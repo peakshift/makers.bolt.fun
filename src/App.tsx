@@ -1,26 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import Navbar from "./Components/Shared/Navbar/Navbar";
+import ExplorePage from "./Components/ExplorePage/ExplorePage";
+import Modal from "./Components/Shared/Modal/Modal";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <div id="app" className='w-screen overflow-hidden'>
+    <Navbar />
+    <ExplorePage />
+    <Modal />
+  </div>;
 }
 
 export default App;
