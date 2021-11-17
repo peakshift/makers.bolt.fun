@@ -1,7 +1,8 @@
 {
-  "name": "my-app-2",
+  "name": "makers.bolt.fun",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",
