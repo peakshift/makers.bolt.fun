@@ -44,13 +44,13 @@ export const modalSlice = createSlice({
 
     openModal(
       state,
-      action: PayloadAction<{ modalId: ModalId; initialModalProps: any }>
+      action: PayloadAction<{ modalId: ModalId; initialModalProps?: any }>
     ) {
       state.direction = Direction.START;
       state.isOpen = true;
       state.openModals.push({
         modalId: action.payload.modalId,
-        propsToPass: action.payload.initialModalProps,
+        propsToPass: action.payload.initialModalProps || {},
       });
     },
 
@@ -58,7 +58,7 @@ export const modalSlice = createSlice({
       state,
       action: PayloadAction<{
         modalId: ModalId;
-        initialModalProps: any;
+        initialModalProps?: any;
         direction: Direction;
       }>
     ) {

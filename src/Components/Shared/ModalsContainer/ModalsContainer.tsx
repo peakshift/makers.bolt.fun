@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { closeModal, Direction, ModalId } from "../../../redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import LoginCard_1 from "../../Login/LoginCard-1";
+import LoginCard_2 from "../../Login/LoginCard-2";
 import ProjectCard from "../../Project/ProjectCard";
 import VoteCard from "../../Vote/VoteCard";
 import Modal from "../Modal/Modal";
@@ -42,6 +43,8 @@ const ModalsMap = (modalId: ModalId) => {
             return ProjectCard;
         case ModalId.Login1:
             return LoginCard_1;
+        case ModalId.Login2:
+            return LoginCard_2;
         case ModalId.Vote:
             return VoteCard;
         default:
