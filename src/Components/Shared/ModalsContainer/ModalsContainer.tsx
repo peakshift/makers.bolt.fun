@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { closeModal, Direction, ModalId } from "../../../redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import LoginCard_1 from "../../Login/LoginCard-1";

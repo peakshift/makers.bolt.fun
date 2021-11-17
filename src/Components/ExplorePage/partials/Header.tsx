@@ -20,15 +20,15 @@ const headerLinks = [
 
 export default function Header() {
   return (
-    <div className="flex gap-40 justify-center md:justify-between">
-      <div className="flex-grow rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
+    <div className="grid grid-cols-1 md:grid-cols-2  gap-40 justify-center md:justify-between">
+      <div className="rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
         <img
           className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
           src={headerLinks[0].img}
           alt=""
         />
-        <div className="w-full h-full object-cover bg-black opacity-40 absolute top-0 left-0 z-[-1]"></div>
-        <h3 className="text-white text-h3 max-w-md">{headerLinks[0].title}</h3>
+        <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
+        <h3 className="text-white text-h3 max-w-[80%]">{headerLinks[0].title}</h3>
         <a
           href={headerLinks[0].link.url}
           className="btn btn-primary font-regular mt-36"
@@ -36,14 +36,14 @@ export default function Header() {
           {headerLinks[0].link.content}
         </a>
       </div>
-      <div className="hidden flex-grow rounded-20 h-[280px] relative overflow-hidden p-24 md:flex flex-col items-start justify-end">
+      <div className="hidden md:flex flex-col rounded-20 h-[280px] relative overflow-hidden p-24  items-start justify-end">
         <img
           className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
           src={headerLinks[1].img}
           alt=""
         />
-        <div className="w-full h-full object-cover bg-black opacity-40 absolute top-0 left-0 z-[-1]"></div>
-        <h3 className="text-white text-h3 max-w-md">
+        <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
+        <h3 className="text-white text-h3 max-w-[80%]">
           {headerLinks[1].title}
         </h3>
         <a href={headerLinks[1].link.url} className="btn font-regular mt-36">

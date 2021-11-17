@@ -33,14 +33,15 @@ export default function ProjectsRow({ title, projects }: Props) {
 
     return (
         <div className='mb-40 overflow-hidden'>
-            <h3 className="font-bolder text-body3 mb-20">{title}</h3>
+            <h3 className="font-bolder text-body3 mb-20 px-32">{title}</h3>
             <Carousel
-                className='py-10'
+                containerClass='py-10 pl-32'
                 showDots={false}
                 arrows={false}
                 responsive={responsive}
+                infinite
             >
-                {projects.map((project, idx) => <div key={idx} className="select-none px-16 py-16  flex w-[296px] gap-16 border-gray-100 shadow-md border-2 rounded-10 transform transition-transform hover:cursor-pointer hover:scale-105" onClick={() => handleClick(project.id)}>
+                {projects.map((project, idx) => <div key={idx} className="select-none px-16 py-16  flex w-[296px] gap-16 border-gray-200 shadow-md border-2 rounded-10 transform transition-transform hover:cursor-pointer hover:scale-105" onClick={() => handleClick(project.id)}>
                     <img src={project.img} draggable="false" className="flex-shrink-0 w-80 h-80 bg-gray-200 border-0 rounded-8"></img>
                     <div className="justify-around items-start min-w-0">
                         <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project.title}</p>
