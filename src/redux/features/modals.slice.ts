@@ -12,21 +12,26 @@ export enum ModalId {
   Project,
   Login1,
   Login2,
+  Vote,
+}
+
+interface OpenModal {
+  modalId: ModalId;
+  propsToPass: any;
 }
 
 interface StoreState {
   isOpen: boolean;
   isLoading: boolean;
   direction: Direction;
-  openModalId: ModalId;
-  initialModalProps: any;
+  openModals: OpenModal[];
 }
 
 const initialState = {
   isOpen: false,
   isLoading: false,
   direction: Direction.START,
-  openModalId: ModalId.None,
+  openModals: [] as OpenModal[],
 } as StoreState;
 
 export const modalSlice = createSlice({
@@ -41,20 +46,43 @@ export const modalSlice = createSlice({
       state,
       action: PayloadAction<{ modalId: ModalId; initialModalProps: any }>
     ) {
-      if (!state.isOpen) state.direction = Direction.START;
+      state.direction = Direction.START;
       state.isOpen = true;
-      state.openModalId = action.payload.modalId;
-      state.initialModalProps = action.payload.initialModalProps;
+      state.openModals.push({
+        modalId: action.payload.modalId,
+        propsToPass: action.payload.initialModalProps,
+      });
+    },
+
+    replaceModal(
+      state,
+      action: PayloadAction<{
+        modalId: ModalId;
+        initialModalProps: any;
+        direction: Direction;
+      }>
+    ) {
+      state.direction = action.payload.direction;
+      state.openModals.pop();
+      state.openModals.push({
+        modalId: action.payload.modalId,
+        propsToPass: action.payload.initialModalProps || {},
+      });
     },
 
     closeModal(state) {
       state.direction = Direction.EXIT;
-      state.isOpen = false;
-      state.openModalId = ModalId.None;
+      state.openModals.pop();
+      state.isOpen = Boolean(state.openModals.length);
     },
   },
 });
 
-export const { closeModal, openModal, setDirection } = modalSlice.actions;
+export const {
+  closeModal,
+  openModal,
+  replaceModal,
+  setDirection,
+} = modalSlice.actions;
 
 export default modalSlice.reducer;

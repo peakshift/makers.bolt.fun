@@ -12,6 +12,10 @@
     @apply bg-primary-600 hover:bg-primary-500 text-white;
   }
 
+  .btn-gray {
+    @apply bg-gray-200 hover:bg-gray-100 text-gray-900;
+  }
+
   .chip {
     @apply bg-gray-100 text-body4 px-16 py-8 rounded-24  font-regular;
   }
@@ -20,7 +24,7 @@
   }
 
   .modal-card {
-    @apply rounded-[40px] bg-gray-50 overflow-hidden w-full max-w-[600px] shadow-xl;
+    @apply rounded-[40px] bg-gray-50 overflow-y-scroll w-full max-w-[600px] shadow-xl z-10;
   }
 }
 
@@ -51,4 +55,13 @@ svg {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #999;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar ::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ModalCard, modalCardVariants } from "../Shared/Modal/Modal";
+import { ModalCard, modalCardVariants } from "../Shared/ModalsContainer/ModalsContainer";
 
 interface Props extends ModalCard {
 

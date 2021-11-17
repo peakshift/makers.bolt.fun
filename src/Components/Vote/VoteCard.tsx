@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 
-export default function LoginCard_1({ onClose, direction, ...props }: ModalCard) {
+export default function VoteCard({ onClose, direction, ...props }: ModalCard) {
     return (
         <motion.div
             custom={direction}
@@ -13,7 +13,7 @@ export default function LoginCard_1({ onClose, direction, ...props }: ModalCard)
 
         >
             <div className="p-24 h-full flex flex-col items-center justify-center">
-                <h3 className="text-h2  font-bold">Login Modal</h3>
+                <h3 className="text-h2  font-bold">Vote Modal</h3>
                 <p className="text-body2 mt-40">WIP</p>
             </div>
         </motion.div>
