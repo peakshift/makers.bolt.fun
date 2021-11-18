@@ -84,7 +84,7 @@ export default function ModalsContainer() {
                         {openModals.map(modal => {
                             const Child = ModalsMap(modal.modalId);
                             return (
-                                <Modal onClose={onClose}>
+                                <Modal key={modal.modalId} onClose={onClose}>
                                     <Child onClose={onClose} direction={direction} {...modal.propsToPass} />
                                 </Modal>)
                         })}
