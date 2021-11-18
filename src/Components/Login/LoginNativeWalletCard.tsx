@@ -27,7 +27,7 @@ export default function LoginNativeWalletCard({ onClose, direction, ...props }: 
         >
             <div className="flex justify-center">
                 <img
-                    src="/assets/icons/lightning-big.svg"
+                    src="assets/icons/lightning-big.svg"
                     className='w-80 h-80'
                     alt="lightning" />
             </div>

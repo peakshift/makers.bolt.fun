@@ -29,7 +29,7 @@ interface StoreState {
 }
 
 const initialState = {
-  isOpen: true,
+  isOpen: false,
   isLoading: false,
   direction: Direction.START,
   openModals: [

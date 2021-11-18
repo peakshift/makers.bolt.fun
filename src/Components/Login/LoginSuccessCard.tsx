@@ -35,7 +35,7 @@ export default function LoginSuccessCard({ onClose, direction, ...props }: Modal
 
             <div className="flex justify-center mt-32">
                 <img
-                    src="/assets/icons/success-icon.svg"
+                    src="assets/icons/success-icon.svg"
                     className='w-80 h-80'
                     alt="success" />
             </div>
