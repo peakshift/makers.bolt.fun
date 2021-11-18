@@ -33,7 +33,7 @@ const initialState = {
   isLoading: false,
   direction: Direction.START,
   openModals: [
-    // { modalId: ModalId.LoginSuccess }
+    // { modalId: ModalId.Vote }
   ] as OpenModal[],
 } as StoreState;
 

@@ -16,6 +16,18 @@
     @apply bg-gray-200 hover:bg-gray-100 text-gray-900;
   }
 
+  .input-wrapper {
+    @apply w-full relative border rounded-lg shadow flex h-42 overflow-hidden focus-within:outline-primary;
+  }
+
+  .input-field {
+    @apply flex-grow appearance-none w-full py-2 px-3 bg-transparent text-primary-800 leading-tight focus:outline-none;
+  }
+
+  .input-icon {
+    @apply h-full text-primary-500 flex-shrink-0 w-42 px-12;
+  }
+
   .chip {
     @apply bg-gray-100 text-body4 px-16 py-8 rounded-24  font-regular;
   }

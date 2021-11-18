@@ -59,6 +59,7 @@ module.exports = {
         body3: ["18px", "20px"],
         body4: ["16px", "20px"],
         body5: ["14px", "20px"],
+        body6: ["12px", "20px"],
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
@@ -75,6 +76,7 @@ module.exports = {
         8: "8px",
         10: "10px",
         12: "12px",
+        14: "14px",
         16: "16px",
         20: "20px",
         24: "24px",
@@ -98,6 +100,9 @@ module.exports = {
         20: "20px",
         24: "24px",
         full: "50%",
+      },
+      outline: {
+        primary: ["2px solid #7B61FF", "1px"],
       },
     },
   },
