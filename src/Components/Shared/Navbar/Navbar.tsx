@@ -27,8 +27,8 @@ export default function Navbar() {
 
                 </ul>
                 <div className="ml-auto">
-                    <button className="btn btn-primary py-12 px-32 lg:px-40">Submit <AiFillThunderbolt className='inline-block text-yellow-400 transform scale-125' /> app️</button>
-                    <span className="chip mx-12 h-full mr-24 p-12"><AiFillThunderbolt className='inline-block text-yellow-400 transform scale-125' /> 2.2k sats </span>
+                    <button className="btn btn-primary py-12 px-32 lg:px-40">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> app️</button>
+                    <span className="chip mx-12 h-full mr-24 p-12"><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> 2.2k sats </span>
                 </div>
             </nav>
         </>

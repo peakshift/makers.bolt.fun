@@ -10,8 +10,9 @@ export enum Direction {
 export enum ModalId {
   None,
   Project,
-  Login1,
-  Login2,
+  LoginScanWallet,
+  LoginNativeWallet,
+  LoginSuccess,
   Vote,
 }
 
@@ -28,10 +29,10 @@ interface StoreState {
 }
 
 const initialState = {
-  isOpen: false,
+  isOpen: true,
   isLoading: false,
   direction: Direction.START,
-  openModals: [] as OpenModal[],
+  openModals: [{ modalId: ModalId.LoginSuccess }] as OpenModal[],
 } as StoreState;
 
 export const modalSlice = createSlice({

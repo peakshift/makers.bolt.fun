@@ -12,7 +12,7 @@ export default function ProjectsSection() {
 
     return (
         <>
-            <ProjectsRow title={<h3 className="font-bolder text-body3 mb-20">Hottest <AiFillThunderbolt className='inline-block text-yellow-400 transform scale-125' /> apps</h3>
+            <ProjectsRow title={<h3 className="font-bolder text-body3 mb-20">Hottest <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> apps</h3>
             } projects={data[0].projects} />
             {data.slice(1).map(({ title, projects }) => <ProjectsRow key={title} title={title} projects={projects} />)}
         </>

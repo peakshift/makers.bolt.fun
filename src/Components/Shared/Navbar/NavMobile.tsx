@@ -58,7 +58,7 @@ export default function NavMobile() {
                             <BsSearch className='absolute top-1/2 left-20 transform -translate-x-1/2  -translatey-1/2 text-gray-500' />
                             <input className="btn bg-gray-100 w-full py-12 px-40 rounded-24 mt-16 placeholder-gray-500" placeholder="Search" />
                         </div>
-                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 my-16">Submit <AiFillThunderbolt className='inline-block text-yellow-400 transform scale-125' />  app️</button>
+                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 my-16">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' />  app️</button>
                     </div>
                     <ul className="py-16 gap-64 border-t">
                         {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 hover:bg-gray-200">

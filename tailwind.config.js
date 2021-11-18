@@ -36,7 +36,6 @@ module.exports = {
           800: "#2C1E93",
           900: "#1C127A",
         },
-        fire: "#ff6a00",
         sucess: {
           300: "#6CE9A6",
           400: "#32D583",
@@ -44,6 +43,10 @@ module.exports = {
           600: "#039855",
           700: "#027A48",
         },
+
+        // Custom Colors
+        thunder: "#ffd400",
+        fire: "#ff6a00",
       },
       fontSize: {
         h1: ["36px", "30px"],

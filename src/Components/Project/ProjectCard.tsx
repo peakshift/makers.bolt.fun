@@ -26,7 +26,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
 
     const onClaim = () => {
         dispatch(openModal({
-            modalId: ModalId.Login1,
+            modalId: ModalId.LoginScanWallet,
             initialModalProps: { projectId: props.projectId },
         }))
     }

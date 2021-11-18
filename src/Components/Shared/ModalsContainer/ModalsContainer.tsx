@@ -2,8 +2,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { closeModal, Direction, ModalId } from "../../../redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
-import LoginCard_1 from "../../Login/LoginCard-1";
-import LoginCard_2 from "../../Login/LoginCard-2";
+import LoginNativeWalletCard from "../../Login/LoginNativeWalletCard";
+import LoginSuccessCard from "../../Login/LoginSuccessCard";
+import ScanningWalletCard from "../../Login/ScanningWalletCard";
 import ProjectCard from "../../Project/ProjectCard";
 import VoteCard from "../../Vote/VoteCard";
 import Modal from "../Modal/Modal";
@@ -41,10 +42,12 @@ const ModalsMap = (modalId: ModalId) => {
     switch (modalId) {
         case ModalId.Project:
             return ProjectCard;
-        case ModalId.Login1:
-            return LoginCard_1;
-        case ModalId.Login2:
-            return LoginCard_2;
+        case ModalId.LoginScanWallet:
+            return ScanningWalletCard;
+        case ModalId.LoginNativeWallet:
+            return LoginNativeWalletCard;
+        case ModalId.LoginSuccess:
+            return LoginSuccessCard;
         case ModalId.Vote:
             return VoteCard;
         default:
