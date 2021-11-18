@@ -32,7 +32,6 @@ export default function ScanningWalletCard({ onClose, direction, ...props }: Mod
             animate="animate"
             exit='exit'
             className="modal-card max-w-[343px] p-24 rounded-xl relative"
-
         >
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
             <h2 className='text-h5 font-bold'>Log in with Lightning  <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></h2>

@@ -59,7 +59,11 @@ const ModalsMap = (modalId: ModalId) => {
 
 export default function ModalsContainer() {
 
-    const { isOpen, openModals, direction } = useAppSelector(state => ({ isOpen: state.modals.isOpen, openModals: state.modals.openModals, direction: state.modals.direction }))
+    const { isOpen, openModals, direction } = useAppSelector(state => ({
+        isOpen: state.modals.isOpen,
+        openModals: state.modals.openModals,
+        direction: state.modals.direction
+    }))
 
     const dispatch = useAppDispatch();
     const onClose = () => dispatch(closeModal());
@@ -69,9 +73,9 @@ export default function ModalsContainer() {
         else document.body.style.overflowY = "initial";
     }, [isOpen]);
 
-
     return (
         <Portal>
+
             <AnimatePresence exitBeforeEnter>
                 {isOpen &&
                     <motion.div
@@ -83,14 +87,15 @@ export default function ModalsContainer() {
                             transition: { ease: "easeInOut" },
                         }}
                     >
-
-                        {openModals.map(modal => {
-                            const Child = ModalsMap(modal.modalId);
-                            return (
-                                <Modal key={modal.modalId} onClose={onClose}>
-                                    <Child onClose={onClose} direction={direction} {...modal.propsToPass} />
-                                </Modal>)
-                        })}
+                        <AnimatePresence>
+                            {openModals.map(modal => {
+                                const Child = ModalsMap(modal.modalId);
+                                return (
+                                    <Modal key={modal.modalId} onClose={onClose} direction={direction}>
+                                        <Child onClose={onClose} direction={direction} {...modal.propsToPass} />
+                                    </Modal>)
+                            })}
+                        </AnimatePresence>
                     </motion.div>}
             </AnimatePresence>
         </Portal>

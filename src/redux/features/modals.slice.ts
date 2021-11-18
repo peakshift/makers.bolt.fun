@@ -32,7 +32,9 @@ const initialState = {
   isOpen: true,
   isLoading: false,
   direction: Direction.START,
-  openModals: [{ modalId: ModalId.LoginSuccess }] as OpenModal[],
+  openModals: [
+    // { modalId: ModalId.LoginSuccess }
+  ] as OpenModal[],
 } as StoreState;
 
 export const modalSlice = createSlice({
