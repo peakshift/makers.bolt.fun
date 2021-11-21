@@ -10,7 +10,7 @@ export default function Login_NativeWalletCard({ onClose, direction, ...props }:
 
     const handleNext = () => {
         dispatch(replaceModal({
-            modalId: ModalId.Login_Success,
+            modalId: ModalId.Login_ExternalWallet,
             direction: Direction.NEXT
         }))
     }

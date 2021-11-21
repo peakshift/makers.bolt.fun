@@ -28,7 +28,7 @@ export default function ProjectsRow({ title, projects }: Props) {
     const handleClick = (projectId: string) => {
         projectId = '123123123';
         if (!drag.current)
-            dispatch(openModal({ modalId: ModalId.Project, initialModalProps: { projectId } }))
+            dispatch(openModal({ modalId: ModalId.Project, propsToPass: { projectId } }))
     }
 
     return (

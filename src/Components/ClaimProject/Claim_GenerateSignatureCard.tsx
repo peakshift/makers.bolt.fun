@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { useCallback, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
@@ -8,11 +8,13 @@ import { IoClose } from 'react-icons/io5';
 export default function Claim_GenerateSignatureCard({ onClose, direction, ...props }: ModalCard) {
 
     const dispatch = useAppDispatch();
+    const { projectName, image } = useAppSelector(state => ({ projectName: state.project.project?.title, image: state.project.project?.thumbnail_image, }))
+
 
 
     const handleNext = useCallback(() => {
         dispatch(replaceModal({
-            modalId: ModalId.Login_NativeWallet,
+            modalId: ModalId.Claim_CopySignature,
             direction: Direction.NEXT
         }))
     }, [dispatch])
@@ -41,12 +43,12 @@ export default function Claim_GenerateSignatureCard({ onClose, direction, ...pro
             <h2 className='text-h5 font-bold'>Claim this project</h2>
             <div className="flex justify-center my-32">
                 <img
-                    src="assets/icons/lightning-big.svg"
-                    className='w-80 h-80'
+                    src={image}
+                    className='w-80 h-80 object-cover rounded-2xl'
                     alt="" />
             </div>
             <p className="text-body4 text-center px-16">
-                To claim ownership of <span className="font-bold">Application Name</span> and its tips, you need to sign a message and paste this on the project website so we can verify you are the real ownership
+                To claim ownership of <span className="font-bold">{projectName}</span> and its tips, you need to sign a message and paste this on the project website so we can verify you are the real ownership
             </p>
             <div className="mt-32">
                 <button className='btn btn-primary w-full' onClick={handleNext}>Generate Signature</button>

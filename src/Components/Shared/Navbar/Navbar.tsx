@@ -4,9 +4,11 @@ import { MdLocalFireDepartment } from 'react-icons/md';
 import { IoExtensionPuzzle } from 'react-icons/io5';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BsSearch } from "react-icons/bs";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { GrClose } from 'react-icons/gr';
+import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
+import { ModalId, openModal } from "../../../redux/features/modals.slice";
 
 export const navLinks = [
     { text: "Explore", url: "/", icon: FaHome, color: 'text-primary-600' },
@@ -18,15 +20,31 @@ export const navLinks = [
 export default function Navbar() {
 
     const [searchOpen, setSearchOpen] = useState(false)
-    const [searchInput, setSearchInput] = useState("")
+    const [searchInput, setSearchInput] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null)
+    const dispatch = useAppDispatch()
+    const { isWalletConnected } = useAppSelector(state => ({ isWalletConnected: state.wallet.isConnected }))
 
     const toggleSearch = () => {
+        if (!searchOpen) inputRef.current?.focus();
         setSearchOpen(!searchOpen);
     }
 
     const onSearch = (search: string) => {
         // Make Search Request
         alert(`Your Searched for: ${search}`)
+    }
+
+    const onConnectWallet = () => {
+        dispatch(openModal({
+            modalId: ModalId.Login_ScanWallet
+        }));
+    }
+
+    const onWithdraw = () => {
+        dispatch(openModal({
+            modalId: ModalId.Claim_FundWithdraw
+        }))
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -53,17 +71,20 @@ export default function Navbar() {
                         animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
                         className="flex">
                         <button className="btn btn-primary py-12 px-32 lg:px-40">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> App️</button>
-                        <button className="btn btn-gray rounded-3xl ml-16 py-12 px-16 lg:px-20"><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
-
+                        {isWalletConnected ?
+                            <button className="btn border ml-16 py-12 px-16 lg:px-20" onClick={onWithdraw}>2.2k Sats <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></button>
+                            : <button className="btn border ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
+                        }
                     </motion.div>
                     <form onBlur={toggleSearch} className='relative flex items-center' onSubmit={handleSubmit}>
                         {searchOpen ? <GrClose onClick={toggleSearch} className='text-gray-500 w-24 h-24 mx-12 z-20 hover:cursor-pointer' /> : <BsSearch onClick={toggleSearch} className='text-gray-500 w-24 h-24 mx-12 z-20 hover:cursor-pointer' />}
-                        <motion.input
+                        {searchOpen && <motion.input
+                            ref={inputRef}
                             value={searchInput}
                             onChange={e => setSearchInput(e.target.value)}
                             initial={{ scaleX: .3, opacity: 0, originX: 'right' }}
                             animate={searchOpen ? { scaleX: 1, opacity: 1, originX: 'right' } : { scaleX: .3, opacity: 0, originX: 'right' }}
-                            className="absolute top-0 right-0  z-10   bg-gray-200 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />
+                            className="absolute top-0 right-0  z-10   bg-gray-200 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />}
                     </form>
                 </div>
             </nav>

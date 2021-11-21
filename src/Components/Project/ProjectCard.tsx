@@ -5,15 +5,22 @@ import { MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer';
 import { useQuery } from 'react-query';
 import { getProjectById } from '../../api';
-import { useAppDispatch } from '../../utils/hooks';
-import { ModalId, openModal } from '../../redux/features/modals.slice';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { ModalId, openModal, scheduleModal } from '../../redux/features/modals.slice';
+import { setProject } from '../../redux/features/project.slice';
 
 
 export default function ProjectCard({ onClose, direction, ...props }: ModalCard) {
 
 
-    const { data: project, isLoading } = useQuery(['get-project', props.projectId], () => getProjectById(props.projectId))
-
+    const { data: project, isLoading } = useQuery(
+        ['get-project', props.projectId],
+        () => getProjectById(props.projectId),
+        {
+            onSuccess: project => dispatch(setProject(project))
+        }
+    )
+    const { isWalletConnected } = useAppSelector(state => ({ isWalletConnected: state.wallet.isConnected }))
     const dispatch = useAppDispatch();
 
     if (isLoading || !project) return <></>;
@@ -21,14 +28,29 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
 
     const onVote = () => {
 
-        dispatch(openModal({ modalId: ModalId.Vote, initialModalProps: { projectId: props.projectId } }))
+        if (!isWalletConnected) {
+            dispatch(scheduleModal({ modalId: ModalId.Vote, propsToPass: { projectId: props.projectId } }))
+            dispatch(openModal({
+                modalId: ModalId.Login_ScanWallet
+            }))
+        } else
+            dispatch(openModal({ modalId: ModalId.Vote, propsToPass: { projectId: props.projectId } }))
     }
 
     const onClaim = () => {
-        dispatch(openModal({
-            modalId: ModalId.Login_ScanWallet,
-            initialModalProps: { projectId: props.projectId },
-        }))
+        if (!isWalletConnected) {
+            dispatch(scheduleModal({
+                modalId: ModalId.Claim_GenerateSignature,
+                propsToPass: { projectId: props.projectId },
+            }))
+            dispatch(openModal({
+                modalId: ModalId.Login_ScanWallet
+            }))
+        } else
+            dispatch(openModal({
+                modalId: ModalId.Claim_GenerateSignature,
+                propsToPass: { projectId: props.projectId },
+            }))
     }
 
     return (
@@ -56,7 +78,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     </div>
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
                         <button className="btn btn-primary py-12 px-24 rounded-lg my-16">Play <BsJoystick /></button>
-                        <button onClick={onVote} className="btn bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg my-16">Vote <MdLocalFireDepartment className='text-fire' /></button>
+                        <button onClick={onVote} className="btn border border-yellow-300 bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg my-16">Vote <MdLocalFireDepartment className='text-fire' /></button>
                     </div>
                 </div>
                 <p className="mt-40 text-body4 leading-normal">{project.description}</p>

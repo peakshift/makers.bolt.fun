@@ -14,6 +14,7 @@
     "@types/react-dom": "^17.0.10",
     "framer-motion": "^5.3.0",
     "react": "^17.0.2",
+    "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-loader-spinner": "^4.0.0",
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.4.0",
+    "@types/react-copy-to-clipboard": "^5.0.2",
     "autoprefixer": "^9.8.8",
     "gh-pages": "^3.2.3",
     "postcss": "^7.0.39",

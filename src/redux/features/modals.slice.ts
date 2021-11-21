@@ -23,13 +23,15 @@ export enum ModalId {
 
 interface OpenModal {
   modalId: ModalId;
-  propsToPass: any;
+  propsToPass?: any;
 }
 
 interface StoreState {
   isOpen: boolean;
   isLoading: boolean;
   direction: Direction;
+  flows: ModalId[];
+  toOpenLater: OpenModal | null;
   openModals: OpenModal[];
 }
 
@@ -37,9 +39,9 @@ const initialState = {
   isOpen: false,
   isLoading: false,
   direction: Direction.START,
-  openModals: [
-    // { modalId: ModalId.Claim_FundWithdraw }
-  ] as OpenModal[],
+  flows: [],
+  toOpenLater: null,
+  openModals: [] as OpenModal[],
 } as StoreState;
 
 export const modalSlice = createSlice({
@@ -50,15 +52,32 @@ export const modalSlice = createSlice({
       state.direction = action.payload;
     },
 
+    scheduleModal(state, action: PayloadAction<OpenModal>) {
+      state.toOpenLater = action.payload;
+    },
+
+    openSceduledModal(state) {
+      if (state.toOpenLater) {
+        state.direction = Direction.START;
+        state.isOpen = true;
+        state.openModals.push(state.toOpenLater);
+        state.toOpenLater = null;
+      }
+    },
+
+    removeScheduledModal(state) {
+      state.toOpenLater = null;
+    },
+
     openModal(
       state,
-      action: PayloadAction<{ modalId: ModalId; initialModalProps?: any }>
+      action: PayloadAction<{ modalId: ModalId; propsToPass?: any }>
     ) {
       state.direction = Direction.START;
       state.isOpen = true;
       state.openModals.push({
         modalId: action.payload.modalId,
-        propsToPass: action.payload.initialModalProps || {},
+        propsToPass: action.payload.propsToPass,
       });
     },
 
@@ -66,7 +85,7 @@ export const modalSlice = createSlice({
       state,
       action: PayloadAction<{
         modalId: ModalId;
-        initialModalProps?: any;
+        propsToPass?: any;
         direction: Direction;
       }>
     ) {
@@ -74,7 +93,7 @@ export const modalSlice = createSlice({
       state.openModals.pop();
       state.openModals.push({
         modalId: action.payload.modalId,
-        propsToPass: action.payload.initialModalProps || {},
+        propsToPass: action.payload.propsToPass || {},
       });
     },
 
@@ -91,6 +110,9 @@ export const {
   openModal,
   replaceModal,
   setDirection,
+  scheduleModal,
+  openSceduledModal,
+  removeScheduledModal,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

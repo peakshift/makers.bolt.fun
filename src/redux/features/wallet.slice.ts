@@ -13,9 +13,13 @@ const initialState = {
 export const walletSlice = createSlice({
   name: "wallet",
   initialState,
-  reducers: {},
+  reducers: {
+    connectWallet(state) {
+      state.isConnected = true;
+    },
+  },
 });
 
-export const {} = walletSlice.actions;
+export const { connectWallet } = walletSlice.actions;
 
 export default walletSlice.reducer;

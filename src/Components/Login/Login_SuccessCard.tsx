@@ -2,21 +2,21 @@ import { motion } from 'framer-motion'
 import { useAppDispatch } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { useCallback, useEffect } from 'react';
+import { closeModal, openSceduledModal } from '../../redux/features/modals.slice';
+import { connectWallet } from '../../redux/features/wallet.slice';
 
 export default function Login_SuccessCard({ onClose, direction, ...props }: ModalCard) {
 
     const dispatch = useAppDispatch();
 
     const handleNext = useCallback(() => {
-        // dispatch(replaceModal({
-        //     modalId: ModalId.Login_ScanWallet,
-        //     direction: Direction.NEXT
-        // })) 
-        onClose && onClose()
+        dispatch(closeModal())
+        dispatch(openSceduledModal())
     }, [dispatch, onClose])
 
 
     useEffect(() => {
+        dispatch(connectWallet());
         const timeout = setTimeout(handleNext, 3000)
         return () => clearTimeout(timeout)
     }, [handleNext])

@@ -3,7 +3,7 @@ import { Direction, ModalId, replaceModal } from '../../redux/features/modals.sl
 import { useAppDispatch } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { AiFillThunderbolt } from 'react-icons/ai';
-import Loader from 'react-loader-spinner';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useCallback, useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { IoIosCopy } from 'react-icons/io'
@@ -15,20 +15,17 @@ export default function Login_ExternalWalletCard({ onClose, direction, ...props 
 
     const handleNext = useCallback(() => {
         dispatch(replaceModal({
-            modalId: ModalId.Login_NativeWallet,
+            modalId: ModalId.Login_Success,
             direction: Direction.NEXT
         }))
     }, [dispatch])
 
     useEffect(() => {
-
-        // const timeout = setTimeout(handleNext, 3000)
-        // return () => clearTimeout(timeout)
     }, [handleNext])
 
     const onCopy = () => {
         // Copy to Clipboard
-        setTimeout(handleNext, 2000)
+        setTimeout(handleNext, 1000)
     }
 
     return (
@@ -45,19 +42,21 @@ export default function Login_ExternalWalletCard({ onClose, direction, ...props 
             <div className='flex justify-center mt-32'>
                 <img
                     onClick={onCopy}
-                    className='w-full max-w-[200px]'
+                    className='w-full max-w-[160px]'
                     src="assets/images/barcode.jpg"
                     alt="barcode" />
             </div>
             <p className="text-body4 text-center mt-16">
                 Scan this code or copy the address below to login using Inurl-auth
             </p>
-            <div className="input-wrapper mt-16">
+            <div className="input-wrapper mt-16 relative">
                 <input
                     className="input-field overflow-ellipsis"
                     value={"Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI"}
                 />
-                <IoIosCopy onClick={onCopy} className='input-icon hover:cursor-pointer' />
+                <CopyToClipboard text={'Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI'} >
+                    <IoIosCopy onClick={onCopy} className='input-icon hover:cursor-pointer' />
+                </CopyToClipboard>
             </div>
 
         </motion.div>

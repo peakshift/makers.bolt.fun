@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { closeModal, Direction, ModalId } from "../../../redux/features/modals.slice";
+import { closeModal, Direction, ModalId, removeScheduledModal } from "../../../redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import Claim_CopySignatureCard from "../../ClaimProject/Claim_CopySignatureCard";
 import Claim_GenerateSignatureCard from "../../ClaimProject/Claim_GenerateSignatureCard";
@@ -85,7 +85,10 @@ export default function ModalsContainer() {
     }))
 
     const dispatch = useAppDispatch();
-    const onClose = () => dispatch(closeModal());
+    const onClose = () => {
+        dispatch(removeScheduledModal());
+        dispatch(closeModal());
+    }
 
     useEffect(() => {
         if (isOpen) document.body.style.overflowY = "hidden";

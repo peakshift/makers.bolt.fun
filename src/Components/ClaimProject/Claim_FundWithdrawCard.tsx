@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { useCallback, useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
@@ -11,8 +11,6 @@ export default function Claim_FundWithdrawCard({ onClose, direction, ...props }:
     const dispatch = useAppDispatch();
 
 
-
-
     return (
         <motion.div
             custom={direction}
@@ -20,12 +18,12 @@ export default function Claim_FundWithdrawCard({ onClose, direction, ...props }:
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card max-w-[270px] py-16 px-24 rounded-xl relative"
+            className="modal-card max-w-[260px] py-16 px-24 rounded-xl relative"
         >
             <div className="flex justify-center my-16">
                 <img
-                    src="assets/icons/lightning-small.svg"
-                    className='w-64 h-64'
+                    src={'assets/icons/lightning-small.svg'}
+                    className='w-48 h-48 object-cover rounded-full'
                     alt="" />
             </div>
             <p className="text-h4 text-center font-bold">
@@ -34,7 +32,7 @@ export default function Claim_FundWithdrawCard({ onClose, direction, ...props }:
             <p className="text-body4 text-center text-gray-400">
                 2.78$
             </p>
-            <div className="mt-32 flex flex-col gap-16">
+            <div className="mt-16 flex flex-col gap-8">
                 <button className='btn btn-primary w-full' >Fund</button>
                 <button className='btn border-2 w-full' >Withdraw</button>
             </div>
