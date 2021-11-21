@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { FiMenu } from 'react-icons/fi';
 import { GrClose } from 'react-icons/gr';
 import { BsSearch } from 'react-icons/bs'
@@ -18,17 +18,29 @@ const navListVariants = {
     hide: { x: 0 }
 }
 
+interface Props {
+    onSearch: (search: string) => void;
+}
 
-export default function NavMobile() {
-    const [open, setOpen] = useState(false)
+export default function NavMobile({ onSearch }: Props) {
+    const [open, setOpen] = useState(false);
+    const [searchInput, setSearchInput] = useState("")
 
     const handleClick = () => {
-        if (open)
-            document.body.classList.remove('overflow-y-hidden')
-        else
-            document.body.classList.add('overflow-y-hidden')
         setOpen(open => !open);
     }
+
+    useEffect(() => {
+        if (open) document.body.style.overflowY = "hidden";
+        else document.body.style.overflowY = "initial";
+    }, [open]);
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (searchInput)
+            onSearch(searchInput)
+    }
+
 
     return (
         <nav className='block lg:hidden overflow-hidden z-[2010]'>
@@ -49,16 +61,23 @@ export default function NavMobile() {
 
                 </div>}
                 <motion.div
-                    className="pointer-events-auto bg-white w-full sm:max-w-[400px] min-h-full absolute left-full  border shadow-2xl sm:p-32 flex flex-col"
+                    className="pointer-events-auto bg-white w-full sm:max-w-[400px] min-h-full absolute left-full  border shadow-2xl pt-32 sm:p-32 flex flex-col"
                     variants={navListVariants}
                     animate={open ? "show" : "hide"}
                 >
                     <div className="px-16">
-                        <div className='relative'>
-                            <BsSearch className='absolute top-1/2 left-20 transform -translate-x-1/2  -translatey-1/2 text-gray-500' />
-                            <input className="btn bg-gray-100 w-full py-12 px-40 rounded-24 mt-16 placeholder-gray-500" placeholder="Search" />
-                        </div>
-                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 my-16">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' />  app️</button>
+                        <form className='relative' onSubmit={handleSubmit}>
+                            <BsSearch className='absolute top-1/2 left-20 transform -translate-x-1/2  -translate-y-1/2 text-gray-500' />
+                            <input
+                                value={searchInput}
+                                onChange={e => setSearchInput(e.target.value)}
+                                className="bg-gray-100 text-gray-600 focus:outline-primary w-full py-12 px-20 pl-40 rounded-24 placeholder-gray-500" placeholder="Search" />
+
+                            {/* <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" /> */}
+                        </form>
+                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 mt-64">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' />  app️</button>
+                        <button className="btn btn-gray w-full py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
+
                     </div>
                     <ul className="py-16 gap-64 border-t">
                         {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 hover:bg-gray-200">

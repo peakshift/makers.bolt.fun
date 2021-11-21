@@ -10,9 +10,14 @@ export enum Direction {
 export enum ModalId {
   None,
   Project,
-  LoginScanWallet,
-  LoginNativeWallet,
-  LoginSuccess,
+  Login_ScanWallet,
+  Login_NativeWallet,
+  Login_ExternalWallet,
+  Login_Success,
+  Claim_GenerateSignature,
+  Claim_CopySignature,
+  Claim_Submitted,
+  Claim_FundWithdraw,
   Vote,
 }
 
@@ -33,7 +38,7 @@ const initialState = {
   isLoading: false,
   direction: Direction.START,
   openModals: [
-    // { modalId: ModalId.Vote }
+    // { modalId: ModalId.Claim_FundWithdraw }
   ] as OpenModal[],
 } as StoreState;
 

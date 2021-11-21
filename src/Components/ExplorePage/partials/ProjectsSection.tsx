@@ -11,10 +11,10 @@ export default function ProjectsSection() {
     if (isLoading || !data) return null;
 
     return (
-        <>
-            <ProjectsRow title={<h3 className="font-bolder text-body3 mb-20">Hottest <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> apps</h3>
-            } projects={data[0].projects} />
+        <div className='mt-32 lg:mt-48'>
+            <ProjectsRow title={<>Hottest <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> apps</>}
+                projects={data[0].projects} />
             {data.slice(1).map(({ title, projects }) => <ProjectsRow key={title} title={title} projects={projects} />)}
-        </>
+        </div>
     )
 }

@@ -2,13 +2,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { closeModal, Direction, ModalId } from "../../../redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
-import LoginNativeWalletCard from "../../Login/LoginNativeWalletCard";
-import LoginSuccessCard from "../../Login/LoginSuccessCard";
-import ScanningWalletCard from "../../Login/ScanningWalletCard";
+import Claim_CopySignatureCard from "../../ClaimProject/Claim_CopySignatureCard";
+import Claim_GenerateSignatureCard from "../../ClaimProject/Claim_GenerateSignatureCard";
+import Login_ExternalWalletCard from "../../Login/Login_ExternalWalletCard";
+import Login_NativeWalletCard from "../../Login/Login_NativeWalletCard";
+import Login_SuccessCard from "../../Login/Login_SuccessCard";
+import Login_ScanningWalletCard from "../../Login/Login_ScanningWalletCard";
 import ProjectCard from "../../Project/ProjectCard";
 import VoteCard from "../../Vote/VoteCard";
 import Modal from "../Modal/Modal";
 import { Portal } from "../Portal/Portal";
+import Claim_SubmittedCard from "../../ClaimProject/Claim_SubmittedCard";
+import Claim_FundWithdrawCard from "../../ClaimProject/Claim_FundWithdrawCard";
 
 export interface ModalCard {
     onClose?: () => void;
@@ -42,17 +47,31 @@ const ModalsMap = (modalId: ModalId) => {
     switch (modalId) {
         case ModalId.Project:
             return ProjectCard;
-        case ModalId.LoginScanWallet:
-            return ScanningWalletCard;
-        case ModalId.LoginNativeWallet:
-            return LoginNativeWalletCard;
-        case ModalId.LoginSuccess:
-            return LoginSuccessCard;
+        case ModalId.Login_ScanWallet:
+            return Login_ScanningWalletCard;
+        case ModalId.Login_NativeWallet:
+            return Login_NativeWalletCard;
+        case ModalId.Login_Success:
+            return Login_SuccessCard;
+        case ModalId.Login_ExternalWallet:
+            return Login_ExternalWalletCard;
         case ModalId.Vote:
             return VoteCard;
+        case ModalId.Claim_GenerateSignature:
+            return Claim_GenerateSignatureCard;
+        case ModalId.Claim_CopySignature:
+            return Claim_CopySignatureCard;
+        case ModalId.Claim_Submitted:
+            return Claim_SubmittedCard;
+        case ModalId.Claim_FundWithdraw:
+            return Claim_FundWithdrawCard;
+
+
+
         default:
             return () => <></>
     }
+
 
 }
 
