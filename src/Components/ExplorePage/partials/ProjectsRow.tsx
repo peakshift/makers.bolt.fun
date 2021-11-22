@@ -14,10 +14,8 @@ const responsive = {
 }
 
 const calcNumItems = () => {
-    const res = (((window.innerWidth - 32 - 296) / (296 + 20)));
-    console.log(res);
-
-    return res;
+    const items = (((window.innerWidth - 32 - 296) / (296 + 20)));
+    return items;
 }
 
 interface Props { title: string | ReactElement, projects: ProjectCard[] }
