@@ -21,7 +21,7 @@
   }
 
   .input-field {
-    @apply flex-grow appearance-none w-full py-2 px-3 bg-transparent text-primary-800 leading-tight focus:outline-none;
+    @apply flex-grow appearance-none w-full py-2 px-3 bg-transparent text-primary-500 leading-tight focus:outline-none;
   }
 
   .input-icon {

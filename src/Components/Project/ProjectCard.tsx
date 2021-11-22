@@ -82,7 +82,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     </div>
                 </div>
                 <p className="mt-40 text-body4 leading-normal">{project.description}</p>
-                <div className="flex gap-24 mt-24 flex-wrap">
+                <div className="flex gap-16 mt-24 flex-wrap">
                     <span className="chip-small bg-red-100 text-red-800 font-regular"> payments </span>
                     <span className="chip-small bg-primary-100 text-primary-800 font-regular"> lightining </span>
                 </div>
@@ -91,12 +91,20 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     <button onClick={onVote} className="btn w-full bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg mb-24">Vote <MdLocalFireDepartment className='text-fire' /></button>
                 </div>
                 <div className="mt-40">
-                    <h3 className="text-h5 font-bold">Screenshots</h3>
-                    <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 gap-x-24 gap-y-20">
-                        <div className="w-full max-w-[310px] self-center h-[130px] bg-gray-300 rounded-xl"></div>
-                        <div className="w-full max-w-[310px] self-center h-[130px] bg-gray-300 rounded-xl"></div>
-                        <div className="w-full max-w-[310px] self-center h-[130px] bg-gray-300 rounded-xl"></div>
-                        <div className="w-full max-w-[310px] self-center h-[130px] bg-gray-300 rounded-xl"></div>
+                    <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
+                    <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
+                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
+                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        </div>
+                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
+                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        </div>
+                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
+                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        </div>
+                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
+                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        </div>
                     </div>
                 </div>
                 <hr className="my-40" />

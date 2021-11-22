@@ -26,7 +26,11 @@ export default function Navbar() {
     const { isWalletConnected } = useAppSelector(state => ({ isWalletConnected: state.wallet.isConnected }))
 
     const toggleSearch = () => {
-        if (!searchOpen) inputRef.current?.focus();
+        if (!searchOpen) {
+            console.log(inputRef.current);
+            inputRef.current?.focus();
+
+        }
         setSearchOpen(!searchOpen);
     }
 
@@ -84,7 +88,11 @@ export default function Navbar() {
                             onChange={e => setSearchInput(e.target.value)}
                             initial={{ scaleX: .3, opacity: 0, originX: 'right' }}
                             animate={searchOpen ? { scaleX: 1, opacity: 1, originX: 'right' } : { scaleX: .3, opacity: 0, originX: 'right' }}
-                            className="absolute top-0 right-0  z-10   bg-gray-200 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />}
+                            onAnimationComplete={() => {
+                                if (searchOpen) inputRef.current?.focus()
+                            }}
+                            className="absolute top-0 right-0 z-10 bg-gray-200 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />
+                        }
                     </form>
                 </div>
             </nav>

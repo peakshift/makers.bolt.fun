@@ -52,14 +52,14 @@ export default function VoteCard({ onClose, direction, ...props }: ModalCard) {
                     {defaultOptions.map((option, idx) =>
                         <button
                             key={idx}
-                            className={`btn border px-12 rounded-md py-8 text-body ${idx === selectedOption && "border-primary-500 bg-primary-100 text-primary-600"}`}
+                            className={`btn border px-12 rounded-md py-8 text-body ${idx === selectedOption && "border-primary-500 bg-primary-100 hover:bg-primary-100 text-primary-600"}`}
                             onClick={() => onSelectOption(idx)}
                         >
                             {option.text}<AiFillThunderbolt className='inline-block text-thunder' />
                         </button>
                     )}
                 </div>
-                <p className="text-body6 mt-14 text-gray-500">1 sat = 1 vote</p>
+                <p className="text-body6 mt-12 text-gray-500">1 sat = 1 vote</p>
                 <button className="btn btn-primary w-full mt-32" onClick={onClose}>
                     Upvote
                 </button>

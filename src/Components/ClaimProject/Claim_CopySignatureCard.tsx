@@ -46,7 +46,7 @@ export default function Claim_CopySignatureCard({ onClose, direction, ...props }
                 Good job! Now paste this on the webpage
                 <a className="font-bold" href="www.projectname.com/"
                     target='_blank' rel='noreferrer'
-                >www.projectname.com/</a>
+                > www.projectname.com/</a>
             </p>
             <div className="input-wrapper mt-32">
                 <input
