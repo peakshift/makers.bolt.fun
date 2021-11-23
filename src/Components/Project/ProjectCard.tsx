@@ -93,17 +93,17 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                 <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
                     <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
-                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
-                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        <div className="w-full relative pt-[56%]">
+                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
                         </div>
-                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
-                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        <div className="w-full relative pt-[56%]">
+                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
                         </div>
-                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
-                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        <div className="w-full relative pt-[56%]">
+                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
                         </div>
-                        <div className="w-full relative" style={{ aspectRatio: '16/9' }}>
-                            <div className="w-full h-full object-cover bg-gray-300 rounded-xl"></div>
+                        <div className="w-full relative pt-[56%]">
+                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                     </div>
                 </div>
