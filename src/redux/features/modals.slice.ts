@@ -18,7 +18,7 @@ export enum ModalId {
   Claim_CopySignature,
   Claim_Submitted,
   Claim_FundWithdraw,
-  Vote,
+  Tip,
 }
 
 interface OpenModal {

@@ -9,7 +9,7 @@ import Login_NativeWalletCard from "../../Login/Login_NativeWalletCard";
 import Login_SuccessCard from "../../Login/Login_SuccessCard";
 import Login_ScanningWalletCard from "../../Login/Login_ScanningWalletCard";
 import ProjectCard from "../../Project/ProjectCard";
-import VoteCard from "../../Vote/VoteCard";
+import TipCard from "../../Tip/TipCard";
 import Modal from "../Modal/Modal";
 import { Portal } from "../Portal/Portal";
 import Claim_SubmittedCard from "../../ClaimProject/Claim_SubmittedCard";
@@ -55,8 +55,8 @@ const ModalsMap = (modalId: ModalId) => {
             return Login_SuccessCard;
         case ModalId.Login_ExternalWallet:
             return Login_ExternalWalletCard;
-        case ModalId.Vote:
-            return VoteCard;
+        case ModalId.Tip:
+            return TipCard;
         case ModalId.Claim_GenerateSignature:
             return Claim_GenerateSignatureCard;
         case ModalId.Claim_CopySignature:

@@ -74,10 +74,10 @@ export default function Navbar() {
                     <motion.div
                         animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
                         className="flex">
-                        <button className="btn btn-primary py-12 px-32 lg:px-40">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> App️</button>
+                        <button className="btn btn-primary py-12 px-32 lg:px-40">Submit App️</button>
                         {isWalletConnected ?
-                            <button className="btn border ml-16 py-12 px-16 lg:px-20" onClick={onWithdraw}>2.2k Sats <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></button>
-                            : <button className="btn border ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
+                            <button className="btn ml-16 py-12 px-16 lg:px-20" onClick={onWithdraw}>2.2k Sats <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></button>
+                            : <button className="btn ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
                         }
                     </motion.div>
                     <form onBlur={toggleSearch} className='relative flex items-center' onSubmit={handleSubmit}>
@@ -91,7 +91,7 @@ export default function Navbar() {
                             onAnimationComplete={() => {
                                 if (searchOpen) inputRef.current?.focus()
                             }}
-                            className="absolute top-0 right-0 z-10 bg-gray-200 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />
+                            className="absolute top-0 right-0 z-10 bg-gray-100 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />
                         }
                     </form>
                 </div>

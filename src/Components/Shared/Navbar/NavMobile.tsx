@@ -75,7 +75,7 @@ export default function NavMobile({ onSearch }: Props) {
 
                             {/* <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" /> */}
                         </form>
-                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 mt-40">Submit <AiFillThunderbolt className='inline-block text-thunder transform scale-125' />  app️</button>
+                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 mt-40">Submit App️</button>
                         <button className="btn btn-gray w-full py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
 
                     </div>

@@ -11,7 +11,7 @@ const headerLinks = [
   {
     title:
       "Join the next wave of the Lightning Network in November’s ‘Shock the Web’ hackathon",
-    img: 'https://s3-alpha-sig.figma.com/img/be1b/cd75/1baa911b3875134c0889d6755c4ba2cb?Expires=1637539200&Signature=QExmgJCGGSES~zIwM-2G8yd7aPR-j5eFnV3tOg6BkSdXVB9AMhHQPbRpbfOv~rD3hdMdSPMkS9kfjyFbAuonltV2zrf5GOwGxrF2GVdhpIGc6RiqGLWVVY8mXysEm6~0fVj~2SK8hec~YnV1h0oHDQiZF5YjGi143pImGmcVERPpB7MiksSoD0Vki6RXamySopj~f-~lUGy2uKRbQKxQ4LCFTz-H9O8vpkZpCVq274FYsqsEtUihwVjniNXV8ukLxdL~rfgf8L9MeiR7gDYYQ9MSLMZKEa~TnQ-JadlngQz78a2T801WaG2xp5hGHYQMtIi1ES-N4FOg5PwEjtIetA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA', link: {
+    img: 'https://s3-alpha-sig.figma.com/img/be1b/cd75/1baa911b3875134c0889d6755c4ba2cb?Expires=1638748800&Signature=DOiLciAA95w8gOvAowjiiR-ZPbmV1oGSRRK8YpE4ALMoe47pL7DifQxZvL1LQn~NRa0aLMoMk61521fbbGJeDAwk~j6fIm~iZAlMzQn7DdWy0wFR0uLQagOgpIiIXO-w8CeC14VoW-hrjIX5mDmOonJzkfoftGqIF1WCOmP2EuswyJpIngFdLb15gCex4Necs3vH2cuD9iSgWG2za97KfdXZP79ROyk2EN9Q3~a7RT4FTBBIlgKDLuFGSVRxReXVNajn~XSxBJh2de9dFVa3tOXkwJXu3jb0G4x-wRCaG-KmBhUOemuGtu5Fumh6goktGh~bIDwoHeUBVKFHAzaYgw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA', link: {
       content: "Register Now",
       url: "#",
     },

@@ -33,8 +33,8 @@ export default function Claim_FundWithdrawCard({ onClose, direction, ...props }:
                 2.78$
             </p>
             <div className="mt-16 flex flex-col gap-8">
-                <button className='btn btn-primary w-full' >Fund</button>
-                <button className='btn border-2 w-full' >Withdraw</button>
+                <button className='btn btn-primary w-full shadow-xs' >Fund</button>
+                <button className='btn border w-full shadow-xs' >Withdraw</button>
             </div>
 
         </motion.div>

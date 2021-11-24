@@ -5,19 +5,19 @@
 
 @layer components {
   .btn {
-    @apply text-gray-900 px-42 bg-gray-25 hover:bg-gray-50 py-12  font-sans rounded-8 font-regular;
+    @apply text-gray-900 px-42 bg-gray-25 hover:bg-gray-50 py-12  font-sans rounded-8 font-regular border border-gray-300;
   }
 
   .btn-primary {
-    @apply bg-primary-500 shadow-md hover:bg-primary-400 text-white;
+    @apply bg-primary-500 border-0 shadow-sm hover:bg-primary-400 text-white;
   }
 
   .btn-gray {
-    @apply bg-gray-100 border-2 hover:bg-gray-200 text-gray-900;
+    @apply bg-gray-100 hover:bg-gray-200 text-gray-900;
   }
 
   .input-wrapper {
-    @apply w-full relative border rounded-lg shadow flex h-42 focus-within:outline-primary;
+    @apply w-full relative border border-gray-300 rounded-lg shadow-xs flex h-42 focus-within:outline-primary;
   }
 
   .input-field {
@@ -36,7 +36,7 @@
   }
 
   .modal-card {
-    @apply rounded-[40px] bg-gray-50 overflow-y-scroll w-full max-w-[600px] shadow-xl z-10;
+    @apply rounded-[40px] bg-gray-50 overflow-y-scroll w-full max-w-[600px] shadow-2xl z-10;
   }
 }
 

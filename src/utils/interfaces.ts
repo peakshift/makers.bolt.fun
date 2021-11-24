@@ -21,6 +21,7 @@ export type Image = string;
 export interface Project {
   id: string;
   title: string;
+  category: ProjectCategory;
   website?: string;
   description: string;
   tags: Tag[];

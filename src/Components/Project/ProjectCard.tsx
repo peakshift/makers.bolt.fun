@@ -26,15 +26,15 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
     if (isLoading || !project) return <></>;
 
 
-    const onVote = () => {
+    const onTip = () => {
 
         if (!isWalletConnected) {
-            dispatch(scheduleModal({ modalId: ModalId.Vote, propsToPass: { projectId: props.projectId } }))
+            dispatch(scheduleModal({ modalId: ModalId.Tip, propsToPass: { projectId: props.projectId } }))
             dispatch(openModal({
                 modalId: ModalId.Login_ScanWallet
             }))
         } else
-            dispatch(openModal({ modalId: ModalId.Vote, propsToPass: { projectId: props.projectId } }))
+            dispatch(openModal({ modalId: ModalId.Tip, propsToPass: { projectId: props.projectId } }))
     }
 
     const onClaim = () => {
@@ -68,17 +68,23 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                 <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><BiArrowBack className=' inline-block text-body1' /></button>
             </div>
             <div className="p-24">
-                <div className="flex gap-24 items-center">
+                <div className="flex gap-24 items-center h-[93px]">
                     <div className="flex-shrink-0 w-[93px] h-[93px] rounded-md overflow-hidden">
                         <img className="w-full h-full object-cover" src={project.thumbnail_image} alt="" />
                     </div>
-                    <div>
+                    <div className='flex flex-col items-start justify-between'>
                         <h3 className="text-h3 font-regular">{project.title}</h3>
-                        <a className="text-blue-400 font-regular text-body4" target='_blank' rel="noreferrer" href={project.website}>{project.website}</a>
+                        <a className="text-blue-400 font-regular text-body4" target='_blank' rel="noreferrer" href={project.website}>{project.website?.replace(/(^\w+:|^)\/\//, '')}</a>
+                        <div>
+                            <span className="chip-small font-light text-body5 py-4 px-12 mr-8"> {project.category.title}</span>
+
+                            <span className="chip-small bg-warning-50 font-light text-body5 py-4 px-12"><MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {project.votes_count}</span>
+
+                        </div>
                     </div>
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
                         <button className="btn btn-primary py-12 px-24 rounded-lg my-16">Play <BsJoystick /></button>
-                        <button onClick={onVote} className="btn border border-yellow-300 bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg my-16">Vote <MdLocalFireDepartment className='text-fire' /></button>
+                        <button onClick={onTip} className="btn border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 py-12 px-24 rounded-lg my-16">Tip <MdLocalFireDepartment className='text-fire' /></button>
                     </div>
                 </div>
                 <p className="mt-40 text-body4 leading-normal">{project.description}</p>
@@ -88,7 +94,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                 </div>
                 <div className="md:hidden">
                     <button className="btn btn-primary w-full py-12 px-24 rounded-lg mt-24 mb-16">Play <BsJoystick /></button>
-                    <button onClick={onVote} className="btn w-full bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg mb-24">Vote <MdLocalFireDepartment className='text-fire' /></button>
+                    <button onClick={onTip} className="btn w-full bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg mb-24">Vote <MdLocalFireDepartment className='text-fire' /></button>
                 </div>
                 <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
