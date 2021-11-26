@@ -1,10 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { ProjectCard } from "../../../utils/interfaces";
 import Carousel from 'react-multi-carousel';
-import { MdLocalFireDepartment } from 'react-icons/md';
+import { MdDoubleArrow, MdLocalFireDepartment } from 'react-icons/md';
 import { useAppDispatch } from "../../../utils/hooks";
 import { ModalId, openModal } from "../../../redux/features/modals.slice";
 import _throttle from 'lodash.throttle'
+import ProjectCardMini from "./ProjectCardMini";
 
 const responsive = {
     all: {
@@ -18,9 +19,9 @@ const calcNumItems = () => {
     return items;
 }
 
-interface Props { title: string | ReactElement, projects: ProjectCard[] }
+interface Props { title: string | ReactElement, categoryId: string, projects: ProjectCard[] }
 
-export default function ProjectsRow({ title, projects }: Props) {
+export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
     const dispatch = useAppDispatch()
     const [carouselItmsCnt, setCarouselItmsCnt] = useState(calcNumItems);
@@ -51,7 +52,13 @@ export default function ProjectsRow({ title, projects }: Props) {
 
     return (
         <div className='mb-48'>
-            <h3 className="font-bolder text-body3 mb-24 px-32">{title}</h3>
+            <h3 className="font-bolder text-body3 mb-24 px-32">{title}
+                <span>
+                    <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer align-bottom transform scale-y-110 scale-x-125 origin-left' onClick={() => {
+                        console.log(categoryId);
+                    }} />
+                </span>
+            </h3>
             <Carousel
                 containerClass='pl-32 pr-[-32px]'
                 showDots={false}
@@ -60,15 +67,9 @@ export default function ProjectsRow({ title, projects }: Props) {
                 centerMode
                 itemClass='pb-[1px]'
             >
-                {projects.map((project, idx) => <div key={idx} className="bg-gray-25 select-none px-16 py-16 flex w-[296px] gap-16 border border-gray-200 rounded-10 hover:cursor-pointer hover:bg-gray-100" onClick={() => handleClick(project.id)}>
-                    <img src={project.img} draggable="false" className="flex-shrink-0 w-80 h-80 bg-gray-200 border-0 rounded-8"></img>
-                    <div className="justify-around items-start min-w-0">
-                        <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project.title}</p>
-                        <p className="text-body5 text-gray-600 font-light my-[5px]">{project.category.title}</p>
-                        <span className="chip-small bg-warning-50 text-yellow-700 font-light text-body5 py-[3px] px-10"> <MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {project.votes_count} </span>
-                    </div>
-
-                </div>)}
+                {projects.map((project, idx) =>
+                    <ProjectCardMini key={idx} project={project} onClick={handleClick} />
+                )}
             </Carousel>
 
         </div>

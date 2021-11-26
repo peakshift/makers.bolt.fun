@@ -72,7 +72,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     <div className="flex-shrink-0 w-[93px] h-[93px] rounded-md overflow-hidden">
                         <img className="w-full h-full object-cover" src={project.thumbnail_image} alt="" />
                     </div>
-                    <div className='flex flex-col items-start justify-between'>
+                    <div className='flex flex-col items-start justify-between self-stretch'>
                         <h3 className="text-h3 font-regular">{project.title}</h3>
                         <a className="text-blue-400 font-regular text-body4" target='_blank' rel="noreferrer" href={project.website}>{project.website?.replace(/(^\w+:|^)\/\//, '')}</a>
                         <div>

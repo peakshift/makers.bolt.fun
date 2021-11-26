@@ -17,14 +17,12 @@ export async function getProjectsByCategory(
 
 // returns the latest bunch of projects in each ( or some ) categories, and returns the hottest projects
 export async function getLatestProjects(): Promise<
-  { title: string; projects: ProjectCard[] }[]
+  { category: ProjectCategory; projects: ProjectCard[] }[]
 > {
-  return [{ title: "hottest_apps", projects: data.projectsCards }].concat(
-    data.categories.slice(0, 2).map((cat) => ({
-      title: cat.title,
-      projects: data.projectsCards,
-    }))
-  );
+  return data.categories.slice(0, 3).map((cat) => ({
+    category: cat,
+    projects: data.projectsCards,
+  }));
 }
 
 export async function getProjectById(projectId: string): Promise<Project> {

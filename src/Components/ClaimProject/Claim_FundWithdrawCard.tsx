@@ -1,10 +1,6 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { useAppDispatch } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
-import { useCallback, useEffect, useState } from 'react';
-import { IoClose } from 'react-icons/io5';
-import { IoIosCopy } from 'react-icons/io'
 
 export default function Claim_FundWithdrawCard({ onClose, direction, ...props }: ModalCard) {
 

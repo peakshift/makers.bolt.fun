@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { getLatestProjects } from "../../../api"
 import ProjectsRow from "./ProjectsRow";
-import { AiFillThunderbolt } from 'react-icons/ai';
+import { MdLocalFireDepartment } from "react-icons/md";
 
 
 export default function ProjectsSection() {
@@ -12,9 +12,14 @@ export default function ProjectsSection() {
 
     return (
         <div className='mt-32 lg:mt-48'>
-            <ProjectsRow title={<>Hottest <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> apps</>}
+            <ProjectsRow title={<>Hottest <MdLocalFireDepartment className='inline-block text-fire align-bottom scale-125 origin-bottom' /></>}
+                categoryId='hottest'
                 projects={data[0].projects} />
-            {data.slice(1).map(({ title, projects }) => <ProjectsRow key={title} title={title} projects={projects} />)}
+            {data.slice(1).map(({ category, projects, }) => <ProjectsRow
+                key={category.id}
+                categoryId={category.id}
+                title={category.title}
+                projects={projects} />)}
         </div>
     )
 }

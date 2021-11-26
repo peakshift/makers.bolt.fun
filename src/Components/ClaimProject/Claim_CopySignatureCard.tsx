@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { IoIosCopy } from 'react-icons/io'
 import CopyToClipboard from 'react-copy-to-clipboard';

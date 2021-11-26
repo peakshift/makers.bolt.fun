@@ -1,6 +1,10 @@
 {
     "categories": [
         {
+            "id": "111",
+            "title": "Hottest"
+        },
+        {
             "id": "123",
             "title": "Art & Collectibles"
         },
