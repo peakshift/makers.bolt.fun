@@ -9,12 +9,16 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 const queryClient = new QueryClient()
+const parsedData = window.location.pathname.split("/");
+let domain = parsedData[1];
+
 
 export default function Wrapper(props: any) {
+
     return (
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-                <BrowserRouter basename={process.env.PUBLIC_URL}>
+                <BrowserRouter basename={"/" + domain}>
                     {props.children}
                 </BrowserRouter>
             </Provider>
