@@ -5,6 +5,7 @@ import { GrClose } from 'react-icons/gr';
 import { BsSearch } from 'react-icons/bs'
 import { navLinks } from "./Navbar";
 import { AiFillThunderbolt } from 'react-icons/ai';
+import { Link } from "react-router-dom";
 
 const navBtnVariant = {
     menuHide: { rotate: 90, opacity: 0 },
@@ -48,7 +49,7 @@ export default function NavMobile({ onSearch }: Props) {
                 <div className="w-40 h-40 bg-gray-100 rounded-8 mr-16 overflow-hidden">
                     <img className="w-full h-full object-cover" src="https://www.figma.com/file/OFowr5RJk9YZCW35KT7D5K/image/07b85d84145942255afd215b3da26dbbf1dd03bd?fuid=772401335362859303" alt="" />
                 </div>
-                <h2 className="text-h5 font-bold mx-auto">makers.bolt.fun</h2>
+                <Link to='/'><h2 className="text-h5 font-bold mx-auto">makers.bolt.fun</h2></Link>
                 <button className='rounded-full mr-16 text-2xl w-[50px] h-[50px] hover:bg-gray-200' onClick={handleClick}>
 
                     {!open ? (<motion.div key={open ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
@@ -81,7 +82,7 @@ export default function NavMobile({ onSearch }: Props) {
                     </div>
                     <ul className="py-16 gap-64 border-t">
                         {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 hover:bg-gray-200">
-                            <a href={link.url}><link.icon className={`text-body2  inline-block mr-12 ${link.color}`} /> {link.text} </a></li>
+                            <Link to={link.url}><link.icon className={`text-body2  inline-block mr-12 ${link.color}`} /> {link.text} </Link></li>
                         )}
                     </ul>
                     <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t mt-auto">

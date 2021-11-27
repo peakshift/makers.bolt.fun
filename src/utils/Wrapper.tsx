@@ -5,6 +5,7 @@ import { store } from '../redux/store';
 
 import 'react-multi-carousel/lib/styles.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { BrowserRouter } from 'react-router-dom';
 
 
 const queryClient = new QueryClient()
@@ -13,7 +14,9 @@ export default function Wrapper(props: any) {
     return (
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-                {props.children}
+                <BrowserRouter basename={process.env.PUBLIC_URL}>
+                    {props.children}
+                </BrowserRouter>
             </Provider>
         </QueryClientProvider>
     )

@@ -12,14 +12,14 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
     const handleNext = useCallback(() => {
         dispatch(closeModal())
         dispatch(openSceduledModal())
-    }, [dispatch, onClose])
+    }, [dispatch])
 
 
     useEffect(() => {
         dispatch(connectWallet());
         const timeout = setTimeout(handleNext, 3000)
         return () => clearTimeout(timeout)
-    }, [handleNext])
+    }, [handleNext, dispatch])
 
     return (
         <motion.div

@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { ProjectCard } from "../../../utils/interfaces";
 import Carousel from 'react-multi-carousel';
-import { MdDoubleArrow, MdLocalFireDepartment } from 'react-icons/md';
+import { MdDoubleArrow, } from 'react-icons/md';
 import { useAppDispatch } from "../../../utils/hooks";
 import { ModalId, openModal } from "../../../redux/features/modals.slice";
 import _throttle from 'lodash.throttle'

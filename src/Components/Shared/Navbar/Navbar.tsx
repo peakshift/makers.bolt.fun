@@ -9,11 +9,12 @@ import { motion } from "framer-motion";
 import { GrClose } from 'react-icons/gr';
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import { ModalId, openModal } from "../../../redux/features/modals.slice";
+import { Link } from "react-router-dom";
 
 export const navLinks = [
     { text: "Explore", url: "/", icon: FaHome, color: 'text-primary-600' },
-    { text: "Hottest", url: "/", icon: MdLocalFireDepartment, color: 'text-primary-600' },
-    { text: "Categories", url: "/", icon: IoExtensionPuzzle, color: 'text-primary-600' },
+    { text: "Hottest", url: "/categories/hottest", icon: MdLocalFireDepartment, color: 'text-primary-600' },
+    { text: "Categories", url: "/categories", icon: IoExtensionPuzzle, color: 'text-primary-600' },
 
 ]
 
@@ -63,10 +64,10 @@ export default function Navbar() {
             {/* Desktop Nav */}
 
             <nav className="hidden lg:flex py-36 px-32 items-center">
-                <h2 className="text-h5 font-bold mr-40 lg:mr-64">makers.bolt.fun</h2>
+                <Link to='/'><h2 className="text-h5 font-bold mr-40 lg:mr-64">makers.bolt.fun</h2></Link>
                 <ul className="flex gap-32 xl:gap-64">
                     {navLinks.map((link, idx) => <li key={idx} className="text-body4 hover:text-primary-600">
-                        <a href={link.url}><link.icon className={`text-body2 align-middle inline-block mr-8 ${link.color}`} /> {link.text}</a></li>
+                        <Link to={link.url}><link.icon className={`text-body2 align-middle inline-block mr-8 ${link.color}`} /> {link.text}</Link></li>
                     )}
 
                 </ul>
