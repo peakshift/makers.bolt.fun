@@ -35,13 +35,16 @@ module.exports = {
       return context.prisma.category.findMany();
     },
     allProjects: async (_source, args, context) => {
-      return context.prisma.project.findMany();
+      return context.prisma.project.findMany({
+        include: { category: true }
+      });
     },
     getProject: async (_source, args, context) => {
       return context.prisma.project.findUnique({
         where: {
           id: args.id,
         },
+        include: { category: true }
       });
     },
   },
