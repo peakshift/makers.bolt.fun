@@ -18,9 +18,21 @@ model Project {
   title           String
   description     String
   website         String
-  thumbnail_image String
-  cover_image     String
+  thumbnail_image String?
+  cover_image     String?
   category        Category @relation(fields: [category_id], references: [id])
   category_id     Int
   votes_count     Int      @default(0)
+  Vote            Vote[]
+}
+
+model Vote {
+  id              Int     @id @default(autoincrement())
+  project         Project @relation(fields: [project_id], references: [id])
+  project_id      Int
+  amount_in_sat   Int
+  payment_request String?
+  payment_hash    String?
+  preimage        String?
+  paid            Boolean @default(false)
 }
