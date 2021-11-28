@@ -1,8 +1,9 @@
+import { AllCategoriesData, ProjectCategory } from "../../../utils/interfaces";
 import { useQuery, gql } from "@apollo/client";
 
 const ALL_CATEGORIES = gql`
   query GetCategories {
-    allCategories() {
+    allCategories {
       id
       title
     }
@@ -11,7 +12,7 @@ const ALL_CATEGORIES = gql`
 
 export default function Categories() {
 
-    const { loading, error, data } = useQuery(ALL_CATEGORIES);
+    const { loading, error, data } = useQuery<AllCategoriesData, ProjectCategory>(ALL_CATEGORIES);
 
     const handleClick = (categoryId: string) => {
 
@@ -19,10 +20,10 @@ export default function Categories() {
 
     if (loading)
         return null;
-
+    console.log(data);
     return (
         <div className="flex gap-12 flex-wrap">
-            {data?.map(category => <span key={category.id} className="chip hover:cursor-pointer hover:bg-gray-200" onClick={() => handleClick(category.id)}>{category.title}</span>)}
+            {data && data.allCategories.map(category => <span key={category.id} className="chip hover:cursor-pointer hover:bg-gray-200" onClick={() => handleClick(category.id)}>{category.title}</span>)}
         </div>
     )
 }
