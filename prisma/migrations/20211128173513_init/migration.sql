@@ -16,6 +16,7 @@ CREATE TABLE "Project" (
     "cover_image" TEXT,
     "category_id" INTEGER NOT NULL,
     "votes_count" INTEGER NOT NULL DEFAULT 0,
+    "lightning_address" TEXT,
 
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
