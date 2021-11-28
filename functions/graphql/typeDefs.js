@@ -17,7 +17,8 @@ module.exports = gql`
   }
 
   type Query {
-    allProjects: [Project!]!
+    allProjects: [Project]!
     getProject(id: Int!): Project
+    allCategories: [Category]!
   }
 `;

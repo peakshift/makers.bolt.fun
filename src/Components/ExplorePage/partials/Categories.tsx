@@ -1,15 +1,23 @@
-import { getAllCategories } from "../../../api"
-import { useQuery } from 'react-query'
+import { useQuery, gql } from "@apollo/client";
+
+const ALL_CATEGORIES = gql`
+  query GetCategories {
+    allCategories() {
+      id
+      title
+    }
+  }
+`;
 
 export default function Categories() {
 
-    const { data, isLoading } = useQuery("categories", getAllCategories);
+    const { loading, error, data } = useQuery(ALL_CATEGORIES);
 
     const handleClick = (categoryId: string) => {
 
     }
 
-    if (isLoading)
+    if (loading)
         return null;
 
     return (

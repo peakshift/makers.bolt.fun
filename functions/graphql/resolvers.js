@@ -1,5 +1,8 @@
 module.exports = {
   Query: {
+    allCategories: async (_source, args, context) => {
+      return context.prisma.category.findMany();
+    },
     allProjects: async (_source, args, context) => {
       return context.prisma.project.findMany();
     },
@@ -11,7 +14,7 @@ module.exports = {
       });
     },
   },
-  Mutation: {
-    vote: async (_source, args, context) => {},
-  },
+  //Mutation: {
+  //  vote: async (_source, args, context) => {},
+  //},
 };
