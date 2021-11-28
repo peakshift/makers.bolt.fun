@@ -3,10 +3,9 @@ import { Direction, ModalId, replaceModal } from '../../redux/features/modals.sl
 import { useAppDispatch } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { AiFillThunderbolt } from 'react-icons/ai';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CopyToClipboard from 'src/Components/Shared/CopyToClipboard/CopyToClipboard';
 import { useCallback, useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { IoIosCopy } from 'react-icons/io'
 
 export default function Login_ExternalWalletCard({ onClose, direction, ...props }: ModalCard) {
 
@@ -54,9 +53,7 @@ export default function Login_ExternalWalletCard({ onClose, direction, ...props 
                     className="input-field overflow-ellipsis"
                     value={"Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI"}
                 />
-                <CopyToClipboard text={'Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI'} >
-                    <IoIosCopy onClick={onCopy} className='input-icon hover:cursor-pointer' />
-                </CopyToClipboard>
+                <CopyToClipboard text='Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI' direction='top' />
             </div>
 
         </motion.div>

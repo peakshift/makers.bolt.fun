@@ -10,6 +10,7 @@ import { GrClose } from 'react-icons/gr';
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import { ModalId, openModal } from "../../../redux/features/modals.slice";
 import { Link } from "react-router-dom";
+import Button from "../Button/Button";
 
 export const navLinks = [
     { text: "Explore", url: "/", icon: FaHome, color: 'text-primary-600' },
@@ -75,10 +76,10 @@ export default function Navbar() {
                     <motion.div
                         animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
                         className="flex">
-                        <button className="btn btn-primary py-12 px-32 lg:px-40">Submit App️</button>
+                        <Button color='primary' size='md' className="lg:px-40">Submit App️</Button>
                         {isWalletConnected ?
-                            <button className="btn ml-16 py-12 px-16 lg:px-20" onClick={onWithdraw}>2.2k Sats <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></button>
-                            : <button className="btn ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
+                            <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onWithdraw}>2.2k Sats <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
+                            : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         }
                     </motion.div>
                     <form onBlur={toggleSearch} className='relative flex items-center' onSubmit={handleSubmit}>

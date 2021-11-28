@@ -8,6 +8,7 @@ import { getProjectById } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalId, openModal, scheduleModal } from '../../redux/features/modals.slice';
 import { setProject } from '../../redux/features/project.slice';
+import Button from 'src/Components/Shared/Button/Button';
 
 
 export default function ProjectCard({ onClose, direction, ...props }: ModalCard) {
@@ -83,8 +84,8 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                         </div>
                     </div>
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
-                        <button className="btn btn-primary py-12 px-24 rounded-lg my-16">Play <BsJoystick /></button>
-                        <button onClick={onTip} className="btn border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 py-12 px-24 rounded-lg my-16">Tip <MdLocalFireDepartment className='text-fire' /></button>
+                        <Button color='primary' size='md' className=" my-16">Play <BsJoystick /></Button>
+                        <Button onClick={onTip} size='md' className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 my-16">Tip <MdLocalFireDepartment className='text-fire' /></Button>
                     </div>
                 </div>
                 <p className="mt-40 text-body4 leading-normal">{project.description}</p>
@@ -93,8 +94,8 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     <span className="chip-small bg-primary-100 text-primary-800 font-regular"> lightining </span>
                 </div>
                 <div className="md:hidden">
-                    <button className="btn btn-primary w-full py-12 px-24 rounded-lg mt-24 mb-16">Play <BsJoystick /></button>
-                    <button onClick={onTip} className="btn w-full bg-yellow-100 hover:bg-yellow-50 py-12 px-24 rounded-lg mb-24">Vote <MdLocalFireDepartment className='text-fire' /></button>
+                    <Button color='primary' size='md' fullWidth className="w-full mt-24 mb-16">Play <BsJoystick /></Button>
+                    <Button size='md' fullWidth className="w-full bg-yellow-100 hover:bg-yellow-50 mb-24" onClick={onTip}>Vote <MdLocalFireDepartment className='text-fire' /></Button>
                 </div>
                 <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
@@ -116,7 +117,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                 <hr className="my-40" />
                 <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project?</h3>
-                    <button className="btn btn-gray py-12 px-24 rounded-lg my-16" onClick={onClaim}>Claim 🖐</button>
+                    <Button color='gray' size='md' className="my-16" onClick={onClaim}>Claim 🖐</Button>
                 </div>
             </div>
         </motion.div>

@@ -6,6 +6,7 @@ import { BsSearch } from 'react-icons/bs'
 import { navLinks } from "./Navbar";
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { Link } from "react-router-dom";
+import Button from "../Button/Button";
 
 const navBtnVariant = {
     menuHide: { rotate: 90, opacity: 0 },
@@ -76,8 +77,8 @@ export default function NavMobile({ onSearch }: Props) {
 
                             {/* <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" /> */}
                         </form>
-                        <button className="btn btn-primary w-full py-12 px-40 rounded-24 mt-40">Submit App️</button>
-                        <button className="btn btn-gray w-full py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </button>
+                        <Button color='primary' fullWidth className="py-12 px-40 rounded-24 mt-40">Submit App️</Button>
+                        <Button color='gray' fullWidth className="py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
 
                     </div>
                     <ul className="py-16 gap-64 border-t">

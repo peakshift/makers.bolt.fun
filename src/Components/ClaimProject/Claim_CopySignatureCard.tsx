@@ -2,10 +2,9 @@ import { motion } from 'framer-motion'
 import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import CopyToClipboard from 'src/Components/Shared/CopyToClipboard/CopyToClipboard'
 import { useCallback } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { IoIosCopy } from 'react-icons/io'
-import CopyToClipboard from 'react-copy-to-clipboard';
 
 export default function Claim_CopySignatureCard({ onClose, direction, ...props }: ModalCard) {
 
@@ -53,10 +52,8 @@ export default function Claim_CopySignatureCard({ onClose, direction, ...props }
                     className="input-field overflow-ellipsis"
                     value={generatedHash}
                 />
-                <CopyToClipboard text={generatedHash} >
-                    <IoIosCopy onClick={onCopy} className='input-icon hover:cursor-pointer' />
-                </CopyToClipboard>
 
+                <CopyToClipboard text={generatedHash} />
             </div>
             <div className="mt-32">
                 <button className='btn btn-primary w-full' onClick={handleNext}>Submit for review</button>

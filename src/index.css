@@ -5,7 +5,7 @@
 
 @layer components {
   .btn {
-    @apply text-gray-900 px-42 bg-gray-25 hover:bg-gray-50 py-12  font-sans rounded-8 font-regular border border-gray-300;
+    @apply text-gray-900 py-12 px-42 bg-gray-25 hover:bg-gray-50 font-sans rounded-lg font-regular border border-gray-300;
   }
 
   .btn-primary {

@@ -3,6 +3,7 @@ import { Direction, ModalId, replaceModal } from '../../redux/features/modals.sl
 import { useAppDispatch } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { IoLockClosed, } from 'react-icons/io5'
+import Button from 'src/Components/Shared/Button/Button';
 
 export default function Login_NativeWalletCard({ onClose, direction, ...props }: ModalCard) {
 
@@ -41,8 +42,8 @@ export default function Login_NativeWalletCard({ onClose, direction, ...props }:
             </div>
 
             <div className="grid gap-16 grid-cols-2 mt-32">
-                <button className='btn border-2' onClick={onClose}>Cancel</button>
-                <button className='btn btn-primary' onClick={handleNext}>Login</button>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button color='primary' onClick={handleNext}>Login</Button>
 
             </div>
         </motion.div>

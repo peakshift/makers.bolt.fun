@@ -1,3 +1,5 @@
+import Button from 'src/Components/Shared/Button/Button'
+
 const headerLinks = [
   {
     title: "A fun directory of Lightning Enabled Applications on the Open Web",
@@ -29,12 +31,13 @@ export default function Header() {
         />
         <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
         <h3 className="text-white text-h3 max-w-[80%]">{headerLinks[0].title}</h3>
-        <a
+        <Button
+          color='primary'
           href={headerLinks[0].link.url}
-          className="btn btn-primary font-regular mt-36"
+          className="font-regular mt-36"
         >
           {headerLinks[0].link.content}
-        </a>
+        </Button>
       </div>
       <div className="hidden md:flex flex-col rounded-20 h-[280px] relative overflow-hidden p-24  items-start justify-end">
         <img
@@ -46,9 +49,9 @@ export default function Header() {
         <h3 className="text-white text-h3 max-w-[80%]">
           {headerLinks[1].title}
         </h3>
-        <a href={headerLinks[1].link.url} className="btn font-regular mt-36">
+        <Button href={headerLinks[1].link.url} className="font-regular mt-36">
           {headerLinks[1].link.content}
-        </a>
+        </Button>
 
       </div>
     </div>
