@@ -4,7 +4,7 @@ import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsCo
 
 export default function Claim_FundWithdrawCard({ onClose, direction, ...props }: ModalCard) {
 
-    const dispatch = useAppDispatch();
+    //const dispatch = useAppDispatch();
 
 
     return (
