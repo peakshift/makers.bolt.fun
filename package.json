@@ -48,6 +48,7 @@
     "build-storybook": "build-storybook -s public",
     "db:init": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
+    "db:seed": "prisma db seed",
     "db:gui": "prisma studio",
     "api:start": "netlify dev"
   },
