@@ -12,7 +12,7 @@ const ALL_CATEGORIES = gql`
 
 export default function Categories() {
 
-    const { loading, error, data } = useQuery<AllCategoriesData, ProjectCategory>(ALL_CATEGORIES);
+    const { loading, data } = useQuery<AllCategoriesData, ProjectCategory>(ALL_CATEGORIES);
 
     const handleClick = (categoryId: string) => {
 
