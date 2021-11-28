@@ -43,7 +43,11 @@
     "deploy": "gh-pages -d build",
     "only-deploy": "gh-pages -d build",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "db:init": "prisma migrate dev",
+    "db:reset": "prisma migrate reset",
+    "db:gui": "prisma studio",
+    "api:start": "netlify dev"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
