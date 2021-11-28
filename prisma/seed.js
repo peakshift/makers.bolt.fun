@@ -14,6 +14,7 @@ async function main() {
       description: "HQ on a VULCANO lake",
       website: "https://github.com/peakshift",
       category_id: category.id,
+      lightning_address: "johns@getalby.com",
     }
   });
 }

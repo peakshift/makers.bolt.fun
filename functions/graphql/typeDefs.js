@@ -7,6 +7,7 @@ module.exports = gql`
     thumbnail_image: String!
     title: String!
     website: String!
+    lightning_address: String!
     votes_count: Int!
     category: Category!
   }
@@ -21,6 +22,7 @@ module.exports = gql`
     project: Project!
     amount_in_sat: Int!
     payment_request: String!
+    payment_hash: String!
     paid: Boolean!
   }
 
@@ -31,5 +33,6 @@ module.exports = gql`
   }
   type Mutation {
     vote (project_id: Int!, amount_in_sat: Int!): Vote!
+    confirmVote (payment_request: String!, preimage: String!): Vote!
   }
 `;
