@@ -28,9 +28,12 @@ module.exports = gql`
   }
 
   type Query {
-    allProjects(skip: Int!, first: Int!): [Project]!
-    getProject(id: Int!): Project
+    allProjects(skip: Int, take: Int): [Project]!
+    newProjects(skip: Int, take: Int): [Project]!
+    projectsByCategory(category_id: Int!, skip: Int, take: Int): [Project]!
+    getProject(id: Int!): Project!
     allCategories: [Category]!
+    getCategory(id: Int!): Category!
   }
   type Mutation {
     vote (project_id: Int!, amount_in_sat: Int!): Vote!

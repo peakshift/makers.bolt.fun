@@ -42,14 +42,47 @@ module.exports = {
         }
       });
     },
-    allProjects: async (_source, args, context) => {
-      const first = args.first || 50;
+    getCategory: async (_source, args, context) => {
+      return context.prisma.category.findUnique({
+        where: { id: args.id },
+        include: {
+          project: {
+            take: 5,
+            orderBy: { votes_count: "desc" }
+          }
+        }
+      });
+    },
+    newProjects: async (_source, args, context) => {
+      const take = args.take || 50;
       const skip = args.skip || 0;
       return context.prisma.project.findMany({
         orderBy: { created_at: 'desc' },
         include: { category: true },
         skip,
-        first,
+        take,
+      });
+    },
+    allProjects: async (_source, args, context) => {
+      const take = args.take || 50;
+      const skip = args.skip || 0;
+      return context.prisma.project.findMany({
+        orderBy: { votes_count: 'desc' },
+        include: { category: true },
+        skip,
+        take,
+      });
+    },
+    projectsByCategory: async (_source, args, context) => {
+      const take = args.take || 50;
+      const skip = args.skip || 0;
+      const categoryId = args.category_id;
+      return context.prisma.project.findMany({
+        where: { category_id: categoryId },
+        orderBy: { votes_count: 'desc' },
+        include: { category: true },
+        skip,
+        take,
       });
     },
     getProject: async (_source, args, context) => {
@@ -80,7 +113,17 @@ module.exports = {
       // look for a vote for the payment request and the calculated payment hash
       const vote = await context.prisma.vote.findFirst({where: { payment_request: args.payment_request, payment_hash: paymentHash}});
       // if we find a vote it means the preimage is correct and we update the vote and mark it as paid
+      // can we write this nicer?
       if (vote) {
+        const project = await context.prisma.project.findUnique({ where: { id: vote.project_id }});
+        // count up votes cache
+        await context.prisma.project.update({
+          where: {id: project.id },
+          data: {
+            votes_count: project.votes_count = vote.amount_in_sat,
+          }
+        });
+        // return the current vote
         return context.prisma.vote.update({
           where: { id: vote.id },
           data: {
