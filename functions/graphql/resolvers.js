@@ -32,11 +32,24 @@ function getPaymetRequest(lightning_address, amount_in_sat) {
 module.exports = {
   Query: {
     allCategories: async (_source, args, context) => {
-      return context.prisma.category.findMany();
+      return context.prisma.category.findMany({
+        orderBy: { title: 'desc'},
+        include: {
+          project: {
+            take: 5,
+            orderBy: { votes_count: "desc" }
+          }
+        }
+      });
     },
     allProjects: async (_source, args, context) => {
+      const first = args.first || 50;
+      const skip = args.skip || 0;
       return context.prisma.project.findMany({
-        include: { category: true }
+        orderBy: { created_at: 'desc' },
+        include: { category: true },
+        skip,
+        first,
       });
     },
     getProject: async (_source, args, context) => {

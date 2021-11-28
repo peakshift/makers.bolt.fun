@@ -10,7 +10,7 @@ generator client {
 model Category {
   id      Int       @id @default(autoincrement())
   title   String
-  Project Project[]
+  project Project[]
 }
 
 model Project {
@@ -24,7 +24,8 @@ model Project {
   category          Category @relation(fields: [category_id], references: [id])
   category_id       Int
   votes_count       Int      @default(0)
-  Vote              Vote[]
+  vote              Vote[]
+  created_at        DateTime @default(now())
 }
 
 model Vote {

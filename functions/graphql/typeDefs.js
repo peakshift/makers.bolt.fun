@@ -15,6 +15,7 @@ module.exports = gql`
   type Category {
     id: Int!
     title: String!
+    project: [Project]
   }
 
   type Vote {
@@ -27,7 +28,7 @@ module.exports = gql`
   }
 
   type Query {
-    allProjects: [Project]!
+    allProjects(skip: Int!, first: Int!): [Project]!
     getProject(id: Int!): Project
     allCategories: [Category]!
   }
