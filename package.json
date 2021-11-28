@@ -45,6 +45,9 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
