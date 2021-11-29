@@ -10,16 +10,22 @@ function hexToUint8Array(hexString) {
 }
 
 // TODO: generaly validate LNURL responses
-
+// get lnurl params
 function getLnurlDetails(lnurl) {
   return axios.get(lnurl);
 }
 
+// parse lightning address and return a url that can be
+// used in a request
 function lightningAddressToLnurl(lightning_address) {
   const [name, domain] = lightning_address.split("@");
   return `https://${domain}/.well-known/lnurlp/${name}`;
 }
 
+// when pressing tip or selecting an amount.
+// this is used for caching so the frontend doesnt
+// have to make an additional http request to get
+// the callback url for future visits
 async function getLnurlCallbackUrl(lightning_address) {
   return getLnurlDetails(lightningAddressToLnurl(lightning_address)).then(
     (response) => {
@@ -29,6 +35,16 @@ async function getLnurlCallbackUrl(lightning_address) {
 }
 
 async function getPaymetRequestForProject(project, amount_in_sat) {
+  // # NOTE: CACHING LNURL CALLBACK URLS + PARAMETERS
+  // LNURL flows have a lot of back and forth and can impact
+  // the load time for your application users.
+  // You may consider caching the callback url, or resolved
+  // parameters but be mindful of this.
+  // The LNURL service provider can change the callback url
+  // details or the paramters that is returned we must be
+  // careful when trying to optimise the amount of
+  // requests so be mindful of this when you are storing
+  // these items.
   let lnurlCallbackUrl = project.lnurl_callback_url;
   const amount = amount_in_sat * 1000; // msats
   if (!lnurlCallbackUrl) {
@@ -130,6 +146,10 @@ module.exports = {
           lnurl_callback_url: lnurlDetails.data.callback,
         },
       });
+      // # SENDING MESSAGES TO THE PROJECT OWNER USING LNURL-PAY COMMENTS
+      // comments in lnurl pay can be used to send a private message or
+      // post on the projcet owners site. could even be used for advertising
+      // or tip messages. or can even be a pay to respond / paid advise
       return {
         minSendable: parseInt(lnurlDetails.data.minSendable) / 1000,
         maxSendable: parseInt(lnurlDetails.data.maxSendable) / 1000,
@@ -139,6 +159,17 @@ module.exports = {
     },
   },
   Mutation: {
+    // votes are like BTC Pay Server / ecommerce store "orders"
+    // the amount that needs to be paid is recorded, and the service
+    // awaits the payment. once the payment is made then a verification
+    // is necessary (confirmVote) since lnurl does not give a response
+    // for a successful payment. the payment is asyncronmous so we
+    // dont know when its get paid, and lnurl does not provide a webhook
+    // setup, or something for us to poll or subscribe to so we determine
+    // if a invoice is paid.
+    // the way that we implemented this check is that the client needs
+    // to provide the preimage for their vote to be counted on the site.
+    //
     vote: async (_source, args, context) => {
       const project = await context.prisma.project.findUnique({
         where: { id: args.project_id },
