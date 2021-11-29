@@ -1,7 +1,19 @@
 import { Project, ProjectCard, ProjectCategory } from "../utils/interfaces";
+import { gql } from "@apollo/client";
 import data from "./mockData.json";
 
 export async function getAllCategories(): Promise<ProjectCategory[]> {
+  let ALL_CATEGORIES = gql`
+    query GetCategories {
+      allCategories {
+        id
+        title
+      }
+    }
+  `;
+
+  console.log(ALL_CATEGORIES)
+
   return data.categories;
 }
 
