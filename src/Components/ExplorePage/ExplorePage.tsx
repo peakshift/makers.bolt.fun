@@ -1,6 +1,6 @@
-import Categories from "./partials/Categories";
-import Header from "./partials/Header";
-import ProjectsSection from "./partials/ProjectsSection";
+import Categories from "./Categories/Categories";
+import Header from "./Header/Header";
+import ProjectsSection from "./ProjectsSection/ProjectsSection";
 
 
 export default function ExplorePage() {

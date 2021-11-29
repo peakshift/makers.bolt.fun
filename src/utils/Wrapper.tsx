@@ -7,21 +7,37 @@ import 'react-multi-carousel/lib/styles.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { BrowserRouter } from 'react-router-dom';
 
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider
+} from "@apollo/client";
+
+const client = new ApolloClient({
+    uri: 'https://deploy-preview-2--makers-bolt-fun.netlify.app/.netlify/functions/graphql',
+    cache: new InMemoryCache()
+});
+
 
 const queryClient = new QueryClient()
 const parsedData = window.location.pathname.split("/");
 let domain = parsedData[1];
 
 
+
+
 export default function Wrapper(props: any) {
 
+
     return (
-        <QueryClientProvider client={queryClient}>
-            <Provider store={store}>
-                <BrowserRouter basename={"/" + domain}>
-                    {props.children}
-                </BrowserRouter>
-            </Provider>
-        </QueryClientProvider>
+        <ApolloProvider client={client}>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <BrowserRouter basename={"/" + domain}>
+                        {props.children}
+                    </BrowserRouter>
+                </Provider>
+            </QueryClientProvider>
+        </ApolloProvider>
     )
 }

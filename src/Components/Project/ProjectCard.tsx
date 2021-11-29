@@ -3,28 +3,27 @@ import { BiArrowBack } from 'react-icons/bi'
 import { BsJoystick } from 'react-icons/bs'
 import { MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer';
-import { useQuery } from 'react-query';
-import { getProjectById } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalId, openModal, scheduleModal } from '../../redux/features/modals.slice';
-import { setProject } from '../../redux/features/project.slice';
 import Button from 'src/Components/Shared/Button/Button';
+import { useGetProjectQuery } from 'src/generated/graphql';
 
 
 export default function ProjectCard({ onClose, direction, ...props }: ModalCard) {
 
-
-    const { data: project, isLoading } = useQuery(
-        ['get-project', props.projectId],
-        () => getProjectById(props.projectId),
-        {
-            onSuccess: project => dispatch(setProject(project))
+    const { data, loading } = useGetProjectQuery({
+        variables: {
+            getProjectId: props.projectId
         }
-    )
+    })
+
     const { isWalletConnected } = useAppSelector(state => ({ isWalletConnected: state.wallet.isConnected }))
     const dispatch = useAppDispatch();
 
-    if (isLoading || !project) return <></>;
+    const project = data?.getProject;
+
+
+    if (loading || !project) return <></>;
 
 
     const onTip = () => {
@@ -88,7 +87,9 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                         <Button onClick={onTip} size='md' className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 my-16">Tip <MdLocalFireDepartment className='text-fire' /></Button>
                     </div>
                 </div>
-                <p className="mt-40 text-body4 leading-normal">{project.description}</p>
+                <p className="mt-40 text-body4 leading-normal">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, iure dolorem quaerat ipsum dolores mollitia libero? Sit dolor saepe amet incidunt placeat. Iusto, expedita rerum! Et excepturi necessitatibus fugiat sequi in laboriosam quas delectus quibusdam quae eum dolore rerum veniam totam neque atque, corporis quasi. Qui commodi odio sit officiis? Beatae quaerat suscipit dolore incidunt vel ipsam obcaecati minima inventore!
+                </p>
                 <div className="flex gap-16 mt-24 flex-wrap">
                     <span className="chip-small bg-red-100 text-red-800 font-regular"> payments </span>
                     <span className="chip-small bg-primary-100 text-primary-800 font-regular"> lightining </span>

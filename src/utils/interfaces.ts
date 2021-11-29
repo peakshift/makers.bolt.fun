@@ -1,25 +1,25 @@
 export interface ProjectCategory {
-  id: string;
+  id: number;
   title: string;
 }
 
 export interface ProjectCard {
-  id: string;
+  id: number;
   title: string;
-  img: string;
+  thumbnail_image: string;
   category: ProjectCategory;
   votes_count: number;
 }
 
 export interface Tag {
-  id: string;
+  id: number;
   title: string;
 }
 
 export type Image = string;
 
 export interface Project {
-  id: string;
+  id: number;
   title: string;
   category: ProjectCategory;
   website?: string;
