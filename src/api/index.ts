@@ -1,29 +1,52 @@
 import { Project, ProjectCard, ProjectCategory } from "../utils/interfaces";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import data from "./mockData.json";
 
 export async function getAllCategories(): Promise<ProjectCategory[]> {
-  let ALL_CATEGORIES = gql`
-    query GetCategories {
-      allCategories {
-        id
-        title
-      }
-    }
-  `;
-
-  console.log(ALL_CATEGORIES)
-
+  // let QUERY = gql`
+  //   query GetCategories {
+  //     allCategories {
+  //       id
+  //       title
+  //     }
+  //   }
+  // `;
   return data.categories;
 }
 
 export async function getHottestProjects(): Promise<ProjectCard[]> {
+  // let QUERY = gql`
+  //   query {
+  //     allProject {
+  //       id
+  //       cover_image
+  //       thumbnail_image
+  //       title
+  //       website
+  //       votes_count
+  //     }
+  //   }
+  // `;
   return data.projectsCards;
 }
 
 export async function getProjectsByCategory(
   categoryId: string
 ): Promise<ProjectCard[]> {
+
+  // let QUERY = gql`
+  //   query Categories($categoryId: Int!){
+  //     projectsByCategory(category_id: ${categoryId}) {
+  //       id
+  //       cover_image
+  //       thumbnail_image
+  //       title
+  //       website
+  //       lightning_address
+  //       votes_count
+  //     }
+  //   }
+  // `;
   return data.projectsCards;
 }
 
@@ -38,5 +61,17 @@ export async function getLatestProjects(): Promise<
 }
 
 export async function getProjectById(projectId: string): Promise<Project> {
+//   let QUERY = gql`
+//     query Project(projectId: String!) {
+//       getProject(id: $projectId) {
+//         id
+//         cover_image
+//         thumbnail_image
+//         title
+//         website
+//         votes_count
+//       }
+//     }
+//   `;
   return data.project;
 }
