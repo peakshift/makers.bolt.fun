@@ -31,7 +31,6 @@ async function getLnurlCallbackUrl(lightning_address) {
 async function getPaymetRequestForProject(project, amount_in_sat) {
   let lnurlCallbackUrl = project.lnurl_callback_url;
   const amount = amount_in_sat * 1000; // msats
-  console.log(lnurlCallbackUrl);
   if (!lnurlCallbackUrl) {
     lnurlCallbackUrl = await getLnurlCallbackUrl(project.lightning_address);
   }
