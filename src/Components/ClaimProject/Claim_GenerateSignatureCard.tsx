@@ -8,7 +8,7 @@ import { IoClose } from 'react-icons/io5';
 export default function Claim_GenerateSignatureCard({ onClose, direction, ...props }: ModalCard) {
 
     const dispatch = useAppDispatch();
-    const { projectName, image } = useAppSelector(state => ({ projectName: state.project.project?.title, image: state.project.project?.thumbnail_image, }))
+    const { projectName, image } = useAppSelector(state => ({ projectName: state.project?.title, image: state.project?.thumbnail_image, }))
 
 
 

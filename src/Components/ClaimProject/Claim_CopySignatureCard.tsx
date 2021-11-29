@@ -9,7 +9,7 @@ import { IoClose } from 'react-icons/io5';
 export default function Claim_CopySignatureCard({ onClose, direction, ...props }: ModalCard) {
 
     const dispatch = useAppDispatch();
-    const { image } = useAppSelector(state => ({ projectName: state.project.project?.title, image: state.project.project?.thumbnail_image, }))
+    const { projectName, image } = useAppSelector(state => ({ projectName: state.project?.title, image: state.project?.thumbnail_image, }))
 
     const generatedHash = '0x000330RaaSt302440zxc327jjiaswf19987183345pRReuBNksbaaueee'
 
