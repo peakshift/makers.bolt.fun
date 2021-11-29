@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 import Wrapper from './utils/Wrapper';
 
 const client = new ApolloClient({
-  uri: '/.netlify/functions/graphql',
+  uri: 'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql',
   cache: new InMemoryCache()
 });
 
