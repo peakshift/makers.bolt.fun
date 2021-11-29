@@ -16,7 +16,7 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
 
 
     useEffect(() => {
-        dispatch(connectWallet());
+        //dispatch(connectWallet());
         const timeout = setTimeout(handleNext, 3000)
         return () => clearTimeout(timeout)
     }, [handleNext, dispatch])
