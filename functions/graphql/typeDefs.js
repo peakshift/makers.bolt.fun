@@ -27,6 +27,13 @@ module.exports = gql`
     paid: Boolean!
   }
 
+  type LnurlDetails {
+    minSendable: Int
+    maxSendable: Int
+    metadata: String
+    commentAllowed: Int
+  }
+
   type Query {
     allProjects(skip: Int, take: Int): [Project]!
     newProjects(skip: Int, take: Int): [Project]!
@@ -34,9 +41,10 @@ module.exports = gql`
     getProject(id: Int!): Project!
     allCategories: [Category]!
     getCategory(id: Int!): Category!
+    getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   }
   type Mutation {
-    vote (project_id: Int!, amount_in_sat: Int!): Vote!
-    confirmVote (payment_request: String!, preimage: String!): Vote!
+    vote(project_id: Int!, amount_in_sat: Int!): Vote!
+    confirmVote(payment_request: String!, preimage: String!): Vote!
   }
 `;
