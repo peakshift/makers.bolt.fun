@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { BiArrowBack } from 'react-icons/bi'
+import { BiArrowBack, BiWindowClose } from 'react-icons/bi'
 import { BsJoystick } from 'react-icons/bs'
-import { MdLocalFireDepartment } from 'react-icons/md';
+import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalId, openModal, scheduleModal } from '../../redux/features/modals.slice';
@@ -63,9 +63,9 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             className="modal-card max-w-[710px]"
 
         >
-            <div className="relative h-[152px]">
+            <div className="relative h-[100px] lg:h-[152px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><BiArrowBack className=' inline-block text-body1' /></button>
+                <button className="w-[42px] h-[42px] lg:w-[48px] lg:h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
             </div>
             <div className="p-24">
                 <div className="flex gap-24 items-center h-[93px]">
@@ -88,7 +88,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     </div>
                 </div>
                 <p className="mt-40 text-body4 leading-normal">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, iure dolorem quaerat ipsum dolores mollitia libero? Sit dolor saepe amet incidunt placeat. Iusto, expedita rerum! Et excepturi necessitatibus fugiat sequi in laboriosam quas delectus quibusdam quae eum dolore rerum veniam totam neque atque, corporis quasi. Qui commodi odio sit officiis? Beatae quaerat suscipit dolore incidunt vel ipsam obcaecati minima inventore!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, iure dolorem quaerat ipsum dolores mollitia libero? Sit dolor saepe amet incidunt placeat. Iusto, expedita rerum
                 </p>
                 <div className="flex gap-16 mt-24 flex-wrap">
                     <span className="chip-small bg-red-100 text-red-800 font-regular"> payments </span>
@@ -96,7 +96,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                 </div>
                 <div className="md:hidden">
                     <Button color='primary' size='md' fullWidth className="w-full mt-24 mb-16">Play <BsJoystick /></Button>
-                    <Button size='md' fullWidth className="w-full bg-yellow-100 hover:bg-yellow-50 mb-24" onClick={onTip}>Vote <MdLocalFireDepartment className='text-fire' /></Button>
+                    <Button size='md' fullWidth className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-10050 mb-24" onClick={onTip}>Vote <MdLocalFireDepartment className='text-fire' /></Button>
                 </div>
                 <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>

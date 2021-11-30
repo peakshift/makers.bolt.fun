@@ -16,7 +16,7 @@ export default function Modal({ onClose, children, ...props }: Props) {
             initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='w-screen h-full fixed inset-0 py-32 md:py-64 flex flex-col justify-center items-center overflow-x-hidden overflow-y-hidden no-scrollbar'
+            className='w-screen h-full fixed inset-0 py-32 px-16 md:py-64 flex flex-col justify-center items-center overflow-x-hidden overflow-y-hidden no-scrollbar'
             {...props}
         >
             <div
