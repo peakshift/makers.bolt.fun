@@ -37,6 +37,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             dispatch(openModal({ modalId: ModalId.Tip, propsToPass: { projectId: props.projectId } }))
     }
 
+
     const onClaim = () => {
         if (!isWalletConnected) {
             dispatch(scheduleModal({
@@ -63,9 +64,9 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             className="modal-card max-w-[710px]"
 
         >
-            <div className="relative h-[100px] lg:h-[152px]">
+            <div className="relative h-[80px] lg:h-[152px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-[42px] h-[42px] lg:w-[48px] lg:h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
+                <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
             </div>
             <div className="p-24">
                 <div className="flex gap-24 items-center h-[93px]">
