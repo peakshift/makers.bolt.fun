@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
+import { ProjectCard } from "src/utils/interfaces";
 
-export const QUERY_ALL_CATEGORIES_PROJECTS = gql`
+export const ALL_CATEGORIES_PROJECTS_QUERY = gql`
   query AllCategoriesProjects {
     allCategories {
       id
@@ -24,3 +25,12 @@ export const QUERY_ALL_CATEGORIES_PROJECTS = gql`
     }
   }
 `;
+
+export type ALL_CATEGORIES_PROJECTS_RES = {
+  newProjects: ProjectCard[];
+  allCategories: {
+    id: string;
+    title: string;
+    project: ProjectCard[];
+  }[];
+};

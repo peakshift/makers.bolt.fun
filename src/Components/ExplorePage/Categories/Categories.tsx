@@ -1,13 +1,13 @@
-import { useAllCategoriesQuery } from 'src/generated/graphql'
+import { useQuery } from '@apollo/client';
+import { ALL_CATEGORIES_QUERY, ALL_CATEGORIES_QUERY_RES } from './query';
 
 export default function Categories() {
 
-    const { data, loading } = useAllCategoriesQuery();
+    const { data, loading } = useQuery<ALL_CATEGORIES_QUERY_RES>(ALL_CATEGORIES_QUERY);
 
-    const handleClick = (categoryId: number) => {
+    const handleClick = (categoryId: string) => {
 
     }
-
 
     if (loading)
         return null;

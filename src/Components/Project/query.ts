@@ -1,8 +1,9 @@
 import { gql } from "@apollo/client";
+import { Project } from "src/utils/interfaces";
 
-export const QUERY_PROJECT_BY_ID = gql`
-  query GetProject($getProjectId: Int!) {
-    getProject(id: $getProjectId) {
+export const PROJECT_BY_ID_QUERY = gql`
+  query Project($projectId: Int!) {
+    getProject(id: $projectId) {
       id
       cover_image
       thumbnail_image
@@ -10,9 +11,17 @@ export const QUERY_PROJECT_BY_ID = gql`
       website
       votes_count
       category {
-        id
         title
+        id
       }
     }
   }
 `;
+
+export interface PROJECT_BY_ID_RES {
+  getProject: Project;
+}
+
+export interface PROJECT_BY_ID_VARS {
+  projectId: number;
+}
