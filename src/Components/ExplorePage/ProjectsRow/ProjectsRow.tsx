@@ -19,12 +19,12 @@ const calcNumItems = () => {
     return items;
 }
 
-interface Props { title: string | ReactElement, categoryId: number, projects: ProjectCard[] }
+interface Props { title: string | ReactElement, categoryId: string, projects: ProjectCard[] }
 
 export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
-    const dispatch = useAppDispatch()
     const [carouselItmsCnt, setCarouselItmsCnt] = useState(calcNumItems);
+    const dispatch = useAppDispatch()
 
     responsive.all.items = carouselItmsCnt
 
@@ -33,7 +33,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
     document.addEventListener('mousedown', () => drag.current = false);
     document.addEventListener('mousemove', () => drag.current = true);
 
-    const handleClick = (projectId: number) => {
+    const handleClick = (projectId: string) => {
         if (!drag.current)
             dispatch(openModal({ modalId: ModalId.Project, propsToPass: { projectId } }))
     }

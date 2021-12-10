@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
+import { ProjectCategory } from "src/utils/interfaces";
 
-export const QUERY_ALL_CATEGORIES = gql`
+export const ALL_CATEGORIES_QUERY = gql`
   query AllCategories {
     allCategories {
       id
@@ -8,3 +9,7 @@ export const QUERY_ALL_CATEGORIES = gql`
     }
   }
 `;
+
+export type ALL_CATEGORIES_QUERY_RES = {
+  allCategories: ProjectCategory[];
+};

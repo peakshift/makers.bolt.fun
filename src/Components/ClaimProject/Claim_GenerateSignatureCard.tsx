@@ -25,10 +25,10 @@ export default function Claim_GenerateSignatureCard({ onClose, direction, ...pro
         // return () => clearTimeout(timeout)
     }, [handleNext])
 
-    const onCopy = () => {
-        // Copy to Clipboard
-        setTimeout(handleNext, 2000)
-    }
+    //const onCopy = () => {
+    //    // Copy to Clipboard
+    //    setTimeout(handleNext, 2000)
+    //}
 
     return (
         <motion.div

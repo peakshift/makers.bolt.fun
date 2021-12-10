@@ -1,30 +1,55 @@
 import { motion } from 'framer-motion'
-import { BiArrowBack, BiWindowClose } from 'react-icons/bi'
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer';
+import { useQuery } from "@apollo/client";
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { ModalId, openModal, scheduleModal } from '../../redux/features/modals.slice';
+import { setProject } from '../../redux/features/project.slice';
+import { connectWallet } from '../../redux/features/wallet.slice';
 import Button from 'src/Components/Shared/Button/Button';
-import { useGetProjectQuery } from 'src/generated/graphql';
+import { requestProvider } from 'webln';
+import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 
 
 export default function ProjectCard({ onClose, direction, ...props }: ModalCard) {
 
-    const { data, loading } = useGetProjectQuery({
-        variables: {
-            getProjectId: props.projectId
-        }
-    })
-
-    const { isWalletConnected } = useAppSelector(state => ({ isWalletConnected: state.wallet.isConnected }))
     const dispatch = useAppDispatch();
 
-    const project = data?.getProject;
+    const { loading } = useQuery<PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS>(
+        PROJECT_BY_ID_QUERY,
+        {
+            variables: { projectId: parseInt(props.projectId) },
+            onCompleted: data => {
+                dispatch(setProject(data.getProject))
+            },
+        }
+    );
+
+    const { isWalletConnected, webln, project } = useAppSelector(state => ({
+        isWalletConnected: state.wallet.isConnected,
+        webln: state.wallet.provider,
+        project: state.project.project,
+    }));
+
 
 
     if (loading || !project) return <></>;
 
+    const onConnectWallet = async () => {
+        try {
+            const webln = await requestProvider();
+            if (webln) {
+                dispatch(connectWallet(webln));
+                alert("wallet connected!");
+            }
+            // Now you can call all of the webln.* methods
+        }
+        catch (err: any) {
+            // Tell the user what went wrong
+            alert(err.message);
+        }
+    }
 
     const onTip = () => {
 

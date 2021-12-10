@@ -20,10 +20,6 @@ export default function Claim_CopySignatureCard({ onClose, direction, ...props }
         }))
     }, [dispatch])
 
-    const onCopy = () => {
-        // Copy to Clipboard 
-    }
-
     return (
         <motion.div
             custom={direction}

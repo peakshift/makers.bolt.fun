@@ -1,10 +1,14 @@
+export interface AllCategoriesData {
+  allCategories: ProjectCategory[];
+}
+
 export interface ProjectCategory {
-  id: number;
+  id: string;
   title: string;
 }
 
 export interface ProjectCard {
-  id: number;
+  id: string;
   title: string;
   thumbnail_image: string;
   category: ProjectCategory;
@@ -12,14 +16,14 @@ export interface ProjectCard {
 }
 
 export interface Tag {
-  id: number;
+  id: string;
   title: string;
 }
 
 export type Image = string;
 
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   category: ProjectCategory;
   website?: string;

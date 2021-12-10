@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../utils/hooks';
 import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
 import { AiFillThunderbolt } from 'react-icons/ai';
 import CopyToClipboard from 'src/Components/Shared/CopyToClipboard/CopyToClipboard';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 
 export default function Login_ExternalWalletCard({ onClose, direction, ...props }: ModalCard) {

@@ -5,10 +5,11 @@ import mockData from "../../api/mockData.json";
 
 interface StoreState {
   project: Project | null;
+  projectSet: boolean;
 }
 
 const initialState = {
-  project: mockData.project,
+  project: null,
 } as StoreState;
 
 export const projectSlice = createSlice({
