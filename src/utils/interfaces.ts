@@ -1,3 +1,8 @@
+
+export interface AllCategoriesData {
+  allCategories: ProjectCategory[]
+}
+
 export interface ProjectCategory {
   id: number;
   title: string;

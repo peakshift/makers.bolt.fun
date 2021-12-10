@@ -2,6 +2,30 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+## Database
+
+Set the `DATABASE_URL` environment variable for your PostgreSQL DB. (e.g. `postgres://bumi@127.0.0.1:5432/bolt_fun_dev`)
+
+### `prisma studio`
+
+prisma studio runs an UI for the DB
+
+### `prisma migrate dev`
+
+Create a migration from the schema.prisma file
+
+### `prisma migrate deploy`
+
+Apply pending migrations to the database
+
+
+## GraphQL
+
+GraphQL endpoint is available as netlify function on: `.netlify/functions/graphql`
+
+Use the Apollo GraphQL Studio to to inspect the GraphQL API: [https://studio.apollographql.com/sandbox/explorer](https://studio.apollographql.com/sandbox/explorer)
+
 ## Available Scripts
 
 In the project directory, you can run:

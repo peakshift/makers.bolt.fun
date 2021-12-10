@@ -1,15 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+} from "@apollo/client";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Wrapper from './utils/Wrapper';
 
+const client = new ApolloClient({
+  uri: 'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql',
+  cache: new InMemoryCache()
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <Wrapper>
-      <App />
-    </Wrapper>
+    <ApolloProvider client={client}>
+      <Wrapper>
+        <App />
+      </Wrapper>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -4,23 +4,24 @@ import { Project } from "../../utils/interfaces";
 import mockData from "../../api/mockData.json";
 
 interface StoreState {
-  project: Project | null;
+  project: Project;
 }
 
 const initialState = {
-  project: mockData.project,
-} as StoreState;
+  ...mockData.project,
+} as Project;
 
 export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
     setProject(state, action: PayloadAction<Project>) {
-      state.project = action.payload;
+      state = action.payload;
+      console.log("called:setProject",state);
     },
 
     unsetProject(state) {
-      state.project = null;
+      state = mockData.project;
     },
   },
 });

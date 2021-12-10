@@ -10,7 +10,7 @@ interface Props {
 export default function ProjectCardMini({ project, onClick }: Props) {
     return (
         <div className="bg-gray-25 select-none px-16 py-16 flex w-[296px] gap-16 border border-gray-200 rounded-10 hover:cursor-pointer hover:bg-gray-100" onClick={() => onClick(project.id)}>
-            <img src={project.thumbnail_image} draggable="false" className="flex-shrink-0 w-80 h-80 bg-gray-200 border-0 rounded-8"></img>
+            <img src={project.img} alt={project.title} draggable="false" className="flex-shrink-0 w-80 h-80 bg-gray-200 border-0 rounded-8"></img>
             <div className="justify-around items-start min-w-0">
                 <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project.title}</p>
                 <p className="text-body5 text-gray-600 font-light my-[5px]">{project.category.title}</p>

@@ -33,7 +33,8 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
     document.addEventListener('mousedown', () => drag.current = false);
     document.addEventListener('mousemove', () => drag.current = true);
 
-    const handleClick = (projectId: number) => {
+    const handleClick = (projectId: string) => {
+        projectId = '1';
         if (!drag.current)
             dispatch(openModal({ modalId: ModalId.Project, propsToPass: { projectId } }))
     }

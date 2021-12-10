@@ -25,7 +25,11 @@ export default function Navbar() {
     const [searchInput, setSearchInput] = useState("");
     const inputRef = useRef<HTMLInputElement>(null)
     const dispatch = useAppDispatch()
-    const { isWalletConnected } = useAppSelector(state => ({ isWalletConnected: state.wallet.isConnected }))
+
+    const { isWalletConnected, webln } = useAppSelector(state => ({
+        isWalletConnected: state.wallet.isConnected,
+        webln: state.wallet.provider,
+    }));
 
     const toggleSearch = () => {
         if (!searchOpen) {
@@ -78,7 +82,7 @@ export default function Navbar() {
                         className="flex">
                         <Button color='primary' size='md' className="lg:px-40">Submit App️</Button>
                         {isWalletConnected ?
-                            <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onWithdraw}>2.2k Sats <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
+                            <Button className="ml-16 py-12 px-16 lg:px-20">Connected <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         }
                     </motion.div>
