@@ -10,6 +10,7 @@ import { connectWallet } from '../../redux/features/wallet.slice';
 import Button from 'src/Components/Shared/Button/Button';
 import { requestProvider } from 'webln';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
+import { AiFillThunderbolt } from 'react-icons/ai';
 
 
 export default function ProjectCard({ onClose, direction, ...props }: ModalCard) {
@@ -86,7 +87,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card max-w-[710px]"
+            className="modal-card max-w-[710px] max-h-[80vh]"
 
         >
             <div className="relative h-[80px] lg:h-[152px]">
@@ -96,33 +97,35 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             <div className="p-24">
                 <div className="flex gap-24 items-center h-[93px]">
                     <div className="flex-shrink-0 w-[93px] h-[93px] rounded-md overflow-hidden">
-                        <img className="w-full h-full object-cover" src={project.thumbnail_image} alt="" />
+                        <img className="w-full h-full object-cover" src={project?.thumbnail_image} alt="" />
                     </div>
                     <div className='flex flex-col items-start justify-between self-stretch'>
-                        <h3 className="text-h3 font-regular">{project.title}</h3>
-                        <a className="text-blue-400 font-regular text-body4" target='_blank' rel="noreferrer" href={project.website}>{project.website?.replace(/(^\w+:|^)\/\//, '')}</a>
+                        <h3 className="text-h3 font-regular">{project?.title}</h3>
+                        <a className="text-blue-400 font-regular text-body4" target='_blank' rel="noreferrer" href={project?.website}>{project?.website?.replace(/(^\w+:|^)\/\//, '')}</a>
                         <div>
-                            <span className="chip-small font-light text-body5 py-4 px-12 mr-8"> {project.category.title}</span>
+                            <span className="chip-small font-light text-body5 py-4 px-12 mr-8"> {project?.category.title}</span>
 
-                            <span className="chip-small bg-warning-50 font-light text-body5 py-4 px-12"><MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {project.votes_count}</span>
+                            <span className="chip-small bg-warning-50 font-light text-body5 py-4 px-12"><MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {project?.votes_count}</span>
 
                         </div>
                     </div>
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
                         <Button color='primary' size='md' className=" my-16">Play <BsJoystick /></Button>
-                        <Button onClick={onTip} size='md' className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 my-16">Tip <MdLocalFireDepartment className='text-fire' /></Button>
+                        {isWalletConnected ?
+                            <Button onClick={onTip} size='md' className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 my-16">Tip <MdLocalFireDepartment className='text-fire' /></Button>
+                            :
+                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16">Connect Wallet to Vote</Button>
+                        }
                     </div>
                 </div>
-                <p className="mt-40 text-body4 leading-normal">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, iure dolorem quaerat ipsum dolores mollitia libero? Sit dolor saepe amet incidunt placeat. Iusto, expedita rerum
-                </p>
-                <div className="flex gap-16 mt-24 flex-wrap">
-                    <span className="chip-small bg-red-100 text-red-800 font-regular"> payments </span>
-                    <span className="chip-small bg-primary-100 text-primary-800 font-regular"> lightining </span>
-                </div>
+                <p className="mt-40 text-body4 leading-normal">{project?.description}</p>
                 <div className="md:hidden">
                     <Button color='primary' size='md' fullWidth className="w-full mt-24 mb-16">Play <BsJoystick /></Button>
-                    <Button size='md' fullWidth className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-10050 mb-24" onClick={onTip}>Vote <MdLocalFireDepartment className='text-fire' /></Button>
+                    {isWalletConnected ?
+                        <Button size='md' fullWidth className="bg-yellow-100 hover:bg-yellow-50 mb-24" onClick={onTip}>Vote <MdLocalFireDepartment className='text-fire' /></Button>
+                        :
+                        <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
+                    }
                 </div>
                 <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
