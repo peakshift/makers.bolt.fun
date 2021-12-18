@@ -87,7 +87,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card max-w-[710px] max-h-[80vh]"
+            className="modal-card max-w-[710px]"
 
         >
             <div className="relative h-[80px] lg:h-[152px]">
@@ -131,16 +131,16 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
                     <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
                         <div className="w-full relative pt-[56%]">
-                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
+                            <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                         <div className="w-full relative pt-[56%]">
-                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
+                            <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                         <div className="w-full relative pt-[56%]">
-                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
+                            <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                         <div className="w-full relative pt-[56%]">
-                            <div className="absolute inset-0 object-cover bg-gray-300 rounded-xl"></div>
+                            <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                     </div>
                 </div>

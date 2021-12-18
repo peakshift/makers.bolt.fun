@@ -41,7 +41,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
     useEffect(() => {
         const listener = _throttle(() => {
             setCarouselItmsCnt(calcNumItems());
-        }, 1000);
+        }, 250);
 
         window.addEventListener('resize', listener)
         return () => {

@@ -36,7 +36,7 @@
   }
 
   .modal-card {
-    @apply rounded-[40px] bg-gray-50 overflow-y-scroll w-full max-w-[600px] shadow-2xl z-10;
+    @apply rounded-[40px] bg-gray-50 overflow-hidden w-full max-w-[600px] shadow-2xl z-10;
   }
 }
 
@@ -50,7 +50,14 @@ svg {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 4px;
+}
+
+@media screen and (min-width: 668px) {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
 }
 
 /* Track */

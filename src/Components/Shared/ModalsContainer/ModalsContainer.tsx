@@ -101,7 +101,7 @@ export default function ModalsContainer() {
             <AnimatePresence exitBeforeEnter>
                 {isOpen &&
                     <motion.div
-                        className="w-screen h-scree fixed inset-0"
+                        className="w-screen fixed inset-0 overflow-x-hidden"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{
