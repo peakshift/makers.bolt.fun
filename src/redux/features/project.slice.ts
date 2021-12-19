@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Project } from "../../utils/interfaces";
 
-import mockData from "../../api/mockData.json";
-
 interface StoreState {
   project: Project | null;
   projectSet: boolean;

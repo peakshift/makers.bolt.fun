@@ -101,7 +101,7 @@ export default function ModalsContainer() {
             <AnimatePresence exitBeforeEnter>
                 {isOpen &&
                     <motion.div
-                        className="w-screen fixed inset-0 overflow-x-hidden"
+                        className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{
@@ -113,8 +113,8 @@ export default function ModalsContainer() {
                             {openModals.map(modal => {
                                 const Child = ModalsMap(modal.modalId);
                                 return (
-                                    <Modal key={modal.modalId} onClose={onClose} direction={direction}>
-                                        <Child onClose={onClose} direction={direction} {...modal.propsToPass} />
+                                    <Modal key={modal.modalId} onClose={onClose} direction={direction} isPageModal={modal.isPageModal}>
+                                        <Child onClose={onClose} direction={direction} isPageModal={modal.isPageModal} {...modal.propsToPass} />
                                     </Modal>)
                             })}
                         </AnimatePresence>

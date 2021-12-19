@@ -1,11 +1,11 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useRef, useState } from "react";
 import { ProjectCard } from "../../../utils/interfaces";
 import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
 import { useAppDispatch } from "../../../utils/hooks";
 import { ModalId, openModal } from "../../../redux/features/modals.slice";
-import _throttle from 'lodash.throttle'
 import ProjectCardMini from "../ProjectCardMini/ProjectCardMini";
+import { useResizeListener } from 'src/utils/hooks'
 
 const responsive = {
     all: {
@@ -38,16 +38,10 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
             dispatch(openModal({ modalId: ModalId.Project, propsToPass: { projectId } }))
     }
 
-    useEffect(() => {
-        const listener = _throttle(() => {
-            setCarouselItmsCnt(calcNumItems());
-        }, 250);
+    useResizeListener(() => {
+        setCarouselItmsCnt(calcNumItems());
+    }, [setCarouselItmsCnt])
 
-        window.addEventListener('resize', listener)
-        return () => {
-            window.removeEventListener('resize', listener)
-        }
-    }, [])
 
     return (
         <div className='mb-48'>

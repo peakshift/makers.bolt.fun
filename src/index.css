@@ -36,7 +36,7 @@
   }
 
   .modal-card {
-    @apply rounded-[40px] bg-gray-50 overflow-hidden w-full max-w-[600px] shadow-2xl z-10;
+    @apply rounded-[40px] bg-gray-50 overflow-hidden w-full shadow-2xl z-10;
   }
 }
 
@@ -62,7 +62,7 @@ svg {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #ddd;
 }
 
 /* Handle */

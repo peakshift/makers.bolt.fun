@@ -23,6 +23,7 @@ export enum ModalId {
 
 interface OpenModal {
   modalId: ModalId;
+  isPageModal?: boolean;
   propsToPass?: any;
 }
 
@@ -33,6 +34,7 @@ interface StoreState {
   flows: ModalId[];
   toOpenLater: OpenModal | null;
   openModals: OpenModal[];
+  isMobileScreen?: boolean;
 }
 
 const initialState = {
@@ -75,9 +77,11 @@ export const modalSlice = createSlice({
     ) {
       state.direction = Direction.START;
       state.isOpen = true;
+      const isPageModal = action.payload.modalId === ModalId.Project;
       state.openModals.push({
         modalId: action.payload.modalId,
         propsToPass: action.payload.propsToPass,
+        isPageModal,
       });
     },
 
@@ -91,9 +95,11 @@ export const modalSlice = createSlice({
     ) {
       state.direction = action.payload.direction;
       state.openModals.pop();
+      const isPageModal = action.payload.modalId === ModalId.Project;
       state.openModals.push({
         modalId: action.payload.modalId,
         propsToPass: action.payload.propsToPass || {},
+        isPageModal,
       });
     },
 

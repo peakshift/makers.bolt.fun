@@ -45,7 +45,7 @@ export default function NavMobile({ onSearch }: Props) {
 
 
     return (
-        <nav className='block lg:hidden overflow-hidden z-[2010]'>
+        <nav className='block bg-white fixed top-0 left-0 w-full lg:hidden overflow-hidden z-[2010]'>
             <div className="p-16 px-32 w-screen flex justify-center items-center">
                 <div className="w-40 h-40 bg-gray-100 rounded-8 mr-auto overflow-hidden">
                     <img className="w-full h-full object-cover" src="https://www.figma.com/file/OFowr5RJk9YZCW35KT7D5K/image/07b85d84145942255afd215b3da26dbbf1dd03bd?fuid=772401335362859303" alt="" />

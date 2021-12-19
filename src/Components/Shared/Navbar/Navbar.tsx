@@ -4,13 +4,16 @@ import { MdLocalFireDepartment } from 'react-icons/md';
 import { IoExtensionPuzzle } from 'react-icons/io5';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BsSearch } from "react-icons/bs";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { GrClose } from 'react-icons/gr';
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import { ModalId, openModal } from "../../../redux/features/modals.slice";
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
+import { setNavHeight } from "src/redux/features/theme.slice";
+import _throttle from 'lodash.throttle'
+import { useResizeListener } from 'src/utils/hooks'
 
 export const navLinks = [
     { text: "Explore", url: "/", icon: FaHome, color: 'text-primary-600' },
@@ -63,12 +66,26 @@ export default function Navbar() {
         onSearch(searchInput)
     }
 
+
+    useResizeListener(function calcNavHeight() {
+        const navs = document.querySelectorAll('nav');
+        navs.forEach(nav => {
+            const navStyles = getComputedStyle(nav);
+            if (navStyles.display !== 'none') {
+                dispatch(setNavHeight(nav.clientHeight))
+                document.body.style.paddingTop = `${nav.clientHeight}px`
+            }
+        });
+    }, [])
+
+
     return (
         <>
+            {/* Mobile Nav */}
             <NavMobile onSearch={onSearch} />
-            {/* Desktop Nav */}
 
-            <nav className="hidden lg:flex py-36 px-32 items-center">
+            {/* Desktop Nav */}
+            <nav className="hidden bg-white w-full lg:flex fixed top-0 left-0 py-36 px-32 items-center z-[2010]">
                 <Link to='/'><h2 className="text-h5 font-bold mr-40 lg:mr-64">makers.bolt.fun</h2></Link>
                 <ul className="flex gap-32 xl:gap-64">
                     {navLinks.map((link, idx) => <li key={idx} className="text-body4 hover:text-primary-600">

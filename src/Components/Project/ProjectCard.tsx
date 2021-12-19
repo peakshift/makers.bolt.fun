@@ -27,10 +27,11 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
         }
     );
 
-    const { isWalletConnected, webln, project } = useAppSelector(state => ({
+    const { isWalletConnected, webln, project, isMobileScreen } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
         webln: state.wallet.provider,
         project: state.project.project,
+        isMobileScreen: state.theme.isMobileScreen
     }));
 
 
@@ -87,7 +88,7 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card max-w-[710px]"
+            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && 'rounded-0 w-full min-h-screen'}`}
 
         >
             <div className="relative h-[80px] lg:h-[152px]">
