@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "baseUrl": ".",
@@ -17,5 +18,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src","./src/utils/types/assets.d.ts"]
 }

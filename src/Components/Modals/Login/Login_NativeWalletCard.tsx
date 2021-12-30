@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
-import { useAppDispatch } from '../../utils/hooks';
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch } from 'src/utils/hooks';
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { IoLockClosed, } from 'react-icons/io5'
-import Button from 'src/Components/Shared/Button/Button';
+import Button from 'src/Components/Button/Button';
 
 export default function Login_NativeWalletCard({ onClose, direction, ...props }: ModalCard) {
 

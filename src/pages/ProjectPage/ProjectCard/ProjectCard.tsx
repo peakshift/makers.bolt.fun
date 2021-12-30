@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion'
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer';
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useQuery } from "@apollo/client";
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
-import { ModalId, openModal, scheduleModal } from '../../redux/features/modals.slice';
-import { setProject } from '../../redux/features/project.slice';
-import { connectWallet } from '../../redux/features/wallet.slice';
-import Button from 'src/Components/Shared/Button/Button';
+import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
+import { ModalId, openModal, scheduleModal } from 'src/redux/features/modals.slice';
+import { setProject } from 'src/redux/features/project.slice';
+import { connectWallet } from 'src/redux/features/wallet.slice';
+import Button from 'src/Components/Button/Button';
 import { requestProvider } from 'webln';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';

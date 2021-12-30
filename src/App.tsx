@@ -1,10 +1,10 @@
-import { useCallback, useEffect } from "react";
-import Navbar from "./Components/Shared/Navbar/Navbar";
-import ExplorePage from "./Components/ExplorePage/ExplorePage";
-import ModalsContainer from "./Components/Shared/ModalsContainer/ModalsContainer";
+import {  useEffect } from "react";
+import Navbar from "src/Components/Navbar/Navbar";
+import ExplorePage from "src/pages/ExplorePage";
+import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { useAppDispatch, useAppSelector, useResizeListener } from './utils/hooks';
-import { connectWallet } from './redux/features/wallet.slice';
-import { setIsMobileScreen } from "./redux/features/theme.slice";
+import { connectWallet } from 'src/redux/features/wallet.slice';
+import { setIsMobileScreen } from "src/redux/features/theme.slice";
 
 function App() {
   const { isWalletConnected, webln } = useAppSelector(state => ({

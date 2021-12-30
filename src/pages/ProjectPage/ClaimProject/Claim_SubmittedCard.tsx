@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { IoClose } from 'react-icons/io5';
 
 export default function Claim_SubmittedCard({ onClose, direction, ...props }: ModalCard) {

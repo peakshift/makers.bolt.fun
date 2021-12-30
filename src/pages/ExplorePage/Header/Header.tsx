@@ -1,10 +1,11 @@
-import Button from 'src/Components/Shared/Button/Button'
+import { Assets_Images_ExploreHeader1, Assets_Images_ExploreHeader2 } from 'src/assets';
+import Button from 'src/Components/Button/Button'
 
 const headerLinks = [
   {
     title: "A fun directory of Lightning Enabled Applications on the Open Web",
     img:
-      "https://s3-alpha-sig.figma.com/img/07b8/5d84/145942255afd215b3da26dbbf1dd03bd?Expires=1638144000&Signature=Cl1DUQJIUsrrFi48M~qU1r3Z0agGdy-uiNUao5g8-nu34QtoyWTFPXvaH3naSZBYqcPyKFq1jaXF6Mw1uj1hdWwGhXhMPLnKNJFFrGViVXhXu-3YeCPY9p4-IcieFJBZPVA~zDY8zxY5b06loWsINAVx4eMHRAhSWl~~Mca5PjlSXloiYrT00W-6c9m8gevfMMX~PsHQedzwYzg0j2DlnhPX8LbRkli1G2OxtCaFwo3~HGHXIlFGuGU1uXRvi1qBWrdjdsuWgIly1ekcFfJWAKmwYXk06EtCmfWRgGYbD7cBK~lwOkFofbf1LW0yqLv0hr4svwToH~3FiHenrCF-1g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+      Assets_Images_ExploreHeader1,
     link: {
       content: "Submit App",
       url: "#",
@@ -13,7 +14,8 @@ const headerLinks = [
   {
     title:
       "Join the next wave of the Lightning Network in November’s ‘Shock the Web’ hackathon",
-    img: 'https://s3-alpha-sig.figma.com/img/be1b/cd75/1baa911b3875134c0889d6755c4ba2cb?Expires=1638748800&Signature=DOiLciAA95w8gOvAowjiiR-ZPbmV1oGSRRK8YpE4ALMoe47pL7DifQxZvL1LQn~NRa0aLMoMk61521fbbGJeDAwk~j6fIm~iZAlMzQn7DdWy0wFR0uLQagOgpIiIXO-w8CeC14VoW-hrjIX5mDmOonJzkfoftGqIF1WCOmP2EuswyJpIngFdLb15gCex4Necs3vH2cuD9iSgWG2za97KfdXZP79ROyk2EN9Q3~a7RT4FTBBIlgKDLuFGSVRxReXVNajn~XSxBJh2de9dFVa3tOXkwJXu3jb0G4x-wRCaG-KmBhUOemuGtu5Fumh6goktGh~bIDwoHeUBVKFHAzaYgw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA', link: {
+    img: Assets_Images_ExploreHeader2,
+    link: {
       content: "Register Now",
       url: "#",
     },

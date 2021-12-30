@@ -1,19 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { closeModal, Direction, ModalId, removeScheduledModal } from "../../../redux/features/modals.slice";
-import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
-import Claim_CopySignatureCard from "../../ClaimProject/Claim_CopySignatureCard";
-import Claim_GenerateSignatureCard from "../../ClaimProject/Claim_GenerateSignatureCard";
-import Login_ExternalWalletCard from "../../Login/Login_ExternalWalletCard";
-import Login_NativeWalletCard from "../../Login/Login_NativeWalletCard";
-import Login_SuccessCard from "../../Login/Login_SuccessCard";
-import Login_ScanningWalletCard from "../../Login/Login_ScanningWalletCard";
-import ProjectCard from "../../Project/ProjectCard";
-import TipCard from "../../Tip/TipCard";
+import { closeModal, Direction, ModalId, removeScheduledModal } from "src/redux/features/modals.slice";
+import { useAppDispatch, useAppSelector } from "src/utils/hooks";
+import Claim_CopySignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_CopySignatureCard";
+import Claim_GenerateSignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_GenerateSignatureCard";
+import Login_ExternalWalletCard from "src/Components/Modals/Login/Login_ExternalWalletCard";
+import Login_NativeWalletCard from "src/Components/Modals/Login/Login_NativeWalletCard";
+import Login_SuccessCard from "src/Components/Modals/Login/Login_SuccessCard";
+import Login_ScanningWalletCard from "src/Components/Modals/Login/Login_ScanningWalletCard";
+import ProjectCard from "src/pages/ProjectPage/ProjectCard/ProjectCard";
+import TipCard from "src/pages/ProjectPage/Tip/TipCard";
 import Modal from "../Modal/Modal";
-import { Portal } from "../Portal/Portal";
-import Claim_SubmittedCard from "../../ClaimProject/Claim_SubmittedCard";
-import Claim_FundWithdrawCard from "../../ClaimProject/Claim_FundWithdrawCard";
+import { Portal } from "../../Portal/Portal";
+import Claim_SubmittedCard from "src/pages/ProjectPage/ClaimProject/Claim_SubmittedCard";
+import Claim_FundWithdrawCard from "src/pages/ProjectPage/ClaimProject/Claim_FundWithdrawCard";
 
 export interface ModalCard {
     onClose?: () => void;

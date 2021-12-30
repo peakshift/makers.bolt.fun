@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
-import { useAppDispatch } from '../../utils/hooks';
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch } from 'src/utils/hooks';
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { AiFillThunderbolt } from 'react-icons/ai';
-import CopyToClipboard from 'src/Components/Shared/CopyToClipboard/CopyToClipboard';
+import CopyToClipboard from 'src/Components/CopyToClipboard/CopyToClipboard';
 import { useCallback, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 

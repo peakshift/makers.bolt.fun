@@ -4,16 +4,15 @@ import { MdLocalFireDepartment } from 'react-icons/md';
 import { IoExtensionPuzzle } from 'react-icons/io5';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { BsSearch } from "react-icons/bs";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { GrClose } from 'react-icons/gr';
-import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
-import { ModalId, openModal } from "../../../redux/features/modals.slice";
+import { useAppDispatch, useAppSelector } from "src/utils/hooks";
+import { ModalId, openModal } from "src/redux/features/modals.slice";
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import { setNavHeight } from "src/redux/features/theme.slice";
-import _throttle from 'lodash.throttle'
-import { useResizeListener } from 'src/utils/hooks'
+ import { useResizeListener } from 'src/utils/hooks'
 
 export const navLinks = [
     { text: "Explore", url: "/", icon: FaHome, color: 'text-primary-600' },

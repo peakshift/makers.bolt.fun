@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import { useAppDispatch } from '../../utils/hooks';
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import { useAppDispatch } from 'src/utils/hooks';
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { useCallback, useEffect } from 'react';
-import { closeModal, openSceduledModal } from '../../redux/features/modals.slice';
-import { connectWallet } from '../../redux/features/wallet.slice';
+import { closeModal, openSceduledModal } from 'src/redux/features/modals.slice';
+import { connectWallet } from 'src/redux/features/wallet.slice';
 
 export default function Login_SuccessCard({ onClose, direction, ...props }: ModalCard) {
 

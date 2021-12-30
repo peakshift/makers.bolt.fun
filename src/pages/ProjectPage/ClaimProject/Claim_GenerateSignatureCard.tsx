@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from '../../redux/features/modals.slice';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { useCallback, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 

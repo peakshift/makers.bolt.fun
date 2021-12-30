@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import React, { useState } from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
+import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { gql, useQuery, useMutation } from "@apollo/client";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";

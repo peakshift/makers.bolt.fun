@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 //  import { useAppDispatch } from '../../utils/hooks';
-import { ModalCard, modalCardVariants } from '../Shared/ModalsContainer/ModalsContainer'
+import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 
 export default function Claim_FundWithdrawCard({ onClose, direction, ...props }: ModalCard) {
 
