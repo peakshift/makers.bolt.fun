@@ -68,25 +68,27 @@ export default function NavMobile({ onSearch }: Props) {
                     animate={open ? "show" : "hide"}
                 >
                     <div className="px-16">
-                        <form className='relative' onSubmit={handleSubmit}>
+
+                        {/* <form className='relative' onSubmit={handleSubmit}>
                             <BsSearch className='absolute top-1/2 left-20 transform -translate-x-1/2  -translate-y-1/2 text-gray-500' />
                             <input
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                                 className="bg-gray-100 text-gray-600 focus:outline-primary w-full py-12 px-20 pl-40 rounded-24 placeholder-gray-500" placeholder="Search" />
 
-                            {/* <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" /> */}
-                        </form>
+                            <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" />
+                        </form> */}
+
                         <Button color='primary' fullWidth className="py-12 px-40 rounded-24 mt-40">Submit App️</Button>
-                        <Button color='gray' fullWidth className="py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
+                        {/* <Button color='gray' fullWidth className="py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button> */}
 
                     </div>
-                    <ul className="py-16 gap-64 border-t">
+                    {/* <ul className="py-16 gap-64 border-t">
                         {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 hover:bg-gray-200">
                             <Link to={link.url}><link.icon className={`text-body2  inline-block mr-12 ${link.color}`} /> {link.text} </Link></li>
                         )}
-                    </ul>
-                    <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t mt-auto">
+                    </ul> */}
+                    <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t mt-32">
                         <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2"><a href="/">About Us</a></li>
                         <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2"><a href="/">Support</a></li>
                         <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2"><a href="/">Press</a></li>

@@ -61,11 +61,10 @@ export default function Button({ color = 'white', variant = 'fill', isLoading, d
     ${btnPadding[size]}
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}
     ${isLoading && disableOnLoading && 'bg-opacity-70 pointer-events-none'}
+    ${fullWidth && 'w-full'}
     `;
 
-    if (size === 'md') classes += ' py-12 px-24';
-    if (size === 'lg')
-        if (fullWidth) classes += ' w-full'
+
 
     const handleClick = () => {
         if (isLoading && disableOnLoading) return;
