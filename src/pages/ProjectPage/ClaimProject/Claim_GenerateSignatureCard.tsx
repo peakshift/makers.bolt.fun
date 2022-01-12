@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { Direction, replaceModal } from 'src/redux/features/modals.slice';
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { useCallback, useEffect } from 'react';
@@ -14,7 +14,7 @@ export default function Claim_GenerateSignatureCard({ onClose, direction, ...pro
 
     const handleNext = useCallback(() => {
         dispatch(replaceModal({
-            modalId: ModalId.Claim_CopySignature,
+            Modal: 'Claim_CopySignatureCard',
             direction: Direction.NEXT
         }))
     }, [dispatch])

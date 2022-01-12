@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { Direction, replaceModal } from 'src/redux/features/modals.slice';
 import { useAppDispatch } from 'src/utils/hooks';
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { IoLockClosed, } from 'react-icons/io5'
@@ -11,7 +11,7 @@ export default function Login_NativeWalletCard({ onClose, direction, ...props }:
 
     const handleNext = () => {
         dispatch(replaceModal({
-            modalId: ModalId.Login_ExternalWallet,
+            Modal: 'Login_ExternalWalletCard',
             direction: Direction.NEXT
         }))
     }

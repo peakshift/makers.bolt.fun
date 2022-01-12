@@ -48,7 +48,11 @@ mutation Mutation($paymentRequest: String!, $preimage: String!) {
 }
 `;
 
-export default function TipCard({ onClose, direction, ...props }: ModalCard) {
+interface Props extends ModalCard {
+
+}
+
+export default function TipCard({ onClose, direction, ...props }: Props) {
     const { width, height } = useWindowSize()
 
     const { isWalletConnected, webln } = useAppSelector(state => ({
@@ -67,13 +71,13 @@ export default function TipCard({ onClose, direction, ...props }: ModalCard) {
             setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
             webln.sendPayment(votingData.vote.payment_request).then((res: any) => {
                 console.log("waiting for payment", res);
-                confirmVote({variables: { paymentRequest: votingData.vote.payment_request, preimage: res.preimage }});
+                confirmVote({ variables: { paymentRequest: votingData.vote.payment_request, preimage: res.preimage } });
                 setPaymentStatus(PaymentStatus.PAID);
             })
-            .catch((err: any) => {
-                console.log(err);
-                setPaymentStatus(PaymentStatus.NOT_PAID);
-            });
+                .catch((err: any) => {
+                    console.log(err);
+                    setPaymentStatus(PaymentStatus.NOT_PAID);
+                });
         }
     });
 
@@ -95,7 +99,7 @@ export default function TipCard({ onClose, direction, ...props }: ModalCard) {
 
     const requestPayment = () => {
         setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS);
-        vote({variables: { "amountInSat": voteAmount, "projectId": parseInt("1") }});
+        vote({ variables: { "amountInSat": voteAmount, "projectId": parseInt("1") } });
     }
 
     return (

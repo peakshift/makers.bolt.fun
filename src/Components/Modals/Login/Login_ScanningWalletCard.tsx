@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { Direction, replaceModal } from 'src/redux/features/modals.slice';
 import { useAppDispatch } from 'src/utils/hooks';
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { AiFillThunderbolt } from 'react-icons/ai';
@@ -13,7 +13,7 @@ export default function Login_ScanningWalletCard({ onClose, direction, ...props 
 
     const handleNext = useCallback(() => {
         dispatch(replaceModal({
-            modalId: ModalId.Login_NativeWallet,
+            Modal: 'Login_NativeWalletCard',
             direction: Direction.NEXT
         }))
     }, [dispatch])

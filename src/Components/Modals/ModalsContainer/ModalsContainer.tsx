@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
-import { closeModal, Direction, ModalId, removeScheduledModal } from "src/redux/features/modals.slice";
+import { ComponentProps, useEffect } from "react";
+import { ALL_MODALS, closeModal, Direction, removeScheduledModal } from "src/redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import Claim_CopySignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_CopySignatureCard";
 import Claim_GenerateSignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_GenerateSignatureCard";
@@ -18,8 +18,9 @@ import Claim_FundWithdrawCard from "src/pages/ProjectPage/ClaimProject/Claim_Fun
 export interface ModalCard {
     onClose?: () => void;
     direction: number;
-    [key: string]: any;
+    isPageModal?: boolean;
 }
+
 
 export const modalCardVariants = {
     initial: (direction: any) => {
@@ -42,38 +43,6 @@ export const modalCardVariants = {
 }
 
 
-
-const ModalsMap = (modalId: ModalId) => {
-    switch (modalId) {
-        case ModalId.Project:
-            return ProjectCard;
-        case ModalId.Login_ScanWallet:
-            return Login_ScanningWalletCard;
-        case ModalId.Login_NativeWallet:
-            return Login_NativeWalletCard;
-        case ModalId.Login_Success:
-            return Login_SuccessCard;
-        case ModalId.Login_ExternalWallet:
-            return Login_ExternalWalletCard;
-        case ModalId.Tip:
-            return TipCard;
-        case ModalId.Claim_GenerateSignature:
-            return Claim_GenerateSignatureCard;
-        case ModalId.Claim_CopySignature:
-            return Claim_CopySignatureCard;
-        case ModalId.Claim_Submitted:
-            return Claim_SubmittedCard;
-        case ModalId.Claim_FundWithdraw:
-            return Claim_FundWithdrawCard;
-
-
-
-        default:
-            return () => <></>
-    }
-
-
-}
 
 
 export default function ModalsContainer() {
@@ -110,11 +79,11 @@ export default function ModalsContainer() {
                         }}
                     >
                         <AnimatePresence>
-                            {openModals.map(modal => {
-                                const Child = ModalsMap(modal.modalId);
+                            {openModals.map((modal, idx) => {
+                                const Child = ALL_MODALS[modal.Modal];
                                 return (
-                                    <Modal key={modal.modalId} onClose={onClose} direction={direction} isPageModal={modal.isPageModal}>
-                                        <Child onClose={onClose} direction={direction} isPageModal={modal.isPageModal} {...modal.propsToPass} />
+                                    <Modal key={idx} onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal}>
+                                        <Child onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal} {...modal.props} />
                                     </Modal>)
                             })}
                         </AnimatePresence>

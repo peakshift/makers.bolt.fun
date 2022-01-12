@@ -8,11 +8,11 @@ import { FormEvent, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { GrClose } from 'react-icons/gr';
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
-import { ModalId, openModal } from "src/redux/features/modals.slice";
+import { openModal } from "src/redux/features/modals.slice";
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import { setNavHeight } from "src/redux/features/theme.slice";
- import { useResizeListener } from 'src/utils/hooks'
+import { useResizeListener } from 'src/utils/hooks'
 
 export const navLinks = [
     { text: "Explore", url: "/", icon: FaHome, color: 'text-primary-600' },
@@ -49,13 +49,13 @@ export default function Navbar() {
 
     const onConnectWallet = () => {
         dispatch(openModal({
-            modalId: ModalId.Login_ScanWallet
+            Modal: 'Login_ScanningWalletCard'
         }));
     }
 
     const onWithdraw = () => {
         dispatch(openModal({
-            modalId: ModalId.Claim_FundWithdraw
+            Modal: 'Claim_FundWithdrawCard'
         }))
     }
 

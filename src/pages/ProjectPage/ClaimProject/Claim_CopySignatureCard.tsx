@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Direction, ModalId, replaceModal } from 'src/redux/features/modals.slice';
+import { Direction, replaceModal } from 'src/redux/features/modals.slice';
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import CopyToClipboard from 'src/Components/CopyToClipboard/CopyToClipboard'
@@ -15,7 +15,7 @@ export default function Claim_CopySignatureCard({ onClose, direction, ...props }
 
     const handleNext = useCallback(() => {
         dispatch(replaceModal({
-            modalId: ModalId.Claim_Submitted,
+            Modal: 'Claim_SubmittedCard',
             direction: Direction.NEXT
         }))
     }, [dispatch])

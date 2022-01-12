@@ -4,7 +4,7 @@ import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useQuery } from "@apollo/client";
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
-import { ModalId, openModal, scheduleModal } from 'src/redux/features/modals.slice';
+import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import { connectWallet } from 'src/redux/features/wallet.slice';
 import Button from 'src/Components/Button/Button';
@@ -12,15 +12,18 @@ import { requestProvider } from 'webln';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';
 
+interface Props extends ModalCard {
+    projectId: string
+}
 
-export default function ProjectCard({ onClose, direction, ...props }: ModalCard) {
+export default function ProjectCard({ onClose, direction, projectId, ...props }: Props) {
 
     const dispatch = useAppDispatch();
 
     const { loading } = useQuery<PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS>(
         PROJECT_BY_ID_QUERY,
         {
-            variables: { projectId: parseInt(props.projectId) },
+            variables: { projectId: parseInt(projectId) },
             onCompleted: data => {
                 dispatch(setProject(data.getProject))
             },
@@ -56,28 +59,26 @@ export default function ProjectCard({ onClose, direction, ...props }: ModalCard)
     const onTip = () => {
 
         if (!isWalletConnected) {
-            dispatch(scheduleModal({ modalId: ModalId.Tip, propsToPass: { projectId: props.projectId } }))
+            dispatch(scheduleModal({ Modal: 'TipCard' }))
             dispatch(openModal({
-                modalId: ModalId.Login_ScanWallet
+                Modal: 'Login_ScanningWalletCard'
             }))
         } else
-            dispatch(openModal({ modalId: ModalId.Tip, propsToPass: { projectId: props.projectId } }))
+            dispatch(openModal({ Modal: 'TipCard' }))
     }
 
 
     const onClaim = () => {
         if (!isWalletConnected) {
             dispatch(scheduleModal({
-                modalId: ModalId.Claim_GenerateSignature,
-                propsToPass: { projectId: props.projectId },
+                Modal: 'Claim_GenerateSignatureCard',
             }))
             dispatch(openModal({
-                modalId: ModalId.Login_ScanWallet
+                Modal: 'Login_ScanningWalletCard'
             }))
         } else
             dispatch(openModal({
-                modalId: ModalId.Claim_GenerateSignature,
-                propsToPass: { projectId: props.projectId },
+                Modal: 'Claim_GenerateSignatureCard',
             }))
     }
 

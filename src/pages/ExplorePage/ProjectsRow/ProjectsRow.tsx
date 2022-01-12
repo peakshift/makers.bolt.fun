@@ -3,7 +3,7 @@ import { ProjectCard } from "../../../utils/interfaces";
 import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
 import { useAppDispatch } from "../../../utils/hooks";
-import { ModalId, openModal } from "../../../redux/features/modals.slice";
+import { openModal } from "../../../redux/features/modals.slice";
 import ProjectCardMini from "../ProjectCardMini/ProjectCardMini";
 import { useResizeListener } from 'src/utils/hooks'
 
@@ -35,7 +35,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
     const handleClick = (projectId: string) => {
         if (!drag.current)
-            dispatch(openModal({ modalId: ModalId.Project, propsToPass: { projectId } }))
+            dispatch(openModal({ Modal: "ProjectCard", props: { projectId } }))
     }
 
     useResizeListener(() => {
