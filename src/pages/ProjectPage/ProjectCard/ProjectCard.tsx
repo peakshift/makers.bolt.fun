@@ -11,6 +11,8 @@ import Button from 'src/Components/Button/Button';
 import { requestProvider } from 'webln';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';
+import ProjectCardSkeleton from './ProjectCard.Skeleton'
+
 
 interface Props extends ModalCard {
     projectId: string
@@ -39,7 +41,8 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
 
 
 
-    if (loading || !project) return <></>;
+    if (loading || !project)
+        return <ProjectCardSkeleton onClose={onClose} direction={direction} isPageModal={props.isPageModal} />;
 
     const onConnectWallet = async () => {
         try {
@@ -83,14 +86,8 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
     }
 
     return (
-        <motion.div
-            custom={direction}
-            variants={modalCardVariants}
-            initial='initial'
-            animate="animate"
-            exit='exit'
+        <div
             className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && 'rounded-0 w-full min-h-screen'}`}
-
         >
             <div className="relative h-[80px] lg:h-[152px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
@@ -152,6 +149,6 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                     <Button color='gray' size='md' className="my-16" onClick={onClaim}>Claim 🖐</Button>
                 </div>
             </div>
-        </motion.div>
+        </div>
     )
 }

@@ -2,6 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import mockData from 'src/api/mockData.json'
 
 import ProjectCardMini from './ProjectCardMini';
+import ProjectCardMiniSkeleton from './ProjectCardMini.Skeleton';
 
 
 export default {
@@ -15,6 +16,14 @@ const Template: ComponentStory<typeof ProjectCardMini> = (args) => <ProjectCardM
 export const Default = Template.bind({});
 Default.args = {
     project: mockData.projectsCards[0]
+}
+
+
+
+const SkeletonTemplate: ComponentStory<typeof ProjectCardMiniSkeleton> = (args) => <ProjectCardMiniSkeleton />;
+
+export const LoadingState = SkeletonTemplate.bind({});
+LoadingState.args = {
 }
 
 

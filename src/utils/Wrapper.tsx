@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
-
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
 
 import 'react-multi-carousel/lib/styles.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import { BrowserRouter } from 'react-router-dom';
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 import {
     ApolloClient,

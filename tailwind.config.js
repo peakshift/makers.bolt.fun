@@ -123,7 +123,12 @@ module.exports = {
         16: "16px",
         20: "20px",
         24: "24px",
+        48: "48px",
         full: "50%",
+      },
+      lineHeight: {
+        'inherit': "inherit",
+        0: '0'
       },
       outline: {
         primary: ["2px solid #7B61FF", "1px"],

@@ -3,12 +3,28 @@ import { configure, addDecorator } from "@storybook/react";
 import { store } from "../src/redux/store";
 import React from "react";
 import { Provider } from "react-redux";
-import { QueryClient, QueryClientProvider } from "react-query";
+
+
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider
+} from "@apollo/client";
+
+
+
 import "react-multi-carousel/lib/styles.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import 'react-loading-skeleton/dist/skeleton.css'
+
 import { BrowserRouter } from "react-router-dom";
 
-const queryClient = new QueryClient();
+
+const client = new ApolloClient({
+  uri: 'https://deploy-preview-2--makers-bolt-fun.netlify.app/.netlify/functions/graphql',
+  cache: new InMemoryCache()
+});
+
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -21,13 +37,14 @@ export const parameters = {
 };
 
 addDecorator((S) => (
-  <QueryClientProvider client={queryClient}>
+
+  <ApolloProvider client={client}>
     <Provider store={store}>
       <BrowserRouter>
         <S />
       </BrowserRouter>
     </Provider>
-  </QueryClientProvider>
+  </ApolloProvider>
 ));
 
 configure(require.context("../src", true, /\.stories\.ts$/), module);

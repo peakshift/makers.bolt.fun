@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import ProjectCard from './ProjectCard';
+import ProjectCardSkeleton from './ProjectCard.Skeleton';
 
 import { ModalsDecorator } from '.storybook/helpers'
 
@@ -15,3 +16,7 @@ const Template: ComponentStory<typeof ProjectCard> = (args) => <ProjectCard {...
 
 export const Default = Template.bind({});
 
+
+
+const LoadingTemplate: ComponentStory<typeof ProjectCardSkeleton> = (args) => <ProjectCardSkeleton {...args} />;
+export const LoadingState = LoadingTemplate.bind({})
