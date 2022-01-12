@@ -1,19 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ComponentProps, useEffect } from "react";
+import { useEffect } from "react";
 import { ALL_MODALS, closeModal, Direction, removeScheduledModal } from "src/redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
-import Claim_CopySignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_CopySignatureCard";
-import Claim_GenerateSignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_GenerateSignatureCard";
-import Login_ExternalWalletCard from "src/Components/Modals/Login/Login_ExternalWalletCard";
-import Login_NativeWalletCard from "src/Components/Modals/Login/Login_NativeWalletCard";
-import Login_SuccessCard from "src/Components/Modals/Login/Login_SuccessCard";
-import Login_ScanningWalletCard from "src/Components/Modals/Login/Login_ScanningWalletCard";
-import ProjectCard from "src/pages/ProjectPage/ProjectCard/ProjectCard";
-import TipCard from "src/pages/ProjectPage/Tip/TipCard";
 import Modal from "../Modal/Modal";
 import { Portal } from "../../Portal/Portal";
-import Claim_SubmittedCard from "src/pages/ProjectPage/ClaimProject/Claim_SubmittedCard";
-import Claim_FundWithdrawCard from "src/pages/ProjectPage/ClaimProject/Claim_FundWithdrawCard";
 
 export interface ModalCard {
     onClose?: () => void;

@@ -48,21 +48,6 @@ type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = 
   never;
 
 
-function dispatch(action: ModalAction) {
-
-}
-
-dispatch({
-  Modal: 'Login_NativeWalletCard',
-
-
-})
-
-
-
-
-
-
 interface OpenModal {
   Modal: ModalAction['Modal'],
   props?: any;
