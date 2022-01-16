@@ -13,7 +13,7 @@
   font-size: 21px;
   will-change: transform;
   opacity: min(calc(var(--scale) * 1), 1);
-  transform: translate(-50%, max(calc(-1px * var(--scale) / 10), -30px)),
+  transform: translate(-50%, max(calc(-1px * var(--scale) / 10), -30px))
     scale(calc(1 + min(var(--scale) / 150, 2)));
   text-shadow: 0 0 4px hsl(25, 100%, 50%);
 }
