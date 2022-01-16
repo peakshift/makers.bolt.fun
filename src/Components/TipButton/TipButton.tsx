@@ -2,7 +2,7 @@ import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import _throttle from 'lodash.throttle'
-import { ComponentProps, useEffect, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 import './tipbutton.style.css'
 import { random, randomItem } from 'src/utils/helperFunctions'
 
