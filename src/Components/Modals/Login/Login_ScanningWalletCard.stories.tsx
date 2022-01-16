@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Login_ScanningWalletCard from './Login_ScanningWalletCard';
 
-import { ModalsDecorator } from '.storybook/helpers'
+import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
     title: 'Login/Scanning Wallet Card',

@@ -12,6 +12,7 @@ import { requestProvider } from 'webln';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';
 import ProjectCardSkeleton from './ProjectCard.Skeleton'
+import TipButton from 'src/Components/TipButton/TipButton';
 
 
 interface Props extends ModalCard {
@@ -46,6 +47,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
 
     const onConnectWallet = async () => {
         try {
+
             const webln = await requestProvider();
             if (webln) {
                 dispatch(connectWallet(webln));
@@ -59,15 +61,16 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
         }
     }
 
-    const onTip = () => {
+    const onTip = (tip?: number) => {
+
 
         if (!isWalletConnected) {
-            dispatch(scheduleModal({ Modal: 'TipCard' }))
+            dispatch(scheduleModal({ Modal: 'TipCard', props: { tipValue: tip } }))
             dispatch(openModal({
                 Modal: 'Login_ScanningWalletCard'
             }))
         } else
-            dispatch(openModal({ Modal: 'TipCard' }))
+            dispatch(openModal({ Modal: 'TipCard', props: { tipValue: tip } }))
     }
 
 
@@ -111,7 +114,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
                         <Button color='primary' size='md' className=" my-16">Play <BsJoystick /></Button>
                         {isWalletConnected ?
-                            <Button onClick={onTip} size='md' className="border border-warning-100 bg-warning-50 hover:bg-warning-50 active:bg-warning-100 my-16">Tip <MdLocalFireDepartment className='text-fire' /></Button>
+                            <TipButton onTip={onTip} />
                             :
                             <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16">Connect Wallet to Vote</Button>
                         }
@@ -121,7 +124,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                 <div className="md:hidden">
                     <Button color='primary' size='md' fullWidth className="w-full mt-24 mb-16">Play <BsJoystick /></Button>
                     {isWalletConnected ?
-                        <Button size='md' fullWidth className="bg-yellow-100 hover:bg-yellow-50 mb-24" onClick={onTip}>Vote <MdLocalFireDepartment className='text-fire' /></Button>
+                        <TipButton fullWidth onTip={onTip} />
                         :
                         <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
                     }

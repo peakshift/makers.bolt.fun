@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import ProjectCard from './ProjectCard';
 import ProjectCardSkeleton from './ProjectCard.Skeleton';
 
-import { ModalsDecorator } from '.storybook/helpers'
+import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
     title: 'Project/Project Card',
@@ -14,7 +14,12 @@ export default {
 
 const Template: ComponentStory<typeof ProjectCard> = (args) => <ProjectCard {...args} />;
 
-export const Default = Template.bind({});
+export const Default = Template.bind({
+});
+
+Default.args = {
+    projectId: '3'
+}
 
 
 

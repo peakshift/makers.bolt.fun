@@ -7,8 +7,10 @@ interface StoreState {
 
 const initialState = {
   navHeight: 88,
-  isMobileScreen: false,
+  isMobileScreen: /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || window.innerWidth < 480,
 } as StoreState;
+
+
 
 export const themeSlice = createSlice({
   name: "theme",

@@ -49,10 +49,10 @@ mutation Mutation($paymentRequest: String!, $preimage: String!) {
 `;
 
 interface Props extends ModalCard {
-
+    tipValue?: number;
 }
 
-export default function TipCard({ onClose, direction, ...props }: Props) {
+export default function TipCard({ onClose, direction, tipValue, ...props }: Props) {
     const { width, height } = useWindowSize()
 
     const { isWalletConnected, webln } = useAppSelector(state => ({
@@ -63,7 +63,7 @@ export default function TipCard({ onClose, direction, ...props }: Props) {
     const dispatch = useAppDispatch();
 
     const [selectedOption, setSelectedOption] = useState(10);
-    const [voteAmount, setVoteAmount] = useState<number>(10);
+    const [voteAmount, setVoteAmount] = useState<number>(tipValue ?? 10);
     const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(PaymentStatus.DEFAULT);
 
     const [vote, { data }] = useMutation(VOTE, {

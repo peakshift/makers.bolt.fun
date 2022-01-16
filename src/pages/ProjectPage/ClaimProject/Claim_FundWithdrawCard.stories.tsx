@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Claim_FundWithdrawCard from './Claim_FundWithdrawCard';
 
-import { ModalsDecorator } from '.storybook/helpers'
+import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
     title: 'Claim/Fund Withdraw Card',

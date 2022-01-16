@@ -71,6 +71,7 @@ export default function ModalsContainer() {
                         <AnimatePresence>
                             {openModals.map((modal, idx) => {
                                 const Child = ALL_MODALS[modal.Modal];
+
                                 return (
                                     <Modal key={idx} onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal}>
                                         <Child onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal} {...modal.props} />

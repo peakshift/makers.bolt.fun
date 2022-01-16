@@ -34,18 +34,22 @@ export const ALL_MODALS = {
   Claim_FundWithdrawCard,
 }
 
-
 type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>
 
 type ModalProps<M extends keyof typeof ALL_MODALS> = ExcludeBaseModalProps<ComponentProps<typeof ALL_MODALS[M]>>
 
+type NonNullableObject<T> = {
+  [K in keyof T]-?: NonNullable<T[K]>
+}
+
 type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = U extends any ?
-  {} extends ModalProps<U> ?
+  {} extends NonNullableObject<ModalProps<U>> ?
   { Modal: U }
   :
   { Modal: U, props: ModalProps<U> }
   :
   never;
+
 
 
 interface OpenModal {
@@ -110,7 +114,6 @@ export const modalSlice = createSlice({
     ) {
       state.direction = Direction.START;
       state.isOpen = true;
-
       let props: any = {};
       if ('props' in action.payload) props = { ...action.payload.props }
 

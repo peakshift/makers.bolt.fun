@@ -1,7 +1,8 @@
+import { DecoratorFn } from '@storybook/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Modal from 'src/Components/Modals/Modal/Modal';
 
-export const ModalsDecorator = (Story: any) => {
+export const ModalsDecorator: DecoratorFn = (Story) => {
   const onClose = () => { };
   return (
     <motion.div
@@ -20,4 +21,10 @@ export const ModalsDecorator = (Story: any) => {
       </AnimatePresence>
     </motion.div>
   );
+}
+
+export const centerDecorator: DecoratorFn = (Story) => {
+  return <div className="min-h-screen flex justify-center items-center">
+    <Story />
+  </div>
 }

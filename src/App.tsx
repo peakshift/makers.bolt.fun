@@ -1,4 +1,4 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "src/Components/Navbar/Navbar";
 import ExplorePage from "src/pages/ExplorePage";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
@@ -23,10 +23,10 @@ function App() {
         console.log("error:webln.enable()", err);
       });
     }
-  }, []);
+  }, [dispatch]);
 
   useResizeListener(() => {
-    dispatch(setIsMobileScreen(document.body.clientWidth < 768));
+    // dispatch(setIsMobileScreen(/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)));
   }, [dispatch])
 
 
