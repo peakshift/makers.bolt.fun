@@ -68,17 +68,24 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
 
     const [vote, { data }] = useMutation(VOTE, {
         onCompleted: async (votingData) => {
-            setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
-            const webln = await Wallet_Service.getWebln()
-            webln.sendPayment(votingData.vote.payment_request).then((res: any) => {
-                console.log("waiting for payment", res);
-                confirmVote({ variables: { paymentRequest: votingData.vote.payment_request, preimage: res.preimage } });
+            try {
+                setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
+                const webln = await Wallet_Service.getWebln()
+                const paymentResponse = await webln.sendPayment(votingData.vote.payment_request);
                 setPaymentStatus(PaymentStatus.PAID);
-            })
-                .catch((err: any) => {
-                    console.log(err);
-                    setPaymentStatus(PaymentStatus.NOT_PAID);
-                });
+                confirmVote({ variables: { paymentRequest: votingData.vote.payment_request, preimage: paymentResponse.preimage } })
+                    .catch() // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
+                    .finally(() => {
+                        setTimeout(() => {
+                            onClose?.();
+                        }, 2000);
+                    })
+
+            } catch (error) {
+                console.log(error);
+                setPaymentStatus(PaymentStatus.NOT_PAID);
+            }
+
         }
     });
 
@@ -88,7 +95,9 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
             setTimeout(() => {
                 onClose?.();
             }, 2000);
-        }
+        },
+        onError: () => { }
+
     });
 
     const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
