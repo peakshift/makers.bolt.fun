@@ -28,9 +28,8 @@ export default function Navbar() {
     const inputRef = useRef<HTMLInputElement>(null)
     const dispatch = useAppDispatch()
 
-    const { isWalletConnected, webln } = useAppSelector(state => ({
+    const { isWalletConnected } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
-        webln: state.wallet.provider,
     }));
 
     const toggleSearch = () => {

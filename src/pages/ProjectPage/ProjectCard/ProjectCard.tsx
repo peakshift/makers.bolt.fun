@@ -1,18 +1,16 @@
-import { motion } from 'framer-motion'
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
-import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
+import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useQuery } from "@apollo/client";
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
-import { connectWallet } from 'src/redux/features/wallet.slice';
 import Button from 'src/Components/Button/Button';
-import { requestProvider } from 'webln';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';
 import ProjectCardSkeleton from './ProjectCard.Skeleton'
 import TipButton from 'src/Components/TipButton/TipButton';
+import { Wallet_Service } from 'src/services'
 
 
 interface Props extends ModalCard {
@@ -33,9 +31,8 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
         }
     );
 
-    const { isWalletConnected, webln, project, isMobileScreen } = useAppSelector(state => ({
+    const { isWalletConnected, project, isMobileScreen } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
-        webln: state.wallet.provider,
         project: state.project.project,
         isMobileScreen: state.theme.isMobileScreen
     }));
@@ -46,23 +43,10 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
         return <ProjectCardSkeleton onClose={onClose} direction={direction} isPageModal={props.isPageModal} />;
 
     const onConnectWallet = async () => {
-        try {
-
-            const webln = await requestProvider();
-            if (webln) {
-                dispatch(connectWallet(webln));
-                alert("wallet connected!");
-            }
-            // Now you can call all of the webln.* methods
-        }
-        catch (err: any) {
-            // Tell the user what went wrong
-            alert(err.message);
-        }
+        Wallet_Service.connectWallet()
     }
 
     const onTip = (tip?: number) => {
-
 
         if (!isWalletConnected) {
             dispatch(scheduleModal({ Modal: 'TipCard', props: { tipValue: tip } }))
@@ -116,7 +100,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                         {isWalletConnected ?
                             <TipButton onTip={onTip} />
                             :
-                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16">Connect Wallet to Vote</Button>
+                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16">Connect Wallet to Tip</Button>
                         }
                     </div>
                 </div>
@@ -126,7 +110,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                     {isWalletConnected ?
                         <TipButton fullWidth onTip={onTip} />
                         :
-                        <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
+                        <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Tip</Button>
                     }
                 </div>
                 <div className="mt-40">

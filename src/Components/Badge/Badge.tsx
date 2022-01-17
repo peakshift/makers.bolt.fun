@@ -41,7 +41,7 @@ export default function Badge(
         size = 'md',
         className,
         href,
-        shadow = 'sm',
+        shadow = 'none',
         children,
         isLoading,
         onRemove,
@@ -50,7 +50,7 @@ export default function Badge(
         : PropsWithChildren<Props>) {
 
     const classes = `
-        rounded-48 shadow-${shadow} inline-block relative align-middle
+        rounded-48 shadow-${shadow} border inline-block relative align-middle
         ${badgrColor[color]}
         ${badgeSize[size]}
         ${className}

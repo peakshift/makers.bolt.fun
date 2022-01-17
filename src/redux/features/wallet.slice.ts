@@ -1,11 +1,12 @@
-import { requestProvider } from "webln";
+import { WebLNProvider } from "webln";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface StoreState {
-  isConnected: boolean;
-  isLoading: boolean;
-  provider: any;
+
+
+type StoreState = {
+  isConnected: boolean,
 }
+
 
 const isWebLNConnected = () => {
   // since webln spec expects webln.enable() to be called on each load
@@ -23,7 +24,6 @@ const isWebLNConnected = () => {
 
 const initialState = {
   isConnected: false,
-  isLoading: false,
   provider: null,
 } as StoreState;
 
@@ -31,9 +31,8 @@ export const walletSlice = createSlice({
   name: "wallet",
   initialState,
   reducers: {
-    connectWallet(state, action: PayloadAction<any>) {
-      state.isConnected = action.payload ? true : false;
-      state.provider = action.payload;
+    connectWallet(state) {
+      state.isConnected = true;
     },
   },
 });

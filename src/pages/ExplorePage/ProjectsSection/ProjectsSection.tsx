@@ -10,6 +10,7 @@ import { ALL_CATEGORIES_PROJECTS_QUERY, ALL_CATEGORIES_PROJECTS_RES } from "./qu
 export default function ProjectsSection() {
 
     const { data, loading } = useQuery<ALL_CATEGORIES_PROJECTS_RES>(ALL_CATEGORIES_PROJECTS_QUERY);
+    console.log(data, loading);
 
     if (loading || !data) return <div className='mt-32 lg:mt-48'>
         {Array(3).fill(0).map((_, idx) => <ProjectsRowSkeleton key={idx} />)}

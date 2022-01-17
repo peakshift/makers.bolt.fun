@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Wrapper from './utils/Wrapper';
 import {
   ApolloClient,
   InMemoryCache,
@@ -8,7 +9,6 @@ import {
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Wrapper from './utils/Wrapper';
 
 const client = new ApolloClient({
   uri: 'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql',

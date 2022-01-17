@@ -3,16 +3,18 @@ import React, { useState } from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
-import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { useAppSelector } from 'src/utils/hooks';
+import { gql, useMutation } from "@apollo/client";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
+import { Wallet_Service } from 'src/services';
 
 const defaultOptions = [
     { text: '10 sat', value: 10 },
     { text: '100 sats', value: 100 },
     { text: '1k sats', value: 1000 },
 ]
+
 
 enum PaymentStatus {
     DEFAULT,
@@ -55,20 +57,19 @@ interface Props extends ModalCard {
 export default function TipCard({ onClose, direction, tipValue, ...props }: Props) {
     const { width, height } = useWindowSize()
 
-    const { isWalletConnected, webln } = useAppSelector(state => ({
+    const { isWalletConnected } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
-        webln: state.wallet.provider,
     }));
 
-    const dispatch = useAppDispatch();
 
     const [selectedOption, setSelectedOption] = useState(10);
     const [voteAmount, setVoteAmount] = useState<number>(tipValue ?? 10);
     const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(PaymentStatus.DEFAULT);
 
     const [vote, { data }] = useMutation(VOTE, {
-        onCompleted: (votingData) => {
+        onCompleted: async (votingData) => {
             setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
+            const webln = await Wallet_Service.getWebln()
             webln.sendPayment(votingData.vote.payment_request).then((res: any) => {
                 console.log("waiting for payment", res);
                 confirmVote({ variables: { paymentRequest: votingData.vote.payment_request, preimage: res.preimage } });
@@ -84,6 +85,9 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
     const [confirmVote, { data: confirmedVoteData }] = useMutation(CONFIRM_VOTE, {
         onCompleted: (votingData) => {
             setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
+            setTimeout(() => {
+                onClose?.();
+            }, 2000);
         }
     });
 
@@ -112,7 +116,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
             className="modal-card max-w-[343px] p-24 rounded-xl relative"
         >
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
-            <h2 className='text-h5 font-bold'>Upvote Project</h2>
+            <h2 className='text-h5 font-bold'>Tip this Project</h2>
             <div className="mt-32 ">
                 <label className="block text-gray-700 text-body4 mb-2 ">
                     Enter Amount
@@ -143,7 +147,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                 {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Please confirm the payment in the prompt...</p>}
                 {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Imagine confetti here</p>}
                 <button className="btn btn-primary w-full mt-32" onClick={requestPayment}>
-                    Upvote
+                    Tip
                 </button>
             </div>
             {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti width={width} height={height} />}
