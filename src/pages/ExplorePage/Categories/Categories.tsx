@@ -17,6 +17,8 @@ export default function Categories() {
             )}
         </div>
 
+    return (<div></div>)
+    /*
     return (
         <div className="flex gap-12 flex-wrap">
             {data?.allCategories.map(category =>
@@ -24,4 +26,5 @@ export default function Categories() {
             )}
         </div>
     )
+    */
 }
