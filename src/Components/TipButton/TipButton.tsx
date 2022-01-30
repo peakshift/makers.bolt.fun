@@ -22,6 +22,7 @@ type Props = {
 
 export default function TipButton({ onTip = () => { }, ...props }: Props) {
     const [tipCnt, setTipCnt] = useState(0)
+    const [incStep, setIncStep] = useState(10)
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
 
@@ -53,8 +54,9 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
 
 
     const { onPressDown, onPressUp } = usePressHolder(_throttle(() => {
-        const incStep = (Math.ceil((tipCnt + 1) / 100) + 1) ** 2;
-        setTipCnt(s => s + incStep)
+        const _incStep = (Math.ceil((tipCnt + 1) / 10) + 1) ** 2 * 10;
+        setIncStep(_incStep)
+        setTipCnt(s => { console.log('update'); return s + _incStep})
 
         const newSpark = {
             id: Math.random().toString(),
@@ -84,7 +86,6 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
     }
 
     const handlePressUp = (event?: any) => {
-
         if (!wasActive) return;
 
         setWasActive(false);
@@ -95,9 +96,9 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
         else
             setTimeout(() => {
                 setSparks([]);
-                onTip(tipCnt);
+                onTip(tipCnt + incStep); // somehow we always miss one incStep
                 setTipCnt(0);
-            }, 1000)
+            }, 500)
     }
 
     return (
@@ -116,7 +117,7 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
             } as any}
             {...props}
         >
-            Hold To Tip !!! <MdLocalFireDepartment className='text-fire' />
+            Hold To Vote !!! <MdLocalFireDepartment className='text-fire' />
 
             <span
                 className='tip-counter'

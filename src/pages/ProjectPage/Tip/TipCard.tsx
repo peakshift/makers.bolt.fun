@@ -10,9 +10,9 @@ import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
 
 const defaultOptions = [
-    { text: '10 sat', value: 10 },
-    { text: '100 sats', value: 100 },
-    { text: '1k sats', value: 1000 },
+    { text: '100 sat', value: 100 },
+    { text: '1k sat', value: 1000 },
+    { text: '10k sats', value: 10000 },
 ]
 
 
@@ -74,11 +74,11 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                 const paymentResponse = await webln.sendPayment(votingData.vote.payment_request);
                 setPaymentStatus(PaymentStatus.PAID);
                 confirmVote({ variables: { paymentRequest: votingData.vote.payment_request, preimage: paymentResponse.preimage } })
-                    .catch() // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
+                    .catch((e) =>  { console.log(e); } ) // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
                     .finally(() => {
                         setTimeout(() => {
                             onClose?.();
-                        }, 2000);
+                        }, 4000);
                     })
 
             } catch (error) {
@@ -94,7 +94,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
             setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
             setTimeout(() => {
                 onClose?.();
-            }, 2000);
+            }, 4000);
         },
         onError: () => { }
 
@@ -125,7 +125,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
             className="modal-card max-w-[343px] p-24 rounded-xl relative"
         >
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
-            <h2 className='text-h5 font-bold'>Tip this Project</h2>
+            <h2 className='text-h5 font-bold'>Vote for this Project</h2>
             <div className="mt-32 ">
                 <label className="block text-gray-700 text-body4 mb-2 ">
                     Enter Amount
@@ -150,13 +150,13 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                     )}
                 </div>
                 <p className="text-body6 mt-12 text-gray-500">1 sat = 1 vote</p>
-                {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 mt-12 text-gray-500">Please wait while we the fetch payment details.</p>}
+                {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 mt-12 text-yellow-500">Please wait while we the fetch payment details.</p>}
                 {paymentStatus === PaymentStatus.NOT_PAID && <p className="text-body6 mt-12 text-red-500">You did not confirm the payment. Please try again.</p>}
                 {paymentStatus === PaymentStatus.PAID && <p className="text-body6 mt-12 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
-                {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Please confirm the payment in the prompt...</p>}
-                {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Imagine confetti here</p>}
-                <button className="btn btn-primary w-full mt-32" onClick={requestPayment}>
-                    Tip
+                {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Waiting for your payment...</p>}
+                {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your vote</p>}
+                <button className="btn btn-primary w-full mt-32" disabled={paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.NOT_PAID} onClick={requestPayment}>
+                    {paymentStatus === PaymentStatus.DEFAULT || paymentStatus === PaymentStatus.NOT_PAID ? "Vote" : "Voting..."}
                 </button>
             </div>
             {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti width={width} height={height} />}
