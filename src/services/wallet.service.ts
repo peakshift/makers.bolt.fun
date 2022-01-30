@@ -29,10 +29,10 @@ class _Wallet_Service {
         }
         catch (err: any) {
             // Default error message
-            let message = `Couldn't connect wallet`;
+            let message = "Check out https://getalby.com to get a web enabled lightning wallet";
             // If they didn't have a provider, point them to Joule
             if (err.constructor === MissingProviderError) {
-                message = "Check out https://lightningjoule.com to get a WebLN provider";
+                message = "Check out https://getalby.com to get a web enabled lightning wallet";
             }
 
 
