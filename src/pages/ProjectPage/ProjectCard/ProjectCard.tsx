@@ -96,7 +96,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                         </div>
                     </div>
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
-                        <Button color='primary' size='md' className=" my-16">Play <BsJoystick /></Button>
+                        <Button color='primary' size='md' className=" my-16" onClick={() => { window.open(project?.website)} }>Visit <BsJoystick /></Button>
                         {isWalletConnected ?
                             <TipButton onTip={onTip} />
                             :
@@ -106,7 +106,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                 </div>
                 <p className="mt-40 text-body4 leading-normal">{project?.description}</p>
                 <div className="md:hidden">
-                    <Button color='primary' size='md' fullWidth className="w-full mt-24 mb-16">Play <BsJoystick /></Button>
+                    <Button color='primary' size='md' fullWidth onClick={() => { window.open(project?.website)} } className="w-full mt-24 mb-16">Visit <BsJoystick /></Button>
                     {isWalletConnected ?
                         <TipButton fullWidth onTip={onTip} />
                         :
