@@ -8,9 +8,7 @@ export default function Categories() {
 
     const { data, loading } = useQuery<ALL_CATEGORIES_QUERY_RES>(ALL_CATEGORIES_QUERY);
 
-    const handleClick = (categoryId: string) => {
 
-    }
 
     if (loading || !data)
         return <div className="flex gap-12">
@@ -20,12 +18,10 @@ export default function Categories() {
         </div>
 
     return (
-        // <div className="flex gap-12 flex-wrap">
         <Slider>
             {data?.allCategories.map(category =>
-                <Badge key={category.id} onClick={() => handleClick(category.id)}>{category.title}</Badge>
+                <Badge key={category.id} onClick={() => document.getElementById(category.title.toLowerCase())?.scrollIntoView({ behavior: 'smooth', block: 'center' })} >{category.title}</Badge>
             )}
         </Slider>
-        // </div>
     )
 }
