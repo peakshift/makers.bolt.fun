@@ -48,8 +48,6 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
     }
 
     useResizeListener(() => {
-        console.log(calcNumItems());
-
         setCarouselItmsCnt(calcNumItems());
     }, [setCarouselItmsCnt])
 
