@@ -1,0 +1,9 @@
+@media (pointer: coarse) {
+  .carousel-btns {
+    display: none;
+  }
+
+  .react-multi-carousel-list {
+    overflow: visible;
+  }
+}

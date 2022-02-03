@@ -29,8 +29,8 @@ const badgeSize: UnionToObjectKeys<Props, 'size'> = {
 }
 
 const loadingBadgeSize: UnionToObjectKeys<Props, 'size'> = {
-    sm: "w-48 h-24 text-body6",
-    md: "w-64 h-32 text-body4",
+    sm: "w-48 h-[28px] text-body6",
+    md: "w-64 h-[38px] text-body4",
     lg: "w-64 h-42  text-body3"
 }
 
@@ -50,7 +50,8 @@ export default function Badge(
         : PropsWithChildren<Props>) {
 
     const classes = `
-        rounded-48 shadow-${shadow} border inline-block relative align-middle
+        rounded-48 border inline-block relative align-middle
+        shadow-${shadow}
         ${badgrColor[color]}
         ${badgeSize[size]}
         ${className}
@@ -58,7 +59,8 @@ export default function Badge(
         `
 
     if (isLoading)
-        return <Skeleton width="6ch" className={`${loadingBadgeSize[size]} !rounded-48 leading-0`} />
+        return <Skeleton width="7ch" className={`${loadingBadgeSize[size]} !rounded-48`} />
+
 
 
     return (

@@ -72,8 +72,15 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                 setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
                 const webln = await Wallet_Service.getWebln()
                 const paymentResponse = await webln.sendPayment(votingData.vote.payment_request);
+                console.log(paymentResponse);
+
                 setPaymentStatus(PaymentStatus.PAID);
-                confirmVote({ variables: { paymentRequest: votingData.vote.payment_request, preimage: paymentResponse.preimage } })
+                confirmVote({
+                    variables: {
+                        paymentRequest: votingData.vote.payment_request,
+                        preimage: paymentResponse.preimage
+                    }
+                })
                     .catch() // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
                     .finally(() => {
                         setTimeout(() => {

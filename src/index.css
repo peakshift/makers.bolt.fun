@@ -94,3 +94,9 @@ svg {
 .no-scrollbar ::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+@media (pointer: coarse) {
+  .touch-device\:hidden {
+    display: none;
+  }
+}
