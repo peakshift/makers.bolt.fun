@@ -81,13 +81,13 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                 <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
             </div>
             <div className="p-24">
-                <div className="flex gap-24 items-center h-[93px]">
+                <div className="flex gap-24 items-start">
                     <div className="flex-shrink-0 w-[93px] h-[93px] rounded-md overflow-hidden">
                         <img className="w-full h-full object-cover" src={project?.thumbnail_image} alt="" />
                     </div>
                     <div className='flex flex-col items-start justify-between self-stretch'>
                         <h3 className="text-h3 font-regular">{project?.title}</h3>
-                        <a className="text-blue-400 font-regular text-body4" target='_blank' rel="noreferrer" href={project?.website}>{project?.website?.replace(/(^\w+:|^)\/\//, '')}</a>
+                        <a className="text-blue-400 font-regular text-body4 truncate max-w-[20ch]" target='_blank' rel="noreferrer" href={project?.website}>{project?.website?.replace(/(^\w+:|^)\/\//, '')}</a>
                         <div>
                             <span className="chip-small font-light text-body5 py-4 px-12 mr-8"> {project?.category.title}</span>
 
@@ -100,7 +100,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                         {isWalletConnected ?
                             <TipButton onTip={onTip} />
                             :
-                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16">Connect Wallet to Tip</Button>
+                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16"><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Tip</Button>
                         }
                     </div>
                 </div>
