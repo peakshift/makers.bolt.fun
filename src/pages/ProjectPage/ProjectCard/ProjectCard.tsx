@@ -113,7 +113,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                         <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Tip</Button>
                     }
                 </div>
-                <div className="mt-40">
+                {/* <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
                     <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
                         <div className="w-full relative pt-[56%]">
@@ -129,7 +129,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                             <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <hr className="my-40" />
                 <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project?</h3>
