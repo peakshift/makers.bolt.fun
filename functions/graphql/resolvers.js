@@ -206,7 +206,7 @@ module.exports = {
         await context.prisma.project.update({
           where: { id: project.id },
           data: {
-            votes_count: (project.votes_count = vote.amount_in_sat),
+            votes_count: project.votes_count + vote.amount_in_sat,
           },
         });
         // return the current vote

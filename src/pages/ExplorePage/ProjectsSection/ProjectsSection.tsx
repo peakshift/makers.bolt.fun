@@ -18,7 +18,7 @@ export default function ProjectsSection() {
 
     return (
         <div className='mt-32 lg:mt-48'>
-            <ProjectsRow title={<>Hottest <MdLocalFireDepartment className='inline-block text-fire align-bottom scale-125 origin-bottom' /></>}
+            <ProjectsRow title={<>Newest <MdLocalFireDepartment className='inline-block text-fire align-bottom scale-125 origin-bottom' /></>}
                 categoryId="133123"
                 projects={data.newProjects} />
             {data.allCategories.map(({ id, title, project, }) => {
