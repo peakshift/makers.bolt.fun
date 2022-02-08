@@ -15,8 +15,10 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-    //uri: 'https://deploy-preview-2--makers-bolt-fun.netlify.app/.netlify/functions/graphql',
-    uri: '/.netlify/functions/graphql',
+    uri: process.env.NODE_ENV === 'development' ?
+        'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql'
+        :
+        '/.netlify/functions/graphql',
     cache: new InMemoryCache()
 });
 

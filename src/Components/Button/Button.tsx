@@ -9,6 +9,7 @@ interface Props {
     size?: 'sm' | 'md' | 'lg'
     children: ReactNode;
     href?: string;
+    newTab?: boolean;
     fullWidth?: boolean;
     onClick?: () => void;
     className?: string
@@ -53,7 +54,7 @@ const btnPadding: UnionToObjectKeys<Props, 'size'> = {
     lg: 'py-12 px-36 text-body4'
 }
 
-export default function Button({ color = 'white', variant = 'fill', isLoading, disableOnLoading = true, size = 'md', fullWidth, href, className, onClick, children, ...props }: Props) {
+export default function Button({ color = 'white', variant = 'fill', isLoading, disableOnLoading = true, size = 'md', fullWidth, href, newTab, className, onClick, children, ...props }: Props) {
 
     let classes = `
     inline-block font-sans rounded-lg font-regular border border-gray-300 hover:cursor-pointer
@@ -83,6 +84,8 @@ export default function Button({ color = 'white', variant = 'fill', isLoading, d
                 {/* {isLoading ? <Loading color={loadingColor[color]} /> : children} */}
                 {children}
             </button>
-            , href)
+            , href, {
+            newTab
+        })
     )
 }

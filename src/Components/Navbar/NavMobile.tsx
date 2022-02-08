@@ -44,22 +44,22 @@ export default function NavMobile({ onSearch }: Props) {
 
   return (
     <nav className="block bg-white fixed top-0 left-0 w-full lg:hidden overflow-hidden z-[2010]">
-      <div className="p-16 px-32 w-screen flex justify-center items-center">
+      <div className="p-16 px-32 w-screen flex justify-between items-center">
         {/* <div className="w-40 h-40 bg-gray-100 rounded-8 mr-auto overflow-hidden">
                     <img className="w-full h-full object-cover" src="https://www.figma.com/file/OFowr5RJk9YZCW35KT7D5K/image/07b85d84145942255afd215b3da26dbbf1dd03bd?fuid=772401335362859303" alt="" />
                 </div> */}
         <Link to="/">
           <h2 className="text-h5 font-bold mx-auto">makers.bolt.fun</h2>
         </Link>
-        <a
+
+        <Button size="sm"
+          color="primary"
+          className=" rounded-24 ml-auto"
           href="https://form.jotform.com/220301236112030"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Button size="sm" color="primary" className=" rounded-24 ml-auto">
-            Submit App️
-          </Button>
-        </a>
+          newTab>
+          Submit App️
+        </Button>
+
         {/* <button className='rounded-full ml-auto text-2xl w-[50px] h-[50px] hover:bg-gray-200' onClick={handleClick}>
 
                     {!open ? (<motion.div key={open ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)

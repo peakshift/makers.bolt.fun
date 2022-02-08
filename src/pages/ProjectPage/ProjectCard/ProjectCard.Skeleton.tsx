@@ -50,15 +50,15 @@ export default function ProjectCardSkeleton({ onClose, direction, ...props }: Pr
                     </div>
 
                 </div>
-                <p className="mt-40 text-body4 leading-normal">
+                <p className="mt-40 text-body4 leading-normal h-[120px]">
 
-                    <Skeleton width='98%' />
+                    {/* <Skeleton width='98%' />
                     <Skeleton width='90%' />
                     <Skeleton width='70%' />
-                    <Skeleton width='40%' />
+                    <Skeleton width='40%' /> */}
                 </p>
 
-                <div className="mt-40">
+                {/* <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
                     <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
                         <div className="w-full relative pt-[56%]">
@@ -74,7 +74,7 @@ export default function ProjectCardSkeleton({ onClose, direction, ...props }: Pr
                             <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl"></div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
             </div>
         </motion.div>

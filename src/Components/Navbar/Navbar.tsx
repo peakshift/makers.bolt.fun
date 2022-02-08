@@ -107,16 +107,16 @@ export default function Navbar() {
             animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
             className="flex"
           >
-            {" "}
-            <a
+
+            <Button
+              color="primary"
+              size="md"
+              className="lg:px-40"
               href="https://form.jotform.com/220301236112030"
-              target="_blank"
-              rel="noreferrer"
+              newTab
             >
-              <Button color="primary" size="md" className="lg:px-40">
-                Submit App️
-              </Button>
-            </a>
+              Submit App️
+            </Button>
             {/* {isWalletConnected ?
                             <Button className="ml-16 py-12 px-16 lg:px-20">Connected <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>

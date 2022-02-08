@@ -28,35 +28,11 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
 
     const isMobileScreen = useAppSelector(s => s.theme.isMobileScreen)
 
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         setTipCnt(s => s + 1)
-
-    //         const newSpark = {
-    //             id: Math.random().toString(),
-    //             offsetX: random(1, 99),
-    //             animation: randomItem('fly-spark-1', 'fly-spark-2'),
-    //             animationSpeed: randomItem(1, 1.5, 2),
-    //             color: randomItem('#ff6a00', '#ff7717', '#ff6217', '#ff8217', '#ff5717'),
-    //             scale: random(1, 2)
-    //         };
-    //         setTimeout(() => {
-    //             setSparks(s => {
-    //                 return s.filter(spark => spark.id !== newSpark.id)
-    //             })
-
-    //         }, newSpark.animationSpeed * 1000)
-
-    //         setSparks(oldSparks => [...oldSparks, newSpark])
-
-    //     }, 300);
-    // }, [])
-
 
     const { onPressDown, onPressUp } = usePressHolder(_throttle(() => {
         const _incStep = (Math.ceil((tipCnt + 1) / 10) + 1) ** 2 * 10;
         setIncStep(_incStep)
-        setTipCnt(s => { console.log('update'); return s + _incStep})
+        setTipCnt(s => s + _incStep)
 
         const newSpark = {
             id: Math.random().toString(),
