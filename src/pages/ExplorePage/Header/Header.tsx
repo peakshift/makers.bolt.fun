@@ -1,13 +1,10 @@
-import {
-  Assets_Images_ExploreHeader1,
-  Assets_Images_ExploreHeader2,
-} from "src/assets";
+import Assets from "src/assets";
 import Button from "src/Components/Button/Button";
 
 const headerLinks = [
   {
     title: "A fun directory of Lightning Enabled Applications on the Open Web",
-    img: Assets_Images_ExploreHeader1,
+    img: Assets.Images_ExploreHeader1,
     link: {
       content: "Submit App",
       url: "#",
@@ -16,7 +13,7 @@ const headerLinks = [
   {
     title:
       "Join the next wave of the Lightning Network in November’s ‘Shock the Web’ hackathon",
-    img: Assets_Images_ExploreHeader2,
+    img: Assets.Images_ExploreHeader2,
     link: {
       content: "Register Now",
       url: "/hackathons/shock-the-web/",

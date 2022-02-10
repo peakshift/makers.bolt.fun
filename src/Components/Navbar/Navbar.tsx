@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import { setNavHeight } from "src/redux/features/theme.slice";
 import { useResizeListener } from "src/utils/hooks";
+import ASSETS from "src/assets";
 
 export const navLinks = [
   { text: "Explore", url: "/", icon: FaHome, color: "text-primary-600" },
@@ -94,7 +95,9 @@ export default function Navbar() {
       {/* Desktop Nav */}
       <nav className="hidden bg-white w-full lg:flex fixed top-0 left-0 py-36 px-32 items-center z-[2010]">
         <Link to="/">
-          <h2 className="text-h5 font-bold mr-40 lg:mr-64">makers.bolt.fun</h2>
+          <h2 className="text-h5 font-bold mr-40 lg:mr-64">
+            <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
+          </h2>
         </Link>
         {/* <ul className="flex gap-32 xl:gap-64">
                     {navLinks.map((link, idx) => <li key={idx} className="text-body4 hover:text-primary-600">

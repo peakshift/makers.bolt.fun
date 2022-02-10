@@ -1,4 +1,6 @@
-import Assets_Images_ExploreHeader1 from './images/explore_page_header_1.jfif'
-import Assets_Images_ExploreHeader2 from './images/shock-the-web.png'
+import Images_ExploreHeader1 from './images/explore_page_header_1.jfif'
+import Images_ExploreHeader2 from './images/shock-the-web.png'
+import Logo from './images/logo.png'
 
-export { Assets_Images_ExploreHeader1, Assets_Images_ExploreHeader2 }
+const ASSETS = { Images_ExploreHeader1, Images_ExploreHeader2, Logo }
+export default ASSETS;

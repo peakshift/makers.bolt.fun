@@ -7,6 +7,7 @@ import { navLinks } from "./Navbar";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
+import ASSETS from "src/assets";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -49,7 +50,8 @@ export default function NavMobile({ onSearch }: Props) {
                     <img className="w-full h-full object-cover" src="https://www.figma.com/file/OFowr5RJk9YZCW35KT7D5K/image/07b85d84145942255afd215b3da26dbbf1dd03bd?fuid=772401335362859303" alt="" />
                 </div> */}
         <Link to="/">
-          <h2 className="text-h5 font-bold mx-auto">makers.bolt.fun</h2>
+
+          <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
         </Link>
 
         <Button size="sm"
