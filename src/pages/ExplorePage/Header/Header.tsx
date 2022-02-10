@@ -19,7 +19,7 @@ const headerLinks = [
     img: Assets_Images_ExploreHeader2,
     link: {
       content: "Register Now",
-      url: "#",
+      url: "/hackathons/shock-the-web/",
     },
   },
 ];

@@ -15,10 +15,7 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-    uri: process.env.NODE_ENV === 'development' ?
-        'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql'
-        :
-        '/.netlify/functions/graphql',
+    uri: 'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql',
     cache: new InMemoryCache()
 });
 
