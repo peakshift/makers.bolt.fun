@@ -9,7 +9,6 @@ export default function Categories() {
     const { data, loading } = useQuery<ALL_CATEGORIES_QUERY_RES>(ALL_CATEGORIES_QUERY);
 
 
-
     if (loading || !data)
         return <div className="flex gap-12">
             {Array(5).fill(0).map((_, idx) =>
@@ -17,8 +16,7 @@ export default function Categories() {
             )}
         </div>
 
-    return (<div></div>)
-    /*
+
     return (
         <Slider>
             {data?.allCategories.map(category =>
@@ -26,5 +24,5 @@ export default function Categories() {
             )}
         </Slider>
     )
-    */
+
 }

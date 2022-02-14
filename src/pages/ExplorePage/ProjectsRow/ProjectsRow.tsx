@@ -14,7 +14,8 @@ import './style.css';
 const responsive = {
     all: {
         breakpoint: { max: 5000, min: 0 },
-        items: calcNumItems()
+        items: calcNumItems(),
+        slidesToSlide: Math.floor(calcNumItems())
     }
 }
 
