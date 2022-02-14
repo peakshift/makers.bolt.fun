@@ -16,7 +16,7 @@ const headerLinks = [
     img: Assets.Images_ExploreHeader2,
     link: {
       content: "Register Now",
-      url: "/hackathons/shock-the-web/",
+      url: "https://airtable.com/shrJqeGYmGTMKsT1a",
     },
   },
 ];
@@ -54,7 +54,7 @@ export default function Header() {
         <h3 className="text-white text-h3 max-w-[80%]">
           {headerLinks[1].title}
         </h3>
-        <Button href={headerLinks[1].link.url} className="font-regular mt-36">
+        <Button href={headerLinks[1].link.url} newTab className="font-regular mt-36">
           {headerLinks[1].link.content}
         </Button>
       </div>
