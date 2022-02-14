@@ -7,7 +7,7 @@ const headerLinks = [
     img: Assets.Images_ExploreHeader1,
     link: {
       content: "Submit App",
-      url: "#",
+      url: "https://form.jotform.com/220301236112030",
     },
   },
   {
@@ -34,15 +34,10 @@ export default function Header() {
         <h3 className="text-white text-h3 max-w-[80%]">
           {headerLinks[0].title}
         </h3>
-        <a
-          href="https://form.jotform.com/220301236112030"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Button color="primary" className="font-regular mt-36">
-            {headerLinks[0].link.content}
-          </Button>
-        </a>
+
+        <Button href={headerLinks[0].link.url} newTab color="primary" className="font-regular mt-36">
+          {headerLinks[0].link.content}
+        </Button>
       </div>
       <div className="hidden md:flex flex-col rounded-20 h-[280px] relative overflow-hidden p-24  items-start justify-end">
         <img
