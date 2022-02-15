@@ -94,11 +94,11 @@ export default function Navbar() {
 
       {/* Desktop Nav */}
       <nav className="hidden bg-white w-full lg:flex fixed top-0 left-0 py-36 px-32 items-center z-[2010]">
-        <Link to="/">
+        <a href="https://bolt.fun/">
           <h2 className="text-h5 font-bold mr-40 lg:mr-64">
             <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
           </h2>
-        </Link>
+        </a>
         {/* <ul className="flex gap-32 xl:gap-64">
                     {navLinks.map((link, idx) => <li key={idx} className="text-body4 hover:text-primary-600">
                         <Link to={link.url}><link.icon className={`text-body2 align-middle inline-block mr-8 ${link.color}`} /> {link.text}</Link></li>
