@@ -133,7 +133,14 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                 <hr className="my-40" />
                 <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project?</h3>
-                    <Button color='gray' size='md' className="my-16" onClick={onClaim}>Claim 🖐</Button>
+                    <Button
+                        color='gray'
+                        size='md'
+                        className="my-16"
+                        href={`https://airtable.com/shr67F20KG9Gdok6d?prefill_app_name=${project.title}&prefill_app_link=${project.website}`}
+                        newTab
+                    // onClick={onClaim}
+                    >Claim 🖐</Button>
                 </div>
             </div>
         </div>
