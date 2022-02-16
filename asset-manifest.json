@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "./static/css/main.c293fdfe.chunk.css",
-    "main.js": "./static/js/main.0241aa23.chunk.js",
-    "main.js.map": "./static/js/main.0241aa23.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.c6824a81.js",
-    "runtime-main.js.map": "./static/js/runtime-main.c6824a81.js.map",
+    "main.css": "./static/css/main.e2bef873.chunk.css",
+    "main.js": "./static/js/main.bf2ea9c5.chunk.js",
+    "main.js.map": "./static/js/main.bf2ea9c5.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.0a687343.js",
+    "runtime-main.js.map": "./static/js/runtime-main.0a687343.js.map",
     "static/css/2.60804494.chunk.css": "./static/css/2.60804494.chunk.css",
-    "static/js/2.8db855ee.chunk.js": "./static/js/2.8db855ee.chunk.js",
-    "static/js/2.8db855ee.chunk.js.map": "./static/js/2.8db855ee.chunk.js.map",
-    "static/js/3.9b094ed3.chunk.js": "./static/js/3.9b094ed3.chunk.js",
-    "static/js/3.9b094ed3.chunk.js.map": "./static/js/3.9b094ed3.chunk.js.map",
+    "static/js/2.16b25d61.chunk.js": "./static/js/2.16b25d61.chunk.js",
+    "static/js/2.16b25d61.chunk.js.map": "./static/js/2.16b25d61.chunk.js.map",
+    "static/js/3.79448ff6.chunk.js": "./static/js/3.79448ff6.chunk.js",
+    "static/js/3.79448ff6.chunk.js.map": "./static/js/3.79448ff6.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.60804494.chunk.css.map": "./static/css/2.60804494.chunk.css.map",
-    "static/css/main.c293fdfe.chunk.css.map": "./static/css/main.c293fdfe.chunk.css.map",
-    "static/js/2.8db855ee.chunk.js.LICENSE.txt": "./static/js/2.8db855ee.chunk.js.LICENSE.txt",
+    "static/css/main.e2bef873.chunk.css.map": "./static/css/main.e2bef873.chunk.css.map",
+    "static/js/2.16b25d61.chunk.js.LICENSE.txt": "./static/js/2.16b25d61.chunk.js.LICENSE.txt",
     "static/media/explore_page_header_1.f24455a3.jfif": "./static/media/explore_page_header_1.f24455a3.jfif",
     "static/media/logo.cadfbdbb.png": "./static/media/logo.cadfbdbb.png",
     "static/media/styles.css": "./static/media/revicons.e8746a62.woff",
     "static/media/shock-the-web.978a7898.png": "./static/media/shock-the-web.978a7898.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.c6824a81.js",
+    "static/js/runtime-main.0a687343.js",
     "static/css/2.60804494.chunk.css",
-    "static/js/2.8db855ee.chunk.js",
-    "static/css/main.c293fdfe.chunk.css",
-    "static/js/main.0241aa23.chunk.js"
+    "static/js/2.16b25d61.chunk.js",
+    "static/css/main.e2bef873.chunk.css",
+    "static/js/main.bf2ea9c5.chunk.js"
   ]
 }
