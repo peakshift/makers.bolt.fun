@@ -8,6 +8,7 @@ import { gql, useMutation } from "@apollo/client";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
+import styles from './style.module.css'
 
 const defaultOptions = [
     { text: '100 sat', value: 100 },
@@ -81,7 +82,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                         preimage: paymentResponse.preimage
                     }
                 })
-                    .catch((e) =>  { console.log(e); }) // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
+                    .catch((e) => { console.log(e); }) // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
                     .finally(() => {
                         setTimeout(() => {
                             onClose?.();
@@ -139,11 +140,13 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                 </label>
                 <div className="input-wrapper">
                     <input
-                        className="input-field"
+                        className={`input-field app ${styles.input}`}
                         value={voteAmount} onChange={onChangeInput}
                         type="number"
                         placeholder="e.g 5 sats" />
-                    {/* <IoCopy className='input-icon' /> */}
+                    <p className='px-16 flex items-center text-primary-400'>
+                        Sats
+                    </p>
                 </div>
                 <div className="flex mt-16 justify-between">
                     {defaultOptions.map((option, idx) =>

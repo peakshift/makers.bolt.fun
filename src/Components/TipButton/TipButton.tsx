@@ -2,7 +2,7 @@ import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import _throttle from 'lodash.throttle'
-import { ComponentProps, useState } from 'react'
+import { ComponentProps, useRef, useState } from 'react'
 import './tipbutton.style.css'
 import { random, randomItem } from 'src/utils/helperFunctions'
 
@@ -22,7 +22,7 @@ type Props = {
 
 export default function TipButton({ onTip = () => { }, ...props }: Props) {
     const [tipCnt, setTipCnt] = useState(0)
-    const [incStep, setIncStep] = useState(10)
+    const tipCntRef = useRef(0);
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
 
@@ -31,8 +31,11 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
 
     const { onPressDown, onPressUp } = usePressHolder(_throttle(() => {
         const _incStep = (Math.ceil((tipCnt + 1) / 10) + 1) ** 2 * 10;
-        setIncStep(_incStep)
-        setTipCnt(s => s + _incStep)
+        setTipCnt(s => {
+            const newValue = s + _incStep;
+            tipCntRef.current = newValue;
+            return newValue;
+        })
 
         const newSpark = {
             id: Math.random().toString(),
@@ -72,8 +75,9 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
         else
             setTimeout(() => {
                 setSparks([]);
-                onTip(tipCnt + incStep); // somehow we always miss one incStep
+                onTip(tipCntRef.current);
                 setTipCnt(0);
+                tipCntRef.current = 0;
             }, 500)
     }
 
