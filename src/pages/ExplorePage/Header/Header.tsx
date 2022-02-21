@@ -12,11 +12,11 @@ const headerLinks = [
   },
   {
     title:
-      "Join the next wave of the Lightning Network in November’s ‘Shock the Web’ hackathon",
+      "Want to learn to build lightning applications? Join Shock the Web hackathon on March 22 - 28",
     img: Assets.Images_ExploreHeader2,
     link: {
       content: "Register Now",
-      url: "https://airtable.com/shrJqeGYmGTMKsT1a",
+      url: "https://bolt.fun/hackathons/shock-the-web/",
     },
   },
 ];

@@ -160,6 +160,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                     )}
                 </div>
                 <p className="text-body6 mt-12 text-gray-500">1 sat = 1 vote</p>
+                <p className="text-body6 mt-12 text-gray-500"><strong>Where do these sats go?</strong> <br /> Claimed project votes go directly towards the maker's. Unclaimed project votes go towards BOLT.FUN's community pool.</p>
                 {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 mt-12 text-yellow-500">Please wait while we the fetch payment details.</p>}
                 {paymentStatus === PaymentStatus.NOT_PAID && <p className="text-body6 mt-12 text-red-500">You did not confirm the payment. Please try again.</p>}
                 {paymentStatus === PaymentStatus.PAID && <p className="text-body6 mt-12 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
