@@ -49,12 +49,12 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
     const onTip = (tip?: number) => {
 
         if (!isWalletConnected) {
-            dispatch(scheduleModal({ Modal: 'TipCard', props: { tipValue: tip } }))
+            dispatch(scheduleModal({ Modal: 'TipCard', props: { tipValue: tip, projectId: project.id } }))
             dispatch(openModal({
                 Modal: 'Login_ScanningWalletCard'
             }))
         } else
-            dispatch(openModal({ Modal: 'TipCard', props: { tipValue: tip } }))
+            dispatch(openModal({ Modal: 'TipCard', props: { tipValue: tip, projectId: project.id } }))
     }
 
 

@@ -4,7 +4,7 @@ import { AiFillThunderbolt } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppSelector } from 'src/utils/hooks';
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useApolloClient } from "@apollo/client";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
@@ -44,18 +44,19 @@ mutation Mutation($paymentRequest: String!, $preimage: String!) {
   confirmVote(payment_request: $paymentRequest, preimage: $preimage) {
     id
     amount_in_sat
-    payment_request
-    payment_hash
     paid
+    payment_hash
+    payment_request 
   }
 }
 `;
 
 interface Props extends ModalCard {
     tipValue?: number;
+    projectId: string
 }
 
-export default function TipCard({ onClose, direction, tipValue, ...props }: Props) {
+export default function TipCard({ onClose, direction, tipValue, projectId, ...props }: Props) {
     const { width, height } = useWindowSize()
 
     const { isWalletConnected } = useAppSelector(state => ({
@@ -73,8 +74,6 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                 setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
                 const webln = await Wallet_Service.getWebln()
                 const paymentResponse = await webln.sendPayment(votingData.vote.payment_request);
-                console.log(paymentResponse);
-
                 setPaymentStatus(PaymentStatus.PAID);
                 confirmVote({
                     variables: {
@@ -82,28 +81,34 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
                         preimage: paymentResponse.preimage
                     }
                 })
-                    .catch((e) => { console.log(e); }) // ONLY TEMPROARY !!! SHOULD BE FIXED FROM BACKEND
-                    .finally(() => {
-                        setTimeout(() => {
-                            onClose?.();
-                        }, 4000);
-                    })
-
             } catch (error) {
                 console.log(error);
                 setPaymentStatus(PaymentStatus.NOT_PAID);
             }
 
+        },
+        onError: (error) => {
+            console.log(error);
+            alert("Something wrong happened...")
+            setPaymentStatus(PaymentStatus.NOT_PAID);
+            setTimeout(() => {
+                onClose?.();
+            }, 4000);
         }
     });
 
     const [confirmVote, { data: confirmedVoteData }] = useMutation(CONFIRM_VOTE, {
+        refetchQueries: [
+            'Project',
+            'AllCategoriesProjects'
+        ],
         onCompleted: (votingData) => {
             setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
             setTimeout(() => {
                 onClose?.();
             }, 4000);
         },
+
         onError: () => { }
 
     });
@@ -120,7 +125,7 @@ export default function TipCard({ onClose, direction, tipValue, ...props }: Prop
 
     const requestPayment = () => {
         setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS);
-        vote({ variables: { "amountInSat": voteAmount, "projectId": parseInt("1") } });
+        vote({ variables: { "amountInSat": voteAmount, "projectId": parseInt(projectId) } });
     }
 
     return (
