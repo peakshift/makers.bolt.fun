@@ -21,7 +21,7 @@ import { BrowserRouter } from "react-router-dom";
 
 
 const client = new ApolloClient({
-  uri: 'https://xenodochial-goldstine-d09942.netlify.app/.netlify/functions/graphql',
+  uri: 'https://makers.bolt.fun/.netlify/functions/graphql',
   cache: new InMemoryCache()
 });
 
