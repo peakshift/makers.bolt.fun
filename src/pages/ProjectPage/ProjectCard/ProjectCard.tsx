@@ -100,7 +100,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                         {isWalletConnected ?
                             <TipButton onTip={onTip} />
                             :
-                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16"><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Tip</Button>
+                            <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16"><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
                         }
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                     {isWalletConnected ?
                         <TipButton fullWidth onTip={onTip} />
                         :
-                        <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Tip</Button>
+                        <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
                     }
                 </div>
                 {/* <div className="mt-40">
