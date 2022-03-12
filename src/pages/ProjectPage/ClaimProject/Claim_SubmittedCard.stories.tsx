@@ -5,7 +5,7 @@ import Claim_SubmittedCard from './Claim_SubmittedCard';
 import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
-    title: 'Projects/Claim/Submitted Card',
+    title: 'Project/Claim/Submitted Card',
     component: Claim_SubmittedCard,
 
     decorators: [ModalsDecorator]

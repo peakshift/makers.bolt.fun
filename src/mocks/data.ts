@@ -1,6 +1,5 @@
 import ASSETS from "src/assets";
 import { Project, ProjectCategory } from "src/utils/interfaces";
-import { projectsByCategory } from "./resolvers";
 
 let categories = [
     {

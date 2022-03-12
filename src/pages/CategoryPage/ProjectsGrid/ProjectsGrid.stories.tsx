@@ -4,7 +4,7 @@ import { MOCK_DATA } from 'src/mocks/data';
 import ProjectsGrid from './ProjectsGrid';
 
 export default {
-    title: 'Pages/Category/Projects Grid',
+    title: 'Category Page/Projects Grid',
     component: ProjectsGrid,
     argTypes: {
         backgroundColor: { control: 'color' },
