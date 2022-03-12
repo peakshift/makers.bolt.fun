@@ -5,7 +5,7 @@ import Claim_FundWithdrawCard from './Claim_FundWithdrawCard';
 import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
-    title: 'Claim/Fund Withdraw Card',
+    title: 'Projects/Claim/Fund Withdraw Card',
     component: Claim_FundWithdrawCard,
 
     decorators: [ModalsDecorator]

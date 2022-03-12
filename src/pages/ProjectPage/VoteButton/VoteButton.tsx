@@ -3,7 +3,7 @@ import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import _throttle from 'lodash.throttle'
 import { ComponentProps, useRef, useState } from 'react'
-import './tipbutton.style.css'
+import './vote-button.style.css'
 import { random, randomItem } from 'src/utils/helperFunctions'
 
 
@@ -17,12 +17,12 @@ interface Particle {
 }
 
 type Props = {
-    onTip: (tip: number) => void
+    onVote: (Vote: number) => void
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
-export default function TipButton({ onTip = () => { }, ...props }: Props) {
-    const [tipCnt, setTipCnt] = useState(0)
-    const tipCntRef = useRef(0);
+export default function VoteButton({ onVote = () => { }, ...props }: Props) {
+    const [voteCnt, setVoteCnt] = useState(0)
+    const voteCntRef = useRef(0);
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
 
@@ -30,10 +30,10 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
 
 
     const { onPressDown, onPressUp } = usePressHolder(_throttle(() => {
-        const _incStep = (Math.ceil((tipCnt + 1) / 10) + 1) ** 2 * 10;
-        setTipCnt(s => {
+        const _incStep = (Math.ceil((voteCnt + 1) / 10) + 1) ** 2 * 10;
+        setVoteCnt(s => {
             const newValue = s + _incStep;
-            tipCntRef.current = newValue;
+            voteCntRef.current = newValue;
             return newValue;
         })
 
@@ -70,14 +70,14 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
         setWasActive(false);
         if (event?.preventDefault) event.preventDefault();
         onPressUp();
-        if (tipCnt === 0)
-            onTip(10);
+        if (voteCnt === 0)
+            onVote(10);
         else
             setTimeout(() => {
                 setSparks([]);
-                onTip(tipCntRef.current);
-                setTipCnt(0);
-                tipCntRef.current = 0;
+                onVote(voteCntRef.current);
+                setVoteCnt(0);
+                voteCntRef.current = 0;
             }, 500)
     }
 
@@ -91,17 +91,17 @@ export default function TipButton({ onTip = () => { }, ...props }: Props) {
             onTouchEnd={handlePressUp}
             size='md'
             color='none'
-            className="tip-button border relative 100 my-16 noselect"
+            className="vote-button border relative 100 my-16 noselect"
             style={{
-                "--scale": tipCnt,
+                "--scale": voteCnt,
             } as any}
             {...props}
         >
             Hold To Vote !!! <MdLocalFireDepartment className='text-fire' />
 
             <span
-                className='tip-counter'
-            >{tipCnt}</span>
+                className='Vote-counter'
+            >{voteCnt}</span>
 
             <div
                 className='spark'

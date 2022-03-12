@@ -1,17 +1,17 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import TipButton from './TipButton';
+import VoteButton from './VoteButton';
 import { centerDecorator } from 'src/utils/storybookDecorators'
 
 export default {
-  title: 'Shared/Tip Button',
-  component: TipButton,
+  title: 'Projects/Tip Button',
+  component: VoteButton,
   decorators: [
     centerDecorator
   ]
-} as ComponentMeta<typeof TipButton>;
+} as ComponentMeta<typeof VoteButton>;
 
-const Template: ComponentStory<typeof TipButton> = (args) => <TipButton onTip={() => { }} />;
+const Template: ComponentStory<typeof VoteButton> = (args) => <VoteButton onVote={() => { }} />;
 
 export const Default = Template.bind({});
 

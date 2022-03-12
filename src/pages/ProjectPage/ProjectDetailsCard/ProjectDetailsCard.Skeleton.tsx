@@ -9,7 +9,7 @@ import { useAppSelector } from 'src/utils/hooks';
 interface Props extends ModalCard {
 }
 
-export default function ProjectCardSkeleton({ onClose, direction, ...props }: Props) {
+export default function ProjectDetailsCardSkeleton({ onClose, direction, ...props }: Props) {
 
 
 

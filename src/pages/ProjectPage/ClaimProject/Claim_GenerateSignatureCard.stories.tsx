@@ -5,7 +5,7 @@ import Claim_GenerateSignatureCard from './Claim_GenerateSignatureCard';
 import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
-    title: 'Claim/Generate Signature Card',
+    title: 'Projects/Claim/Generate Signature Card',
     component: Claim_GenerateSignatureCard,
 
     decorators: [ModalsDecorator]

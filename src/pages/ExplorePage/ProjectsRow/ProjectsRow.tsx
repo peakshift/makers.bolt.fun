@@ -1,15 +1,19 @@
-import { ReactElement, useRef, useState } from "react";
-import { ProjectCard } from "../../../utils/interfaces";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { ProjectCard } from "src/utils/interfaces";
 import Carousel from 'react-multi-carousel';
-import { MdArrowRight, MdDoubleArrow, } from 'react-icons/md';
-import { useAppDispatch } from "../../../utils/hooks";
-import { openModal } from "../../../redux/features/modals.slice";
-import ProjectCardMini from "../ProjectCardMini/ProjectCardMini";
+import { MdDoubleArrow, } from 'react-icons/md';
+import { useAppDispatch } from "src/utils/hooks";
+import { openModal } from "src/redux/features/modals.slice";
+import ProjectCardMini from "src/Components/Cards/ProjectCardMini/ProjectCardMini";
 import { useResizeListener } from 'src/utils/hooks'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import './style.css';
 
-
+interface Props {
+    title: string | ReactNode,
+    categoryId: string,
+    projects: ProjectCard[]
+}
 
 const responsive = {
     all: {
@@ -29,23 +33,35 @@ function calcNumItems() {
     return items;
 }
 
-interface Props { title: string | ReactElement, categoryId: string, projects: ProjectCard[] }
+
 
 export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
     const [carouselItmsCnt, setCarouselItmsCnt] = useState(calcNumItems);
     const dispatch = useAppDispatch()
+    let drag = useRef(false);
 
     responsive.all.items = carouselItmsCnt
 
-    let drag = useRef(false);
 
-    document.addEventListener('mousedown', () => drag.current = false);
-    document.addEventListener('mousemove', () => drag.current = true);
+    useEffect(() => {
+        const mousedownListener = () => drag.current = false
+        const mousemoveListener = () => drag.current = true
+
+        document.addEventListener('mousedown', mousedownListener);
+        document.addEventListener('mousemove', mousemoveListener);
+
+        return () => {
+            document.removeEventListener('mousedown', mousedownListener);
+            document.removeEventListener('mousemove', mousemoveListener);
+        }
+    }, [])
+
+
 
     const handleClick = (projectId: string) => {
         if (!drag.current)
-            dispatch(openModal({ Modal: "ProjectCard", props: { projectId } }))
+            dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
     }
 
     useResizeListener(() => {
@@ -57,7 +73,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
 
     return (
-        <div id={title.toString().toLowerCase()} className='mb-48'>
+        <div className='mb-48'>
             <h3 className="font-bolder text-body3 mb-24 px-32">{title}
                 <span>
                     <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer align-bottom transform scale-y-110 scale-x-125 origin-left' onClick={() => {
@@ -85,7 +101,9 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
                     }
                 >
                     {projects.map((project, idx) =>
-                        <ProjectCardMini key={idx} project={project} onClick={handleClick} />
+                        <div key={project.id} className='max-w-[296px]'>
+                            <ProjectCardMini project={project} onClick={handleClick} />
+                        </div>
                     )}
                 </Carousel>
             </div>

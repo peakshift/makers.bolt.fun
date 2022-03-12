@@ -6,7 +6,7 @@ import ProjectCardMiniSkeleton from './ProjectCardMini.Skeleton';
 
 
 export default {
-    title: 'Explore Page/Project Card Mini',
+    title: 'Projects/Project Card Mini',
     component: ProjectCardMini,
 
 } as ComponentMeta<typeof ProjectCardMini>;

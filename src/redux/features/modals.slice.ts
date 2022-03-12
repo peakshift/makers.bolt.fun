@@ -5,8 +5,8 @@ import Login_ExternalWalletCard from "src/Components/Modals/Login/Login_External
 import Login_NativeWalletCard from "src/Components/Modals/Login/Login_NativeWalletCard";
 import Login_SuccessCard from "src/Components/Modals/Login/Login_SuccessCard";
 import Login_ScanningWalletCard from "src/Components/Modals/Login/Login_ScanningWalletCard";
-import ProjectCard from "src/pages/ProjectPage/ProjectCard/ProjectCard";
-import TipCard from "src/pages/ProjectPage/Tip/TipCard";
+import ProjectDetailsCard from "src/pages/ProjectPage/ProjectDetailsCard/ProjectDetailsCard";
+import VoteCard from "src/pages/ProjectPage/VoteCard/VoteCard";
 import Claim_SubmittedCard from "src/pages/ProjectPage/ClaimProject/Claim_SubmittedCard";
 import Claim_FundWithdrawCard from "src/pages/ProjectPage/ClaimProject/Claim_FundWithdrawCard";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
@@ -22,12 +22,12 @@ export enum Direction {
 
 
 export const ALL_MODALS = {
-  ProjectCard,
+  ProjectDetailsCard,
   Login_ScanningWalletCard,
   Login_NativeWalletCard,
   Login_SuccessCard,
   Login_ExternalWalletCard,
-  TipCard,
+  VoteCard,
   Claim_GenerateSignatureCard,
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
@@ -117,7 +117,7 @@ export const modalSlice = createSlice({
       let props: any = {};
       if ('props' in action.payload) props = { ...action.payload.props }
 
-      props.isPageModal = action.payload.Modal === 'ProjectCard';
+      props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
 
       state.openModals.push({
         Modal: action.payload.Modal,
@@ -136,7 +136,7 @@ export const modalSlice = createSlice({
       let props: any = {};
       if ('props' in action.payload) props = { ...action.payload.props }
 
-      props.isPageModal = action.payload.Modal === 'ProjectCard';
+      props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
 
       state.openModals.push({
         Modal: action.payload.Modal,

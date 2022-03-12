@@ -8,8 +8,8 @@ import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';
-import ProjectCardSkeleton from './ProjectCard.Skeleton'
-import TipButton from 'src/Components/TipButton/TipButton';
+import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
+import VoteButton from 'src/pages/ProjectPage/VoteButton/VoteButton';
 import { Wallet_Service } from 'src/services'
 
 
@@ -17,7 +17,7 @@ interface Props extends ModalCard {
     projectId: string
 }
 
-export default function ProjectCard({ onClose, direction, projectId, ...props }: Props) {
+export default function ProjectDetailsCard({ onClose, direction, projectId, ...props }: Props) {
 
     const dispatch = useAppDispatch();
 
@@ -46,15 +46,15 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
         Wallet_Service.connectWallet()
     }
 
-    const onTip = (tip?: number) => {
+    const onVote = (votes?: number) => {
 
         if (!isWalletConnected) {
-            dispatch(scheduleModal({ Modal: 'TipCard', props: { tipValue: tip, projectId: project.id } }))
+            dispatch(scheduleModal({ Modal: 'VoteCard', props: { initVotes: votes, projectId: project.id } }))
             dispatch(openModal({
                 Modal: 'Login_ScanningWalletCard'
             }))
         } else
-            dispatch(openModal({ Modal: 'TipCard', props: { tipValue: tip, projectId: project.id } }))
+            dispatch(openModal({ Modal: 'VoteCard', props: { initVotes: votes, projectId: project.id } }))
     }
 
 
@@ -98,7 +98,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                     <div className="flex-shrink-0  hidden md:flex ml-auto gap-16">
                         <Button color='primary' size='md' className=" my-16" href={project.website} newTab >Visit <BsJoystick /></Button>
                         {isWalletConnected ?
-                            <TipButton onTip={onTip} />
+                            <VoteButton onVote={onVote} />
                             :
                             <Button onClick={onConnectWallet} size='md' className="border border-gray-200 bg-gray-100 hover:bg-gray-50 active:bg-gray-100 my-16"><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
                         }
@@ -108,7 +108,7 @@ export default function ProjectCard({ onClose, direction, projectId, ...props }:
                 <div className="md:hidden">
                     <Button color='primary' size='md' fullWidth href={project.website} newTab className="w-full mt-24 mb-16">Visit <BsJoystick /></Button>
                     {isWalletConnected ?
-                        <TipButton fullWidth onTip={onTip} />
+                        <VoteButton fullWidth onVote={onVote} />
                         :
                         <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
                     }

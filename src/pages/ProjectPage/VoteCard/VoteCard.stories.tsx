@@ -1,17 +1,17 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import TipCard from './TipCard';
+import VoteCard from './VoteCard';
 
 import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
-    title: 'Tip/Tip Card',
-    component: TipCard,
+    title: 'Components/Cards/Vote Card',
+    component: VoteCard,
 
     decorators: [ModalsDecorator]
-} as ComponentMeta<typeof TipCard>;
+} as ComponentMeta<typeof VoteCard>;
 
-const Template: ComponentStory<typeof TipCard> = (args) => <TipCard {...args} />;
+const Template: ComponentStory<typeof VoteCard> = (args) => <VoteCard {...args} />;
 
 export const Default = Template.bind({});
 

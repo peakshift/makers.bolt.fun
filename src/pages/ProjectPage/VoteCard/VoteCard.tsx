@@ -9,6 +9,7 @@ import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
 import styles from './style.module.css'
+import { CONFIRM_VOTE_QUERY, CONFIRM_VOTE_QUERY_RES_TYPE, VOTE_QUERY, VOTE_QUERY_RES_TYPE } from './query';
 
 const defaultOptions = [
     { text: '100 sat', value: 100 },
@@ -27,36 +28,13 @@ enum PaymentStatus {
     CANCELED
 }
 
-const VOTE = gql`
-mutation Mutation($projectId: Int!, $amountInSat: Int!) {
-  vote(project_id: $projectId, amount_in_sat: $amountInSat) {
-    id
-    amount_in_sat
-    payment_request
-    payment_hash
-    paid
-  }
-}
-`;
-
-const CONFIRM_VOTE = gql`
-mutation Mutation($paymentRequest: String!, $preimage: String!) {
-  confirmVote(payment_request: $paymentRequest, preimage: $preimage) {
-    id
-    amount_in_sat
-    paid
-    payment_hash
-    payment_request 
-  }
-}
-`;
 
 interface Props extends ModalCard {
-    tipValue?: number;
+    initVotes?: number;
     projectId: string
 }
 
-export default function TipCard({ onClose, direction, tipValue, projectId, ...props }: Props) {
+export default function VoteCard({ onClose, direction, initVotes, projectId, ...props }: Props) {
     const { width, height } = useWindowSize()
 
     const { isWalletConnected } = useAppSelector(state => ({
@@ -65,10 +43,10 @@ export default function TipCard({ onClose, direction, tipValue, projectId, ...pr
 
 
     const [selectedOption, setSelectedOption] = useState(10);
-    const [voteAmount, setVoteAmount] = useState<number>(tipValue ?? 10);
+    const [voteAmount, setVoteAmount] = useState<number>(initVotes ?? 10);
     const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(PaymentStatus.DEFAULT);
 
-    const [vote, { data }] = useMutation(VOTE, {
+    const [vote, { data }] = useMutation<VOTE_QUERY_RES_TYPE>(VOTE_QUERY, {
         onCompleted: async (votingData) => {
             try {
                 setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
@@ -97,7 +75,7 @@ export default function TipCard({ onClose, direction, tipValue, projectId, ...pr
         }
     });
 
-    const [confirmVote, { data: confirmedVoteData }] = useMutation(CONFIRM_VOTE, {
+    const [confirmVote, { data: confirmedVoteData }] = useMutation<CONFIRM_VOTE_QUERY_RES_TYPE>(CONFIRM_VOTE_QUERY, {
         refetchQueries: [
             'Project',
             'AllCategoriesProjects'
