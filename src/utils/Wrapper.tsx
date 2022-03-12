@@ -20,11 +20,10 @@ const client = new ApolloClient({
 });
 const queryClient = new QueryClient()
 
+let basename = '/';
 
-const parsedData = window.location.pathname.split("/");
-let domain = parsedData[1];
-
-
+if (process.env.REACT_APP_FOR_GITHUB)
+    basename = '/makers.bolt.fun/'
 
 
 export default function Wrapper(props: any) {
@@ -34,7 +33,7 @@ export default function Wrapper(props: any) {
         <ApolloProvider client={client}>
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <BrowserRouter >
+                    <BrowserRouter basename={basename}>
                         {props.children}
                     </BrowserRouter>
                 </Provider>

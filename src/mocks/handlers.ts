@@ -7,7 +7,6 @@ export const handlers = [
     graphql.query('PROJECTS_IN_CATEGORY_QUERY', (req, res, ctx) => {
         const { categoryId } = req.variables
 
-
         return res(
             ctx.data({
                 projectsByCategory: projectsByCategory(categoryId),
@@ -17,6 +16,7 @@ export const handlers = [
     }),
 
     graphql.query('AllCategoriesProjects', (req, res, ctx) => {
+
         return res(
             ctx.data({
                 allCategories: allCategories(),

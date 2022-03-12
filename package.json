@@ -48,7 +48,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "set REACT_APP_FOR_GITHUB=true&& npm run build",
     "deploy": "gh-pages -d build",
     "only-deploy": "gh-pages -d build",
     "storybook": "start-storybook -p 6006 -s public",
