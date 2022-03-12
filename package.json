@@ -46,6 +46,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "build-dev": "REACT_APP_ENABLE_MOCKS=true craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
     "predeploy": "set REACT_APP_FOR_GITHUB=true&& npm run build",
