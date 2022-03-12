@@ -14,7 +14,7 @@ import { Wallet_Service } from 'src/services'
 
 
 interface Props extends ModalCard {
-    projectId: string
+    projectId: number
 }
 
 export default function ProjectDetailsCard({ onClose, direction, projectId, ...props }: Props) {
@@ -24,7 +24,7 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
     const { loading } = useQuery<PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS>(
         PROJECT_BY_ID_QUERY,
         {
-            variables: { projectId: parseInt(projectId) },
+            variables: { projectId: projectId },
             onCompleted: data => {
                 dispatch(setProject(data.getProject))
             },

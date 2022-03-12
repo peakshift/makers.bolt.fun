@@ -4,6 +4,8 @@ import ExplorePage from "src/pages/ExplorePage";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { useAppDispatch, useAppSelector, useResizeListener } from './utils/hooks';
 import { Wallet_Service } from "./services";
+import { Route, Routes } from "react-router-dom";
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -34,7 +36,10 @@ function App() {
 
   return <div id="app" className='w-screen overflow-hidden'>
     <Navbar />
-    <ExplorePage />
+    <Routes>
+      <Route path="/category/:id" element={<CategoryPage />} />
+      <Route path="/" element={<ExplorePage />} />
+    </Routes>
     <ModalsContainer />
   </div>;
 }

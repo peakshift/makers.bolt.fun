@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import mockData from 'src/api/mockData.json'
+import { MOCK_DATA } from 'src/mocks/data';
 
 import ProjectCardMini from './ProjectCardMini';
 import ProjectCardMiniSkeleton from './ProjectCardMini.Skeleton';
@@ -15,7 +15,7 @@ const Template: ComponentStory<typeof ProjectCardMini> = (args) => <ProjectCardM
 
 export const Default = Template.bind({});
 Default.args = {
-    project: mockData.projectsCards[0]
+    project: MOCK_DATA.projects[0]
 }
 
 

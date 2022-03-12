@@ -1,15 +1,30 @@
-import React from 'react'
 import ProjectCardMini from 'src/Components/Cards/ProjectCardMini/ProjectCardMini'
-import mockData from 'src/api/mockData.json'
+import ProjectCardMiniSkeleton from 'src/Components/Cards/ProjectCardMini/ProjectCardMini.Skeleton';
+import { openModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch } from 'src/utils/hooks';
+import { ProjectCard } from 'src/utils/interfaces';
 
-export default function ProjectsGrid() {
+interface Props {
+    isLoading?: boolean;
+    projects: ProjectCard[]
+}
+
+export default function ProjectsGrid({ isLoading, projects }: Props) {
+
+    const dispatch = useAppDispatch();
+
+    const handleClick = (projectId: number) => {
+        dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
+    }
+
     return (
         <div style={{
-            gridTemplateColumns: 'repeat(auto-fit, minmax(296px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(296px, 1fr) )',
             display: 'grid',
             gridGap: '24px',
         }}>
-            {Array(30).fill(0).map((_, idx) => <ProjectCardMini key={idx} project={mockData.projectsCards[0]} onClick={() => { }} />)}
+            {isLoading && Array(12).fill(0).map((_, idx) => <ProjectCardMiniSkeleton key={idx} />)}
+            {!isLoading && projects.map((project) => <ProjectCardMini key={project.id} project={project} onClick={handleClick} />)}
         </div>
     )
 }

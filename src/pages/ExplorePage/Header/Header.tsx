@@ -31,7 +31,7 @@ export default function Header() {
           alt=""
         />
         <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
-        <h3 className="text-white text-h3 max-w-[80%]">
+        <h3 className="text-white text-h4 lg:text-h3 max-w-[80%]">
           {headerLinks[0].title}
         </h3>
 
@@ -46,7 +46,7 @@ export default function Header() {
           alt=""
         />
         <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
-        <h3 className="text-white text-h3 max-w-[80%]">
+        <h3 className="text-white text-h4 lg:text-h3 max-w-[80%]">
           {headerLinks[1].title}
         </h3>
         <Button href={headerLinks[1].link.url} newTab className="font-regular mt-36">

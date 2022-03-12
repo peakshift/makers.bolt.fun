@@ -1,7 +1,7 @@
 import { store } from '../redux/store';
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom'
 
 import 'react-multi-carousel/lib/styles.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -18,9 +18,9 @@ const client = new ApolloClient({
     uri: 'https://makers.bolt.fun/.netlify/functions/graphql',
     cache: new InMemoryCache()
 });
-
-
 const queryClient = new QueryClient()
+
+
 const parsedData = window.location.pathname.split("/");
 let domain = parsedData[1];
 
@@ -34,7 +34,7 @@ export default function Wrapper(props: any) {
         <ApolloProvider client={client}>
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <BrowserRouter basename={"/" + domain}>
+                    <BrowserRouter >
                         {props.children}
                     </BrowserRouter>
                 </Provider>

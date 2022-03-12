@@ -100,7 +100,7 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
             Hold To Vote !!! <MdLocalFireDepartment className='text-fire' />
 
             <span
-                className='Vote-counter'
+                className='vote-counter'
             >{voteCnt}</span>
 
             <div

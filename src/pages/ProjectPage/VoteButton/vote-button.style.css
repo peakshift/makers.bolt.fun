@@ -1,10 +1,10 @@
-.tip-button {
+.vote-button {
   --scale: 0;
   transition: background-color 1s;
   background-color: hsl(25, 100%, max(calc((95 - var(--scale) / 4) * 1%), 63%));
 }
 
-.tip-counter {
+.vote-counter {
   position: absolute;
   left: 50%;
   bottom: 110%;

@@ -9,9 +9,9 @@ export default function ExplorePage() {
             <div className="px-32">
                 <Header />
             </div>
-            {/* <div className="my-40 px-32">
+            <div className="my-40 px-32">
                 <Categories />
-            </div> */}
+            </div>
             <ProjectsSection />
         </>
     )

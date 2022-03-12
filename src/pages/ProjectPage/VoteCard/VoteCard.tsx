@@ -31,7 +31,7 @@ enum PaymentStatus {
 
 interface Props extends ModalCard {
     initVotes?: number;
-    projectId: string
+    projectId: number
 }
 
 export default function VoteCard({ onClose, direction, initVotes, projectId, ...props }: Props) {
@@ -103,7 +103,7 @@ export default function VoteCard({ onClose, direction, initVotes, projectId, ...
 
     const requestPayment = () => {
         setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS);
-        vote({ variables: { "amountInSat": voteAmount, "projectId": parseInt(projectId) } });
+        vote({ variables: { "amountInSat": voteAmount, "projectId": projectId } });
     }
 
     return (

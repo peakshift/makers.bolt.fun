@@ -1,31 +1,31 @@
 import { Image, Tag } from ".";
 
 export interface Project {
-    id: string;
+    id: number;
     title: string;
-    category: ProjectCategory;
+    category: Pick<ProjectCategory, 'id' | 'title'>;
     website?: string;
     description: string;
     tags: Tag[];
     cover_image: Image;
     thumbnail_image: Image;
+    lightning_address: string,
     screenShots: Image[];
     votes_count: number;
 }
 
 export interface ProjectCategory {
-    id: string;
+    id: number;
     title: string;
+    cover_image: string
+    apps_count: number
 }
 
 export interface ProjectCard {
-    id: string;
+    id: number;
     title: string;
     thumbnail_image: string;
-    category: ProjectCategory;
+    category: Pick<ProjectCategory, 'id' | 'title'>;
     votes_count: number;
 }
 
-interface AllCategoriesData {
-    allCategories: ProjectCategory[];
-}

@@ -8,10 +8,11 @@ import ProjectCardMini from "src/Components/Cards/ProjectCardMini/ProjectCardMin
 import { useResizeListener } from 'src/utils/hooks'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import './style.css';
+import { Link } from "react-router-dom";
 
 interface Props {
     title: string | ReactNode,
-    categoryId: string,
+    categoryId: number,
     projects: ProjectCard[]
 }
 
@@ -59,7 +60,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
 
 
-    const handleClick = (projectId: string) => {
+    const handleClick = (projectId: number) => {
         if (!drag.current)
             dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
     }
@@ -75,11 +76,11 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
     return (
         <div className='mb-48'>
             <h3 className="font-bolder text-body3 mb-24 px-32">{title}
-                <span>
+                {categoryId > 0 && <Link to={`/category/${categoryId}`}>
                     <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer align-bottom transform scale-y-110 scale-x-125 origin-left' onClick={() => {
                         console.log(categoryId);
                     }} />
-                </span>
+                </Link>}
             </h3>
             <div className="px-32">
                 <Carousel

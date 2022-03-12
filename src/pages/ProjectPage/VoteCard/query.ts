@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const VOTE_QUERY = gql`
-mutation Mutation($projectId: Int!, $amountInSat: Int!) {
+mutation Vote($projectId: Int!, $amountInSat: Int!) {
   vote(project_id: $projectId, amount_in_sat: $amountInSat) {
     id
     amount_in_sat
@@ -13,17 +13,17 @@ mutation Mutation($projectId: Int!, $amountInSat: Int!) {
 `;
 
 export type VOTE_QUERY_RES_TYPE = {
-    vote: {
-        id: number;
-        amount_in_sat: number;
-        payment_request: string;
-        payment_hash: string;
-        paid: boolean;
-    }
+  vote: {
+    id: number;
+    amount_in_sat: number;
+    payment_request: string;
+    payment_hash: string;
+    paid: boolean;
+  }
 }
 
 export const CONFIRM_VOTE_QUERY = gql`
-mutation Mutation($paymentRequest: String!, $preimage: String!) {
+mutation ConfirmVote($paymentRequest: String!, $preimage: String!) {
   confirmVote(payment_request: $paymentRequest, preimage: $preimage) {
     id
     amount_in_sat
@@ -35,11 +35,11 @@ mutation Mutation($paymentRequest: String!, $preimage: String!) {
 `;
 
 export type CONFIRM_VOTE_QUERY_RES_TYPE = {
-    confirmVote: {
-        id: number;
-        amount_in_sat: number;
-        paid: boolean;
-        payment_hash: string;
-        payment_request: string;
-    }
+  confirmVote: {
+    id: number;
+    amount_in_sat: number;
+    paid: boolean;
+    payment_hash: string;
+    payment_request: string;
+  }
 }

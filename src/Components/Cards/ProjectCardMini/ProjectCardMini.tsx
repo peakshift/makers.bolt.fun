@@ -1,13 +1,15 @@
 import { MdLocalFireDepartment } from "react-icons/md";
+import { useAppDispatch } from "src/utils/hooks";
 import { ProjectCard } from "src/utils/interfaces";
 
 
 interface Props {
     project: ProjectCard
-    onClick: (projectId: string) => void
+    onClick: (projectId: number) => void
 }
 
 export default function ProjectCardMini({ project, onClick }: Props) {
+
     return (
         <div className="bg-gray-25 select-none px-16 py-16 flex min-w-[296px] gap-16 border border-gray-200 rounded-10 hover:cursor-pointer hover:bg-gray-100" onClick={() => onClick(project.id)}>
             <img src={project.thumbnail_image} alt={project.title} draggable="false" className="flex-shrink-0 w-80 h-80 bg-gray-200 border-0 rounded-8"></img>
