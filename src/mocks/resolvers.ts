@@ -26,3 +26,10 @@ export function newProjects() {
 export function getProject(projectId: number) {
     return MOCK_DATA.projects.find(p => p.id === projectId)
 }
+
+export function searchProjects(search: string) {
+    return MOCK_DATA.projects.filter(project => {
+        const regexSearch = new RegExp(search, 'i')
+        return regexSearch.test(project.title) || regexSearch.test(project.category.title)
+    })
+}

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { ProjectCard } from "src/utils/interfaces";
 import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
@@ -65,9 +65,15 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
             dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
     }
 
-    useResizeListener(() => {
-        setCarouselItmsCnt(calcNumItems());
-    }, [setCarouselItmsCnt])
+    const recalcItemsCnt = useCallback(
+        () => {
+            setCarouselItmsCnt(calcNumItems());
+        },
+        [],
+    )
+
+
+    useResizeListener(recalcItemsCnt)
 
     if (projects.length === 0)
         return <></>

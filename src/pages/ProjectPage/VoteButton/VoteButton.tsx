@@ -26,7 +26,7 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
 
-    const isMobileScreen = useAppSelector(s => s.theme.isMobileScreen)
+    const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen)
 
 
     const { onPressDown, onPressUp } = usePressHolder(_throttle(() => {

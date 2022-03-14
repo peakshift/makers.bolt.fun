@@ -1,10 +1,13 @@
 
 import { graphql } from 'msw'
-import { allCategories, getCategory, getProject, newProjects, projectsByCategory } from './resolvers'
+import { allCategories, getCategory, getProject, newProjects, projectsByCategory, searchProjects } from './resolvers'
+
+const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms))
 
 export const handlers = [
 
-    graphql.query('PROJECTS_IN_CATEGORY_QUERY', (req, res, ctx) => {
+    graphql.query('PROJECTS_IN_CATEGORY_QUERY', async (req, res, ctx) => {
+        await delay()
         const { categoryId } = req.variables
 
         return res(
@@ -15,7 +18,19 @@ export const handlers = [
         )
     }),
 
-    graphql.query('AllCategoriesProjects', (req, res, ctx) => {
+    graphql.query('SEARCH_PROJECTS_QUERY', async (req, res, ctx) => {
+        await delay()
+        const { search } = req.variables
+
+        return res(
+            ctx.data({
+                searchProjects: searchProjects(search),
+            })
+        )
+    }),
+
+    graphql.query('AllCategoriesProjects', async (req, res, ctx) => {
+        await delay()
 
         return res(
             ctx.data({
@@ -25,7 +40,8 @@ export const handlers = [
         )
     }),
 
-    graphql.query('AllCategories', (req, res, ctx) => {
+    graphql.query('AllCategories', async (req, res, ctx) => {
+        await delay()
         return res(
             ctx.data({
                 allCategories: allCategories()
@@ -33,7 +49,8 @@ export const handlers = [
         )
     }),
 
-    graphql.query('Project', (req, res, ctx) => {
+    graphql.query('Project', async (req, res, ctx) => {
+        await delay()
         const { projectId } = req.variables
 
         return res(

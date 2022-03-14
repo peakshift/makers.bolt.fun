@@ -1,13 +1,12 @@
 import { motion } from "framer-motion";
-import { FormEvent, useEffect, useState } from "react";
-import { FiMenu } from "react-icons/fi";
-import { GrClose } from "react-icons/gr";
+import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { navLinks } from "./Navbar";
-import { AiFillThunderbolt } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import ASSETS from "src/assets";
+import Search from "./Search/Search";
+import IconButton from "../IconButton/IconButton";
+import { useAppDispatch, useAppSelector } from "src/utils/hooks";
+import { toggleSearch } from "src/redux/features/ui.slice";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -22,12 +21,17 @@ const navListVariants = {
 };
 
 interface Props {
-  onSearch: (search: string) => void;
 }
 
-export default function NavMobile({ onSearch }: Props) {
+export default function NavMobile({ }: Props) {
   const [open, setOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
+  const dispatch = useAppDispatch();
+  const { searchOpen } = useAppSelector((state) => ({
+    isWalletConnected: state.wallet.isConnected,
+    searchOpen: state.ui.isSearchOpen
+  }));
+
+
 
   const handleClick = () => {
     setOpen((open) => !open);
@@ -38,37 +42,51 @@ export default function NavMobile({ onSearch }: Props) {
     else document.body.style.overflowY = "initial";
   }, [open]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchInput) onSearch(searchInput);
+
+
+  const handleSearchClick = () => {
+    dispatch(toggleSearch())
   };
 
+
+
+
   return (
-    <nav className="block bg-white fixed top-0 left-0 w-full lg:hidden overflow-hidden z-[2010]">
-      <div className="p-16 px-32 w-screen flex justify-between items-center">
-        {/* <div className="w-40 h-40 bg-gray-100 rounded-8 mr-auto overflow-hidden">
+    <div className="w-screen z-[2010]">
+      <nav className="bg-white fixed top-0 left-0  h-[67px] w-full p-16 px-32 flex justify-between items-center z-[2010]">
+        {/* <div className="w-40 h-40 bg-gray-100 rounded-8 mr-auto">
                     <img className="w-full h-full object-cover" src="https://www.figma.com/file/OFowr5RJk9YZCW35KT7D5K/image/07b85d84145942255afd215b3da26dbbf1dd03bd?fuid=772401335362859303" alt="" />
                 </div> */}
         <a href="https://bolt.fun/">
           <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
         </a>
 
-        <Button size="sm"
-          color="primary"
-          className=" rounded-24 ml-auto"
-          href="https://form.jotform.com/220301236112030"
-          newTab>
-          Submit App️
-        </Button>
+        <div className="ml-auto"></div>
+        <motion.div
+          animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
+          className="flex"
+        >
+          <Button size="sm"
+            color="primary"
+            className="rounded-24"
+            href="https://form.jotform.com/220301236112030"
+            newTab>
+            Submit App️
+          </Button>
+          <IconButton className='ml-8  self-center' onClick={handleSearchClick}>
+            <BsSearch className="text-gray-400" />
+          </IconButton>
+        </motion.div>
+        <Search width='calc(100vw - 64px)' />
 
         {/* <button className='rounded-full ml-auto text-2xl w-[50px] h-[50px] hover:bg-gray-200' onClick={handleClick}>
 
                     {!open ? (<motion.div key={open ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
                         : (<motion.div key={open ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
                 </button> */}
-      </div>
+      </nav>
 
-      <div className="fixed overflow-hidden left-0 pointer-events-none z-[2010] w-full min-h-[calc(100vh-76px)]">
+      <div className="fixed  left-0 pointer-events-none z-[2010] w-full min-h-[calc(100vh-76px)]">
         {open && (
           <div
             onClick={handleClick}
@@ -138,6 +156,6 @@ export default function NavMobile({ onSearch }: Props) {
           </ul>
         </motion.div>
       </div>
-    </nav>
+    </div>
   );
 }

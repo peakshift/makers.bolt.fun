@@ -3,6 +3,7 @@ import { configure, addDecorator } from "@storybook/react";
 import { store } from "../src/redux/store";
 import React from "react";
 import { Provider } from "react-redux";
+import { useWrapperSetup } from '../src/utils/Wrapper'
 
 
 import {
@@ -40,15 +41,24 @@ if (process.env.NODE_ENV === 'development') {
   worker.start()
 }
 
-addDecorator((S) => (
+addDecorator((S) => {
+  useWrapperSetup()
 
-  <ApolloProvider client={client}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <S />
-      </BrowserRouter>
-    </Provider>
-  </ApolloProvider>
-));
+  return <S />
+}
+);
+
+
+addDecorator((S) => (<ApolloProvider client={client}>
+  <Provider store={store}>
+    <BrowserRouter>
+      <S />
+    </BrowserRouter>
+  </Provider>
+</ApolloProvider>)
+);
+
+
+
 
 configure(require.context("../src", true, /\.stories\.ts$/), module);

@@ -2,17 +2,19 @@ import { useEffect } from "react";
 import Navbar from "src/Components/Navbar/Navbar";
 import ExplorePage from "src/pages/ExplorePage";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
-import { useAppDispatch, useAppSelector, useResizeListener } from './utils/hooks';
+import { useAppSelector } from './utils/hooks';
 import { Wallet_Service } from "./services";
 import { Route, Routes } from "react-router-dom";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
+import { useWrapperSetup } from "./utils/Wrapper";
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
     isWalletConnected: state.wallet.isConnected,
   }));
 
-  const dispatch = useAppDispatch();
+  useWrapperSetup()
+
 
   useEffect(() => {
     // if (typeof window.webln != "undefined") {
@@ -29,9 +31,6 @@ function App() {
     }, 2000)
   }, []);
 
-  useResizeListener(() => {
-    // dispatch(setIsMobileScreen(/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)));
-  }, [dispatch])
 
 
   return <div id="app" className='w-screen overflow-hidden'>

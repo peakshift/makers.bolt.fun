@@ -14,8 +14,7 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
 
 
     const { isMobileScreen } = useAppSelector(state => ({
-
-        isMobileScreen: state.theme.isMobileScreen
+        isMobileScreen: state.ui.isMobileScreen
     }));
 
 

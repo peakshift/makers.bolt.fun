@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.5",
     "@prisma/client": "3.5.0",
+    "@react-hookz/web": "^13.1.0",
     "@react-spring/web": "^9.4.2",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",

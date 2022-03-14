@@ -34,7 +34,7 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
     const { isWalletConnected, project, isMobileScreen } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
         project: state.project.project,
-        isMobileScreen: state.theme.isMobileScreen
+        isMobileScreen: state.ui.isMobileScreen
     }));
 
 

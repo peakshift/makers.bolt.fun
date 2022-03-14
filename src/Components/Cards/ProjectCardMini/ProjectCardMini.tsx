@@ -1,5 +1,4 @@
 import { MdLocalFireDepartment } from "react-icons/md";
-import { useAppDispatch } from "src/utils/hooks";
 import { ProjectCard } from "src/utils/interfaces";
 
 
