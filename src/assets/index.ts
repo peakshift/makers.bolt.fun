@@ -3,4 +3,6 @@ import Images_ExploreHeader2 from './images/shock-the-web.png'
 import Logo from './images/logo.png'
 
 const ASSETS = { Images_ExploreHeader1, Images_ExploreHeader2, Logo }
+console.log(ASSETS);
+
 export default ASSETS;

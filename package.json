@@ -1,8 +1,7 @@
 {
   "name": "makers.bolt.fun",
   "version": "0.1.0",
-  "private": true,
-  "homepage": ".",
+  "private": true, 
   "dependencies": {
     "@apollo/client": "^3.5.5",
     "@prisma/client": "3.5.0",
