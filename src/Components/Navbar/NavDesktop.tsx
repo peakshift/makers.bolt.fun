@@ -65,9 +65,7 @@ export default function NavDesktop() {
                     <link.icon className={`text-body2  inline-block mr-8 text-primary-600`} />
                     <span className="align-middle">{link.text}</span>
                 </Link>
-                {link.text === 'Categories' && <div className="absolute top-full left-0 w-[256px] border border-primary-50 rounded-8 shadow-2xl translate-y-16">
-                    <CategoriesList />
-                </div>}
+
             </li>
             )}
             <li
@@ -80,19 +78,22 @@ export default function NavDesktop() {
                 {<motion.div
                     initial={{ opacity: 0, y: 200, display: 'none' }}
                     animate={categoriesOpen ? {
+
                         opacity: 1, y: 16, display: 'initial',
                         transition: { ease: 'easeOut' }
                     } : {
-                        opacity: 0, y: 200,
+                        opacity: [1, 0, 0],
+                        y: [16, 40, 200],
                         transition: {
+                            times: [0, .5, 1],
                             ease: "easeIn",
-                            duration: .4
+                            duration: .2
                         },
                         transitionEnd: {
                             display: 'none'
                         }
                     }}
-                    className="absolute top-full left-0 w-[256px] border border-primary-50 rounded-8 shadow-2xl">
+                    className="absolute top-full left-0 w-[256px] bg-white border border-primary-50 rounded-8 shadow-3xl">
                     <CategoriesList />
                 </motion.div>}
             </li>

@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getCategory, getProject, newProjects, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getCategory, getProject, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms))
 
@@ -56,6 +56,17 @@ export const handlers = [
         return res(
             ctx.data({
                 getProject: getProject(projectId)
+            })
+        )
+    }),
+
+    graphql.query('HOTTEST_PROJECTS', async (req, res, ctx) => {
+        await delay()
+        console.log(hottestProjects());
+
+        return res(
+            ctx.data({
+                hottestProjects: hottestProjects()
             })
         )
     }),

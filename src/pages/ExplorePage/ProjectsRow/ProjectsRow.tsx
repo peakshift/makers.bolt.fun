@@ -81,11 +81,10 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
     return (
         <div className='mb-48'>
-            <h3 className="font-bolder text-body3 mb-24 px-32">{title}
+            <h3 className="font-bolder text-body3 mb-24 px-32">
+                <span className="align-middle">{title}</span>
                 {categoryId > 0 && <Link to={`/category/${categoryId}`}>
-                    <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer align-bottom transform scale-y-110 scale-x-125 origin-left' onClick={() => {
-                        console.log(categoryId);
-                    }} />
+                    <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer transform scale-y-110 scale-x-125 origin-left' />
                 </Link>}
             </h3>
             <div className="px-32">

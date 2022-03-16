@@ -116,6 +116,11 @@ export default function Search({
                         placeholder='Search'
                         value={searchInput}
                         onChange={handleChange}
+                        onKeyDown={e => {
+                            console.log(e.key);
+                            if (e.key === 'Escape') dispatch(toggleSearch(false))
+
+                        }}
                     />
                 </div>
                 <motion.div

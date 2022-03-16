@@ -1,3 +1,4 @@
+import ASSETS from "src/assets";
 import { MOCK_DATA } from "./data";
 
 export function getCategory(id: number) {
@@ -32,4 +33,13 @@ export function searchProjects(search: string) {
         const regexSearch = new RegExp(search, 'i')
         return regexSearch.test(project.title) || regexSearch.test(project.category.title)
     })
+}
+
+export function hottestProjects() {
+    return {
+        title: "Hottest Projects",
+        cover_image: ASSETS.Image_Hottest_Header,
+        apps_count: 20,
+        project: MOCK_DATA.projects.sort((p1, p2) => p2.votes_count - p1.votes_count).slice(0, 20)
+    }
 }

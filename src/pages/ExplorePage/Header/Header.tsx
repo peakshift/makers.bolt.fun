@@ -1,5 +1,11 @@
+import { useMediaQuery } from "@react-hookz/web";
+import Carousel from "react-multi-carousel";
 import Assets from "src/assets";
 import Button from "src/Components/Button/Button";
+import { THEME } from "src/utils/theme";
+import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
+import CustomDot from "./CustomDot/CustomDot";
+import styles from './styles.module.css'
 
 const headerLinks = [
   {
@@ -21,10 +27,32 @@ const headerLinks = [
   },
 ];
 
+const responsive = {
+  desktop: {
+    breakpoint: { max: 5000, min: THEME.screens.md },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 768, min: 0 },
+    items: 1
+  }
+}
+
+
 export default function Header() {
+
+  const isDesktop = useMediaQuery(MEDIA_QUERIES.isMedium);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2  gap-40 justify-center md:justify-between">
-      <div className="rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
+    <Carousel
+      showDots={!isDesktop}
+      arrows={false}
+      responsive={responsive}
+      customDot={<CustomDot />}
+      className={styles.header}
+      containerClass='!overflow-hidden'
+    >
+      <div className=" rounded-20 md:mr-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
         <img
           className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
           src={headerLinks[0].img}
@@ -39,7 +67,7 @@ export default function Header() {
           {headerLinks[0].link.content}
         </Button>
       </div>
-      <div className="hidden md:flex flex-col rounded-20 h-[280px] relative overflow-hidden p-24  items-start justify-end">
+      <div className="rounded-20 md:ml-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
         <img
           className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
           src={headerLinks[1].img}
@@ -53,6 +81,7 @@ export default function Header() {
           {headerLinks[1].link.content}
         </Button>
       </div>
-    </div>
+    </Carousel>
+
   );
 }

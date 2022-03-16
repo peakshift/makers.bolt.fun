@@ -14,7 +14,7 @@ export const navLinks = [
   { text: "Explore", url: "/", icon: MdHomeFilled, color: "text-primary-600" },
   {
     text: "Hottest",
-    url: "/categories/hottest",
+    url: "/hottest",
     icon: MdLocalFireDepartment,
     color: "text-primary-600",
   },

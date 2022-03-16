@@ -7,6 +7,7 @@ import { Wallet_Service } from "./services";
 import { Route, Routes } from "react-router-dom";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import { useWrapperSetup } from "./utils/Wrapper";
+import HottestPage from "./pages/HottestPage/HottestPage";
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -36,6 +37,7 @@ function App() {
   return <div id="app" className='w-screen overflow-hidden'>
     <Navbar />
     <Routes>
+      <Route path="/hottest" element={<HottestPage />} />
       <Route path="/category/:id" element={<CategoryPage />} />
       <Route path="/" element={<ExplorePage />} />
     </Routes>

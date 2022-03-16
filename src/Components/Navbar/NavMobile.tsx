@@ -156,7 +156,7 @@ export default function NavMobile({ }: Props) {
             </a>
 
             <Button
-              color='gray'
+              color='white'
               fullWidth
               className="py-12 px-40 rounded-24"
               onClick={() => handleSearchClick()}
@@ -169,7 +169,7 @@ export default function NavMobile({ }: Props) {
           </div>
           <ul className="py-16 gap-64 border-t">
             {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 active:bg-gray-200">
-              <Link to={link.url}><link.icon className={`text-body2  inline-block mr-12 text-primary-600`} /> <span className="align-middle">{link.text}</span> </Link></li>
+              <Link to={link.url} onClick={() => toggleDrawerOpen(false)}><link.icon className={`text-body2  inline-block mr-12 text-primary-600`} /> <span className="align-middle">{link.text}</span> </Link></li>
             )}
             <li >
               <p className="text-body3 flex items-center p-16 active:bg-gray-200 cursor-pointer"

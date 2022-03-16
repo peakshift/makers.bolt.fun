@@ -8,7 +8,9 @@ import reportWebVitals from './reportWebVitals';
 
 if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_ENABLE_MOCKS) {
   const { worker } = require('./mocks/browser')
-  worker.start()
+  worker.start({
+    onUnhandledRequest: 'bypass'
+  })
 }
 
 
