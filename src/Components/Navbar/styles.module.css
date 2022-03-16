@@ -1,0 +1,20 @@
+/* width */
+.navMobile ::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.navMobile ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.navMobile ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #aaa;
+}
+
+/* Handle on hover */
+.navMobile ::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}

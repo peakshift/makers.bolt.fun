@@ -5,52 +5,72 @@ let categories = [
     {
         "id": 10,
         "title": "Video",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '📹',
+        votes_sum: 1200,
     },
     {
         "id": 8,
         "title": "Shopping",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '🛒',
+        votes_sum: 850,
     },
     {
         "id": 5,
         "title": "Music",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '🎭',
+        votes_sum: 820,
     },
     {
         "id": 9,
         "title": "Miscellaneous",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '🎁',
+        votes_sum: 675,
     },
     {
         "id": 4,
         "title": "Gaming",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '🎮',
+        votes_sum: 675,
     },
     {
         "id": 1,
         "title": "Finance",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '💵',
+        votes_sum: 250,
     },
     {
         "id": 2,
         "title": "Digital Print",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '🚨',
+        votes_sum: 200,
     },
     {
         "id": 7,
         "title": "Digital Content",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '💱',
+        votes_sum: 180,
     },
     {
         "id": 3,
-        "title": "Art",
-        cover_image: ASSETS.Images_ExploreHeader1
+        "title": "Art & Collectibles",
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '🎨',
+        votes_sum: 120,
     },
     {
         "id": 6,
         "title": "Analytics",
-        cover_image: ASSETS.Images_ExploreHeader1
+        cover_image: ASSETS.Images_ExploreHeader1,
+        icon: '💸',
+        votes_sum: 100,
     },
 
 ]

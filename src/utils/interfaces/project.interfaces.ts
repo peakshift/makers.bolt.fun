@@ -17,8 +17,10 @@ export interface Project {
 export interface ProjectCategory {
     id: number;
     title: string;
-    cover_image: string
-    apps_count: number
+    cover_image: string;
+    icon: string;
+    apps_count: number;
+    votes_sum: number;
 }
 
 export interface ProjectCard {

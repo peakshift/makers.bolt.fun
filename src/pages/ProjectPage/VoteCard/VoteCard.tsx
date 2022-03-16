@@ -5,11 +5,11 @@ import { IoClose } from 'react-icons/io5'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppSelector } from 'src/utils/hooks';
 import { gql, useMutation, useApolloClient } from "@apollo/client";
-import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
 import styles from './style.module.css'
 import { CONFIRM_VOTE_QUERY, CONFIRM_VOTE_QUERY_RES_TYPE, VOTE_QUERY, VOTE_QUERY_RES_TYPE } from './query';
+import { useWindowSize } from '@react-hookz/web';
 
 const defaultOptions = [
     { text: '100 sat', value: 100 },

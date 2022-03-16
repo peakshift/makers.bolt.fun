@@ -8,14 +8,26 @@ import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { toggleSearch } from "src/redux/features/ui.slice";
+import { navLinks } from "./Navbar";
+import { Link } from "react-router-dom";
+import CategoriesList from "./CategoriesList/CategoriesList";
+import { useEffect, useRef, useState } from "react";
+import { IoExtensionPuzzle } from "react-icons/io5";
+import { useClickOutside, useToggle } from "@react-hookz/web";
 
 
 export default function NavDesktop() {
     const dispatch = useAppDispatch();
+    const [categoriesOpen, toggleCategories] = useToggle(false)
+    const categoriesRef = useRef<HTMLLIElement>(null)
+    useClickOutside(categoriesRef, () => toggleCategories(false))
+
+
     const { isWalletConnected, searchOpen } = useAppSelector((state) => ({
         isWalletConnected: state.wallet.isConnected,
         searchOpen: state.ui.isSearchOpen
     }));
+
 
     const handleSearchClick = () => {
         dispatch(toggleSearch())
@@ -47,12 +59,44 @@ export default function NavDesktop() {
                 <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
             </h2>
         </a>
-        {/* <ul className="flex gap-32 xl:gap-64">
-                    {navLinks.map((link, idx) => <li key={idx} className="text-body4 hover:text-primary-600">
-                        <Link to={link.url}><link.icon className={`text-body2 align-middle inline-block mr-8 ${link.color}`} /> {link.text}</Link></li>
-                    )}
-
-                </ul> */}
+        <ul className="flex gap-32 xl:gap-64">
+            {navLinks.map((link, idx) => <li key={idx} className=" relative">
+                <Link to={link.url} className='text-body4 hover:text-primary-600'>
+                    <link.icon className={`text-body2  inline-block mr-8 text-primary-600`} />
+                    <span className="align-middle">{link.text}</span>
+                </Link>
+                {link.text === 'Categories' && <div className="absolute top-full left-0 w-[256px] border border-primary-50 rounded-8 shadow-2xl translate-y-16">
+                    <CategoriesList />
+                </div>}
+            </li>
+            )}
+            <li
+                ref={categoriesRef}
+                className="relative cursor-pointer" onClick={() => toggleCategories(!categoriesOpen)}>
+                <p className='text-body4 hover:text-primary-600'>
+                    <IoExtensionPuzzle className={`text-body2  inline-block mr-8 text-primary-600`} />
+                    <span className="align-middle">Categories</span>
+                </p>
+                {<motion.div
+                    initial={{ opacity: 0, y: 200, display: 'none' }}
+                    animate={categoriesOpen ? {
+                        opacity: 1, y: 16, display: 'initial',
+                        transition: { ease: 'easeOut' }
+                    } : {
+                        opacity: 0, y: 200,
+                        transition: {
+                            ease: "easeIn",
+                            duration: .4
+                        },
+                        transitionEnd: {
+                            display: 'none'
+                        }
+                    }}
+                    className="absolute top-full left-0 w-[256px] border border-primary-50 rounded-8 shadow-2xl">
+                    <CategoriesList />
+                </motion.div>}
+            </li>
+        </ul>
 
         <div className="ml-auto"></div>
         <motion.div
