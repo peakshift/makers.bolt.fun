@@ -115,7 +115,7 @@ export default function Navbar() {
               color="primary"
               size="md"
               className="lg:px-40"
-              href="https://form.jotform.com/220301236112030"
+              href="https://airtable.com/shr2VkxarNsIFilDz"
               newTab
             >
               Submit App️

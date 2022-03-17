@@ -91,7 +91,7 @@ export default function NavMobile({ onSearch }: Props) {
                             <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" />
                         </form> */}
             <a
-              href="https://form.jotform.com/220301236112030"
+              href="https://airtable.com/shr2VkxarNsIFilDz"
               target="_blank"
               rel="noreferrer"
             >
