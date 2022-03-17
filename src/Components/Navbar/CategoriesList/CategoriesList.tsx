@@ -1,8 +1,8 @@
-import React from 'react'
+import { useQuery } from '@apollo/client'
+import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
-import { MOCK_DATA } from 'src/mocks/data'
 import { numberFormatter } from 'src/utils/helperFunctions'
-import { ProjectCategory } from 'src/utils/interfaces'
+import { ALL_CATEGORIES_QUERY, ALL_CATEGORIES_QUERY_RES } from './query'
 
 interface Props {
     // categories: Pick<ProjectCategory, 'id' | 'title' | 'icon' | 'votes_sum'>[]
@@ -10,12 +10,25 @@ interface Props {
     onClick?: (categoryId: number) => void
 }
 
-const categories = MOCK_DATA['categories']
 
 export default function CategoriesList({ classes = {}, onClick }: Props) {
+
+
+    const { data, loading } = useQuery<ALL_CATEGORIES_QUERY_RES>(ALL_CATEGORIES_QUERY);
+
+
+    if (loading)
+        return <ul className={classes.list}>
+            {Array(5).fill(0).map((_, idx) =>
+                <li key={idx} className={`flex p-16 text-body4 font-semibold items-center hover:bg-gray-100 rounded-8 ${classes.item}`} >
+                    <span className="text-body3 mr-8"><Skeleton width='1.5ch' /></span> <Skeleton width='10ch' /> <span className="ml-auto text-body5 font-normal text-gray-400"><Skeleton width='2ch' /></span>
+                </li>
+            )}
+        </ul>
+
     return (
         <ul className={classes.list}>
-            {categories.map(category =>
+            {data?.allCategories.map(category =>
                 <Link
                     onClick={() => onClick?.(category.id)}
                     key={category.id}

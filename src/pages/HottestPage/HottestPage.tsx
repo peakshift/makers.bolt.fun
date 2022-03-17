@@ -19,7 +19,6 @@ export default function HottestPage() {
         </div>
     }
 
-    console.log(data);
 
 
     return (

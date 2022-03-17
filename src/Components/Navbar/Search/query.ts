@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { ProjectCard } from "src/utils/interfaces";
+import { ProjectCard, ProjectCategory } from "src/utils/interfaces";
 
 export const SEARCH_PROJECTS_QUERY = gql`
 query SEARCH_PROJECTS_QUERY($search: String!) {
@@ -17,9 +17,23 @@ query SEARCH_PROJECTS_QUERY($search: String!) {
 }
 `
 export type SEARCH_PROJECTS_QUERY_VARS = {
-    search: string;
+  search: string;
 }
 
+export type ProjectSearchItem =
+  (
+    Pick<ProjectCard,
+      | 'id'
+      | 'thumbnail_image'
+      | 'title'>
+    &
+    {
+      category: Pick<ProjectCategory,
+        | 'id'
+        | 'title'>
+    }
+  )
+
 export type SEARCH_PROJECTS_QUERY_RES_TYPE = {
-    searchProjects: ProjectCard[],
+  searchProjects: ProjectSearchItem[],
 }

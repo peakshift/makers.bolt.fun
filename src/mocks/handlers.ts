@@ -62,7 +62,6 @@ export const handlers = [
 
     graphql.query('HOTTEST_PROJECTS', async (req, res, ctx) => {
         await delay()
-        console.log(hottestProjects());
 
         return res(
             ctx.data({

@@ -1,4 +1,5 @@
-import { ProjectCard } from 'src/utils/interfaces'
+
+import { ProjectSearchItem } from '../query'
 import SearchProjectCardSkeleton from './SearchProjectCard.Skeleton'
 
 type Props =
@@ -8,7 +9,7 @@ type Props =
     |
     {
         loading?: false
-        project: ProjectCard
+        project: ProjectSearchItem
         onClick: (projectId: number) => void;
     }
 

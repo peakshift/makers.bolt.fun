@@ -117,7 +117,6 @@ export default function Search({
                         value={searchInput}
                         onChange={handleChange}
                         onKeyDown={e => {
-                            console.log(e.key);
                             if (e.key === 'Escape') dispatch(toggleSearch(false))
 
                         }}
