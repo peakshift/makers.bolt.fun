@@ -102,7 +102,7 @@ export default function NavMobile({ }: Props) {
           {/* <Button size="sm"
             color="primary"
             className="rounded-24"
-            href="https://form.jotform.com/220301236112030"
+            href="https://airtable.com/shr2VkxarNsIFilDz"
             newTab>
             Submit App️
           </Button> */}
@@ -142,7 +142,7 @@ export default function NavMobile({ }: Props) {
                             <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" />
                         </form> */}
             <a
-              href="https://form.jotform.com/220301236112030"
+              href="https://airtable.com/shr2VkxarNsIFilDz"
               target="_blank"
               rel="noreferrer"
             >
