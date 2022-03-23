@@ -10,7 +10,7 @@ export interface Project {
     cover_image: Image;
     thumbnail_image: Image;
     lightning_address: string,
-    screenShots: Image[];
+    screenshots: Image[];
     votes_count: number;
 }
 

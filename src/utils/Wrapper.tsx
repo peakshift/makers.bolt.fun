@@ -19,7 +19,7 @@ import { setIsMobileScreen } from 'src/redux/features/ui.slice';
 import { isMobileScreen } from './helperFunctions';
 
 const client = new ApolloClient({
-    uri: 'https://makers.bolt.fun/.netlify/functions/graphql',
+    uri: 'http://localhost:8888/.netlify/functions/graphql',
     cache: new InMemoryCache()
 });
 const queryClient = new QueryClient()

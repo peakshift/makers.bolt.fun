@@ -1,16 +1,16 @@
 const { ApolloServer } = require("apollo-server-lambda");
-const { PrismaClient } = require("@prisma/client");
+// const resolvers = require("./resolvers/resolvers");
+// const typeDefs = require("./schema");
+// const { prisma } = require('./prisma')
+const schema = require('./schema')
 
-const resolvers = require("./resolvers");
-const typeDefs = require("./typeDefs");
 
-const prisma = new PrismaClient();
 const server = new ApolloServer({
-  resolvers,
-  typeDefs,
+  schema,
+
   context: () => {
     return {
-      prisma,
+      // prisma,
     };
   },
 });
@@ -21,6 +21,7 @@ const apolloHandler = server.createHandler({
     credentials: true,
   },
 });
+
 
 // https://github.com/vendia/serverless-express/issues/427#issuecomment-924580007
 const handler = (event, context, ...args) => {

@@ -8,8 +8,10 @@ export const PROJECT_BY_ID_QUERY = gql`
       cover_image
       thumbnail_image
       title
+      description
       website
       votes_count
+      screenshots
       category {
         title
         id

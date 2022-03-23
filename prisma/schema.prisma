@@ -8,25 +8,43 @@ generator client {
 }
 
 model Category {
-  id      Int       @id @default(autoincrement())
-  title   String
+  id          Int     @id @default(autoincrement())
+  title       String
+  cover_image String?
+  icon        String?
+
   project Project[]
+}
+
+model Award {
+  id    Int    @id @default(autoincrement())
+  title String
+  image String
+  url   String
+
+  project    Project @relation(fields: [project_id], references: [id])
+  project_id Int
 }
 
 model Project {
   id                 Int      @id @default(autoincrement())
   title              String
   description        String
+  screenshots        String[]
   website            String
   thumbnail_image    String?
   cover_image        String?
   lightning_address  String?
   lnurl_callback_url String?
-  category           Category @relation(fields: [category_id], references: [id])
-  category_id        Int
-  votes_count        Int      @default(0)
-  vote               Vote[]
-  created_at         DateTime @default(now())
+
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id Int
+  votes_count Int      @default(0)
+  vote        Vote[]
+  created_at  DateTime @default(now())
+
+  awards Award[]
+  tags   Tag[]
 }
 
 model Vote {
@@ -38,4 +56,11 @@ model Vote {
   payment_hash    String?
   preimage        String?
   paid            Boolean @default(false)
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+
+  project Project[]
 }
