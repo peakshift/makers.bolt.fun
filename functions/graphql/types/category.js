@@ -55,7 +55,6 @@ const allCategoriesQuery = extendType({
                         }
                     }
                 })
-                console.log(categories);
                 categories.sort((c1, c2) => c2._count.project - c1._count.project)
                 return categories;
             }
