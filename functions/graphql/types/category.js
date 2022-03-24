@@ -3,26 +3,26 @@ const {
     objectType,
     extendType,
     nonNull,
-} = require('nexus')
-const { prisma } = require('../prisma')
+} = require('nexus');
+
 
 const Category = objectType({
     name: 'Category',
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
-        t.nonNull.string('cover_image');
-        t.nonNull.string('icon');
+        t.string('cover_image');
+        t.string('icon');
 
 
         t.nonNull.int('votes_sum', {
-            async resolve(parent) {
+            async resolve(parent, _, { prisma }) {
                 const projects = await prisma.category.findUnique({ where: { id: parent.id } }).project();
                 return projects.reduce((total, project) => total + project.votes_count, 0);
             }
         });
         t.nonNull.int('apps_count', {
-            async resolve(parent) {
+            async resolve(parent, _, { prisma }) {
                 const projects = await prisma.category.findUnique({ where: { id: parent.id } }).project();
                 return projects.length;
 
@@ -31,7 +31,7 @@ const Category = objectType({
 
         t.nonNull.list.nonNull.field('project', {
             type: "Project",
-            resolve: (parent) => {
+            resolve: (parent, _, { prisma }) => {
                 return parent.project ?? prisma.category.findUnique({
                     where: { id: parent.id }
                 }).project()
@@ -45,7 +45,7 @@ const allCategoriesQuery = extendType({
     definition(t) {
         t.nonNull.list.nonNull.field('allCategories', {
             type: "Category",
-            resolve: async () => {
+            resolve: async (parent, args, { prisma }) => {
                 const categories = await prisma.category.findMany({
                     include: {
                         _count: {
@@ -70,7 +70,7 @@ const getCategory = extendType({
             args: {
                 id: nonNull(intArg())
             },
-            resolve(parent, { id }) {
+            resolve(parent, { id }, { prisma }) {
                 return prisma.category.findUnique({
                     where: { id }
                 })

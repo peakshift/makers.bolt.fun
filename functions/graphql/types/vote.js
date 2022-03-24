@@ -5,7 +5,6 @@ const {
     nonNull,
     stringArg,
 } = require('nexus')
-const { prisma } = require('../prisma')
 const { parsePaymentRequest } = require('invoices');
 const { getPaymetRequestForProject, hexToUint8Array } = require('./helpers');
 const { createHash } = require('crypto');
@@ -25,7 +24,7 @@ const Vote = objectType({
 
         t.nonNull.field('project', {
             type: "Project",
-            resolve: (parent) => {
+            resolve: (parent, args, { prisma }) => {
                 return parent.project ?? prisma.vote.findUnique({
                     where: { id: parent.id }
                 }).project()
@@ -54,7 +53,7 @@ const voteMutation = extendType({
                 project_id: nonNull(intArg()),
                 amount_in_sat: nonNull(intArg())
             },
-            resolve: async (_, args) => {
+            resolve: async (_, args, { prisma }) => {
                 const project = await prisma.project.findUnique({
                     where: { id: args.project_id },
                 });
@@ -86,7 +85,7 @@ const confirmVoteMutation = extendType({
                 payment_request: nonNull(stringArg()),
                 preimage: nonNull(stringArg())
             },
-            resolve: async (_, args) => {
+            resolve: async (_, args, { prisma }) => {
                 const paymentHash = createHash("sha256")
                     .update(hexToUint8Array(args.preimage))
                     .digest("hex");

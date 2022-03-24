@@ -6,7 +6,6 @@ const {
     nonNull,
 } = require('nexus')
 
-const { prisma } = require('../prisma');
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 
 
@@ -26,21 +25,21 @@ const Project = objectType({
 
         t.nonNull.field('category', {
             type: "Category",
-            resolve: (parent) => {
+            resolve: (parent, args, { prisma }) => {
                 return prisma.project.findUnique({ where: { id: parent.id } }).category();
             }
         });
 
         t.nonNull.list.nonNull.field('awards', {
             type: "Award",
-            resolve: (parent) => {
+            resolve: (parent, args, { prisma }) => {
                 return prisma.project.findUnique({ where: { id: parent.id } }).awards();
             }
         });
 
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
-            resolve: (parent) => {
+            resolve: (parent, args, { prisma }) => {
                 return prisma.project.findUnique({ where: { id: parent.id } }).tags();
             }
         })
@@ -57,7 +56,7 @@ const Award = objectType({
         t.nonNull.string('url');
         t.nonNull.field('project', {
             type: "Project",
-            resolve: (parent) => {
+            resolve: (parent, args, { prisma }) => {
                 return prisma.award.findUnique({ where: { id: parent.id } }).project();
             }
         })
@@ -71,7 +70,7 @@ const Tag = objectType({
         t.nonNull.string('title');
         t.nonNull.list.nonNull.field('project', {
             type: "Project",
-            resolve: (parent) => {
+            resolve: (parent, args, { prisma }) => {
                 return prisma.tag.findUnique({ where: { id: parent.id } }).project();
             }
         })
@@ -87,7 +86,7 @@ const getProject = extendType({
             args: {
                 id: nonNull(intArg())
             },
-            resolve(_, { id }) {
+            resolve(_, { id }, { prisma }) {
                 return prisma.project.findUnique({
                     where: { id }
                 })
@@ -102,7 +101,7 @@ const allProjects = extendType({
         t.nonNull.list.nonNull.field('allProjects', {
             type: "Project",
             args: paginationArgs({ take: 50 }),
-            resolve(_, { take, skip }) {
+            resolve(_, { take, skip }, { prisma }) {
                 return prisma.project.findMany({
                     orderBy: { votes_count: "desc" },
                     skip,
@@ -119,7 +118,7 @@ const newProjects = extendType({
         t.nonNull.list.nonNull.field('newProjects', {
             type: "Project",
             args: paginationArgs({ take: 50 }),
-            resolve(_, args) {
+            resolve(_, args, { prisma }) {
                 const take = args.take || 50;
                 const skip = args.skip || 0;
                 return prisma.project.findMany({
@@ -139,7 +138,7 @@ const hottestProjects = extendType({
         t.nonNull.list.nonNull.field('hottestProjects', {
             type: "Project",
             args: paginationArgs({ take: 50 }),
-            async resolve(_, { take, skip }) {
+            async resolve(_, { take, skip }, { prisma }) {
                 return prisma.project.findMany({
                     orderBy: { votes_count: "desc" },
                     skip,
@@ -160,7 +159,7 @@ const searchProjects = extendType({
                 ...paginationArgs({ take: 50 }),
                 search: nonNull(stringArg())
             },
-            async resolve(_, { take, skip, search }) {
+            async resolve(_, { take, skip, search }, { prisma }) {
                 return prisma.project.findMany({
                     where: {
                         OR: [{
@@ -193,7 +192,7 @@ const projectsByCategory = extendType({
                 ...paginationArgs(),
                 category_id: nonNull(intArg())
             },
-            async resolve(_, { take, skip, category_id }) {
+            async resolve(_, { take, skip, category_id }, { prisma }) {
                 return prisma.project.findMany({
                     where: { category_id },
                     orderBy: { votes_count: "desc" },
@@ -212,7 +211,7 @@ const getLnurlDetailsForProject = extendType({
         t.nonNull.field('getLnurlDetailsForProject', {
             type: "LnurlDetails",
             args: { project_id: nonNull(intArg()) },
-            async resolve(_, args) {
+            async resolve(_, args, { prisma }) {
                 const project = await prisma.project.findUnique({
                     where: {
                         id: args.project_id,
