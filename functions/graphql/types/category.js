@@ -4,6 +4,7 @@ const {
     extendType,
     nonNull,
 } = require('nexus');
+const { prisma } = require('../prisma')
 
 
 const Category = objectType({
@@ -16,13 +17,13 @@ const Category = objectType({
 
 
         t.nonNull.int('votes_sum', {
-            async resolve(parent, _, { prisma }) {
+            async resolve(parent) {
                 const projects = await prisma.category.findUnique({ where: { id: parent.id } }).project();
                 return projects.reduce((total, project) => total + project.votes_count, 0);
             }
         });
         t.nonNull.int('apps_count', {
-            async resolve(parent, _, { prisma }) {
+            async resolve(parent) {
                 const projects = await prisma.category.findUnique({ where: { id: parent.id } }).project();
                 return projects.length;
 
@@ -31,7 +32,7 @@ const Category = objectType({
 
         t.nonNull.list.nonNull.field('project', {
             type: "Project",
-            resolve: (parent, _, { prisma }) => {
+            resolve: (parent) => {
                 return parent.project ?? prisma.category.findUnique({
                     where: { id: parent.id }
                 }).project()
@@ -45,7 +46,7 @@ const allCategoriesQuery = extendType({
     definition(t) {
         t.nonNull.list.nonNull.field('allCategories', {
             type: "Category",
-            resolve: async (parent, args, { prisma }) => {
+            resolve: async () => {
                 const categories = await prisma.category.findMany({
                     include: {
                         _count: {
@@ -70,7 +71,7 @@ const getCategory = extendType({
             args: {
                 id: nonNull(intArg())
             },
-            resolve(parent, { id }, { prisma }) {
+            resolve(parent, { id }) {
                 return prisma.category.findUnique({
                     where: { id }
                 })
