@@ -20,13 +20,6 @@ type Category {
   votes_sum: Int!
 }
 
-type HottestProjectsPage {
-  apps_count: Int!
-  cover_image: String!
-  project: [Project!]!
-  title: String!
-}
-
 type LnurlDetails {
   commentAllowed: Int
   maxSendable: Int
@@ -61,7 +54,7 @@ type Query {
   getCategory(id: Int!): Category!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getProject(id: Int!): Project!
-  hottestProjects(skip: Int = 0, take: Int = 50): HottestProjectsPage!
+  hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!

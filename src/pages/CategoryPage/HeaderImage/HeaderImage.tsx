@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 type Props = {
     isLoading: boolean
     title: string
-    apps_count: number
+    apps_count?: number
     img: string
 }
 
@@ -37,9 +37,9 @@ export default function HeaderImage(props: Props) {
             <h1
                 className='text-white text-[24px] md:text-[40px]  '
             >{title}</h1>
-            <p
+            {typeof apps_count === 'number' && <p
                 className='text-white text-body4'
-            >{apps_count} apps</p>
+            >{apps_count} apps</p>}
         </div>
     )
 }

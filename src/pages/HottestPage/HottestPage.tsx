@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { useParams, Navigate } from 'react-router-dom'
+import ASSETS from 'src/assets';
+
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
 import HeaderImage from 'src/pages/CategoryPage/HeaderImage/HeaderImage';
 import ProjectsGrid from 'src/pages/CategoryPage/ProjectsGrid/ProjectsGrid';
@@ -25,14 +26,13 @@ export default function HottestPage() {
         <div className='px-32'>
             <HeaderImage
                 isLoading={loading}
-                title={data?.hottestProjects.title!}
-                img={data?.hottestProjects.cover_image!}
-                apps_count={data?.hottestProjects.apps_count!}
+                title={"Hottest Projects"}
+                img={ASSETS.Image_Hottest_Header}
             />
             <div className="mt-40">
                 <ProjectsGrid
                     isLoading={loading}
-                    projects={data?.hottestProjects?.project!}
+                    projects={data?.hottestProjects!}
                 />
             </div>
         </div>

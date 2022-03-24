@@ -40,12 +40,6 @@ export interface NexusGenObjects {
     id: number; // Int!
     title: string; // String!
   }
-  HottestProjectsPage: { // root type
-    apps_count: number; // Int!
-    cover_image: string; // String!
-    project: NexusGenRootTypes['Project'][]; // [Project!]!
-    title: string; // String!
-  }
   LnurlDetails: { // root type
     commentAllowed?: number | null; // Int
     maxSendable?: number | null; // Int
@@ -106,12 +100,6 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     votes_sum: number; // Int!
   }
-  HottestProjectsPage: { // field return type
-    apps_count: number; // Int!
-    cover_image: string; // String!
-    project: NexusGenRootTypes['Project'][]; // [Project!]!
-    title: string; // String!
-  }
   LnurlDetails: { // field return type
     commentAllowed: number | null; // Int
     maxSendable: number | null; // Int
@@ -143,7 +131,7 @@ export interface NexusGenFieldTypes {
     getCategory: NexusGenRootTypes['Category']; // Category!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getProject: NexusGenRootTypes['Project']; // Project!
-    hottestProjects: NexusGenRootTypes['HottestProjectsPage']; // HottestProjectsPage!
+    hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -180,12 +168,6 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     votes_sum: 'Int'
   }
-  HottestProjectsPage: { // field return type name
-    apps_count: 'Int'
-    cover_image: 'String'
-    project: 'Project'
-    title: 'String'
-  }
   LnurlDetails: { // field return type name
     commentAllowed: 'Int'
     maxSendable: 'Int'
@@ -217,7 +199,7 @@ export interface NexusGenFieldTypeNames {
     getCategory: 'Category'
     getLnurlDetailsForProject: 'LnurlDetails'
     getProject: 'Project'
-    hottestProjects: 'HottestProjectsPage'
+    hottestProjects: 'Project'
     newProjects: 'Project'
     projectsByCategory: 'Project'
     searchProjects: 'Project'

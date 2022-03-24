@@ -19,6 +19,7 @@
     "apollo-server": "^3.5.0",
     "apollo-server-lambda": "^3.5.0",
     "axios": "^0.24.0",
+    "env-cmd": "^10.1.0",
     "framer-motion": "^5.3.0",
     "graphql": "^16.0.1",
     "invoices": "^2.0.2",
@@ -44,17 +45,23 @@
     "webln": "^0.2.2"
   },
   "scripts": {
-    "start": "craco start",
+    "client:prod-server": "env-cmd -f ./environments/.dev.prod-server.env craco start",
+    "client:mocks": "env-cmd -f ./environments/.dev.mock-server.env craco start",
+    "client:dev-server": "env-cmd -f ./environments/.dev.server.env craco start",
+    "server:dev": "serverless offline",
     "build": "craco build",
-    "build-dev": "REACT_APP_ENABLE_MOCKS=true craco build",
+    "build:mocks": "env-cmd -f ./environments/.prod.mock-server.env craco build", 
     "test": "craco test",
     "eject": "react-scripts eject",
-    "predeploy": "set REACT_APP_FOR_GITHUB=true&& npm run build",
+
+    "predeploy": "env-cmd -f ./environments/.prod.github.env npm run build",
     "deploy": "gh-pages -d build",
     "only-deploy": "gh-pages -d build",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
-    "db:init": "prisma migrate dev",
+    "storybook": "env-cmd -f ./environments/.dev.mock-server.env start-storybook -p 6006 -s public",
+    "build-storybook": "env-cmd -f ./environments/.prod.mock-server.env build-storybook -s public",
+
+    "db:migrate-dev": "prisma migrate dev",
+    "db:migrate-deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",
     "db:seed": "prisma db seed",
     "db:gui": "prisma studio",
@@ -111,6 +118,7 @@
     "msw": "^0.39.1",
     "netlify-cli": "^8.15.0",
     "postcss": "^7.0.39",
+    "serverless-offline": "^8.5.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   },
   "msw": {

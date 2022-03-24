@@ -1,6 +1,6 @@
 const { makeSchema } = require('nexus');
 const { join } = require('path');
-const types = require('../services')
+const types = require('../types')
 
 
 const schema = makeSchema({
