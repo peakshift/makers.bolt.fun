@@ -35,8 +35,8 @@ export interface NexusGenObjects {
     url: string; // String!
   }
   Category: { // root type
-    cover_image: string; // String!
-    icon: string; // String!
+    cover_image?: string | null; // String
+    icon?: string | null; // String
     id: number; // Int!
     title: string; // String!
   }
@@ -93,8 +93,8 @@ export interface NexusGenFieldTypes {
   }
   Category: { // field return type
     apps_count: number; // Int!
-    cover_image: string; // String!
-    icon: string; // String!
+    cover_image: string | null; // String
+    icon: string | null; // String
     id: number; // Int!
     project: NexusGenRootTypes['Project'][]; // [Project!]!
     title: string; // String!

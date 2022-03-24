@@ -12,8 +12,8 @@ type Award {
 
 type Category {
   apps_count: Int!
-  cover_image: String!
-  icon: String!
+  cover_image: String
+  icon: String
   id: Int!
   project: [Project!]!
   title: String!
