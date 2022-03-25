@@ -36,10 +36,6 @@ export function searchProjects(search: string) {
 }
 
 export function hottestProjects() {
-    return {
-        title: "Hottest Projects",
-        cover_image: ASSETS.Image_Hottest_Header,
-        apps_count: 20,
-        project: MOCK_DATA.projects.sort((p1, p2) => p2.votes_count - p1.votes_count).slice(0, 20)
-    }
+    return MOCK_DATA.projects.sort((p1, p2) => p2.votes_count - p1.votes_count).slice(0, 20)
+
 }

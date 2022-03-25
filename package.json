@@ -64,8 +64,7 @@
     "db:migrate-deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",
     "db:seed": "prisma db seed",
-    "db:gui": "prisma studio",
-    "netlify:start": "netlify dev"
+    "db:gui": "prisma studio"
   },
   "prisma": {
     "seed": "node prisma/seed/index.js"

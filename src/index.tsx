@@ -6,11 +6,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 
-if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_ENABLE_MOCKS) {
+if (process.env.REACT_APP_ENABLE_MOCKS) {
   const { worker } = require('./mocks/browser')
-  // worker.start({
-  //   onUnhandledRequest: 'bypass'
-  // })
+  worker.start({
+    onUnhandledRequest: 'bypass'
+  })
 }
 
 

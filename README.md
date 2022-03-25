@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Makers.Bolt.Fun
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A lightning apps directory made for and by the bitcoin community.
 
+## Environment Setup
+
+To run the project locally, you need to have [Node.Js](https://nodejs.org/en/download/) installed on your machine.
+
+1- Either clone the project or download it as Zip from the github repository.
+2- Inside the project folder, open the cmd and run `npm install` to install all the libraries used by the project.
+3- You are ready to start !!!
+
+# Client Application
+
+The client app is built in React + TypeScript.
+To start the client app on your machine, open the CMD in the project root directory, then you will run **one** of the commands below:
+
+1- `npm run client:prod-server`
+This will run the application and will use the real backend api to get the data.
+
+2- `npm run client:mocks`
+This will spin up a local mocks server with mock data, so you can use the app offline.
+
+3- `npm run client:dev-server`
+This will assume that you have a local api server running on port 8888, and will connect to it.
+
+In all cases, the application will be running on http://localhost:3000
+
+# Backend API
+
+We are using serverless functions to serve our GraphQl endpoint to the client app.
+
+## Running locally
+
+First, you need to have a Postegre Database to store the data, then you need to put the connection string in an .env file in your project root directory.
+The connection string will be of the format:
+postgresql://username:password@server/database_name
+
+Then you need to run the migrations against your database.
+use the command:
+
+### `npm run db:migrate-dev`
+
+Finally, you can start the serverless functions using the command:
+
+### `npm run server:dev`
+
+And your functions will be served on http://localhost:8888/dev/graphql
 
 ## Database
 
-Set the `DATABASE_URL` environment variable for your PostgreSQL DB. (e.g. `postgres://bumi@127.0.0.1:5432/bolt_fun_dev`)
-
-### `prisma studio`
+`prisma studio`
 
 prisma studio runs an UI for the DB
 
-### `prisma migrate dev`
+`prisma migrate dev`
 
 Create a migration from the schema.prisma file
 
-### `prisma migrate deploy`
+`prisma migrate deploy`
 
 Apply pending migrations to the database
-
-
-## GraphQL
-
-GraphQL endpoint is available as netlify function on: `.netlify/functions/graphql`
-
-Use the Apollo GraphQL Studio to to inspect the GraphQL API: [https://studio.apollographql.com/sandbox/explorer](https://studio.apollographql.com/sandbox/explorer)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
