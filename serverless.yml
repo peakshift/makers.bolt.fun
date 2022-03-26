@@ -17,14 +17,6 @@ functions:
       - http:
           path: graphql
           method: post
-          cors:
-            origin: "*"
-            headers: "*"
-            allowCredentials: false
       - http:
           path: graphql
           method: get
-          cors:
-            origin: "*"
-            headers: "*"
-            allowCredentials: false
