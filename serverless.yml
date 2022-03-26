@@ -1,6 +1,7 @@
 custom:
   serverless-offline:
     httpPort: 8888
+    corsAllowHeaders: "*"
 
 plugins:
   - serverless-offline
