@@ -2,8 +2,7 @@
 import { openModal } from 'src/redux/features/modals.slice';
 import { toggleSearch } from 'src/redux/features/ui.slice';
 import { useAppDispatch } from 'src/utils/hooks';
-import { ProjectCard } from 'src/utils/interfaces'
-import { ProjectSearchItem } from '../query';
+import { ProjectSearchItem } from '../Search';
 import SearchProjectCard from '../SearchProjectCard/SearchProjectCard';
 import styles from './styles.module.css'
 

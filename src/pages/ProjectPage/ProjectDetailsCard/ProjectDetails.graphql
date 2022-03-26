@@ -1,0 +1,28 @@
+query ProjectDetails($projectId: Int!) {
+  getProject(id: $projectId) {
+    id
+    title
+    description
+    cover_image
+    thumbnail_image
+    screenshots
+    website
+    lightning_address
+    lnurl_callback_url
+    votes_count
+    category {
+      id
+      title
+    }
+    awards {
+      title
+      image
+      url
+      id
+    }
+    tags {
+      id
+      title
+    }
+  }
+}

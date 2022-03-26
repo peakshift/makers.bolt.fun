@@ -1,0 +1,11 @@
+query SearchProjects($search: String!) {
+  searchProjects(search: $search) {
+    id
+    thumbnail_image
+    title
+    category {
+      title
+      id
+    }
+  }
+}

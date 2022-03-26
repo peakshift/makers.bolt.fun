@@ -1,16 +1,15 @@
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
-import { useQuery } from "@apollo/client";
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
-import { PROJECT_BY_ID_QUERY, PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS } from './query'
 import { AiFillThunderbolt } from 'react-icons/ai';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 import VoteButton from 'src/pages/ProjectPage/VoteButton/VoteButton';
 import { Wallet_Service } from 'src/services'
+import { useProjectDetailsQuery } from 'src/graphql';
 
 
 interface Props extends ModalCard {
@@ -21,15 +20,16 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
 
     const dispatch = useAppDispatch();
 
-    const { loading } = useQuery<PROJECT_BY_ID_RES, PROJECT_BY_ID_VARS>(
-        PROJECT_BY_ID_QUERY,
-        {
-            variables: { projectId: projectId },
-            onCompleted: data => {
-                dispatch(setProject(data.getProject))
-            },
-        }
-    );
+   
+
+    const { loading } =useProjectDetailsQuery({
+        variables: { projectId: projectId },
+        onCompleted: data => { 
+            dispatch(setProject(data.getProject))
+        },
+    });
+
+
 
     const { isWalletConnected, project, isMobileScreen } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,

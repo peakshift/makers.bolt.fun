@@ -3,15 +3,16 @@ import { motion } from 'framer-motion'
 import { BsSearch } from 'react-icons/bs';
 import { useClickOutside, useThrottledCallback } from '@react-hookz/web'
 import SearchResults from './SearchResults/SearchResults'
-import { useLazyQuery } from '@apollo/client';
-import { SEARCH_PROJECTS_QUERY, SEARCH_PROJECTS_QUERY_RES_TYPE, SEARCH_PROJECTS_QUERY_VARS } from './query';
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { toggleSearch } from 'src/redux/features/ui.slice';
+import { SearchProjectsQuery, useSearchProjectsLazyQuery } from 'src/graphql';
 
 interface Props {
     height?: number | string;
     width?: number | string;
 }
+
+export type ProjectSearchItem = SearchProjectsQuery['searchProjects'][number];
 
 const SearchResultsListVariants = {
     hidden: {
@@ -46,8 +47,8 @@ export default function Search({
             dispatch(toggleSearch(false))
     })
 
-    const [executeQuery, { data, loading }] = useLazyQuery<SEARCH_PROJECTS_QUERY_RES_TYPE, SEARCH_PROJECTS_QUERY_VARS>(SEARCH_PROJECTS_QUERY);
 
+    const [executeQuery, { data, loading }] = useSearchProjectsLazyQuery()
 
     const throttledExecuteQuery = useThrottledCallback((search: string) => {
         executeQuery({

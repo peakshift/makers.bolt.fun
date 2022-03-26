@@ -1,4 +1,5 @@
-import { Image, Tag } from ".";
+import { Tag } from "src/graphql";
+import { Image } from ".";
 
 export interface Project {
     id: number;
@@ -6,10 +7,10 @@ export interface Project {
     category: Pick<ProjectCategory, 'id' | 'title'>;
     website?: string;
     description: string;
-    tags: Tag[];
+    tags: Pick<Tag, 'id' | 'title'>[];
     cover_image: Image;
     thumbnail_image: Image;
-    lightning_address: string,
+    lightning_address?: string | null,
     screenshots: Image[];
     votes_count: number;
 }

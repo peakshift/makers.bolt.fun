@@ -1,16 +1,15 @@
-import { useQuery } from '@apollo/client';
 import { useParams, Navigate } from 'react-router-dom'
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
+import { useCategoryPageQuery } from 'src/graphql';
 import HeaderImage from './HeaderImage/HeaderImage';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
-import { PROJECTS_IN_CATEGORY_QUERY, PROJECTS_IN_CATEGORY_QUERY_RES_TYPE, PROJECTS_IN_CATEGORY_QUERY_VARS } from './query';
 
 export default function CategoryPage() {
 
     const { id } = useParams();
 
 
-    const { data, loading, error } = useQuery<PROJECTS_IN_CATEGORY_QUERY_RES_TYPE, PROJECTS_IN_CATEGORY_QUERY_VARS>(PROJECTS_IN_CATEGORY_QUERY, {
+    const { data, loading, error } = useCategoryPageQuery({
         skip: !id,
         variables: {
             categoryId: Number(id)
