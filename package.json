@@ -50,7 +50,7 @@
     "client:mocks": "env-cmd -f ./environments/.dev.mock-server.env craco start",
     "client:dev-server": "env-cmd -f ./environments/.dev.server.env craco start",
     "server:dev": "serverless offline",
-    "generate-graphql":"graphql-codegen",
+    "generate-graphql": "graphql-codegen",
     "build": "craco build",
     "build:mocks": "env-cmd -f ./environments/.prod.mock-server.env craco build",
     "test": "craco test",
