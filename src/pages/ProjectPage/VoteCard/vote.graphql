@@ -1,0 +1,23 @@
+mutation Vote($projectId: Int!, $amountInSat: Int!) {
+  vote(project_id: $projectId, amount_in_sat: $amountInSat) {
+    id
+    amount_in_sat
+    payment_request
+    payment_hash
+    paid
+  }
+}
+
+mutation ConfirmVote($paymentRequest: String!, $preimage: String!) {
+  confirmVote(payment_request: $paymentRequest, preimage: $preimage) {
+    id
+    amount_in_sat
+    payment_request
+    payment_hash
+    paid
+    project {
+      id
+      votes_count
+    }
+  }
+}

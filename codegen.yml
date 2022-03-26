@@ -1,11 +1,12 @@
 overwrite: true
-schema: "https://deploy-preview-2--makers-bolt-fun.netlify.app/.netlify/functions/graphql"
-documents: "./src/components/**/*.{ts,tsx}"
+schema: "https://makers-bolt-fun-preview.netlify.app/.netlify/functions/graphql"
+documents: "./src/**/*.{ts,graphql}"
 generates:
-  src/generated/graphql.tsx:
+  src/graphql/index.tsx:
     plugins:
       - "typescript"
       - "typescript-operations"
       - "typescript-react-apollo"
     config:
       withHooks: true
+      avoidOptionals: true

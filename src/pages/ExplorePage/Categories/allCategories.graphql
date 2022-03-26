@@ -1,0 +1,6 @@
+query AllCategories {
+  allCategories {
+    id
+    title
+  }
+}

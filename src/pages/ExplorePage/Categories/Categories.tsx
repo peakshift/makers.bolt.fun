@@ -1,13 +1,13 @@
 import { useQuery } from '@apollo/client';
-import { ALL_CATEGORIES_QUERY, ALL_CATEGORIES_QUERY_RES } from './query';
 import Badge from 'src/Components/Badge/Badge'
 import Slider from 'src/Components/Slider/Slider'
 import { useNavigate } from 'react-router-dom';
+import { useAllCategoriesQuery } from 'src/graphql';
 
 
 export default function Categories() {
 
-    const { data, loading } = useQuery<ALL_CATEGORIES_QUERY_RES>(ALL_CATEGORIES_QUERY);
+    const { data, loading } = useAllCategoriesQuery();
     const navigate = useNavigate();
 
     if (loading || !data)

@@ -1,6 +1,6 @@
 
-import { ProjectSearchItem } from '../query'
 import SearchProjectCardSkeleton from './SearchProjectCard.Skeleton'
+import { ProjectSearchItem } from '../Search';
 
 type Props =
     {

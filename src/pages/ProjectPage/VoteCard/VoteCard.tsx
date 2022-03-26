@@ -8,8 +8,8 @@ import { gql, useMutation, useApolloClient } from "@apollo/client";
 import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
 import styles from './style.module.css'
-import { CONFIRM_VOTE_QUERY, CONFIRM_VOTE_QUERY_RES_TYPE, VOTE_QUERY, VOTE_QUERY_RES_TYPE } from './query';
 import { useWindowSize } from '@react-hookz/web';
+import { useConfirmVoteMutation, useVoteMutation } from 'src/graphql';
 
 const defaultOptions = [
     { text: '100 sat', value: 100 },
@@ -46,7 +46,7 @@ export default function VoteCard({ onClose, direction, initVotes, projectId, ...
     const [voteAmount, setVoteAmount] = useState<number>(initVotes ?? 10);
     const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(PaymentStatus.DEFAULT);
 
-    const [vote, { data }] = useMutation<VOTE_QUERY_RES_TYPE>(VOTE_QUERY, {
+    const [vote, { data }] = useVoteMutation({
         onCompleted: async (votingData) => {
             try {
                 setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
@@ -75,11 +75,7 @@ export default function VoteCard({ onClose, direction, initVotes, projectId, ...
         }
     });
 
-    const [confirmVote, { data: confirmedVoteData }] = useMutation<CONFIRM_VOTE_QUERY_RES_TYPE>(CONFIRM_VOTE_QUERY, {
-        refetchQueries: [
-            'Project',
-            'AllCategoriesProjects'
-        ],
+    const [confirmVote, { data: confirmedVoteData }] = useConfirmVoteMutation({
         onCompleted: (votingData) => {
             setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
             setTimeout(() => {

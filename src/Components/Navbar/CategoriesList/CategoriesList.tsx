@@ -1,8 +1,7 @@
-import { useQuery } from '@apollo/client'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
+import { useNavCategoriesQuery } from 'src/graphql'
 import { numberFormatter } from 'src/utils/helperFunctions'
-import { ALL_CATEGORIES_QUERY, ALL_CATEGORIES_QUERY_RES } from './query'
 
 interface Props {
     // categories: Pick<ProjectCategory, 'id' | 'title' | 'icon' | 'votes_sum'>[]
@@ -13,8 +12,7 @@ interface Props {
 
 export default function CategoriesList({ classes = {}, onClick }: Props) {
 
-
-    const { data, loading } = useQuery<ALL_CATEGORIES_QUERY_RES>(ALL_CATEGORIES_QUERY);
+    const { data, loading } = useNavCategoriesQuery()
 
 
     if (loading)
