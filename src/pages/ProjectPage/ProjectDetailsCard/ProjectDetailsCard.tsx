@@ -20,11 +20,11 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
 
     const dispatch = useAppDispatch();
 
-   
 
-    const { loading } =useProjectDetailsQuery({
+
+    const { loading } = useProjectDetailsQuery({
         variables: { projectId: projectId },
-        onCompleted: data => { 
+        onCompleted: data => {
             dispatch(setProject(data.getProject))
         },
     });
@@ -82,8 +82,8 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
             </div>
             <div className="p-24">
                 <div className="flex gap-24 items-start">
-                    <div className="flex-shrink-0 w-[93px] h-[93px] rounded-md overflow-hidden">
-                        <img className="w-full h-full object-cover" src={project?.thumbnail_image} alt="" />
+                    <div className="flex-shrink-0 w-[93px] h-[93px] rounded-md overflow-hidden border">
+                        <img className="w-full h-full" src={project?.thumbnail_image} alt="" />
                     </div>
                     <div className='flex flex-col items-start justify-between self-stretch'>
                         <h3 className="text-h3 font-regular">{project?.title}</h3>
