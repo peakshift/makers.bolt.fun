@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
@@ -10,6 +11,7 @@ import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 import VoteButton from 'src/pages/ProjectPage/VoteButton/VoteButton';
 import { Wallet_Service } from 'src/services'
 import { useProjectDetailsQuery } from 'src/graphql';
+import Lightbox from 'src/Components/Lightbox/Lightbox'
 
 
 interface Props extends ModalCard {
@@ -19,6 +21,8 @@ interface Props extends ModalCard {
 export default function ProjectDetailsCard({ onClose, direction, projectId, ...props }: Props) {
 
     const dispatch = useAppDispatch();
+    const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
+
 
 
 
@@ -113,14 +117,26 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
                         <Button size='md' fullWidth className="bg-gray-200 hover:bg-gray-100 mb-24" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet to Vote</Button>
                     }
                 </div>
-                {project.screenshots.length > 0 && <div className="mt-40">
-                    <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
-                    <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
-                        {project.screenshots.map((screenshot, idx) => <div key={idx} className="w-full relative pt-[56%]">
-                            <img src={screenshot} className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl" alt='' />
-                        </div>)}
+                {project.screenshots.length > 0 && <>
+                    <div className="mt-40">
+                        <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
+                        <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
+                            {project.screenshots.map((screenshot, idx) => <div
+                                key={idx}
+                                className="w-full relative pt-[56%] cursor-pointer"
+                                onClick={() => setScreenshotsOpen(idx)}
+                            >
+                                <img src={screenshot} className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl" alt='' />
+                            </div>)}
+                        </div>
                     </div>
-                </div>}
+                    <Lightbox
+                        images={project.screenshots}
+                        isOpen={screenshotsOpen !== -1}
+                        initOpenIndex={screenshotsOpen}
+                        onClose={() => setScreenshotsOpen(-1)}
+                    />
+                </>}
                 <hr className="my-40" />
                 <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project?</h3>
