@@ -182,7 +182,7 @@ export type AllCategoriesQuery = { __typename?: 'Query', allCategories: Array<{ 
 export type ExploreProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ExploreProjectsQuery = { __typename?: 'Query', allCategories: Array<{ __typename?: 'Category', id: number, title: string, project: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, votes_count: number }> }>, newProjects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> };
+export type ExploreProjectsQuery = { __typename?: 'Query', allCategories: Array<{ __typename?: 'Category', id: number, title: string, project: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> }>, newProjects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> };
 
 export type HottestProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -384,6 +384,10 @@ export const ExploreProjectsDocument = gql`
       thumbnail_image
       title
       votes_count
+      category {
+        title
+        id
+      }
     }
   }
   newProjects {

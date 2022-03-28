@@ -7,6 +7,10 @@ query ExploreProjects {
       thumbnail_image
       title
       votes_count
+      category {
+        title
+        id
+      }
     }
   }
   newProjects {
