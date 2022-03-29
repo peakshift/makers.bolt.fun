@@ -59,17 +59,19 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
 
                 <div className="mt-40">
                     <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
-                    <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
 
-                        <div className="w-full relative pt-[56%]">
-                            <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-200 rounded-xl"></div>
-                        </div>
-                        <div className="w-full relative pt-[56%]">
-                            <div className="absolute top-0 left-0 w-full h-full object-cover bg-gray-200 rounded-xl"></div>
-                        </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
+                        {
+                            Array(4).fill(0).map((_, idx) => <div key={idx} className="w-full relative pt-[56%] cursor-pointer bg-gray-200 shadow-sm rounded-10 overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-full object-cover"></div>
+                            </div>)
+                        }
                     </div>
                 </div>
+                <hr className="my-40" />
+                <div className="text-center h-[100px]">
 
+                </div>
             </div>
         </motion.div>
     )

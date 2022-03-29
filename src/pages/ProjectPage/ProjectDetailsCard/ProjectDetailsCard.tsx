@@ -92,7 +92,7 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
                     </div>
                     <div className='flex flex-col items-start justify-between self-stretch'>
                         <h3 className="text-h3 font-regular">{project?.title}</h3>
-                        <a className="text-blue-400 font-regular text-body4 truncate max-w-[20ch]" target='_blank' rel="noreferrer" href={project?.website}>{project?.website?.replace(/(^\w+:|^)\/\//, '')}</a>
+                        <a className="text-blue-400 font-regular text-body4 truncate max-w-[20ch]" target='_blank' rel="noreferrer" href={project?.website}>{project?.website?.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, "")}</a>
                         <div>
                             <span className="chip-small font-light text-body5 py-4 px-12 mr-8"> {project?.category.title}</span>
 
@@ -128,13 +128,13 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
                 {project.screenshots.length > 0 && <>
                     <div className="mt-40">
                         <h3 className="text-h5 font-bold mb-16">Screenshots</h3>
-                        <div className="grid grid-cols-2 gap-12 justify-items-center md:gap-24">
-                            {project.screenshots.map((screenshot, idx) => <div
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
+                            {project.screenshots.slice(0, 4).map((screenshot, idx) => <div
                                 key={idx}
-                                className="w-full relative pt-[56%] cursor-pointer"
+                                className="w-full relative pt-[56%] cursor-pointer bg-gray-300 shadow-sm rounded-10 overflow-hidden"
                                 onClick={() => setScreenshotsOpen(idx)}
                             >
-                                <img src={screenshot} className="absolute top-0 left-0 w-full h-full object-cover bg-gray-300 rounded-xl" alt='' />
+                                <img src={screenshot} className="absolute top-0 left-0 w-full h-full object-cover" alt='' />
                             </div>)}
                         </div>
                     </div>
