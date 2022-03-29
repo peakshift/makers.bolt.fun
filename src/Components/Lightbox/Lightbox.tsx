@@ -30,9 +30,8 @@ export default function Lightbox(props: Props) {
 
     return (
         <>
-            {isOpen && <div className="z-[100000111]">
+            {isOpen &&
                 <LightboxComponent
-                    wrapperClassName='fixed z-[10000022]'
                     mainSrc={props.images[photoIndex]}
                     nextSrc={props.images[(photoIndex + 1) % props.images.length]}
                     prevSrc={props.images[(photoIndex + props.images.length - 1) % props.images.length]}
@@ -45,8 +44,7 @@ export default function Lightbox(props: Props) {
                         setPhotoIndex((photoIndex + 1) % props.images.length)
                     }
                     imagePadding={48}
-                />
-            </div>}
+                />}
         </>
     )
 }
