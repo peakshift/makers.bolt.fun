@@ -25,7 +25,7 @@ export default function ErrorMessage({
             <p >
                 {messageToShow}
             </p>
-            <Link to='/' className='text-primary-500 mt-36 underline' >Back to home page</Link>
+            <a href='/' className='text-primary-500 mt-36 underline' >Back to home page</a>
         </div>
     )
 }

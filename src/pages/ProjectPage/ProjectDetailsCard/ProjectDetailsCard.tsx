@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
@@ -13,6 +13,7 @@ import { Wallet_Service } from 'src/services'
 import { useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
+import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
 
 
 interface Props extends ModalCard {
@@ -27,12 +28,19 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
 
 
 
-    const { loading } = useProjectDetailsQuery({
+    const { loading, error } = useProjectDetailsQuery({
         variables: { projectId: projectId },
         onCompleted: data => {
             dispatch(setProject(data.getProject))
         },
     });
+
+    useEffect(() => {
+        return () => {
+            dispatch(setProject(null))
+        }
+    }, [dispatch])
+
 
 
 
@@ -43,6 +51,14 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
     }));
 
 
+    if (error)
+        return <div
+            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && 'rounded-0 w-full min-h-screen'}`}
+        >
+            <div className="p-64">
+                <ErrorMessage type='fetching' message='Something Wrong happened while fetching project details, please try refreshing the page' />
+            </div>
+        </div>
 
     if (loading || !project)
         return <ProjectCardSkeleton onClose={onClose} direction={direction} isPageModal={props.isPageModal} />;

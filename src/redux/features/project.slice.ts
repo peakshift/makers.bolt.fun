@@ -14,13 +14,11 @@ export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    setProject(state, action: PayloadAction<Project>) {
+    setProject(state, action: PayloadAction<Project | null>) {
       state.project = action.payload;
     },
 
-    unsetProject(state) {
-      state.project = null;
-    },
+
   },
 });
 
