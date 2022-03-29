@@ -12,6 +12,7 @@ import VoteButton from 'src/pages/ProjectPage/VoteButton/VoteButton';
 import { Wallet_Service } from 'src/services'
 import { useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
+import linkifyHtml from 'linkify-html';
 
 
 interface Props extends ModalCard {
@@ -108,7 +109,14 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
                         }
                     </div>
                 </div>
-                <p className="mt-40 text-body4 leading-normal">{project?.description}</p>
+                <p className="mt-40 text-body4 leading-normal" dangerouslySetInnerHTML={{
+                    __html: linkifyHtml(project?.description, {
+                        className: ' text-blue-500 underline',
+                        defaultProtocol: 'https',
+                        target: "_blank",
+                        rel: 'noreferrer'
+                    })
+                }}></p>
                 <div className="md:hidden">
                     <Button color='primary' size='md' fullWidth href={project.website} newTab className="w-full mt-24 mb-16">Visit <BsJoystick /></Button>
                     {isWalletConnected ?
