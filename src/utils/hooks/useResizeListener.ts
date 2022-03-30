@@ -11,6 +11,7 @@ export const useResizeListener = (
     func();
 
     window.addEventListener("resize", listener);
+
     return () => {
       window.removeEventListener("resize", listener);
     };

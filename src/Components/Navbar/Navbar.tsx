@@ -1,7 +1,7 @@
 import NavMobile from "./NavMobile";
 import { MdHomeFilled, MdLocalFireDepartment } from "react-icons/md";
 import { IoExtensionPuzzle } from "react-icons/io5";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import { setNavHeight } from "src/redux/features/ui.slice";
@@ -54,21 +54,21 @@ export default function Navbar() {
   };
 
 
+  useEffect(() => {
+    const nav = document.querySelector("nav");
 
-  const resizeCb = useCallback(
-    () => {
-      const nav = document.querySelector("nav");
-      if (nav) {
-        const navStyles = getComputedStyle(nav);
-        if (navStyles.display !== "none") {
-          dispatch(setNavHeight(nav.clientHeight));
-          document.body.style.paddingTop = `${nav.clientHeight}px`;
-        }
+    if (nav) {
+      const navStyles = getComputedStyle(nav);
+      if (navStyles.display !== "none") {
+        dispatch(setNavHeight(nav.clientHeight));
+        document.body.style.paddingTop = `${nav.clientHeight}px`;
       }
-    },
-    [dispatch],
-  )
-  useResizeListener(resizeCb);
+    }
+
+
+  }, [dispatch, isMobileScreen, isLargeScreen])
+
+
 
 
   return (
