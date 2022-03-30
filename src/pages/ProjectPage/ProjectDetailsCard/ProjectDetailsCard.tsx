@@ -33,6 +33,9 @@ export default function ProjectDetailsCard({ onClose, direction, ...props }: Pro
         isMobileScreen: state.ui.isMobileScreen
     }));
 
+    console.log(projectId);
+
+
 
     const { loading, error } = useProjectDetailsQuery({
         variables: { projectId: projectId! },

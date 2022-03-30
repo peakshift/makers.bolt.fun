@@ -5,7 +5,7 @@ import walletSlice from "./features/wallet.slice";
 import voteSlice from "./features/vote.slice";
 import uiSlice from "./features/ui.slice";
 
-export const store = configureStore({
+const defaultStore = configureStore({
   reducer: {
     modals: modalsSlice,
     project: projectSlice,
@@ -14,6 +14,21 @@ export const store = configureStore({
     ui: uiSlice,
   },
 });
+
+export let store = defaultStore;
+
+export const createReduxStore = (initalState?: Partial<RootState>) => {
+  return store = configureStore({
+    reducer: {
+      modals: modalsSlice,
+      project: projectSlice,
+      wallet: walletSlice,
+      vote: voteSlice,
+      ui: uiSlice,
+    },
+    preloadedState: initalState
+  });
+}
 
 export type RootState = ReturnType<typeof store.getState>;
 

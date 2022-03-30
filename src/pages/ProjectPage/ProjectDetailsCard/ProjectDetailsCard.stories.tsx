@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import { ModifyArgs } from 'src/utils/storybook/utils'
 import ProjectDetailsCard from './ProjectDetailsCard';
 import ProjectDetailsCardSkeleton from './ProjectDetailsCard.Skeleton';
 
@@ -9,7 +9,16 @@ export default {
     title: 'Project/Project Details Card',
     component: ProjectDetailsCard,
 
-    decorators: [ModalsDecorator]
+    decorators: [ModalsDecorator],
+    parameters: {
+        modifyArgs: {
+            store: {
+                project: {
+                    openId: 1
+                }
+            }
+        } as ModifyArgs
+    }
 } as ComponentMeta<typeof ProjectDetailsCard>;
 
 const Template: ComponentStory<typeof ProjectDetailsCard> = (args) => <ProjectDetailsCard {...args} />;
@@ -18,6 +27,7 @@ export const Default = Template.bind({
 });
 
 Default.args = {
+
 }
 
 
