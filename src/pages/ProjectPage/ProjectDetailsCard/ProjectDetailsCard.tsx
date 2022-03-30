@@ -14,25 +14,32 @@ import { useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
+import { setVoteAmount } from 'src/redux/features/vote.slice';
 
 
 interface Props extends ModalCard {
-    projectId: number
 }
 
-export default function ProjectDetailsCard({ onClose, direction, projectId, ...props }: Props) {
+export default function ProjectDetailsCard({ onClose, direction, ...props }: Props) {
 
     const dispatch = useAppDispatch();
     const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
 
 
+    const { isWalletConnected, project, projectId, isMobileScreen } = useAppSelector(state => ({
+        isWalletConnected: state.wallet.isConnected,
+        project: state.project.project,
+        projectId: state.project.openId,
+        isMobileScreen: state.ui.isMobileScreen
+    }));
 
 
     const { loading, error } = useProjectDetailsQuery({
-        variables: { projectId: projectId },
+        variables: { projectId: projectId! },
         onCompleted: data => {
             dispatch(setProject(data.getProject))
         },
+        skip: !Boolean(projectId)
     });
 
     useEffect(() => {
@@ -40,15 +47,6 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
             dispatch(setProject(null))
         }
     }, [dispatch])
-
-
-
-
-    const { isWalletConnected, project, isMobileScreen } = useAppSelector(state => ({
-        isWalletConnected: state.wallet.isConnected,
-        project: state.project.project,
-        isMobileScreen: state.ui.isMobileScreen
-    }));
 
 
     if (error)
@@ -68,14 +66,8 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
     }
 
     const onVote = (votes?: number) => {
-
-        if (!isWalletConnected) {
-            dispatch(scheduleModal({ Modal: 'VoteCard', props: { initVotes: votes, projectId: project.id } }))
-            dispatch(openModal({
-                Modal: 'Login_ScanningWalletCard'
-            }))
-        } else
-            dispatch(openModal({ Modal: 'VoteCard', props: { initVotes: votes, projectId: project.id } }))
+        dispatch(setVoteAmount(votes ?? 10));
+        dispatch(openModal({ Modal: 'VoteCard' }))
     }
 
 
@@ -147,7 +139,7 @@ export default function ProjectDetailsCard({ onClose, direction, projectId, ...p
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
                             {project.screenshots.slice(0, 4).map((screenshot, idx) => <div
                                 key={idx}
-                                className="w-full relative pt-[56%] cursor-pointer bg-gray-300 shadow-sm rounded-10 overflow-hidden"
+                                className="w-full relative pt-[56%] cursor-pointer bg-gray-300 border rounded-10 overflow-hidden"
                                 onClick={() => setScreenshotsOpen(idx)}
                             >
                                 <img src={screenshot} className="absolute top-0 left-0 w-full h-full object-cover" alt='' />

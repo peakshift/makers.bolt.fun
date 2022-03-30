@@ -9,6 +9,7 @@ import { useResizeListener } from 'src/utils/hooks'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import './style.css';
 import { Link } from "react-router-dom";
+import { openProject } from "src/redux/features/project.slice";
 
 interface Props {
     title: string | ReactNode,
@@ -61,8 +62,10 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
 
 
     const handleClick = (projectId: number) => {
-        if (!drag.current)
-            dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
+        if (!drag.current) {
+            dispatch(openProject(projectId));
+            dispatch(openModal({ Modal: "ProjectDetailsCard" }))
+        }
     }
 
     const recalcItemsCnt = useCallback(

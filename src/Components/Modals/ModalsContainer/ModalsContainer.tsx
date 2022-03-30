@@ -7,7 +7,7 @@ import { Portal } from "../../Portal/Portal";
 
 export interface ModalCard {
     onClose?: () => void;
-    direction: number;
+    direction?: number;
     isPageModal?: boolean;
 }
 
@@ -17,7 +17,9 @@ export const modalCardVariants = {
         if (direction === Direction.START) return { opacity: 0, y: 300 };
         else if (direction === Direction.NEXT) return { opacity: 0, x: 300 };
         else if (direction === Direction.PREVIOUS) return { opacity: 0, x: -300 };
-        return {}
+        return {
+
+        }
     },
     animate: {
         x: 0, y: 0, opacity: 1, transition: { type: "spring" }

@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
 
 import 'react-multi-carousel/lib/styles.css';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'react-loading-skeleton/dist/skeleton.css'
 
 

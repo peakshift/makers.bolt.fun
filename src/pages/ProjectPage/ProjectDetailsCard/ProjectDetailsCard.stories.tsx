@@ -18,7 +18,6 @@ export const Default = Template.bind({
 });
 
 Default.args = {
-    projectId: 3
 }
 
 

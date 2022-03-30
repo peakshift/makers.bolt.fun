@@ -1,14 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Claim_CopySignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_CopySignatureCard";
-import Claim_GenerateSignatureCard from "src/pages/ProjectPage/ClaimProject/Claim_GenerateSignatureCard";
-import Login_ExternalWalletCard from "src/Components/Modals/Login/Login_ExternalWalletCard";
-import Login_NativeWalletCard from "src/Components/Modals/Login/Login_NativeWalletCard";
-import Login_SuccessCard from "src/Components/Modals/Login/Login_SuccessCard";
-import Login_ScanningWalletCard from "src/Components/Modals/Login/Login_ScanningWalletCard";
-import ProjectDetailsCard from "src/pages/ProjectPage/ProjectDetailsCard/ProjectDetailsCard";
+import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
+import { ProjectDetailsCard } from "src/pages/ProjectPage/ProjectDetailsCard";
 import VoteCard from "src/pages/ProjectPage/VoteCard/VoteCard";
-import Claim_SubmittedCard from "src/pages/ProjectPage/ClaimProject/Claim_SubmittedCard";
-import Claim_FundWithdrawCard from "src/pages/ProjectPage/ClaimProject/Claim_FundWithdrawCard";
+import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ComponentProps } from "react";
 
@@ -85,13 +79,8 @@ export const modalSlice = createSlice({
     },
 
     scheduleModal(state, action: PayloadAction<ModalAction>) {
-
-      let props: any = {};
-      if ('props' in action.payload) props = { ...action.payload.props }
-
       state.toOpenLater = {
         Modal: action.payload.Modal,
-        props,
       };
     },
 
@@ -114,9 +103,8 @@ export const modalSlice = createSlice({
     ) {
       state.direction = Direction.START;
       state.isOpen = true;
-      let props: any = {};
-      if ('props' in action.payload) props = { ...action.payload.props }
 
+      let props: any = {};
       props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
 
       state.openModals.push({
@@ -134,8 +122,6 @@ export const modalSlice = createSlice({
 
 
       let props: any = {};
-      if ('props' in action.payload) props = { ...action.payload.props }
-
       props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
 
       state.openModals.push({
