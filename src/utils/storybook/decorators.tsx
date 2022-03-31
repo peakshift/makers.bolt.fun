@@ -5,35 +5,21 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { createReduxStore } from 'src/redux/store';
 import { useWrapperSetup } from '../Wrapper';
 import { ModifyArgs } from './utils';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Modal from 'src/Components/Modals/Modal/Modal';
 import { worker } from 'src/mocks/browser'
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Add the global stuff first (index.ts)
 // -------------------------------------------
 
 import "react-multi-carousel/lib/styles.css";
 import 'react-loading-skeleton/dist/skeleton.css'
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from '../apollo';
 
-if (process.env.NODE_ENV === 'development') {
-    worker.start({
-        onUnhandledRequest: 'bypass'
-    })
-}
 
 // -------------------------------------------
 // -------------------------------------------
-
-
-let apiClientUri = 'https://makers-bolt-fun-preview.netlify.app/.netlify/functions/graphql';
-
-if (process.env.REACT_APP_API_END_POINT)
-    apiClientUri = process.env.REACT_APP_API_END_POINT
-
-const client = new ApolloClient({
-    uri: apiClientUri,
-    cache: new InMemoryCache()
-});
 
 
 if (process.env.NODE_ENV === 'development') {
@@ -59,7 +45,7 @@ export const WrapperDecorator: DecoratorFn = (Story, options) => {
 
 
     return (
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
             <Provider store={store}>
                 <Suspense fallback={<h2>Loading</h2>}>
                     <MemoryRouter initialEntries={[modifyArgs.router?.currentPath!]}>
@@ -84,3 +70,31 @@ export const wrapModal: DecoratorFn = (Component) => <Modal isOpen onClose={() =
 
 export const wrapPage: DecoratorFn = (Component) => <div className='page-container'><Component /></div>
 
+
+
+export const ModalsDecorator: DecoratorFn = (Story) => {
+    const onClose = () => { };
+    return (
+        <motion.div
+            className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+                opacity: 0,
+                transition: { ease: "easeInOut" },
+            }}
+        >
+            <AnimatePresence>
+                <Modal onClose={onClose}  >
+                    <Story onClose={onClose} />
+                </Modal>
+            </AnimatePresence>
+        </motion.div>
+    );
+}
+
+export const centerDecorator: DecoratorFn = (Story) => {
+    return <div className="min-h-screen flex justify-center items-center">
+        <Story />
+    </div>
+}

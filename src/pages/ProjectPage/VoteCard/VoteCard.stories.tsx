@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import VoteCard from './VoteCard';
 
-import { ModalsDecorator } from 'src/utils/storybookDecorators'
+import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
     title: 'Project/Vote Card',

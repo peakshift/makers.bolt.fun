@@ -1,32 +1,15 @@
 import { store } from '../redux/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
-
-import 'react-multi-carousel/lib/styles.css';
-import 'react-loading-skeleton/dist/skeleton.css'
-
-
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider
-} from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from './apollo';
 import { useAppDispatch, useResizeListener } from './hooks';
 import { useCallback, useLayoutEffect } from 'react';
 import { setIsMobileScreen } from 'src/redux/features/ui.slice';
 import { isMobileScreen } from './helperFunctions';
 
-let apiClientUri = '/.netlify/functions/graphql';
-
-if (process.env.REACT_APP_API_END_POINT)
-    apiClientUri = process.env.REACT_APP_API_END_POINT
-
-
-const client = new ApolloClient({
-    uri: apiClientUri,
-    cache: new InMemoryCache()
-});
-
+import 'react-multi-carousel/lib/styles.css';
+import 'react-loading-skeleton/dist/skeleton.css'
 
 let basename = '/';
 
@@ -55,7 +38,7 @@ export const useWrapperSetup = () => {
 export default function Wrapper(props: any) {
 
     return (
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
             <Provider store={store}>
                 <BrowserRouter basename={basename}>
                     {props.children}

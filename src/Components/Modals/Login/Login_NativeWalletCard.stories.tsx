@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 import Login_NativeWalletCard from './Login_NativeWalletCard';
 
-import { ModalsDecorator } from 'src/utils/storybookDecorators'
 
 export default {
     title: 'Login/Native Wallet Card',

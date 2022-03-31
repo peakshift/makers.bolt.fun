@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Claim_GenerateSignatureCard from './Claim_GenerateSignatureCard';
 
-import { ModalsDecorator } from 'src/utils/storybookDecorators'
+import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
     title: 'Project/Claim/Generate Signature Card',

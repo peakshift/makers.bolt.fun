@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import VoteButton from './VoteButton';
-import { centerDecorator } from 'src/utils/storybookDecorators'
+import { centerDecorator } from 'src/utils/storybook/decorators';
 
 export default {
   title: 'Project/Tip Button',

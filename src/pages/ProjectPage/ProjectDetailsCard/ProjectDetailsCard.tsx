@@ -33,7 +33,6 @@ export default function ProjectDetailsCard({ onClose, direction, ...props }: Pro
         isMobileScreen: state.ui.isMobileScreen
     }));
 
-    console.log(projectId);
 
 
 

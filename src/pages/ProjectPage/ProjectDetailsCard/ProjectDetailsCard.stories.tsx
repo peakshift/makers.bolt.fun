@@ -3,7 +3,7 @@ import { ModifyArgs } from 'src/utils/storybook/utils'
 import ProjectDetailsCard from './ProjectDetailsCard';
 import ProjectDetailsCardSkeleton from './ProjectDetailsCard.Skeleton';
 
-import { ModalsDecorator } from 'src/utils/storybookDecorators'
+import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
     title: 'Project/Project Details Card',

@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Claim_CopySignatureCard from './Claim_CopySignatureCard';
 
-import { ModalsDecorator } from 'src/utils/storybookDecorators'
+import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
     title: 'Project/Claim/Copy Signature Card',
