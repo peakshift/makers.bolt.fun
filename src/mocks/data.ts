@@ -1,4 +1,5 @@
 import ASSETS from "src/assets";
+import { Story } from "src/features/Posts/types";
 import { Project, ProjectCategory } from "src/utils/interfaces";
 
 let categories = [
@@ -557,6 +558,32 @@ let projects = [
     }
 ]
 
+
+let posts = {
+    stories: [
+        {
+            id: 1,
+            title: 'Digital Editor, Mars Review of Books',
+            cover_image: "https://picsum.photos/id/10/1660/1200",
+            comments_count: 31,
+            date: 'April 13',
+            votes_count: 120,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            type: "story",
+            tags: [
+                { id: 1, title: "lnurl" },
+                { id: 2, title: "webln" },
+                { id: 3, title: "guide" },
+            ],
+            author: {
+                id: 12,
+                name: "John Doe",
+                image: "https://i.pravatar.cc/300?img=3"
+            }
+        }
+    ] as Story[],
+}
+
 // Process Data
 // ------------
 
@@ -570,5 +597,6 @@ categories = categories.map(c => ({ ...c, apps_count: projects.reduce((acc, p) =
 
 export const MOCK_DATA = {
     projects: projects as Project[],
-    categories: categories as ProjectCategory[]
+    categories: categories as ProjectCategory[],
+    posts: posts
 }
