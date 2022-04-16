@@ -15,11 +15,11 @@ export default function QuestionCard({ question }: Props) {
         <div className="bg-white rounded-12 overflow-hidden border">
             {/* <img src={question.cover_image} className='h-[200px] w-full object-cover' alt="" /> */}
             <div className="p-24">
-                <Header name={question.author.name} avatar={question.author.image} date={question.date} />
+                <Header author={question.author} date={question.date} />
                 <div className="flex justify-between">
                     <h2 className="text-h5 font-medium mt-16">{question.title}</h2>
                 </div>
-                <p className="text-body5 text-gray-600 mt-8">{question.excerpt}</p>
+                <p className="text-body4 text-gray-600 mt-8">{question.excerpt}</p>
 
                 <div className="flex gap-8 mt-8">
                     <Badge key={'991199'} size='sm' color="none" className="bg-red-200 text-red-600">
@@ -39,16 +39,12 @@ export default function QuestionCard({ question }: Props) {
                 </div>
 
                 <div className="flex p-16 mt-16 flex-col gap-10 bg-gray-50">
-                    {question.comments.map(comment => <div className="border-b last-of-type:border-b-0 pb-8 ">
-                        <div className='flex gap-8'>
-                            <Avatar width={32} src={comment.author.image} />
-                            <div>
-                                <p className='text-body4 text-black font-medium'>{comment.author.name}</p>
-                                <p className='text-body6 text-gray-600'>{dayjs(comment.date).format('MMMM DD')}</p>
-                            </div>
-                        </div>
-                        <p className="text-body5 text-gray-600 mt-8">{comment.body}</p>
-                    </div>)}
+                    <div className="flex flex-col gap-10">
+                        {question.comments.map(comment => <div key={comment.id} className="border-b last-of-type:border-b-0 pb-8 " >
+                            <Header author={comment.author} size='sm' date={comment.date} />
+                            <p className="text-body5 text-gray-600 mt-8">{comment.body}</p>
+                        </div>)}
+                    </div>
 
                     <div className="flex">
                         <Link to='#' className="text-black font-medium p-8 hover:bg-gray-100 rounded">

@@ -1,0 +1,75 @@
+query PostDetailsQuery($postId: Int!) {
+  getPostById(id: $postId) {
+    ... on Story {
+      id
+      title
+      date
+      author {
+        id
+        name
+        image
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      comments_count
+    }
+    ... on Bounty {
+      id
+      title
+      date
+      author {
+        id
+        name
+        image
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      deadline
+      reward_amount
+      applicants_count
+    }
+    ... on Question {
+      id
+      title
+      date
+      author {
+        id
+        name
+        image
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      deadline
+      reward_amount
+      answers_count
+      comments {
+        id
+        date
+        body
+        author {
+          id
+          name
+          image
+        }
+      }
+    }
+  }
+}

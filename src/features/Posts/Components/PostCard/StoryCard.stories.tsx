@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof StoryCard>;
 
 
-const Template: ComponentStory<typeof StoryCard> = (args) => <div className="max-w-[660px]"><StoryCard {...args} ></StoryCard></div>
+const Template: ComponentStory<typeof StoryCard> = (args) => <div className="max-w-[70ch]"><StoryCard {...args} ></StoryCard></div>
 
 export const Default = Template.bind({});
 Default.args = {

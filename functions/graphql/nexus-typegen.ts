@@ -34,6 +34,19 @@ export interface NexusGenObjects {
     title: string; // String!
     url: string; // String!
   }
+  Bounty: { // root type
+    applicants_count: number; // Int!
+    author: NexusGenRootTypes['User']; // User!
+    cover_image: string; // String!
+    date: string; // String!
+    deadline: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    reward_amount: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    votes_count: number; // Int!
+  }
   Category: { // root type
     cover_image?: string | null; // String
     icon?: string | null; // String
@@ -47,6 +60,12 @@ export interface NexusGenObjects {
     minSendable?: number | null; // Int
   }
   Mutation: {};
+  PostComment: { // root type
+    author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
+    date: string; // String!
+    id: number; // Int!
+  }
   Project: { // root type
     cover_image: string; // String!
     description: string; // String!
@@ -60,9 +79,39 @@ export interface NexusGenObjects {
     website: string; // String!
   }
   Query: {};
+  Question: { // root type
+    answers_count: number; // Int!
+    author: NexusGenRootTypes['User']; // User!
+    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
+    cover_image: string; // String!
+    date: string; // String!
+    deadline: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    reward_amount: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    votes_count: number; // Int!
+  }
+  Story: { // root type
+    author: NexusGenRootTypes['User']; // User!
+    comments_count: number; // Int!
+    cover_image: string; // String!
+    date: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    votes_count: number; // Int!
+  }
   Tag: { // root type
     id: number; // Int!
     title: string; // String!
+  }
+  User: { // root type
+    id: number; // Int!
+    image: string; // String!
+    name: string; // String!
   }
   Vote: { // root type
     amount_in_sat: number; // Int!
@@ -74,12 +123,14 @@ export interface NexusGenObjects {
 }
 
 export interface NexusGenInterfaces {
+  PostBase: NexusGenRootTypes['Bounty'] | NexusGenRootTypes['Question'] | NexusGenRootTypes['Story'];
 }
 
 export interface NexusGenUnions {
+  Post: NexusGenRootTypes['Bounty'] | NexusGenRootTypes['Question'] | NexusGenRootTypes['Story'];
 }
 
-export type NexusGenRootTypes = NexusGenObjects
+export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects & NexusGenUnions
 
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
@@ -90,6 +141,20 @@ export interface NexusGenFieldTypes {
     project: NexusGenRootTypes['Project']; // Project!
     title: string; // String!
     url: string; // String!
+  }
+  Bounty: { // field return type
+    applicants_count: number; // Int!
+    author: NexusGenRootTypes['User']; // User!
+    cover_image: string; // String!
+    date: string; // String!
+    deadline: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    reward_amount: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    type: string; // String!
+    votes_count: number; // Int!
   }
   Category: { // field return type
     apps_count: number; // Int!
@@ -110,6 +175,12 @@ export interface NexusGenFieldTypes {
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
+  PostComment: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
+    date: string; // String!
+    id: number; // Int!
+  }
   Project: { // field return type
     awards: NexusGenRootTypes['Award'][]; // [Award!]!
     category: NexusGenRootTypes['Category']; // Category!
@@ -129,17 +200,51 @@ export interface NexusGenFieldTypes {
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
+    getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
+    getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
+  Question: { // field return type
+    answers_count: number; // Int!
+    author: NexusGenRootTypes['User']; // User!
+    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
+    cover_image: string; // String!
+    date: string; // String!
+    deadline: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    reward_amount: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    type: string; // String!
+    votes_count: number; // Int!
+  }
+  Story: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    comments_count: number; // Int!
+    cover_image: string; // String!
+    date: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    type: string; // String!
+    votes_count: number; // Int!
+  }
   Tag: { // field return type
     id: number; // Int!
     project: NexusGenRootTypes['Project'][]; // [Project!]!
     title: string; // String!
+  }
+  User: { // field return type
+    id: number; // Int!
+    image: string; // String!
+    name: string; // String!
   }
   Vote: { // field return type
     amount_in_sat: number; // Int!
@@ -148,6 +253,15 @@ export interface NexusGenFieldTypes {
     payment_hash: string; // String!
     payment_request: string; // String!
     project: NexusGenRootTypes['Project']; // Project!
+  }
+  PostBase: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    date: string; // String!
+    excerpt: string; // String!
+    id: number; // Int!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    title: string; // String!
+    votes_count: number; // Int!
   }
 }
 
@@ -158,6 +272,20 @@ export interface NexusGenFieldTypeNames {
     project: 'Project'
     title: 'String'
     url: 'String'
+  }
+  Bounty: { // field return type name
+    applicants_count: 'Int'
+    author: 'User'
+    cover_image: 'String'
+    date: 'String'
+    deadline: 'String'
+    excerpt: 'String'
+    id: 'Int'
+    reward_amount: 'Int'
+    tags: 'Tag'
+    title: 'String'
+    type: 'String'
+    votes_count: 'Int'
   }
   Category: { // field return type name
     apps_count: 'Int'
@@ -178,6 +306,12 @@ export interface NexusGenFieldTypeNames {
     confirmVote: 'Vote'
     vote: 'Vote'
   }
+  PostComment: { // field return type name
+    author: 'User'
+    body: 'String'
+    date: 'String'
+    id: 'Int'
+  }
   Project: { // field return type name
     awards: 'Award'
     category: 'Category'
@@ -197,17 +331,51 @@ export interface NexusGenFieldTypeNames {
     allCategories: 'Category'
     allProjects: 'Project'
     getCategory: 'Category'
+    getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
+    getPostById: 'Post'
     getProject: 'Project'
     hottestProjects: 'Project'
     newProjects: 'Project'
     projectsByCategory: 'Project'
     searchProjects: 'Project'
   }
+  Question: { // field return type name
+    answers_count: 'Int'
+    author: 'User'
+    comments: 'PostComment'
+    cover_image: 'String'
+    date: 'String'
+    deadline: 'String'
+    excerpt: 'String'
+    id: 'Int'
+    reward_amount: 'Int'
+    tags: 'Tag'
+    title: 'String'
+    type: 'String'
+    votes_count: 'Int'
+  }
+  Story: { // field return type name
+    author: 'User'
+    comments_count: 'Int'
+    cover_image: 'String'
+    date: 'String'
+    excerpt: 'String'
+    id: 'Int'
+    tags: 'Tag'
+    title: 'String'
+    type: 'String'
+    votes_count: 'Int'
+  }
   Tag: { // field return type name
     id: 'Int'
     project: 'Project'
     title: 'String'
+  }
+  User: { // field return type name
+    id: 'Int'
+    image: 'String'
+    name: 'String'
   }
   Vote: { // field return type name
     amount_in_sat: 'Int'
@@ -216,6 +384,15 @@ export interface NexusGenFieldTypeNames {
     payment_hash: 'String'
     payment_request: 'String'
     project: 'Project'
+  }
+  PostBase: { // field return type name
+    author: 'User'
+    date: 'String'
+    excerpt: 'String'
+    id: 'Int'
+    tags: 'Tag'
+    title: 'String'
+    votes_count: 'Int'
   }
 }
 
@@ -238,8 +415,15 @@ export interface NexusGenArgTypes {
     getCategory: { // args
       id: number; // Int!
     }
+    getFeed: { // args
+      skip?: number | null; // Int
+      take: number | null; // Int
+    }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!
+    }
+    getPostById: { // args
+      id: number; // Int!
     }
     getProject: { // args
       id: number; // Int!
@@ -266,9 +450,14 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
+  Post: "Bounty" | "Question" | "Story"
+  PostBase: "Bounty" | "Question" | "Story"
 }
 
 export interface NexusGenTypeInterfaces {
+  Bounty: "PostBase"
+  Question: "PostBase"
+  Story: "PostBase"
 }
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
@@ -277,15 +466,15 @@ export type NexusGenInputNames = never;
 
 export type NexusGenEnumNames = never;
 
-export type NexusGenInterfaceNames = never;
+export type NexusGenInterfaceNames = keyof NexusGenInterfaces;
 
 export type NexusGenScalarNames = keyof NexusGenScalars;
 
-export type NexusGenUnionNames = never;
+export type NexusGenUnionNames = keyof NexusGenUnions;
 
 export type NexusGenObjectsUsingAbstractStrategyIsTypeOf = never;
 
-export type NexusGenAbstractsUsingStrategyResolveType = never;
+export type NexusGenAbstractsUsingStrategyResolveType = "Post" | "PostBase";
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {

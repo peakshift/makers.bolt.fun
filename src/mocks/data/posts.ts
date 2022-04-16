@@ -1,5 +1,6 @@
 
-import { Bounty, Question, Story } from "src/features/Posts/types";
+import dayjs from "dayjs";
+import { Bounty, Post, Question, Story } from "src/features/Posts/types";
 import { getAvatarImage, getCoverImage } from "./utils";
 
 const getAuthor = () => ({
@@ -8,9 +9,9 @@ const getAuthor = () => ({
     image: getAvatarImage()
 })
 
-const date = 'Mon Mar 14 2022 20:33:17 GMT+0200 (Eastern European Standard Time)'
+const date = dayjs().subtract(5, 'hour').toString();
 
-let posts = {
+export let posts = {
     stories: [
         {
             id: 1,
@@ -86,7 +87,9 @@ posts.bounties = posts.bounties.map(b => ({ ...b, __typename: "Bounty" }))
 posts.questions = posts.questions.map(b => ({ ...b, __typename: "Question" }))
 posts.stories = posts.stories.map(b => ({ ...b, __typename: "Story" }))
 
+export const feed: Post[] = [
+    ...posts.stories,
+    ...posts.bounties,
+    ...posts.questions,
+]
 
-export {
-    posts,
-}

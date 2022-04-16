@@ -11,9 +11,9 @@ export default function StoryCard({ story }: Props) {
         <div className="bg-white rounded-12 overflow-hidden border">
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
-                <Header name={story.author.name} avatar={story.author.image} date={story.date} />
+                <Header author={story.author} date={story.date} />
                 <h2 className="text-h5 font-medium mt-16">{story.title}</h2>
-                <p className="text-body5 text-gray-600 mt-8">{story.excerpt}</p>
+                <p className="text-body4 text-gray-600 mt-8">{story.excerpt}</p>
 
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24">

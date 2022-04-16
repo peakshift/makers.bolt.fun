@@ -12,7 +12,7 @@ export default {
 } as ComponentMeta<typeof BountyCard>;
 
 
-const Template: ComponentStory<typeof BountyCard> = (args) => <div className="max-w-[660px]"><BountyCard {...args} ></BountyCard></div>
+const Template: ComponentStory<typeof BountyCard> = (args) => <div className="max-w-[70ch]"><BountyCard {...args} ></BountyCard></div>
 
 export const Default = Template.bind({});
 Default.args = {

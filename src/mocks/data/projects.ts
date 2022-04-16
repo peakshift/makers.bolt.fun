@@ -1,7 +1,7 @@
 import { Project, ProjectCategory } from "src/utils/interfaces";
 
 
-let categories = [
+export let categories = [
     {
         "title": "Shock the Web ⚡️",
         "id": 11,
@@ -79,9 +79,9 @@ let categories = [
         "icon": "🔁",
         "votes_sum": 0
     }
-]
+] as ProjectCategory[]
 
-let projects = [
+export let projects = [
     {
         "id": 16,
         "title": "Alby",
@@ -555,7 +555,7 @@ let projects = [
             "title": "Gaming"
         }
     }
-]
+] as Project[]
 
 
 categories = categories.map(c => ({ ...c, __typename: "Category" }))
@@ -564,7 +564,3 @@ projects = projects.map(p => ({ ...p, __typename: "Project" }))
 // 2- Computed Fields
 categories = categories.map(c => ({ ...c, apps_count: projects.reduce((acc, p) => acc + (p.category.id === c.id ? 1 : 0), 0) }))
 
-export {
-    projects,
-    categories
-}

@@ -13,7 +13,7 @@ export default function BountyCard({ bounty }: Props) {
         <div className="bg-white rounded-12 overflow-hidden border">
             <img src={bounty.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
-                <Header name={bounty.author.name} avatar={bounty.author.image} date={bounty.date} />
+                <Header author={bounty.author} date={bounty.date} />
                 <div className="flex justify-between">
                     <div>
                         <h2 className="text-h5 font-medium mt-16">{bounty.title}</h2>
@@ -26,7 +26,7 @@ export default function BountyCard({ bounty }: Props) {
                         Apply
                     </Button>
                 </div>
-                <p className="text-body5 text-gray-600 mt-8">{bounty.excerpt}</p>
+                <p className="text-body4 text-gray-600 mt-8">{bounty.excerpt}</p>
 
                 <div className="flex gap-8 mt-8">
                     {bounty.tags.map(tag => <Badge key={tag.id} size='sm'>
