@@ -1,14 +1,20 @@
 import { Tag } from "src/utils/interfaces"
 
+export type User = {
+    id: number
+    name: string
+    image: string
+}
+
+export type Author = User & {
+    join_date: string
+}
+
 export type PostBase = {
     id: number
     title: string
     date: string
-    author: {
-        id: number
-        name: string
-        image: string
-    }
+    author: Author
     excerpt: string
     tags: Tag[]
     votes_count: number
@@ -31,6 +37,14 @@ export type Bounty = PostBase & {
 export type Question = PostBase & {
     type: 'question'
     answers_count: number
+    comments: PostComment[]
+}
+
+export type PostComment = {
+    id: number;
+    author: Author
+    date: string
+    body: string
 }
 
 export type Post = Story | Question | Bounty
