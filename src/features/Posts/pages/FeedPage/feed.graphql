@@ -1,4 +1,4 @@
-query FeedQuery {
+query Feed {
   getFeed {
     ... on Story {
       id

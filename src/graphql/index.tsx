@@ -254,17 +254,17 @@ export type SearchProjectsQueryVariables = Exact<{
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
 
-export type FeedQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type FeedQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FeedQueryQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
+export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
 
-export type PostDetailsQueryQueryVariables = Exact<{
+export type PostDetailsQueryVariables = Exact<{
   postId: Scalars['Int'];
 }>;
 
 
-export type PostDetailsQueryQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -390,8 +390,8 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
-export const FeedQueryDocument = gql`
-    query FeedQuery {
+export const FeedDocument = gql`
+    query Feed {
   getFeed {
     ... on Story {
       id
@@ -469,33 +469,33 @@ export const FeedQueryDocument = gql`
     `;
 
 /**
- * __useFeedQueryQuery__
+ * __useFeedQuery__
  *
- * To run a query within a React component, call `useFeedQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useFeedQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFeedQueryQuery({
+ * const { data, loading, error } = useFeedQuery({
  *   variables: {
  *   },
  * });
  */
-export function useFeedQueryQuery(baseOptions?: Apollo.QueryHookOptions<FeedQueryQuery, FeedQueryQueryVariables>) {
+export function useFeedQuery(baseOptions?: Apollo.QueryHookOptions<FeedQuery, FeedQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FeedQueryQuery, FeedQueryQueryVariables>(FeedQueryDocument, options);
+        return Apollo.useQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
       }
-export function useFeedQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeedQueryQuery, FeedQueryQueryVariables>) {
+export function useFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeedQuery, FeedQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FeedQueryQuery, FeedQueryQueryVariables>(FeedQueryDocument, options);
+          return Apollo.useLazyQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
         }
-export type FeedQueryQueryHookResult = ReturnType<typeof useFeedQueryQuery>;
-export type FeedQueryLazyQueryHookResult = ReturnType<typeof useFeedQueryLazyQuery>;
-export type FeedQueryQueryResult = Apollo.QueryResult<FeedQueryQuery, FeedQueryQueryVariables>;
-export const PostDetailsQueryDocument = gql`
-    query PostDetailsQuery($postId: Int!) {
+export type FeedQueryHookResult = ReturnType<typeof useFeedQuery>;
+export type FeedLazyQueryHookResult = ReturnType<typeof useFeedLazyQuery>;
+export type FeedQueryResult = Apollo.QueryResult<FeedQuery, FeedQueryVariables>;
+export const PostDetailsDocument = gql`
+    query PostDetails($postId: Int!) {
   getPostById(id: $postId) {
     ... on Story {
       id
@@ -573,32 +573,32 @@ export const PostDetailsQueryDocument = gql`
     `;
 
 /**
- * __usePostDetailsQueryQuery__
+ * __usePostDetailsQuery__
  *
- * To run a query within a React component, call `usePostDetailsQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostDetailsQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePostDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePostDetailsQueryQuery({
+ * const { data, loading, error } = usePostDetailsQuery({
  *   variables: {
  *      postId: // value for 'postId'
  *   },
  * });
  */
-export function usePostDetailsQueryQuery(baseOptions: Apollo.QueryHookOptions<PostDetailsQueryQuery, PostDetailsQueryQueryVariables>) {
+export function usePostDetailsQuery(baseOptions: Apollo.QueryHookOptions<PostDetailsQuery, PostDetailsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PostDetailsQueryQuery, PostDetailsQueryQueryVariables>(PostDetailsQueryDocument, options);
+        return Apollo.useQuery<PostDetailsQuery, PostDetailsQueryVariables>(PostDetailsDocument, options);
       }
-export function usePostDetailsQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostDetailsQueryQuery, PostDetailsQueryQueryVariables>) {
+export function usePostDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostDetailsQuery, PostDetailsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PostDetailsQueryQuery, PostDetailsQueryQueryVariables>(PostDetailsQueryDocument, options);
+          return Apollo.useLazyQuery<PostDetailsQuery, PostDetailsQueryVariables>(PostDetailsDocument, options);
         }
-export type PostDetailsQueryQueryHookResult = ReturnType<typeof usePostDetailsQueryQuery>;
-export type PostDetailsQueryLazyQueryHookResult = ReturnType<typeof usePostDetailsQueryLazyQuery>;
-export type PostDetailsQueryQueryResult = Apollo.QueryResult<PostDetailsQueryQuery, PostDetailsQueryQueryVariables>;
+export type PostDetailsQueryHookResult = ReturnType<typeof usePostDetailsQuery>;
+export type PostDetailsLazyQueryHookResult = ReturnType<typeof usePostDetailsLazyQuery>;
+export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDetailsQueryVariables>;
 export const CategoryPageDocument = gql`
     query CategoryPage($categoryId: Int!) {
   projectsByCategory(category_id: $categoryId) {

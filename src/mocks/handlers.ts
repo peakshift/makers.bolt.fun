@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getCategory, getProject, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getCategory, getFeed, getPostById, getProject, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -13,7 +13,10 @@ import {
     HottestProjectsQuery,
     HottestProjectsQueryVariables,
     AllCategoriesQuery,
-    AllCategoriesQueryVariables
+    AllCategoriesQueryVariables,
+    FeedQuery,
+    PostDetailsQuery,
+    PostDetailsQueryVariables,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms))
@@ -92,6 +95,27 @@ export const handlers = [
         return res(
             ctx.data({
                 hottestProjects: hottestProjects()
+            })
+        )
+    }),
+
+    graphql.query<FeedQuery>('Feed', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getFeed: getFeed()
+            })
+        )
+    }),
+
+    graphql.query<PostDetailsQuery, PostDetailsQueryVariables>('PostDetails', async (req, res, ctx) => {
+        await delay()
+        const { postId } = req.variables
+
+        return res(
+            ctx.data({
+                getPostById: getPostById(postId)
             })
         )
     }),

@@ -1,4 +1,4 @@
-query PostDetailsQuery($postId: Int!) {
+query PostDetails($postId: Int!) {
   getPostById(id: $postId) {
     ... on Story {
       id

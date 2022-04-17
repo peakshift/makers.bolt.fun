@@ -1,4 +1,4 @@
-import { Post } from "src/features/Posts/types"
+import { Post, isStory, isBounty, isQuestion } from "src/features/Posts/types"
 import BountyCard from "./BountyCard"
 import QuestionCard from "./QuestionCard"
 import StoryCard from "./StoryCard"
@@ -8,13 +8,13 @@ type Props = {
 }
 
 export default function PostCard({ post }: Props) {
-  if (post.type === 'story')
+  if (isStory(post))
     return <StoryCard story={post} />
 
-  if (post.type === 'bounty')
+  if (isBounty(post))
     return <BountyCard bounty={post} />
 
-  if (post.type === 'question')
+  if (isQuestion(post))
     return <QuestionCard question={post} />
 
   return null

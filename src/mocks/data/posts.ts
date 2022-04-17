@@ -14,14 +14,14 @@ const date = dayjs().subtract(5, 'hour').toString();
 export let posts = {
     stories: [
         {
-            id: 1,
+            id: 4,
             title: 'Digital Editor, Mars Review of Books',
             cover_image: getCoverImage(),
             comments_count: 31,
             date,
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "story",
+            type: "Story",
             tags: [
                 { id: 1, title: "lnurl" },
                 { id: 2, title: "webln" },
@@ -32,8 +32,8 @@ export let posts = {
     ] as Story[],
     bounties: [
         {
-            type: "bounty",
-            id: 1,
+            type: "Bounty",
+            id: 2,
             title: 'Digital Editor, Mars Review of Books',
             cover_image: getCoverImage(),
             applicants_count: 31,
@@ -52,8 +52,8 @@ export let posts = {
     ] as Bounty[],
     questions: [
         {
-            type: "question",
-            id: 1,
+            type: "Question",
+            id: 3,
             title: 'Digital Editor, Mars Review of Books',
             answers_count: 31,
             date,

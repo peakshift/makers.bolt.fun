@@ -7,7 +7,7 @@ export type User = {
 }
 
 export type Author = User & {
-    join_date: string
+    join_date?: string
 }
 
 export type PostBase = {
@@ -18,26 +18,36 @@ export type PostBase = {
     excerpt: string
     tags: Tag[]
     votes_count: number
+    type: string
 }
 
 export type Story = PostBase & {
-    type: 'story'
     cover_image: string;
     comments_count: number
 }
 
+export function isStory(post: Post): post is Story {
+    return post.type === 'Story'
+}
+
 export type Bounty = PostBase & {
-    type: 'bounty'
     cover_image: string;
     reward_amount: number
     deadline: string
     applicants_count: number
 }
 
+export function isBounty(post: Post): post is Bounty {
+    return post.type === 'Bounty'
+}
+
 export type Question = PostBase & {
-    type: 'question'
     answers_count: number
     comments: PostComment[]
+}
+
+export function isQuestion(post: Post): post is Question {
+    return post.type === 'Question'
 }
 
 export type PostComment = {

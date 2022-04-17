@@ -37,7 +37,7 @@ const Story = objectType({
     definition(t) {
         t.implements('PostBase');
         t.nonNull.string('type', {
-            resolve: () => 'story'
+            resolve: () => 'Story'
         });
         t.nonNull.string('cover_image');
         t.nonNull.int('comments_count');
@@ -49,7 +49,7 @@ const Bounty = objectType({
     definition(t) {
         t.implements('PostBase');
         t.nonNull.string('type', {
-            resolve: () => 'bounty'
+            resolve: () => 'Bounty'
         });
         t.nonNull.string('cover_image');
         t.nonNull.string('deadline');
@@ -63,7 +63,8 @@ const Question = objectType({
     definition(t) {
         t.implements('PostBase');
         t.nonNull.string('type', {
-            resolve: () => 'question'
+            resolve: () => 'Question',
+
         });
         t.nonNull.string('cover_image');
         t.nonNull.string('deadline');
