@@ -12,7 +12,7 @@ export default function StoryCard({ story }: Props) {
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
                 <Header author={story.author} date={story.date} />
-                <h2 className="text-h5 font-medium mt-16">{story.title}</h2>
+                <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
                 <p className="text-body4 text-gray-600 mt-8">{story.excerpt}</p>
 
                 <hr className="my-16 bg-gray-200" />

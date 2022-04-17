@@ -11,20 +11,24 @@ interface Props {
 export default function BountyCard({ bounty }: Props) {
     return (
         <div className="bg-white rounded-12 overflow-hidden border">
-            <img src={bounty.cover_image} className='h-[200px] w-full object-cover' alt="" />
+            <img src={bounty.cover_image} className='h-[200px] w-full object-cover bg-gray-100' alt="" />
             <div className="p-24">
                 <Header author={bounty.author} date={bounty.date} />
                 <div className="flex justify-between">
                     <div>
-                        <h2 className="text-h5 font-medium mt-16">{bounty.title}</h2>
-                        <div className="flex gap-8 mt-8">
+                        <h2 className="text-h5 font-bolder mt-16 flex items-center gap-8">
                             <Badge color="none" size="sm" className="bg-yellow-500 text-black">Bounty</Badge>
-                            <Badge color="none" size="sm" className="bg-purple-200 text-purple-900">{bounty.reward_amount} sats</Badge>
-                        </div>
+                            <span>{bounty.title}</span>
+                        </h2>
+
                     </div>
                     <Button color="black" className="self-center !py-10 !px-36 flex-shrink-0 ">
                         Apply
                     </Button>
+                </div>
+                <div className=" mt-16">
+                    <span className="text-body4 text-gray-600 font-bolder">Reward: </span>
+                    <span className="text-body4 text-purple-500 font-medium">{bounty.reward_amount} sats</span>
                 </div>
                 <p className="text-body4 text-gray-600 mt-8">{bounty.excerpt}</p>
 

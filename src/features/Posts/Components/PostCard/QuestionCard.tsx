@@ -17,7 +17,7 @@ export default function QuestionCard({ question }: Props) {
             <div className="p-24">
                 <Header author={question.author} date={question.date} />
                 <div className="flex justify-between">
-                    <h2 className="text-h5 font-medium mt-16">{question.title}</h2>
+                    <h2 className="text-h5 font-bolder mt-16">{question.title}</h2>
                 </div>
                 <p className="text-body4 text-gray-600 mt-8">{question.excerpt}</p>
 
