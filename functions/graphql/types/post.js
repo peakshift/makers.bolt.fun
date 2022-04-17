@@ -14,8 +14,8 @@ const { paginationArgs } = require('./helpers');
 
 const PostBase = interfaceType({
     name: 'PostBase',
-    resolveType(post) {
-        return post.type
+    resolveType() {
+        return null
     },
     definition(t) {
         t.nonNull.int('id');

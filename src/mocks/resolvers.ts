@@ -2,8 +2,10 @@ import ASSETS from "src/assets";
 import { MOCK_DATA } from "./data";
 
 export function getCategory(id: number) {
+
+    const category = MOCK_DATA.categories.find(c => c.id === id)!;
     return {
-        ...MOCK_DATA.categories.find(c => c.id === id),
+        ...category,
         project: MOCK_DATA.projects.filter(p => p.category.id === id)
     }
 }
@@ -25,7 +27,7 @@ export function newProjects() {
 }
 
 export function getProject(projectId: number) {
-    return MOCK_DATA.projects.find(p => p.id === projectId)
+    return MOCK_DATA.projects.find(p => p.id === projectId)!
 }
 
 export function searchProjects(search: string) {

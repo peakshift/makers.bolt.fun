@@ -1,18 +1,18 @@
-import { Tag } from "src/graphql";
+import { Project as ApiProject, Tag } from "src/graphql";
 import { Image } from ".";
 
 export interface Project {
-    id: number;
-    title: string;
+    id: ApiProject['id'];
+    title: ApiProject['title'];
     category: Pick<ProjectCategory, 'id' | 'title'>;
-    website?: string;
-    description: string;
+    website?: ApiProject['website'];
+    description: ApiProject['description'];
     tags: Pick<Tag, 'id' | 'title'>[];
-    cover_image: Image;
-    thumbnail_image: Image;
-    lightning_address?: string | null,
+    cover_image: ApiProject['cover_image'];
+    thumbnail_image: ApiProject['thumbnail_image'];
+    lightning_address?: ApiProject['lightning_address'] | null,
     screenshots: Image[];
-    votes_count: number;
+    votes_count: ApiProject['votes_count'];
 }
 
 export interface ProjectCategory {

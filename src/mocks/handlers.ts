@@ -1,35 +1,46 @@
 
 import { graphql } from 'msw'
 import { allCategories, getCategory, getProject, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
+import {
+    NavCategoriesQuery,
+    ExploreProjectsQuery,
+    SearchProjectsQuery,
+    SearchProjectsQueryVariables,
+    CategoryPageQuery,
+    CategoryPageQueryVariables,
+    ProjectDetailsQuery,
+    ProjectDetailsQueryVariables,
+    HottestProjectsQuery,
+    HottestProjectsQueryVariables,
+    AllCategoriesQuery,
+    AllCategoriesQueryVariables
+} from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms))
 
 export const handlers = [
 
-    graphql.query('PROJECTS_IN_CATEGORY_QUERY', async (req, res, ctx) => {
+    graphql.query<NavCategoriesQuery>('NavCategories', async (req, res, ctx) => {
         await delay()
-        const { categoryId } = req.variables
 
         return res(
             ctx.data({
-                projectsByCategory: projectsByCategory(categoryId),
-                getCategory: getCategory(categoryId)
+                allCategories: allCategories()
             })
         )
     }),
 
-    graphql.query('SEARCH_PROJECTS_QUERY', async (req, res, ctx) => {
+    graphql.query<AllCategoriesQuery, AllCategoriesQueryVariables>('AllCategories', async (req, res, ctx) => {
         await delay()
-        const { search } = req.variables
 
         return res(
             ctx.data({
-                searchProjects: searchProjects(search),
+                allCategories: allCategories()
             })
         )
     }),
 
-    graphql.query('AllCategoriesProjects', async (req, res, ctx) => {
+    graphql.query<ExploreProjectsQuery>('ExploreProjects', async (req, res, ctx) => {
         await delay()
 
         return res(
@@ -40,27 +51,42 @@ export const handlers = [
         )
     }),
 
-    graphql.query('AllCategories', async (req, res, ctx) => {
+    graphql.query<CategoryPageQuery, CategoryPageQueryVariables>('CategoryPage', async (req, res, ctx) => {
         await delay()
+        const { categoryId } = req.variables
+
         return res(
             ctx.data({
-                allCategories: allCategories()
+                projectsByCategory: projectsByCategory(categoryId),
+                getCategory: getCategory(categoryId)!
             })
         )
     }),
 
-    graphql.query('Project', async (req, res, ctx) => {
+
+    graphql.query<SearchProjectsQuery, SearchProjectsQueryVariables>('SearchProjects', async (req, res, ctx) => {
+        await delay()
+        const { search } = req.variables
+
+        return res(
+            ctx.data({
+                searchProjects: searchProjects(search),
+            })
+        )
+    }),
+
+    graphql.query<ProjectDetailsQuery, ProjectDetailsQueryVariables>('ProjectDetails', async (req, res, ctx) => {
         await delay()
         const { projectId } = req.variables
 
         return res(
             ctx.data({
-                getProject: getProject(projectId)
+                getProject: getProject(projectId) as any
             })
         )
     }),
 
-    graphql.query('HOTTEST_PROJECTS', async (req, res, ctx) => {
+    graphql.query<HottestProjectsQuery, HottestProjectsQueryVariables>('HottestProjects', async (req, res, ctx) => {
         await delay()
 
         return res(
@@ -69,4 +95,5 @@ export const handlers = [
             })
         )
     }),
+
 ]

@@ -92,6 +92,7 @@ export let projects = [
         "website": "https://getalby.com/",
         "lightning_address": "hello@getalby.com",
         "votes_count": 335,
+        tags: [],
         "category": {
             "id": 9,
             "title": "Misc / Other"
@@ -107,6 +108,7 @@ export let projects = [
         "website": "https://geyser.fund/",
         "lightning_address": "divineorgan67@walletofsatoshi.com",
         "votes_count": 232,
+        tags: [],
         "category": {
             "id": 1,
             "title": "Finance"
@@ -126,6 +128,7 @@ export let projects = [
         "website": "https://kollider.xyz/",
         "lightning_address": "johns@getalby.com",
         "votes_count": 220,
+        tags: [],
         "category": {
             "id": 1,
             "title": "Finance"
@@ -141,6 +144,7 @@ export let projects = [
         "website": "https://lightning.video/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 205,
+        tags: [],
         "category": {
             "id": 7,
             "title": "Media & News"
@@ -156,6 +160,7 @@ export let projects = [
         "website": "https://www.wavlake.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 45,
+        tags: [],
         "category": {
             "id": 7,
             "title": "Media & News"
@@ -171,6 +176,7 @@ export let projects = [
         "website": "https://www.bitrefill.com/buy",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 25,
+        tags: [],
         "category": {
             "id": 8,
             "title": "Shopping"
@@ -186,6 +192,7 @@ export let projects = [
         "website": "https://sparkshot.io/",
         "lightning_address": "johns@getalby.com",
         "votes_count": 11,
+        tags: [],
         "category": {
             "id": 3,
             "title": "Art & Collectibles"
@@ -201,6 +208,7 @@ export let projects = [
         "website": "https://lightning-roulette.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 10,
+        tags: [],
         "category": {
             "id": 4,
             "title": "Gaming"
@@ -216,9 +224,11 @@ export let projects = [
         "website": "https://lnshort.it/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 10,
+        tags: [],
         "category": {
             "id": 9,
-            "title": "Misc / Other"
+            "title": "Misc / Other",
+
         }
     },
     {
@@ -231,6 +241,7 @@ export let projects = [
         "website": "https://lightning.gifts/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 10,
+        tags: [],
         "category": {
             "id": 8,
             "title": "Shopping"
@@ -246,6 +257,7 @@ export let projects = [
         "website": "https://www.lnblackjack.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 5,
+        tags: [],
         "category": {
             "id": 4,
             "title": "Gaming"
@@ -265,6 +277,7 @@ export let projects = [
         "website": "https://satsbuster.herokuapp.com/",
         "lightning_address": "subirachs@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -282,6 +295,7 @@ export let projects = [
         "website": "https://satstreamer.vercel.app",
         "lightning_address": "kiwiidb@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -300,6 +314,7 @@ export let projects = [
         "website": "https://github.com/Zrce/tipwall-frontend",
         "lightning_address": "tobitcoin@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -325,6 +340,7 @@ export let projects = [
         "website": "https://arionparking.tech/",
         "lightning_address": "atlantabitdevs@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -342,6 +358,7 @@ export let projects = [
         "website": "https://webln.twentyuno.net/widget",
         "lightning_address": "reneaaron@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -364,6 +381,7 @@ export let projects = [
         "website": "https://lnshop.github.io/lnshop/",
         "lightning_address": "alivesession77@walletofsatoshi.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -379,6 +397,7 @@ export let projects = [
         "website": "https://lnmarkets.com/",
         "lightning_address": "johns@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 1,
             "title": "Finance"
@@ -400,6 +419,7 @@ export let projects = [
         "website": "https://geyser.fund",
         "lightning_address": "divineorgan67@walletofsatoshi.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 11,
             "title": "Shock the Web ⚡️"
@@ -415,6 +435,7 @@ export let projects = [
         "website": "https://loft.trade/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 1,
             "title": "Finance"
@@ -430,6 +451,7 @@ export let projects = [
         "website": "https://kriptode.com/satsforlikes/index.html",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 9,
             "title": "Misc / Other"
@@ -445,6 +467,7 @@ export let projects = [
         "website": "https://scarce.city/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 3,
             "title": "Art & Collectibles"
@@ -460,6 +483,7 @@ export let projects = [
         "website": "https://stacker.news/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 7,
             "title": "Media & News"
@@ -475,6 +499,7 @@ export let projects = [
         "website": "https://www.starbackr.com/",
         "lightning_address": "moritz@geralby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 7,
             "title": "Media & News"
@@ -490,6 +515,7 @@ export let projects = [
         "website": "https://amboss.space/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 6,
             "title": "Analytics"
@@ -505,6 +531,7 @@ export let projects = [
         "website": "https://yalls.org/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 2,
             "title": "Social"
@@ -520,6 +547,7 @@ export let projects = [
         "website": "https://lightningnetworkstores.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 8,
             "title": "Shopping"
@@ -535,6 +563,7 @@ export let projects = [
         "website": "https://lightning-poker.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 4,
             "title": "Gaming"
@@ -550,6 +579,7 @@ export let projects = [
         "website": "https://lngames.net/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
+        tags: [],
         "category": {
             "id": 4,
             "title": "Gaming"
