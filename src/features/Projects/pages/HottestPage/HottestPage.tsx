@@ -1,8 +1,8 @@
 import ASSETS from 'src/assets';
 
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
-import HeaderImage from 'src/pages/CategoryPage/HeaderImage/HeaderImage';
-import ProjectsGrid from 'src/pages/CategoryPage/ProjectsGrid/ProjectsGrid';
+import HeaderImage from 'src/features/Projects/pages/CategoryPage/HeaderImage/HeaderImage';
+import ProjectsGrid from 'src/features/Projects/pages/CategoryPage/ProjectsGrid/ProjectsGrid';
 
 import { useHottestProjectsQuery } from 'src/graphql'
 

@@ -1,5 +1,5 @@
 import { Project as ApiProject, Tag } from "src/graphql";
-import { Image } from ".";
+import { Image } from "../../../utils/interfaces";
 
 export interface Project {
     id: ApiProject['id'];

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import Navbar from "src/Components/Navbar/Navbar";
-import ExplorePage from "src/pages/ExplorePage";
+import ExplorePage from "src/features/Projects/pages/ExplorePage";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { useAppSelector } from './utils/hooks';
 import { Wallet_Service } from "./services";
 import { Route, Routes } from "react-router-dom";
-import CategoryPage from "./pages/CategoryPage/CategoryPage";
+import CategoryPage from "src/features/Projects/pages/CategoryPage/CategoryPage";
 import { useWrapperSetup } from "./utils/Wrapper";
-import HottestPage from "./pages/HottestPage/HottestPage";
+import HottestPage from "src/features/Projects/pages/HottestPage/HottestPage";
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({

@@ -8,7 +8,7 @@ import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
-import VoteButton from 'src/pages/ProjectPage/VoteButton/VoteButton';
+import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
 import { Wallet_Service } from 'src/services'
 import { useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
