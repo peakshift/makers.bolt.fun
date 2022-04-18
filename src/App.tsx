@@ -40,8 +40,8 @@ function App() {
     <Routes>
       <Route path="/hottest" element={<HottestPage />} />
       <Route path="/category/:id" element={<CategoryPage />} />
-      {/* <Route path="/" element={<ExplorePage />} /> */}
-      <Route path="/" element={<FeedPage />} />
+      <Route path="/feed" element={<FeedPage />} />
+      <Route path="/" element={<ExplorePage />} />
     </Routes>
     <ModalsContainer />
   </div>;
