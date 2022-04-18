@@ -5,7 +5,7 @@ export type Tag = {
 }
 
 
-export type ListProps<T> = {
+export type ListComponentProps<T> = {
     items?: T[]
     isLoading?: boolean;
     isFetching?: boolean;

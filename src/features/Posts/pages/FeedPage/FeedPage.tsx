@@ -1,15 +1,22 @@
 
 import { useFeedQuery } from 'src/graphql'
-import { MOCK_DATA } from 'src/mocks/data'
+import { useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import PopularCategories from './PopularCategories/PopularCategories'
 import SortBy from './SortBy/SortBy'
 import styles from './styles.module.css'
 
+
 export default function FeedPage() {
 
-    const feedQuery = useFeedQuery()
+    const feedQuery = useFeedQuery({
+        variables: {
+            take: 10,
+            skip: 0
+        }
+    })
+    const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
 
     return (
         <div
@@ -22,7 +29,12 @@ export default function FeedPage() {
                     <PopularCategories />
                 </div>
             </aside>
-            <PostsList isLoading={feedQuery.loading} items={feedQuery.data?.getFeed} />
+            <PostsList
+                isLoading={feedQuery.loading}
+                items={feedQuery.data?.getFeed}
+                isFetching={isFetchingMore}
+                onReachedBottom={fetchMore}
+            />
             <aside>
                 <div className="sticky top-16">
                     <TrendingCard />

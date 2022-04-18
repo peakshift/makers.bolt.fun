@@ -254,7 +254,10 @@ export type SearchProjectsQueryVariables = Exact<{
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
 
-export type FeedQueryVariables = Exact<{ [key: string]: never; }>;
+export type FeedQueryVariables = Exact<{
+  skip: InputMaybe<Scalars['Int']>;
+  take: InputMaybe<Scalars['Int']>;
+}>;
 
 
 export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
@@ -391,8 +394,8 @@ export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQ
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
 export const FeedDocument = gql`
-    query Feed {
-  getFeed {
+    query Feed($skip: Int, $take: Int) {
+  getFeed(skip: $skip, take: $take) {
     ... on Story {
       id
       title
@@ -480,6 +483,8 @@ export const FeedDocument = gql`
  * @example
  * const { data, loading, error } = useFeedQuery({
  *   variables: {
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
  *   },
  * });
  */

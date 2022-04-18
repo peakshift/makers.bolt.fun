@@ -1,6 +1,6 @@
 import ASSETS from "src/assets";
 import { MOCK_DATA } from "./data";
-import { Query } from 'src/graphql'
+import { Query, QueryGetFeedArgs } from 'src/graphql'
 
 export function getCategory(id: number) {
 
@@ -42,8 +42,10 @@ export function hottestProjects() {
     return MOCK_DATA.projects.sort((p1, p2) => p2.votes_count - p1.votes_count).slice(0, 20)
 }
 
-export function getFeed(): Query['getFeed'] {
-    return MOCK_DATA.feed as any;
+export function getFeed(config: QueryGetFeedArgs): Query['getFeed'] {
+    const take = config.take ?? 10
+    const skip = config.skip ?? 0
+    return MOCK_DATA.feed.slice(skip, skip + take) as any;
 }
 
 export function getPostById(postId: number): Query['getPostById'] {

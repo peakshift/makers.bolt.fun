@@ -1,19 +1,14 @@
 import { useCallback } from "react"
 import { Post } from "src/features/Posts/types"
 import { useReachedBottom } from "src/utils/hooks/useReachedBottom"
-import { ListProps } from "src/utils/interfaces"
+import { ListComponentProps } from "src/utils/interfaces"
 import PostCard, { PostCardSkeleton } from "../PostCard"
 
-type Props = ListProps<Post>
+type Props = ListComponentProps<Post>
 
 export default function PostsList(props: Props) {
 
-
-    const reachedBottom = useCallback(() => {
-        console.log("NEW FETCH")
-    }, [])
-
-    const { ref } = useReachedBottom<HTMLDivElement>(reachedBottom)
+    const { ref } = useReachedBottom<HTMLDivElement>(props.onReachedBottom)
 
     if (props.isLoading)
         return <div className="flex flex-col gap-24">

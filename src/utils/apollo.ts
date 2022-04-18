@@ -1,4 +1,4 @@
-import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache, from, Reference, FieldPolicy } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 
@@ -45,5 +45,40 @@ export const apolloClient = new ApolloClient({
         errorLink,
         httpLink
     ]),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    getFeed: offsetLimitPagination()
+                },
+            },
+        },
+    })
 });
+
+type KeyArgs = FieldPolicy<any>["keyArgs"];
+
+function offsetLimitPagination<T = Reference>(
+    keyArgs: KeyArgs = false,
+): FieldPolicy<T[]> {
+    return {
+        keyArgs,
+        merge(existing, incoming, { args }) {
+            const merged = existing ? existing.slice(0) : [];
+            if (args) {
+                // Assume an skip of 0 if args.skip omitted.
+                const { skip = 0 } = args;
+                for (let i = 0; i < incoming.length; ++i) {
+                    merged[skip + i] = incoming[i];
+                }
+            } else {
+                // It's unusual (probably a mistake) for a paginated field not
+                // to receive any arguments, so you might prefer to throw an
+                // exception here, instead of recovering by appending incoming
+                // onto the existing array.
+                merged.push.apply(merged, [...incoming]);
+            }
+            return merged;
+        },
+    };
+}

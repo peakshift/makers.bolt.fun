@@ -87,9 +87,7 @@ posts.bounties = posts.bounties.map(b => ({ ...b, __typename: "Bounty" }))
 posts.questions = posts.questions.map(b => ({ ...b, __typename: "Question" }))
 posts.stories = posts.stories.map(b => ({ ...b, __typename: "Story" }))
 
-export const feed: Post[] = [
-    ...posts.stories,
-    ...posts.bounties,
-    ...posts.questions,
-]
+export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
+    return { ...posts.stories[0], id: idx + 1, title: `Post Title ${idx + 1}` }
+})
 

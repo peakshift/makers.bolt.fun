@@ -17,6 +17,7 @@ import {
     FeedQuery,
     PostDetailsQuery,
     PostDetailsQueryVariables,
+    FeedQueryVariables,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms))
@@ -99,12 +100,12 @@ export const handlers = [
         )
     }),
 
-    graphql.query<FeedQuery>('Feed', async (req, res, ctx) => {
+    graphql.query<FeedQuery, FeedQueryVariables>('Feed', async (req, res, ctx) => {
         await delay()
-
+        const { take, skip } = req.variables;
         return res(
             ctx.data({
-                getFeed: getFeed()
+                getFeed: getFeed({ take, skip })
             })
         )
     }),

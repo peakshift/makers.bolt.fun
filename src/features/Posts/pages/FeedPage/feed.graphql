@@ -1,5 +1,5 @@
-query Feed {
-  getFeed {
+query Feed($skip: Int, $take: Int) {
+  getFeed(skip: $skip, take: $take) {
     ... on Story {
       id
       title
