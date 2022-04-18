@@ -2,6 +2,7 @@ import VotesCount from "src/Components/VotesCount/VotesCount"
 import { Story } from "src/features/Posts/types"
 import Header from "../Header/Header"
 import { BiComment } from 'react-icons/bi'
+import { Link } from "react-router-dom"
 
 interface Props {
     story: Story
@@ -12,7 +13,9 @@ export default function StoryCard({ story }: Props) {
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
                 <Header author={story.author} date={story.date} />
-                <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
+                <Link to={'#'}>
+                    <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
+                </Link>
                 <p className="text-body4 text-gray-600 mt-8">{story.excerpt}</p>
 
                 <hr className="my-16 bg-gray-200" />

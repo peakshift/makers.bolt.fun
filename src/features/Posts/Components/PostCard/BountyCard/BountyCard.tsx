@@ -4,6 +4,7 @@ import Header from "../Header/Header"
 import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import Button from "src/Components/Button/Button"
+import { Link } from "react-router-dom"
 
 interface Props {
     bounty: Bounty
@@ -14,15 +15,17 @@ export default function BountyCard({ bounty }: Props) {
             <img src={bounty.cover_image} className='h-[200px] w-full object-cover bg-gray-100' alt="" />
             <div className="p-24">
                 <Header author={bounty.author} date={bounty.date} />
-                <div className="flex justify-between">
+                <div className="flex flex-col gap-8 md:gap-0 md:flex-row justify-between">
                     <div>
-                        <h2 className="text-h5 font-bolder mt-16 flex items-center gap-8">
-                            <Badge color="none" size="sm" className="bg-yellow-500 text-black">Bounty</Badge>
-                            <span>{bounty.title}</span>
-                        </h2>
+
+                        <Link to={'#'}>
+                            <h2 className="text-h5 font-bolder mt-16 flex items-center gap-8">
+                                <span><Badge color="none" size="sm" className="bg-yellow-500 text-black">Bounty</Badge> {bounty.title}</span>
+                            </h2>
+                        </Link>
 
                     </div>
-                    <Button color="black" className="self-center !py-10 !px-36 flex-shrink-0 ">
+                    <Button color="black" className="self-center !py-10 !px-36 flex-shrink-0 w-full md:w-auto ">
                         Apply
                     </Button>
                 </div>

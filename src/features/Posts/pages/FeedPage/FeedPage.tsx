@@ -16,13 +16,17 @@ export default function FeedPage() {
             className={`page-container grid w-full gap-32 ${styles.grid}`}
         >
             <aside>
-                <SortBy />
-                <hr className="my-24 bg-gray-100" />
-                <PopularCategories />
+                <div className="sticky top-16">
+                    <SortBy />
+                    <hr className="my-24 bg-gray-100" />
+                    <PopularCategories />
+                </div>
             </aside>
             <PostsList isLoading={feedQuery.loading} items={feedQuery.data?.getFeed} />
             <aside>
-                <TrendingCard />
+                <div className="sticky top-16">
+                    <TrendingCard />
+                </div>
             </aside>
         </div>
     )
