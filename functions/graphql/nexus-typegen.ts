@@ -83,12 +83,9 @@ export interface NexusGenObjects {
     answers_count: number; // Int!
     author: NexusGenRootTypes['User']; // User!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
-    cover_image: string; // String!
     date: string; // String!
-    deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
-    reward_amount: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     votes_count: number; // Int!
@@ -213,12 +210,9 @@ export interface NexusGenFieldTypes {
     answers_count: number; // Int!
     author: NexusGenRootTypes['User']; // User!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
-    cover_image: string; // String!
     date: string; // String!
-    deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
-    reward_amount: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
@@ -344,12 +338,9 @@ export interface NexusGenFieldTypeNames {
     answers_count: 'Int'
     author: 'User'
     comments: 'PostComment'
-    cover_image: 'String'
     date: 'String'
-    deadline: 'String'
     excerpt: 'String'
     id: 'Int'
-    reward_amount: 'Int'
     tags: 'Tag'
     title: 'String'
     type: 'String'

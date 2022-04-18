@@ -56,9 +56,6 @@ query PostDetails($postId: Int!) {
       }
       votes_count
       type
-      cover_image
-      deadline
-      reward_amount
       answers_count
       comments {
         id

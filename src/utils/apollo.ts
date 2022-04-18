@@ -40,6 +40,7 @@ const retryLink = new RetryLink({
 
 
 export const apolloClient = new ApolloClient({
+    connectToDevTools: true,
     link: from([
         retryLink,
         errorLink,
@@ -65,6 +66,7 @@ function offsetLimitPagination<T = Reference>(
         keyArgs,
         merge(existing, incoming, { args }) {
             const merged = existing ? existing.slice(0) : [];
+
             if (args) {
                 // Assume an skip of 0 if args.skip omitted.
                 const { skip = 0 } = args;

@@ -14,7 +14,7 @@ export default function FeedPage() {
         variables: {
             take: 10,
             skip: 0
-        }
+        },
     })
     const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
 

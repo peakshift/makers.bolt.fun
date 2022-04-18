@@ -10,7 +10,6 @@ export const useInfiniteQuery = (query: QueryResult, dataField: string) => {
         () => {
             if (!fetchingMore && !reachedLastPage) {
                 setFetchingMore(true);
-                // console.log(feedQuery.variables?.skip);
 
                 query.fetchMore({
                     variables: {

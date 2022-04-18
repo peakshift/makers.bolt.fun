@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import CategoryPage from "src/features/Projects/pages/CategoryPage/CategoryPage";
 import { useWrapperSetup } from "./utils/Wrapper";
 import HottestPage from "src/features/Projects/pages/HottestPage/HottestPage";
+import FeedPage from "./features/Posts/pages/FeedPage/FeedPage";
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -39,7 +40,8 @@ function App() {
     <Routes>
       <Route path="/hottest" element={<HottestPage />} />
       <Route path="/category/:id" element={<CategoryPage />} />
-      <Route path="/" element={<ExplorePage />} />
+      {/* <Route path="/" element={<ExplorePage />} /> */}
+      <Route path="/" element={<FeedPage />} />
     </Routes>
     <ModalsContainer />
   </div>;

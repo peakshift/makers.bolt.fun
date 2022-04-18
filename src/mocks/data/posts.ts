@@ -1,6 +1,7 @@
 
 import dayjs from "dayjs";
 import { Bounty, Post, Question, Story } from "src/features/Posts/types";
+import { randomItem } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
 
 const getAuthor = () => ({
@@ -28,12 +29,44 @@ export let posts = {
                 { id: 3, title: "guide" },
             ],
             author: getAuthor()
+        },
+        {
+            id: 14,
+            title: 'Digital Editor, Mars Review of Books',
+            cover_image: getCoverImage(),
+            comments_count: 31,
+            date,
+            votes_count: 120,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            type: "Story",
+            tags: [
+                { id: 1, title: "lnurl" },
+                { id: 2, title: "webln" },
+                { id: 3, title: "guide" },
+            ],
+            author: getAuthor()
+        },
+        {
+            id: 44,
+            title: 'Digital Editor, Mars Review of Books',
+            cover_image: getCoverImage(),
+            comments_count: 31,
+            date,
+            votes_count: 120,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            type: "Story",
+            tags: [
+                { id: 1, title: "lnurl" },
+                { id: 2, title: "webln" },
+                { id: 3, title: "guide" },
+            ],
+            author: getAuthor()
         }
     ] as Story[],
     bounties: [
         {
             type: "Bounty",
-            id: 2,
+            id: 22,
             title: 'Digital Editor, Mars Review of Books',
             cover_image: getCoverImage(),
             applicants_count: 31,
@@ -53,7 +86,63 @@ export let posts = {
     questions: [
         {
             type: "Question",
-            id: 3,
+            id: 33,
+            title: 'Digital Editor, Mars Review of Books',
+            answers_count: 31,
+            date,
+            votes_count: 70,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            tags: [
+                { id: 1, title: "lnurl" },
+                { id: 2, title: "webln" },
+            ],
+            author: getAuthor(),
+            comments: [
+                {
+                    id: 1,
+                    author: getAuthor(),
+                    date,
+                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
+                },
+                {
+                    id: 2,
+                    author: getAuthor(),
+                    date,
+                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
+                },
+            ]
+        },
+        {
+            type: "Question",
+            id: 233,
+            title: 'Digital Editor, Mars Review of Books',
+            answers_count: 31,
+            date,
+            votes_count: 70,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            tags: [
+                { id: 1, title: "lnurl" },
+                { id: 2, title: "webln" },
+            ],
+            author: getAuthor(),
+            comments: [
+                {
+                    id: 1,
+                    author: getAuthor(),
+                    date,
+                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
+                },
+                {
+                    id: 2,
+                    author: getAuthor(),
+                    date,
+                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
+                },
+            ]
+        },
+        {
+            type: "Question",
+            id: 133,
             title: 'Digital Editor, Mars Review of Books',
             answers_count: 31,
             date,
@@ -87,7 +176,9 @@ posts.bounties = posts.bounties.map(b => ({ ...b, __typename: "Bounty" }))
 posts.questions = posts.questions.map(b => ({ ...b, __typename: "Question" }))
 posts.stories = posts.stories.map(b => ({ ...b, __typename: "Story" }))
 
-export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
-    return { ...posts.stories[0], id: idx + 1, title: `Post Title ${idx + 1}` }
-})
 
+export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
+    const post = randomItem(posts.bounties[0], posts.questions[0], posts.stories[0]) as Post;
+
+    return { ...post, id: idx + 1, title: `${post.type} Title ${idx + 1}` }
+})

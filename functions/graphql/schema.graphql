@@ -86,7 +86,7 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   getCategory(id: Int!): Category!
-  getFeed(skip: Int = 0, take: Int = 15): [Post!]!
+  getFeed(skip: Int = 0, take: Int = 5): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!): Post!
   getProject(id: Int!): Project!
@@ -100,12 +100,9 @@ type Question implements PostBase {
   answers_count: Int!
   author: User!
   comments: [PostComment!]!
-  cover_image: String!
   date: String!
-  deadline: String!
   excerpt: String!
   id: Int!
-  reward_amount: Int!
   tags: [Tag!]!
   title: String!
   type: String!
