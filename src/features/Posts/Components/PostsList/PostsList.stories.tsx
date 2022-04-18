@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof PostsList> = (args) => <div className="max
 
 export const Default = Template.bind({});
 Default.args = {
-    posts: MOCK_DATA['feed']
+    items: MOCK_DATA['feed']
 }
 
 

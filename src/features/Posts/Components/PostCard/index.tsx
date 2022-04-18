@@ -1,2 +1,5 @@
+import PostCard from "./PostCard/PostCard";
 
-export { }
+export { default as PostCardSkeleton } from './PostCard/PostCard.Skeleton'
+
+export default PostCard;
