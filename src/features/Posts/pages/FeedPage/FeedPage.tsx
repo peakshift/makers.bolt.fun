@@ -1,6 +1,6 @@
 
 import { useFeedQuery } from 'src/graphql'
-import { useInfiniteQuery } from 'src/utils/hooks'
+import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import PopularCategories from './PopularCategories/PopularCategories'
@@ -17,13 +17,21 @@ export default function FeedPage() {
         },
     })
     const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
+    const { navHeight } = useAppSelector((state) => ({
+        navHeight: state.ui.navHeight
+    }));
 
     return (
         <div
-            className={`page-container grid w-full gap-32 ${styles.grid}`}
+            className={`page-container grid pt-16 w-full gap-32 ${styles.grid}`}
         >
-            <aside>
-                <div className="sticky top-16">
+            <aside className='no-scrollbar'>
+                <div className="sticky"
+                    style={{
+                        top: `${navHeight + 16}px`,
+                        maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
+                        overflowY: "scroll",
+                    }}>
                     <SortBy />
                     <hr className="my-24 bg-gray-100" />
                     <PopularCategories />
@@ -35,8 +43,13 @@ export default function FeedPage() {
                 isFetching={isFetchingMore}
                 onReachedBottom={fetchMore}
             />
-            <aside>
-                <div className="sticky top-16">
+            <aside className='no-scrollbar'>
+                <div className="sticky"
+                    style={{
+                        top: `${navHeight + 16}px`,
+                        maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
+                        overflowY: "scroll",
+                    }}>
                     <TrendingCard />
                 </div>
             </aside>

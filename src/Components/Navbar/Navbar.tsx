@@ -9,6 +9,7 @@ import { useResizeListener } from "src/utils/hooks";
 import NavDesktop from "./NavDesktop";
 import { useMediaQuery } from "@react-hookz/web";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
+import { BiComment } from "react-icons/bi";
 
 export const navLinks = [
   { text: "Explore", url: "/", icon: MdHomeFilled, color: "text-primary-600" },
@@ -16,6 +17,12 @@ export const navLinks = [
     text: "Hottest",
     url: "/hottest",
     icon: MdLocalFireDepartment,
+    color: "text-primary-600",
+  },
+  {
+    text: "Blog",
+    url: "/blog",
+    icon: BiComment,
     color: "text-primary-600",
   },
   // {

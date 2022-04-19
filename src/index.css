@@ -44,6 +44,7 @@
 
 body {
   overflow-x: hidden;
+  /* background-color: #F8FAFC; */
 }
 
 .page-container{
@@ -95,14 +96,16 @@ svg {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .no-scrollbar ::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
-
 @media (pointer: coarse) {
   .touch-device\:hidden {
     display: none;

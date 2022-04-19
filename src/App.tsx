@@ -35,12 +35,12 @@ function App() {
 
 
 
-  return <div id="app" className='w-screen overflow-hidden'>
+  return <div id="app" className=''>
     <Navbar />
     <Routes>
       <Route path="/hottest" element={<HottestPage />} />
       <Route path="/category/:id" element={<CategoryPage />} />
-      <Route path="/feed" element={<FeedPage />} />
+      <Route path="/blog" element={<FeedPage />} />
       <Route path="/" element={<ExplorePage />} />
     </Routes>
     <ModalsContainer />
