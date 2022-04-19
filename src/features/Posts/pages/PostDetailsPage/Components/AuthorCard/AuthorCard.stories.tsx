@@ -4,7 +4,7 @@ import { MOCK_DATA } from 'src/mocks/data';
 import AuthorCard from './AuthorCard';
 
 export default {
-    title: 'Posts/Post Page/Components/AuthorCard',
+    title: 'Posts/Post Details Page/Components/AuthorCard',
     component: AuthorCard,
     argTypes: {
         backgroundColor: { control: 'color' },

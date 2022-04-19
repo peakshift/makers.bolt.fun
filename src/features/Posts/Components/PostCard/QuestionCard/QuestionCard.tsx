@@ -3,12 +3,20 @@ import { Question } from "src/features/Posts/types"
 import Header from "../Header/Header"
 import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
-import Avatar from "src/features/Profiles/Components/Avatar/Avatar"
-import dayjs from "dayjs"
 import { Link } from "react-router-dom"
 
+type QuestionCardType = Pick<Question,
+    | 'title'
+    | 'date'
+    | 'author'
+    | 'excerpt'
+    | 'votes_count'
+    | "tags"
+    | "answers_count"
+    | "comments"
+>;
 interface Props {
-    question: Question
+    question: QuestionCardType
 }
 export default function QuestionCard({ question }: Props) {
     return (

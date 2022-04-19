@@ -3,10 +3,10 @@ let coverImgsCntr = -1;
 
 export function getCoverImage() {
     const coverImgs = [
-        'https://picsum.photos/id/10/1660/1200',
-        'https://picsum.photos/id/1000/1660/1200',
-        'https://picsum.photos/id/1002/1660/1200',
-        'https://picsum.photos/id/1018/1660/1200',
+        'https://picsum.photos/id/10/1600/900',
+        'https://picsum.photos/id/1000/1600/900',
+        'https://picsum.photos/id/1002/1600/900',
+        'https://picsum.photos/id/1018/1600/900',
     ]
 
     return coverImgs[(++coverImgsCntr) % coverImgs.length]

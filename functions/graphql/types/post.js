@@ -1,7 +1,6 @@
 const {
     intArg,
     objectType,
-    stringArg,
     extendType,
     nonNull,
     interfaceType,

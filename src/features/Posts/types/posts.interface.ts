@@ -19,6 +19,7 @@ export type PostBase = {
     tags: Tag[]
     votes_count: number
     type: string
+    body: string
 }
 
 export type Story = PostBase & {
@@ -35,6 +36,10 @@ export type Bounty = PostBase & {
     reward_amount: number
     deadline: string
     applicants_count: number
+    applicants: {
+        author: Author
+        workPlan: string
+    }[]
 }
 
 export function isBounty(post: Post): post is Bounty {

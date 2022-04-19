@@ -6,8 +6,19 @@ import Badge from "src/Components/Badge/Badge"
 import Button from "src/Components/Button/Button"
 import { Link } from "react-router-dom"
 
+type BountyCardType = Pick<Bounty,
+    | 'title'
+    | 'cover_image'
+    | 'date'
+    | 'author'
+    | 'excerpt'
+    | 'votes_count'
+    | "reward_amount"
+    | "tags"
+    | "applicants_count"
+>;
 interface Props {
-    bounty: Bounty
+    bounty: BountyCardType
 }
 export default function BountyCard({ bounty }: Props) {
     return (

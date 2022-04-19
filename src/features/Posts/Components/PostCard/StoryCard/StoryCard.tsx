@@ -4,8 +4,18 @@ import Header from "../Header/Header"
 import { BiComment } from 'react-icons/bi'
 import { Link } from "react-router-dom"
 
+type StoryCardType = Pick<Story,
+    | 'title'
+    | 'cover_image'
+    | 'date'
+    | 'author'
+    | 'excerpt'
+    | 'votes_count'
+    | 'comments_count'
+>;
+
 interface Props {
-    story: Story
+    story: StoryCardType
 }
 export default function StoryCard({ story }: Props) {
     return (
