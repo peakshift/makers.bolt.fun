@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import FeedPage from './FeedPage';
 
 export default {
-    title: 'Posts/FeedPage',
+    title: 'Posts/Feed Page',
     component: FeedPage,
     argTypes: {
         backgroundColor: { control: 'color' },

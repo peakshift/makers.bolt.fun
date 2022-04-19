@@ -86,10 +86,11 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   getCategory(id: Int!): Category!
-  getFeed(skip: Int = 0, take: Int = 5): [Post!]!
+  getFeed(skip: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!): Post!
   getProject(id: Int!): Project!
+  getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!

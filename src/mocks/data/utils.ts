@@ -6,7 +6,7 @@ export function getCoverImage() {
         'https://picsum.photos/id/10/1660/1200',
         'https://picsum.photos/id/1000/1660/1200',
         'https://picsum.photos/id/1002/1660/1200',
-        'https://picsum.photos/id/1008/1660/1200',
+        'https://picsum.photos/id/1018/1660/1200',
     ]
 
     return coverImgs[(++coverImgsCntr) % coverImgs.length]

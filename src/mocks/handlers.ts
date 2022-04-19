@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getCategory, getFeed, getPostById, getProject, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -18,9 +18,10 @@ import {
     PostDetailsQuery,
     PostDetailsQueryVariables,
     FeedQueryVariables,
+    TrendingPostsQuery,
 } from 'src/graphql'
 
-const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms))
+const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
 
 export const handlers = [
 
@@ -117,6 +118,17 @@ export const handlers = [
         return res(
             ctx.data({
                 getPostById: getPostById(postId)
+            })
+        )
+    }),
+
+
+    graphql.query<TrendingPostsQuery>('TrendingPosts', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getTrendingPosts: getTrendingPosts()
             })
         )
     }),

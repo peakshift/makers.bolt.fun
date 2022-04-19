@@ -201,6 +201,7 @@ export interface NexusGenFieldTypes {
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
+    getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -329,6 +330,7 @@ export interface NexusGenFieldTypeNames {
     getLnurlDetailsForProject: 'LnurlDetails'
     getPostById: 'Post'
     getProject: 'Project'
+    getTrendingPosts: 'Post'
     hottestProjects: 'Project'
     newProjects: 'Project'
     projectsByCategory: 'Project'

@@ -4,13 +4,15 @@ import { Bounty, Post, Question, Story } from "src/features/Posts/types";
 import { randomItem } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
 
+const date = dayjs().subtract(5, 'hour').toString();
+
 const getAuthor = () => ({
     id: 12,
     name: "John Doe",
-    image: getAvatarImage()
+    image: getAvatarImage(),
+    join_date: date
 })
 
-const date = dayjs().subtract(5, 'hour').toString();
 
 export let posts = {
     stories: [
@@ -30,38 +32,6 @@ export let posts = {
             ],
             author: getAuthor()
         },
-        {
-            id: 14,
-            title: 'Digital Editor, Mars Review of Books',
-            cover_image: getCoverImage(),
-            comments_count: 31,
-            date,
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
-            author: getAuthor()
-        },
-        {
-            id: 44,
-            title: 'Digital Editor, Mars Review of Books',
-            cover_image: getCoverImage(),
-            comments_count: 31,
-            date,
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
-            author: getAuthor()
-        }
     ] as Story[],
     bounties: [
         {
@@ -112,62 +82,6 @@ export let posts = {
                 },
             ]
         },
-        {
-            type: "Question",
-            id: 233,
-            title: 'Digital Editor, Mars Review of Books',
-            answers_count: 31,
-            date,
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-            ],
-            author: getAuthor(),
-            comments: [
-                {
-                    id: 1,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-                {
-                    id: 2,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-            ]
-        },
-        {
-            type: "Question",
-            id: 133,
-            title: 'Digital Editor, Mars Review of Books',
-            answers_count: 31,
-            date,
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-            ],
-            author: getAuthor(),
-            comments: [
-                {
-                    id: 1,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-                {
-                    id: 2,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-            ]
-        }
     ] as Question[]
 }
 

@@ -1,6 +1,7 @@
 import ASSETS from "src/assets";
 import { MOCK_DATA } from "./data";
 import { Query, QueryGetFeedArgs } from 'src/graphql'
+import { Author } from "src/features/Posts/types";
 
 export function getCategory(id: number) {
 
@@ -60,4 +61,49 @@ export function getPostById(postId: number): Query['getPostById'] {
     }
 
     throw new Error("Post doesn't exist")
+}
+
+export function getTrendingPosts(): Query['getTrendingPosts'] {
+    return [
+        {
+            id: 1,
+            title: 'How to collect donations within lightning network?',
+            author: {
+                id: 2,
+                name: "John Doe",
+                image: "https://i.pravatar.cc/150?img=2"
+            } as Author,
+            __typename: "Question"
+        },
+        {
+            id: 2,
+            title: 'How to implement the RSMC part of Lightning network?',
+            author: {
+                id: 2,
+                name: "John Doe",
+                image: "https://i.pravatar.cc/150?img=2"
+            } as Author,
+            __typename: "Question"
+        },
+        {
+            id: 3,
+            title: 'c-lightning public node data on explorers',
+            author: {
+                id: 2,
+                name: "John Doe",
+                image: "https://i.pravatar.cc/150?img=2"
+            } as Author,
+            __typename: "Story"
+        },
+        {
+            id: 4,
+            title: 'How to find all nodes and connections in LN?',
+            author: {
+                id: 2,
+                name: "John Doe",
+                image: "https://i.pravatar.cc/150?img=2"
+            } as Author,
+            __typename: "Question"
+        },
+    ] as any;
 }

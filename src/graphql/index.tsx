@@ -123,6 +123,7 @@ export type Query = {
   getLnurlDetailsForProject: LnurlDetails;
   getPostById: Post;
   getProject: Project;
+  getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
   newProjects: Array<Project>;
   projectsByCategory: Array<Project>;
@@ -250,6 +251,11 @@ export type SearchProjectsQueryVariables = Exact<{
 
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
+
+export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, image: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, image: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, image: string } }> };
 
 export type FeedQueryVariables = Exact<{
   skip: InputMaybe<Scalars['Int']>;
@@ -390,6 +396,63 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const TrendingPostsDocument = gql`
+    query TrendingPosts {
+  getTrendingPosts {
+    ... on Story {
+      id
+      title
+      author {
+        id
+        image
+      }
+    }
+    ... on Bounty {
+      id
+      title
+      author {
+        id
+        image
+      }
+    }
+    ... on Question {
+      id
+      title
+      author {
+        id
+        image
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useTrendingPostsQuery__
+ *
+ * To run a query within a React component, call `useTrendingPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTrendingPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTrendingPostsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTrendingPostsQuery(baseOptions?: Apollo.QueryHookOptions<TrendingPostsQuery, TrendingPostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TrendingPostsQuery, TrendingPostsQueryVariables>(TrendingPostsDocument, options);
+      }
+export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrendingPostsQuery, TrendingPostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TrendingPostsQuery, TrendingPostsQueryVariables>(TrendingPostsDocument, options);
+        }
+export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
+export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
+export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
 export const FeedDocument = gql`
     query Feed($skip: Int, $take: Int) {
   getFeed(skip: $skip, take: $take) {

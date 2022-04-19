@@ -1,0 +1,29 @@
+query TrendingPosts {
+  getTrendingPosts {
+    ... on Story {
+      id
+      title
+      author {
+        id
+        image
+      }
+    }
+    ... on Bounty {
+      id
+      title
+      author {
+        id
+        image
+      }
+    }
+
+    ... on Question {
+      id
+      title
+      author {
+        id
+        image
+      }
+    }
+  }
+}

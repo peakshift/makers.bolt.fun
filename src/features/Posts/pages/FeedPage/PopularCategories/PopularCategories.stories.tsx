@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import PopularCategories from './PopularCategories';
 
 export default {
-    title: 'Posts/FeedPage/Components/PopularCategories',
+    title: 'Posts/Feed Page/Components/PopularCategories',
     component: PopularCategories,
     argTypes: {
         backgroundColor: { control: 'color' },

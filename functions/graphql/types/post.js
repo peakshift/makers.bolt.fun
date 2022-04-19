@@ -93,193 +93,6 @@ const Post = unionType({
     resolveType: (item) => item.type,
 })
 
-let coverImgsCntr = -1;
-function getCoverImage() {
-    const coverImgs = [
-        'https://picsum.photos/id/10/1660/1200',
-        'https://picsum.photos/id/1000/1660/1200',
-        'https://picsum.photos/id/1002/1660/1200',
-        'https://picsum.photos/id/1008/1660/1200',
-    ]
-
-    return coverImgs[(++coverImgsCntr) % coverImgs.length]
-}
-let avatarImgsCntr = -1;
-
-function getAvatarImage() {
-    const avatarImgs = [
-        'https://i.pravatar.cc/150?img=1',
-        'https://i.pravatar.cc/150?img=2',
-        'https://i.pravatar.cc/150?img=3',
-        'https://i.pravatar.cc/150?img=4',
-    ]
-
-    return avatarImgs[(++avatarImgsCntr) % avatarImgs.length]
-}
-const getAuthor = () => ({
-    id: 12,
-    name: "John Doe",
-    image: getAvatarImage()
-})
-const date = new Date().toString()
-const posts = {
-    stories: [
-        {
-            id: 4,
-            title: 'Digital Editor, Mars Review of Books',
-            cover_image: getCoverImage(),
-            comments_count: 31,
-            date,
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
-            author: getAuthor()
-        },
-        {
-            id: 14,
-            title: 'Digital Editor, Mars Review of Books',
-            cover_image: getCoverImage(),
-            comments_count: 31,
-            date,
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
-            author: getAuthor()
-        },
-        {
-            id: 44,
-            title: 'Digital Editor, Mars Review of Books',
-            cover_image: getCoverImage(),
-            comments_count: 31,
-            date,
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
-            author: getAuthor()
-        }
-    ],
-    bounties: [
-        {
-            type: "Bounty",
-            id: 22,
-            title: 'Digital Editor, Mars Review of Books',
-            cover_image: getCoverImage(),
-            applicants_count: 31,
-            date,
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
-            author: getAuthor(),
-            deadline: "25 May",
-            reward_amount: 200_000,
-        }
-    ],
-    questions: [
-        {
-            type: "Question",
-            id: 33,
-            title: 'Digital Editor, Mars Review of Books',
-            answers_count: 31,
-            date,
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-            ],
-            author: getAuthor(),
-            comments: [
-                {
-                    id: 1,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-                {
-                    id: 2,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-            ]
-        },
-        {
-            type: "Question",
-            id: 233,
-            title: 'Digital Editor, Mars Review of Books',
-            answers_count: 31,
-            date,
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-            ],
-            author: getAuthor(),
-            comments: [
-                {
-                    id: 1,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-                {
-                    id: 2,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-            ]
-        },
-        {
-            type: "Question",
-            id: 133,
-            title: 'Digital Editor, Mars Review of Books',
-            answers_count: 31,
-            date,
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-            ],
-            author: getAuthor(),
-            comments: [
-                {
-                    id: 1,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-                {
-                    id: 2,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-            ]
-        }
-    ]
-}
 
 const getFeed = extendType({
     type: "Query",
@@ -287,15 +100,27 @@ const getFeed = extendType({
         t.nonNull.list.nonNull.field('getFeed', {
             type: "Post",
             args: {
-                ...paginationArgs({ take: 5 })
+                ...paginationArgs({ take: 10 })
             },
             resolve(_, { take, skip }) {
-                const feed = [
-                    ...posts.bounties,
-                    ...posts.stories,
-                    ...posts.questions,
-                ]
+                const feed = []
                 return feed.slice(skip, skip + take);
+            }
+        })
+    }
+})
+
+
+const getTrendingPosts = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getTrendingPosts', {
+            type: "Post",
+            args: {
+            },
+            resolve() {
+
+                return [];
             }
         })
     }
@@ -329,5 +154,6 @@ module.exports = {
     Post,
     // Queries
     getFeed,
-    getPostById
+    getPostById,
+    getTrendingPosts
 }
