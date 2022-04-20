@@ -3,8 +3,11 @@ import dayjs from "dayjs";
 import { Bounty, Post, Question, Story } from "src/features/Posts/types";
 import { randomItem } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
+import chance, { Chance } from 'chance'
 
 const date = dayjs().subtract(5, 'hour').toString();
+
+
 
 const getAuthor = () => ({
     id: 12,
@@ -102,7 +105,7 @@ export let posts = {
             author: getAuthor(),
             deadline: "25 May",
             reward_amount: 200_000,
-            applications: getApplications(),
+            applications: getApplications(2),
 
         }
     ] as Bounty[],
@@ -145,8 +148,10 @@ posts.questions = posts.questions.map(b => ({ ...b, __typename: "Question" }))
 posts.stories = posts.stories.map(b => ({ ...b, __typename: "Story" }))
 
 
+const feedRandomer = new Chance('feed')
+
 export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
-    const post = randomItem(posts.bounties[0], posts.questions[0], posts.stories[0]) as Post;
+    const post = feedRandomer.pickone([posts.bounties[0], posts.questions[0], posts.stories[0]])
 
     return { ...post, id: idx + 1, title: `${post.type} Title ${idx + 1}` }
 })

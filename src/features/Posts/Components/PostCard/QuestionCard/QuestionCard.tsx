@@ -27,7 +27,7 @@ export default function QuestionCard({ question }: Props) {
             <div className="p-24">
                 <Header author={question.author} date={question.date} />
                 <div className="flex justify-between">
-                    <Link to={'#'}>
+                    <Link to={`/blog/post/Question/${question.id}`}>
                         <h2 className="text-h5 font-bolder mt-16">{question.title}</h2>
                     </Link>
                 </div>
@@ -59,7 +59,7 @@ export default function QuestionCard({ question }: Props) {
                     </div>
 
                     <div className="flex">
-                        <Link to='#' className="text-black font-medium p-8 hover:bg-gray-100 rounded">
+                        <Link to={`/blog/post/Question/${question.id}`} className="text-black font-medium p-8 hover:bg-gray-100 rounded">
                             See all {question.answers_count} comments
                         </Link>
                     </div>

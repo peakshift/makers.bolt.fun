@@ -9,6 +9,7 @@ import CategoryPage from "src/features/Projects/pages/CategoryPage/CategoryPage"
 import { useWrapperSetup } from "./utils/Wrapper";
 import HottestPage from "src/features/Projects/pages/HottestPage/HottestPage";
 import FeedPage from "./features/Posts/pages/FeedPage/FeedPage";
+import PostDetailsPage from "./features/Posts/pages/PostDetailsPage/PostDetailsPage";
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -40,6 +41,7 @@ function App() {
     <Routes>
       <Route path="/hottest" element={<HottestPage />} />
       <Route path="/category/:id" element={<CategoryPage />} />
+      <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
       <Route path="/blog" element={<FeedPage />} />
       <Route path="/" element={<ExplorePage />} />
     </Routes>

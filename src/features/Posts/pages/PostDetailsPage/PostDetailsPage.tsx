@@ -1,8 +1,7 @@
 
-import { useFeedQuery } from 'src/graphql'
-import { MOCK_DATA } from 'src/mocks/data'
-import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
-import PostsList from '../../Components/PostsList/PostsList'
+import { useParams } from 'react-router-dom'
+import { usePostDetailsQuery } from 'src/graphql'
+import { useAppSelector, } from 'src/utils/hooks'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import AuthorCard from './Components/AuthorCard/AuthorCard'
 import PageContent from './Components/PageContent/PageContent'
@@ -12,17 +11,26 @@ import styles from './styles.module.css'
 
 export default function PostDetailsPage() {
 
-    // const feedQuery = useFeedQuery({
-    //     variables: {
-    //         take: 10,
-    //         skip: 0
-    //     },
-    // })
-    // const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
-    const post = MOCK_DATA.posts.stories[0]
+    const { type, id } = useParams()
+    const postDetailsQuery = usePostDetailsQuery({
+        variables: {
+            id: Number(id!),
+            type: type as any
+        },
+        skip: isNaN(Number(id))
+    })
+
     const { navHeight } = useAppSelector((state) => ({
         navHeight: state.ui.navHeight
     }));
+
+    if (postDetailsQuery.loading)
+        return <h2>Loading</h2>
+
+    const post = postDetailsQuery.data?.getPostById;
+
+    if (!post)
+        return <h2>404</h2>
 
     return (
         <div

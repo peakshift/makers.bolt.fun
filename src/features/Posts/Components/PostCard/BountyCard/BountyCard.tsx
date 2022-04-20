@@ -30,8 +30,7 @@ export default function BountyCard({ bounty }: Props) {
                 <Header author={bounty.author} date={bounty.date} />
                 <div className="flex flex-col gap-8 md:gap-0 md:flex-row justify-between">
                     <div>
-
-                        <Link to={'#'}>
+                        <Link to={`/blog/post/Bounty/${bounty.id}`}>
                             <h2 className="text-h5 font-bolder mt-16 flex items-center gap-8">
                                 <span><Badge color="none" size="sm" className="bg-yellow-500 text-black">Bounty</Badge> {bounty.title}</span>
                             </h2>

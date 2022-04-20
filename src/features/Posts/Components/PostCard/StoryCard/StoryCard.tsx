@@ -25,7 +25,7 @@ export default function StoryCard({ story }: Props) {
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
                 <Header author={story.author} date={story.date} />
-                <Link to={'#'}>
+                <Link to={`/blog/post/Story/${story.id}`}>
                     <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
                 </Link>
                 <p className="text-body4 text-gray-600 mt-8">{story.excerpt}</p>

@@ -55,20 +55,16 @@ export default function BountyPageContent({ bounty }: Props) {
             <div className="border bg-white rounded-8 p-24 mt-16">
                 <h4 className="text-body2 font-bolder">Applicants</h4>
                 <ul className="flex flex-col gap-16 mt-16">
-                    <li>
-                        <Header author={bounty.author} size='sm' date={bounty.date} />
-                        <div className="bg-gray-100 mt-10 p-16 rounded-8">
-                            <p className="text-body5 font-medium mb-8">Work Plan</p>
-                            <p className="text-body5 text-gray-600">I will create the widget using nextjs, react and typescript. and also convert it into a npm package.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <Header author={bounty.author} size='sm' date={bounty.date} />
-                        <div className="bg-gray-100 mt-10 p-16 rounded-8">
-                            <p className="text-body5 font-medium mb-8">Work Plan</p>
-                            <p className="text-body5 text-gray-600">I will create the widget using nextjs, react and typescript. and also convert it into a npm package.</p>
-                        </div>
-                    </li>
+                    {bounty.applications.map(application =>
+                        <li key={application.id}>
+                            <Header author={application.author} size='sm' date={application.date} />
+                            <div className="bg-gray-100 mt-10 p-16 rounded-8">
+                                <p className="text-body5 font-medium mb-8">Work Plan</p>
+                                <p className="text-body5 text-gray-600">   {application.workplan}</p>
+                            </div>
+                        </li>
+                    )}
+
                 </ul>
             </div>
         </div>

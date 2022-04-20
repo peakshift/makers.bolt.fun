@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import { ModifyArgs } from 'src/utils/storybook/utils';
 import PostDetailsPage from './PostDetailsPage';
 
 export default {
@@ -8,6 +8,14 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
+    parameters: {
+        modifyArgs: {
+            router: {
+                routePath: "/:type/:id",
+                currentPath: "/Story/1"
+            }
+        } as ModifyArgs
+    }
 } as ComponentMeta<typeof PostDetailsPage>;
 
 
