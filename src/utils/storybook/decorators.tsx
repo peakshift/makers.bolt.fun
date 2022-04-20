@@ -18,11 +18,8 @@ import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
 
 
+// Enable the Mocks Service Worker
 // -------------------------------------------
-// -------------------------------------------
-
-console.log('HIIII ', process.env);
-
 
 if (process.env.STORYBOOK_ENABLE_MOCKS) {
     worker.start({

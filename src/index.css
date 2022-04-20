@@ -17,7 +17,7 @@
   }
 
   .input-wrapper {
-    @apply w-full relative border border-gray-300 rounded-lg shadow-xs flex h-42 focus-within:outline-primary;
+    @apply w-full relative border border-gray-300 rounded-lg shadow-xs flex focus-within:outline-primary;
   }
 
   .input-field {
@@ -25,7 +25,7 @@
   }
 
   .input-icon {
-    @apply h-full text-primary-500 flex-shrink-0 w-42 px-12;
+    @apply h-full text-primary-500 flex-shrink-0 w-42 px-12 self-center;
   }
 
   .chip {
@@ -38,8 +38,6 @@
   .modal-card {
     @apply rounded-[40px] bg-gray-50 overflow-hidden w-full shadow-2xl z-10;
   }
-
-   
 }
 
 body {
@@ -47,7 +45,7 @@ body {
   /* background-color: #F8FAFC; */
 }
 
-.page-container{
+.page-container {
   width: 98%;
   margin: 0 auto;
   max-width: 1440px;
