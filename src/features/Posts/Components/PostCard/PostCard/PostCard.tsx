@@ -1,10 +1,12 @@
-import { Post, isStory, isBounty, isQuestion } from "src/features/Posts/types"
-import BountyCard from "../BountyCard/BountyCard"
-import QuestionCard from "../QuestionCard/QuestionCard"
-import StoryCard from "../StoryCard/StoryCard"
+import { isStory, isBounty, isQuestion } from "src/features/Posts/types"
+import BountyCard, { BountyCardType } from "../BountyCard/BountyCard"
+import QuestionCard, { QuestionCardType } from "../QuestionCard/QuestionCard"
+import StoryCard, { StoryCardType } from "../StoryCard/StoryCard"
+
+export type PostCardType = StoryCardType | QuestionCardType | BountyCardType;
 
 type Props = {
-  post: Post
+  post: PostCardType
 }
 
 export default function PostCard({ post }: Props) {

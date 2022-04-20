@@ -27,7 +27,9 @@ export type Award = {
 export type Bounty = PostBase & {
   __typename?: 'Bounty';
   applicants_count: Scalars['Int'];
+  applications: Array<BountyApplication>;
   author: User;
+  body: Scalars['String'];
   cover_image: Scalars['String'];
   date: Scalars['String'];
   deadline: Scalars['String'];
@@ -38,6 +40,14 @@ export type Bounty = PostBase & {
   title: Scalars['String'];
   type: Scalars['String'];
   votes_count: Scalars['Int'];
+};
+
+export type BountyApplication = {
+  __typename?: 'BountyApplication';
+  author: User;
+  date: Scalars['String'];
+  id: Scalars['Int'];
+  workplan: Scalars['String'];
 };
 
 export type Category = {
@@ -77,10 +87,17 @@ export type MutationVoteArgs = {
   project_id: Scalars['Int'];
 };
 
+export enum Post_Type {
+  Bounty = 'Bounty',
+  Question = 'Question',
+  Story = 'Story'
+}
+
 export type Post = Bounty | Question | Story;
 
 export type PostBase = {
   author: User;
+  body: Scalars['String'];
   date: Scalars['String'];
   excerpt: Scalars['String'];
   id: Scalars['Int'];
@@ -155,6 +172,7 @@ export type QueryGetLnurlDetailsForProjectArgs = {
 
 export type QueryGetPostByIdArgs = {
   id: Scalars['Int'];
+  type: Post_Type;
 };
 
 
@@ -192,6 +210,7 @@ export type Question = PostBase & {
   __typename?: 'Question';
   answers_count: Scalars['Int'];
   author: User;
+  body: Scalars['String'];
   comments: Array<PostComment>;
   date: Scalars['String'];
   excerpt: Scalars['String'];
@@ -205,6 +224,8 @@ export type Question = PostBase & {
 export type Story = PostBase & {
   __typename?: 'Story';
   author: User;
+  body: Scalars['String'];
+  comments: Array<PostComment>;
   comments_count: Scalars['Int'];
   cover_image: Scalars['String'];
   date: Scalars['String'];
@@ -219,7 +240,6 @@ export type Story = PostBase & {
 export type Tag = {
   __typename?: 'Tag';
   id: Scalars['Int'];
-  project: Array<Project>;
   title: Scalars['String'];
 };
 
@@ -266,11 +286,12 @@ export type FeedQueryVariables = Exact<{
 export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
 
 export type PostDetailsQueryVariables = Exact<{
-  postId: Scalars['Int'];
+  id: Scalars['Int'];
+  type: Post_Type;
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Question', id: number, title: string, date: string, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, date: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -557,8 +578,8 @@ export type FeedQueryHookResult = ReturnType<typeof useFeedQuery>;
 export type FeedLazyQueryHookResult = ReturnType<typeof useFeedLazyQuery>;
 export type FeedQueryResult = Apollo.QueryResult<FeedQuery, FeedQueryVariables>;
 export const PostDetailsDocument = gql`
-    query PostDetails($postId: Int!) {
-  getPostById(id: $postId) {
+    query PostDetails($id: Int!, $type: POST_TYPE!) {
+  getPostById(id: $id, type: $type) {
     ... on Story {
       id
       title
@@ -568,7 +589,7 @@ export const PostDetailsDocument = gql`
         name
         image
       }
-      excerpt
+      body
       tags {
         id
         title
@@ -577,6 +598,16 @@ export const PostDetailsDocument = gql`
       type
       cover_image
       comments_count
+      comments {
+        id
+        date
+        body
+        author {
+          id
+          name
+          image
+        }
+      }
     }
     ... on Bounty {
       id
@@ -587,7 +618,7 @@ export const PostDetailsDocument = gql`
         name
         image
       }
-      excerpt
+      body
       tags {
         id
         title
@@ -598,6 +629,16 @@ export const PostDetailsDocument = gql`
       deadline
       reward_amount
       applicants_count
+      applications {
+        id
+        date
+        workplan
+        author {
+          id
+          name
+          image
+        }
+      }
     }
     ... on Question {
       id
@@ -608,7 +649,7 @@ export const PostDetailsDocument = gql`
         name
         image
       }
-      excerpt
+      body
       tags {
         id
         title
@@ -643,7 +684,8 @@ export const PostDetailsDocument = gql`
  * @example
  * const { data, loading, error } = usePostDetailsQuery({
  *   variables: {
- *      postId: // value for 'postId'
+ *      id: // value for 'id'
+ *      type: // value for 'type'
  *   },
  * });
  */

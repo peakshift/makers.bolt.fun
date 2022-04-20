@@ -1,6 +1,5 @@
-import ASSETS from "src/assets";
 import { MOCK_DATA } from "./data";
-import { Query, QueryGetFeedArgs } from 'src/graphql'
+import { Post, Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
 import { Author } from "src/features/Posts/types";
 
 export function getCategory(id: number) {
@@ -33,8 +32,8 @@ export function getProject(projectId: number) {
 }
 
 export function searchProjects(search: string) {
+    const regexSearch = new RegExp(search, 'i')
     return MOCK_DATA.projects.filter(project => {
-        const regexSearch = new RegExp(search, 'i')
         return regexSearch.test(project.title) || regexSearch.test(project.category.title)
     })
 }
@@ -43,24 +42,16 @@ export function hottestProjects() {
     return MOCK_DATA.projects.sort((p1, p2) => p2.votes_count - p1.votes_count).slice(0, 20)
 }
 
-export function getFeed(config: QueryGetFeedArgs): Query['getFeed'] {
-    const take = config.take ?? 10
-    const skip = config.skip ?? 0
-    return MOCK_DATA.feed.slice(skip, skip + take) as any;
+export function getFeed(args: QueryGetFeedArgs): Query['getFeed'] {
+    const take = args.take ?? 10
+    const skip = args.skip ?? 0
+    return MOCK_DATA.feed.slice(skip, skip + take);
 }
 
-export function getPostById(postId: number): Query['getPostById'] {
-    for (const key in MOCK_DATA.posts) {
-        if (Object.prototype.hasOwnProperty.call(MOCK_DATA.posts, key)) {
-            const t = key as keyof typeof MOCK_DATA.posts
-            for (const p of MOCK_DATA.posts[t]) {
-                if (p.id === postId) return p as any;
-            }
+export function getPostById(args: QueryGetPostByIdArgs): Query['getPostById'] {
 
-        }
-    }
+    return MOCK_DATA.feed.find(p => p.id === args.id)!;
 
-    throw new Error("Post doesn't exist")
 }
 
 export function getTrendingPosts(): Query['getTrendingPosts'] {
@@ -105,5 +96,5 @@ export function getTrendingPosts(): Query['getTrendingPosts'] {
             } as Author,
             __typename: "Question"
         },
-    ] as any;
+    ] as Post[];
 }

@@ -5,7 +5,9 @@ import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import { Link } from "react-router-dom"
 
-type QuestionCardType = Pick<Question,
+export type QuestionCardType = Pick<Question,
+    | 'id'
+    | 'type'
     | 'title'
     | 'date'
     | 'author'

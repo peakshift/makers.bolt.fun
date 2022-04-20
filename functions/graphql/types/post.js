@@ -5,10 +5,17 @@ const {
     nonNull,
     interfaceType,
     unionType,
+    stringArg,
+    enumType,
+    arg,
 } = require('nexus');
 const { paginationArgs } = require('./helpers');
 
 
+const POST_TYPE = enumType({
+    name: 'POST_TYPE',
+    members: ['Story', 'Bounty', 'Question'],
+})
 
 
 const PostBase = interfaceType({
@@ -24,6 +31,7 @@ const PostBase = interfaceType({
             type: "User"
         });
         t.nonNull.string('excerpt');
+        t.nonNull.string('body');
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag"
         });
@@ -40,7 +48,22 @@ const Story = objectType({
         });
         t.nonNull.string('cover_image');
         t.nonNull.int('comments_count');
+        t.nonNull.list.nonNull.field('comments', {
+            type: "PostComment"
+        })
     },
+})
+
+const BountyApplication = objectType({
+    name: 'BountyApplication',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('date');
+        t.nonNull.string('workplan');
+        t.nonNull.field('author', {
+            type: "User"
+        });
+    }
 })
 
 const Bounty = objectType({
@@ -54,6 +77,9 @@ const Bounty = objectType({
         t.nonNull.string('deadline');
         t.nonNull.int('reward_amount');
         t.nonNull.int('applicants_count');
+        t.nonNull.list.nonNull.field('applications', {
+            type: "BountyApplication"
+        })
     },
 })
 
@@ -125,16 +151,44 @@ const getTrendingPosts = extendType({
     }
 })
 
+
+
+
 const getPostById = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.field('getPostById', {
             type: "Post",
             args: {
-                id: nonNull(intArg())
+                id: nonNull(intArg()),
+                type: arg({
+                    type: nonNull('POST_TYPE')
+                })
             },
             resolve(_, { id }) {
-                return {}
+                return {
+                    id: 4,
+                    title: 'Digital Editor, Mars Review of Books',
+                    body: "AASA",
+                    cover_image: "AASA",
+                    comments_count: 31,
+                    date: "SSSS",
+                    votes_count: 120,
+                    excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+                    type: "Story",
+                    tags: [
+                        { id: 1, title: "lnurl" },
+                        { id: 2, title: "webln" },
+                        { id: 3, title: "guide" },
+                    ],
+                    author: {
+
+                        id: 12,
+                        name: "John Doe",
+                        image: "SSSS",
+                        join_date: "SSSS"
+                    },
+                }
             }
         })
     }
@@ -145,7 +199,9 @@ const getPostById = extendType({
 
 module.exports = {
     // Types
+    POST_TYPE,
     PostBase,
+    BountyApplication,
     Bounty,
     Story,
     Question,

@@ -113,11 +113,14 @@ export const handlers = [
 
     graphql.query<PostDetailsQuery, PostDetailsQueryVariables>('PostDetails', async (req, res, ctx) => {
         await delay()
-        const { postId } = req.variables
+        const { id, type } = req.variables
 
         return res(
             ctx.data({
-                getPostById: getPostById(postId)
+                getPostById: getPostById({
+                    id,
+                    type
+                })
             })
         )
     }),

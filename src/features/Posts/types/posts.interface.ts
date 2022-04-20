@@ -1,3 +1,4 @@
+import * as ApiTypes from "src/graphql"
 import { Tag } from "src/utils/interfaces"
 
 export type User = {
@@ -10,7 +11,7 @@ export type Author = User & {
     join_date?: string
 }
 
-export type PostBase = {
+export type PostBase1 = {
     id: number
     title: string
     date: string
@@ -22,44 +23,29 @@ export type PostBase = {
     body: string
 }
 
-export type Story = PostBase & {
-    cover_image: string;
-    comments_count: number
-}
+export type PostBase = ApiTypes.PostBase
 
-export function isStory(post: Post): post is Story {
+
+export type Story = ApiTypes.Story
+
+export function isStory(post: { type: string }): post is Story {
     return post.type === 'Story'
 }
 
-export type Bounty = PostBase & {
-    cover_image: string;
-    reward_amount: number
-    deadline: string
-    applicants_count: number
-    applicants: {
-        author: Author
-        workPlan: string
-    }[]
-}
 
-export function isBounty(post: Post): post is Bounty {
+export type Bounty = ApiTypes.Bounty
+
+export function isBounty(post: { type: string }): post is Bounty {
     return post.type === 'Bounty'
 }
 
-export type Question = PostBase & {
-    answers_count: number
-    comments: PostComment[]
-}
+export type Question = ApiTypes.Question
 
-export function isQuestion(post: Post): post is Question {
+export function isQuestion(post: { type: string }): post is Question {
     return post.type === 'Question'
 }
 
-export type PostComment = {
-    id: number;
-    author: Author
-    date: string
-    body: string
-}
+
+export type PostComment = ApiTypes.PostComment
 
 export type Post = Story | Question | Bounty

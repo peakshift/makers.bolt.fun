@@ -4,7 +4,9 @@ import Header from "../Header/Header"
 import { BiComment } from 'react-icons/bi'
 import { Link } from "react-router-dom"
 
-type StoryCardType = Pick<Story,
+export type StoryCardType = Pick<Story,
+    | 'id'
+    | 'type'
     | 'title'
     | 'cover_image'
     | 'date'

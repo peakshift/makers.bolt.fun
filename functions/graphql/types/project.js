@@ -69,12 +69,12 @@ const Tag = objectType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
-        t.nonNull.list.nonNull.field('project', {
-            type: "Project",
-            resolve: (parent) => {
-                return prisma.tag.findUnique({ where: { id: parent.id } }).project();
-            }
-        })
+        // t.nonNull.list.nonNull.field('project', {
+        //     type: "Project",
+        //     resolve: (parent) => {
+        //         return prisma.tag.findUnique({ where: { id: parent.id } }).project();
+        //     }
+        // })
     }
 })
 

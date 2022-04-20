@@ -1,5 +1,5 @@
-query PostDetails($postId: Int!) {
-  getPostById(id: $postId) {
+query PostDetails($id: Int!, $type: POST_TYPE!) {
+  getPostById(id: $id, type: $type) {
     ... on Story {
       id
       title
@@ -9,7 +9,7 @@ query PostDetails($postId: Int!) {
         name
         image
       }
-      excerpt
+      body
       tags {
         id
         title
@@ -18,6 +18,16 @@ query PostDetails($postId: Int!) {
       type
       cover_image
       comments_count
+      comments {
+        id
+        date
+        body
+        author {
+          id
+          name
+          image
+        }
+      }
     }
     ... on Bounty {
       id
@@ -28,7 +38,7 @@ query PostDetails($postId: Int!) {
         name
         image
       }
-      excerpt
+      body
       tags {
         id
         title
@@ -39,6 +49,16 @@ query PostDetails($postId: Int!) {
       deadline
       reward_amount
       applicants_count
+      applications {
+        id
+        date
+        workplan
+        author {
+          id
+          name
+          image
+        }
+      }
     }
     ... on Question {
       id
@@ -49,7 +69,7 @@ query PostDetails($postId: Int!) {
         name
         image
       }
-      excerpt
+      body
       tags {
         id
         title

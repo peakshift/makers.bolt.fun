@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  POST_TYPE: "Bounty" | "Question" | "Story"
 }
 
 export interface NexusGenScalars {
@@ -36,7 +37,9 @@ export interface NexusGenObjects {
   }
   Bounty: { // root type
     applicants_count: number; // Int!
+    applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
     cover_image: string; // String!
     date: string; // String!
     deadline: string; // String!
@@ -46,6 +49,12 @@ export interface NexusGenObjects {
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     votes_count: number; // Int!
+  }
+  BountyApplication: { // root type
+    author: NexusGenRootTypes['User']; // User!
+    date: string; // String!
+    id: number; // Int!
+    workplan: string; // String!
   }
   Category: { // root type
     cover_image?: string | null; // String
@@ -82,6 +91,7 @@ export interface NexusGenObjects {
   Question: { // root type
     answers_count: number; // Int!
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     date: string; // String!
     excerpt: string; // String!
@@ -92,6 +102,8 @@ export interface NexusGenObjects {
   }
   Story: { // root type
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
+    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
     cover_image: string; // String!
     date: string; // String!
@@ -129,7 +141,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects & NexusGenUnions
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Award: { // field return type
@@ -141,7 +153,9 @@ export interface NexusGenFieldTypes {
   }
   Bounty: { // field return type
     applicants_count: number; // Int!
+    applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
     cover_image: string; // String!
     date: string; // String!
     deadline: string; // String!
@@ -152,6 +166,12 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     type: string; // String!
     votes_count: number; // Int!
+  }
+  BountyApplication: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    date: string; // String!
+    id: number; // Int!
+    workplan: string; // String!
   }
   Category: { // field return type
     apps_count: number; // Int!
@@ -210,6 +230,7 @@ export interface NexusGenFieldTypes {
   Question: { // field return type
     answers_count: number; // Int!
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     date: string; // String!
     excerpt: string; // String!
@@ -221,6 +242,8 @@ export interface NexusGenFieldTypes {
   }
   Story: { // field return type
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
+    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
     cover_image: string; // String!
     date: string; // String!
@@ -233,7 +256,6 @@ export interface NexusGenFieldTypes {
   }
   Tag: { // field return type
     id: number; // Int!
-    project: NexusGenRootTypes['Project'][]; // [Project!]!
     title: string; // String!
   }
   User: { // field return type
@@ -251,6 +273,7 @@ export interface NexusGenFieldTypes {
   }
   PostBase: { // field return type
     author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
     date: string; // String!
     excerpt: string; // String!
     id: number; // Int!
@@ -270,7 +293,9 @@ export interface NexusGenFieldTypeNames {
   }
   Bounty: { // field return type name
     applicants_count: 'Int'
+    applications: 'BountyApplication'
     author: 'User'
+    body: 'String'
     cover_image: 'String'
     date: 'String'
     deadline: 'String'
@@ -281,6 +306,12 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     type: 'String'
     votes_count: 'Int'
+  }
+  BountyApplication: { // field return type name
+    author: 'User'
+    date: 'String'
+    id: 'Int'
+    workplan: 'String'
   }
   Category: { // field return type name
     apps_count: 'Int'
@@ -339,6 +370,7 @@ export interface NexusGenFieldTypeNames {
   Question: { // field return type name
     answers_count: 'Int'
     author: 'User'
+    body: 'String'
     comments: 'PostComment'
     date: 'String'
     excerpt: 'String'
@@ -350,6 +382,8 @@ export interface NexusGenFieldTypeNames {
   }
   Story: { // field return type name
     author: 'User'
+    body: 'String'
+    comments: 'PostComment'
     comments_count: 'Int'
     cover_image: 'String'
     date: 'String'
@@ -362,7 +396,6 @@ export interface NexusGenFieldTypeNames {
   }
   Tag: { // field return type name
     id: 'Int'
-    project: 'Project'
     title: 'String'
   }
   User: { // field return type name
@@ -380,6 +413,7 @@ export interface NexusGenFieldTypeNames {
   }
   PostBase: { // field return type name
     author: 'User'
+    body: 'String'
     date: 'String'
     excerpt: 'String'
     id: 'Int'
@@ -417,6 +451,7 @@ export interface NexusGenArgTypes {
     }
     getPostById: { // args
       id: number; // Int!
+      type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
     }
     getProject: { // args
       id: number; // Int!
@@ -457,7 +492,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = keyof NexusGenInterfaces;
 

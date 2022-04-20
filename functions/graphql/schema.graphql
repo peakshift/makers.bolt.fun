@@ -12,7 +12,9 @@ type Award {
 
 type Bounty implements PostBase {
   applicants_count: Int!
+  applications: [BountyApplication!]!
   author: User!
+  body: String!
   cover_image: String!
   date: String!
   deadline: String!
@@ -23,6 +25,13 @@ type Bounty implements PostBase {
   title: String!
   type: String!
   votes_count: Int!
+}
+
+type BountyApplication {
+  author: User!
+  date: String!
+  id: Int!
+  workplan: String!
 }
 
 type Category {
@@ -47,10 +56,17 @@ type Mutation {
   vote(amount_in_sat: Int!, project_id: Int!): Vote!
 }
 
+enum POST_TYPE {
+  Bounty
+  Question
+  Story
+}
+
 union Post = Bounty | Question | Story
 
 interface PostBase {
   author: User!
+  body: String!
   date: String!
   excerpt: String!
   id: Int!
@@ -88,7 +104,7 @@ type Query {
   getCategory(id: Int!): Category!
   getFeed(skip: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
-  getPostById(id: Int!): Post!
+  getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
@@ -100,6 +116,7 @@ type Query {
 type Question implements PostBase {
   answers_count: Int!
   author: User!
+  body: String!
   comments: [PostComment!]!
   date: String!
   excerpt: String!
@@ -112,6 +129,8 @@ type Question implements PostBase {
 
 type Story implements PostBase {
   author: User!
+  body: String!
+  comments: [PostComment!]!
   comments_count: Int!
   cover_image: String!
   date: String!
@@ -125,7 +144,6 @@ type Story implements PostBase {
 
 type Tag {
   id: Int!
-  project: [Project!]!
   title: String!
 }
 

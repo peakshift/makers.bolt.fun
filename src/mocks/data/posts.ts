@@ -13,6 +13,20 @@ const getAuthor = () => ({
     join_date: date
 })
 
+const getPostComments = (cnt: number = 1): Story['comments'] => Array(cnt).fill(0).map((_, idx) => ({
+    id: idx + 1,
+    body: "This is a comment " + idx + 1,
+    date,
+    author: getAuthor()
+}))
+
+const getApplications = (cnt: number = 1): Bounty['applications'] => Array(cnt).fill(0).map((_, idx) => ({
+    id: idx + 1,
+    workplan: "I Plan to build this using React, Ts, Redux, and Storybook.",
+    date,
+    author: getAuthor(),
+}))
+
 const postBody = `
 [Marked] lets you convert [Markdown] into HTML.  Markdown is a simple text format whose goal is to be very easy to read and write, even when not converted to HTML.  This demo page will let you type anything you like and see how it gets converted.  Live.  No more waiting around.
 
@@ -65,6 +79,8 @@ export let posts = {
                 { id: 3, title: "guide" },
             ],
             author: getAuthor(),
+            comments: getPostComments(),
+
         },
     ] as Story[],
     bounties: [
@@ -86,6 +102,8 @@ export let posts = {
             author: getAuthor(),
             deadline: "25 May",
             reward_amount: 200_000,
+            applications: getApplications(),
+
         }
     ] as Bounty[],
     questions: [
@@ -93,6 +111,7 @@ export let posts = {
             type: "Question",
             id: 33,
             title: 'Digital Editor, Mars Review of Books',
+            body: postBody,
             answers_count: 31,
             date,
             votes_count: 70,

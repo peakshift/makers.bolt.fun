@@ -1,10 +1,11 @@
-import { useCallback } from "react"
-import { Post } from "src/features/Posts/types"
+
 import { useReachedBottom } from "src/utils/hooks/useReachedBottom"
 import { ListComponentProps } from "src/utils/interfaces"
 import PostCard, { PostCardSkeleton } from "../PostCard"
+import { PostCardType } from "../PostCard/PostCard/PostCard"
 
-type Props = ListComponentProps<Post>
+
+type Props = ListComponentProps<PostCardType>
 
 export default function PostsList(props: Props) {
 

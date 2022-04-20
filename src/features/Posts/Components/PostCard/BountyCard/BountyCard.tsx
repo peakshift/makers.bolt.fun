@@ -6,7 +6,9 @@ import Badge from "src/Components/Badge/Badge"
 import Button from "src/Components/Button/Button"
 import { Link } from "react-router-dom"
 
-type BountyCardType = Pick<Bounty,
+export type BountyCardType = Pick<Bounty,
+    | 'id'
+    | 'type'
     | 'title'
     | 'cover_image'
     | 'date'
