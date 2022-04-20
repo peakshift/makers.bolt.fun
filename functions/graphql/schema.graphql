@@ -102,7 +102,7 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   getCategory(id: Int!): Category!
-  getFeed(skip: Int = 0, take: Int = 10): [Post!]!
+  getFeed(category: String = "all", skip: Int = 0, sortBy: String = "all", take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!

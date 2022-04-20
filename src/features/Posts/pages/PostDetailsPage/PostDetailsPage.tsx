@@ -1,5 +1,6 @@
 
 import { useParams } from 'react-router-dom'
+import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
 import { usePostDetailsQuery } from 'src/graphql'
 import { useAppSelector, } from 'src/utils/hooks'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
@@ -17,7 +18,8 @@ export default function PostDetailsPage() {
             id: Number(id!),
             type: type as any
         },
-        skip: isNaN(Number(id))
+        skip: isNaN(Number(id)),
+
     })
 
     const { navHeight } = useAppSelector((state) => ({
@@ -25,7 +27,7 @@ export default function PostDetailsPage() {
     }));
 
     if (postDetailsQuery.loading)
-        return <h2>Loading</h2>
+        return <LoadingPage />
 
     const post = postDetailsQuery.data?.getPostById;
 

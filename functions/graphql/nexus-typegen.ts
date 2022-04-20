@@ -443,7 +443,9 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     getFeed: { // args
+      category: string | null; // String
       skip?: number | null; // Int
+      sortBy: string | null; // String
       take: number | null; // Int
     }
     getLnurlDetailsForProject: { // args

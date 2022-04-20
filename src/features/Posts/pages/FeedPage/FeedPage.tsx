@@ -1,4 +1,5 @@
 
+import { useReducer, useState } from 'react'
 import { useFeedQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
@@ -10,10 +11,16 @@ import styles from './styles.module.css'
 
 export default function FeedPage() {
 
+    const [sortByFilter, setSortByFilter] = useState('all')
+    const [categoryFilter, setCategoryFilter] = useState('all')
+
+
     const feedQuery = useFeedQuery({
         variables: {
             take: 10,
-            skip: 0
+            skip: 0,
+            sortBy: sortByFilter,
+            category: categoryFilter
         },
     })
     const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
@@ -32,9 +39,13 @@ export default function FeedPage() {
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         overflowY: "scroll",
                     }}>
-                    <SortBy />
+                    <SortBy
+                        filterChanged={setSortByFilter}
+                    />
                     <hr className="my-24 bg-gray-100" />
-                    <PopularCategories />
+                    <PopularCategories
+                        filterChanged={setCategoryFilter}
+                    />
                 </div>
             </aside>
             <PostsList

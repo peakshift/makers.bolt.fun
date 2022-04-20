@@ -125,7 +125,13 @@ const getFeed = extendType({
         t.nonNull.list.nonNull.field('getFeed', {
             type: "Post",
             args: {
-                ...paginationArgs({ take: 10 })
+                ...paginationArgs({ take: 10 }),
+                sortBy: stringArg({
+                    default: "all"
+                }),
+                category: stringArg({
+                    default: "all"
+                })
             },
             resolve(_, { take, skip }) {
                 const feed = []

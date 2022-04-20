@@ -160,7 +160,9 @@ export type QueryGetCategoryArgs = {
 
 
 export type QueryGetFeedArgs = {
+  category?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
+  sortBy?: InputMaybe<Scalars['String']>;
   take?: InputMaybe<Scalars['Int']>;
 };
 
@@ -278,8 +280,10 @@ export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, image: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, image: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, image: string } }> };
 
 export type FeedQueryVariables = Exact<{
-  skip: InputMaybe<Scalars['Int']>;
   take: InputMaybe<Scalars['Int']>;
+  skip: InputMaybe<Scalars['Int']>;
+  sortBy: InputMaybe<Scalars['String']>;
+  category: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -475,8 +479,8 @@ export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQue
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
 export const FeedDocument = gql`
-    query Feed($skip: Int, $take: Int) {
-  getFeed(skip: $skip, take: $take) {
+    query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, category: $category) {
     ... on Story {
       id
       title
@@ -561,8 +565,10 @@ export const FeedDocument = gql`
  * @example
  * const { data, loading, error } = useFeedQuery({
  *   variables: {
- *      skip: // value for 'skip'
  *      take: // value for 'take'
+ *      skip: // value for 'skip'
+ *      sortBy: // value for 'sortBy'
+ *      category: // value for 'category'
  *   },
  * });
  */

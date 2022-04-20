@@ -50,7 +50,7 @@ export const apolloClient = new ApolloClient({
         typePolicies: {
             Query: {
                 fields: {
-                    getFeed: offsetLimitPagination()
+                    getFeed: offsetLimitPagination(['sortBy', 'category'])
                 },
             },
         },

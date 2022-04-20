@@ -153,5 +153,9 @@ const feedRandomer = new Chance('feed')
 export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
     const post = feedRandomer.pickone([posts.bounties[0], posts.questions[0], posts.stories[0]])
 
-    return { ...post, id: idx + 1, title: `${post.type} Title ${idx + 1}` }
+    return {
+        ...post, id: idx + 1, title: feedRandomer.sentence({
+            words: feedRandomer.integer({ min: 4, max: 7 })
+        })
+    }
 })

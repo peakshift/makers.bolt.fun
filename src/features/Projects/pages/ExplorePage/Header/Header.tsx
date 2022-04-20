@@ -2,7 +2,7 @@ import { useMediaQuery } from "@react-hookz/web";
 import Carousel from "react-multi-carousel";
 import Assets from "src/assets";
 import Button from "src/Components/Button/Button";
-import { THEME } from "src/utils/theme";
+import THEME from "src/utils/theme";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import CustomDot from "./CustomDot/CustomDot";
 import styles from './styles.module.css'
