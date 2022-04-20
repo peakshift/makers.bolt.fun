@@ -21,8 +21,10 @@ import { apolloClient } from '../apollo';
 // -------------------------------------------
 // -------------------------------------------
 
+console.log('HIIII ', process.env);
 
-if (process.env.REACT_APP_ENABLE_MOCKS) {
+
+if (process.env.STORYBOOK_ENABLE_MOCKS) {
     worker.start({
         onUnhandledRequest: 'bypass'
     })
