@@ -11,9 +11,7 @@ export const parameters = {
       date: /Date$/,
     },
   },
-};
-
-
+}
 
 addDecorator(AppDecorator);
 

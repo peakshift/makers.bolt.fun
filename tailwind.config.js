@@ -1,15 +1,14 @@
 const THEME = require('./src/utils/theme')
 
+
 module.exports = {
-  mode: "jit",
-  purge: [
+  content: [
     "./src/features/**/*.{html,js,ts,tsx,jsx}",
     "./src/pages/**/*.{html,js,ts,tsx,jsx}",
     "./src/Components/**/*.{html,js,ts,tsx,jsx}",
     "./src/layouts/**/*.{html,js,ts,tsx,jsx}",
     "./src/index.html",
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: THEME.colors,
@@ -100,4 +99,4 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
   ],
-};
+}

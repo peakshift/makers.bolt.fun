@@ -17,7 +17,7 @@
   }
 
   .input-wrapper {
-    @apply w-full relative border border-gray-300 rounded-lg shadow-xs flex focus-within:outline-primary;
+    @apply w-full relative border border-gray-300 rounded-lg shadow-xs flex focus-within:outline-primary-400;
   }
 
   .input-field {
