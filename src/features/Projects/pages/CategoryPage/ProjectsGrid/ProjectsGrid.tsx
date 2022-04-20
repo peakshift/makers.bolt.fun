@@ -1,5 +1,6 @@
-import ProjectCardMini from 'src/Components/Cards/ProjectCardMini/ProjectCardMini'
-import ProjectCardMiniSkeleton from 'src/Components/Cards/ProjectCardMini/ProjectCardMini.Skeleton';
+
+import ProjectCardMini from "src/features/Projects/Components/ProjectCardMini/ProjectCardMini";
+import ProjectCardMiniSkeleton from 'src/features/Projects/Components/ProjectCardMini/ProjectCardMini.Skeleton';
 import { openModal } from 'src/redux/features/modals.slice';
 import { openProject } from 'src/redux/features/project.slice';
 import { useAppDispatch } from 'src/utils/hooks';

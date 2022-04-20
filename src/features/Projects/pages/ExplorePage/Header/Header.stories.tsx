@@ -4,7 +4,7 @@ import Header from './Header';
 
 
 export default {
-    title: 'Explore Page/Header',
+    title: 'Projects/Explore Page/Header',
     component: Header,
 
 } as ComponentMeta<typeof Header>;

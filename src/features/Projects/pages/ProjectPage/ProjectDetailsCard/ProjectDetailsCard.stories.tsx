@@ -6,7 +6,7 @@ import ProjectDetailsCardSkeleton from './ProjectDetailsCard.Skeleton';
 import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
-    title: 'Project/Project Details Card',
+    title: 'Projects/Project Page/Project Details Modal',
     component: ProjectDetailsCard,
 
     decorators: [ModalsDecorator],

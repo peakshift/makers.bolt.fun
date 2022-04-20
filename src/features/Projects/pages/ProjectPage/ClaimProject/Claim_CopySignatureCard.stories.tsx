@@ -5,7 +5,7 @@ import Claim_CopySignatureCard from './Claim_CopySignatureCard';
 import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
-    title: 'Project/Claim/Copy Signature Card',
+    title: 'Projects/Claim/Copy Signature Card',
     component: Claim_CopySignatureCard,
 
     decorators: [ModalsDecorator]

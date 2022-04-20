@@ -1,4 +1,3 @@
-import Categories from "./Categories/Categories";
 import Header from "./Header/Header";
 import ProjectsSection from "./ProjectsSection/ProjectsSection";
 

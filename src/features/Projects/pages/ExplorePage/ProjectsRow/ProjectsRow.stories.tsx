@@ -6,7 +6,7 @@ import { MOCK_DATA } from 'src/mocks/data';
 
 
 export default {
-    title: 'Explore Page/ProjectsRow',
+    title: 'Projects/Explore Page/ProjectsRow',
     component: ProjectsRow,
 
 } as ComponentMeta<typeof ProjectsRow>;

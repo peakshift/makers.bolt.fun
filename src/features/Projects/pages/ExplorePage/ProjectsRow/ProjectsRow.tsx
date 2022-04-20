@@ -4,12 +4,12 @@ import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
 import { useAppDispatch } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
-import ProjectCardMini from "src/Components/Cards/ProjectCardMini/ProjectCardMini";
 import { useResizeListener } from 'src/utils/hooks'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import './style.css';
 import { Link } from "react-router-dom";
 import { openProject } from "src/redux/features/project.slice";
+import ProjectCardMini from "src/features/Projects/Components/ProjectCardMini/ProjectCardMini";
 
 interface Props {
     title: string | ReactNode,

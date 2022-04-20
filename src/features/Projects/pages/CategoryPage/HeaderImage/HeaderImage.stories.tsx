@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import HeaderImage from './HeaderImage';
 
 export default {
-    title: 'Category Page/Header Image',
+    title: 'Projects/Category Page/Header Image',
     component: HeaderImage,
     argTypes: {
         backgroundColor: { control: 'color' },

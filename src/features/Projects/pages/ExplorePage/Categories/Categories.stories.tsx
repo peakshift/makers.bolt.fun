@@ -4,7 +4,7 @@ import Categories from './Categories';
 
 
 export default {
-    title: 'Explore Page/Categories',
+    title: 'Projects/Explore Page/Categories',
     component: Categories,
 
 } as ComponentMeta<typeof Categories>;

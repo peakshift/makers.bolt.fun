@@ -1,6 +1,6 @@
 
-import ProjectCardMiniSkeleton from "src/Components/Cards/ProjectCardMini/ProjectCardMini.Skeleton";
 import Skeleton from "react-loading-skeleton";
+import ProjectCardMiniSkeleton from "src/features/Projects/Components/ProjectCardMini/ProjectCardMini.Skeleton";
 
 export default function ProjectsRowSkeleton() {
 

@@ -4,7 +4,7 @@ import ProjectsSection from './ProjectsSection';
 
 
 export default {
-    title: 'Explore Page/Projects Section',
+    title: 'Projects/Explore Page/Projects Section',
     component: ProjectsSection,
 
 } as ComponentMeta<typeof ProjectsSection>;

@@ -5,7 +5,7 @@ import VoteCard from './VoteCard';
 import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
-    title: 'Project/Vote Card',
+    title: 'Projects/Project Page/Vote Card',
     component: VoteCard,
 
     decorators: [ModalsDecorator]
