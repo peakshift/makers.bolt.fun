@@ -22,7 +22,7 @@ import { apolloClient } from '../apollo';
 // -------------------------------------------
 
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.REACT_APP_ENABLE_MOCKS) {
     worker.start({
         onUnhandledRequest: 'bypass'
     })
