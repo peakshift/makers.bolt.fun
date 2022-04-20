@@ -68,6 +68,7 @@
     "storybook": "env-cmd -f ./environments/.dev.preview-server.env start-storybook -p 6006 -s public",
     "storybook:mocks": "env-cmd -f ./environments/.dev.mock-server.env start-storybook -p 6006 -s public",
     "build-storybook": "env-cmd -f ./environments/.prod.preview-server.env build-storybook -s public",
+    "build-storybook:mocks": "env-cmd -f ./environments/.prod.mock-server.env build-storybook -s public",
     "db:migrate-dev": "prisma migrate dev",
     "db:migrate-deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",
