@@ -15,6 +15,7 @@ interface Props {
     className?: string
     isLoading?: boolean;
     disableOnLoading?: boolean;
+    disabled?: boolean;
     [rest: string]: any;
 }
 
@@ -56,7 +57,19 @@ const btnPadding: UnionToObjectKeys<Props, 'size'> = {
     lg: 'py-12 px-36 text-body4'
 }
 
-export default function Button({ color = 'white', variant = 'fill', isLoading, disableOnLoading = true, size = 'md', fullWidth, href, newTab, className, onClick, children, ...props }: Props) {
+export default function Button({ color = 'white',
+    variant = 'fill',
+    isLoading,
+    disableOnLoading = true,
+    size = 'md',
+    fullWidth,
+    disabled,
+    href,
+    newTab,
+    className,
+    onClick,
+    children,
+    ...props }: Props) {
 
     let classes = `
     inline-block font-sans rounded-lg font-regular border border-gray-300 hover:cursor-pointer
@@ -65,6 +78,7 @@ export default function Button({ color = 'white', variant = 'fill', isLoading, d
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}
     ${isLoading && disableOnLoading && 'bg-opacity-70 pointer-events-none'}
     ${fullWidth && 'w-full'}
+    ${disabled && 'opacity-40 pointer-events-none'}
     `;
 
 

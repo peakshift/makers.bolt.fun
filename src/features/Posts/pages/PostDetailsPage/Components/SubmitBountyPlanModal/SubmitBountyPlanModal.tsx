@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { IoClose } from 'react-icons/io5'
+import Button from 'src/Components/Button/Button'
 import DatePicker from 'src/Components/Inputs/DatePicker/DatePicker'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 
@@ -40,13 +41,29 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
             </div>
 
             <div>
-                <div className="mt-16">
-                    <input className="appearance-none h-16 w-16 border border-gray-300 rounded-sm bg-gray-200 checked:bg-primary-600 checked:border-primary-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="" id="flexCheckChecked" />
-                    <label className=" inline-block text-gray-800" htmlFor="flexCheckChecked">
-                        Checked checkbox
+                <div className="mt-16 flex gap-16">
+                    <input
+                        className='input-checkbox self-center'
+                        type="checkbox" value="" />
+                    <label className="text-body4 text-gray-600" >
+                        I understand that this is an application and I should wait for approval from the funder before working
+                    </label>
+                </div>
+                <div className="mt-16 flex gap-16">
+                    <input
+                        className='input-checkbox self-center'
+                        type="checkbox" value="" />
+                    <label className="text-body4 text-gray-600" >
+                        I agree to keep the funder informed of my progress every few days
                     </label>
                 </div>
             </div>
+
+            <Button fullWidth color='black' className='mt-24' disabled>
+                Submit
+            </Button>
+            <p className="text-body6 text-gray-600 mt-4 font-medium" >
+                Please fill all the required fields in order to submit</p>
 
 
         </motion.div>

@@ -25,8 +25,9 @@
     @apply flex-grow border-none focus:border-0 focus:!ring-0 bg-transparent min-w-0 text-primary-500;
   }
 
-  .input-field {
-    @apply flex-grow appearance-none w-full py-2 px-3 bg-transparent text-primary-500 leading-tight focus:outline-none;
+  .input-checkbox {
+    @apply rounded-4 bg-gray-200 border-transparent focus:border-transparent focus:bg-primary-200
+                        text-primary-700 focus:ring-1 focus:ring-offset-2 focus:ring-primary-500;
   }
 
   .input-icon {
