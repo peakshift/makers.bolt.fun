@@ -18,27 +18,25 @@ import { setVoteAmount } from 'src/redux/features/vote.slice';
 
 
 interface Props extends ModalCard {
+    projectId: number;
 }
 
-export default function ProjectDetailsCard({ onClose, direction, ...props }: Props) {
+export default function ProjectDetailsCard({ direction, projectId, ...props }: Props) {
 
     const dispatch = useAppDispatch();
     const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
 
 
-    const { isWalletConnected, project, projectId, isMobileScreen } = useAppSelector(state => ({
+    const { isWalletConnected, project, isMobileScreen } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
         project: state.project.project,
-        projectId: state.project.openId,
         isMobileScreen: state.ui.isMobileScreen
     }));
-
-
-
 
     const { loading, error } = useProjectDetailsQuery({
         variables: { projectId: projectId! },
         onCompleted: data => {
+
             dispatch(setProject(data.getProject))
         },
         skip: !Boolean(projectId)
@@ -46,9 +44,13 @@ export default function ProjectDetailsCard({ onClose, direction, ...props }: Pro
 
     useEffect(() => {
         return () => {
-            dispatch(setProject(null))
         }
-    }, [dispatch])
+    }, [dispatch]);
+
+    const closeModal = () => {
+        dispatch(setProject(null));
+        props.onClose?.();
+    }
 
 
     if (error)
@@ -61,7 +63,7 @@ export default function ProjectDetailsCard({ onClose, direction, ...props }: Pro
         </div>
 
     if (loading || !project)
-        return <ProjectCardSkeleton onClose={onClose} direction={direction} isPageModal={props.isPageModal} />;
+        return <ProjectCardSkeleton onClose={closeModal} direction={direction} isPageModal={props.isPageModal} />;
 
     const onConnectWallet = async () => {
         Wallet_Service.connectWallet()
@@ -69,7 +71,12 @@ export default function ProjectDetailsCard({ onClose, direction, ...props }: Pro
 
     const onVote = (votes?: number) => {
         dispatch(setVoteAmount(votes ?? 10));
-        dispatch(openModal({ Modal: 'VoteCard' }))
+        dispatch(openModal({
+            Modal: 'VoteCard', props: {
+                projectId: project.id,
+                initVotes: votes
+            }
+        }))
     }
 
 
@@ -93,7 +100,7 @@ export default function ProjectDetailsCard({ onClose, direction, ...props }: Pro
         >
             <div className="relative h-[80px] lg:h-[152px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
+                <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={closeModal}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
             </div>
             <div className="p-24">
                 <div className="flex gap-24 items-start">

@@ -18,8 +18,7 @@ export default function SearchResults({ projects, isLoading }: Props) {
 
     const handleOpenProject = (projectId: number) => {
         dispatch(toggleSearch(false))
-        dispatch(openProject(projectId));
-        dispatch(openModal({ Modal: "ProjectDetailsCard" }))
+        dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
     }
 
     return (

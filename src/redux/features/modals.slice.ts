@@ -107,6 +107,10 @@ export const modalSlice = createSlice({
       let props: any = {};
       props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
 
+      if ('props' in action.payload)
+        props = { ...props, ...action.payload.props }
+
+
       state.openModals.push({
         Modal: action.payload.Modal,
         props
@@ -123,6 +127,8 @@ export const modalSlice = createSlice({
 
       let props: any = {};
       props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
+      if ('props' in action.payload)
+        props = { ...props, ...action.payload.props }
 
       state.openModals.push({
         Modal: action.payload.Modal,

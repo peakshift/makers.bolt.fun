@@ -4,9 +4,4 @@ import { lazyModal } from 'src/utils/helperFunctions';
 
 
 
-
 export const { LazyComponent: ProjectDetailsCard, preload: projectDetailsCardPreload } = lazyModal(() => import('./ProjectDetailsCard'), ProjectDetailsCardSkeleton)
-
-
-
-

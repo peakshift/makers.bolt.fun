@@ -30,12 +30,14 @@ enum PaymentStatus {
 
 
 interface Props extends ModalCard {
+    projectId: number;
+    initVotes?: number;
 }
 
-export default function VoteCard({ onClose, direction, ...props }: Props) {
+export default function VoteCard({ onClose, direction, projectId, initVotes, ...props }: Props) {
     const { width, height } = useWindowSize()
 
-    const { isWalletConnected, initVotes, projectId } = useAppSelector(state => ({
+    const { isWalletConnected } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
         initVotes: state.vote.voteAmount,
         projectId: state.project.openId

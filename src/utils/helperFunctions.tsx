@@ -1,4 +1,4 @@
-import React, { ComponentType, Suspense } from "react";
+import React, { ComponentProps, ComponentType, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 
@@ -33,12 +33,16 @@ export function numberFormatter(num?: number, digits = 1) {
   return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
 }
 
-export function lazyModal(impFn: () => Promise<{ default: ComponentType<any>; }>, LoadingComponent?: (props: any) => JSX.Element) {
+
+
+export function lazyModal<T extends ComponentType<any>>
+  (impFn: () => Promise<{ default: T; }>,
+    LoadingComponent?: (props: any) => JSX.Element) {
   const C = React.lazy(() => new Promise(res => setTimeout(() => {
     res(impFn() as any)
   }, 0))) // This promise wrapping is just for testing purposes
   const preload = impFn;
-  const LazyComponent = ({ direction, ...props }: ModalCard) => <Suspense
+  const LazyComponent = ({ direction, ...props }: ComponentProps<T>) => <Suspense
     fallback={
       LoadingComponent ?
         <LoadingComponent direction={direction} {...props} />
@@ -47,6 +51,12 @@ export function lazyModal(impFn: () => Promise<{ default: ComponentType<any>; }>
     }>
     <C direction={!LoadingComponent && direction} {...props} />
   </Suspense>
+
+
+
+  // type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
+  // type y = ThenArg<ReturnType<typeof x>>
+  // type yy = ComponentProps<y['default']>
 
   return { LazyComponent, preload };
 }

@@ -57,7 +57,7 @@ export default function ModalsContainer() {
     }, [isOpen]);
 
     return (
-        <Portal>
+        <Portal className="modals">
 
             <AnimatePresence exitBeforeEnter>
                 {isOpen &&
