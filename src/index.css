@@ -17,7 +17,12 @@
   }
 
   .input-wrapper {
-    @apply w-full relative border border-gray-300 rounded-lg shadow-xs flex focus-within:outline-primary-400;
+    @apply relative w-full border border-gray-300 rounded-lg shadow-xs flex focus-within:outline-primary-400
+          focus-within:border-primary-300 focus-within:ring focus-within:ring-primary-200 focus-within:ring-opacity-50;
+  }
+
+  .input-text {
+    @apply flex-grow border-none focus:border-0 focus:!ring-0 bg-transparent min-w-0 text-primary-500;
   }
 
   .input-field {

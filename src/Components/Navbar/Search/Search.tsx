@@ -112,8 +112,9 @@ export default function Search({
                 <div className="input-wrapper bg-white !rounded-12 ring-1 ring-gray-400">
                     <BsSearch className={`input-icon`} />
                     <input
+                        type='text'
                         ref={inputRef}
-                        className="input-field placeholder-black pl-0"
+                        className="input-text placeholder-black pl-0"
                         placeholder='Search'
                         value={searchInput}
                         onChange={handleChange}

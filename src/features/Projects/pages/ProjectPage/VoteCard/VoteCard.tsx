@@ -119,11 +119,11 @@ export default function VoteCard({ onClose, direction, ...props }: Props) {
                 </label>
                 <div className="input-wrapper">
                     <input
-                        className={`input-field app ${styles.input}`}
+                        className={` input-text ${styles.input} `}
                         value={voteAmount} onChange={onChangeInput}
                         type="number"
                         placeholder="e.g 5 sats" />
-                    <p className='px-16 flex items-center text-primary-400'>
+                    <p className='px-16 shrink-0 self-center text-primary-400'>
                         Sats
                     </p>
                 </div>

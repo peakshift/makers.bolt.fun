@@ -24,13 +24,13 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
             <div className="input-wrapper mt-24 relative">
                 <textarea
                     rows={6}
-                    className="input-field !p-20"
+                    className="input-text !p-20"
                     placeholder='What steps will you take to complete this task? '
                 />
             </div>
             <div className="grid sm:grid-cols-2 gap-24 mt-16">
                 <div>
-                    <label className='text-body5 text-gray-600 font-medium' htmlFor="">First Draf</label>
+                    <label className='text-body5 text-gray-600 font-medium' htmlFor="">First Draft</label>
                     <DatePicker className='mt-8' />
                 </div>
                 <div>

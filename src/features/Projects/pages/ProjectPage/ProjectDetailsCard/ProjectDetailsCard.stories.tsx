@@ -2,13 +2,11 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ModifyArgs } from 'src/utils/storybook/utils'
 import ProjectDetailsCard from './ProjectDetailsCard';
 import ProjectDetailsCardSkeleton from './ProjectDetailsCard.Skeleton';
-
 import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
     title: 'Projects/Project Page/Project Details Modal',
     component: ProjectDetailsCard,
-
     decorators: [ModalsDecorator],
     parameters: {
         modifyArgs: {
@@ -23,9 +21,7 @@ export default {
 
 const Template: ComponentStory<typeof ProjectDetailsCard> = (args) => <ProjectDetailsCard {...args} />;
 
-export const Default = Template.bind({
-});
-
+export const Default = Template.bind({});
 Default.args = {
 
 }

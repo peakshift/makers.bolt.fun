@@ -45,7 +45,8 @@ export default function Claim_CopySignatureCard({ onClose, direction, ...props }
             </p>
             <div className="input-wrapper mt-32">
                 <input
-                    className="input-field overflow-ellipsis"
+                    className="input-text overflow-ellipsis"
+                    type='text'
                     value={generatedHash}
                 />
 
