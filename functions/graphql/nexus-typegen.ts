@@ -72,8 +72,10 @@ export interface NexusGenObjects {
   PostComment: { // root type
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    date: string; // String!
+    created_at: string; // String!
     id: number; // Int!
+    parentId: number; // Int!
+    votes_count: number; // Int!
   }
   Project: { // root type
     cover_image: string; // String!
@@ -195,8 +197,10 @@ export interface NexusGenFieldTypes {
   PostComment: { // field return type
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    date: string; // String!
+    created_at: string; // String!
     id: number; // Int!
+    parentId: number; // Int!
+    votes_count: number; // Int!
   }
   Project: { // field return type
     awards: NexusGenRootTypes['Award'][]; // [Award!]!
@@ -335,8 +339,10 @@ export interface NexusGenFieldTypeNames {
   PostComment: { // field return type name
     author: 'User'
     body: 'String'
-    date: 'String'
+    created_at: 'String'
     id: 'Int'
+    parentId: 'Int'
+    votes_count: 'Int'
   }
   Project: { // field return type name
     awards: 'Award'

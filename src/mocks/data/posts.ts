@@ -1,32 +1,45 @@
 
 import dayjs from "dayjs";
 import { Bounty, Post, Question, Story } from "src/features/Posts/types";
-import { randomItem } from "src/utils/helperFunctions";
+import { random, randomItem } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
-import chance, { Chance } from 'chance'
+import { Chance } from 'chance'
 
-const date = dayjs().subtract(5, 'hour').toString();
-
-
+const getDate = () => dayjs().subtract(random(5, 48), 'hour').toString();
 
 const getAuthor = () => ({
     id: 12,
     name: "John Doe",
     image: getAvatarImage(),
-    join_date: date
+    join_date: getDate()
 })
 
-const getPostComments = (cnt: number = 1): Story['comments'] => Array(cnt).fill(0).map((_, idx) => ({
-    id: idx + 1,
-    body: "This is a comment " + idx + 1,
-    date,
-    author: getAuthor()
-}))
+const getPostComments = (cnt: number = 1): Story['comments'] => {
+
+    let comments = [];
+    const rootCommentsIds: any[] = []
+    for (let i = 0; i < cnt; i++) {
+        const parentId = Math.random() < .4 ? 0 : rootCommentsIds.length ? randomItem(...rootCommentsIds) : 0;
+        const comment = {
+            id: i + 1,
+            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",
+            created_at: getDate(),
+            author: getAuthor(),
+            votes_count: 123,
+            parentId
+        }
+        comments.push(comment);
+        if (!parentId)
+            rootCommentsIds.push(comment.id);
+
+    }
+    return comments;
+}
 
 const getApplications = (cnt: number = 1): Bounty['applications'] => Array(cnt).fill(0).map((_, idx) => ({
     id: idx + 1,
     workplan: "I Plan to build this using React, Ts, Redux, and Storybook.",
-    date,
+    date: getDate(),
     author: getAuthor(),
 }))
 
@@ -72,7 +85,7 @@ export let posts = {
             body: postBody,
             cover_image: getCoverImage(),
             comments_count: 31,
-            date,
+            date: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             type: "Story",
@@ -94,7 +107,7 @@ export let posts = {
             body: postBody,
             cover_image: getCoverImage(),
             applicants_count: 31,
-            date,
+            date: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             tags: [
@@ -116,7 +129,7 @@ export let posts = {
             title: 'Digital Editor, Mars Review of Books',
             body: postBody,
             answers_count: 31,
-            date,
+            date: getDate(),
             votes_count: 70,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             tags: [
@@ -124,20 +137,7 @@ export let posts = {
                 { id: 2, title: "webln" },
             ],
             author: getAuthor(),
-            comments: [
-                {
-                    id: 1,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-                {
-                    id: 2,
-                    author: getAuthor(),
-                    date,
-                    body: 'Naw, I’m 42 and know people who started in their 50’s, you got this!'
-                },
-            ]
+            comments: getPostComments(3)
         },
     ] as Question[]
 }
@@ -154,8 +154,11 @@ export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
     const post = feedRandomer.pickone([posts.bounties[0], posts.questions[0], posts.stories[0]])
 
     return {
-        ...post, id: idx + 1, title: feedRandomer.sentence({
+        ...post,
+        id: idx + 1,
+        title: feedRandomer.sentence({
             words: feedRandomer.integer({ min: 4, max: 7 })
-        })
+        }),
+        date: getDate(),
     }
 })

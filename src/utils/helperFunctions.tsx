@@ -52,11 +52,9 @@ export function lazyModal<T extends ComponentType<any>>
     <C direction={!LoadingComponent && direction} {...props} />
   </Suspense>
 
-
-
-  // type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
-  // type y = ThenArg<ReturnType<typeof x>>
-  // type yy = ComponentProps<y['default']>
-
   return { LazyComponent, preload };
+}
+
+export function trimText(text: string, length: number) {
+  return text.slice(0, length) + (text.length > length ? "..." : "")
 }

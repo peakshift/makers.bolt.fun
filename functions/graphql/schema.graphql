@@ -78,8 +78,10 @@ interface PostBase {
 type PostComment {
   author: User!
   body: String!
-  date: String!
+  created_at: String!
   id: Int!
+  parentId: Int!
+  votes_count: Int!
 }
 
 type Project {

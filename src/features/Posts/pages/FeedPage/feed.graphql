@@ -59,7 +59,7 @@ query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
       answers_count
       comments {
         id
-        date
+        created_at
         body
         author {
           id

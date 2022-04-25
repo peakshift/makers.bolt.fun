@@ -30,16 +30,22 @@ export default function Header({
     showTimeAgo = true,
     ...props }: Props) {
 
+    const passedTime = dayjs().diff(props.date, 'hour');
+    const dateToShow = passedTime < 24 ?
+        `${dayjs().diff(props.date, 'hour')}h ago`
+        :
+        dayjs(props.date).format('MMMM DD');
+
     return (
         <div className='flex gap-8'>
             <Avatar width={avatarSize[size]} src={props.author.image} />
             <div>
                 <p className={`${nameSize[size]} text-black font-medium`}>{props.author.name}</p>
-                <p className={`text-body6 text-gray-600`}>{dayjs(props.date).format('MMMM DD')}</p>
+                <p className={`text-body6 text-gray-600`}>{dateToShow}</p>
             </div>
-            {showTimeAgo && <p className={`${nameSize[size]} text-gray-500 ml-auto `}>
+            {/* {showTimeAgo && <p className={`${nameSize[size]} text-gray-500 ml-auto `}>
                 {dayjs().diff(props.date, 'hour') < 24 ? `${dayjs().diff(props.date, 'hour')}h ago` : undefined}
-            </p>}
+            </p>} */}
         </div>
     )
 }

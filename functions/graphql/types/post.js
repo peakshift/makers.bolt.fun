@@ -102,11 +102,13 @@ const PostComment = objectType({
     name: 'PostComment',
     definition(t) {
         t.nonNull.int('id');
-        t.nonNull.string('date');
+        t.nonNull.string('created_at');
         t.nonNull.string('body');
         t.nonNull.field('author', {
             type: "User"
         });
+        t.nonNull.int('parentId');
+        t.nonNull.int('votes_count');
     }
 })
 

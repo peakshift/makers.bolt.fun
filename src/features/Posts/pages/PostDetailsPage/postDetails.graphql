@@ -20,7 +20,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       comments_count
       comments {
         id
-        date
+        created_at
         body
         author {
           id
@@ -79,7 +79,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       answers_count
       comments {
         id
-        date
+        created_at
         body
         author {
           id

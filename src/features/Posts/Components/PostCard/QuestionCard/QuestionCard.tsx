@@ -4,6 +4,7 @@ import Header from "../Header/Header"
 import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import { Link } from "react-router-dom"
+import { trimText } from "src/utils/helperFunctions"
 
 export type QuestionCardType = Pick<Question,
     | 'id'
@@ -15,8 +16,14 @@ export type QuestionCardType = Pick<Question,
     | 'votes_count'
     | "tags"
     | "answers_count"
-    | "comments"
->;
+> & {
+    comments: Array<Pick<Question['comments'][number],
+        | 'id'
+        | 'author'
+        | 'body'
+        | 'created_at'
+    >>
+};
 interface Props {
     question: QuestionCardType
 }
@@ -52,9 +59,9 @@ export default function QuestionCard({ question }: Props) {
 
                 <div className="flex p-16 mt-16 flex-col gap-10 bg-gray-50">
                     <div className="flex flex-col gap-10">
-                        {question.comments.map(comment => <div key={comment.id} className="border-b last-of-type:border-b-0 pb-8 " >
-                            <Header author={comment.author} size='sm' date={comment.date} />
-                            <p className="text-body5 text-gray-600 mt-8">{comment.body}</p>
+                        {question.comments.slice(0, 2).map(comment => <div key={comment.id} className="border-b last-of-type:border-b-0 pb-8 " >
+                            <Header author={comment.author} size='sm' date={comment.created_at} />
+                            <p className="text-body5 text-gray-600 mt-8">{trimText(comment.body, 80)}</p>
                         </div>)}
                     </div>
 
