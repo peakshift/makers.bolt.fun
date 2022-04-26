@@ -4,7 +4,7 @@ import { MOCK_DATA } from 'src/mocks/data';
 import CommentCard from './CommentCard';
 
 export default {
-    title: 'Posts/Components/CommentCard',
+    title: 'Posts/Components/Comments/CommentCard',
     component: CommentCard,
     argTypes: {
         backgroundColor: { control: 'color' },
@@ -16,7 +16,9 @@ const Template: ComponentStory<typeof CommentCard> = (args) => <div className="m
 
 export const Default = Template.bind({});
 Default.args = {
-    comment: MOCK_DATA.posts.stories[0].comments[0]
+    comment: {
+        ...MOCK_DATA.posts.stories[0].comments[0],
+    }
 }
 
 

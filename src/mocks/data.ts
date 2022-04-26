@@ -1,9 +1,10 @@
-import { posts, feed } from "./data/posts";
+import { posts, feed, generatePostComments } from "./data/posts";
 import { categories, projects } from "./data/projects";
 
 export const MOCK_DATA = {
     projects,
     categories,
     posts,
-    feed
+    feed,
+    generatePostComments: generatePostComments
 }

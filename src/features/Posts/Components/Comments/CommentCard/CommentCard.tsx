@@ -1,15 +1,9 @@
 import { BiComment } from "react-icons/bi";
-import Button from "src/Components/Button/Button";
 import VotesCount from "src/Components/VotesCount/VotesCount";
-import { Author } from "../../types"
-import Header from "../PostCard/Header/Header";
+import Header from "src/features/Posts/Components/PostCard/Header/Header";
+import { Comment } from "../types";
 
-interface Comment {
-    author: Author
-    created_at: string
-    body: string;
-    votes_count: number
-}
+
 interface Props {
     comment: Comment
 }

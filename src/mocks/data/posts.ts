@@ -14,7 +14,7 @@ const getAuthor = () => ({
     join_date: getDate()
 })
 
-const getPostComments = (cnt: number = 1): Story['comments'] => {
+export const generatePostComments = (cnt: number = 1): Story['comments'] => {
 
     let comments = [];
     const rootCommentsIds: any[] = []
@@ -95,7 +95,7 @@ export let posts = {
                 { id: 3, title: "guide" },
             ],
             author: getAuthor(),
-            comments: getPostComments(),
+            comments: generatePostComments(),
 
         },
     ] as Story[],
@@ -137,7 +137,7 @@ export let posts = {
                 { id: 2, title: "webln" },
             ],
             author: getAuthor(),
-            comments: getPostComments(3)
+            comments: generatePostComments(3)
         },
     ] as Question[]
 }
