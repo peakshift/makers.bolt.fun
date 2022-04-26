@@ -1,6 +1,7 @@
 import ReactDatePicker from "react-datepicker";
 import { MdCalendarToday } from "react-icons/md";
 import "react-datepicker/dist/react-datepicker.css";
+import React from "react";
 
 interface Props {
     value?: Date,
@@ -13,12 +14,15 @@ interface Props {
     innerClassname?: string
 }
 
-export default function DatePicker({ value = new Date(), onChange = () => { }, classes, className }: Props) {
+const DatePicker = React.forwardRef<HTMLDivElement, Props>(({ value = new Date(), onChange = () => { }, classes, className }, ref) => {
     return (
         <div className={`input-wrapper !text-gray-800 px-16
-         ${className} ${classes?.containerClasses}`}>
+         ${className} ${classes?.containerClasses}`}
+            ref={ref}
+        >
             <MdCalendarToday className="flex-shrink-0 self-center text-gray-600" />
             <ReactDatePicker
+
                 selected={value}
                 onChange={onChange}
                 className={`
@@ -28,4 +32,7 @@ export default function DatePicker({ value = new Date(), onChange = () => { }, c
             ></ReactDatePicker>
         </div>
     )
-}
+})
+
+
+export default DatePicker;
