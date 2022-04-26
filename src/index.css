@@ -115,3 +115,15 @@ svg {
     display: none;
   }
 }
+
+.remirror-editor-wrapper ul {
+  list-style: disc !important;
+  padding: revert;
+  margin: revert;
+}
+
+.remirror-editor-wrapper ol {
+  list-style: decimal !important;
+  padding: revert;
+  margin: revert;
+}
