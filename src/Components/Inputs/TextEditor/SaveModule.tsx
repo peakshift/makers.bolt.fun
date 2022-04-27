@@ -1,29 +1,29 @@
-import React, { useCallback } from 'react'
-
-import { EditorComponent, Remirror, useHelpers, useRemirror, useEvent, useEditorState } from '@remirror/react';
+import { useHelpers, useEvent, useRemirrorContext } from '@remirror/react';
 import { Control, useController } from 'react-hook-form';
+import { useDebouncedCallback } from '@react-hookz/web';
 
 interface Props {
     control?: Control,
     name?: string,
-
 }
 
 export default function SaveModule(props: Props) {
 
-    const state = useEditorState()
-    const { getMarkdown } = useHelpers();
     const { field: { onChange, onBlur } } = useController({
         control: props.control,
         name: props.name ?? 'content'
     })
 
-    const listener = (d: any) => {
-        onChange(getMarkdown(state));
-        onBlur()
-    };
+    const { getMarkdown } = useHelpers();
 
-    useEvent('blur', listener)
+    const changeCallback = useDebouncedCallback(ctx => {
+        const { state } = ctx;
+        onChange(getMarkdown(state));
+    }, [], 500)
+
+    useRemirrorContext(changeCallback)
+
+    useEvent('blur', () => onBlur())
 
     return <></>
 }
