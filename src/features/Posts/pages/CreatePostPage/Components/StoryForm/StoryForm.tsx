@@ -2,13 +2,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import Button from "src/Components/Button/Button";
 import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
+import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import * as yup from "yup";
 import ContentEditor from "../ContentEditor/ContentEditor";
 
 
 const schema = yup.object({
     title: yup.string().required().min(10),
-    tags: yup.string().required().min(10),
+    tags: yup.array().required().min(1),
     body: yup.string().required().min(50, 'you have to write at least 10 words'),
     cover_image: yup.lazy((value: string | File[]) => {
         switch (typeof value) {
@@ -28,7 +29,7 @@ const schema = yup.object({
 
 interface IFormInputs {
     title: string
-    tags: string
+    tags: NestedValue<object[]>
     cover_image: NestedValue<File[]> | string
     body: string
 }
@@ -41,14 +42,16 @@ export default function StoryForm() {
     const formMethods = useForm<IFormInputs>({
         resolver: yupResolver(schema) as Resolver<IFormInputs>,
         defaultValues: {
+            title: '',
+            tags: [{
+                title: 'tag 1'
+            }],
             body: '',
             cover_image: 'https://i.picsum.photos/id/10/1600/900.jpg?hmac=9R7fIkKwC5JxHx8ayZAKNMt6FvJXqKKyiv8MClikgDo'
         }
 
     });
-    const { handleSubmit, control, register, formState: { isValid, errors }, watch, } = formMethods;
-
-    console.log(errors);
+    const { handleSubmit, control, register, formState: { errors }, watch, } = formMethods;
 
     const onSubmit: SubmitHandler<IFormInputs> = data => console.log(data);
 
@@ -96,14 +99,10 @@ export default function StoryForm() {
                         <p className="text-body5 mt-16">
                             Tags
                         </p>
-                        <div className="input-wrapper mt-8 relative">
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='WebLN, Design, ...'
-                                {...register("tags")}
-                            />
-                        </div>
+                        <TagsInput
+                            placeholder="webln, alby, lnurl, wallet, ..."
+                            classes={{ container: 'mt-8' }}
+                        />
                         {errors.tags && <p className="input-error">
                             {errors.tags.message}
                         </p>}

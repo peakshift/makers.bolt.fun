@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { EditorComponent, Remirror, useHelpers, useRemirror, useEvent, useEditorState } from '@remirror/react';
 import { Control, useController } from 'react-hook-form';
 
 interface Props {
     control?: Control,
-    name?: string
+    name?: string,
+
 }
 
 export default function SaveModule(props: Props) {
@@ -17,10 +18,12 @@ export default function SaveModule(props: Props) {
         name: props.name ?? 'content'
     })
 
-    useEvent('blur', () => {
+    const listener = (d: any) => {
         onChange(getMarkdown(state));
         onBlur()
-    })
+    };
+
+    useEvent('blur', listener)
 
     return <></>
 }

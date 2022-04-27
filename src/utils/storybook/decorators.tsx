@@ -16,6 +16,7 @@ import "react-multi-carousel/lib/styles.css";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
+import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 
 
 // Enable the Mocks Service Worker
@@ -97,3 +98,14 @@ export const centerDecorator: DecoratorFn = (Story) => {
         <Story />
     </div>
 }
+
+export const WrapForm: (options?: Partial<UseFormProps>) => DecoratorFn = options => {
+    const Func: DecoratorFn = (Story) => {
+        const methods = useForm(options);
+        return <FormProvider {...methods} >
+            <Story />
+        </FormProvider>
+    }
+    return Func
+}
+

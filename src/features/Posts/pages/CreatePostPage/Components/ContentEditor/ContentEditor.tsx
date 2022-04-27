@@ -26,7 +26,7 @@ import {
 } from 'remirror/extensions';
 import { ExtensionPriority } from 'remirror';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Toolbar from './Toolbar';
 
@@ -82,10 +82,13 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
         [linkExtension, placeholder],
     );
 
-    const { manager, } = useRemirror({
+
+    const { manager } = useRemirror({
         extensions,
         stringHandler: 'markdown',
     });
+
+
     return (
         <div className={`remirror-theme ${styles.wrapper} bg-white`}>
             <Remirror

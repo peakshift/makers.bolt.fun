@@ -81,10 +81,12 @@ export default function TextEditor({ placeholder, initialContent }: Props) {
         [linkExtension, placeholder],
     );
 
-    const { manager, } = useRemirror({
+
+    const { manager } = useRemirror({
         extensions,
         stringHandler: 'markdown',
     });
+
     return (
         <div className={`remirror-theme ${styles.wrapper} bg-white shadow-md`}>
             <Remirror
