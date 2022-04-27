@@ -25,18 +25,19 @@ import {
     UnderlineExtension,
 } from 'remirror/extensions';
 import { ExtensionPriority } from 'remirror';
-import { EditorComponent, Remirror, useHelpers, useRemirror } from '@remirror/react';
+import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
 import { useCallback, useMemo } from 'react';
-import Toolbar from './Toolbar/Toolbar';
-import SaveModule from './SaveModule';
+import TextEditorComponents from 'src/Components/Inputs/TextEditor';
+import Toolbar from './Toolbar';
 
 
 interface Props {
     placeholder?: string;
     initialContent?: string;
+    name?: string;
 }
 
-export default function TextEditor({ placeholder, initialContent }: Props) {
+export default function ContentEditor({ placeholder, initialContent, name }: Props) {
 
     const linkExtension = useMemo(() => {
         const extension = new LinkExtension({ autoLink: true });
@@ -86,13 +87,12 @@ export default function TextEditor({ placeholder, initialContent }: Props) {
         stringHandler: 'markdown',
     });
     return (
-        <div className={`remirror-theme ${styles.wrapper} bg-white shadow-md`}>
+        <div className={`remirror-theme ${styles.wrapper} bg-white`}>
             <Remirror
                 manager={manager}
                 initialContent={initialContent}
-
             >
-                <SaveModule />
+                <TextEditorComponents.SaveModule name={name} />
                 <Toolbar />
                 <EditorComponent />
             </Remirror>

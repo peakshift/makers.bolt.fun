@@ -22,7 +22,7 @@
   }
 
   .input-text {
-    @apply flex-grow border-none focus:border-0 focus:!ring-0 bg-transparent min-w-0 text-primary-500;
+    @apply flex-grow border-none focus:border-0 focus:ring-0 bg-transparent min-w-0 text-primary-500;
   }
 
   .input-checkbox {
@@ -32,6 +32,10 @@
 
   .input-icon {
     @apply h-full text-primary-500 flex-shrink-0 w-42 px-12 self-center;
+  }
+
+  .input-error{
+    @apply text-body6 text-red-500 mt-4;
   }
 
   .chip {

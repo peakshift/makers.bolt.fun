@@ -1,4 +1,3 @@
-import "../src/index.css";
 import { configure, addDecorator, addParameters } from "@storybook/react";
 import { WrapperDecorator, AppDecorator } from 'src/utils/storybook/decorators'
 

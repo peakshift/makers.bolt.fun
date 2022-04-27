@@ -34,24 +34,21 @@ export default function ToolButton({ cmd: _cmd }: Props) {
 
     if (_cmd === 'heading') {
         return <Menu menuButton={
-            <MenuButton>
-                <button
-                    className={`
+            <MenuButton className={`
             w-36 h-36 flex justify-center items-center
             ${active.heading({}) ?
-                            'font-bold bg-gray-300 text-black'
-                            :
-                            'hover:bg-gray-200'
-                        }
+                    'font-bold bg-gray-300 text-black'
+                    :
+                    'hover:bg-gray-200'
+                }
             ${!commands.toggleHeading.enabled() && 'opacity-40 text-gray-600 pointer-events-none'}
             
-            `}
-                >
-                    <FiType />
-                </button>
+            `}>
+                <FiType />
             </MenuButton>
         } transition>
             {Array(6).fill(0).map((_, idx) => <MenuItem
+                key={idx}
                 className={`
                 py-8 px-16 hover:bg-gray-200
                 ${active.heading({ level: idx + 1 }) && 'font-bold bg-gray-200'}

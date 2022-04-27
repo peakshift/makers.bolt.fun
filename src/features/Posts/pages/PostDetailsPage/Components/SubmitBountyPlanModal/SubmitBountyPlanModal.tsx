@@ -54,7 +54,7 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
                         rows={6}
                         className="input-text !p-20"
                         placeholder='What steps will you take to complete this task? '
-                        {...register("workplan", { required: true, minLength: 20 })}
+                        {...register("workplan")}
                     />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-24 mt-16">
