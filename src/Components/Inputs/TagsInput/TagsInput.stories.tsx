@@ -9,7 +9,13 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
-    decorators: [WrapForm()]
+    decorators: [WrapForm({
+        defaultValues: {
+            tags: [{
+                title: "Webln"
+            }]
+        }
+    })]
 } as ComponentMeta<typeof TagsInput>;
 
 

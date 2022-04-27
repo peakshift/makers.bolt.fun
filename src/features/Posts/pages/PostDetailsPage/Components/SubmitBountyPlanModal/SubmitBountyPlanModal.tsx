@@ -27,7 +27,12 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
 
     const { handleSubmit, control, register, formState: { isValid }, watch } = useForm<IFormInputs>({
         mode: "onChange",
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
+        defaultValues: {
+            workplan: "",
+            firstDraft: new Date(),
+            completionDate: new Date(),
+        }
 
     });
 
