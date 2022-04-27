@@ -1,6 +1,8 @@
 import 'remirror/styles/all.css';
+import styles from './styles.module.scss'
 
-
+import javascript from 'refractor/lang/javascript';
+import typescript from 'refractor/lang/typescript';
 import {
     BlockquoteExtension,
     BoldExtension,
@@ -9,6 +11,7 @@ import {
     CodeExtension,
     HardBreakExtension,
     HeadingExtension,
+    ImageExtension,
     ItalicExtension,
     LinkExtension,
     ListItemExtension,
@@ -23,7 +26,7 @@ import {
 } from 'remirror/extensions';
 import { ExtensionPriority } from 'remirror';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import Toolbar from './Toolbar/Toolbar';
 
 
@@ -32,11 +35,21 @@ interface Props {
     initialContent?: string;
 }
 
-export default function TextEditor({ placeholder, initialContent = 'Hello everyone\n How are you doing today ??' }: Props) {
+export default function TextEditor({ placeholder, initialContent }: Props) {
+
+    const linkExtension = useMemo(() => {
+        const extension = new LinkExtension({ autoLink: true });
+        extension.addHandler('onClick', (_, data) => {
+            alert(`You clicked link: ${JSON.stringify(data)}`);
+            return true;
+        });
+        return extension;
+    }, []);
+
     const extensions = useCallback(
         () => [
             new PlaceholderExtension({ placeholder }),
-            new LinkExtension({ autoLink: true }),
+            linkExtension,
             new BoldExtension(),
             // new StrikeExtension(),
             new UnderlineExtension(),
@@ -48,8 +61,11 @@ export default function TextEditor({ placeholder, initialContent = 'Hello everyo
             new OrderedListExtension(),
             new ListItemExtension({ priority: ExtensionPriority.High, enableCollapsible: true }),
             // new TaskListExtension(),
-            // new CodeExtension(),
-            // new CodeBlockExtension(),
+            new CodeExtension(),
+            new CodeBlockExtension({
+                supportedLanguages: [javascript, typescript]
+            }),
+            new ImageExtension({ enableResizing: true }),
             // new TrailingNodeExtension(),
             // new TableExtension(),
             new MarkdownExtension({ copyAsMarkdown: false }),
@@ -68,7 +84,7 @@ export default function TextEditor({ placeholder, initialContent = 'Hello everyo
         stringHandler: 'markdown',
     });
     return (
-        <div className='remirror-theme'>
+        <div className={`remirror-theme ${styles.wrapper} bg-white shadow-md`}>
             <Remirror manager={manager} initialContent={initialContent}>
                 <Toolbar />
                 <EditorComponent />

@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof TextEditor> = (args) => <TextEditor {...ar
 
 export const Default = Template.bind({});
 Default.args = {
-
+    placeholder: "Start writing something in markdown"
 }
 
 

@@ -11,12 +11,13 @@ export default function Toolbar() {
 
 
   return (
-    <div className='flex gap-24'>
+    <div className='flex gap-24 bg-gray-100'>
       <div className="flex">
+        <ToolButton cmd='heading' />
         <ToolButton cmd='bold' />
         <ToolButton cmd='italic' />
         <ToolButton cmd='underline' />
-        <ToolButton cmd='heading' />
+        <ToolButton cmd='code' />
       </div>
       <div className="flex">
         <ToolButton cmd='leftAlign' />
@@ -25,6 +26,7 @@ export default function Toolbar() {
         <ToolButton cmd='bulletList' />
         <ToolButton cmd='orderedList' />
       </div>
+
 
       <div className="flex ml-auto">
         <ToolButton cmd='undo' />

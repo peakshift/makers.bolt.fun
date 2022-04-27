@@ -36,6 +36,7 @@
     "lodash.throttle": "^4.1.1",
     "marked": "^4.0.14",
     "nexus": "^1.3.0",
+    "node-sass": "^7.0.1",
     "prisma": "^3.12.0",
     "react": "^18.0.0",
     "react-confetti": "^6.0.1",
