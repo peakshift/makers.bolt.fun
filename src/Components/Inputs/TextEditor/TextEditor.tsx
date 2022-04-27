@@ -41,7 +41,7 @@ export default function TextEditor({ placeholder, initialContent }: Props) {
     const linkExtension = useMemo(() => {
         const extension = new LinkExtension({ autoLink: true });
         extension.addHandler('onClick', (_, data) => {
-            alert(`You clicked link: ${JSON.stringify(data)}`);
+            window.open(data.href, '_blank')?.focus();
             return true;
         });
         return extension;

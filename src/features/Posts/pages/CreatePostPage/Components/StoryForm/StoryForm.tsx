@@ -43,15 +43,12 @@ export default function StoryForm() {
         resolver: yupResolver(schema) as Resolver<IFormInputs>,
         defaultValues: {
             title: '',
-            tags: [{
-                title: 'tag 1'
-            }],
+            tags: [],
             body: '',
-            cover_image: 'https://i.picsum.photos/id/10/1600/900.jpg?hmac=9R7fIkKwC5JxHx8ayZAKNMt6FvJXqKKyiv8MClikgDo'
+            cover_image: ''
         }
-
     });
-    const { handleSubmit, control, register, formState: { errors }, watch, } = formMethods;
+    const { handleSubmit, control, register, formState: { errors }, } = formMethods;
 
     const onSubmit: SubmitHandler<IFormInputs> = data => console.log(data);
 
@@ -63,8 +60,6 @@ export default function StoryForm() {
                 <div
                     className='bg-white shadow-lg rounded-8 overflow-hidden'>
                     <div className="p-32">
-
-
                         <Controller
                             control={control}
                             name="cover_image"
