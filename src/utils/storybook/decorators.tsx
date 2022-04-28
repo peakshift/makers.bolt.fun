@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 // Add the global stuff first (index.ts)
 // -------------------------------------------
-import "src/index.scss";
+import "src/styles/index.scss";
 import "react-multi-carousel/lib/styles.css";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';

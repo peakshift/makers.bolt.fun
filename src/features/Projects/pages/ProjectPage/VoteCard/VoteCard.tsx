@@ -4,10 +4,8 @@ import { AiFillThunderbolt } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppSelector } from 'src/utils/hooks';
-import { gql, useMutation, useApolloClient } from "@apollo/client";
 import Confetti from "react-confetti";
 import { Wallet_Service } from 'src/services';
-import styles from './style.module.css'
 import { useWindowSize } from '@react-hookz/web';
 import { useConfirmVoteMutation, useVoteMutation } from 'src/graphql';
 
@@ -121,7 +119,7 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                 </label>
                 <div className="input-wrapper">
                     <input
-                        className={` input-text ${styles.input} `}
+                        className={` input-text input-removed-arrows`}
                         value={voteAmount} onChange={onChangeInput}
                         type="number"
                         placeholder="e.g 5 sats" />

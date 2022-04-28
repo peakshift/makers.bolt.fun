@@ -12,6 +12,7 @@ interface Props {
         input?: string
     }
     placeholder?: string
+    max?: number;
     [k: string]: any
 }
 
@@ -20,6 +21,7 @@ interface Props {
 export default function TagsInput({
     classes,
     placeholder = 'Write some tags',
+    max = 5,
     ...props }: Props) {
 
 
@@ -41,13 +43,18 @@ export default function TagsInput({
         onBlur();
     }
 
+    const isDisabled = value.length >= max;
+
 
     return (
         <div className={`${classes?.container}`}>
             <div className="input-wrapper relative">
                 <input
+                    disabled={isDisabled}
                     type='text'
-                    className={`input-text inline-block ${classes?.input}`}
+                    className={`input-text inline-block 
+                    ${isDisabled && 'opacity-50'}
+                    ${classes?.input}`}
                     placeholder={placeholder}
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}

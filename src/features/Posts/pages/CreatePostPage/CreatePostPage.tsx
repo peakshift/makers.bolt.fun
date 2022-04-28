@@ -1,4 +1,6 @@
 import { useState } from "react";
+import BountyForm from "./Components/BountyForm/BountyForm";
+import QuestionForm from "./Components/QuestionForm/QuestionForm";
 import StoryForm from "./Components/StoryForm/StoryForm";
 import PostTypeList from "./PostTypeList";
 
@@ -21,9 +23,21 @@ export default function CreatePostPage() {
             <div>
                 {postType === 'story' && <>
                     <h2 className="text-h2 font-bolder text-gray-800 mb-32">
-                        Create Story
+                        Create a Story
                     </h2>
                     <StoryForm />
+                </>}
+                {postType === 'bounty' && <>
+                    <h2 className="text-h2 font-bolder text-gray-800 mb-32">
+                        Create a Bounty
+                    </h2>
+                    <BountyForm />
+                </>}
+                {postType === 'question' && <>
+                    <h2 className="text-h2 font-bolder text-gray-800 mb-32">
+                        Create a Question
+                    </h2>
+                    <QuestionForm />
                 </>}
             </div>
         </div>

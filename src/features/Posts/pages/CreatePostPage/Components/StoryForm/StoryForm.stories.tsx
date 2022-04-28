@@ -11,7 +11,7 @@ export default {
 } as ComponentMeta<typeof StoryForm>;
 
 
-const Template: ComponentStory<typeof StoryForm> = (args) => <StoryForm {...args as any} ></StoryForm>
+const Template: ComponentStory<typeof StoryForm> = (args) => <div className="max-w-[1000px]"><StoryForm {...args as any} ></StoryForm></div>
 
 export const Default = Template.bind({});
 Default.args = {

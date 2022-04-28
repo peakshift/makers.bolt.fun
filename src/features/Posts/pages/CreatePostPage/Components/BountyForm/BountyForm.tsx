@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import Button from "src/Components/Button/Button";
+import DatePicker from "src/Components/Inputs/DatePicker/DatePicker";
 import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import * as yup from "yup";
@@ -8,27 +9,49 @@ import ContentEditor from "../ContentEditor/ContentEditor";
 
 
 const schema = yup.object({
-    title: yup.string().required().min(10),
-    tags: yup.array().required().min(1),
-    body: yup.string().required().min(50, 'you have to write at least 10 words'),
-    cover_image: yup.lazy((value: string | File[]) => {
-        switch (typeof value) {
-            case 'object':
-                return yup.array()
-                    .test("fileSize", "File Size is too large", (files) => (files as File[]).every(file => file.size <= 5242880))
-                    .test("fileType", "Unsupported File Format, only png/jpg/jpeg images are allowed",
-                        (files) => (files as File[]).every((file: File) =>
-                            ["image/jpeg", "image/png", "image/jpg"].includes(file.type)))
-            case 'string':
-                return yup.string().url();
-            default:
-                return yup.mixed()
-        }
-    })
+    title: yup
+        .string()
+        .required()
+        .min(10),
+    tags: yup
+        .array()
+        .required()
+        .min(1),
+    deadline: yup
+        .date()
+        .required(),
+    bounty_amount: yup
+        .number()
+        .typeError('Bounty amount must be a number')
+        .required()
+        .min(100)
+        .label("Bounty Amount"),
+    body: yup
+        .string()
+        .required()
+        .min(50, 'you have to write at least 10 words'),
+    cover_image: yup
+        .lazy((value: string | File[]) => {
+            switch (typeof value) {
+                case 'object':
+                    return yup
+                        .array()
+                        .test("fileSize", "File Size is too large", (files) => (files as File[]).every(file => file.size <= 5242880))
+                        .test("fileType", "Unsupported File Format, only png/jpg/jpeg images are allowed",
+                            (files) => (files as File[]).every((file: File) =>
+                                ["image/jpeg", "image/png", "image/jpg"].includes(file.type)))
+                case 'string':
+                    return yup.string().url();
+                default:
+                    return yup.mixed()
+            }
+        })
 }).required();
 
 interface IFormInputs {
     title: string
+    deadline: Date
+    bounty_amount: number
     tags: NestedValue<object[]>
     cover_image: NestedValue<File[]> | string
     body: string
@@ -36,7 +59,7 @@ interface IFormInputs {
 
 
 
-export default function StoryForm() {
+export default function BountyForm() {
 
 
     const formMethods = useForm<IFormInputs>({
@@ -44,6 +67,8 @@ export default function StoryForm() {
         defaultValues: {
             title: '',
             tags: [],
+            bounty_amount: 100000,
+            deadline: new Date(),
             body: '',
             cover_image: []
         }
@@ -82,13 +107,47 @@ export default function StoryForm() {
                             <input
                                 type='text'
                                 className="input-text"
-                                placeholder='Your Story Title'
+                                placeholder='Your Bounty Title'
                                 {...register("title")}
                             />
                         </div>
                         {errors.title && <p className="input-error">
                             {errors.title.message}
                         </p>}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 mt-16">
+                            <div>
+                                <p className="text-body5">
+                                    Bounty Amount
+                                </p>
+                                <div className="input-wrapper mt-8">
+                                    <input
+                                        type="number"
+                                        className='input-text input-removed-arrows'
+                                        placeholder="10,000"
+                                        min={0}
+                                        step={100}
+                                        {...register("bounty_amount")}
+                                    />
+                                    <p className='px-16 shrink-0 self-center text-primary-400'>
+                                        Sats
+                                    </p>
+                                </div>
+                                <p className='input-error'>{errors.bounty_amount?.message}</p>
+                            </div>
+                            <div>
+                                <p className="text-body5">
+                                    Deadline
+                                </p>
+                                <Controller
+                                    name="deadline"
+                                    control={control}
+                                    render={({ field }) => <DatePicker {...field} className='mt-8' />}
+                                />
+                                <p className='input-error'>{errors.deadline?.message}</p>
+
+                            </div>
+                        </div>
 
 
                         <p className="text-body5 mt-16">
@@ -103,7 +162,7 @@ export default function StoryForm() {
                         </p>}
                     </div>
                     <ContentEditor
-                        placeholder="Write your story content here..."
+                        placeholder="Write a detailed description for your bounty here..."
                         name="body"
                     />
 

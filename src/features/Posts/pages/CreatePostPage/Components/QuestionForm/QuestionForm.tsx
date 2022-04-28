@@ -36,7 +36,7 @@ interface IFormInputs {
 
 
 
-export default function StoryForm() {
+export default function QuestionForm() {
 
 
     const formMethods = useForm<IFormInputs>({
@@ -82,7 +82,7 @@ export default function StoryForm() {
                             <input
                                 type='text'
                                 className="input-text"
-                                placeholder='Your Story Title'
+                                placeholder='Your Question Title'
                                 {...register("title")}
                             />
                         </div>
@@ -103,7 +103,7 @@ export default function StoryForm() {
                         </p>}
                     </div>
                     <ContentEditor
-                        placeholder="Write your story content here..."
+                        placeholder="Write your question here..."
                         name="body"
                     />
 
