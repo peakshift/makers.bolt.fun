@@ -47,7 +47,9 @@ export default function ToolButton({ cmd: _cmd, classes }: Props) {
 
     if (_cmd === 'heading') {
         return <Menu menuButton={
-            <MenuButton className={`
+            <MenuButton
+                data-tip={'Headings'}
+                className={`
             ${buttonClasses}
             ${active.heading({}) && activeClasses}
             ${commands.toggleHeading.enabled() ? enabledClasses : disabledClasses}
@@ -71,10 +73,11 @@ export default function ToolButton({ cmd: _cmd, classes }: Props) {
 
 
     if (isCommand(_cmd)) {
-        const { activeCmd, cmd, Icon } = cmdToBtn[_cmd]
+        const { activeCmd, cmd, tip, Icon } = cmdToBtn[_cmd]
         return (
             <button
                 type='button'
+                data-tip={tip}
                 className={`
                     ${buttonClasses}
                     ${(activeCmd && active[activeCmd]()) && activeClasses}
@@ -96,16 +99,19 @@ const cmdToBtn = {
     'bold': {
         cmd: 'toggleBold',
         activeCmd: 'bold',
+        tip: "Bold",
         Icon: FiBold
     },
     'italic': {
         cmd: 'toggleItalic',
         activeCmd: 'italic',
+        tip: "Italic",
         Icon: FiItalic
     },
     underline: {
         cmd: 'toggleUnderline',
         activeCmd: 'underline',
+        tip: "Underline",
         Icon: FiUnderline
 
     },
@@ -117,48 +123,57 @@ const cmdToBtn = {
     leftAlign: {
         cmd: 'leftAlign',
         activeCmd: null,
+        tip: "Left Align",
         Icon: FiAlignLeft,
     },
     centerAlign: {
         cmd: 'centerAlign',
         activeCmd: null,
+        tip: "Center Align",
         Icon: FiAlignCenter,
     },
     rightAlign: {
         cmd: 'rightAlign',
         activeCmd: null,
+        tip: "Right Align",
         Icon: FiAlignRight,
     },
 
     bulletList: {
         cmd: 'toggleBulletList',
         activeCmd: 'bulletList',
+        tip: "Bullets List",
         Icon: FaListUl,
     },
     orderedList: {
         cmd: 'toggleOrderedList',
         activeCmd: 'orderedList',
+        tip: "Numbered List",
         Icon: FaListOl,
     },
     undo: {
         cmd: 'undo',
         activeCmd: null,
+        tip: "Undo",
         Icon: FaUndo,
     },
 
     redo: {
         cmd: 'redo',
         activeCmd: null,
+        tip: "Redo",
         Icon: FaRedo,
     },
     code: {
         cmd: 'toggleCode',
         activeCmd: 'code',
+        tip: "Code",
         Icon: FiCode,
     },
     codeBlock: {
         cmd: 'toggleCodeBlock',
         activeCmd: 'codeBlock',
+        tip: "Code Block",
         Icon: BiCodeCurly,
     },
 

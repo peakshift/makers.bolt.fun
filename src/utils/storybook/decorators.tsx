@@ -8,6 +8,7 @@ import { ModifyArgs } from './utils';
 import Modal from 'src/Components/Modals/Modal/Modal';
 import { worker } from 'src/mocks/browser'
 import { AnimatePresence, motion } from 'framer-motion';
+import ReactTooltip from 'react-tooltip';
 
 // Add the global stuff first (index.ts)
 // -------------------------------------------
@@ -45,17 +46,23 @@ export const WrapperDecorator: DecoratorFn = (Story, options) => {
 
 
     return (
-        <ApolloProvider client={apolloClient}>
-            <Provider store={store}>
-                <Suspense fallback={<h2>Loading</h2>}>
-                    <MemoryRouter initialEntries={[modifyArgs.router?.currentPath!]}>
-                        <Routes>
-                            <Route path={modifyArgs.router?.routePath} element={<Story {...options} />} />
-                        </Routes>
-                    </MemoryRouter>
-                </Suspense>
-            </Provider>
-        </ApolloProvider>
+        <>
+            <ApolloProvider client={apolloClient}>
+                <Provider store={store}>
+                    <Suspense fallback={<h2>Loading</h2>}>
+                        <MemoryRouter initialEntries={[modifyArgs.router?.currentPath!]}>
+                            <Routes>
+                                <Route path={modifyArgs.router?.routePath} element={<Story {...options} />} />
+                            </Routes>
+                        </MemoryRouter>
+                    </Suspense>
+                </Provider>
+            </ApolloProvider>
+            <ReactTooltip
+                effect='solid'
+                delayShow={1000}
+            />
+        </>
     );
 }
 

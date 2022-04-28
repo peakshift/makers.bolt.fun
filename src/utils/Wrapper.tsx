@@ -7,9 +7,11 @@ import { useAppDispatch, useResizeListener } from './hooks';
 import { useCallback, useLayoutEffect } from 'react';
 import { setIsMobileScreen } from 'src/redux/features/ui.slice';
 import { isMobileScreen } from './helperFunctions';
+import ReactTooltip from 'react-tooltip';
 
 import 'react-multi-carousel/lib/styles.css';
 import 'react-loading-skeleton/dist/skeleton.css'
+import THEME from './theme';
 
 let basename = '/';
 
@@ -23,7 +25,7 @@ export const useWrapperSetup = () => {
     useLayoutEffect(() => {
         // Setting CSS Vars
         let root = document.documentElement;
-        // root.style.setProperty('--primary', THEME.colors.primary[500]);
+        root.style.setProperty('--primary', THEME.colors.primary[500]);
         // root.style.setProperty('--secondary', THEME.colors.secondary[500]);
     }, [])
 
@@ -38,12 +40,18 @@ export const useWrapperSetup = () => {
 export default function Wrapper(props: any) {
 
     return (
-        <ApolloProvider client={apolloClient}>
-            <Provider store={store}>
-                <BrowserRouter basename={basename}>
-                    {props.children}
-                </BrowserRouter>
-            </Provider>
-        </ApolloProvider>
+        <>
+            <ApolloProvider client={apolloClient}>
+                <Provider store={store}>
+                    <BrowserRouter basename={basename}>
+                        {props.children}
+                    </BrowserRouter>
+                </Provider>
+            </ApolloProvider>
+            <ReactTooltip
+                effect='solid'
+                delayShow={1000}
+            />
+        </>
     )
 }
