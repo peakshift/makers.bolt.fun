@@ -9,19 +9,32 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
+import { BiCodeCurly } from 'react-icons/bi';
 
 interface Props {
     cmd: Command
+    classes?: Partial<{
+        button: string,
+        icon: string,
+        active: string,
+        enabled: string
+        disabled: string
+    }>
 }
 
-export default function ToolButton({ cmd: _cmd }: Props) {
+export default function ToolButton({ cmd: _cmd, classes }: Props) {
 
+    const buttonClasses = classes?.button ?? `w-36 h-36 flex justify-center items-center`;
+    const activeClasses = classes?.active ?? 'font-bold bg-gray-300 hover:bg-gray-300 text-black'
+    const enabledClasses = classes?.enabled ?? 'hover:bg-gray-200';
+    const disabledClasses = classes?.disabled ?? 'opacity-40 text-gray-600 pointer-events-none'
+    const iconClasses = classes?.icon ?? ''
 
     const commands = useCommands();
     const active = useActive();
     // const chain = useChainedCommands();
 
-    //  commands.toggleLik
+    //  commands.toggleCo
     // active.list
 
     const runCommand = (cmd: string, attrs?: any) => {
@@ -35,16 +48,11 @@ export default function ToolButton({ cmd: _cmd }: Props) {
     if (_cmd === 'heading') {
         return <Menu menuButton={
             <MenuButton className={`
-            w-36 h-36 flex justify-center items-center
-            ${active.heading({}) ?
-                    'font-bold bg-gray-300 text-black'
-                    :
-                    'hover:bg-gray-200'
-                }
-            ${!commands.toggleHeading.enabled() && 'opacity-40 text-gray-600 pointer-events-none'}
-            
+            ${buttonClasses}
+            ${active.heading({}) && activeClasses}
+            ${commands.toggleHeading.enabled() ? enabledClasses : disabledClasses}
             `}>
-                <FiType />
+                <FiType className={iconClasses} />
             </MenuButton>
         } transition>
             {Array(6).fill(0).map((_, idx) => <MenuItem
@@ -66,19 +74,15 @@ export default function ToolButton({ cmd: _cmd }: Props) {
         const { activeCmd, cmd, Icon } = cmdToBtn[_cmd]
         return (
             <button
+                type='button'
                 className={`
-            w-36 h-36 flex justify-center items-center
-            ${(activeCmd && active[activeCmd]()) ?
-                        'font-bold bg-gray-300 text-black'
-                        :
-                        'hover:bg-gray-200'
-                    }
-            ${!commands[cmd].enabled() && 'opacity-40 text-gray-600 pointer-events-none'}
-            
-            `}
+                    ${buttonClasses}
+                    ${(activeCmd && active[activeCmd]()) && activeClasses}
+                    ${commands[cmd].enabled() ? enabledClasses : disabledClasses}
+                    `}
                 onClick={() => runCommand(cmd)}
             >
-                <Icon />
+                <Icon className={iconClasses} />
             </button>
         )
     }
@@ -148,9 +152,14 @@ const cmdToBtn = {
         Icon: FaRedo,
     },
     code: {
+        cmd: 'toggleCode',
+        activeCmd: 'code',
+        Icon: FiCode,
+    },
+    codeBlock: {
         cmd: 'toggleCodeBlock',
         activeCmd: 'codeBlock',
-        Icon: FiCode,
+        Icon: BiCodeCurly,
     },
 
 

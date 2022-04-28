@@ -7,7 +7,7 @@ interface Props {
 
 export default function Avatar({ src, alt, width = 40 }: Props) {
     return (
-        <img src={src} className='rounded-full shadow-inner object-contain border border-gray-100' style={{
+        <img src={src} className='shrink-0 rounded-full shadow-inner object-contain border border-gray-100' style={{
             width: width,
             height: width,
         }} alt={alt ?? "avatar"} />

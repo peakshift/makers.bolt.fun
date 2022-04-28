@@ -18,6 +18,7 @@ export default function Toolbar() {
         <ToolButton cmd='italic' />
         <ToolButton cmd='underline' />
         <ToolButton cmd='code' />
+        <ToolButton cmd='codeBlock' />
       </div>
       <div className="flex">
         <ToolButton cmd='leftAlign' />

@@ -14,6 +14,7 @@ export default function Toolbar() {
                 <TextEditorComponents.ToolButton cmd='italic' />
                 <TextEditorComponents.ToolButton cmd='underline' />
                 <TextEditorComponents.ToolButton cmd='code' />
+                <TextEditorComponents.ToolButton cmd='codeBlock' />
             </div>
             <div className="flex">
                 <TextEditorComponents.ToolButton cmd='leftAlign' />

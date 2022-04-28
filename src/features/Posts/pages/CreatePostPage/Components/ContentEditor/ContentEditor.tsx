@@ -58,7 +58,6 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
             new UnderlineExtension(),
             new ItalicExtension(),
             new HeadingExtension(),
-            new LinkExtension(),
             new BlockquoteExtension(),
             new BulletListExtension(),
             new OrderedListExtension(),
