@@ -22,7 +22,19 @@ const Template: ComponentStory<typeof TextEditor> = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-    placeholder: "Start writing something in markdown"
+    placeholder: "Start writing something in markdown",
+    initialContent: `
+## heading2
+
+#### heading4
+
+###### heading6
+
+some text with **bold**, _italic,_ underline, [www.link.com](//www.link.com)
+
+\`code line goes here\`
+ 
+`
 }
 
 

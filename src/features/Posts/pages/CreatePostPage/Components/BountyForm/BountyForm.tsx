@@ -19,10 +19,11 @@ const schema = yup.object({
         .min(1),
     deadline: yup
         .date()
+        .typeError('Deadline must be a valid date')
         .required(),
     bounty_amount: yup
         .number()
-        .typeError('Bounty amount must be a number')
+        .typeError('Bounty amount must be a valid number')
         .required()
         .min(100)
         .label("Bounty Amount"),
@@ -67,7 +68,7 @@ export default function BountyForm() {
         defaultValues: {
             title: '',
             tags: [],
-            bounty_amount: 100000,
+            bounty_amount: 1000,
             deadline: new Date(),
             body: '',
             cover_image: []
