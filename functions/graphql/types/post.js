@@ -107,7 +107,7 @@ const PostComment = objectType({
         t.nonNull.field('author', {
             type: "User"
         });
-        t.nonNull.int('parentId');
+        t.int('parentId');
         t.nonNull.int('votes_count');
     }
 })

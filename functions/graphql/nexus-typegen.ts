@@ -74,7 +74,7 @@ export interface NexusGenObjects {
     body: string; // String!
     created_at: string; // String!
     id: number; // Int!
-    parentId: number; // Int!
+    parentId?: number | null; // Int
     votes_count: number; // Int!
   }
   Project: { // root type
@@ -199,7 +199,7 @@ export interface NexusGenFieldTypes {
     body: string; // String!
     created_at: string; // String!
     id: number; // Int!
-    parentId: number; // Int!
+    parentId: number | null; // Int
     votes_count: number; // Int!
   }
   Project: { // field return type

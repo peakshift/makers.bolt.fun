@@ -80,7 +80,7 @@ type PostComment {
   body: String!
   created_at: String!
   id: Int!
-  parentId: Int!
+  parentId: Int
   votes_count: Int!
 }
 

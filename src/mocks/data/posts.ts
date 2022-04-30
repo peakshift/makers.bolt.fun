@@ -19,7 +19,7 @@ export const generatePostComments = (cnt: number = 1): Story['comments'] => {
     let comments = [];
     const rootCommentsIds: any[] = []
     for (let i = 0; i < cnt; i++) {
-        const parentId = Math.random() < .4 ? 0 : rootCommentsIds.length ? randomItem(...rootCommentsIds) : 0;
+        const parentId = Math.random() < .4 ? null : rootCommentsIds.length ? randomItem(...rootCommentsIds) : null;
         const comment = {
             id: i + 1,
             body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",

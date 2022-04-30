@@ -7,7 +7,7 @@ export interface Comment {
     created_at: string
     body: string
     votes_count: number
-    parentId: number
+    parentId: number | null
 }
 
 export interface CommentWithReplies extends Comment {

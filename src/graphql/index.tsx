@@ -112,7 +112,7 @@ export type PostComment = {
   body: Scalars['String'];
   created_at: Scalars['String'];
   id: Scalars['Int'];
-  parentId: Scalars['Int'];
+  parentId: Maybe<Scalars['Int']>;
   votes_count: Scalars['Int'];
 };
 
@@ -297,7 +297,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Question', id: number, title: string, date: string, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Question', id: number, title: string, date: string, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, image: string } }> } };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -610,6 +610,8 @@ export const PostDetailsDocument = gql`
         id
         created_at
         body
+        votes_count
+        parentId
         author {
           id
           name
@@ -669,6 +671,8 @@ export const PostDetailsDocument = gql`
         id
         created_at
         body
+        votes_count
+        parentId
         author {
           id
           name

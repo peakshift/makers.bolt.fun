@@ -24,12 +24,15 @@ import { debounce } from 'remirror';
 
 interface Props {
     initialContent?: string;
+    placeholder?: string;
     name?: string;
+    autoFocus?: boolean
 }
 
 
-export default function AddComment({ initialContent, name }: Props) {
+export default function AddComment({ initialContent, placeholder, name, autoFocus }: Props) {
 
+    const containerRef = useRef<HTMLDivElement>(null)
     const linkExtension = useMemo(() => {
         const extension = new LinkExtension({ autoLink: true });
         extension.addHandler('onClick', (_, data) => {
@@ -44,7 +47,7 @@ export default function AddComment({ initialContent, name }: Props) {
 
     const extensions = useCallback(
         () => [
-            new PlaceholderExtension({ placeholder: 'Leave a comment...' }),
+            new PlaceholderExtension({ placeholder }),
             linkExtension,
             new BoldExtension(),
             new CodeExtension(),
@@ -59,15 +62,19 @@ export default function AddComment({ initialContent, name }: Props) {
              */
             new HardBreakExtension(),
         ],
-        [linkExtension],
+        [linkExtension, placeholder],
     );
-
 
     const { manager, state, onChange, } = useRemirror({
         extensions,
         stringHandler: 'markdown',
         content: initialContent ?? ''
     });
+
+    useEffect(() => {
+        if (autoFocus)
+            containerRef.current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    }, [autoFocus])
 
 
     const submitComment = () => {
@@ -77,7 +84,7 @@ export default function AddComment({ initialContent, name }: Props) {
 
 
     return (
-        <div className={`remirror-theme ${styles.wrapper} p-24 border rounded-12`}>
+        <div className={`remirror-theme ${styles.wrapper} p-24 border rounded-12`} ref={containerRef}>
             <Remirror
                 manager={manager}
                 state={state}
@@ -86,6 +93,7 @@ export default function AddComment({ initialContent, name }: Props) {
                     valueRef.current = markdown;
                     onChange(e);
                 }}
+                autoFocus={autoFocus}
             >
                 <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
                     <div className="mt-16 shrink-0"><Avatar width={48} src='https://i.pravatar.cc/150?img=1' /></div>
@@ -94,7 +102,7 @@ export default function AddComment({ initialContent, name }: Props) {
                         />
                     </div>
                 </div>
-                <div className="flex gap-16 mt-16">
+                <div className="flex flex-wrap gap-16 mt-16">
                     <Toolbar />
                     <Button onClick={submitComment} color='primary' className='ml-auto'>Submit</Button>
                 </div>
