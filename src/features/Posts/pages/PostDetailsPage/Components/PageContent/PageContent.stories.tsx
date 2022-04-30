@@ -24,4 +24,9 @@ Bounty.args = {
     post: MOCK_DATA.posts.bounties[0]
 }
 
+// export const Question = Template.bind({});
+// Question.args = {
+//     post: MOCK_DATA.posts.questions[0]
+// }
+
 

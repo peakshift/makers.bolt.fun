@@ -37,6 +37,7 @@ const colors = {
         50: "#FFFAEB",
         100: "#FEF0C7",
         200: "#FEDF89",
+        500: '#F59E0B'
     },
 
     // Custom Colors

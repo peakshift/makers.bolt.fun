@@ -3,7 +3,7 @@ import { ModifyArgs } from 'src/utils/storybook/utils';
 import PostDetailsPage from './PostDetailsPage';
 
 export default {
-    title: 'Posts/Post Details Page',
+    title: 'Posts/Post Details Page/Page',
     component: PostDetailsPage,
     argTypes: {
         backgroundColor: { control: 'color' },

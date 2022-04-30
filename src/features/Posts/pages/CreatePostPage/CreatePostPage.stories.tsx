@@ -4,7 +4,7 @@ import { WithModals } from 'src/utils/storybook/decorators';
 import CreatePostPage from './CreatePostPage';
 
 export default {
-    title: 'Posts/Create Post Page',
+    title: 'Posts/Create Post Page/Page',
     component: CreatePostPage,
     argTypes: {
         backgroundColor: { control: 'color' },

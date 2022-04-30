@@ -32,7 +32,7 @@ export default function BountyCard({ bounty }: Props) {
                     <div>
                         <Link to={`/blog/post/Bounty/${bounty.id}`}>
                             <h2 className="text-h5 font-bolder mt-16 flex items-center gap-8">
-                                <span><Badge color="none" size="sm" className="bg-yellow-500 text-black">Bounty</Badge> {bounty.title}</span>
+                                <span><Badge color="none" size="sm" className="bg-warning-500 text-black">Bounty</Badge> {bounty.title}</span>
                             </h2>
                         </Link>
 
