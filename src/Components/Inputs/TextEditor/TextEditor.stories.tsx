@@ -1,10 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { WithModals } from 'src/utils/storybook/decorators';
 
 import TextEditor from './TextEditor';
 
 export default {
     title: 'Shared/TextEditor',
+    decorators: [WithModals],
     component: TextEditor,
 
 } as ComponentMeta<typeof TextEditor>;

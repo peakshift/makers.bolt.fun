@@ -67,7 +67,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
             new CodeBlockExtension({
                 supportedLanguages: [javascript, typescript]
             }),
-            new ImageExtension({ enableResizing: true }),
+            new ImageExtension(),
             // new TrailingNodeExtension(),
             // new TableExtension(),
             new MarkdownExtension({ copyAsMarkdown: false }),

@@ -1,6 +1,6 @@
 import { useActive, useChainedCommands, useCommands } from '@remirror/react';
 import { FiBold, FiItalic, FiType, FiUnderline, FiAlignCenter, FiAlignLeft, FiAlignRight, FiCode } from 'react-icons/fi'
-import { FaListOl, FaListUl, FaUndo, FaRedo } from 'react-icons/fa'
+import { FaListOl, FaListUl, FaUndo, FaRedo, FaImage } from 'react-icons/fa'
 
 import {
     Menu,
@@ -10,6 +10,8 @@ import {
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import { BiCodeCurly } from 'react-icons/bi';
+import { useAppDispatch } from 'src/utils/hooks';
+import { openModal } from 'src/redux/features/modals.slice';
 
 interface Props {
     cmd: Command
@@ -32,6 +34,7 @@ export default function ToolButton({ cmd: _cmd, classes }: Props) {
 
     const commands = useCommands();
     const active = useActive();
+    const dispatch = useAppDispatch()
     // const chain = useChainedCommands();
 
     //  commands.toggleCo
@@ -71,6 +74,38 @@ export default function ToolButton({ cmd: _cmd, classes }: Props) {
     }
 
 
+    if (_cmd === 'img') {
+        const { activeCmd, cmd, tip, Icon } = cmdToBtn[_cmd];
+        const onClick = () => {
+            dispatch(openModal({
+                Modal: "InsertImageModal",
+                props: {
+                    onInsert: ({ src, alt }) => {
+                        commands.insertImage({
+                            src,
+                            alt,
+
+                        })
+                    }
+                }
+            }))
+        }
+
+        return (
+            <button
+                type='button'
+                data-tip={tip}
+                className={`
+                    ${buttonClasses}
+                    ${(activeCmd && active[activeCmd]()) && activeClasses}
+                    ${commands[cmd].enabled({ src: "" }) ? enabledClasses : disabledClasses}
+                    `}
+                onClick={onClick}
+            >
+                <Icon className={iconClasses} />
+            </button>
+        )
+    }
 
     if (isCommand(_cmd)) {
         const { activeCmd, cmd, tip, Icon } = cmdToBtn[_cmd]
@@ -175,6 +210,12 @@ const cmdToBtn = {
         activeCmd: 'codeBlock',
         tip: "Code Block",
         Icon: BiCodeCurly,
+    },
+    img: {
+        cmd: 'insertImage',
+        activeCmd: 'image',
+        tip: "Insert Image",
+        Icon: FaImage,
     },
 
 

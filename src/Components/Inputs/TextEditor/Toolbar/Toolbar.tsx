@@ -11,7 +11,7 @@ export default function Toolbar() {
 
 
   return (
-    <div className='flex gap-24 bg-gray-100'>
+    <div className='flex flex-wrap gap-24 bg-gray-100'>
       <div className="flex">
         <ToolButton cmd='heading' />
         <ToolButton cmd='bold' />
@@ -26,6 +26,7 @@ export default function Toolbar() {
         <ToolButton cmd='rightAlign' />
         <ToolButton cmd='bulletList' />
         <ToolButton cmd='orderedList' />
+        <ToolButton cmd='img' />
       </div>
 
 

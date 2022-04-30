@@ -18,6 +18,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
+import ModalsContainer from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 
 
 // Enable the Mocks Service Worker
@@ -25,7 +26,7 @@ import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 
 if (process.env.STORYBOOK_ENABLE_MOCKS) {
     worker.start({
-        onUnhandledRequest: 'bypass'
+        onUnhandledRequest: 'bypass',
     })
 }
 
@@ -106,6 +107,7 @@ export const centerDecorator: DecoratorFn = (Story) => {
     </div>
 }
 
+
 export const WrapForm: (options?: Partial<UseFormProps>) => DecoratorFn = options => {
     const Func: DecoratorFn = (Story) => {
         const methods = useForm(options);
@@ -116,3 +118,8 @@ export const WrapForm: (options?: Partial<UseFormProps>) => DecoratorFn = option
     return Func
 }
 
+
+export const WithModals: DecoratorFn = (Component) => <>
+    <Component />
+    <ModalsContainer />
+</>

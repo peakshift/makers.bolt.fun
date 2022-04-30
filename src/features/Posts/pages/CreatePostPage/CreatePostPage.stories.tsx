@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { WithModals } from 'src/utils/storybook/decorators';
 
 import CreatePostPage from './CreatePostPage';
 
@@ -8,6 +9,9 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
+    decorators: [
+        WithModals
+    ]
 } as ComponentMeta<typeof CreatePostPage>;
 
 

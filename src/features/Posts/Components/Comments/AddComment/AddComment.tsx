@@ -14,11 +14,12 @@ import {
     PlaceholderExtension,
 } from 'remirror/extensions';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Toolbar from './Toolbar';
 import Button from 'src/Components/Button/Button';
+import { debounce } from 'remirror';
 
 
 interface Props {
@@ -37,6 +38,8 @@ export default function AddComment({ initialContent, name }: Props) {
         });
         return extension;
     }, []);
+
+    const valueRef = useRef<string>("");
 
 
     const extensions = useCallback(
@@ -60,33 +63,40 @@ export default function AddComment({ initialContent, name }: Props) {
     );
 
 
-    const { manager } = useRemirror({
+    const { manager, state, onChange, } = useRemirror({
         extensions,
         stringHandler: 'markdown',
+        content: initialContent ?? ''
     });
+
+
+    const submitComment = () => {
+        console.log(valueRef.current);
+        manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+    }
 
 
     return (
         <div className={`remirror-theme ${styles.wrapper} p-24 border rounded-12`}>
             <Remirror
                 manager={manager}
-                initialContent={initialContent}
+                state={state}
+                onChange={e => {
+                    const markdown = e.helpers.getMarkdown(e.state)
+                    valueRef.current = markdown;
+                    onChange(e);
+                }}
             >
                 <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
                     <div className="mt-16 shrink-0"><Avatar width={48} src='https://i.pravatar.cc/150?img=1' /></div>
-                    {/* <textarea
-                        rows={2}
-                        className="w-full border-0 text-gray-500 font-medium focus:!ring-0 resize-none"
-                        placeholder='Leave a comment...'
-                        ref={textAreaRef}
-                    /> */}
                     <div className="flex-grow">
-                        <EditorComponent />
+                        <EditorComponent
+                        />
                     </div>
                 </div>
                 <div className="flex gap-16 mt-16">
                     <Toolbar />
-                    <Button color='primary' className='ml-auto'>Submit</Button>
+                    <Button onClick={submitComment} color='primary' className='ml-auto'>Submit</Button>
                 </div>
                 {/* <TextEditorComponents.SaveModule name={name} /> */}
             </Remirror>

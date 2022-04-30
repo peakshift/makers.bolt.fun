@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
 import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
+import InsertImageModal from 'src/Components/Inputs/TextEditor/InsertImageModal/InsertImageModal'
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ComponentProps } from "react";
@@ -26,6 +27,7 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+  InsertImageModal
 }
 
 type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>

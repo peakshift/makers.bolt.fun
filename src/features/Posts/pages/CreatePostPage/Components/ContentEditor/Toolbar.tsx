@@ -7,7 +7,7 @@ interface Props {
 export default function Toolbar() {
 
     return (
-        <div className='flex gap-36 bg-gray-100'>
+        <div className='flex flex-wrap gap-36 bg-gray-100'>
             <div className="flex">
                 <TextEditorComponents.ToolButton cmd='heading' />
                 <TextEditorComponents.ToolButton cmd='bold' />
@@ -22,6 +22,7 @@ export default function Toolbar() {
                 <TextEditorComponents.ToolButton cmd='rightAlign' />
                 <TextEditorComponents.ToolButton cmd='bulletList' />
                 <TextEditorComponents.ToolButton cmd='orderedList' />
+                <TextEditorComponents.ToolButton cmd='img' />
             </div>
 
 
