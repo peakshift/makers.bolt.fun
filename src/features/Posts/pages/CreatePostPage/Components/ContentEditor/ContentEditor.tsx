@@ -24,7 +24,7 @@ import {
     TrailingNodeExtension,
     UnderlineExtension,
 } from 'remirror/extensions';
-import { ExtensionPriority } from 'remirror';
+import { ExtensionPriority, InvalidContentHandler } from 'remirror';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
 import { useCallback, useEffect, useMemo } from 'react';
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
@@ -46,6 +46,12 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
             return true;
         });
         return extension;
+    }, []);
+
+
+    const onError: InvalidContentHandler = useCallback(({ json, invalidContent, transformers }) => {
+        // Automatically remove all invalid nodes and marks.
+        return transformers.remove(json, invalidContent);
     }, []);
 
 
@@ -85,6 +91,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
     const { manager } = useRemirror({
         extensions,
         stringHandler: 'markdown',
+        onError,
     });
 
 

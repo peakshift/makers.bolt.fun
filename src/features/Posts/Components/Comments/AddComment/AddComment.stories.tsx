@@ -15,6 +15,7 @@ const Template: ComponentStory<typeof AddComment> = (args) => <div className="ma
 
 export const Default = Template.bind({});
 Default.args = {
+    placeholder: "Leave a comment..."
 }
 
 

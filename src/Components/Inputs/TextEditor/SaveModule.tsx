@@ -14,11 +14,11 @@ export default function SaveModule(props: Props) {
         name: props.name ?? 'content'
     })
 
-    const { getMarkdown } = useHelpers();
+    const { getMarkdown, getHTML } = useHelpers();
 
     const changeCallback = useDebouncedCallback(ctx => {
         const { state } = ctx;
-        onChange(getMarkdown(state));
+        onChange(getHTML(state));
     }, [], 500)
 
     useRemirrorContext(changeCallback)

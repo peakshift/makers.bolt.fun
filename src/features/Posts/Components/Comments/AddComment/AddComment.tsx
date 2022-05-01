@@ -15,11 +15,10 @@ import {
 } from 'remirror/extensions';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Toolbar from './Toolbar';
 import Button from 'src/Components/Button/Button';
-import { debounce } from 'remirror';
+import { InvalidContentHandler } from 'remirror';
 
 
 interface Props {
@@ -65,10 +64,18 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
         [linkExtension, placeholder],
     );
 
+
+
+    const onError: InvalidContentHandler = useCallback(({ json, invalidContent, transformers }) => {
+        // Automatically remove all invalid nodes and marks.
+        return transformers.remove(json, invalidContent);
+    }, []);
+
     const { manager, state, onChange, } = useRemirror({
         extensions,
         stringHandler: 'markdown',
-        content: initialContent ?? ''
+        content: initialContent ?? '',
+        onError,
     });
 
     useEffect(() => {
@@ -89,8 +96,8 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
                 manager={manager}
                 state={state}
                 onChange={e => {
-                    const markdown = e.helpers.getMarkdown(e.state)
-                    valueRef.current = markdown;
+                    const html = e.helpers.getHTML(e.state)
+                    valueRef.current = html;
                     onChange(e);
                 }}
                 autoFocus={autoFocus}
@@ -106,7 +113,6 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
                     <Toolbar />
                     <Button onClick={submitComment} color='primary' className='ml-auto'>Submit</Button>
                 </div>
-                {/* <TextEditorComponents.SaveModule name={name} /> */}
             </Remirror>
         </div>
     );

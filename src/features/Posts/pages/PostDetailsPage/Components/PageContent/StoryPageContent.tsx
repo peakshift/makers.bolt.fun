@@ -37,7 +37,7 @@ export default function StoryPageContent({ story }: Props) {
                 <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(story.body) }}>
                 </div>
             </div>
-            <div className="mt-32">
+            <div className="mt-10">
                 <CommentsSection comments={story.comments} />
             </div>
         </div>

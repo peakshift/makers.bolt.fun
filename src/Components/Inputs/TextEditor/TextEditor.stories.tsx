@@ -14,11 +14,12 @@ export default {
 const Template: ComponentStory<typeof TextEditor> = (args) => {
 
     const methods = useForm();
-
     console.log(methods.watch('content'))
 
     return <FormProvider {...methods}>
-        <TextEditor {...args} />
+        <div className="max-w-[80ch]">
+            <TextEditor {...args} />
+        </div>
     </FormProvider>
 }
 
@@ -41,3 +42,47 @@ some text with **bold**, _italic,_ underline, [www.link.com](//www.link.com)
 
 
 
+
+const PreviewTemplate: ComponentStory<typeof TextEditor> = (args) => {
+
+    const methods = useForm({
+        defaultValues: {
+            content: ""
+        }
+    });
+
+    const md = methods.watch('content')
+    console.log(md);
+
+
+    return <FormProvider {...methods}>
+        <div className="max-w-[80ch]">
+            <TextEditor {...args} />
+            <div
+                className="mt-32 bg-white p-32 border rounded-12 remirror-theme"
+                dangerouslySetInnerHTML={{ __html: md }}
+            >
+            </div>
+        </div>
+    </FormProvider>
+}
+
+export const WithPreview = PreviewTemplate.bind({});
+WithPreview.args = {
+    placeholder: "Start writing something in markdown",
+    initialContent: `
+## heading2
+
+#### heading4
+
+###### heading6 
+<br/>
+<br/>
+<br/>
+
+some text with **bold**, _italic,_ underline, [www.link.com](//www.link.com)
+
+\`code line goes here\`
+ 
+`
+}

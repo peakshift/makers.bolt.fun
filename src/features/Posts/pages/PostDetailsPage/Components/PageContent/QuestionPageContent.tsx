@@ -38,7 +38,7 @@ export default function QuestionPageContent({ question }: Props) {
                 </div>
             </div>
 
-            <div className="mt-32">
+            <div className="mt-10">
                 <CommentsSection comments={question.comments} />
             </div>
         </div>

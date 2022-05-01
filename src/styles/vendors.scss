@@ -1,0 +1,22 @@
+
+// 
+// This file is for overriding various libraries native styles
+// -----------------------------------------------------------
+
+
+// Re mirror
+// ---------------
+.remirror-theme ul {
+    list-style: disc !important;
+    padding: revert;
+    margin: revert;
+}
+
+.remirror-theme ol {
+    list-style: decimal !important;
+    padding: revert;
+    margin: revert;
+}
+
+// 
+// ----------------

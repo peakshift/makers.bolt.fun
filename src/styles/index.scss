@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
-@import "./shared.scss", './tw.scss';
+@import './tw.scss',"./shared.scss",'./vendors.scss';
 
 
 body {
@@ -72,14 +72,3 @@ svg {
   }
 }
 
-.remirror-editor-wrapper ul {
-  list-style: disc !important;
-  padding: revert;
-  margin: revert;
-}
-
-.remirror-editor-wrapper ol {
-  list-style: decimal !important;
-  padding: revert;
-  margin: revert;
-}
