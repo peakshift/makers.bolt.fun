@@ -1,15 +1,7 @@
-import React from 'react'
-import { ToolbarItemUnion, } from '@remirror/react';
-import ToolButton from './ToolButton';
+import ToolButton from '../ToolButton';
 
-interface Props {
-  items: ToolbarItemUnion
-}
 
 export default function Toolbar() {
-
-
-
   return (
     <div className='flex flex-wrap gap-24 bg-gray-100'>
       <div className="flex">

@@ -3,20 +3,26 @@ import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContai
 import { motion } from 'framer-motion'
 import { IoClose } from 'react-icons/io5'
 import Button from 'src/Components/Button/Button'
+import { useAppDispatch } from 'src/utils/hooks'
+import { PayloadAction } from '@reduxjs/toolkit'
 
 interface Props extends ModalCard {
-    onInsert: (img: { src: string, alt?: string }) => void
+    callbackAction: PayloadAction<{ src: string, alt?: string }>
 }
 
-export default function InsertImageModal({ onClose, direction, onInsert, ...props }: Props) {
+export default function InsertImageModal({ onClose, direction, callbackAction, ...props }: Props) {
 
     const [urlInput, setUrlInput] = useState("")
     const [altInput, setAltInput] = useState("")
+    const dispatch = useAppDispatch();
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
         if (urlInput.length > 10) {
-            onInsert({ src: urlInput, alt: altInput })
+            // onInsert({ src: urlInput, alt: altInput })
+            const action = Object.assign({}, callbackAction);
+            action.payload = { src: urlInput, alt: altInput }
+            dispatch(action)
             onClose?.();
         }
     }

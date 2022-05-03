@@ -1,13 +1,13 @@
-.grid{
-    grid-template-columns: 1fr 2fr 1fr;
+.grid {
+  grid-template-columns: 1fr 2fr 1fr;
 }
 
-@media screen and (max-width:680px) {
-    aside{
-        display: none;
-    }
+@media screen and (max-width: 680px) {
+  aside {
+    display: none;
+  }
 
-    .grid{
-        grid-template-columns: 1fr;
-    }
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
