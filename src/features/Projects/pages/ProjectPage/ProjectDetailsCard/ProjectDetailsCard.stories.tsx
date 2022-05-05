@@ -14,9 +14,12 @@ const Template: ComponentStory<typeof ProjectDetailsCard> = (args) => <ProjectDe
 export const Default = Template.bind({});
 Default.args = {
     projectId: 1,
+    isPageModal: true
 }
 
 
 
 const LoadingTemplate: ComponentStory<typeof ProjectDetailsCardSkeleton> = (args) => <ProjectDetailsCardSkeleton {...args} />;
-export const LoadingState = LoadingTemplate.bind({})
+export const LoadingState = LoadingTemplate.bind({
+    isPageModal: true
+})

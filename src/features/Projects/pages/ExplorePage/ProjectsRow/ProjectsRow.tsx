@@ -92,6 +92,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
             <div className="px-32">
                 <Carousel
                     showDots={false}
+                    autoPlay={false}
                     // arrows={false}
                     responsive={responsive}
                     // centerMode

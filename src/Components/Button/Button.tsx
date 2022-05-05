@@ -72,7 +72,7 @@ export default function Button({ color = 'white',
     ...props }: Props) {
 
     let classes = `
-    inline-block font-sans rounded-lg font-regular border border-gray-300 hover:cursor-pointer
+    inline-block font-sans rounded-lg font-regular border border-gray-300 hover:cursor-pointer text-center
     ${baseBtnStyles[variant]}
     ${btnPadding[size]}
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}

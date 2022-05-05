@@ -97,11 +97,11 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
     return (
         <div
-            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && 'rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && '!rounded-0 w-full min-h-screen'}`}
         >
             <div className="relative h-[80px] lg:h-[152px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-[48px] h-[48px] bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={closeModal}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
+                <button className="w-40 h-40 md:w-48 md:h-48 bg-white absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={closeModal}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
             </div>
             <div className="p-24">
                 <div className="flex gap-24 items-start">
