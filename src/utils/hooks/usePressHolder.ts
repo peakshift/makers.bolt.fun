@@ -14,7 +14,6 @@ export const usePressHolder = (onHold: () => any, holdThreshold: number = 400) =
 
 
     const onPressUp = () => {
-        console.log('ON PRESS UP');
 
         cancelAnimationFrame(ref.current.timerID);
         ref.current.cntr = 0;
