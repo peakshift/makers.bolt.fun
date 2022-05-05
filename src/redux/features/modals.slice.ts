@@ -6,6 +6,7 @@ import InsertImageModal from 'src/Components/Inputs/TextEditor/InsertImageModal/
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ComponentProps } from "react";
+import { generateId } from "src/utils/helperFunctions";
 
 export enum Direction {
   START,
@@ -48,9 +49,11 @@ type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = 
 
 
 
-interface OpenModal {
+interface ModalObject {
+  id: string
   Modal: ModalAction['Modal'],
   props?: any;
+  isOpen: boolean
 }
 
 interface StoreState {
@@ -58,8 +61,8 @@ interface StoreState {
   isLoading: boolean;
   direction: Direction;
   flows: keyof typeof ALL_MODALS[];
-  toOpenLater: OpenModal | null;
-  openModals: OpenModal[];
+  toOpenLater: ModalObject | null;
+  openModals: ModalObject[];
   isMobileScreen?: boolean;
 }
 
@@ -69,7 +72,7 @@ const initialState = {
   direction: Direction.START,
   flows: [] as any,
   toOpenLater: null,
-  openModals: [] as OpenModal[],
+  openModals: [] as ModalObject[],
 } as StoreState;
 
 export const modalSlice = createSlice({
@@ -82,7 +85,9 @@ export const modalSlice = createSlice({
 
     scheduleModal(state, action: PayloadAction<ModalAction>) {
       state.toOpenLater = {
+        id: generateId(),
         Modal: action.payload.Modal,
+        isOpen: false,
       };
     },
 
@@ -90,7 +95,7 @@ export const modalSlice = createSlice({
       if (state.toOpenLater) {
         state.direction = Direction.START;
         state.isOpen = true;
-        state.openModals.push(state.toOpenLater);
+        state.openModals.push({ ...state.toOpenLater, isOpen: true });
         state.toOpenLater = null;
       }
     },
@@ -114,8 +119,10 @@ export const modalSlice = createSlice({
 
 
       state.openModals.push({
+        id: generateId(),
         Modal: action.payload.Modal,
-        props
+        props,
+        isOpen: true
       });
     },
 
@@ -124,7 +131,7 @@ export const modalSlice = createSlice({
       action: PayloadAction<ModalAction & { direction: Direction }>
     ) {
       state.direction = action.payload.direction;
-      state.openModals.pop();
+      state.openModals[state.openModals.length - 1].isOpen = false;
 
 
       let props: any = {};
@@ -133,16 +140,23 @@ export const modalSlice = createSlice({
         props = { ...props, ...action.payload.props }
 
       state.openModals.push({
+        id: generateId(),
         Modal: action.payload.Modal,
         props,
+        isOpen: true,
       });
     },
 
     closeModal(state) {
       state.direction = Direction.EXIT;
-      state.openModals.pop();
-      state.isOpen = Boolean(state.openModals.length);
+      state.openModals[state.openModals.length - 1].isOpen = false;
+      state.isOpen = Boolean(state.openModals.filter(modal => modal.isOpen).length);
     },
+
+    removeClosedModal(state, action: PayloadAction<string>) {
+      state.openModals = state.openModals.filter(m => m.id !== action.payload)
+
+    }
   },
 });
 
@@ -156,6 +170,7 @@ export const {
   scheduleModal,
   openSceduledModal,
   removeScheduledModal,
+  removeClosedModal
 } = modalSlice.actions;
 
 

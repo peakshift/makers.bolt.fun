@@ -74,7 +74,7 @@ export const AppDecorator: DecoratorFn = (Component) => {
     return <Component />
 }
 
-export const wrapModal: DecoratorFn = (Component) => <Modal isOpen onClose={() => { }}><Component /></Modal>
+export const wrapModal: DecoratorFn = (Component) => <Modal isOpen id='some-id' onClose={() => { }}><Component /></Modal>
 
 export const wrapPage: DecoratorFn = (Component) => <div className='page-container'><Component /></div>
 
@@ -83,22 +83,27 @@ export const wrapPage: DecoratorFn = (Component) => <div className='page-contain
 export const ModalsDecorator: DecoratorFn = (Story) => {
     const onClose = () => { };
     return (
-        <motion.div
-            className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-                opacity: 0,
-                transition: { ease: "easeInOut" },
-            }}
-        >
-            <AnimatePresence>
-                <Modal onClose={onClose}  >
-                    <Story onClose={onClose} />
-                </Modal>
-            </AnimatePresence>
-        </motion.div>
-    );
+        <Modal isOpen id={'some-id'} onClose={onClose}  >
+            <Story onClose={onClose} />
+        </Modal>
+    )
+    // return (
+    //     <motion.div
+    //         className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
+    //         initial={{ opacity: 0 }}
+    //         animate={{ opacity: 1 }}
+    //         exit={{
+    //             opacity: 0,
+    //             transition: { ease: "easeInOut" },
+    //         }}
+    //     >
+    //         <AnimatePresence>
+    //             <Modal onClose={onClose}  >
+    //                 <Story onClose={onClose} />
+    //             </Modal>
+    //         </AnimatePresence>
+    //     </motion.div>
+    // );
 }
 
 export const centerDecorator: DecoratorFn = (Story) => {

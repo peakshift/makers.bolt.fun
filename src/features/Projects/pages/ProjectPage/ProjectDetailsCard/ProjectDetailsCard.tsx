@@ -36,8 +36,10 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     const { loading, error } = useProjectDetailsQuery({
         variables: { projectId: projectId! },
         onCompleted: data => {
-
             dispatch(setProject(data.getProject))
+        },
+        onError: () => {
+            dispatch(setProject(null));
         },
         skip: !Boolean(projectId)
     });
@@ -48,7 +50,6 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     }, [dispatch]);
 
     const closeModal = () => {
-        dispatch(setProject(null));
         props.onClose?.();
     }
 
@@ -126,7 +127,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         }
                     </div>
                 </div>
-                <p className="mt-40 text-body4 leading-normal" dangerouslySetInnerHTML={{
+                <p className="mt-40 text-body4 leading-normal whitespace-pre-line" dangerouslySetInnerHTML={{
                     __html: linkifyHtml(project?.description, {
                         className: ' text-blue-500 underline',
                         defaultProtocol: 'https',

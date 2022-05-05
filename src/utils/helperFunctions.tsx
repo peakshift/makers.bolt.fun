@@ -58,3 +58,8 @@ export function lazyModal<T extends ComponentType<any>>
 export function trimText(text: string, length: number) {
   return text.slice(0, length) + (text.length > length ? "..." : "")
 }
+
+export function generateId() {
+  // TODO: Change to proper generator
+  return Math.random().toString();
+}

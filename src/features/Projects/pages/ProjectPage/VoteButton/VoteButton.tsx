@@ -60,12 +60,15 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
     }, 100), 100);
 
     const handlePressDown = () => {
+        console.log('HANDLE PRESS DOWN');
         setWasActive(true);
         onPressDown();
     }
 
     const handlePressUp = (event?: any) => {
         if (!wasActive) return;
+
+        console.log('HANDLE PRESS UP');
 
         setWasActive(false);
         if (event?.preventDefault) event.preventDefault();

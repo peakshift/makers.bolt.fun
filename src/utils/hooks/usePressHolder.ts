@@ -9,11 +9,12 @@ export const usePressHolder = (onHold: () => any, holdThreshold: number = 400) =
     });
 
     const onPressDown = () => {
-        requestAnimationFrame(timer)
+        ref.current.timerID = requestAnimationFrame(timer)
     }
 
 
     const onPressUp = () => {
+        console.log('ON PRESS UP');
 
         cancelAnimationFrame(ref.current.timerID);
         ref.current.cntr = 0;

@@ -2,6 +2,11 @@
 @import './tw.scss',"./shared.scss",'./vendors.scss';
 
 
+
+html{
+  width: 100vw;
+}
+
 body {
   overflow-x: hidden;
   /* background-color: #F8FAFC; */
@@ -62,13 +67,29 @@ svg {
   /* Firefox */
 }
 
-.no-scrollbar ::-webkit-scrollbar {
+.no-scrollbar::-webkit-scrollbar {
   display: none;
   /* Safari and Chrome */
 }
+ 
+
 @media (pointer: coarse) {
   .touch-device\:hidden {
     display: none;
   }
 }
 
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 900ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transition-timing-function: ease-in;
+  transition-duration: 400ms;
+}
