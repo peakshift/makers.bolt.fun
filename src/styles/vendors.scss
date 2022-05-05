@@ -18,5 +18,19 @@
     margin: revert;
 }
 
-// 
+// React Modals
 // ----------------
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 900ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
+    transition-timing-function: ease-in;
+    transition-duration: 400ms;
+}

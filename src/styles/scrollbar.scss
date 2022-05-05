@@ -1,0 +1,28 @@
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+@media screen and (min-width: 668px) {
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: inherit;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #c8c8c8;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #aaaaaa;
+}

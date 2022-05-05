@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
-@import './tw.scss',"./shared.scss",'./vendors.scss';
+@import './tw.scss',"./shared.scss",'./vendors.scss','./scrollbar.scss';
 
 
 
@@ -20,34 +20,6 @@ body {
 
 svg {
   display: inline-block;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-@media screen and (min-width: 668px) {
-  /* width */
-  ::-webkit-scrollbar {
-    width: 12px;
-  }
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #ddd;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #aaa;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: #999;
 }
 
 .noselect {
@@ -79,17 +51,3 @@ svg {
   }
 }
 
-.ReactModal__Overlay {
-  opacity: 0;
-  transition: opacity 900ms ease-in-out;
-}
-
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-}
-
-.ReactModal__Overlay--before-close {
-  opacity: 0;
-  transition-timing-function: ease-in;
-  transition-duration: 400ms;
-}
