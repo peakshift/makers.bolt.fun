@@ -52,7 +52,6 @@ export default function NavDesktop() {
     };
 
 
-
     return (<nav className="bg-white w-full flex fixed h-[118px] top-0 left-0 py-36 px-32 items-center z-[2010]">
         <a href="https://bolt.fun/">
             <h2 className="text-h5 font-bold mr-40 lg:mr-64">
@@ -70,11 +69,16 @@ export default function NavDesktop() {
             )}
             <li
                 ref={categoriesRef}
-                className="relative cursor-pointer" onClick={() => toggleCategories(!categoriesOpen)}>
-                <p className='text-body4 hover:text-primary-600'>
+                className="relative"
+            >
+                <button
+                    onClick={() => toggleCategories(!categoriesOpen)}
+                    onKeyDown={e => (e.key !== 'Escape') || toggleCategories(false)}
+                    className='text-body4 hover:text-primary-600 cursor-pointer'
+                >
                     <IoExtensionPuzzle className={`text-body2  inline-block mr-8 text-primary-600`} />
                     <span className="align-middle">Categories</span>
-                </p>
+                </button>
                 {<motion.div
                     initial={{ opacity: 0, y: 200, display: 'none' }}
                     animate={categoriesOpen ? {
@@ -94,7 +98,7 @@ export default function NavDesktop() {
                         }
                     }}
                     className="absolute top-full left-0 w-[256px] bg-white border border-primary-50 rounded-8 shadow-3xl">
-                    <CategoriesList />
+                    <CategoriesList onClick={() => toggleCategories(false)} />
                 </motion.div>}
             </li>
         </ul>
