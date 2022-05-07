@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
@@ -97,7 +97,8 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
         setVoteAmount(defaultOptions[idx].value);
     }
 
-    const requestPayment = () => {
+    const requestPayment = (e: FormEvent) => {
+        e.preventDefault();
         setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS);
         vote({ variables: { "amountInSat": voteAmount, "projectId": projectId! } });
     }
@@ -113,7 +114,7 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
         >
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
             <h2 className='text-h5 font-bold'>Vote for this Project</h2>
-            <div className="mt-32 ">
+            <form onSubmit={requestPayment} className="mt-32 ">
                 <label className="block text-gray-700 text-body4 mb-2 ">
                     Enter Amount
                 </label>
@@ -122,7 +123,9 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                         className={` input-text input-removed-arrows`}
                         value={voteAmount} onChange={onChangeInput}
                         type="number"
-                        placeholder="e.g 5 sats" />
+                        placeholder="e.g 5 sats"
+                        autoFocus
+                    />
                     <p className='px-16 shrink-0 self-center text-primary-400'>
                         Sats
                     </p>
@@ -130,6 +133,7 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                 <div className="flex mt-16 justify-between">
                     {defaultOptions.map((option, idx) =>
                         <button
+                            type='button'
                             key={idx}
                             className={`btn border px-12 rounded-md py-8 text-body ${idx === selectedOption && "border-primary-500 bg-primary-100 hover:bg-primary-100 text-primary-600"}`}
                             onClick={() => onSelectOption(idx)}
@@ -145,10 +149,14 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                 {paymentStatus === PaymentStatus.PAID && <p className="text-body6 mt-12 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
                 {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Waiting for your payment...</p>}
                 {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your vote</p>}
-                <button className="btn btn-primary w-full mt-32" disabled={paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.NOT_PAID} onClick={requestPayment}>
+                <button
+                    type='submit'
+                    className="btn btn-primary w-full mt-32"
+                    disabled={paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.NOT_PAID}
+                >
                     {paymentStatus === PaymentStatus.DEFAULT || paymentStatus === PaymentStatus.NOT_PAID ? "Vote" : "Voting..."}
                 </button>
-            </div>
+            </form>
             {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti width={width} height={height} />}
         </motion.div>
     )

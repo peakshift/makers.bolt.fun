@@ -50,10 +50,17 @@ export default function ModalsContainer() {
     }
 
     useEffect(() => {
-        if (isOpen)
-            document.body.style.overflowY = "hidden";
-        else
-            document.body.style.overflowY = "initial";
+        if (isOpen) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.documentElement.style.overflow = 'hidden';
+            if (scrollbarWidth) {
+                document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+            }
+        }
+        else {
+            document.documentElement.style.overflow = "";
+            document.documentElement.style.paddingRight = "";
+        }
     }, [isOpen]);
 
     return (
