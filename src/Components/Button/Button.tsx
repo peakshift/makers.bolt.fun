@@ -112,6 +112,7 @@ export default function Button({ color = 'white',
             type='button'
             className={`${classes} ${className}`}
             onClick={() => handleClick()}
+            disabled={disabled}
             {...props}
         >
             {/* {isLoading ? <Loading color={loadingColor[color]} /> : children} */}

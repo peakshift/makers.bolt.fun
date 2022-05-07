@@ -80,6 +80,7 @@ export default function QuestionForm() {
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
+                                autoFocus
                                 type='text'
                                 className="input-text"
                                 placeholder='Your Question Title'

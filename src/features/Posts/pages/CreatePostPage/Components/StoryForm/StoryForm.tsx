@@ -80,6 +80,7 @@ export default function StoryForm() {
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
+                                autoFocus
                                 type='text'
                                 className="input-text"
                                 placeholder='Your Story Title'

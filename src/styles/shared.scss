@@ -8,3 +8,8 @@
 .input-removed-arrows[type="number"] {
     -moz-appearance: textfield;
 }
+
+button[disabled]{
+    opacity: .5;
+    pointer-events: none;
+}

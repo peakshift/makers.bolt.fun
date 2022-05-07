@@ -106,6 +106,7 @@ export default function BountyForm() {
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
+                                autoFocus
                                 type='text'
                                 className="input-text"
                                 placeholder='Your Bounty Title'

@@ -56,6 +56,7 @@ export default function Login_SuccessCard({ onClose, direction, ...props }: Moda
                 </p>
                 <div className="input-wrapper mt-24 relative">
                     <textarea
+                        autoFocus
                         rows={6}
                         className="input-text !p-20"
                         placeholder='What steps will you take to complete this task? '
