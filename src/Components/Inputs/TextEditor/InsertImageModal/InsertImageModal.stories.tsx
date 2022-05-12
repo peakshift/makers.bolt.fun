@@ -5,7 +5,7 @@ import InsertImageModal from './InsertImageModal';
 import { ModalsDecorator } from 'src/utils/storybook/decorators';
 
 export default {
-    title: 'Shared/TextEditor/Insert Image Modal',
+    title: 'Shared/Inputs/Text Editor/Insert Image Modal',
     component: InsertImageModal,
 
     decorators: [ModalsDecorator]

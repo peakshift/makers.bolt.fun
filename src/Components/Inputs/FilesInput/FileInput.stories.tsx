@@ -6,7 +6,7 @@ import FilesInput from './FilesInput';
 import FileDropInput from './FilesDropInput';
 
 export default {
-    title: 'Shared/Files Input',
+    title: 'Shared/Inputs/Files Input',
     component: FilesInput,
 
 } as ComponentMeta<typeof FilesInput>;
@@ -27,5 +27,5 @@ CustomizedButton.args = {
 const DropTemplate: ComponentStory<typeof FileDropInput> = (args) => <div className="max-w-[500px]"><FileDropInput {...args as any} /></div>
 export const DropZoneInput = DropTemplate.bind({});
 DropZoneInput.args = {
-    onChange: () => { },
+    onChange: console.log,
 }

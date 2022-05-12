@@ -5,7 +5,7 @@ import { WithModals } from 'src/utils/storybook/decorators';
 import TextEditor from './TextEditor';
 
 export default {
-    title: 'Shared/TextEditor',
+    title: 'Shared/Inputs/Text Editor',
     decorators: [WithModals],
     component: TextEditor,
 

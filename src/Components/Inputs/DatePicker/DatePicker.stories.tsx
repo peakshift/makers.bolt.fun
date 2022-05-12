@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import DatePicker from './DatePicker';
 
 export default {
-    title: 'Shared/DatePicker',
+    title: 'Shared/Inputs/Date Picker',
     component: DatePicker,
 
 } as ComponentMeta<typeof DatePicker>;

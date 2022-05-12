@@ -14,8 +14,10 @@ type Props = {
     uploadText?: string;
     allowedType?: 'images';
     classes?: Partial<{
-        wrapper: string,
-        dragging: string
+        base: string,
+        idle: string,
+        dragging: string,
+        hasFiles: string
     }>
 }
 
@@ -44,8 +46,9 @@ export default function FilesInput({
 }: Props) {
 
 
-    const wrapperClasses = classes?.wrapper ?? 'bg-primary-50 p-32 border border-primary-500 rounded-8 text-center flex flex-col justify-center items-center'
-    const draggingClasses = classes?.dragging ?? '!bg-primary-500 !text-white'
+    const baseClasses = classes?.base ?? 'p-32 rounded-8 text-center flex flex-col justify-center items-center'
+    const idleClasses = classes?.idle ?? 'bg-primary-50 hover:bg-primary-25 border border-dashed border-primary-500 text-gray-800'
+    const draggingClasses = classes?.dragging ?? 'bg-primary-500 text-white'
 
     return (
         <DropInput
@@ -58,7 +61,8 @@ export default function FilesInput({
             multiple={multiple}
             allowedType={fileAccept[allowedType]}
             classes={{
-                wrapper: wrapperClasses,
+                base: baseClasses,
+                idle: idleClasses,
                 dragging: draggingClasses
             }}
         />

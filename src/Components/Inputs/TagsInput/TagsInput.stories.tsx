@@ -4,7 +4,7 @@ import { WrapForm } from 'src/utils/storybook/decorators';
 import TagsInput from './TagsInput';
 
 export default {
-    title: 'Shared/TagsInput',
+    title: 'Shared/Inputs/Tags Input',
     component: TagsInput,
     argTypes: {
         backgroundColor: { control: 'color' },

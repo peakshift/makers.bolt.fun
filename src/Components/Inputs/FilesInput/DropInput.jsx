@@ -11,7 +11,11 @@ export default function DropInput({
   height,
   multiple = false,
   allowedType = "*",
-  classes = {},
+  classes = {
+    base: "",
+    idle: "",
+    dragging: "",
+  },
 }) {
   const [isDragging, toggleDrag] = useToggle(false);
   const fileInputRef = React.useRef(null);
@@ -40,7 +44,9 @@ export default function DropInput({
         onFrameDragLeave={() => toggleDrag(false)}
         onFrameDrop={() => toggleDrag(false)}
         className={`h-full cursor-pointer`}
-        targetClassName={`h-full ${classes.wrapper}`}
+        targetClassName={`h-full ${classes.base} ${
+          status === "empty" && classes.idle
+        }`}
         draggingOverFrameClassName={`${classes.dragging}`}
       >
         {status === "dragging" && draggingContent}
