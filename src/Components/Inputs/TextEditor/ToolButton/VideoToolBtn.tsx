@@ -16,36 +16,34 @@ interface Props {
     }
 }
 
-const INSERT_IMAGE_ACTION = createAction<{ src: string, alt?: string }>('IMAGE_INSERTED_IN_EDITOR')({ src: '', alt: "" })
+const INSERT_VIDEO_ACTION = createAction<{ src: string }>('VIDEO_INSERTED_IN_EDITOR')({ src: '' })
 
-export default function ImageToolButton({ classes }: Props) {
+export default function VideoToolButton({ classes }: Props) {
 
     const commands = useCommands();
     const active = useActive();
     const dispatch = useAppDispatch()
 
 
-    const onInsertImage = useCallback(({ payload: { src, alt } }: typeof INSERT_IMAGE_ACTION) => {
-        commands.insertImage({
-            src,
-            alt,
+    const onInsertVideo = useCallback(({ payload: { src } }: typeof INSERT_VIDEO_ACTION) => {
+        commands.addYouTubeVideo({
+            video: src,
+
         })
     }, [commands])
 
-    useReduxEffect(onInsertImage, INSERT_IMAGE_ACTION.type)
+    useReduxEffect(onInsertVideo, INSERT_VIDEO_ACTION.type)
 
 
-
-    const { activeCmd, cmd, tip, Icon } = cmdToBtn['img'];
+    const { activeCmd, cmd, tip, Icon } = cmdToBtn['youtube'];
     const onClick = () => {
         dispatch(openModal({
-            Modal: "InsertImageModal",
+            Modal: "InsertVideoModal",
             props: {
                 callbackAction: {
-                    type: INSERT_IMAGE_ACTION.type,
+                    type: INSERT_VIDEO_ACTION.type,
                     payload: {
                         src: "",
-                        alt: ""
                     }
                 }
             }
@@ -59,7 +57,7 @@ export default function ImageToolButton({ classes }: Props) {
             className={`
                     ${classes.button}
                     ${(activeCmd && active[activeCmd]()) && classes.active}
-                    ${commands[cmd].enabled({ src: "" }) ? classes.enabled : classes.disabled}
+                    ${commands[cmd].enabled({ video: "" }) ? classes.enabled : classes.disabled}
                     `}
             onClick={onClick}
         >

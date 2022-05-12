@@ -23,6 +23,7 @@ import {
     TableExtension,
     TrailingNodeExtension,
     UnderlineExtension,
+    IframeExtension,
 } from 'remirror/extensions';
 import { ExtensionPriority, InvalidContentHandler } from 'remirror';
 import { EditorComponent, Remirror, useHelpers, useRemirror } from '@remirror/react';
@@ -77,6 +78,7 @@ export default function TextEditor({ placeholder, initialContent }: Props) {
             // new TableExtension(),
             new MarkdownExtension({ copyAsMarkdown: false }),
             new NodeFormattingExtension(),
+            new IframeExtension(),
             /**
              * `HardBreakExtension` allows us to create a newline inside paragraphs.
              * e.g. in a list item

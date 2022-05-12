@@ -2,6 +2,7 @@ import ImageToolButton from './ImageToolBtn';
 import HeadingsToolButton from './HeadingsToolBtn';
 import DefaultToolButton from './DefaultToolBtn';
 import { Command, isCommand } from './helpers';
+import VideoToolButton from './VideoToolBtn';
 
 interface Props {
     cmd: Command
@@ -35,6 +36,9 @@ export default function ToolButton({ cmd,
     if (cmd === 'heading')
         return <HeadingsToolButton classes={classes} />
 
+
+    if (cmd === 'youtube')
+        return <VideoToolButton classes={classes} />
 
     if (cmd === 'img')
         return <ImageToolButton classes={classes} />

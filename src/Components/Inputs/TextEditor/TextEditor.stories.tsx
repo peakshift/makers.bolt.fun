@@ -75,10 +75,7 @@ WithPreview.args = {
 
 #### heading4
 
-###### heading6 
-<br/>
-<br/>
-<br/>
+###### heading6
 
 some text with **bold**, _italic,_ underline, [www.link.com](//www.link.com)
 

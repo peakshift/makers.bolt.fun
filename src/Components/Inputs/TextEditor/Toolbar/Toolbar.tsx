@@ -19,6 +19,7 @@ export default function Toolbar() {
         <ToolButton cmd='bulletList' />
         <ToolButton cmd='orderedList' />
         <ToolButton cmd='img' />
+        <ToolButton cmd='youtube' />
       </div>
 
 

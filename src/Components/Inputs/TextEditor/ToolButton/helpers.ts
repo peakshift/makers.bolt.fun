@@ -1,5 +1,5 @@
 import { FiBold, FiItalic, FiType, FiUnderline, FiAlignCenter, FiAlignLeft, FiAlignRight, FiCode } from 'react-icons/fi'
-import { FaListOl, FaListUl, FaUndo, FaRedo, FaImage } from 'react-icons/fa'
+import { FaListOl, FaListUl, FaUndo, FaRedo, FaImage, FaYoutube } from 'react-icons/fa'
 import { BiCodeCurly } from 'react-icons/bi';
 
 
@@ -90,6 +90,13 @@ export const cmdToBtn = {
         activeCmd: 'image',
         tip: "Insert Image",
         Icon: FaImage,
+    },
+
+    youtube: {
+        cmd: 'addYouTubeVideo',
+        activeCmd: 'iframe',
+        tip: "Insert Video",
+        Icon: FaYoutube,
     },
 
 
