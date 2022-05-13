@@ -10,18 +10,18 @@ interface Props extends ModalCard {
     callbackAction: PayloadAction<{ src: string, alt?: string }>
 }
 
+
 export default function InsertVideoModal({ onClose, direction, callbackAction, ...props }: Props) {
 
-    const [idInput, setIdInput] = useState("")
-    const [altInput, setAltInput] = useState("")
+    const [urlInput, setUrlInput] = useState("")
     const dispatch = useAppDispatch();
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        if (idInput.length > 10) {
-            // onInsert({ src: idInput, alt: altInput })
+        const id = extractId(urlInput);
+        if (id) {
             const action = Object.assign({}, callbackAction);
-            action.payload = { src: idInput, alt: altInput }
+            action.payload = { src: id }
             dispatch(action)
             onClose?.();
         }
@@ -42,15 +42,15 @@ export default function InsertVideoModal({ onClose, direction, callbackAction, .
                 <div className="grid gap-16 mt-32">
                     <div className='md:col-span-2'>
                         <p className="text-body5">
-                            Video Id
+                            Video URL
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
                                 type='text'
                                 className="input-text"
-                                value={idInput}
-                                onChange={e => setIdInput(e.target.value)}
-                                placeholder='Zi7sRMcJT-o'
+                                value={urlInput}
+                                onChange={e => setUrlInput(e.target.value)}
+                                placeholder='https://www.youtube.com/watch?v=****'
                             />
                         </div>
                     </div>
@@ -67,4 +67,10 @@ export default function InsertVideoModal({ onClose, direction, callbackAction, .
 
         </motion.div>
     )
+}
+
+
+function extractId(url: string) {
+    const rgx = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+    return url.match(rgx)?.[1]
 }

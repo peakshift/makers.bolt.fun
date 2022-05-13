@@ -19,6 +19,7 @@ import {
     NodeFormattingExtension,
     OrderedListExtension,
     PlaceholderExtension,
+    IframeExtension,
     StrikeExtension,
     TableExtension,
     TrailingNodeExtension,
@@ -74,6 +75,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
                 supportedLanguages: [javascript, typescript]
             }),
             new ImageExtension(),
+            new IframeExtension(),
             // new TrailingNodeExtension(),
             // new TableExtension(),
             new MarkdownExtension({ copyAsMarkdown: false }),

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { WithModals } from 'src/utils/storybook/decorators';
 
 import QuestionForm from './QuestionForm';
 
@@ -8,6 +9,7 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
+    decorators: [WithModals]
 } as ComponentMeta<typeof QuestionForm>;
 
 

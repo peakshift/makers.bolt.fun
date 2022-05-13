@@ -23,6 +23,7 @@ export default function Toolbar() {
                 <TextEditorComponents.ToolButton cmd='bulletList' />
                 <TextEditorComponents.ToolButton cmd='orderedList' />
                 <TextEditorComponents.ToolButton cmd='img' />
+                <TextEditorComponents.ToolButton cmd='youtube' />
             </div>
 
 
