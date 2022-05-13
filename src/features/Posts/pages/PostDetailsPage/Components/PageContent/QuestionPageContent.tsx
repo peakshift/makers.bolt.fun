@@ -14,8 +14,8 @@ interface Props {
 
 export default function QuestionPageContent({ question }: Props) {
     return (
-        <div>
-            <div className="bg-white p-32 border rounded-16">
+        <>
+            <div id="content" className="bg-white p-32 border rounded-16">
                 <div className="flex flex-col gap-24">
                     <Header size="lg" showTimeAgo={false} author={question.author} date={question.date} />
                     <h1 className="text-h2 font-bolder">{question.title}</h1>
@@ -38,9 +38,9 @@ export default function QuestionPageContent({ question }: Props) {
                 </div>
             </div>
 
-            <div className="mt-10">
+            <div id="comments" className="mt-10">
                 <CommentsSection comments={question.comments} />
             </div>
-        </div>
+        </>
     )
 }

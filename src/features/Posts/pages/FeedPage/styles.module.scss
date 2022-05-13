@@ -1,0 +1,17 @@
+.grid {
+  display: grid;
+  grid-template-columns: 0 1fr 0;
+  gap: 0;
+
+  @media screen and (min-width: 680px) {
+    grid-template-columns: 1fr 2fr 0;
+    gap: 32px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    grid-template-columns:
+      minmax(200px, 1fr)
+      minmax(50%, 70ch)
+      minmax(200px, 1fr);
+  }
+}

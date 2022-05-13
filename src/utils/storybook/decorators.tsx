@@ -7,8 +7,8 @@ import { useWrapperSetup } from '../Wrapper';
 import { ModifyArgs } from './utils';
 import Modal from 'src/Components/Modals/Modal/Modal';
 import { worker } from 'src/mocks/browser'
-import { AnimatePresence, motion } from 'framer-motion';
 import ReactTooltip from 'react-tooltip';
+import THEME from '../theme';
 
 // Add the global stuff first (index.ts)
 // -------------------------------------------
@@ -30,6 +30,7 @@ if (process.env.STORYBOOK_ENABLE_MOCKS) {
     })
 }
 
+THEME.injectStyles()
 
 
 // This adds the stuff and setup that usually goes in the Wrapper.tsx

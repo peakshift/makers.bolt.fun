@@ -6,7 +6,7 @@ import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import PopularCategories from './PopularCategories/PopularCategories'
 import SortBy from './SortBy/SortBy'
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 
 
 export default function FeedPage() {
@@ -30,7 +30,7 @@ export default function FeedPage() {
 
     return (
         <div
-            className={`page-container grid pt-16 w-full gap-32 ${styles.grid}`}
+            className={`page-container pt-16 w-full ${styles.grid}`}
         >
             <aside className='no-scrollbar'>
                 <div className="sticky"

@@ -7,7 +7,7 @@ import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import AuthorCard from './Components/AuthorCard/AuthorCard'
 import PageContent from './Components/PageContent/PageContent'
 import PostActions from './Components/PostActions/PostActions'
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 
 
 export default function PostDetailsPage() {
@@ -38,7 +38,7 @@ export default function PostDetailsPage() {
         <div
             className={`page-container grid pt-16 w-full gap-32 ${styles.grid}`}
         >
-            <aside className='no-scrollbar'>
+            <aside id='actions' className='no-scrollbar'>
                 <div className="sticky"
                     style={{
                         top: `${navHeight + 16}px`,
@@ -51,7 +51,7 @@ export default function PostDetailsPage() {
 
 
             <PageContent post={post} />
-            <aside className='no-scrollbar'>
+            <aside id='author' className='no-scrollbar'>
                 <div className="flex flex-col gap-24"
                     style={{
                         top: `${navHeight + 16}px`,

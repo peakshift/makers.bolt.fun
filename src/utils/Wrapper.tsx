@@ -12,6 +12,7 @@ import ReactTooltip from 'react-tooltip';
 import 'react-multi-carousel/lib/styles.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import THEME from './theme';
+THEME.injectStyles();
 
 let basename = '/';
 

@@ -23,6 +23,11 @@ interface Props {
     bounty: BountyCardType
 }
 export default function BountyCard({ bounty }: Props) {
+
+    const handleApply = () => {
+
+    }
+
     return (
         <div className="bg-white rounded-12 overflow-hidden border">
             <img src={bounty.cover_image} className='h-[200px] w-full object-cover bg-gray-100' alt="" />
@@ -37,7 +42,7 @@ export default function BountyCard({ bounty }: Props) {
                         </Link>
 
                     </div>
-                    <Button color="black" className="self-center !py-10 !px-36 flex-shrink-0 w-full md:w-auto ">
+                    <Button color="black" onClick={handleApply} className="self-center !py-10 !px-36 flex-shrink-0 hidden md:block ">
                         Apply
                     </Button>
                 </div>
@@ -60,6 +65,11 @@ export default function BountyCard({ bounty }: Props) {
                         <FiUsers /> <span className="align-middle text-body5">{bounty.applicants_count} Applicants</span>
                     </div>
                 </div>
+
+
+                <Button color="black" onClick={handleApply} fullWidth className="mt-16 !py-10 !px-36 md:hidden ">
+                    Apply
+                </Button>
             </div>
         </div>
     )

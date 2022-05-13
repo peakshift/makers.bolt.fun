@@ -14,8 +14,8 @@ interface Props {
 
 export default function StoryPageContent({ story }: Props) {
     return (
-        <div>
-            <div className="bg-white p-32 border rounded-16">
+        <>
+            <div id="content" className="bg-white p-32 border rounded-16">
                 <div className="flex flex-col gap-24">
                     <Header size="lg" showTimeAgo={false} author={story.author} date={story.date} />
                     <h1 className="text-h2 font-bolder">{story.title}</h1>
@@ -37,9 +37,9 @@ export default function StoryPageContent({ story }: Props) {
                 <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(story.body) }}>
                 </div>
             </div>
-            <div className="mt-10">
+            <div id="comments" className="mt-10 comments_col">
                 <CommentsSection comments={story.comments} />
             </div>
-        </div>
+        </>
     )
 }
