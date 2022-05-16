@@ -12,7 +12,6 @@
   font-weight: bold;
   font-size: 21px;
   will-change: transform;
-  text-shadow: 0 0 4px #ff0707;
   transform: translate(-50%, 0) scale(0.5);
   animation: fly_value 0.5s 1 ease-out;
 }
@@ -69,7 +68,6 @@
   animation-timing-function: linear;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  filter: drop-shadow(0 0 4px);
 }
 
 @keyframes fly_spark_1 {
