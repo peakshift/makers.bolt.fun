@@ -1,8 +1,8 @@
 import { isBounty, isQuestion, isStory, Post } from "src/features/Posts/types"
-import StoryPageContent from "./StoryPageContent";
-import BountyPageContent from "./BountyPageContent";
+import StoryPageContent from "../StoryPageContent/StoryPageContent";
+import BountyPageContent from "../BountyPageContent/BountyPageContent";
+import QuestionPageContent from "../QuestionPageContent/QuestionPageContent";
 import { PostDetailsQuery } from "src/graphql";
-import QuestionPageContent from "./QuestionPageContent";
 
 
 interface Props {

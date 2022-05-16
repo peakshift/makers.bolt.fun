@@ -103,7 +103,7 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
                 autoFocus={autoFocus}
             >
                 <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
-                    <div className="mt-16 shrink-0"><Avatar width={48} src='https://i.pravatar.cc/150?img=1' /></div>
+                    <div className="hidden sm:block mt-16 shrink-0"><Avatar width={48} src='https://i.pravatar.cc/150?img=1' /></div>
                     <div className="flex-grow">
                         <EditorComponent
                         />
