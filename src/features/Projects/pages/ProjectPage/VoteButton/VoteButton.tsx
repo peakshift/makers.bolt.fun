@@ -3,7 +3,7 @@ import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import _throttle from 'lodash.throttle'
 import { ComponentProps, useRef, useState } from 'react'
-import './vote-button.style.css'
+import styles from './vote-button-style.module.css'
 import { random, randomItem } from 'src/utils/helperFunctions'
 
 
@@ -40,7 +40,7 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
         const newSpark = {
             id: Math.random().toString(),
             offsetX: random(1, 99),
-            animation: randomItem('fly-spark-1', 'fly-spark-2'),
+            animation: randomItem(styles.fly_spark_1, styles.fly_spark_1),
             animationSpeed: randomItem(1, 1.5, 2),
             color: randomItem('#ff6a00', '#ff7717', '#ff6217', '#ff8217', '#ff5717'),
             scale: random(1.2, 2.2)
@@ -91,7 +91,7 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
             onTouchEnd={handlePressUp}
             size='md'
             color='none'
-            className="vote-button border relative 100 my-16 noselect"
+            className={`${styles.vote_button} border relative 100 my-16 noselect`}
             style={{
                 "--scale": voteCnt,
             } as any}
@@ -100,48 +100,48 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
             Hold To Vote !!! <MdLocalFireDepartment className='text-fire' />
 
             <span
-                className='vote-counter'
+                className={styles.vote_counter}
             >{voteCnt}</span>
 
             <div
-                className='spark'
+                className={styles.spark}
                 style={{
                     "--offsetX": 23,
                     "--animationSpeed": 3,
                     "--scale": 1,
                     "animationIterationCount": 'infinite',
-                    "animationName": 'fly-spark-1',
+                    "animationName": styles.fly_spark_1,
                     "animationDelay": '1.1s',
                     color: '#ff6a00'
                 } as any}
             ><MdLocalFireDepartment className='' /></div>
             <div
-                className='spark'
+                className={styles.spark}
                 style={{
                     "--offsetX": 50,
                     "--animationSpeed": 2.2,
                     "--scale": 1,
                     "animationIterationCount": 'infinite',
-                    "animationName": 'fly-spark-2',
+                    "animationName": styles.fly_spark_2,
                     "animationDelay": '0.4s',
                     color: '#ff6a00'
                 } as any}
             ><MdLocalFireDepartment className='' /></div>
             <div
-                className='spark'
+                className={styles.spark}
                 style={{
                     "--offsetX": 70,
                     "--animationSpeed": 2.5,
                     "--scale": 1,
                     "animationIterationCount": 'infinite',
-                    "animationName": 'fly-spark-1',
+                    "animationName": styles.fly_spark_1,
                     color: '#ff6a00'
                 } as any}
             ><MdLocalFireDepartment className='' /></div>
             {sparks.map(spark =>
                 <div
                     key={spark.id}
-                    className='spark'
+                    className={styles.spark}
                     style={{
                         "--offsetX": spark.offsetX,
                         "--animationSpeed": spark.animationSpeed,

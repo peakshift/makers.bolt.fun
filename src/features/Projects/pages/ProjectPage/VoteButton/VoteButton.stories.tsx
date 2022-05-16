@@ -4,7 +4,7 @@ import VoteButton from './VoteButton';
 import { centerDecorator } from 'src/utils/storybook/decorators';
 
 export default {
-  title: 'Projects/Project Page/Tip Button',
+  title: 'Projects/Project Page/Vote Button',
   component: VoteButton,
   decorators: [
     centerDecorator
