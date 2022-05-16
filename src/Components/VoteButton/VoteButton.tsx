@@ -19,11 +19,18 @@ interface Particle {
 }
 
 type Props = {
-    initVotes: number
-    onVote: (Vote: number) => void
+    initVotes: number,
+    onVote: (Vote: number) => void,
+    fillType: 'leftRight' | 'upDown' | "background"
+    disableCounter?: boolean
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
-export default function VoteButton({ initVotes, onVote = () => { }, ...props }: Props) {
+export default function VoteButton({
+    disableCounter = false,
+    fillType = 'leftRight',
+    initVotes,
+    onVote = () => { },
+    ...props }: Props) {
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
     const [sparks, setSparks] = useState<Particle[]>([]);
@@ -48,13 +55,14 @@ export default function VoteButton({ initVotes, onVote = () => { }, ...props }: 
         incrementsCountRef.current += 1;
         setIncrementsCount(v => incrementsCountRef.current);
 
-        setIncrements(v => {
-            const genId = Math.random().toString();
-            setTimeout(() => {
-                setIncrements(v => v.filter(e => e.id !== genId))
-            }, 500)
-            return [...v, { id: genId, value: _incStep }]
-        });
+        if (!disableCounter)
+            setIncrements(v => {
+                const genId = Math.random().toString();
+                setTimeout(() => {
+                    setIncrements(v => v.filter(e => e.id !== genId))
+                }, 500)
+                return [...v, { id: genId, value: _incStep }]
+            });
 
         setVoteCnt(s => {
             const newValue = s + _incStep;
@@ -70,7 +78,7 @@ export default function VoteButton({ initVotes, onVote = () => { }, ...props }: 
                 animation: randomItem(styles.fly_spark_1, styles.fly_spark_1),
                 animationSpeed: randomItem(1, 1.5, 2),
                 color: `hsl(0deg 86% ${random(50, 63)}%)`,
-                scale: random(1.2, 1.8)
+                scale: random(1, 1.5)
             }))
 
             // if on mobile screen, reduce number of sparks particles to 60%
@@ -108,22 +116,31 @@ export default function VoteButton({ initVotes, onVote = () => { }, ...props }: 
     }
 
     return (
-        <Button
+        <button
             onMouseDown={handlePressDown}
             onMouseUp={handlePressUp}
             onMouseLeave={handlePressUp}
             onTouchStart={handlePressDown}
             onTouchEnd={handlePressUp}
-            size='md'
+
             color='none'
-            className={`text-gray-600 !border-0 bg-gray-25 hover:bg-gray-50  relative  noselect`}
+            className={`p-10 rounded-lg text-gray-600 !border-0 bg-white hover:bg-gray-50  relative  noselect active:scale-95`}
             {...props}
         >
             <div
-                className={styles.color_overlay}
+                className={`
+                ${styles.color_overlay}
+                ${fillType === 'upDown' && styles.color_overlay__upDown}
+                ${fillType === 'leftRight' && styles.color_overlay__leftRight}
+                ${fillType === 'background' && styles.color_overlay__background}
+                `}
                 style={{
                     "--increments": incrementsCount,
-                    "--offset": `${(incrementsCount ? (incrementsCount % 5 === 0 ? 5 : incrementsCount % 5) : 0) * 20}%`
+                    "--offset": `${(incrementsCount ? (incrementsCount % 5 === 0 ? 5 : incrementsCount % 5) : 0) * 20}%`,
+                    "--bg-color": fillType !== 'background' ?
+                        'hsl(0deg 86% max(calc((93 - var(--increments) / 3) * 1%), 68%))'
+                        :
+                        "hsl(0deg 86% max(calc((100 - var(--increments) / 2) * 1%), 68%))",
                 } as any}
             >
             </div>
@@ -148,7 +165,7 @@ export default function VoteButton({ initVotes, onVote = () => { }, ...props }: 
                     } as any}
                 ><MdLocalFireDepartment className='' /></div>)
             }
-        </Button>
+        </button>
 
     )
 }
