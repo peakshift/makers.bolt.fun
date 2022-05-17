@@ -1,7 +1,54 @@
 .vote_button {
   --scale: 0;
+  --increments: 0;
+  --offset: 0;
+  --bg-color: hsl(0deg 86% max(calc((93 - var(--increments) / 3) * 1%), 68%));
   /* transition: background-color 1s; */
   /* background-color: hsl(25, 100%, max(calc((95 - var(--scale) / 4) * 1%), 63%)); */
+}
+
+.btn_content.clicked_1 {
+  animation: shake_1 0.2s 1 ease-out;
+}
+/* Same animation, two classes so that the animation restarts between clicks */
+.btn_content.clicked_2 {
+  animation: shake_2 0.2s 1 ease-out;
+}
+
+@keyframes shake_1 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  33% {
+    transform: rotate(calc(clamp(10, var(--increments) / 2, 30) * 1deg));
+  }
+
+  66% {
+    transform: rotate(calc(-1 * clamp(10, var(--increments) / 2, 30) * 1deg));
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes shake_2 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  33% {
+    transform: rotate(calc(clamp(10, var(--increments) / 2, 30) * 1deg));
+  }
+
+  66% {
+    transform: rotate(calc(-1 * clamp(10, var(--increments) / 2, 30) * 1deg));
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .vote_counter {
@@ -17,14 +64,11 @@
 }
 
 .color_overlay {
-  --increments: 0;
-  --offset: 0;
-  --bg-color: hsl(0deg 86% max(calc((93 - var(--increments) / 3) * 1%), 68%));
-
   position: absolute;
   border-radius: inherit;
   inset: 0;
   overflow: hidden;
+  transition: all 0.1s;
 }
 
 .color_overlay::before {
@@ -50,6 +94,22 @@
   top: 100%;
   right: 0;
   transform: translateY(calc(-1 * var(--offset)));
+}
+
+@property --offset {
+  syntax: "<number>"; /* <- defined as type number for the transition to work */
+  initial-value: 0%;
+  inherits: false;
+}
+
+.color_overlay__radial::before {
+  top: 0;
+  right: 0;
+  background: radial-gradient(
+    circle at center,
+    var(--bg-color) var(--offset),
+    transparent calc(var(--offset) * 1.1)
+  );
 }
 
 @keyframes fly_value {

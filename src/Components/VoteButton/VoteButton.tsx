@@ -1,7 +1,6 @@
 import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
-import _throttle from 'lodash.throttle'
 import { ComponentProps, useRef, useState } from 'react'
 import styles from './styles.module.css'
 import { random, randomItem } from 'src/utils/helperFunctions'
@@ -21,8 +20,9 @@ interface Particle {
 type Props = {
     initVotes: number,
     onVote: (Vote: number) => void,
-    fillType: 'leftRight' | 'upDown' | "background"
+    fillType: 'leftRight' | 'upDown' | "background" | 'radial'
     disableCounter?: boolean
+    disableShake?: boolean
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
 export default function VoteButton({
@@ -123,29 +123,47 @@ export default function VoteButton({
             onTouchStart={handlePressDown}
             onTouchEnd={handlePressUp}
 
-            color='none'
-            className={`p-10 rounded-lg text-gray-600 !border-0 bg-white hover:bg-gray-50  relative  noselect active:scale-95`}
+            className={`${styles.vote_button} relative  noselect border-0`}
+            style={{
+                "--increments": incrementsCount,
+                "--offset": `${(incrementsCount ? (incrementsCount % 5 === 0 ? 5 : incrementsCount % 5) : 0) * 20}%`,
+                "--bg-color": fillType !== 'background' ?
+                    'hsl(0deg 86% max(calc((93 - var(--increments) / 3) * 1%), 68%))'
+                    :
+                    "hsl(0deg 86% max(calc((100 - var(--increments) / 2) * 1%), 68%))",
+            } as any}
             {...props}
         >
+
             <div
                 className={`
+                ${styles.btn_content} 
+                relative p-10 rounded-lg text-gray-600 bg-white hover:bg-gray-50 
+                 ${incrementsCount && 'outline'} active:outline outline-1 outline-red-500  `}
+                onClick={e => {
+                    const btn = e.currentTarget
+                    if (btn.classList.contains(styles.clicked_2)) {
+                        btn.classList.remove(styles.clicked_2)
+                        btn.classList.add(styles.clicked_1)
+                    } else {
+                        btn.classList.remove(styles.clicked_1)
+                        btn.classList.add(styles.clicked_2)
+                    }
+                }}
+            >
+                <div
+                    className={`
                 ${styles.color_overlay}
                 ${fillType === 'upDown' && styles.color_overlay__upDown}
                 ${fillType === 'leftRight' && styles.color_overlay__leftRight}
                 ${fillType === 'background' && styles.color_overlay__background}
+                ${fillType === 'radial' && styles.color_overlay__radial}
                 `}
-                style={{
-                    "--increments": incrementsCount,
-                    "--offset": `${(incrementsCount ? (incrementsCount % 5 === 0 ? 5 : incrementsCount % 5) : 0) * 20}%`,
-                    "--bg-color": fillType !== 'background' ?
-                        'hsl(0deg 86% max(calc((93 - var(--increments) / 3) * 1%), 68%))'
-                        :
-                        "hsl(0deg 86% max(calc((100 - var(--increments) / 2) * 1%), 68%))",
-                } as any}
-            >
-            </div>
-            <div className={`relative z-10 ${incrementsCount ? "text-red-600" : "text-gray-600"}`}>
-                <MdLocalFireDepartment className='' /><span className="align-middle"> {initVotes + voteCnt}</span>
+                >
+                </div>
+                <div className={`relative z-10 ${incrementsCount ? "text-red-600" : "text-gray-600"}`}>
+                    <MdLocalFireDepartment className='' /><span className="align-middle"> {initVotes + voteCnt}</span>
+                </div>
             </div>
             {increments.map(increment => <span
                 key={increment.id}
