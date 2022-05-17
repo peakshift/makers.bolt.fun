@@ -35,6 +35,7 @@ export default function VoteButton({
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
     const btnContainerRef = useRef<HTMLDivElement>(null!!)
+    const [btnShakeClass, setBtnShakeClass] = useState('')
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
     const [incrementsCount, setIncrementsCount] = useState(0);
@@ -52,6 +53,11 @@ export default function VoteButton({
     }, [], 2000)
 
     const clickIncrement = () => {
+
+
+        if (!disableShake)
+            setBtnShakeClass(s => s === styles.clicked_2 ? styles.clicked_1 : styles.clicked_2)
+
 
         const _incStep = Math.ceil((incrementsCountRef.current + 1) / 5);
         incrementsCountRef.current += 1;
@@ -93,16 +99,6 @@ export default function VoteButton({
             }, 2 * 1000)
         }
 
-        if (!disableShake) {
-            const btn = btnContainerRef.current;
-            if (btn.classList.contains(styles.clicked_2)) {
-                btn.classList.remove(styles.clicked_2)
-                btn.classList.add(styles.clicked_1)
-            } else {
-                btn.classList.remove(styles.clicked_1)
-                btn.classList.add(styles.clicked_2)
-            }
-        }
         doVote();
     }
 
@@ -150,7 +146,9 @@ export default function VoteButton({
                 className={`
                 ${styles.btn_content} 
                 relative p-10 rounded-lg text-gray-600 bg-white hover:bg-gray-50 
-                 ${incrementsCount && 'outline'} active:outline outline-1 outline-red-500  `}
+                active:outline outline-1 outline-red-500 
+                ${btnShakeClass} 
+                `}
 
             >
                 <div
