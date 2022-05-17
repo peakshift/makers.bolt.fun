@@ -146,7 +146,7 @@ export default function VoteButton({
                 className={`
                 ${styles.btn_content} 
                 relative p-10 rounded-lg text-gray-600 bg-white hover:bg-gray-50 
-                active:outline outline-1 outline-red-500 
+                ${incrementsCount && "outline"} active:outline outline-1 outline-red-500 
                 ${btnShakeClass} 
                 `}
 
