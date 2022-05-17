@@ -33,6 +33,7 @@ export default function VoteButton({
     ...props }: Props) {
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
+    const btnContainerRef = useRef<HTMLDivElement>(null!!)
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
     const [incrementsCount, setIncrementsCount] = useState(0);
@@ -91,7 +92,14 @@ export default function VoteButton({
             }, 2 * 1000)
         }
 
-
+        const btn = btnContainerRef.current;
+        if (btn.classList.contains(styles.clicked_2)) {
+            btn.classList.remove(styles.clicked_2)
+            btn.classList.add(styles.clicked_1)
+        } else {
+            btn.classList.remove(styles.clicked_1)
+            btn.classList.add(styles.clicked_2)
+        }
 
         doVote();
     }
@@ -136,20 +144,12 @@ export default function VoteButton({
         >
 
             <div
+                ref={btnContainerRef}
                 className={`
                 ${styles.btn_content} 
                 relative p-10 rounded-lg text-gray-600 bg-white hover:bg-gray-50 
                  ${incrementsCount && 'outline'} active:outline outline-1 outline-red-500  `}
-                onClick={e => {
-                    const btn = e.currentTarget
-                    if (btn.classList.contains(styles.clicked_2)) {
-                        btn.classList.remove(styles.clicked_2)
-                        btn.classList.add(styles.clicked_1)
-                    } else {
-                        btn.classList.remove(styles.clicked_1)
-                        btn.classList.add(styles.clicked_2)
-                    }
-                }}
+
             >
                 <div
                     className={`
