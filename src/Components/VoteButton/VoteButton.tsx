@@ -27,6 +27,7 @@ type Props = {
 
 export default function VoteButton({
     disableCounter = false,
+    disableShake = false,
     fillType = 'leftRight',
     initVotes,
     onVote = () => { },
@@ -92,15 +93,16 @@ export default function VoteButton({
             }, 2 * 1000)
         }
 
-        const btn = btnContainerRef.current;
-        if (btn.classList.contains(styles.clicked_2)) {
-            btn.classList.remove(styles.clicked_2)
-            btn.classList.add(styles.clicked_1)
-        } else {
-            btn.classList.remove(styles.clicked_1)
-            btn.classList.add(styles.clicked_2)
+        if (!disableShake) {
+            const btn = btnContainerRef.current;
+            if (btn.classList.contains(styles.clicked_2)) {
+                btn.classList.remove(styles.clicked_2)
+                btn.classList.add(styles.clicked_1)
+            } else {
+                btn.classList.remove(styles.clicked_1)
+                btn.classList.add(styles.clicked_2)
+            }
         }
-
         doVote();
     }
 
