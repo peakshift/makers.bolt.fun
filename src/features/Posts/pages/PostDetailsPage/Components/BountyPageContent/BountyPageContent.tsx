@@ -8,6 +8,7 @@ import VotesCount from "src/Components/VotesCount/VotesCount";
 import Button from "src/Components/Button/Button";
 import { FiGithub, FiShare2 } from "react-icons/fi";
 import BountyApplicants from "./BountyApplicants";
+import VoteButton from "src/Components/VoteButton/VoteButton";
 
 
 interface Props {
@@ -26,8 +27,8 @@ export default function BountyPageContent({ bounty }: Props) {
                     <span className="text-body4 text-gray-600 font-bolder">Reward: </span>
                     <span className="text-body4 text-purple-500 font-medium">{bounty.reward_amount} sats</span>
                 </div>
-                <div className="flex gap-24">
-                    <VotesCount count={bounty.votes_count} />
+                <div className="flex gap-24 items-center">
+                    <VoteButton initVotes={bounty.votes_count} />
                     <div className="text-black font-medium">
                         <BiComment /> <span className="align-middle text-body5">32 Comments</span>
                     </div>

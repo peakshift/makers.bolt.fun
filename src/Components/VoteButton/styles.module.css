@@ -8,11 +8,11 @@
 }
 
 .btn_content.clicked_1 {
-  animation: shake_1 0.2s 1 ease-out;
+  animation: shake_1 0.14s 1 ease-in-out;
 }
 /* Same animation, two classes so that the animation restarts between clicks */
 .btn_content.clicked_2 {
-  animation: shake_2 0.2s 1 ease-out;
+  animation: shake_2 0.14s 1 ease-in-out;
 }
 
 @keyframes shake_1 {
@@ -21,11 +21,11 @@
   }
 
   33% {
-    transform: rotate(calc(clamp(10, var(--increments) / 2, 30) * 1deg));
+    transform: rotate(calc(clamp(5, var(--increments) / 3, 20) * 1deg));
   }
 
   66% {
-    transform: rotate(calc(-1 * clamp(10, var(--increments) / 2, 30) * 1deg));
+    transform: rotate(calc(-1 * clamp(5, var(--increments) / 2, 20) * 1deg));
   }
 
   100% {

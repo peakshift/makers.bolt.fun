@@ -43,7 +43,6 @@ export default function PostDetailsPage() {
                     style={{
                         top: `${navHeight + 16}px`,
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                        overflowY: "scroll",
                     }}>
                     <PostActions />
                 </div>

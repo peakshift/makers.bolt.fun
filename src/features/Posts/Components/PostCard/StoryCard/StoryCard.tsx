@@ -3,6 +3,7 @@ import { Story } from "src/features/Posts/types"
 import Header from "../Header/Header"
 import { BiComment } from 'react-icons/bi'
 import { Link } from "react-router-dom"
+import VoteButton from "src/Components/VoteButton/VoteButton"
 
 export type StoryCardType = Pick<Story,
     | 'id'
@@ -31,8 +32,8 @@ export default function StoryCard({ story }: Props) {
                 <p className="text-body4 text-gray-600 mt-8">{story.excerpt}</p>
 
                 <hr className="my-16 bg-gray-200" />
-                <div className="flex gap-24">
-                    <VotesCount count={story.votes_count} />
+                <div className="flex gap-24 items-center">
+                    <VoteButton initVotes={story.votes_count} dense />
                     <div className="text-gray-600">
                         <BiComment /> <span className="align-middle text-body5">{story.comments_count} Comments</span>
                     </div>

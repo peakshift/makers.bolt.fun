@@ -5,6 +5,7 @@ import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import { Link } from "react-router-dom"
 import { trimText } from "src/utils/helperFunctions"
+import VoteButton from "src/Components/VoteButton/VoteButton"
 
 export type QuestionCardType = Pick<Question,
     | 'id'
@@ -50,8 +51,8 @@ export default function QuestionCard({ question }: Props) {
                 </div>
 
                 <hr className="my-16 bg-gray-200" />
-                <div className="flex gap-24">
-                    <VotesCount count={question.votes_count} />
+                <div className="flex gap-24 items-center">
+                    <VoteButton initVotes={question.votes_count} dense />
                     <div className="text-gray-600">
                         <FiUsers /> <span className="align-middle text-body5">{question.answers_count} Answers</span>
                     </div>

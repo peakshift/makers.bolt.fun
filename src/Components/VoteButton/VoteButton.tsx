@@ -3,8 +3,9 @@ import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import { ComponentProps, useRef, useState } from 'react'
 import styles from './styles.module.css'
-import { random, randomItem } from 'src/utils/helperFunctions'
+import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
 import { useDebouncedCallback, useThrottledCallback } from '@react-hookz/web'
+
 
 
 interface Particle {
@@ -19,18 +20,24 @@ interface Particle {
 
 type Props = {
     initVotes: number,
-    onVote: (Vote: number) => void,
-    fillType: 'leftRight' | 'upDown' | "background" | 'radial'
+    onVote?: (Vote: number) => void,
+    fillType?: 'leftRight' | 'upDown' | "background" | 'radial',
+    direction?: 'horizontal' | 'vertical'
     disableCounter?: boolean
     disableShake?: boolean
+    dense?: boolean
+    resetCounterOnRelease?: boolean
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
 export default function VoteButton({
-    disableCounter = false,
-    disableShake = false,
-    fillType = 'leftRight',
     initVotes,
     onVote = () => { },
+    fillType = 'leftRight',
+    direction = 'horizontal',
+    disableCounter = false,
+    disableShake = false,
+    dense = false,
+    resetCounterOnRelease: resetCounterOnReleaseProp = false,
     ...props }: Props) {
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
@@ -39,11 +46,14 @@ export default function VoteButton({
     const [sparks, setSparks] = useState<Particle[]>([]);
     const [wasActive, setWasActive] = useState(false);
     const [incrementsCount, setIncrementsCount] = useState(0);
-    const incrementsCountRef = useRef(0);
+    const totalIncrementsCountRef = useRef(0)
+    const currentIncrementsCountRef = useRef(0);
     const [increments, setIncrements] = useState<Array<{ id: string, value: number }>>([])
 
     const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen);
 
+
+    const resetCounterOnRelease = resetCounterOnReleaseProp;
 
     const doVote = useDebouncedCallback(() => {
         onVote(voteCntRef.current);
@@ -59,9 +69,12 @@ export default function VoteButton({
             setBtnShakeClass(s => s === styles.clicked_2 ? styles.clicked_1 : styles.clicked_2)
 
 
-        const _incStep = Math.ceil((incrementsCountRef.current + 1) / 5);
-        incrementsCountRef.current += 1;
-        setIncrementsCount(v => incrementsCountRef.current);
+        const _incStep = Math.ceil((currentIncrementsCountRef.current + 1) / 5);
+
+        currentIncrementsCountRef.current += 1;
+        totalIncrementsCountRef.current += 1;
+
+        setIncrementsCount(v => totalIncrementsCountRef.current);
 
         if (!disableCounter)
             setIncrements(v => {
@@ -78,7 +91,7 @@ export default function VoteButton({
             return newValue;
         })
 
-        if (incrementsCountRef.current && incrementsCountRef.current % 5 === 0) {
+        if (totalIncrementsCountRef.current && totalIncrementsCountRef.current % 5 === 0) {
             const newSparks = Array(5).fill(0).map((_, idx) => ({
                 id: (Math.random() + 1).toString(),
                 offsetX: random(-10, 99),
@@ -104,7 +117,7 @@ export default function VoteButton({
 
     const onHold = useThrottledCallback(clickIncrement, [], 150)
 
-    const { onPressDown, onPressUp } = usePressHolder(onHold, 100);
+    const { onPressDown, onPressUp, isHolding } = usePressHolder(onHold, 100);
 
     const handlePressDown = () => {
         setWasActive(true);
@@ -119,6 +132,12 @@ export default function VoteButton({
 
         onPressUp();
         onHold();
+        if (resetCounterOnRelease)
+            if (!isHolding) {
+                currentIncrementsCountRef.current = 0;
+            } else
+                setTimeout(() =>
+                    currentIncrementsCountRef.current = 0, 150)
     }
 
     return (
@@ -145,7 +164,11 @@ export default function VoteButton({
                 ref={btnContainerRef}
                 className={`
                 ${styles.btn_content} 
-                relative p-10 rounded-lg text-gray-600 bg-white hover:bg-gray-50 
+                relative rounded-lg text-gray-600 ${!incrementsCount && 'bg-gray-50 hover:bg-gray-100'} 
+                 ${direction === 'vertical' ?
+                        dense ? "py-4 px-12" : "py-8 px-20"
+                        :
+                        dense ? "py-4 px-8" : "p-8"}
                 ${incrementsCount && "outline"} active:outline outline-1 outline-red-500 
                 ${btnShakeClass} 
                 `}
@@ -161,8 +184,15 @@ export default function VoteButton({
                 `}
                 >
                 </div>
-                <div className={`relative z-10 ${incrementsCount ? "text-red-600" : "text-gray-600"}`}>
-                    <MdLocalFireDepartment className='' /><span className="align-middle"> {initVotes + voteCnt}</span>
+                <div className={`
+                relative z-10 
+                ${incrementsCount ? "text-red-800" : "text-gray-600"}
+                flex justify-center items-center gap-8 text-left ${direction === 'vertical' && "flex-col !text-center"}
+                `}>
+                    <MdLocalFireDepartment
+                        className={`text-body2 ${incrementsCount ? "text-red-600" : "text-red-600"}`}
+
+                    /><span className="align-middle w-[4ch]"> {numberFormatter(initVotes + voteCnt)}</span>
                 </div>
             </div>
             {increments.map(increment => <span

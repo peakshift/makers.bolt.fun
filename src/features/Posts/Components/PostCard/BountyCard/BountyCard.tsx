@@ -5,6 +5,7 @@ import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import Button from "src/Components/Button/Button"
 import { Link } from "react-router-dom"
+import VoteButton from "src/Components/VoteButton/VoteButton"
 
 export type BountyCardType = Pick<Bounty,
     | 'id'
@@ -59,8 +60,8 @@ export default function BountyCard({ bounty }: Props) {
                 </div>
 
                 <hr className="my-16 bg-gray-200" />
-                <div className="flex gap-24">
-                    <VotesCount count={bounty.votes_count} />
+                <div className="flex gap-24 items-center">
+                    <VoteButton initVotes={bounty.votes_count} dense />
                     <div className="text-gray-600">
                         <FiUsers /> <span className="align-middle text-body5">{bounty.applicants_count} Applicants</span>
                     </div>
