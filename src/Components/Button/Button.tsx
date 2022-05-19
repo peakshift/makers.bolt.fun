@@ -21,11 +21,11 @@ interface Props {
 
 const btnStylesFill: UnionToObjectKeys<Props, 'color'> = {
     none: "",
-    primary: "bg-primary-500 border-0 hover:bg-primary-400 active:bg-primary-600 text-white",
+    primary: "bg-primary-500 hover:bg-primary-400 active:bg-primary-600 text-white",
     gray: 'bg-gray-100 hover:bg-gray-200 text-gray-900 active:bg-gray-300',
-    white: 'text-gray-900 bg-gray-25 hover:bg-gray-50',
+    white: 'border border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50',
     black: 'text-white bg-black hover:bg-gray-900',
-    red: "bg-red-600 border-0 hover:bg-red-500 active:bg-red-700 text-white",
+    red: "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white",
 }
 
 const btnStylesOutline: UnionToObjectKeys<Props, 'color'> = {
@@ -38,7 +38,7 @@ const btnStylesOutline: UnionToObjectKeys<Props, 'color'> = {
 }
 
 const baseBtnStyles: UnionToObjectKeys<Props, 'variant'> = {
-    fill: " shadow-sm active:scale-95",
+    fill: "active:scale-95",
     outline: "bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 "
 }
 
@@ -72,7 +72,7 @@ export default function Button({ color = 'white',
     ...props }: Props) {
 
     let classes = `
-    inline-block font-sans rounded-lg font-regular border border-gray-300 hover:cursor-pointer text-center
+    inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center
     ${baseBtnStyles[variant]}
     ${btnPadding[size]}
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}

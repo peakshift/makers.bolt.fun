@@ -63,14 +63,19 @@ export default function Navbar() {
   useEffect(() => {
     const nav = document.querySelector("nav");
 
+    let oldPadding = '';
     if (nav) {
       const navStyles = getComputedStyle(nav);
       if (navStyles.display !== "none") {
         dispatch(setNavHeight(nav.clientHeight));
+        oldPadding = document.body.style.paddingTop
         document.body.style.paddingTop = `${nav.clientHeight}px`;
       }
     }
 
+    return () => {
+      document.body.style.paddingTop = oldPadding
+    }
 
   }, [dispatch, isMobileScreen, isLargeScreen])
 

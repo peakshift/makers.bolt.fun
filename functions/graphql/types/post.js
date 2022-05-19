@@ -10,6 +10,7 @@ const {
     arg,
 } = require('nexus');
 const { paginationArgs } = require('./helpers');
+const { prisma } = require('../prisma')
 
 
 const POST_TYPE = enumType({
@@ -17,6 +18,29 @@ const POST_TYPE = enumType({
     members: ['Story', 'Bounty', 'Question'],
 })
 
+const Topic = objectType({
+    name: 'Topic',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+    }
+})
+
+
+const allTopics = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('allTopics', {
+            type: "Topic",
+            resolve: () => {
+                return prisma.topic.findMany({
+
+                });
+            }
+        })
+    }
+})
 
 const PostBase = interfaceType({
     name: 'PostBase',
@@ -27,13 +51,13 @@ const PostBase = interfaceType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('date');
-        t.nonNull.field('author', {
-            type: "User"
-        });
         t.nonNull.string('excerpt');
         t.nonNull.string('body');
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag"
+        });
+        t.nonNull.field('topic', {
+            type: "Topic"
         });
         t.nonNull.int('votes_count');
     },
@@ -49,8 +73,18 @@ const Story = objectType({
         t.nonNull.string('cover_image');
         t.nonNull.int('comments_count');
         t.nonNull.list.nonNull.field('comments', {
-            type: "PostComment"
-        })
+            type: "PostComment",
+            resolve: (parent) => {
+                return prisma.story.findUnique({ where: { id: parent.id } }).comments();
+            }
+        });
+
+        t.nonNull.field('author', {
+            type: "User",
+            resolve: (parent) => {
+                return prisma.story.findUnique({ where: { id: parent.id } }).user();
+            }
+        });
     },
 })
 
@@ -79,7 +113,13 @@ const Bounty = objectType({
         t.nonNull.int('applicants_count');
         t.nonNull.list.nonNull.field('applications', {
             type: "BountyApplication"
-        })
+        });
+        t.nonNull.field('author', {
+            type: "User",
+            resolve: (parent) => {
+                return prisma.bounty.findUnique({ where: { id: parent.id } }).user();
+            }
+        });
     },
 })
 
@@ -93,8 +133,18 @@ const Question = objectType({
         });
         t.nonNull.int('answers_count');
         t.nonNull.list.nonNull.field('comments', {
-            type: "PostComment"
-        })
+            type: "PostComment",
+            resolve: (parent) => {
+                return prisma.question.findUnique({ where: { id: parent.id } }).comments();
+            }
+        });
+
+        t.nonNull.field('author', {
+            type: "User",
+            resolve: (parent) => {
+                return prisma.question.findUnique({ where: { id: parent.id } }).user();
+            }
+        });
     },
 })
 
@@ -130,14 +180,18 @@ const getFeed = extendType({
                 ...paginationArgs({ take: 10 }),
                 sortBy: stringArg({
                     default: "all"
-                }),
-                category: stringArg({
-                    default: "all"
-                })
+                }), // all, popular, trending, newest
+                topic: intArg()
             },
-            resolve(_, { take, skip }) {
-                const feed = []
-                return feed.slice(skip, skip + take);
+            resolve(_, { take, skip, topic, sortBy, }) {
+                return prisma.story.findMany({
+                    orderBy: { createdAt: "desc" },
+                    where: {
+                        topic_id: topic,
+                    },
+                    skip,
+                    take,
+                });
             }
         })
     }
@@ -152,14 +206,20 @@ const getTrendingPosts = extendType({
             args: {
             },
             resolve() {
-
-                return [];
+                const now = new Date();
+                const lastWeekDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).toUTCString()
+                return prisma.story.findMany({
+                    take: 5,
+                    where: {
+                        createdAt: {
+                            gt: lastWeekDate
+                        }
+                    }
+                })
             }
         })
     }
 })
-
-
 
 
 const getPostById = extendType({
@@ -208,6 +268,7 @@ const getPostById = extendType({
 module.exports = {
     // Types
     POST_TYPE,
+    Topic,
     PostBase,
     BountyApplication,
     Bounty,
@@ -216,6 +277,7 @@ module.exports = {
     PostComment,
     Post,
     // Queries
+    allTopics,
     getFeed,
     getPostById,
     getTrendingPosts

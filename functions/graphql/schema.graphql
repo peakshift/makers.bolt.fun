@@ -54,6 +54,7 @@ type LnurlDetails {
 type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   vote(amount_in_sat: Int!, project_id: Int!): Vote!
+  vote2(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote2!
 }
 
 enum POST_TYPE {
@@ -155,6 +156,15 @@ type User {
   name: String!
 }
 
+enum VOTE_ITEM_TYPE {
+  Bounty
+  Comment
+  Project
+  Question
+  Story
+  User
+}
+
 type Vote {
   amount_in_sat: Int!
   id: Int!
@@ -162,4 +172,14 @@ type Vote {
   payment_hash: String!
   payment_request: String!
   project: Project!
+}
+
+type Vote2 {
+  amount_in_sat: Int!
+  id: Int!
+  item_id: Int!
+  item_type: VOTE_ITEM_TYPE!
+  paid: Boolean!
+  payment_hash: String!
+  payment_request: String!
 }
