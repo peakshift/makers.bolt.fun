@@ -81,9 +81,6 @@ const PostBase = interfaceType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.date('createdAt');
-        t.nonNull.string('excerpt', {
-            resolve: (parent) => parent.body.slice(0, 150)
-        });
         t.nonNull.string('body');
         t.nonNull.int('votes_count');
     },

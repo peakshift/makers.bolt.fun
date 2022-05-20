@@ -100,6 +100,7 @@ model Story {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   body        String
+  excerpt     String
   cover_image String
   votes_count Int      @default(0)
 
@@ -120,6 +121,7 @@ model Question {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   body        String
+  excerpt     String
   votes_count Int      @default(0)
 
   topic    Topic @relation(fields: [topic_id], references: [id])
