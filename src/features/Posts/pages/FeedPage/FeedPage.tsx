@@ -1,5 +1,7 @@
 
+import { useUpdateEffect } from '@react-hookz/web'
 import { useReducer, useState } from 'react'
+import { Nullable } from 'remirror'
 import { useFeedQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
@@ -11,7 +13,7 @@ import styles from './styles.module.scss'
 
 export default function FeedPage() {
 
-    const [sortByFilter, setSortByFilter] = useState('all')
+    const [sortByFilter, setSortByFilter] = useState<string | null>(null)
     const [topicFilter, setTopicFilter] = useState<number | null>(null)
 
 
@@ -23,7 +25,9 @@ export default function FeedPage() {
             topic: topicFilter
         },
     })
-    const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
+    const { fetchMore, isFetchingMore, variablesChanged } = useInfiniteQuery(feedQuery, 'getFeed')
+    useUpdateEffect(variablesChanged, [sortByFilter, topicFilter]);
+
     const { navHeight } = useAppSelector((state) => ({
         navHeight: state.ui.navHeight
     }));

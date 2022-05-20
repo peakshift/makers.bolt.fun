@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Nullable } from 'remirror';
 
 const filters = [
     {
@@ -14,16 +15,15 @@ const filters = [
 ]
 
 interface Props {
-    filterChanged?: (newFilter: string) => void
+    filterChanged?: (newFilter: string | null) => void
 }
 
 export default function SortBy({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState(filters[0].value);
+    const [selected, setSelected] = useState<Nullable<string>>(filters[0].value);
 
-    const filterClicked = (newValue: string) => {
-        if (selected === newValue)
-            return
+    const filterClicked = (_newValue: string) => {
+        const newValue = selected !== _newValue ? _newValue : null;
         setSelected(newValue);
         filterChanged?.(newValue);
     }

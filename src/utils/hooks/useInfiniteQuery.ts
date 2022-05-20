@@ -1,10 +1,15 @@
 import { QueryResult } from "@apollo/client";
+import { useUpdateEffect } from "@react-hookz/web";
 import { useCallback, useState } from "react";
 
 export const useInfiniteQuery = (query: QueryResult, dataField: string) => {
     const [fetchingMore, setFetchingMore] = useState(false)
     const [reachedLastPage, setReachedLastPage] = useState(false)
 
+
+    const variablesChanged = () => {
+        setReachedLastPage(false);
+    }
 
     const fetchMore = useCallback(
         () => {
@@ -28,6 +33,7 @@ export const useInfiniteQuery = (query: QueryResult, dataField: string) => {
 
     return {
         isFetchingMore: fetchingMore,
-        fetchMore: fetchMore
+        fetchMore: fetchMore,
+        variablesChanged // Call this function whenever other query vars beside take/skip changes.
     }
 }

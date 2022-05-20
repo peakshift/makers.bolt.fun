@@ -25,19 +25,18 @@ const filters = [
 ]
 
 interface Props {
-    filterChanged?: (newFilter: number) => void
+    filterChanged?: (newFilter: number | null) => void
 }
 
 export default function PopularTopicsFilter({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState(filters[0].value);
+    const [selected, setSelected] = useState<number | null>(filters[0].value);
 
     const topicsQuery = usePopularTopicsQuery();
 
 
-    const filterClicked = (newValue: number) => {
-        if (selected === newValue)
-            return
+    const filterClicked = (_newValue: number) => {
+        const newValue = selected !== _newValue ? _newValue : null;
         setSelected(newValue);
         filterChanged?.(newValue);
     }
