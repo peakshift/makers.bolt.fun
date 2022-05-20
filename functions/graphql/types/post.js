@@ -16,7 +16,17 @@ const { prisma } = require('../prisma')
 const POST_TYPE = enumType({
     name: 'POST_TYPE',
     members: ['Story', 'Bounty', 'Question'],
-})
+});
+
+const asType = type => (obj) => {
+    if (Array.isArray(obj)) return obj.map(o => ({ ...o, type }))
+    return { ...obj, type }
+}
+
+const asStoryType = asType('Story')
+const asQuestionType = asType('Question')
+const asBountyType = asType('Bounty')
+
 
 const Topic = objectType({
     name: 'Topic',
@@ -44,20 +54,17 @@ const allTopics = extendType({
 
 const PostBase = interfaceType({
     name: 'PostBase',
-    resolveType() {
-        return null
+    resolveType(item) {
+        return item.type
     },
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
-        t.nonNull.string('date');
+        t.nonNull.date('createdAt');
         t.nonNull.string('excerpt');
         t.nonNull.string('body');
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag"
-        });
-        t.nonNull.field('topic', {
-            type: "Topic"
         });
         t.nonNull.int('votes_count');
     },
@@ -68,23 +75,45 @@ const Story = objectType({
     definition(t) {
         t.implements('PostBase');
         t.nonNull.string('type', {
-            resolve: () => 'Story'
+            resolve: () => t.typeName
         });
         t.nonNull.string('cover_image');
-        t.nonNull.int('comments_count');
+
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
-            resolve: (parent) => {
-                return prisma.story.findUnique({ where: { id: parent.id } }).comments();
+            resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
+
+        });
+        t.nonNull.int('comments_count', {
+            resolve: async (parent) => {
+                const post = await prisma.story.findUnique({
+                    where: { id: parent.id },
+                    include: {
+                        _count: {
+                            select: {
+                                comments: true
+                            }
+                        }
+                    }
+                })
+                return post._count.comments;
             }
         });
-
+        t.nonNull.field('topic', {
+            type: "Topic",
+            resolve: parent => {
+                return prisma.story.findUnique({
+                    where: { id: parent.id }
+                }).topic()
+            }
+        })
         t.nonNull.field('author', {
             type: "User",
-            resolve: (parent) => {
-                return prisma.story.findUnique({ where: { id: parent.id } }).user();
-            }
+            resolve: (parent) =>
+                prisma.story.findUnique({ where: { id: parent.id } }).user()
+
         });
+
     },
 })
 
@@ -152,7 +181,7 @@ const PostComment = objectType({
     name: 'PostComment',
     definition(t) {
         t.nonNull.int('id');
-        t.nonNull.string('created_at');
+        t.nonNull.date('created_at');
         t.nonNull.string('body');
         t.nonNull.field('author', {
             type: "User"
@@ -167,7 +196,9 @@ const Post = unionType({
     definition(t) {
         t.members('Story', 'Bounty', 'Question')
     },
-    resolveType: (item) => item.type,
+    resolveType: (item) => {
+        return item.type
+    },
 })
 
 
@@ -191,7 +222,7 @@ const getFeed = extendType({
                     },
                     skip,
                     take,
-                });
+                }).then(asStoryType)
             }
         })
     }
@@ -207,15 +238,15 @@ const getTrendingPosts = extendType({
             },
             resolve() {
                 const now = new Date();
-                const lastWeekDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).toUTCString()
+                const lastWeekDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)
                 return prisma.story.findMany({
                     take: 5,
                     where: {
                         createdAt: {
-                            gt: lastWeekDate
+                            gte: lastWeekDate
                         }
                     }
-                })
+                }).then(asStoryType)
             }
         })
     }
@@ -233,30 +264,17 @@ const getPostById = extendType({
                     type: nonNull('POST_TYPE')
                 })
             },
-            resolve(_, { id }) {
-                return {
-                    id: 4,
-                    title: 'Digital Editor, Mars Review of Books',
-                    body: "AASA",
-                    cover_image: "AASA",
-                    comments_count: 31,
-                    date: "SSSS",
-                    votes_count: 120,
-                    excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-                    type: "Story",
-                    tags: [
-                        { id: 1, title: "lnurl" },
-                        { id: 2, title: "webln" },
-                        { id: 3, title: "guide" },
-                    ],
-                    author: {
+            resolve(_, { id, type }) {
+                if (type === 'Story')
+                    return prisma.story.findUnique({
+                        where: { id }
+                    }).then(asStoryType)
 
-                        id: 12,
-                        name: "John Doe",
-                        image: "SSSS",
-                        join_date: "SSSS"
-                    },
-                }
+                if (type === 'Question')
+                    return prisma.question.findUnique({
+                        where: { id }
+                    }).then(asQuestionType)
+                return null
             }
         })
     }

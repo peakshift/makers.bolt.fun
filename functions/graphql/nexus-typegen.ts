@@ -4,9 +4,23 @@
  */
 
 
-
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * Date custom scalar type
+     */
+    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * Date custom scalar type
+     */
+    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
+  }
+}
 
 
 declare global {
@@ -27,6 +41,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  Date: any
 }
 
 export interface NexusGenObjects {
@@ -39,10 +54,9 @@ export interface NexusGenObjects {
   Bounty: { // root type
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
-    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     cover_image: string; // String!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
@@ -73,7 +87,7 @@ export interface NexusGenObjects {
   PostComment: { // root type
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    created_at: string; // String!
+    created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId?: number | null; // Int
     votes_count: number; // Int!
@@ -93,10 +107,8 @@ export interface NexusGenObjects {
   Query: {};
   Question: { // root type
     answers_count: number; // Int!
-    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -104,12 +116,9 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Story: { // root type
-    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
-    comments_count: number; // Int!
     cover_image: string; // String!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -117,6 +126,11 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Tag: { // root type
+    id: number; // Int!
+    title: string; // String!
+  }
+  Topic: { // root type
+    icon: string; // String!
     id: number; // Int!
     title: string; // String!
   }
@@ -169,7 +183,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     cover_image: string; // String!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
@@ -208,7 +222,7 @@ export interface NexusGenFieldTypes {
   PostComment: { // field return type
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    created_at: string; // String!
+    created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId: number | null; // Int
     votes_count: number; // Int!
@@ -231,6 +245,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    allTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
@@ -247,7 +262,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -261,15 +276,21 @@ export interface NexusGenFieldTypes {
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
     cover_image: string; // String!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
+    topic: NexusGenRootTypes['Topic']; // Topic!
     type: string; // String!
     votes_count: number; // Int!
   }
   Tag: { // field return type
+    id: number; // Int!
+    title: string; // String!
+  }
+  Topic: { // field return type
+    icon: string; // String!
     id: number; // Int!
     title: string; // String!
   }
@@ -296,9 +317,8 @@ export interface NexusGenFieldTypes {
     payment_request: string; // String!
   }
   PostBase: { // field return type
-    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    date: string; // String!
+    createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -321,7 +341,7 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     body: 'String'
     cover_image: 'String'
-    date: 'String'
+    createdAt: 'Date'
     deadline: 'String'
     excerpt: 'String'
     id: 'Int'
@@ -360,7 +380,7 @@ export interface NexusGenFieldTypeNames {
   PostComment: { // field return type name
     author: 'User'
     body: 'String'
-    created_at: 'String'
+    created_at: 'Date'
     id: 'Int'
     parentId: 'Int'
     votes_count: 'Int'
@@ -383,6 +403,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     allCategories: 'Category'
     allProjects: 'Project'
+    allTopics: 'Topic'
     getCategory: 'Category'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
@@ -399,7 +420,7 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     body: 'String'
     comments: 'PostComment'
-    date: 'String'
+    createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
     tags: 'Tag'
@@ -413,15 +434,21 @@ export interface NexusGenFieldTypeNames {
     comments: 'PostComment'
     comments_count: 'Int'
     cover_image: 'String'
-    date: 'String'
+    createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
     tags: 'Tag'
     title: 'String'
+    topic: 'Topic'
     type: 'String'
     votes_count: 'Int'
   }
   Tag: { // field return type name
+    id: 'Int'
+    title: 'String'
+  }
+  Topic: { // field return type name
+    icon: 'String'
     id: 'Int'
     title: 'String'
   }
@@ -448,9 +475,8 @@ export interface NexusGenFieldTypeNames {
     payment_request: 'String'
   }
   PostBase: { // field return type name
-    author: 'User'
     body: 'String'
-    date: 'String'
+    createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
     tags: 'Tag'
@@ -484,10 +510,10 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     getFeed: { // args
-      category: string | null; // String
       skip?: number | null; // Int
       sortBy: string | null; // String
       take: number | null; // Int
+      topic?: number | null; // Int
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!

@@ -16,7 +16,7 @@ type Bounty implements PostBase {
   author: User!
   body: String!
   cover_image: String!
-  date: String!
+  createdAt: Date!
   deadline: String!
   excerpt: String!
   id: Int!
@@ -44,6 +44,9 @@ type Category {
   votes_sum: Int!
 }
 
+"""Date custom scalar type"""
+scalar Date
+
 type LnurlDetails {
   commentAllowed: Int
   maxSendable: Int
@@ -66,9 +69,8 @@ enum POST_TYPE {
 union Post = Bounty | Question | Story
 
 interface PostBase {
-  author: User!
   body: String!
-  date: String!
+  createdAt: Date!
   excerpt: String!
   id: Int!
   tags: [Tag!]!
@@ -79,7 +81,7 @@ interface PostBase {
 type PostComment {
   author: User!
   body: String!
-  created_at: String!
+  created_at: Date!
   id: Int!
   parentId: Int
   votes_count: Int!
@@ -104,8 +106,9 @@ type Project {
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  allTopics: [Topic!]!
   getCategory(id: Int!): Category!
-  getFeed(category: String = "all", skip: Int = 0, sortBy: String = "all", take: Int = 10): [Post!]!
+  getFeed(skip: Int = 0, sortBy: String = "all", take: Int = 10, topic: Int): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
@@ -121,7 +124,7 @@ type Question implements PostBase {
   author: User!
   body: String!
   comments: [PostComment!]!
-  date: String!
+  createdAt: Date!
   excerpt: String!
   id: Int!
   tags: [Tag!]!
@@ -136,16 +139,23 @@ type Story implements PostBase {
   comments: [PostComment!]!
   comments_count: Int!
   cover_image: String!
-  date: String!
+  createdAt: Date!
   excerpt: String!
   id: Int!
   tags: [Tag!]!
   title: String!
+  topic: Topic!
   type: String!
   votes_count: Int!
 }
 
 type Tag {
+  id: Int!
+  title: String!
+}
+
+type Topic {
+  icon: String!
   id: Int!
   title: String!
 }

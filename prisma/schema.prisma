@@ -95,14 +95,13 @@ model Award {
 // -----------------
 
 model Story {
-  id              Int      @id @default(autoincrement())
-  title           String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  body            String
-  thumbnail_image String
-  cover_image     String
-  votes_count     Int      @default(0)
+  id          Int      @id @default(autoincrement())
+  title       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  body        String
+  cover_image String
+  votes_count Int      @default(0)
 
   topic    Topic @relation(fields: [topic_id], references: [id])
   topic_id Int
@@ -116,13 +115,12 @@ model Story {
 }
 
 model Question {
-  id              Int      @id @default(autoincrement())
-  title           String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  body            String
-  thumbnail_image String
-  votes_count     Int      @default(0)
+  id          Int      @id @default(autoincrement())
+  title       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  body        String
+  votes_count Int      @default(0)
 
   topic    Topic @relation(fields: [topic_id], references: [id])
   topic_id Int
@@ -171,14 +169,15 @@ model PostComment {
 // Hackathons
 // -----------------
 model Hackathon {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
-  date        String
+  start_date  DateTime @db.Date
+  end_date    DateTime @db.Date
   cover_image String
   description String
   location    String
   website     String
-  votes_count Int    @default(0)
+  votes_count Int      @default(0)
 
   topics Topic[]
 }
