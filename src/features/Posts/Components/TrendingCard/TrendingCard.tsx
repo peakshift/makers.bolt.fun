@@ -26,7 +26,7 @@ export default function TrendingCard() {
                         trendingPosts.data?.getTrendingPosts.map(post => {
                             return <Link key={post.id} to={`/blog/post/${post.__typename}/${post.id}`} className="border-b pb-4 last-of-type:border-b-0">
                                 <li className="flex items-start gap-8">
-                                    <Avatar width={24} src={post.author.image} />
+                                    <Avatar width={24} src={post.author.avatar} />
                                     <p className="text-body5 font-medium">{post.title}</p>
                                 </li>
                             </Link>

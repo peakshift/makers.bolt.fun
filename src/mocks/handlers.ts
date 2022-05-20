@@ -106,7 +106,7 @@ export const handlers = [
         const { take, skip } = req.variables;
         return res(
             ctx.data({
-                getFeed: getFeed({ take, skip })
+                getFeed: getFeed({ take, skip, })
             })
         )
     }),

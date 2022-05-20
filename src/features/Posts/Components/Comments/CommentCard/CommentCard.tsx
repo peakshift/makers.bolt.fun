@@ -12,7 +12,7 @@ interface Props {
 export default function CommentCard({ comment, onReply }: Props) {
     return (
         <div className="border rounded-12 p-24">
-            <Header author={comment.author} date={comment.created_at} />
+            <Header author={comment.author} date={comment.createdAt} />
             <p className="text-body4 mt-16">
                 {comment.body}
             </p>

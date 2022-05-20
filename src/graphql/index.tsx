@@ -13,6 +13,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Date custom scalar type */
+  Date: any;
 };
 
 export type Award = {
@@ -31,7 +33,7 @@ export type Bounty = PostBase & {
   author: User;
   body: Scalars['String'];
   cover_image: Scalars['String'];
-  date: Scalars['String'];
+  createdAt: Scalars['Date'];
   deadline: Scalars['String'];
   excerpt: Scalars['String'];
   id: Scalars['Int'];
@@ -73,6 +75,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   confirmVote: Vote;
   vote: Vote;
+  vote2: Vote2;
 };
 
 
@@ -87,6 +90,13 @@ export type MutationVoteArgs = {
   project_id: Scalars['Int'];
 };
 
+
+export type MutationVote2Args = {
+  amount_in_sat: Scalars['Int'];
+  item_id: Scalars['Int'];
+  item_type: Vote_Item_Type;
+};
+
 export enum Post_Type {
   Bounty = 'Bounty',
   Question = 'Question',
@@ -96,12 +106,10 @@ export enum Post_Type {
 export type Post = Bounty | Question | Story;
 
 export type PostBase = {
-  author: User;
   body: Scalars['String'];
-  date: Scalars['String'];
+  createdAt: Scalars['Date'];
   excerpt: Scalars['String'];
   id: Scalars['Int'];
-  tags: Array<Tag>;
   title: Scalars['String'];
   votes_count: Scalars['Int'];
 };
@@ -110,7 +118,7 @@ export type PostComment = {
   __typename?: 'PostComment';
   author: User;
   body: Scalars['String'];
-  created_at: Scalars['String'];
+  createdAt: Scalars['Date'];
   id: Scalars['Int'];
   parentId: Maybe<Scalars['Int']>;
   votes_count: Scalars['Int'];
@@ -137,6 +145,7 @@ export type Query = {
   __typename?: 'Query';
   allCategories: Array<Category>;
   allProjects: Array<Project>;
+  allTopics: Array<Topic>;
   getCategory: Category;
   getFeed: Array<Post>;
   getLnurlDetailsForProject: LnurlDetails;
@@ -145,6 +154,7 @@ export type Query = {
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
   newProjects: Array<Project>;
+  popularTopics: Array<Topic>;
   projectsByCategory: Array<Project>;
   searchProjects: Array<Project>;
 };
@@ -162,10 +172,10 @@ export type QueryGetCategoryArgs = {
 
 
 export type QueryGetFeedArgs = {
-  category?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   sortBy?: InputMaybe<Scalars['String']>;
   take?: InputMaybe<Scalars['Int']>;
+  topic?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -216,7 +226,7 @@ export type Question = PostBase & {
   author: User;
   body: Scalars['String'];
   comments: Array<PostComment>;
-  date: Scalars['String'];
+  createdAt: Scalars['Date'];
   excerpt: Scalars['String'];
   id: Scalars['Int'];
   tags: Array<Tag>;
@@ -232,11 +242,12 @@ export type Story = PostBase & {
   comments: Array<PostComment>;
   comments_count: Scalars['Int'];
   cover_image: Scalars['String'];
-  date: Scalars['String'];
+  createdAt: Scalars['Date'];
   excerpt: Scalars['String'];
   id: Scalars['Int'];
   tags: Array<Tag>;
   title: Scalars['String'];
+  topic: Topic;
   type: Scalars['String'];
   votes_count: Scalars['Int'];
 };
@@ -247,12 +258,28 @@ export type Tag = {
   title: Scalars['String'];
 };
 
+export type Topic = {
+  __typename?: 'Topic';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
+  avatar: Scalars['String'];
   id: Scalars['Int'];
-  image: Scalars['String'];
   name: Scalars['String'];
 };
+
+export enum Vote_Item_Type {
+  Bounty = 'Bounty',
+  Comment = 'Comment',
+  Project = 'Project',
+  Question = 'Question',
+  Story = 'Story',
+  User = 'User'
+}
 
 export type Vote = {
   __typename?: 'Vote';
@@ -262,6 +289,17 @@ export type Vote = {
   payment_hash: Scalars['String'];
   payment_request: Scalars['String'];
   project: Project;
+};
+
+export type Vote2 = {
+  __typename?: 'Vote2';
+  amount_in_sat: Scalars['Int'];
+  id: Scalars['Int'];
+  item_id: Scalars['Int'];
+  item_type: Vote_Item_Type;
+  paid: Scalars['Boolean'];
+  payment_hash: Scalars['String'];
+  payment_request: Scalars['String'];
 };
 
 export type NavCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -279,17 +317,22 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, image: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, image: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, image: string } }> };
+export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } }> };
+
+export type PopularTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PopularTopicsQuery = { __typename?: 'Query', popularTopics: Array<{ __typename?: 'Topic', id: number, title: string, icon: string }> };
 
 export type FeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
   skip: InputMaybe<Scalars['Int']>;
   sortBy: InputMaybe<Scalars['String']>;
-  category: InputMaybe<Scalars['String']>;
+  topic: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
+export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
 
 export type PostDetailsQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -297,7 +340,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Question', id: number, title: string, date: string, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, image: string } }> } | { __typename?: 'Story', id: number, title: string, date: string, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, image: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, created_at: string, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, image: string } }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -431,7 +474,7 @@ export const TrendingPostsDocument = gql`
       title
       author {
         id
-        image
+        avatar
       }
     }
     ... on Bounty {
@@ -439,7 +482,7 @@ export const TrendingPostsDocument = gql`
       title
       author {
         id
-        image
+        avatar
       }
     }
     ... on Question {
@@ -447,7 +490,7 @@ export const TrendingPostsDocument = gql`
       title
       author {
         id
-        image
+        avatar
       }
     }
   }
@@ -480,17 +523,53 @@ export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
+export const PopularTopicsDocument = gql`
+    query PopularTopics {
+  popularTopics {
+    id
+    title
+    icon
+  }
+}
+    `;
+
+/**
+ * __usePopularTopicsQuery__
+ *
+ * To run a query within a React component, call `usePopularTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePopularTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePopularTopicsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePopularTopicsQuery(baseOptions?: Apollo.QueryHookOptions<PopularTopicsQuery, PopularTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PopularTopicsQuery, PopularTopicsQueryVariables>(PopularTopicsDocument, options);
+      }
+export function usePopularTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PopularTopicsQuery, PopularTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PopularTopicsQuery, PopularTopicsQueryVariables>(PopularTopicsDocument, options);
+        }
+export type PopularTopicsQueryHookResult = ReturnType<typeof usePopularTopicsQuery>;
+export type PopularTopicsLazyQueryHookResult = ReturnType<typeof usePopularTopicsLazyQuery>;
+export type PopularTopicsQueryResult = Apollo.QueryResult<PopularTopicsQuery, PopularTopicsQueryVariables>;
 export const FeedDocument = gql`
-    query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
-  getFeed(take: $take, skip: $skip, sortBy: $sortBy, category: $category) {
+    query Feed($take: Int, $skip: Int, $sortBy: String, $topic: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, topic: $topic) {
     ... on Story {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       excerpt
       tags {
@@ -505,11 +584,11 @@ export const FeedDocument = gql`
     ... on Bounty {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       excerpt
       tags {
@@ -526,11 +605,11 @@ export const FeedDocument = gql`
     ... on Question {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       excerpt
       tags {
@@ -542,12 +621,12 @@ export const FeedDocument = gql`
       answers_count
       comments {
         id
-        created_at
+        createdAt
         body
         author {
           id
           name
-          image
+          avatar
         }
       }
     }
@@ -570,7 +649,7 @@ export const FeedDocument = gql`
  *      take: // value for 'take'
  *      skip: // value for 'skip'
  *      sortBy: // value for 'sortBy'
- *      category: // value for 'category'
+ *      topic: // value for 'topic'
  *   },
  * });
  */
@@ -591,11 +670,11 @@ export const PostDetailsDocument = gql`
     ... on Story {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       body
       tags {
@@ -608,25 +687,25 @@ export const PostDetailsDocument = gql`
       comments_count
       comments {
         id
-        created_at
+        createdAt
         body
         votes_count
         parentId
         author {
           id
           name
-          image
+          avatar
         }
       }
     }
     ... on Bounty {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       body
       tags {
@@ -646,18 +725,18 @@ export const PostDetailsDocument = gql`
         author {
           id
           name
-          image
+          avatar
         }
       }
     }
     ... on Question {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       body
       tags {
@@ -669,14 +748,14 @@ export const PostDetailsDocument = gql`
       answers_count
       comments {
         id
-        created_at
+        createdAt
         body
         votes_count
         parentId
         author {
           id
           name
-          image
+          avatar
         }
       }
     }

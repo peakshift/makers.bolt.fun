@@ -4,7 +4,7 @@ import { Author } from "src/features/Posts/types";
 export interface Comment {
     id: number
     author: Author
-    created_at: string
+    createdAt: string
     body: string
     votes_count: number
     parentId: number | null

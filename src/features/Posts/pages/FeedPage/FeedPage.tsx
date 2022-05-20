@@ -4,7 +4,7 @@ import { useFeedQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
-import PopularCategories from './PopularCategories/PopularCategories'
+import PopularTopicsFilter from './PopularTopicsFilter/PopularTopicsFilter'
 import SortBy from './SortBy/SortBy'
 import styles from './styles.module.scss'
 
@@ -12,15 +12,15 @@ import styles from './styles.module.scss'
 export default function FeedPage() {
 
     const [sortByFilter, setSortByFilter] = useState('all')
-    const [categoryFilter, setCategoryFilter] = useState('all')
+    const [topicFilter, setTopicFilter] = useState<number | null>(null)
 
 
     const feedQuery = useFeedQuery({
         variables: {
-            take: 10,
+            take: 3,
             skip: 0,
             sortBy: sortByFilter,
-            category: categoryFilter
+            topic: topicFilter
         },
     })
     const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
@@ -42,9 +42,9 @@ export default function FeedPage() {
                     <SortBy
                         filterChanged={setSortByFilter}
                     />
-                    <hr className="my-24 bg-gray-100" />
-                    <PopularCategories
-                        filterChanged={setCategoryFilter}
+                    <div className="my-24"></div>
+                    <PopularTopicsFilter
+                        filterChanged={setTopicFilter}
                     />
                 </div>
             </aside>

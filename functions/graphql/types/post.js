@@ -52,6 +52,26 @@ const allTopics = extendType({
     }
 })
 
+
+const popularTopics = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('popularTopics', {
+            type: "Topic",
+            resolve: () => {
+                return prisma.topic.findMany({
+                    take: 6,
+                    orderBy: {
+                        stories: {
+                            _count: 'desc'
+                        }
+                    },
+                });
+            }
+        })
+    }
+})
+
 const PostBase = interfaceType({
     name: 'PostBase',
     resolveType(item) {
@@ -61,11 +81,10 @@ const PostBase = interfaceType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.date('createdAt');
-        t.nonNull.string('excerpt');
-        t.nonNull.string('body');
-        t.nonNull.list.nonNull.field('tags', {
-            type: "Tag"
+        t.nonNull.string('excerpt', {
+            resolve: (parent) => parent.body.slice(0, 150)
         });
+        t.nonNull.string('body');
         t.nonNull.int('votes_count');
     },
 })
@@ -82,7 +101,10 @@ const Story = objectType({
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
-
+        });
+        t.nonNull.list.nonNull.field('tags', {
+            type: "Tag",
+            resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).tags()
         });
         t.nonNull.int('comments_count', {
             resolve: async (parent) => {
@@ -149,6 +171,11 @@ const Bounty = objectType({
                 return prisma.bounty.findUnique({ where: { id: parent.id } }).user();
             }
         });
+
+        t.nonNull.list.nonNull.field('tags', {
+            type: "Tag",
+            resolve: (parent) => []
+        });
     },
 })
 
@@ -160,6 +187,12 @@ const Question = objectType({
             resolve: () => 'Question',
 
         });
+
+        t.nonNull.list.nonNull.field('tags', {
+            type: "Tag",
+            resolve: (parent) => prisma.question.findUnique({ where: { id: parent.id } }).tags()
+        });
+
         t.nonNull.int('answers_count');
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
@@ -181,7 +214,7 @@ const PostComment = objectType({
     name: 'PostComment',
     definition(t) {
         t.nonNull.int('id');
-        t.nonNull.date('created_at');
+        t.nonNull.date('createdAt');
         t.nonNull.string('body');
         t.nonNull.field('author', {
             type: "User"
@@ -212,13 +245,17 @@ const getFeed = extendType({
                 sortBy: stringArg({
                     default: "all"
                 }), // all, popular, trending, newest
-                topic: intArg()
+                topic: intArg({
+                    default: 0
+                })
             },
             resolve(_, { take, skip, topic, sortBy, }) {
+
+
                 return prisma.story.findMany({
                     orderBy: { createdAt: "desc" },
                     where: {
-                        topic_id: topic,
+                        topic_id: topic ? topic : undefined,
                     },
                     skip,
                     take,
@@ -296,6 +333,7 @@ module.exports = {
     Post,
     // Queries
     allTopics,
+    popularTopics,
     getFeed,
     getPostById,
     getTrendingPosts

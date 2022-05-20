@@ -6,7 +6,7 @@ interface Props {
     author: {
         id: number,
         name: string,
-        image: string
+        avatar: string
     }
     date: string;
     size?: 'sm' | 'md' | 'lg';
@@ -27,21 +27,25 @@ const nameSize: UnionToObjectKeys<Props, 'size'> = {
 
 export default function Header({
     size = 'md',
-    showTimeAgo = true,
+    showTimeAgo = false,
     ...props }: Props) {
 
     const passedTime = dayjs().diff(props.date, 'hour');
-    const dateToShow = passedTime < 24 ?
-        `${dayjs().diff(props.date, 'hour')}h ago`
-        :
-        dayjs(props.date).format('MMMM DD');
+
+    const dateToShow = () => {
+        const passedTime = dayjs().diff(props.date, 'hour');
+        if (passedTime === 0) return 'now';
+        if (passedTime < 24) return `${dayjs().diff(props.date, 'hour')}h ago`
+        return dayjs(props.date).format('MMMM DD');
+    }
+
 
     return (
         <div className='flex gap-8'>
-            <Avatar width={avatarSize[size]} src={props.author.image} />
+            <Avatar width={avatarSize[size]} src={props.author.avatar} />
             <div>
                 <p className={`${nameSize[size]} text-black font-medium`}>{props.author.name}</p>
-                <p className={`text-body6 text-gray-600`}>{dateToShow}</p>
+                <p className={`text-body6 text-gray-600`}>{dateToShow()}</p>
             </div>
             {/* {showTimeAgo && <p className={`${nameSize[size]} text-gray-500 ml-auto `}>
                 {dayjs().diff(props.date, 'hour') < 24 ? `${dayjs().diff(props.date, 'hour')}h ago` : undefined}

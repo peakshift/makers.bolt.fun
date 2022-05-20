@@ -5,7 +5,7 @@ query TrendingPosts {
       title
       author {
         id
-        image
+        avatar
       }
     }
     ... on Bounty {
@@ -13,7 +13,7 @@ query TrendingPosts {
       title
       author {
         id
-        image
+        avatar
       }
     }
 
@@ -22,7 +22,7 @@ query TrendingPosts {
       title
       author {
         id
-        image
+        avatar
       }
     }
   }

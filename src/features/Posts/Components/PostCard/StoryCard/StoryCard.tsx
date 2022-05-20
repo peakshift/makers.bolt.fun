@@ -10,7 +10,7 @@ export type StoryCardType = Pick<Story,
     | 'type'
     | 'title'
     | 'cover_image'
-    | 'date'
+    | 'createdAt'
     | 'author'
     | 'excerpt'
     | 'votes_count'
@@ -25,7 +25,7 @@ export default function StoryCard({ story }: Props) {
         <div className="bg-white rounded-12 overflow-hidden border">
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
-                <Header author={story.author} date={story.date} />
+                <Header author={story.author} date={story.createdAt} />
                 <Link to={`/blog/post/Story/${story.id}`}>
                     <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
                 </Link>

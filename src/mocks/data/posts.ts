@@ -4,13 +4,14 @@ import { Bounty, Post, Question, Story } from "src/features/Posts/types";
 import { random, randomItem } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
 import { Chance } from 'chance'
+import { topics } from "./hackathon";
 
 const getDate = () => dayjs().subtract(random(5, 48), 'hour').toString();
 
 const getAuthor = () => ({
     id: 12,
     name: "John Doe",
-    image: getAvatarImage(),
+    avatar: getAvatarImage(),
     join_date: getDate()
 })
 
@@ -23,7 +24,7 @@ export const generatePostComments = (cnt: number = 1): Story['comments'] => {
         const comment = {
             id: i + 1,
             body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",
-            created_at: getDate(),
+            createdAt: getDate(),
             author: getAuthor(),
             votes_count: 123,
             parentId
@@ -85,7 +86,7 @@ export let posts = {
             body: postBody,
             cover_image: getCoverImage(),
             comments_count: 3,
-            date: getDate(),
+            createdAt: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             type: "Story",
@@ -96,6 +97,7 @@ export let posts = {
             ],
             author: getAuthor(),
             comments: generatePostComments(3),
+            topic: randomItem(...topics)
 
         },
     ] as Story[],
@@ -107,7 +109,7 @@ export let posts = {
             body: postBody,
             cover_image: getCoverImage(),
             applicants_count: 31,
-            date: getDate(),
+            createdAt: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             tags: [
@@ -129,7 +131,7 @@ export let posts = {
             title: 'Digital Editor, Mars Review of Books',
             body: postBody,
             answers_count: 3,
-            date: getDate(),
+            createdAt: getDate(),
             votes_count: 70,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             tags: [

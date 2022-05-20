@@ -4,7 +4,7 @@ import { Tag } from "src/utils/interfaces"
 export type User = {
     id: number
     name: string
-    image: string
+    avatar: string
 }
 
 export type Author = User & {
@@ -14,7 +14,7 @@ export type Author = User & {
 export type PostBase1 = {
     id: number
     title: string
-    date: string
+    createdAt: string
     author: Author
     excerpt: string
     tags: Tag[]

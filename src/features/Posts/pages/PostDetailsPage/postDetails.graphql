@@ -3,11 +3,11 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
     ... on Story {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       body
       tags {
@@ -20,25 +20,25 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       comments_count
       comments {
         id
-        created_at
+        createdAt
         body
         votes_count
         parentId
         author {
           id
           name
-          image
+          avatar
         }
       }
     }
     ... on Bounty {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       body
       tags {
@@ -58,18 +58,18 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         author {
           id
           name
-          image
+          avatar
         }
       }
     }
     ... on Question {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       body
       tags {
@@ -81,14 +81,14 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       answers_count
       comments {
         id
-        created_at
+        createdAt
         body
         votes_count
         parentId
         author {
           id
           name
-          image
+          avatar
         }
       }
     }

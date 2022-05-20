@@ -199,20 +199,36 @@ export default function VoteButton({
                 key={increment.id}
                 className={styles.vote_counter}
             >+{increment.value}</span>)}
-            {sparks.map(spark =>
-                <div
-                    key={spark.id}
-                    className={styles.spark}
+
+            <div className="relative z-50">
+                <MdLocalFireDepartment className={styles.spark}
                     style={{
-                        "--offsetX": spark.offsetX,
-                        "--offsetY": spark.offsetY,
-                        "--animationSpeed": spark.animationSpeed,
-                        "--scale": spark.scale,
-                        "animationName": spark.animation,
-                        "color": spark.color
-                    } as any}
-                ><MdLocalFireDepartment className='' /></div>)
-            }
+                        opacity: 1,
+                        scale: 1,
+                        top: 0,
+                        left: 0,
+                        color: 'green'
+                    }}
+                />
+                {sparks.map(spark =>
+                    <div
+                        key={spark.id}
+                        className={styles.spark}
+                        style={{
+                            "--offsetX": spark.offsetX,
+                            "--offsetY": spark.offsetY,
+                            "--animationSpeed": spark.animationSpeed,
+                            "--scale": spark.scale,
+                            "animationName": spark.animation,
+                            "color": spark.color
+                        } as any}
+                    ><MdLocalFireDepartment className='' /></div>)
+                }
+            </div>
+            <div
+                className={styles.spark}
+
+            ><MdLocalFireDepartment className='' /></div>
         </button>
 
     )

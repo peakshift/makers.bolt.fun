@@ -11,9 +11,8 @@ body {
 }
 
 .page-container {
-  width: 98%;
+  width: calc(min(100% - 64px, 1440px));
   margin: 0 auto;
-  max-width: 1440px;
 }
 
 svg {

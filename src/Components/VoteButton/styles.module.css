@@ -136,6 +136,7 @@
   transform: scale(var(--scale));
   opacity: 0;
   will-change: transform;
+  z-index: 3000;
 
   animation-name: fly-spark-1;
   animation-duration: calc(var(--animationSpeed) * 1s);

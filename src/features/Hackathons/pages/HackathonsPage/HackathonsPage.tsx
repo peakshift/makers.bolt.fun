@@ -18,7 +18,7 @@ export default function HackathonsPage() {
             take: 10,
             skip: 0,
             sortBy: sortByFilter,
-            category: topicsFilter
+            topic: Number(topicsFilter)
         },
     })
     const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')

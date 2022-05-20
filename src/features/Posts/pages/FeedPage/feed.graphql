@@ -1,13 +1,13 @@
-query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
-  getFeed(take: $take, skip: $skip, sortBy: $sortBy, category: $category) {
+query Feed($take: Int, $skip: Int, $sortBy: String, $topic: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, topic: $topic) {
     ... on Story {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       excerpt
       tags {
@@ -22,11 +22,11 @@ query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
     ... on Bounty {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       excerpt
       tags {
@@ -43,11 +43,11 @@ query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
     ... on Question {
       id
       title
-      date
+      createdAt
       author {
         id
         name
-        image
+        avatar
       }
       excerpt
       tags {
@@ -59,12 +59,12 @@ query Feed($take: Int, $skip: Int, $sortBy: String, $category: String) {
       answers_count
       comments {
         id
-        created_at
+        createdAt
         body
         author {
           id
           name
-          image
+          avatar
         }
       }
     }

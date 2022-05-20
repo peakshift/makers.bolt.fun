@@ -9,6 +9,8 @@ import Button from "src/Components/Button/Button";
 import { FiGithub, FiShare2 } from "react-icons/fi";
 import BountyApplicants from "./BountyApplicants";
 import VoteButton from "src/Components/VoteButton/VoteButton";
+import { RiFlashlightLine } from "react-icons/ri";
+import { numberFormatter } from "src/utils/helperFunctions";
 
 
 interface Props {
@@ -21,14 +23,16 @@ export default function BountyPageContent({ bounty }: Props) {
 
             {/* Header */}
             <div className="flex flex-col gap-24">
-                <Header size="lg" showTimeAgo={false} author={bounty.author} date={bounty.date} />
+                <Header size="lg" showTimeAgo={false} author={bounty.author} date={bounty.createdAt} />
                 <h1 className="text-h2 font-bolder">{bounty.title} <Badge color="none" size="sm" className="bg-warning-500 text-black">Bounty</Badge></h1>
                 <div className="">
                     <span className="text-body4 text-gray-600 font-bolder">Reward: </span>
                     <span className="text-body4 text-purple-500 font-medium">{bounty.reward_amount} sats</span>
                 </div>
                 <div className="flex gap-24 items-center">
-                    <VoteButton initVotes={bounty.votes_count} />
+                    <div className="text-black font-medium">
+                        <RiFlashlightLine /> <span className="align-middle text-body5">{numberFormatter(bounty.votes_count)} votes</span>
+                    </div>
                     <div className="text-black font-medium">
                         <BiComment /> <span className="align-middle text-body5">32 Comments</span>
                     </div>

@@ -123,7 +123,7 @@ const newProjects = extendType({
                 const take = args.take || 50;
                 const skip = args.skip || 0;
                 return prisma.project.findMany({
-                    orderBy: { created_at: "desc" },
+                    orderBy: { createdAt: "desc" },
                     skip,
                     take,
                 });

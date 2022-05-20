@@ -39,7 +39,7 @@ function App() {
 
 
 
-  return <div id="app" className='w-full overflow-hidden'>
+  return <div id="app" className='w-full'>
     <Navbar />
     <Suspense fallback={<LoadingPage />}>
       <Routes>

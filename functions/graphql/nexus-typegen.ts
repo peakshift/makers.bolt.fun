@@ -58,10 +58,8 @@ export interface NexusGenObjects {
     cover_image: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
-    excerpt: string; // String!
     id: number; // Int!
     reward_amount: number; // Int!
-    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -87,7 +85,7 @@ export interface NexusGenObjects {
   PostComment: { // root type
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    created_at: NexusGenScalars['Date']; // Date!
+    createdAt: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId?: number | null; // Int
     votes_count: number; // Int!
@@ -109,9 +107,7 @@ export interface NexusGenObjects {
     answers_count: number; // Int!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
-    excerpt: string; // String!
     id: number; // Int!
-    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -119,9 +115,7 @@ export interface NexusGenObjects {
     body: string; // String!
     cover_image: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
-    excerpt: string; // String!
     id: number; // Int!
-    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -135,8 +129,8 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   User: { // root type
+    avatar: string; // String!
     id: number; // Int!
-    image: string; // String!
     name: string; // String!
   }
   Vote: { // root type
@@ -222,7 +216,7 @@ export interface NexusGenFieldTypes {
   PostComment: { // field return type
     author: NexusGenRootTypes['User']; // User!
     body: string; // String!
-    created_at: NexusGenScalars['Date']; // Date!
+    createdAt: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId: number | null; // Int
     votes_count: number; // Int!
@@ -254,6 +248,7 @@ export interface NexusGenFieldTypes {
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    popularTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
@@ -295,8 +290,8 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   User: { // field return type
+    avatar: string; // String!
     id: number; // Int!
-    image: string; // String!
     name: string; // String!
   }
   Vote: { // field return type
@@ -321,7 +316,6 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
-    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -380,7 +374,7 @@ export interface NexusGenFieldTypeNames {
   PostComment: { // field return type name
     author: 'User'
     body: 'String'
-    created_at: 'Date'
+    createdAt: 'Date'
     id: 'Int'
     parentId: 'Int'
     votes_count: 'Int'
@@ -412,6 +406,7 @@ export interface NexusGenFieldTypeNames {
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
     newProjects: 'Project'
+    popularTopics: 'Topic'
     projectsByCategory: 'Project'
     searchProjects: 'Project'
   }
@@ -453,8 +448,8 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   User: { // field return type name
+    avatar: 'String'
     id: 'Int'
-    image: 'String'
     name: 'String'
   }
   Vote: { // field return type name
@@ -479,7 +474,6 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
-    tags: 'Tag'
     title: 'String'
     votes_count: 'Int'
   }

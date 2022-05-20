@@ -1,10 +1,12 @@
 import { BsBookmark } from "react-icons/bs"
-import { MdIosShare, MdLocalFireDepartment } from "react-icons/md"
+import { MdIosShare } from "react-icons/md"
 import VoteButton from "src/Components/VoteButton/VoteButton"
 
+interface Props {
+    votes_count: number
+}
 
-
-export default function PostActions() {
+export default function PostActions(props: Props) {
 
     const actions = [
         {
@@ -19,7 +21,7 @@ export default function PostActions() {
 
     return (
         <ul className="bg-white rounded-12 p-16 border flex justify-around md:flex-col gap-32">
-            <VoteButton initVotes={123} direction='vertical' fillType="upDown" />
+            <VoteButton initVotes={props.votes_count} direction='vertical' fillType="upDown" />
             {actions.map((action, idx) => <li
                 className={`py-8 px-20 text-body5 flex flex-col justify-center items-center cursor-pointer rounded-8 
                 ${'text-gray-500 hover:bg-gray-50 active:bg-gray-100'}`}>

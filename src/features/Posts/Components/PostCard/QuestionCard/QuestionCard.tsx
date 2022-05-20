@@ -11,7 +11,7 @@ export type QuestionCardType = Pick<Question,
     | 'id'
     | 'type'
     | 'title'
-    | 'date'
+    | 'createdAt'
     | 'author'
     | 'excerpt'
     | 'votes_count'
@@ -22,7 +22,7 @@ export type QuestionCardType = Pick<Question,
         | 'id'
         | 'author'
         | 'body'
-        | 'created_at'
+        | 'createdAt'
     >>
 };
 interface Props {
@@ -33,7 +33,7 @@ export default function QuestionCard({ question }: Props) {
         <div className="bg-white rounded-12 overflow-hidden border">
             {/* <img src={question.cover_image} className='h-[200px] w-full object-cover' alt="" /> */}
             <div className="p-24">
-                <Header author={question.author} date={question.date} />
+                <Header author={question.author} date={question.createdAt} />
                 <div className="flex justify-between">
                     <Link to={`/blog/post/Question/${question.id}`}>
                         <h2 className="text-h5 font-bolder mt-16">{question.title}</h2>
@@ -61,7 +61,7 @@ export default function QuestionCard({ question }: Props) {
                 <div className="flex p-16 mt-16 flex-col gap-10 bg-gray-50">
                     <div className="flex flex-col gap-10">
                         {question.comments.slice(0, 2).map(comment => <div key={comment.id} className="border-b last-of-type:border-b-0 pb-8 " >
-                            <Header author={comment.author} size='sm' date={comment.created_at} />
+                            <Header author={comment.author} size='sm' date={comment.createdAt} />
                             <p className="text-body5 text-gray-600 mt-8">{trimText(comment.body, 80)}</p>
                         </div>)}
                     </div>

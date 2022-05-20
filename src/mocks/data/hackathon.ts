@@ -1,7 +1,7 @@
 import { random, randomItem, randomItems } from "src/utils/helperFunctions"
 import { getCoverImage } from "./utils"
 
-const topics = [
+export const topics = [
     {
         id: 1,
         title: '🎨 Design'

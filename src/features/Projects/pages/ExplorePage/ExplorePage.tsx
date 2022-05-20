@@ -4,14 +4,16 @@ import ProjectsSection from "./ProjectsSection/ProjectsSection";
 
 export default function ExplorePage() {
     return (
-        <>
-            <div className="px-32">
-                <Header />
-            </div>
+        <div className="page-container">
+
+            <Header />
+
             {/* <div className="my-40 px-32">
                 <Categories />
             </div> */}
-            <ProjectsSection />
-        </>
+            <div className="w-full overflow-hidden">
+                <ProjectsSection />
+            </div>
+        </div>
     )
 }

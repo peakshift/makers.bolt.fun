@@ -29,7 +29,7 @@ export default function SortBy({ filterChanged }: Props) {
     }
 
     return (
-        <div className=''>
+        <div className='bg-white border rounded-12 p-16'>
             <p className="text-body2 font-bolder text-black mb-16">Sort By</p>
             <ul>
                 {filters.map((f, idx) => <li
