@@ -58,6 +58,7 @@ export interface NexusGenObjects {
     cover_image: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
+    excerpt: string; // String!
     id: number; // Int!
     reward_amount: number; // Int!
     title: string; // String!
@@ -107,6 +108,7 @@ export interface NexusGenObjects {
     answers_count: number; // Int!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
+    excerpt: string; // String!
     id: number; // Int!
     title: string; // String!
     votes_count: number; // Int!
@@ -115,6 +117,7 @@ export interface NexusGenObjects {
     body: string; // String!
     cover_image: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
+    excerpt: string; // String!
     id: number; // Int!
     title: string; // String!
     votes_count: number; // Int!

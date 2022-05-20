@@ -82,6 +82,7 @@ const PostBase = interfaceType({
         t.nonNull.string('title');
         t.nonNull.date('createdAt');
         t.nonNull.string('body');
+        t.nonNull.string('excerpt');
         t.nonNull.int('votes_count');
     },
 })
@@ -94,7 +95,6 @@ const Story = objectType({
             resolve: () => t.typeName
         });
         t.nonNull.string('cover_image');
-
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
