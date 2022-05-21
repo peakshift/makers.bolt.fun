@@ -2,7 +2,7 @@ import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import { ComponentProps, useRef, useState } from 'react'
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
 import { useDebouncedCallback, useThrottledCallback } from '@react-hookz/web'
 
@@ -183,6 +183,7 @@ export default function VoteButton({
                 ${fillType === 'radial' && styles.color_overlay__radial}
                 `}
                 >
+                    <div></div>
                 </div>
                 <div className={`
                 relative z-10 
@@ -201,15 +202,7 @@ export default function VoteButton({
             >+{increment.value}</span>)}
 
             <div className="relative z-50">
-                <MdLocalFireDepartment className={styles.spark}
-                    style={{
-                        opacity: 1,
-                        scale: 1,
-                        top: 0,
-                        left: 0,
-                        color: 'green'
-                    }}
-                />
+
                 {sparks.map(spark =>
                     <div
                         key={spark.id}

@@ -71,7 +71,7 @@
   transition: all 0.1s;
 }
 
-.color_overlay::before {
+.color_overlay > div {
   content: "";
   background: var(--bg-color);
   width: 100%;
@@ -79,30 +79,24 @@
   position: absolute;
 }
 
-.color_overlay__background::before {
+.color_overlay__background > div {
   top: 0;
   right: 0;
 }
 
-.color_overlay__leftRight::before {
+.color_overlay__leftRight > div {
   top: 0;
   right: 100%;
   transform: translateX(var(--offset));
 }
 
-.color_overlay__upDown::before {
+.color_overlay__upDown > div {
   top: 100%;
   right: 0;
   transform: translateY(calc(-1 * var(--offset)));
 }
 
-@property --offset {
-  syntax: "<number>"; /* <- defined as type number for the transition to work */
-  initial-value: 0%;
-  inherits: false;
-}
-
-.color_overlay__radial::before {
+.color_overlay__radial > div {
   top: 0;
   right: 0;
   background: radial-gradient(
