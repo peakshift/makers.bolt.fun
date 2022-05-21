@@ -28,16 +28,8 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
     const [selectedOption, setSelectedOption] = useState(10);
     const [voteAmount, setVoteAmount] = useState<number>(initVotes ?? 10);
     const { vote, paymentStatus } = useVote({
-        onSuccess: () => {
-            setTimeout(() => {
-                onClose?.();
-            }, 4000);
-        },
-        onError: () => {
-            setTimeout(() => {
-                onClose?.();
-            }, 4000);
-        }
+        itemId: projectId,
+        itemType: Vote_Item_Type.Project
     })
 
 
@@ -54,7 +46,18 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
 
     const requestPayment = (e: FormEvent) => {
         e.preventDefault();
-        vote({ variables: { "amountInSat": voteAmount, "itemId": projectId!, itemType: Vote_Item_Type.Project } });
+        vote(voteAmount, {
+            onSuccess: () => {
+                setTimeout(() => {
+                    onClose?.();
+                }, 4000);
+            },
+            onError: () => {
+                setTimeout(() => {
+                    onClose?.();
+                }, 4000);
+            }
+        });
     }
 
     return (

@@ -19,7 +19,6 @@ export default function PostDetailsPage() {
             type: type as any
         },
         skip: isNaN(Number(id)),
-
     })
 
     const { navHeight } = useAppSelector((state) => ({
@@ -44,7 +43,7 @@ export default function PostDetailsPage() {
                         top: `${navHeight + 16}px`,
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                     }}>
-                    <PostActions votes_count={post.votes_count} />
+                    <PostActions post={post} />
                 </div>
             </aside>
 

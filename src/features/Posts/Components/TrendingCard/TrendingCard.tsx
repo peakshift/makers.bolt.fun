@@ -13,7 +13,7 @@ export default function TrendingCard() {
     return (
         <div className="bg-white rounded-8 border p-16">
             <h3 className="text-body2 font-bolder mb-16">Trending on BOLT.FUN</h3>
-            <ul className='flex flex-col gap-16'>
+            <ul className='flex flex-col'>
                 {
                     trendingPosts.loading ?
                         Array(4).fill(0).map((_, idx) => <li key={idx} className="flex items-start gap-8">
@@ -24,7 +24,7 @@ export default function TrendingCard() {
                         )
                         :
                         trendingPosts.data?.getTrendingPosts.map(post => {
-                            return <Link key={post.id} to={`/blog/post/${post.__typename}/${post.id}`} className="border-b pb-4 last-of-type:border-b-0">
+                            return <Link key={post.id} to={`/blog/post/${post.__typename}/${post.id}`} className="border-b py-16 last-of-type:border-b-0">
                                 <li className="flex items-start gap-8">
                                     <Avatar width={24} src={post.author.avatar} />
                                     <p className="text-body5 font-medium">{post.title}</p>

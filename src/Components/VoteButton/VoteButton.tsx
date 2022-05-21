@@ -19,8 +19,8 @@ interface Particle {
 }
 
 type Props = {
-    initVotes: number,
-    onVote?: (Vote: number) => void,
+    votes: number,
+    onVote?: (amount: number, config: Partial<{ onSetteled: () => void }>) => void,
     fillType?: 'leftRight' | 'upDown' | "background" | 'radial',
     direction?: 'horizontal' | 'vertical'
     disableCounter?: boolean
@@ -30,7 +30,7 @@ type Props = {
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
 export default function VoteButton({
-    initVotes,
+    votes,
     onVote = () => { },
     fillType = 'leftRight',
     direction = 'horizontal',
@@ -56,9 +56,9 @@ export default function VoteButton({
     const resetCounterOnRelease = resetCounterOnReleaseProp;
 
     const doVote = useDebouncedCallback(() => {
-        onVote(voteCntRef.current);
+        const amount = voteCntRef.current;
+        onVote(amount, { onSetteled: () => setVoteCnt(v => v - amount) });
         voteCntRef.current = 0;
-        console.log("VOTED");
 
     }, [], 2000)
 
@@ -192,7 +192,7 @@ export default function VoteButton({
                     <MdLocalFireDepartment
                         className={`text-body2 ${incrementsCount ? "text-red-600" : "text-red-600"}`}
 
-                    /><span className="align-middle w-[4ch]"> {numberFormatter(initVotes + voteCnt)}</span>
+                    /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
                 </div>
             </div>
             {increments.map(increment => <span

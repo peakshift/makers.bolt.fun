@@ -52,7 +52,7 @@ export default function PopularTopicsFilter({ filterChanged }: Props) {
 
                     >
                         <span className='bg-gray-50 rounded-8 w-40 h-40 text-center py-8'> </span>
-                        <span className="self-center px-16"><Skeleton width={'10ch'} />
+                        <span className="self-center px-16"><Skeleton width={'7ch'} />
                         </span>
                     </li>
                     )

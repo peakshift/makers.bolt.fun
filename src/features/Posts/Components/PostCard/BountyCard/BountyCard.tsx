@@ -61,7 +61,7 @@ export default function BountyCard({ bounty }: Props) {
 
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">
-                    <VoteButton initVotes={bounty.votes_count} dense />
+                    <VoteButton votes={bounty.votes_count} dense />
                     <div className="text-gray-600">
                         <FiUsers /> <span className="align-middle text-body5">{bounty.applicants_count} Applicants</span>
                     </div>

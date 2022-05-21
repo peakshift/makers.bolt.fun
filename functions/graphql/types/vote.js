@@ -133,6 +133,7 @@ const voteMutation = extendType({
                 const { item_id, item_type, amount_in_sat } = args;
                 const lightning_address = (await getLightningAddress(item_id, item_type)) ?? BOLT_FUN_LIGHTNING_ADDRESS;
                 const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
+                console.log(pr);
                 const invoice = parsePaymentRequest({ request: pr });
 
                 // #TODO remove votes rows that get added but not confirmed after some time

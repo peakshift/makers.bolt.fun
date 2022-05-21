@@ -43,10 +43,10 @@ export default function FeedPage() {
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         overflowY: "scroll",
                     }}>
-                    <SortBy
+                    {/* <SortBy
                         filterChanged={setSortByFilter}
                     />
-                    <div className="my-24"></div>
+                    <div className="my-24"></div> */}
                     <PopularTopicsFilter
                         filterChanged={setTopicFilter}
                     />

@@ -1,9 +1,10 @@
-import VotesCount from "src/Components/VotesCount/VotesCount"
 import { Story } from "src/features/Posts/types"
 import Header from "../Header/Header"
 import { BiComment } from 'react-icons/bi'
 import { Link } from "react-router-dom"
 import VoteButton from "src/Components/VoteButton/VoteButton"
+import { useVote } from "src/utils/hooks"
+import { Vote_Item_Type } from 'src/graphql';
 
 export type StoryCardType = Pick<Story,
     | 'id'
@@ -21,6 +22,12 @@ interface Props {
     story: StoryCardType
 }
 export default function StoryCard({ story }: Props) {
+
+    const { vote } = useVote({
+        itemId: story.id,
+        itemType: Vote_Item_Type.Story
+    });
+
     return (
         <div className="bg-white rounded-12 overflow-hidden border">
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
@@ -33,7 +40,7 @@ export default function StoryCard({ story }: Props) {
 
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">
-                    <VoteButton initVotes={story.votes_count} dense />
+                    <VoteButton votes={story.votes_count} dense onVote={vote} />
                     <div className="text-gray-600">
                         <BiComment /> <span className="align-middle text-body5">{story.comments_count} Comments</span>
                     </div>

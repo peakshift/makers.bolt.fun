@@ -52,7 +52,7 @@ export default function QuestionCard({ question }: Props) {
 
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">
-                    <VoteButton initVotes={question.votes_count} dense />
+                    <VoteButton votes={question.votes_count} dense />
                     <div className="text-gray-600">
                         <FiUsers /> <span className="align-middle text-body5">{question.answers_count} Answers</span>
                     </div>
