@@ -32,7 +32,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
-  VOTE_ITEM_TYPE: "Bounty" | "Comment" | "Project" | "Question" | "Story" | "User"
+  VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 
 export interface NexusGenScalars {
@@ -139,13 +139,6 @@ export interface NexusGenObjects {
   Vote: { // root type
     amount_in_sat: number; // Int!
     id: number; // Int!
-    paid: boolean; // Boolean!
-    payment_hash: string; // String!
-    payment_request: string; // String!
-  }
-  Vote2: { // root type
-    amount_in_sat: number; // Int!
-    id: number; // Int!
     item_id: number; // Int!
     item_type: NexusGenEnums['VOTE_ITEM_TYPE']; // VOTE_ITEM_TYPE!
     paid: boolean; // Boolean!
@@ -214,7 +207,6 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     vote: NexusGenRootTypes['Vote']; // Vote!
-    vote2: NexusGenRootTypes['Vote2']; // Vote2!
   }
   PostComment: { // field return type
     author: NexusGenRootTypes['User']; // User!
@@ -300,14 +292,6 @@ export interface NexusGenFieldTypes {
   Vote: { // field return type
     amount_in_sat: number; // Int!
     id: number; // Int!
-    paid: boolean; // Boolean!
-    payment_hash: string; // String!
-    payment_request: string; // String!
-    project: NexusGenRootTypes['Project']; // Project!
-  }
-  Vote2: { // field return type
-    amount_in_sat: number; // Int!
-    id: number; // Int!
     item_id: number; // Int!
     item_type: NexusGenEnums['VOTE_ITEM_TYPE']; // VOTE_ITEM_TYPE!
     paid: boolean; // Boolean!
@@ -372,7 +356,6 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmVote: 'Vote'
     vote: 'Vote'
-    vote2: 'Vote2'
   }
   PostComment: { // field return type name
     author: 'User'
@@ -458,14 +441,6 @@ export interface NexusGenFieldTypeNames {
   Vote: { // field return type name
     amount_in_sat: 'Int'
     id: 'Int'
-    paid: 'Boolean'
-    payment_hash: 'String'
-    payment_request: 'String'
-    project: 'Project'
-  }
-  Vote2: { // field return type name
-    amount_in_sat: 'Int'
-    id: 'Int'
     item_id: 'Int'
     item_type: 'VOTE_ITEM_TYPE'
     paid: 'Boolean'
@@ -489,10 +464,6 @@ export interface NexusGenArgTypes {
       preimage: string; // String!
     }
     vote: { // args
-      amount_in_sat: number; // Int!
-      project_id: number; // Int!
-    }
-    vote2: { // args
       amount_in_sat: number; // Int!
       item_id: number; // Int!
       item_type: NexusGenEnums['VOTE_ITEM_TYPE']; // VOTE_ITEM_TYPE!

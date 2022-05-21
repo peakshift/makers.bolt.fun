@@ -75,7 +75,6 @@ export type Mutation = {
   __typename?: 'Mutation';
   confirmVote: Vote;
   vote: Vote;
-  vote2: Vote2;
 };
 
 
@@ -86,12 +85,6 @@ export type MutationConfirmVoteArgs = {
 
 
 export type MutationVoteArgs = {
-  amount_in_sat: Scalars['Int'];
-  project_id: Scalars['Int'];
-};
-
-
-export type MutationVote2Args = {
   amount_in_sat: Scalars['Int'];
   item_id: Scalars['Int'];
   item_type: Vote_Item_Type;
@@ -274,7 +267,7 @@ export type User = {
 
 export enum Vote_Item_Type {
   Bounty = 'Bounty',
-  Comment = 'Comment',
+  PostComment = 'PostComment',
   Project = 'Project',
   Question = 'Question',
   Story = 'Story',
@@ -283,16 +276,6 @@ export enum Vote_Item_Type {
 
 export type Vote = {
   __typename?: 'Vote';
-  amount_in_sat: Scalars['Int'];
-  id: Scalars['Int'];
-  paid: Scalars['Boolean'];
-  payment_hash: Scalars['String'];
-  payment_request: Scalars['String'];
-  project: Project;
-};
-
-export type Vote2 = {
-  __typename?: 'Vote2';
   amount_in_sat: Scalars['Int'];
   id: Scalars['Int'];
   item_id: Scalars['Int'];
@@ -372,12 +355,13 @@ export type ProjectDetailsQueryVariables = Exact<{
 export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string }, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
 export type VoteMutationVariables = Exact<{
-  projectId: Scalars['Int'];
+  itemType: Vote_Item_Type;
+  itemId: Scalars['Int'];
   amountInSat: Scalars['Int'];
 }>;
 
 
-export type VoteMutation = { __typename?: 'Mutation', vote: { __typename?: 'Vote', id: number, amount_in_sat: number, payment_request: string, payment_hash: string, paid: boolean } };
+export type VoteMutation = { __typename?: 'Mutation', vote: { __typename?: 'Vote', id: number, amount_in_sat: number, payment_request: string, payment_hash: string, paid: boolean, item_type: Vote_Item_Type, item_id: number } };
 
 export type ConfirmVoteMutationVariables = Exact<{
   paymentRequest: Scalars['String'];
@@ -385,7 +369,7 @@ export type ConfirmVoteMutationVariables = Exact<{
 }>;
 
 
-export type ConfirmVoteMutation = { __typename?: 'Mutation', confirmVote: { __typename?: 'Vote', id: number, amount_in_sat: number, payment_request: string, payment_hash: string, paid: boolean, project: { __typename?: 'Project', id: number, votes_count: number } } };
+export type ConfirmVoteMutation = { __typename?: 'Mutation', confirmVote: { __typename?: 'Vote', id: number, amount_in_sat: number, payment_request: string, payment_hash: string, paid: boolean, item_type: Vote_Item_Type, item_id: number } };
 
 
 export const NavCategoriesDocument = gql`
@@ -1029,13 +1013,15 @@ export type ProjectDetailsQueryHookResult = ReturnType<typeof useProjectDetailsQ
 export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDetailsLazyQuery>;
 export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
 export const VoteDocument = gql`
-    mutation Vote($projectId: Int!, $amountInSat: Int!) {
-  vote(project_id: $projectId, amount_in_sat: $amountInSat) {
+    mutation Vote($itemType: VOTE_ITEM_TYPE!, $itemId: Int!, $amountInSat: Int!) {
+  vote(item_type: $itemType, item_id: $itemId, amount_in_sat: $amountInSat) {
     id
     amount_in_sat
     payment_request
     payment_hash
     paid
+    item_type
+    item_id
   }
 }
     `;
@@ -1054,7 +1040,8 @@ export type VoteMutationFn = Apollo.MutationFunction<VoteMutation, VoteMutationV
  * @example
  * const [voteMutation, { data, loading, error }] = useVoteMutation({
  *   variables: {
- *      projectId: // value for 'projectId'
+ *      itemType: // value for 'itemType'
+ *      itemId: // value for 'itemId'
  *      amountInSat: // value for 'amountInSat'
  *   },
  * });
@@ -1074,10 +1061,8 @@ export const ConfirmVoteDocument = gql`
     payment_request
     payment_hash
     paid
-    project {
-      id
-      votes_count
-    }
+    item_type
+    item_id
   }
 }
     `;

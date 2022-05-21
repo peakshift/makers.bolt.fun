@@ -1,10 +1,12 @@
-mutation Vote($projectId: Int!, $amountInSat: Int!) {
-  vote(project_id: $projectId, amount_in_sat: $amountInSat) {
+mutation Vote($itemType: VOTE_ITEM_TYPE!, $itemId: Int!, $amountInSat: Int!) {
+  vote(item_type: $itemType, item_id: $itemId, amount_in_sat: $amountInSat) {
     id
     amount_in_sat
     payment_request
     payment_hash
     paid
+    item_type
+    item_id
   }
 }
 
@@ -15,9 +17,7 @@ mutation ConfirmVote($paymentRequest: String!, $preimage: String!) {
     payment_request
     payment_hash
     paid
-    project {
-      id
-      votes_count
-    }
+    item_type
+    item_id
   }
 }

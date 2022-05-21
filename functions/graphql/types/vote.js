@@ -8,7 +8,7 @@ const {
     enumType,
 } = require('nexus')
 const { parsePaymentRequest } = require('invoices');
-const { getPaymetRequestForProject, hexToUint8Array } = require('./helpers');
+const { getPaymetRequestForItem, hexToUint8Array } = require('./helpers');
 const { createHash } = require('crypto');
 const { prisma } = require('../prisma')
 
@@ -16,31 +16,12 @@ const { prisma } = require('../prisma')
 // the types of items we can vote to
 const VOTE_ITEM_TYPE = enumType({
     name: 'VOTE_ITEM_TYPE',
-    members: ['Story', 'Bounty', 'Question', 'Project', 'User', 'Comment'],
+    members: ['Story', 'Bounty', 'Question', 'Project', 'User', 'PostComment'],
 })
+
 
 const Vote = objectType({
     name: 'Vote',
-    definition(t) {
-        t.nonNull.int('id');
-        t.nonNull.int('amount_in_sat');
-        t.nonNull.string('payment_request');
-        t.nonNull.string('payment_hash');
-        t.nonNull.boolean('paid');
-
-        t.nonNull.field('project', {
-            type: "Project",
-            resolve: (parent, args,) => {
-                return parent.project ?? prisma.vote.findUnique({
-                    where: { id: parent.id }
-                }).project()
-            }
-        })
-    }
-})
-
-const Vote2 = objectType({
-    name: 'Vote2',
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.int('amount_in_sat');
@@ -67,46 +48,78 @@ const LnurlDetails = objectType({
     }
 })
 
-// This is the old voting mutation, it can only vote for projects (SHOULD BE REPLACED BY THE NEW VOTE MUTATION WHEN THAT ONE IS WORKING)
+
+
+
+const getModalOfType = (type) => {
+    switch (type) {
+        case "Story":
+            return prisma.story;
+        case "Question":
+            return prisma.question;
+        case "Project":
+            return prisma.project;
+        case "Comment":
+            return prisma.postComment;
+        default:
+            return null;
+    }
+}
+
+const getLightningAddress = async (item_id, item_type) => {
+    switch (item_type) {
+        case "Story":
+            return prisma.story.findUnique({
+                where: { id: item_id }, include: {
+                    user: {
+                        select: {
+                            lightning_address: true
+                        }
+                    }
+                }
+            }).then(data => data.user.lightning_address);
+        case "Question":
+            return prisma.question.findUnique({
+                where: { id: item_id }, include: {
+                    user: {
+                        select: {
+                            lightning_address: true
+                        }
+                    }
+                }
+            }).then(data => data.user.lightning_address);
+        case "Project":
+            return prisma.project.findUnique({
+                where: { id: item_id },
+                select: {
+                    lightning_address: true
+                }
+            }).then(data => data.lightning_address);
+        case "Comment":
+            return prisma.postComment.findUnique({
+                where: { id: item_id }, include: {
+                    user: {
+                        select: {
+                            lightning_address: true
+                        }
+                    }
+                }
+            }).then(data => data.user.lightning_address);
+        default:
+            return null;
+    }
+}
+
+// type => modal
+// type => lightning address (pr)
+
+
+// This is the new voting mutation, it can vote for any type of item that we define in the VOTE_ITEM_TYPE enum
 const voteMutation = extendType({
     type: "Mutation",
     definition(t) {
         t.nonNull.field('vote', {
             type: "Vote",
-            args: {
-                project_id: nonNull(intArg()),
-                amount_in_sat: nonNull(intArg())
-            },
-            resolve: async (_, args) => {
-                const project = await prisma.project.findUnique({
-                    where: { id: args.project_id },
-                });
-                const pr = await getPaymetRequestForProject(project, args.amount_in_sat);
-                const invoice = parsePaymentRequest({ request: pr });
-                return prisma.vote.create({
-                    data: {
-                        project_id: project.id,
-                        amount_in_sat: args.amount_in_sat,
-                        payment_request: pr,
-                        payment_hash: invoice.id,
-                    },
-                    include: {
-                        project: true
-                    }
-                });
-            }
-        })
-    }
-})
-
-
-
-// This is the new voting mutation, it can vote for any type of item that we define in the VOTE_ITEM_TYPE enum
-const vote2Mutation = extendType({
-    type: "Mutation",
-    definition(t) {
-        t.nonNull.field('vote2', {
-            type: "Vote2",
             args: {
                 item_type: arg({
                     type: nonNull("VOTE_ITEM_TYPE")
@@ -117,20 +130,23 @@ const vote2Mutation = extendType({
             resolve: async (_, args) => {
 
                 const { item_id, item_type, amount_in_sat } = args;
+                const lightning_address = getLightningAddress(item_id, item_type)
+                const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
+                const invoice = parsePaymentRequest({ request: pr });
 
-                // Create the invoice here according to it's type & get a payment request and a payment hash
+                // #TODO remove votes rows that get added but not confirmed after some time
+                // maybe using a scheduler, timeout, or whatever mean available
 
-                return {
-                    id: 111,
-                    amount_in_sat: amount_in_sat,
-                    payment_request: '{{payment_request}}',
-                    payment_hash: '{{payment_hash}}',
-                    paid: true,
-                    item_type: item_type,
-                    item_id: item_id,
-                }
+                return prisma.vote.create({
+                    data: {
+                        item_type: item_type,
+                        item_id: item_id,
+                        amount_in_sat: amount_in_sat,
+                        payment_request: pr,
+                        payment_hash: invoice.id,
+                    }
+                });
             }
-
         })
     }
 })
@@ -156,17 +172,19 @@ const confirmVoteMutation = extendType({
                         payment_hash: paymentHash,
                     },
                 });
+
                 // if we find a vote it means the preimage is correct and we update the vote and mark it as paid
                 // can we write this nicer?
                 if (vote) {
-                    const project = await prisma.project.findUnique({
-                        where: { id: vote.project_id },
+                    const modal = getModalOfType(vote.item_type);
+                    const item = await modal.findUnique({
+                        where: { id: vote.item_id },
                     });
                     // count up votes cache
-                    await prisma.project.update({
-                        where: { id: project.id },
+                    await modal.update({
+                        where: { id: item.id },
                         data: {
-                            votes_count: project.votes_count + vote.amount_in_sat,
+                            votes_count: item.votes_count + vote.amount_in_sat,
                         },
                     });
                     // return the current vote
@@ -175,9 +193,6 @@ const confirmVoteMutation = extendType({
                         data: {
                             paid: true,
                             preimage: args.preimage,
-                        },
-                        include: {
-                            project: true
                         }
                     });
                 } else {
@@ -194,11 +209,9 @@ module.exports = {
 
     // Types
     Vote,
-    Vote2,
     LnurlDetails,
 
     // Mutations
     voteMutation,
-    vote2Mutation,
     confirmVoteMutation
 }

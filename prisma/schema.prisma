@@ -22,8 +22,8 @@ model Tag {
 
 model Vote {
   id              Int     @id @default(autoincrement())
-  project         Project @relation(fields: [project_id], references: [id])
-  project_id      Int
+  item_id         Int
+  item_type       String
   amount_in_sat   Int
   payment_request String?
   payment_hash    String?
@@ -73,7 +73,6 @@ model Project {
   category    Category @relation(fields: [category_id], references: [id])
   category_id Int
   votes_count Int      @default(0)
-  vote        Vote[]
   createdAt   DateTime @default(now())
 
   awards Award[]

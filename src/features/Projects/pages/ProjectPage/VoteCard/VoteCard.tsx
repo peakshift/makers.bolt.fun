@@ -3,28 +3,16 @@ import React, { FormEvent, useState } from 'react';
 import { AiFillThunderbolt } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
-import { useAppSelector } from 'src/utils/hooks';
+import { PaymentStatus, useVote } from 'src/utils/hooks';
 import Confetti from "react-confetti";
-import { Wallet_Service } from 'src/services';
 import { useWindowSize } from '@react-hookz/web';
-import { useConfirmVoteMutation, useVoteMutation } from 'src/graphql';
+import { Vote_Item_Type } from 'src/graphql';
 
 const defaultOptions = [
     { text: '100 sat', value: 100 },
     { text: '1k sat', value: 1000 },
     { text: '10k sats', value: 10000 },
 ]
-
-
-enum PaymentStatus {
-    DEFAULT,
-    FETCHING_PAYMENT_DETAILS,
-    PAID,
-    AWAITING_PAYMENT,
-    PAYMENT_CONFIRMED,
-    NOT_PAID,
-    CANCELED
-}
 
 
 interface Props extends ModalCard {
@@ -35,57 +23,24 @@ interface Props extends ModalCard {
 export default function VoteCard({ onClose, direction, projectId, initVotes, ...props }: Props) {
     const { width, height } = useWindowSize()
 
-    const { isWalletConnected } = useAppSelector(state => ({
-        isWalletConnected: state.wallet.isConnected,
-        initVotes: state.vote.voteAmount,
-        projectId: state.project.openId
-    }));
 
 
     const [selectedOption, setSelectedOption] = useState(10);
     const [voteAmount, setVoteAmount] = useState<number>(initVotes ?? 10);
-    const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(PaymentStatus.DEFAULT);
-
-    const [vote, { data }] = useVoteMutation({
-        onCompleted: async (votingData) => {
-            try {
-                setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
-                const webln = await Wallet_Service.getWebln()
-                const paymentResponse = await webln.sendPayment(votingData.vote.payment_request);
-                setPaymentStatus(PaymentStatus.PAID);
-                confirmVote({
-                    variables: {
-                        paymentRequest: votingData.vote.payment_request,
-                        preimage: paymentResponse.preimage
-                    }
-                })
-            } catch (error) {
-                console.log(error);
-                setPaymentStatus(PaymentStatus.NOT_PAID);
-            }
-
+    const { vote, paymentStatus } = useVote({
+        onSuccess: () => {
+            setTimeout(() => {
+                onClose?.();
+            }, 4000);
         },
-        onError: (error) => {
-            console.log(error);
-            alert("Something wrong happened...")
-            setPaymentStatus(PaymentStatus.NOT_PAID);
+        onError: () => {
             setTimeout(() => {
                 onClose?.();
             }, 4000);
         }
-    });
+    })
 
-    const [confirmVote, { data: confirmedVoteData }] = useConfirmVoteMutation({
-        onCompleted: (votingData) => {
-            setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
-            setTimeout(() => {
-                onClose?.();
-            }, 4000);
-        },
 
-        onError: () => { }
-
-    });
 
     const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(-1);
@@ -99,8 +54,7 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
 
     const requestPayment = (e: FormEvent) => {
         e.preventDefault();
-        setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS);
-        vote({ variables: { "amountInSat": voteAmount, "projectId": projectId! } });
+        vote({ variables: { "amountInSat": voteAmount, "itemId": projectId!, itemType: Vote_Item_Type.Project } });
     }
 
     return (
