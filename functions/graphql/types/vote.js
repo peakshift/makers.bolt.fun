@@ -18,6 +18,7 @@ const VOTE_ITEM_TYPE = enumType({
     name: 'VOTE_ITEM_TYPE',
     members: ['Story', 'Bounty', 'Question', 'Project', 'User', 'PostComment'],
 })
+const BOLT_FUN_LIGHTNING_ADDRESS = 'johns@getalby.com'; // #TODO, replace it by bolt-fun lightning address if there exist one
 
 
 const Vote = objectType({
@@ -130,7 +131,7 @@ const voteMutation = extendType({
             resolve: async (_, args) => {
 
                 const { item_id, item_type, amount_in_sat } = args;
-                const lightning_address = getLightningAddress(item_id, item_type)
+                const lightning_address = (await getLightningAddress(item_id, item_type)) ?? BOLT_FUN_LIGHTNING_ADDRESS;
                 const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
                 const invoice = parsePaymentRequest({ request: pr });
 
