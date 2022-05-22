@@ -63,6 +63,19 @@ export type Category = {
   votes_sum: Scalars['Int'];
 };
 
+export type Hackathon = {
+  __typename?: 'Hackathon';
+  cover_image: Scalars['String'];
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  id: Scalars['Int'];
+  location: Scalars['String'];
+  start_date: Scalars['Date'];
+  title: Scalars['String'];
+  topics: Array<Topic>;
+  website: Scalars['String'];
+};
+
 export type LnurlDetails = {
   __typename?: 'LnurlDetails';
   commentAllowed: Maybe<Scalars['Int']>;
@@ -139,6 +152,7 @@ export type Query = {
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   allTopics: Array<Topic>;
+  getAllHackathons: Array<Hackathon>;
   getCategory: Category;
   getFeed: Array<Post>;
   getLnurlDetailsForProject: LnurlDetails;
@@ -156,6 +170,12 @@ export type Query = {
 export type QueryAllProjectsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetAllHackathonsArgs = {
+  sortBy: InputMaybe<Scalars['String']>;
+  topic: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -296,6 +316,19 @@ export type SearchProjectsQueryVariables = Exact<{
 
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
+
+export type AllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllTopicsQuery = { __typename?: 'Query', allTopics: Array<{ __typename?: 'Topic', id: number, title: string, icon: string }> };
+
+export type GetHackathonsQueryVariables = Exact<{
+  sortBy: InputMaybe<Scalars['String']>;
+  topic: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetHackathonsQuery = { __typename?: 'Query', getAllHackathons: Array<{ __typename?: 'Hackathon', id: number, title: string, description: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, topics: Array<{ __typename?: 'Topic', id: number, title: string, icon: string }> }> };
 
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -450,6 +483,90 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const AllTopicsDocument = gql`
+    query allTopics {
+  allTopics {
+    id
+    title
+    icon
+  }
+}
+    `;
+
+/**
+ * __useAllTopicsQuery__
+ *
+ * To run a query within a React component, call `useAllTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllTopicsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllTopicsQuery(baseOptions?: Apollo.QueryHookOptions<AllTopicsQuery, AllTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllTopicsQuery, AllTopicsQueryVariables>(AllTopicsDocument, options);
+      }
+export function useAllTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllTopicsQuery, AllTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllTopicsQuery, AllTopicsQueryVariables>(AllTopicsDocument, options);
+        }
+export type AllTopicsQueryHookResult = ReturnType<typeof useAllTopicsQuery>;
+export type AllTopicsLazyQueryHookResult = ReturnType<typeof useAllTopicsLazyQuery>;
+export type AllTopicsQueryResult = Apollo.QueryResult<AllTopicsQuery, AllTopicsQueryVariables>;
+export const GetHackathonsDocument = gql`
+    query getHackathons($sortBy: String, $topic: Int) {
+  getAllHackathons(sortBy: $sortBy, topic: $topic) {
+    id
+    title
+    description
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    topics {
+      id
+      title
+      icon
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetHackathonsQuery__
+ *
+ * To run a query within a React component, call `useGetHackathonsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetHackathonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetHackathonsQuery({
+ *   variables: {
+ *      sortBy: // value for 'sortBy'
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useGetHackathonsQuery(baseOptions?: Apollo.QueryHookOptions<GetHackathonsQuery, GetHackathonsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetHackathonsQuery, GetHackathonsQueryVariables>(GetHackathonsDocument, options);
+      }
+export function useGetHackathonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetHackathonsQuery, GetHackathonsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetHackathonsQuery, GetHackathonsQueryVariables>(GetHackathonsDocument, options);
+        }
+export type GetHackathonsQueryHookResult = ReturnType<typeof useGetHackathonsQuery>;
+export type GetHackathonsLazyQueryHookResult = ReturnType<typeof useGetHackathonsLazyQuery>;
+export type GetHackathonsQueryResult = Apollo.QueryResult<GetHackathonsQuery, GetHackathonsQueryVariables>;
 export const TrendingPostsDocument = gql`
     query TrendingPosts {
   getTrendingPosts {

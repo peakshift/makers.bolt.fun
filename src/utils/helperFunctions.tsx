@@ -10,8 +10,6 @@ export function randomItem(...args: any[]) {
 }
 
 export function randomItems(cnt: number, ...args: any[]) {
-  console.log(cnt);
-
   return shuffle(args).slice(0, cnt);
 }
 

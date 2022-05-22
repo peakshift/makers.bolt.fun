@@ -2,27 +2,6 @@ import React, { useState } from 'react'
 import Skeleton from 'react-loading-skeleton';
 import { usePopularTopicsQuery } from 'src/graphql';
 
-const filters = [
-    {
-        text: "🔥 All",
-        value: 0
-    }, {
-        text: "Lightning Network",
-        value: 1
-    }, {
-        text: "Bitcoin",
-        value: 2
-    }, {
-        text: "Cybersecurity",
-        value: 3
-    }, {
-        text: "Bounties",
-        value: 4
-    }, {
-        text: "Grants",
-        value: 5
-    },
-]
 
 interface Props {
     filterChanged?: (newFilter: number | null) => void
@@ -30,7 +9,7 @@ interface Props {
 
 export default function PopularTopicsFilter({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState<number | null>(filters[0].value);
+    const [selected, setSelected] = useState<number | null>(null);
 
     const topicsQuery = usePopularTopicsQuery();
 
@@ -59,10 +38,10 @@ export default function PopularTopicsFilter({ filterChanged }: Props) {
                     :
                     topicsQuery.data?.popularTopics.map((f, idx) => <li
                         key={f.id}
-                        className={`flex items-start rounded-8 cursor-pointer font-bold ${f.id === selected && 'bg-gray-50'}`}
+                        className={`flex items-start rounded-8 cursor-pointer font-bold ${f.id === selected && 'bg-gray-200'}`}
                         onClick={() => filterClicked(f.id)}
                     >
-                        <span className='bg-gray-50 rounded-8 w-40 h-40 text-center py-8'>{f.icon}</span>
+                        <span className={`${f.id !== selected && 'bg-gray-50'} rounded-8 w-40 h-40 text-center py-8`}>{f.icon}</span>
                         <span className="self-center px-16">
                             {f.title}
                         </span>

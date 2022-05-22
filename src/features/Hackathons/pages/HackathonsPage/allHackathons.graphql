@@ -1,0 +1,17 @@
+query getHackathons($sortBy: String, $topic: Int) {
+  getAllHackathons(sortBy: $sortBy, topic: $topic) {
+    id
+    title
+    description
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    topics {
+      id
+      title
+      icon
+    }
+  }
+}

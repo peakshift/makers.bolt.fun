@@ -3,8 +3,8 @@ import { Nullable } from 'remirror';
 
 const filters = [
     {
-        text: "🔥 Popular",
-        value: 'popular'
+        text: "🔥 Hottest",
+        value: 'hottest'
     }, {
         text: "📆 Newest",
         value: 'newest'
@@ -34,7 +34,7 @@ export default function SortBy({ filterChanged }: Props) {
             <ul>
                 {filters.map((f, idx) => <li
                     key={f.value}
-                    className={`p-12 rounded-8 cursor-pointer font-bold ${f.value === selected && 'bg-gray-100'}`}
+                    className={`p-12 rounded-8 cursor-pointer font-bold ${f.value === selected && 'bg-gray-200'}`}
                     onClick={() => filterClicked(f.value)}
                 >
                     {f.text}

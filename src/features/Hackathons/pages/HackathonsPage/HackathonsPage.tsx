@@ -1,7 +1,9 @@
 
 import { useReducer, useState } from 'react'
-import { useFeedQuery } from 'src/graphql'
+import Button from 'src/Components/Button/Button'
+import { useGetHackathonsQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
+import HackathonsList from '../../Components/HackathonsList/HackathonsList'
 import SortByFilter from '../../Components/SortByFilter/SortByFilter'
 import TopicsFilter from '../../Components/TopicsFilter/TopicsFilter'
 import styles from './styles.module.scss'
@@ -9,19 +11,15 @@ import styles from './styles.module.scss'
 
 export default function HackathonsPage() {
 
-    const [sortByFilter, setSortByFilter] = useState('all')
-    const [topicsFilter, setTopicsFilter] = useState('all')
+    const [sortByFilter, setSortByFilter] = useState<string | null>(null)
+    const [topicsFilter, setTopicsFilter] = useState<number | null>(null)
 
-
-    const feedQuery = useFeedQuery({
+    const hackathonsQuery = useGetHackathonsQuery({
         variables: {
-            take: 10,
-            skip: 0,
             sortBy: sortByFilter,
             topic: Number(topicsFilter)
         },
     })
-    const { fetchMore, isFetchingMore } = useInfiniteQuery(feedQuery, 'getFeed')
     const { navHeight } = useAppSelector((state) => ({
         navHeight: state.ui.navHeight
     }));
@@ -31,7 +29,7 @@ export default function HackathonsPage() {
             className={`page-container pt-16 w-full ${styles.grid}`}
         >
             <aside className='no-scrollbar'>
-                <div className="sticky"
+                <div className="sticky flex flex-col gap-24"
                     style={{
                         top: `${navHeight + 16}px`,
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
@@ -43,9 +41,21 @@ export default function HackathonsPage() {
                     <TopicsFilter
                         filterChanged={setTopicsFilter}
                     />
+                    <Button
+                        href='https://airtable.com/some-registration-form'
+                        newTab
+                        color='primary'
+                        fullWidth
+                    >
+                        List Your Hackathon
+                    </Button>
                 </div>
             </aside>
-
+            <div className="self-start">
+                <HackathonsList
+                    isLoading={hackathonsQuery.loading}
+                    items={hackathonsQuery.data?.getAllHackathons} />
+            </div>
         </div>
     )
 }

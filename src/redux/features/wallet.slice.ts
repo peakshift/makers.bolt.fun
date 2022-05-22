@@ -1,5 +1,4 @@
-import { WebLNProvider } from "webln";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 
 

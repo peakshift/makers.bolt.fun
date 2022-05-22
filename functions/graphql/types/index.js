@@ -4,6 +4,7 @@ const project = require('./project')
 const vote = require('./vote')
 const post = require('./post')
 const users = require('./users')
+const hackathon = require('./hackathon')
 
 module.exports = {
     ...scalars,
@@ -11,5 +12,6 @@ module.exports = {
     ...project,
     ...vote,
     ...post,
-    ...users
+    ...users,
+    ...hackathon
 }

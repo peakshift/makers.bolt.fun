@@ -1,0 +1,7 @@
+query allTopics {
+  allTopics {
+    id
+    title
+    icon
+  }
+}

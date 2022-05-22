@@ -76,6 +76,16 @@ export interface NexusGenObjects {
     id: number; // Int!
     title: string; // String!
   }
+  Hackathon: { // root type
+    cover_image: string; // String!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    id: number; // Int!
+    location: string; // String!
+    start_date: NexusGenScalars['Date']; // Date!
+    title: string; // String!
+    website: string; // String!
+  }
   LnurlDetails: { // root type
     commentAllowed?: number | null; // Int
     maxSendable?: number | null; // Int
@@ -198,6 +208,17 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     votes_sum: number; // Int!
   }
+  Hackathon: { // field return type
+    cover_image: string; // String!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    id: number; // Int!
+    location: string; // String!
+    start_date: NexusGenScalars['Date']; // Date!
+    title: string; // String!
+    topics: NexusGenRootTypes['Topic'][]; // [Topic!]!
+    website: string; // String!
+  }
   LnurlDetails: { // field return type
     commentAllowed: number | null; // Int
     maxSendable: number | null; // Int
@@ -235,6 +256,7 @@ export interface NexusGenFieldTypes {
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     allTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
+    getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
@@ -347,6 +369,17 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     votes_sum: 'Int'
   }
+  Hackathon: { // field return type name
+    cover_image: 'String'
+    description: 'String'
+    end_date: 'Date'
+    id: 'Int'
+    location: 'String'
+    start_date: 'Date'
+    title: 'String'
+    topics: 'Topic'
+    website: 'String'
+  }
   LnurlDetails: { // field return type name
     commentAllowed: 'Int'
     maxSendable: 'Int'
@@ -384,6 +417,7 @@ export interface NexusGenFieldTypeNames {
     allCategories: 'Category'
     allProjects: 'Project'
     allTopics: 'Topic'
+    getAllHackathons: 'Hackathon'
     getCategory: 'Category'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
@@ -473,6 +507,10 @@ export interface NexusGenArgTypes {
     allProjects: { // args
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    getAllHackathons: { // args
+      sortBy?: string | null; // String
+      topic?: number | null; // Int
     }
     getCategory: { // args
       id: number; // Int!

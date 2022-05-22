@@ -8,6 +8,7 @@ import { setNavHeight } from "src/redux/features/ui.slice";
 import NavDesktop from "./NavDesktop";
 import { useMediaQuery } from "@react-hookz/web";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
+import { IoMdTrophy } from "react-icons/io";
 
 
 export const navLinks = [
@@ -16,6 +17,12 @@ export const navLinks = [
     text: "Blog",
     url: "/blog",
     icon: MdComment,
+    color: "text-primary-600",
+  },
+  {
+    text: "Hackathons",
+    url: "/hackathons",
+    icon: IoMdTrophy,
     color: "text-primary-600",
   },
   {
@@ -41,6 +48,7 @@ export default function Navbar() {
   }));
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
+  console.log(isLargeScreen, MEDIA_QUERIES.isLarge);
 
 
   const onConnectWallet = () => {

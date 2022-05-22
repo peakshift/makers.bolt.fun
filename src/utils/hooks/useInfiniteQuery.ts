@@ -1,5 +1,4 @@
 import { QueryResult } from "@apollo/client";
-import { useUpdateEffect } from "@react-hookz/web";
 import { useCallback, useState } from "react";
 
 export const useInfiniteQuery = (query: QueryResult, dataField: string) => {

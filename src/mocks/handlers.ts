@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, newProjects, popularTopics, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, newProjects, popularTopics, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -21,6 +21,10 @@ import {
     TrendingPostsQuery,
     PopularTopicsQuery,
     PopularTopicsQueryVariables,
+    GetHackathonsQuery,
+    GetHackathonsQueryVariables,
+    AllTopicsQuery,
+    AllTopicsQueryVariables,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -112,6 +116,15 @@ export const handlers = [
         )
     }),
 
+    graphql.query<AllTopicsQuery, AllTopicsQueryVariables>('allTopics', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                allTopics: popularTopics()
+            })
+        )
+    }),
+
 
     graphql.query<FeedQuery, FeedQueryVariables>('Feed', async (req, res, ctx) => {
         await delay()
@@ -144,6 +157,17 @@ export const handlers = [
         return res(
             ctx.data({
                 getTrendingPosts: getTrendingPosts()
+            })
+        )
+    }),
+
+
+    graphql.query<GetHackathonsQuery, GetHackathonsQueryVariables>('getHackathons', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getAllHackathons: getAllHackathons()
             })
         )
     }),

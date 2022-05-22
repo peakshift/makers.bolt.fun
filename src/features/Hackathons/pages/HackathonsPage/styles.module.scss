@@ -4,14 +4,11 @@
   gap: 0;
 
   @media screen and (min-width: 680px) {
-    grid-template-columns: 1fr 2fr 0;
+    grid-template-columns: 1fr 2fr;
     gap: 32px;
   }
 
   @media screen and (min-width: 1024px) {
-    grid-template-columns:
-      minmax(200px, 1fr)
-      minmax(50%, 70ch)
-      minmax(200px, 1fr);
+    grid-template-columns: calc(min(30%, 326px)) 1fr;
   }
 }

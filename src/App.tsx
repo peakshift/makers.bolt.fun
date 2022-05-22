@@ -9,6 +9,7 @@ import LoadingPage from "./Components/LoadingPage/LoadingPage";
 
 // Pages
 const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage"))
+const HackathonsPage = React.lazy(() => import("./features/Hackathons/pages/HackathonsPage/HackathonsPage"))
 const HottestPage = React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage"))
 const PostDetailsPage = React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage"))
 const CategoryPage = React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage"))
@@ -47,6 +48,7 @@ function App() {
         <Route path="/category/:id" element={<CategoryPage />} />
         <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
         <Route path="/blog" element={<FeedPage />} />
+        <Route path="/hackathons" element={<HackathonsPage />} />
         <Route path="/" element={<ExplorePage />} />
       </Routes>
     </Suspense>

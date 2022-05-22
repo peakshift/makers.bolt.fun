@@ -2,6 +2,7 @@ import { MOCK_DATA } from "./data";
 import { Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
 import { Chance } from "chance";
 import { topics } from "./data/topics";
+import { hackathons } from "./data/hackathon";
 
 const chance = new Chance()
 
@@ -63,4 +64,8 @@ export function getTrendingPosts(): Query['getTrendingPosts'] {
 
 export function popularTopics() {
     return topics;
+}
+
+export function getAllHackathons() {
+    return hackathons;
 }
