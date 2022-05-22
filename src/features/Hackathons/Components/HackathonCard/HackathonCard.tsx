@@ -33,7 +33,6 @@ export default function HackathonCard({ hackathon }: Props) {
                 </div>
                 <div className="mt-16 flex flex-wrap gap-8">
                     {hackathon.topics.map(topic => <div key={topic.id} className="p-8 bg-gray-50 rounded-8 text-body5">{topic.icon} {topic.title}</div>)}
-
                 </div>
                 <Button href={hackathon.website} newTab color="gray" fullWidth className="mt-16">
                     Learn more

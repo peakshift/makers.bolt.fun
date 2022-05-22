@@ -1,9 +1,9 @@
 .grid {
   display: grid;
-  grid-template-columns: 0 1fr 0;
-  gap: 0;
+  grid-template-columns: 100%;
+  gap: 32px;
 
-  @media screen and (min-width: 680px) {
+  @media screen and (min-width: 768px) {
     grid-template-columns: 1fr 2fr 0;
     gap: 32px;
   }

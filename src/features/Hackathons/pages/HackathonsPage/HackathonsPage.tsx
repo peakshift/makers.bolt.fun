@@ -29,11 +29,10 @@ export default function HackathonsPage() {
             className={`page-container pt-16 w-full ${styles.grid}`}
         >
             <aside className='no-scrollbar'>
-                <div className="sticky flex flex-col gap-24"
+                <div className="sticky flex flex-col gap-24 md:overflow-y-scroll"
                     style={{
                         top: `${navHeight + 16}px`,
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                        overflowY: "scroll",
                     }}>
                     <SortByFilter
                         filterChanged={setSortByFilter}

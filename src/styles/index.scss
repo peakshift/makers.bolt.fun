@@ -11,8 +11,15 @@ body {
 }
 
 .page-container {
-  width: calc(min(100% - 64px, 1440px));
+  width: calc(min(100% - 32px, 1440px));
   margin: 0 auto;
+}
+
+@media screen and (min-width: 780px) {
+  .page-container {
+    width: calc(min(100% - 64px, 1440px));
+    margin: 0 auto;
+  }
 }
 
 svg {

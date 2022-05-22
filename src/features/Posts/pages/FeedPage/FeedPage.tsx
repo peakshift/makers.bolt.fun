@@ -37,16 +37,15 @@ export default function FeedPage() {
             className={`page-container pt-16 w-full ${styles.grid}`}
         >
             <aside className='no-scrollbar'>
-                <div className="sticky"
+                <div className="sticky md:overflow-y-scroll"
                     style={{
                         top: `${navHeight + 16}px`,
                         maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                        overflowY: "scroll",
                     }}>
-                    {/* <SortBy
+                    <SortBy
                         filterChanged={setSortByFilter}
                     />
-                    <div className="my-24"></div> */}
+                    <div className="my-24"></div>
                     <PopularTopicsFilter
                         filterChanged={setTopicFilter}
                     />
@@ -58,7 +57,7 @@ export default function FeedPage() {
                 isFetching={isFetchingMore}
                 onReachedBottom={fetchMore}
             />
-            <aside className='no-scrollbar'>
+            <aside className='no-scrollbar hidden md:block'>
                 <div className="sticky"
                     style={{
                         top: `${navHeight + 16}px`,

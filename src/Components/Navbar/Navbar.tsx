@@ -48,7 +48,6 @@ export default function Navbar() {
   }));
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
-  console.log(isLargeScreen, MEDIA_QUERIES.isLarge);
 
 
   const onConnectWallet = () => {
