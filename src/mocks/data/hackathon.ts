@@ -1,33 +1,11 @@
-import { random, randomItem, randomItems } from "src/utils/helperFunctions"
-import { getCoverImage } from "./utils"
+import { topics } from "./topics"
+import { getCoverImage, getItems } from "./utils"
 
-export const topics = [
-    {
-        id: 1,
-        title: '🎨 Design'
-    },
-    {
-        id: 2,
-        title: '💻 Hardware'
-    },
-    {
-        id: 3,
-        title: '⚡️ Lightning'
-    },
-    {
-        id: 4,
-        title: '🚀 Startups'
-    },
-    {
-        id: 5,
-        title: '💸 Bitcoin'
-    },
-]
 
-const generateTopics = () => randomItems(
-    Math.floor(random(1, 4)),
-    ...topics
-)
+const generateTopics = () => getItems(topics, {
+    min: 1,
+    max: 4
+})
 
 
 export const hackathons = [

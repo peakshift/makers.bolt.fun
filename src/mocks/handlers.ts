@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, newProjects, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, newProjects, popularTopics, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -19,6 +19,8 @@ import {
     PostDetailsQueryVariables,
     FeedQueryVariables,
     TrendingPostsQuery,
+    PopularTopicsQuery,
+    PopularTopicsQueryVariables,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -100,6 +102,16 @@ export const handlers = [
             })
         )
     }),
+
+    graphql.query<PopularTopicsQuery, PopularTopicsQueryVariables>('PopularTopics', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                popularTopics: popularTopics()
+            })
+        )
+    }),
+
 
     graphql.query<FeedQuery, FeedQueryVariables>('Feed', async (req, res, ctx) => {
         await delay()

@@ -1,3 +1,4 @@
+import { random, randomItems } from "src/utils/helperFunctions";
 
 let coverImgsCntr = -1;
 
@@ -22,4 +23,13 @@ export function getAvatarImage() {
     ]
 
     return avatarImgs[(++avatarImgsCntr) % avatarImgs.length]
+};
+
+export function getItems<T>(items: T[], options: { min: number, max: number } | { count: number }) {
+    if ('min' in options)
+        return randomItems(
+            Math.floor(random(options.min, options.max)),
+            ...items
+        )
+    return randomItems(options.count, ...items)
 }

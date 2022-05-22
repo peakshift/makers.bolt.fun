@@ -4,7 +4,7 @@ import { Bounty, Post, Question, Story } from "src/features/Posts/types";
 import { random, randomItem } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
 import { Chance } from 'chance'
-import { topics } from "./hackathon";
+import { topics } from "./topics";
 
 const getDate = () => dayjs().subtract(random(5, 48), 'hour').toString();
 

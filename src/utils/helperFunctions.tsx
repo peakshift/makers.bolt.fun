@@ -1,6 +1,5 @@
 import React, { ComponentProps, ComponentType, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
-import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 
 export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;

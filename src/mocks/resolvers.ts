@@ -1,6 +1,7 @@
 import { MOCK_DATA } from "./data";
-import { Post, Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
+import { Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
 import { Chance } from "chance";
+import { topics } from "./data/topics";
 
 const chance = new Chance()
 
@@ -58,4 +59,8 @@ export function getPostById(args: QueryGetPostByIdArgs): Query['getPostById'] {
 
 export function getTrendingPosts(): Query['getTrendingPosts'] {
     return chance.pickset(MOCK_DATA.feed, 5);
+}
+
+export function popularTopics() {
+    return topics;
 }
