@@ -33,7 +33,7 @@ export default function PopularTopicsFilter({ filterChanged }: Props) {
                     <p className="text-body2 font-bolder text-black mb-16">Topics</p>
                     <ul className=' flex flex-col gap-16'>
                         {topicsQuery.loading ?
-                            Array(4).fill(0).map((_, idx) => <li
+                            Array(3).fill(0).map((_, idx) => <li
                                 key={idx}
                                 className={`flex items-start rounded-8 font-bold`}
 
