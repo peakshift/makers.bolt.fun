@@ -10,7 +10,8 @@ export default {
 
 const Template: ComponentStory<typeof CopyToClipboard> = (args) => <div className="flex h-[400px] justify-center items-center"><div className="input-wrapper mt-32 max-w-[320px] mx-auto">
   <input
-    className="input-field overflow-ellipsis"
+    type='text'
+    className="input-text overflow-ellipsis"
     value={'Some Text To Copy'}
   />
   <CopyToClipboard {...args} text="Some Text To Copy" />

@@ -1,0 +1,44 @@
+@import "/src/styles/mixins";
+
+.grid {
+  display: grid;
+  //   grid-template-columns: 1fr;
+  gap: 32px;
+
+  grid-template-areas:
+    "content"
+    "actions"
+    "author"
+    "comments";
+
+  :global {
+    #content {
+      grid-area: content;
+    }
+    #actions {
+      grid-area: actions;
+    }
+    #author {
+      grid-area: author;
+    }
+    #comments {
+      grid-area: comments;
+    }
+  }
+
+  @include gt-md {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "actions content"
+      ". author"
+      ". comments";
+  }
+
+  @include gt-lg {
+    grid-template-columns: auto 1fr calc(min(30%, 326px));
+    grid-template-areas:
+      "actions content author"
+      ". comments ."
+      ". . .";
+  }
+}

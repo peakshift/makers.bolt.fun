@@ -34,7 +34,8 @@ async function getLnurlCallbackUrl(lightning_address) {
     );
 }
 
-async function getPaymetRequestForProject(project, amount_in_sat) {
+
+async function getPaymetRequestForItem(lightning_address, amount_in_sat) {
     // # NOTE: CACHING LNURL CALLBACK URLS + PARAMETERS
     // LNURL flows have a lot of back and forth and can impact
     // the load time for your application users.
@@ -45,11 +46,9 @@ async function getPaymetRequestForProject(project, amount_in_sat) {
     // careful when trying to optimise the amount of
     // requests so be mindful of this when you are storing
     // these items.
-    let lnurlCallbackUrl = project.lnurl_callback_url;
+
     const amount = amount_in_sat * 1000; // msats
-    if (!lnurlCallbackUrl) {
-        lnurlCallbackUrl = await getLnurlCallbackUrl(project.lightning_address);
-    }
+    let lnurlCallbackUrl = await getLnurlCallbackUrl(lightning_address);
     return axios
         .get(lnurlCallbackUrl, { params: { amount } })
         .then((prResponse) => {
@@ -69,10 +68,9 @@ const paginationArgs = (args) => {
 }
 
 module.exports = {
-    getPaymetRequestForProject,
+    getPaymetRequestForItem,
     hexToUint8Array,
     lightningAddressToLnurl,
     getLnurlDetails,
-
     paginationArgs
 }

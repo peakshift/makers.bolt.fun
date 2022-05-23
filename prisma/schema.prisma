@@ -7,6 +7,49 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// -----------------
+// Shared
+// -----------------
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+
+  project   Project[]
+  stories   Story[]
+  questions Question[]
+}
+
+model Vote {
+  id              Int     @id @default(autoincrement())
+  item_id         Int
+  item_type       String
+  amount_in_sat   Int
+  payment_request String?
+  payment_hash    String?
+  preimage        String?
+  paid            Boolean @default(false)
+}
+
+// -----------------
+// Users
+// -----------------
+
+model User {
+  id                Int     @id @default(autoincrement())
+  name              String  @unique
+  lightning_address String?
+  avatar            String
+
+  stories        Story[]
+  questions      Question[]
+  posts_comments PostComment[]
+}
+
+// -----------------
+// Projects
+// -----------------
+
 model Category {
   id          Int     @id @default(autoincrement())
   title       String
@@ -14,16 +57,6 @@ model Category {
   icon        String?
 
   project Project[]
-}
-
-model Award {
-  id    Int    @id @default(autoincrement())
-  title String
-  image String
-  url   String
-
-  project    Project @relation(fields: [project_id], references: [id])
-  project_id Int
 }
 
 model Project {
@@ -40,27 +73,112 @@ model Project {
   category    Category @relation(fields: [category_id], references: [id])
   category_id Int
   votes_count Int      @default(0)
-  vote        Vote[]
-  created_at  DateTime @default(now())
+  createdAt   DateTime @default(now())
 
   awards Award[]
   tags   Tag[]
 }
 
-model Vote {
-  id              Int     @id @default(autoincrement())
-  project         Project @relation(fields: [project_id], references: [id])
-  project_id      Int
-  amount_in_sat   Int
-  payment_request String?
-  payment_hash    String?
-  preimage        String?
-  paid            Boolean @default(false)
+model Award {
+  id    Int    @id @default(autoincrement())
+  title String
+  image String
+  url   String
+
+  project    Project @relation(fields: [project_id], references: [id])
+  project_id Int
 }
 
-model Tag {
+// -----------------
+// Posts
+// -----------------
+
+model Story {
+  id          Int      @id @default(autoincrement())
+  title       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  body        String
+  excerpt     String
+  cover_image String
+  votes_count Int      @default(0)
+
+  topic    Topic @relation(fields: [topic_id], references: [id])
+  topic_id Int
+
+  tags Tag[]
+
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
+
+  comments PostComment[] @relation("StoryComment")
+}
+
+model Question {
+  id          Int      @id @default(autoincrement())
+  title       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  body        String
+  excerpt     String
+  votes_count Int      @default(0)
+
+  topic    Topic @relation(fields: [topic_id], references: [id])
+  topic_id Int
+
+  tags Tag[]
+
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
+
+  comments PostComment[] @relation("QuestionComment")
+}
+
+model Topic {
   id    Int    @id @default(autoincrement())
   title String @unique
+  icon  String
 
-  project Project[]
+  stories    Story[]
+  questions  Question[]
+  hackathons Hackathon[]
+}
+
+model PostComment {
+  id          Int      @id @default(autoincrement())
+  body        String
+  createdAt   DateTime @default(now())
+  votes_count Int      @default(0)
+
+  replies           PostComment[] @relation("PostComment_Replies")
+  parent_comment_id Int?
+  parent_comment    PostComment?  @relation("PostComment_Replies", fields: [parent_comment_id], references: [id])
+
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
+
+
+  story    Story? @relation("StoryComment", fields: [story_id], references: [id])
+  story_id Int?
+
+
+  question    Question? @relation("QuestionComment", fields: [question_id], references: [id])
+  question_id Int?
+}
+
+// -----------------
+// Hackathons
+// -----------------
+model Hackathon {
+  id          Int      @id @default(autoincrement())
+  title       String
+  start_date  DateTime @db.Date
+  end_date    DateTime @db.Date
+  cover_image String
+  description String
+  location    String
+  website     String
+  votes_count Int      @default(0)
+
+  topics Topic[]
 }

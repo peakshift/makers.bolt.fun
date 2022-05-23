@@ -7,27 +7,30 @@ import { useWrapperSetup } from '../Wrapper';
 import { ModifyArgs } from './utils';
 import Modal from 'src/Components/Modals/Modal/Modal';
 import { worker } from 'src/mocks/browser'
-import { AnimatePresence, motion } from 'framer-motion';
+import ReactTooltip from 'react-tooltip';
+import THEME from '../theme';
 
 // Add the global stuff first (index.ts)
 // -------------------------------------------
-
+import "src/styles/index.scss";
 import "react-multi-carousel/lib/styles.css";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
+import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
+import ModalsContainer from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 
 
+// Enable the Mocks Service Worker
 // -------------------------------------------
-// -------------------------------------------
 
-
-if (process.env.NODE_ENV === 'development') {
+if (process.env.STORYBOOK_ENABLE_MOCKS) {
     worker.start({
-        onUnhandledRequest: 'bypass'
+        onUnhandledRequest: 'bypass',
     })
 }
 
+THEME.injectStyles()
 
 
 // This adds the stuff and setup that usually goes in the Wrapper.tsx
@@ -45,17 +48,23 @@ export const WrapperDecorator: DecoratorFn = (Story, options) => {
 
 
     return (
-        <ApolloProvider client={apolloClient}>
-            <Provider store={store}>
-                <Suspense fallback={<h2>Loading</h2>}>
-                    <MemoryRouter initialEntries={[modifyArgs.router?.currentPath!]}>
-                        <Routes>
-                            <Route path={modifyArgs.router?.routePath} element={<Story {...options} />} />
-                        </Routes>
-                    </MemoryRouter>
-                </Suspense>
-            </Provider>
-        </ApolloProvider>
+        <>
+            <ApolloProvider client={apolloClient}>
+                <Provider store={store}>
+                    <Suspense fallback={<h2>Loading</h2>}>
+                        <MemoryRouter initialEntries={[modifyArgs.router?.currentPath!]}>
+                            <Routes>
+                                <Route path={modifyArgs.router?.routePath} element={<Story {...options} />} />
+                            </Routes>
+                        </MemoryRouter>
+                    </Suspense>
+                </Provider>
+            </ApolloProvider>
+            <ReactTooltip
+                effect='solid'
+                delayShow={1000}
+            />
+        </>
     );
 }
 
@@ -66,7 +75,7 @@ export const AppDecorator: DecoratorFn = (Component) => {
     return <Component />
 }
 
-export const wrapModal: DecoratorFn = (Component) => <Modal isOpen onClose={() => { }}><Component /></Modal>
+export const wrapModal: DecoratorFn = (Component) => <Modal isOpen id='some-id' onClose={() => { }}><Component /></Modal>
 
 export const wrapPage: DecoratorFn = (Component) => <div className='page-container'><Component /></div>
 
@@ -75,22 +84,27 @@ export const wrapPage: DecoratorFn = (Component) => <div className='page-contain
 export const ModalsDecorator: DecoratorFn = (Story) => {
     const onClose = () => { };
     return (
-        <motion.div
-            className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-                opacity: 0,
-                transition: { ease: "easeInOut" },
-            }}
-        >
-            <AnimatePresence>
-                <Modal onClose={onClose}  >
-                    <Story onClose={onClose} />
-                </Modal>
-            </AnimatePresence>
-        </motion.div>
-    );
+        <Modal isOpen id={'some-id'} onClose={onClose}  >
+            <Story onClose={onClose} />
+        </Modal>
+    )
+    // return (
+    //     <motion.div
+    //         className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
+    //         initial={{ opacity: 0 }}
+    //         animate={{ opacity: 1 }}
+    //         exit={{
+    //             opacity: 0,
+    //             transition: { ease: "easeInOut" },
+    //         }}
+    //     >
+    //         <AnimatePresence>
+    //             <Modal onClose={onClose}  >
+    //                 <Story onClose={onClose} />
+    //             </Modal>
+    //         </AnimatePresence>
+    //     </motion.div>
+    // );
 }
 
 export const centerDecorator: DecoratorFn = (Story) => {
@@ -98,3 +112,20 @@ export const centerDecorator: DecoratorFn = (Story) => {
         <Story />
     </div>
 }
+
+
+export const WrapForm: (options?: Partial<UseFormProps>) => DecoratorFn = options => {
+    const Func: DecoratorFn = (Story) => {
+        const methods = useForm(options);
+        return <FormProvider {...methods} >
+            <Story />
+        </FormProvider>
+    }
+    return Func
+}
+
+
+export const WithModals: DecoratorFn = (Component) => <>
+    <Component />
+    <ModalsContainer />
+</>

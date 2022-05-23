@@ -1,0 +1,96 @@
+query PostDetails($id: Int!, $type: POST_TYPE!) {
+  getPostById(id: $id, type: $type) {
+    ... on Story {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+      }
+      body
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      comments_count
+      comments {
+        id
+        createdAt
+        body
+        votes_count
+        parentId
+        author {
+          id
+          name
+          avatar
+        }
+      }
+    }
+    ... on Bounty {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+      }
+      body
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      deadline
+      reward_amount
+      applicants_count
+      applications {
+        id
+        date
+        workplan
+        author {
+          id
+          name
+          avatar
+        }
+      }
+    }
+    ... on Question {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+      }
+      body
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      answers_count
+      comments {
+        id
+        createdAt
+        body
+        votes_count
+        parentId
+        author {
+          id
+          name
+          avatar
+        }
+      }
+    }
+  }
+}

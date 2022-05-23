@@ -1,4 +1,4 @@
-export const screens = {
+const screens = {
     sm: 640,
     md: 768,
     lg: 1024,
@@ -6,9 +6,14 @@ export const screens = {
     '2xl': 1536,
 }
 
-export const MEDIA_QUERIES = {
+const MEDIA_QUERIES = {
     isSmall: `only screen and (min-width : ${screens.sm}px)`,
     isMedium: `only screen and (min-width : ${screens.md}px)`,
     isLarge: `only screen and (min-width : ${screens.lg}px)`,
     isXLarge: `only screen and (min-width : ${screens["2xl"]}px))`,
+}
+
+module.exports = {
+    screens,
+    MEDIA_QUERIES
 }

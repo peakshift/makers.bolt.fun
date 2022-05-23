@@ -1,0 +1,32 @@
+.body h1 {
+  font-size: 48px;
+  line-height: 54px;
+  margin-bottom: min(0.5em);
+}
+.body h2 {
+  font-size: 36px;
+  line-height: 50px;
+  margin-bottom: min(0.5em);
+}
+.body h3 {
+  font-size: 29px;
+  line-height: 40px;
+  margin-bottom: min(0.5em);
+}
+.body h4 {
+  font-size: 22px;
+  line-height: 31px;
+  margin-bottom: min(0.5em);
+}
+.body h5 {
+  font-size: 19px;
+  line-height: 26px;
+  margin-bottom: min(0.5em);
+}
+
+.body p,
+.body ul {
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 1.5em;
+}

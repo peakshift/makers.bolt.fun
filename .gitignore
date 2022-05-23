@@ -7,6 +7,7 @@ environments/.dev.preview-server.env
 
 # dependencies
 /node_modules
+/node_modules_t
 /.pnp
 .pnp.js
 

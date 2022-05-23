@@ -1,17 +1,30 @@
 import NavMobile from "./NavMobile";
-import { MdHomeFilled, MdLocalFireDepartment } from "react-icons/md";
+import { MdComment, MdHomeFilled, MdLocalFireDepartment } from "react-icons/md";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import { setNavHeight } from "src/redux/features/ui.slice";
-import { useResizeListener } from "src/utils/hooks";
 import NavDesktop from "./NavDesktop";
 import { useMediaQuery } from "@react-hookz/web";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
+import { IoMdTrophy } from "react-icons/io";
+
 
 export const navLinks = [
   { text: "Explore", url: "/", icon: MdHomeFilled, color: "text-primary-600" },
+  {
+    text: "Blog",
+    url: "/blog",
+    icon: MdComment,
+    color: "text-primary-600",
+  },
+  {
+    text: "Hackathons",
+    url: "/hackathons",
+    icon: IoMdTrophy,
+    color: "text-primary-600",
+  },
   {
     text: "Hottest",
     url: "/hottest",
@@ -57,14 +70,19 @@ export default function Navbar() {
   useEffect(() => {
     const nav = document.querySelector("nav");
 
+    let oldPadding = '';
     if (nav) {
       const navStyles = getComputedStyle(nav);
       if (navStyles.display !== "none") {
         dispatch(setNavHeight(nav.clientHeight));
+        oldPadding = document.body.style.paddingTop
         document.body.style.paddingTop = `${nav.clientHeight}px`;
       }
     }
 
+    return () => {
+      document.body.style.paddingTop = oldPadding
+    }
 
   }, [dispatch, isMobileScreen, isLargeScreen])
 

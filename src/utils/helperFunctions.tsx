@@ -1,6 +1,5 @@
-import React, { ComponentType, Suspense } from "react";
+import React, { ComponentProps, ComponentType, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
-import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 
 export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -8,6 +7,10 @@ export function random(min: number, max: number) {
 
 export function randomItem(...args: any[]) {
   return args[Math.floor(Math.random() * args.length)];
+}
+
+export function randomItems(cnt: number, ...args: any[]) {
+  return shuffle(args).slice(0, cnt);
 }
 
 export function isMobileScreen() {
@@ -33,12 +36,16 @@ export function numberFormatter(num?: number, digits = 1) {
   return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
 }
 
-export function lazyModal(impFn: () => Promise<{ default: ComponentType<any>; }>, LoadingComponent?: (props: any) => JSX.Element) {
+
+
+export function lazyModal<T extends ComponentType<any>>
+  (impFn: () => Promise<{ default: T; }>,
+    LoadingComponent?: (props: any) => JSX.Element) {
   const C = React.lazy(() => new Promise(res => setTimeout(() => {
     res(impFn() as any)
   }, 0))) // This promise wrapping is just for testing purposes
   const preload = impFn;
-  const LazyComponent = ({ direction, ...props }: ModalCard) => <Suspense
+  const LazyComponent = ({ direction, ...props }: ComponentProps<T>) => <Suspense
     fallback={
       LoadingComponent ?
         <LoadingComponent direction={direction} {...props} />
@@ -49,4 +56,32 @@ export function lazyModal(impFn: () => Promise<{ default: ComponentType<any>; }>
   </Suspense>
 
   return { LazyComponent, preload };
+}
+
+export function trimText(text: string, length: number) {
+  return text.slice(0, length) + (text.length > length ? "..." : "")
+}
+
+export function generateId() {
+  // TODO: Change to proper generator
+  return Math.random().toString();
+}
+
+export function shuffle<T>(_array: Array<T>) {
+  let array = [..._array]
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex !== 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }

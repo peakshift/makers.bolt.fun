@@ -1,0 +1,72 @@
+query Feed($take: Int, $skip: Int, $sortBy: String, $topic: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, topic: $topic) {
+    ... on Story {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      comments_count
+    }
+    ... on Bounty {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      deadline
+      reward_amount
+      applicants_count
+    }
+    ... on Question {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      answers_count
+      comments {
+        id
+        createdAt
+        body
+        author {
+          id
+          name
+          avatar
+        }
+      }
+    }
+  }
+}

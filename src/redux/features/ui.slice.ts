@@ -7,7 +7,7 @@ interface StoreState {
 }
 
 const initialState = {
-  navHeight: 88,
+  navHeight: 0,
   isMobileScreen: /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || window.innerWidth < 480,
   isSearchOpen: false,
 } as StoreState;

@@ -1,0 +1,41 @@
+//
+// This file is for overriding various libraries native styles
+// -----------------------------------------------------------
+
+// Re mirror
+// ---------------
+.remirror-editor-wrapper ul {
+  list-style: disc !important;
+  padding: revert;
+  margin: revert;
+}
+
+.remirror-editor-wrapper ol {
+  list-style: decimal !important;
+  padding: revert;
+  margin: revert;
+}
+
+.remirror-editor-wrapper iframe,
+.remirror-theme iframe {
+  width: calc(min(100%, 550px));
+  margin: 16px auto;
+  aspect-ratio: 16/9;
+}
+
+// React Modals
+// ----------------
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 900ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transition-timing-function: ease-in;
+  transition-duration: 400ms;
+}

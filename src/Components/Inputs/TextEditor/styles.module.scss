@@ -1,0 +1,24 @@
+.wrapper {
+
+    :global {
+
+        .ProseMirror {
+            overflow: hidden;  
+            a {
+                color: rgb(54, 139, 236);
+
+                &:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .ProseMirror,
+        .ProseMirror:active,
+        .ProseMirror:focus {
+            box-shadow: none;
+        }
+    }
+
+}

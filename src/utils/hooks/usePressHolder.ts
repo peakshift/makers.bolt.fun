@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 
 export const usePressHolder = (onHold: () => any, holdThreshold: number = 400) => {
@@ -7,9 +7,10 @@ export const usePressHolder = (onHold: () => any, holdThreshold: number = 400) =
         timerID: 0,
         previousTimestamp: -1
     });
+    const [isHolding, setIsHolding] = useState(false)
 
     const onPressDown = () => {
-        requestAnimationFrame(timer)
+        ref.current.timerID = requestAnimationFrame(timer)
     }
 
 
@@ -18,6 +19,7 @@ export const usePressHolder = (onHold: () => any, holdThreshold: number = 400) =
         cancelAnimationFrame(ref.current.timerID);
         ref.current.cntr = 0;
         ref.current.previousTimestamp = -1;
+        setIsHolding(false)
     }
 
     function timer(timestamp: number) {
@@ -30,11 +32,12 @@ export const usePressHolder = (onHold: () => any, holdThreshold: number = 400) =
             ref.current.cntr += dt;
         } else {
             onHold();
+            setIsHolding(true)
         }
 
         ref.current.timerID = requestAnimationFrame(timer);
     }
 
-    return { onPressUp, onPressDown }
+    return { onPressUp, onPressDown, isHolding }
 
 }

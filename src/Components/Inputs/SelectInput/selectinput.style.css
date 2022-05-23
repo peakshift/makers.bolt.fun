@@ -1,0 +1,30 @@
+.selectdiv:after {
+  content: "<>";
+  font: 15px "Consolas", monospace;
+  color: inherit;
+  -webkit-transform: translateY(-50%) rotate(90deg);
+  -moz-transform: translateY(-50%) rotate(90deg);
+  -ms-transform: translateY(-50%) rotate(90deg);
+  transform: translateY(-50%) rotate(90deg);
+  right: 11px;
+  /*Adjust for position however you want*/
+
+  top: 50%;
+
+  padding: 0 0 2px;
+  border-bottom: 1px solid inherit;
+  /*left line */
+
+  position: absolute;
+  pointer-events: none;
+}
+
+.selectdiv select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  background-image: none;
+  -ms-word-break: normal;
+  word-break: normal;
+}

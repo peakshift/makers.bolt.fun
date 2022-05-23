@@ -1,9 +1,7 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { ALL_MODALS, closeModal, Direction, removeScheduledModal } from "src/redux/features/modals.slice";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import Modal from "../Modal/Modal";
-import { Portal } from "../../Portal/Portal";
 
 export interface ModalCard {
     onClose?: () => void;
@@ -52,36 +50,36 @@ export default function ModalsContainer() {
     }
 
     useEffect(() => {
-        if (isOpen) document.body.style.overflowY = "hidden";
-        else document.body.style.overflowY = "initial";
+        if (isOpen) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.documentElement.style.overflow = 'hidden';
+            if (scrollbarWidth) {
+                document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+            }
+        }
+        else {
+            document.documentElement.style.overflow = "";
+            document.documentElement.style.paddingRight = "";
+        }
     }, [isOpen]);
 
     return (
-        <Portal>
+        <div className="z-[2020]">
+            {openModals.map((modal, idx) => {
+                const Child = ALL_MODALS[modal.Modal];
 
-            <AnimatePresence exitBeforeEnter>
-                {isOpen &&
-                    <motion.div
-                        className="w-screen fixed inset-0 overflow-x-hidden z-[2020]"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{
-                            opacity: 0,
-                            transition: { ease: "easeInOut" },
-                        }}
+                return (
+                    <Modal
+                        key={idx}
+                        isOpen={modal.isOpen}
+                        onClose={onClose}
+                        direction={direction}
+                        id={modal.id}
+                        isPageModal={modal.props?.isPageModal}
                     >
-                        <AnimatePresence>
-                            {openModals.map((modal, idx) => {
-                                const Child = ALL_MODALS[modal.Modal];
-
-                                return (
-                                    <Modal key={idx} onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal}>
-                                        <Child onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal} {...modal.props} />
-                                    </Modal>)
-                            })}
-                        </AnimatePresence>
-                    </motion.div>}
-            </AnimatePresence>
-        </Portal>
+                        <Child onClose={onClose} direction={direction} isPageModal={modal.props?.isPageModal} {...modal.props} />
+                    </Modal>)
+            })}
+        </div>
     )
 }

@@ -4,6 +4,7 @@ import projectSlice from "./features/project.slice";
 import walletSlice from "./features/wallet.slice";
 import voteSlice from "./features/vote.slice";
 import uiSlice from "./features/ui.slice";
+import { actionReducer } from './features/action-reducer'
 
 const defaultStore = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const defaultStore = configureStore({
     wallet: walletSlice,
     vote: voteSlice,
     ui: uiSlice,
+    action: actionReducer
   },
 });
 
@@ -25,6 +27,7 @@ export const createReduxStore = (initalState?: Partial<RootState>) => {
       wallet: walletSlice,
       vote: voteSlice,
       ui: uiSlice,
+      action: actionReducer
     },
     preloadedState: initalState
   });

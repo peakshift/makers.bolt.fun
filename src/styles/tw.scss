@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn {
+        @apply text-gray-900 py-12 px-42 bg-gray-25 hover:bg-gray-50 font-sans rounded-lg font-regular border border-gray-300;
+    }
+
+    .btn-primary {
+        @apply bg-primary-500 border-0 shadow-sm hover:bg-primary-400 text-white;
+    }
+
+    .btn-gray {
+        @apply bg-gray-100 hover:bg-gray-200 text-gray-900;
+    }
+
+    .input-wrapper {
+        @apply relative w-full border border-gray-300 rounded-lg shadow-xs flex focus-within:outline-primary-400 focus-within:border-primary-300 focus-within:ring focus-within:ring-primary-200 focus-within:ring-opacity-50;
+    }
+
+    .input-text {
+        @apply flex-grow border-none focus:border-0 focus:ring-0 bg-transparent min-w-0 text-primary-500;
+    }
+
+    .input-checkbox {
+        @apply rounded-4 bg-gray-200 border-transparent focus:border-transparent focus:bg-primary-200 text-primary-700 focus:ring-1 focus:ring-offset-2 focus:ring-primary-500;
+    }
+
+    .input-icon {
+        @apply h-full text-primary-500 flex-shrink-0 w-42 px-12 self-center;
+    }
+
+    .input-error {
+        @apply text-body6 text-red-500 mt-4;
+    }
+
+    .chip {
+        @apply bg-gray-100 text-body4 px-16 py-8 rounded-24 font-regular;
+    }
+
+    .chip-small {
+        @apply bg-gray-100 text-body5 px-12 py-8 rounded-16 font-regular;
+    }
+
+    .modal-card {
+        @apply rounded-[40px] bg-gray-50 overflow-hidden w-full shadow-2xl z-10;
+    }
+}

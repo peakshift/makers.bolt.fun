@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
-import { ProjectDetailsCard } from "src/pages/ProjectPage/ProjectDetailsCard";
-import VoteCard from "src/pages/ProjectPage/VoteCard/VoteCard";
-import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/pages/ProjectPage/ClaimProject";
+import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
+import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
+import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageModal'
+import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
+import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ComponentProps } from "react";
+import { generateId } from "src/utils/helperFunctions";
 
 export enum Direction {
   START,
@@ -26,6 +29,10 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+
+  // Text Editor Modals
+  InsertImageModal,
+  InsertVideoModal,
 }
 
 type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>
@@ -46,9 +53,11 @@ type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = 
 
 
 
-interface OpenModal {
+interface ModalObject {
+  id: string
   Modal: ModalAction['Modal'],
   props?: any;
+  isOpen: boolean
 }
 
 interface StoreState {
@@ -56,8 +65,8 @@ interface StoreState {
   isLoading: boolean;
   direction: Direction;
   flows: keyof typeof ALL_MODALS[];
-  toOpenLater: OpenModal | null;
-  openModals: OpenModal[];
+  toOpenLater: ModalObject | null;
+  openModals: ModalObject[];
   isMobileScreen?: boolean;
 }
 
@@ -67,7 +76,7 @@ const initialState = {
   direction: Direction.START,
   flows: [] as any,
   toOpenLater: null,
-  openModals: [] as OpenModal[],
+  openModals: [] as ModalObject[],
 } as StoreState;
 
 export const modalSlice = createSlice({
@@ -80,7 +89,9 @@ export const modalSlice = createSlice({
 
     scheduleModal(state, action: PayloadAction<ModalAction>) {
       state.toOpenLater = {
+        id: generateId(),
         Modal: action.payload.Modal,
+        isOpen: false,
       };
     },
 
@@ -88,7 +99,7 @@ export const modalSlice = createSlice({
       if (state.toOpenLater) {
         state.direction = Direction.START;
         state.isOpen = true;
-        state.openModals.push(state.toOpenLater);
+        state.openModals.push({ ...state.toOpenLater, isOpen: true });
         state.toOpenLater = null;
       }
     },
@@ -107,9 +118,15 @@ export const modalSlice = createSlice({
       let props: any = {};
       props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
 
+      if ('props' in action.payload)
+        props = { ...props, ...action.payload.props }
+
+
       state.openModals.push({
+        id: generateId(),
         Modal: action.payload.Modal,
-        props
+        props,
+        isOpen: true
       });
     },
 
@@ -118,23 +135,32 @@ export const modalSlice = createSlice({
       action: PayloadAction<ModalAction & { direction: Direction }>
     ) {
       state.direction = action.payload.direction;
-      state.openModals.pop();
+      state.openModals[state.openModals.length - 1].isOpen = false;
 
 
       let props: any = {};
       props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
+      if ('props' in action.payload)
+        props = { ...props, ...action.payload.props }
 
       state.openModals.push({
+        id: generateId(),
         Modal: action.payload.Modal,
         props,
+        isOpen: true,
       });
     },
 
     closeModal(state) {
       state.direction = Direction.EXIT;
-      state.openModals.pop();
-      state.isOpen = Boolean(state.openModals.length);
+      state.openModals[state.openModals.length - 1].isOpen = false;
+      state.isOpen = Boolean(state.openModals.filter(modal => modal.isOpen).length);
     },
+
+    removeClosedModal(state, action: PayloadAction<string>) {
+      state.openModals = state.openModals.filter(m => m.id !== action.payload)
+
+    }
   },
 });
 
@@ -148,6 +174,7 @@ export const {
   scheduleModal,
   openSceduledModal,
   removeScheduledModal,
+  removeClosedModal
 } = modalSlice.actions;
 
 

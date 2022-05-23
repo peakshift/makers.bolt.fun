@@ -18,7 +18,7 @@ const Category = objectType({
 
         t.nonNull.int('votes_sum', {
             async resolve(parent) {
-                const projects = await prisma.category.findUnique({ where: { id: parent.id } }).project();
+                const projects = await prisma.category.findUnique({ where: { id: parent.id } }).project()
                 return projects.reduce((total, project) => total + project.votes_count, 0);
             }
         });

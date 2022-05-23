@@ -10,6 +10,30 @@ type Award {
   url: String!
 }
 
+type Bounty implements PostBase {
+  applicants_count: Int!
+  applications: [BountyApplication!]!
+  author: User!
+  body: String!
+  cover_image: String!
+  createdAt: Date!
+  deadline: String!
+  excerpt: String!
+  id: Int!
+  reward_amount: Int!
+  tags: [Tag!]!
+  title: String!
+  type: String!
+  votes_count: Int!
+}
+
+type BountyApplication {
+  author: User!
+  date: String!
+  id: Int!
+  workplan: String!
+}
+
 type Category {
   apps_count: Int!
   cover_image: String
@@ -18,6 +42,21 @@ type Category {
   project: [Project!]!
   title: String!
   votes_sum: Int!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Hackathon {
+  cover_image: String!
+  description: String!
+  end_date: Date!
+  id: Int!
+  location: String!
+  start_date: Date!
+  title: String!
+  topics: [Topic!]!
+  website: String!
 }
 
 type LnurlDetails {
@@ -29,7 +68,33 @@ type LnurlDetails {
 
 type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
-  vote(amount_in_sat: Int!, project_id: Int!): Vote!
+  vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
+}
+
+enum POST_TYPE {
+  Bounty
+  Question
+  Story
+}
+
+union Post = Bounty | Question | Story
+
+interface PostBase {
+  body: String!
+  createdAt: Date!
+  excerpt: String!
+  id: Int!
+  title: String!
+  votes_count: Int!
+}
+
+type PostComment {
+  author: User!
+  body: String!
+  createdAt: Date!
+  id: Int!
+  parentId: Int
+  votes_count: Int!
 }
 
 type Project {
@@ -51,26 +116,83 @@ type Project {
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  allTopics: [Topic!]!
+  getAllHackathons(sortBy: String, topic: Int): [Hackathon!]!
   getCategory(id: Int!): Category!
+  getFeed(skip: Int = 0, sortBy: String = "all", take: Int = 10, topic: Int = 0): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
+  getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
+  getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  popularTopics: [Topic!]!
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
 }
 
+type Question implements PostBase {
+  answers_count: Int!
+  author: User!
+  body: String!
+  comments: [PostComment!]!
+  createdAt: Date!
+  excerpt: String!
+  id: Int!
+  tags: [Tag!]!
+  title: String!
+  type: String!
+  votes_count: Int!
+}
+
+type Story implements PostBase {
+  author: User!
+  body: String!
+  comments: [PostComment!]!
+  comments_count: Int!
+  cover_image: String!
+  createdAt: Date!
+  excerpt: String!
+  id: Int!
+  tags: [Tag!]!
+  title: String!
+  topic: Topic!
+  type: String!
+  votes_count: Int!
+}
+
 type Tag {
   id: Int!
-  project: [Project!]!
   title: String!
+}
+
+type Topic {
+  icon: String!
+  id: Int!
+  title: String!
+}
+
+type User {
+  avatar: String!
+  id: Int!
+  name: String!
+}
+
+enum VOTE_ITEM_TYPE {
+  Bounty
+  PostComment
+  Project
+  Question
+  Story
+  User
 }
 
 type Vote {
   amount_in_sat: Int!
   id: Int!
+  item_id: Int!
+  item_type: VOTE_ITEM_TYPE!
   paid: Boolean!
   payment_hash: String!
   payment_request: String!
-  project: Project!
 }

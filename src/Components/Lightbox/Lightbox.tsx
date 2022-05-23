@@ -1,9 +1,8 @@
 
-import { useEffect, useState } from 'react';
-import LightboxComponent from 'react-image-lightbox';
-import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
-import './styles.css'
+import { useUpdateEffect } from '@react-hookz/web';
+import { useState } from 'react';
 
+import FsLightbox from 'fslightbox-react';
 
 interface Props {
     images: string[];
@@ -13,38 +12,21 @@ interface Props {
 }
 
 export default function Lightbox(props: Props) {
+    const [toggler, setToggler] = useState(false);
 
-    const [photoIndex, setPhotoIndex] = useState(0);
-    const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        if (props.isOpen) {
-            setIsOpen(true);
-            setPhotoIndex(props.initOpenIndex ?? 0)
-        } else
-            setIsOpen(false);
-
-    }, [props.initOpenIndex, props.isOpen])
+    useUpdateEffect(() => {
+        if (props.isOpen)
+            setToggler(!toggler)
+    }, [props.isOpen])
 
 
 
     return (
-        <>
-            {isOpen &&
-                <LightboxComponent
-                    mainSrc={props.images[photoIndex]}
-                    nextSrc={props.images[(photoIndex + 1) % props.images.length]}
-                    prevSrc={props.images[(photoIndex + props.images.length - 1) % props.images.length]}
-                    onCloseRequest={() => props.onClose?.()}
-                    onMovePrevRequest={() =>
-                        setPhotoIndex((photoIndex + props.images.length - 1) % props.images.length
-                        )
-                    }
-                    onMoveNextRequest={() =>
-                        setPhotoIndex((photoIndex + 1) % props.images.length)
-                    }
-                    imagePadding={48}
-                />}
-        </>
+        <FsLightbox
+            toggler={toggler}
+            onClose={props.onClose}
+            sources={props.images}
+            sourceIndex={props.initOpenIndex}
+        />
     )
 }

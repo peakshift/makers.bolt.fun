@@ -50,7 +50,8 @@ export default function Login_ExternalWalletCard({ onClose, direction, ...props 
             </p>
             <div className="input-wrapper mt-16 relative">
                 <input
-                    className="input-field overflow-ellipsis"
+                    className="input-text overflow-ellipsis"
+                    type={'text'}
                     value={"Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI"}
                 />
                 <CopyToClipboard text='Inurldp-3234234-ahhsdfm-dssdf-uooiRS-TTRASssa-334Qaas-UUI' direction='top' />

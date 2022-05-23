@@ -66,7 +66,7 @@ export default function Badge(
     return (
         wrapLink(
             <span className={classes} onClick={onClick}>
-                <span>{children}</span>
+                <span className="font-medium">{children}</span>
                 {onRemove && <IoMdCloseCircle onClick={onRemove} className="ml-12 cursor-pointer" />}
             </span>
             , href)

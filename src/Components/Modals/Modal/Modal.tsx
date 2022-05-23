@@ -1,34 +1,40 @@
-import { motion } from "framer-motion";
 import { ReactElement } from "react";
+import ReactModal from 'react-modal';
+import { removeClosedModal } from "src/redux/features/modals.slice";
+import { useAppDispatch } from 'src/utils/hooks'
 
 
 interface Props {
-    onClose: () => void;
-
+    id: string,
+    isOpen: boolean;
+    isPageModal?: boolean;
     children: ReactElement
+    onClose: () => void;
     [key: string]: any;
 }
 
+ReactModal.setAppElement('#root');
 
 export default function Modal({ onClose, children, ...props }: Props) {
-    return (
-        <motion.div
-            initial={false}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className='fixed w-full h-full items-center overflow-x-hidden no-scrollbar'
-            {...props}
-        >
-            <div
-                className='w-screen min-h-screen relative flex flex-col justify-center items-center md:py-64 md:px-16 overflow-x-hidden no-scrollbar'
-            >
 
-                <div
-                    className={`absolute w-full h-full top-0 left-0 bg-gray-300 bg-opacity-50 ${props.isPageModal && "hidden md:block"}`}
-                    onClick={onClose}
-                ></div>
-                {children}
-            </div>
-        </motion.div>
-    )
+    const dispatch = useAppDispatch()
+
+    return <ReactModal
+        isOpen={props.isOpen}
+        onRequestClose={onClose}
+        overlayClassName='fixed w-full inset-0 overflow-x-hidden z-[2020]'
+        className=' '
+        closeTimeoutMS={1000}
+        onAfterClose={() => dispatch(removeClosedModal(props.id))}
+        contentElement={(_props, children) => <div {..._props} className={`${_props.className} w-screen min-h-screen relative flex flex-col justify-center items-center md:py-64 md:px-16 inset-0`}>
+            <div
+                onClick={onClose}
+                className={`absolute w-full h-full top-0 left-0 bg-gray-300 bg-opacity-50 ${props.isPageModal && "hidden md:block"}`}
+            ></div>
+            {children}
+        </div>}
+    >
+        {children}
+    </ReactModal>
 }
+

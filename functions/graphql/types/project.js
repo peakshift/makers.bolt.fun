@@ -69,12 +69,12 @@ const Tag = objectType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
-        t.nonNull.list.nonNull.field('project', {
-            type: "Project",
-            resolve: (parent) => {
-                return prisma.tag.findUnique({ where: { id: parent.id } }).project();
-            }
-        })
+        // t.nonNull.list.nonNull.field('project', {
+        //     type: "Project",
+        //     resolve: (parent) => {
+        //         return prisma.tag.findUnique({ where: { id: parent.id } }).project();
+        //     }
+        // })
     }
 })
 
@@ -123,7 +123,7 @@ const newProjects = extendType({
                 const take = args.take || 50;
                 const skip = args.skip || 0;
                 return prisma.project.findMany({
-                    orderBy: { created_at: "desc" },
+                    orderBy: { createdAt: "desc" },
                     skip,
                     take,
                 });
