@@ -46,9 +46,9 @@ function App() {
       <Routes>
         <Route path="/hottest" element={<HottestPage />} />
         <Route path="/category/:id" element={<CategoryPage />} />
-        <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
+        {/* <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
         <Route path="/blog" element={<FeedPage />} />
-        <Route path="/hackathons" element={<HackathonsPage />} />
+        <Route path="/hackathons" element={<HackathonsPage />} /> */}
         <Route path="/" element={<ExplorePage />} />
       </Routes>
     </Suspense>

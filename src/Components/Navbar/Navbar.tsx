@@ -13,18 +13,18 @@ import { IoMdTrophy } from "react-icons/io";
 
 export const navLinks = [
   { text: "Explore", url: "/", icon: MdHomeFilled, color: "text-primary-600" },
-  {
-    text: "Blog",
-    url: "/blog",
-    icon: MdComment,
-    color: "text-primary-600",
-  },
-  {
-    text: "Hackathons",
-    url: "/hackathons",
-    icon: IoMdTrophy,
-    color: "text-primary-600",
-  },
+  // {
+  //   text: "Blog",
+  //   url: "/blog",
+  //   icon: MdComment,
+  //   color: "text-primary-600",
+  // },
+  // {
+  //   text: "Hackathons",
+  //   url: "/hackathons",
+  //   icon: IoMdTrophy,
+  //   color: "text-primary-600",
+  // },
   {
     text: "Hottest",
     url: "/hottest",
