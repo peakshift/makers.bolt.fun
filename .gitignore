@@ -1,6 +1,7 @@
 .netlify
 .env
 build 
+storybook-static
 environments/.dev.preview-server.env
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
