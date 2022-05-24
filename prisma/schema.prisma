@@ -44,6 +44,7 @@ model User {
   stories        Story[]
   questions      Question[]
   posts_comments PostComment[]
+  donations      Donation[]
 }
 
 // -----------------
@@ -181,4 +182,20 @@ model Hackathon {
   votes_count Int      @default(0)
 
   topics Topic[]
+}
+
+// -----------------
+// Donations
+// -----------------
+model Donation {
+  id              Int      @id @default(autoincrement())
+  amount          Int
+  createdAt       DateTime @default(now()) @db.Date
+  payment_request String?
+  payment_hash    String?
+  preimage        String?
+  paid            Boolean  @default(false)
+
+  donor    User? @relation(fields: [donor_id], references: [id])
+  donor_id Int?
 }

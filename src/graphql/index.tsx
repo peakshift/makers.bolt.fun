@@ -63,6 +63,25 @@ export type Category = {
   votes_sum: Scalars['Int'];
 };
 
+export type Donation = {
+  __typename?: 'Donation';
+  amount: Scalars['Int'];
+  by: Maybe<User>;
+  createdAt: Scalars['Date'];
+  id: Scalars['Int'];
+  paid: Scalars['Boolean'];
+  payment_hash: Scalars['String'];
+  payment_request: Scalars['String'];
+};
+
+export type DonationsStats = {
+  __typename?: 'DonationsStats';
+  applications: Scalars['Int'];
+  donations: Scalars['Int'];
+  prizes: Scalars['Int'];
+  touranments: Scalars['Int'];
+};
+
 export type Hackathon = {
   __typename?: 'Hackathon';
   cover_image: Scalars['String'];
@@ -86,14 +105,27 @@ export type LnurlDetails = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  confirmDonation: Donation;
   confirmVote: Vote;
+  donate: Donation;
   vote: Vote;
+};
+
+
+export type MutationConfirmDonationArgs = {
+  payment_request: Scalars['String'];
+  preimage: Scalars['String'];
 };
 
 
 export type MutationConfirmVoteArgs = {
   payment_request: Scalars['String'];
   preimage: Scalars['String'];
+};
+
+
+export type MutationDonateArgs = {
+  amount_in_sat: Scalars['Int'];
 };
 
 
@@ -154,6 +186,7 @@ export type Query = {
   allTopics: Array<Topic>;
   getAllHackathons: Array<Hackathon>;
   getCategory: Category;
+  getDonationsStats: Array<DonationsStats>;
   getFeed: Array<Post>;
   getLnurlDetailsForProject: LnurlDetails;
   getPostById: Post;
@@ -316,6 +349,21 @@ export type SearchProjectsQueryVariables = Exact<{
 
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
+
+export type DonateMutationVariables = Exact<{
+  amountInSat: Scalars['Int'];
+}>;
+
+
+export type DonateMutation = { __typename?: 'Mutation', donate: { __typename?: 'Donation', id: number, amount: number, payment_request: string, payment_hash: string } };
+
+export type ConfirmDonationMutationVariables = Exact<{
+  paymentRequest: Scalars['String'];
+  preimage: Scalars['String'];
+}>;
+
+
+export type ConfirmDonationMutation = { __typename?: 'Mutation', confirmDonation: { __typename?: 'Donation', id: number, amount: number, paid: boolean } };
 
 export type AllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -483,6 +531,78 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const DonateDocument = gql`
+    mutation Donate($amountInSat: Int!) {
+  donate(amount_in_sat: $amountInSat) {
+    id
+    amount
+    payment_request
+    payment_hash
+  }
+}
+    `;
+export type DonateMutationFn = Apollo.MutationFunction<DonateMutation, DonateMutationVariables>;
+
+/**
+ * __useDonateMutation__
+ *
+ * To run a mutation, you first call `useDonateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDonateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [donateMutation, { data, loading, error }] = useDonateMutation({
+ *   variables: {
+ *      amountInSat: // value for 'amountInSat'
+ *   },
+ * });
+ */
+export function useDonateMutation(baseOptions?: Apollo.MutationHookOptions<DonateMutation, DonateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DonateMutation, DonateMutationVariables>(DonateDocument, options);
+      }
+export type DonateMutationHookResult = ReturnType<typeof useDonateMutation>;
+export type DonateMutationResult = Apollo.MutationResult<DonateMutation>;
+export type DonateMutationOptions = Apollo.BaseMutationOptions<DonateMutation, DonateMutationVariables>;
+export const ConfirmDonationDocument = gql`
+    mutation ConfirmDonation($paymentRequest: String!, $preimage: String!) {
+  confirmDonation(payment_request: $paymentRequest, preimage: $preimage) {
+    id
+    amount
+    paid
+  }
+}
+    `;
+export type ConfirmDonationMutationFn = Apollo.MutationFunction<ConfirmDonationMutation, ConfirmDonationMutationVariables>;
+
+/**
+ * __useConfirmDonationMutation__
+ *
+ * To run a mutation, you first call `useConfirmDonationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmDonationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmDonationMutation, { data, loading, error }] = useConfirmDonationMutation({
+ *   variables: {
+ *      paymentRequest: // value for 'paymentRequest'
+ *      preimage: // value for 'preimage'
+ *   },
+ * });
+ */
+export function useConfirmDonationMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmDonationMutation, ConfirmDonationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ConfirmDonationMutation, ConfirmDonationMutationVariables>(ConfirmDonationDocument, options);
+      }
+export type ConfirmDonationMutationHookResult = ReturnType<typeof useConfirmDonationMutation>;
+export type ConfirmDonationMutationResult = Apollo.MutationResult<ConfirmDonationMutation>;
+export type ConfirmDonationMutationOptions = Apollo.BaseMutationOptions<ConfirmDonationMutation, ConfirmDonationMutationVariables>;
 export const AllTopicsDocument = gql`
     query allTopics {
   allTopics {

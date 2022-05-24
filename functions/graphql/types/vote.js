@@ -10,7 +10,8 @@ const {
 const { parsePaymentRequest } = require('invoices');
 const { getPaymetRequestForItem, hexToUint8Array } = require('./helpers');
 const { createHash } = require('crypto');
-const { prisma } = require('../prisma')
+const { prisma } = require('../prisma');
+const { BOLT_FUN_LIGHTNING_ADDRESS } = require('../helpers/consts');
 
 
 // the types of items we can vote to
@@ -18,7 +19,6 @@ const VOTE_ITEM_TYPE = enumType({
     name: 'VOTE_ITEM_TYPE',
     members: ['Story', 'Bounty', 'Question', 'Project', 'User', 'PostComment'],
 })
-const BOLT_FUN_LIGHTNING_ADDRESS = 'johns@getalby.com'; // #TODO, replace it by bolt-fun lightning address if there exist one
 
 
 const Vote = objectType({
@@ -133,7 +133,6 @@ const voteMutation = extendType({
                 const { item_id, item_type, amount_in_sat } = args;
                 const lightning_address = (await getLightningAddress(item_id, item_type)) ?? BOLT_FUN_LIGHTNING_ADDRESS;
                 const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
-                console.log(pr);
                 const invoice = parsePaymentRequest({ request: pr });
 
                 // #TODO remove votes rows that get added but not confirmed after some time

@@ -76,6 +76,20 @@ export interface NexusGenObjects {
     id: number; // Int!
     title: string; // String!
   }
+  Donation: { // root type
+    amount: number; // Int!
+    createdAt: NexusGenScalars['Date']; // Date!
+    id: number; // Int!
+    paid: boolean; // Boolean!
+    payment_hash: string; // String!
+    payment_request: string; // String!
+  }
+  DonationsStats: { // root type
+    applications: number; // Int!
+    donations: number; // Int!
+    prizes: number; // Int!
+    touranments: number; // Int!
+  }
   Hackathon: { // root type
     cover_image: string; // String!
     description: string; // String!
@@ -208,6 +222,21 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     votes_sum: number; // Int!
   }
+  Donation: { // field return type
+    amount: number; // Int!
+    by: NexusGenRootTypes['User'] | null; // User
+    createdAt: NexusGenScalars['Date']; // Date!
+    id: number; // Int!
+    paid: boolean; // Boolean!
+    payment_hash: string; // String!
+    payment_request: string; // String!
+  }
+  DonationsStats: { // field return type
+    applications: number; // Int!
+    donations: number; // Int!
+    prizes: number; // Int!
+    touranments: number; // Int!
+  }
   Hackathon: { // field return type
     cover_image: string; // String!
     description: string; // String!
@@ -226,7 +255,9 @@ export interface NexusGenFieldTypes {
     minSendable: number | null; // Int
   }
   Mutation: { // field return type
+    confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
+    donate: NexusGenRootTypes['Donation']; // Donation!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
   PostComment: { // field return type
@@ -258,6 +289,7 @@ export interface NexusGenFieldTypes {
     allTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
+    getDonationsStats: NexusGenRootTypes['DonationsStats'][]; // [DonationsStats!]!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getPostById: NexusGenRootTypes['Post']; // Post!
@@ -369,6 +401,21 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     votes_sum: 'Int'
   }
+  Donation: { // field return type name
+    amount: 'Int'
+    by: 'User'
+    createdAt: 'Date'
+    id: 'Int'
+    paid: 'Boolean'
+    payment_hash: 'String'
+    payment_request: 'String'
+  }
+  DonationsStats: { // field return type name
+    applications: 'Int'
+    donations: 'Int'
+    prizes: 'Int'
+    touranments: 'Int'
+  }
   Hackathon: { // field return type name
     cover_image: 'String'
     description: 'String'
@@ -387,7 +434,9 @@ export interface NexusGenFieldTypeNames {
     minSendable: 'Int'
   }
   Mutation: { // field return type name
+    confirmDonation: 'Donation'
     confirmVote: 'Vote'
+    donate: 'Donation'
     vote: 'Vote'
   }
   PostComment: { // field return type name
@@ -419,6 +468,7 @@ export interface NexusGenFieldTypeNames {
     allTopics: 'Topic'
     getAllHackathons: 'Hackathon'
     getCategory: 'Category'
+    getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
     getPostById: 'Post'
@@ -493,9 +543,16 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    confirmDonation: { // args
+      payment_request: string; // String!
+      preimage: string; // String!
+    }
     confirmVote: { // args
       payment_request: string; // String!
       preimage: string; // String!
+    }
+    donate: { // args
+      amount_in_sat: number; // Int!
     }
     vote: { // args
       amount_in_sat: number; // Int!

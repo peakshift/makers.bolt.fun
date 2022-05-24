@@ -47,6 +47,23 @@ type Category {
 """Date custom scalar type"""
 scalar Date
 
+type Donation {
+  amount: Int!
+  by: User
+  createdAt: Date!
+  id: Int!
+  paid: Boolean!
+  payment_hash: String!
+  payment_request: String!
+}
+
+type DonationsStats {
+  applications: Int!
+  donations: Int!
+  prizes: Int!
+  touranments: Int!
+}
+
 type Hackathon {
   cover_image: String!
   description: String!
@@ -67,7 +84,9 @@ type LnurlDetails {
 }
 
 type Mutation {
+  confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  donate(amount_in_sat: Int!): Donation!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
 
@@ -119,6 +138,7 @@ type Query {
   allTopics: [Topic!]!
   getAllHackathons(sortBy: String, topic: Int): [Hackathon!]!
   getCategory(id: Int!): Category!
+  getDonationsStats: [DonationsStats!]!
   getFeed(skip: Int = 0, sortBy: String = "all", take: Int = 10, topic: Int = 0): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!, type: POST_TYPE!): Post!
