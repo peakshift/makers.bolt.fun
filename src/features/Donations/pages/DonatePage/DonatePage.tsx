@@ -1,6 +1,6 @@
 
 
-export default function HackathonsPage() {
+export default function DonatePage() {
 
     return (
         <div

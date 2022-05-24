@@ -1,0 +1,17 @@
+@import "/src/styles/mixins";
+
+.header {
+  padding: 56px 24px;
+  background: #ffecf9;
+  background: linear-gradient(40deg, white -5%, #ffb7d963 74%, #e3faff61 100%);
+
+  & > div {
+    max-width: calc(min(100%, 910px));
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include gt-md {
+    padding: 156px 0;
+  }
+}

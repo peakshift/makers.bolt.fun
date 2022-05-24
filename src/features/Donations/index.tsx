@@ -1,1 +1,1 @@
-export * from './pages/DonationsPage'
+export * from './pages/DonatePage/DonatePage'
