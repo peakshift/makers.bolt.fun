@@ -2,6 +2,7 @@
 
 .header {
   padding: 56px 0;
+  min-height: calc(min(1080px, 90vh));
   background: #ffecf9;
   background: linear-gradient(40deg, white -5%, #ffb7d963 74%, #e3faff61 100%);
 
@@ -11,9 +12,5 @@
 
   & > div {
     grid-area: content;
-  }
-
-  @include gt-md {
-    padding: 156px 0;
   }
 }

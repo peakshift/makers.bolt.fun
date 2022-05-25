@@ -14,6 +14,7 @@ const HottestPage = React.lazy(() => import("src/features/Projects/pages/Hottest
 const PostDetailsPage = React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage"))
 const CategoryPage = React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage"))
 const ExplorePage = React.lazy(() => import("src/features/Projects/pages/ExplorePage"))
+const DonatePage = React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage"))
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -49,6 +50,7 @@ function App() {
         <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
         <Route path="/blog" element={<FeedPage />} />
         <Route path="/hackathons" element={<HackathonsPage />} />
+        <Route path="/donate" element={<DonatePage />} />
         <Route path="/" element={<ExplorePage />} />
       </Routes>
     </Suspense>

@@ -20,7 +20,7 @@ export default function DonationStats() {
             <StatCard
                 color="#22C55E"
                 label={<><IoMedalOutline className='scale-125 mr-8' /> <span className="align-middle">Prizes</span></>}
-                value='2.5k'
+                value='$2.5k'
             />
             <StatCard
                 color="#3B82F6"

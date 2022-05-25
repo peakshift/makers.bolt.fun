@@ -11,8 +11,11 @@ export enum PaymentStatus {
     AWAITING_PAYMENT,
     PAYMENT_CONFIRMED,
     NOT_PAID,
-    CANCELED
+    CANCELED,
+    NETWORK_ERROR
 }
+
+
 
 
 export const useVote = ({ itemId, itemType }: {
@@ -81,8 +84,10 @@ export const useVote = ({ itemId, itemType }: {
                         },
 
                         onError: (error) => {
+                            setPaymentStatus(PaymentStatus.NETWORK_ERROR);
                             config?.onError?.(error);
                             config?.onSetteled?.();
+                            alert("A network error happened while confirming the payment...")
                         }
                     })
                 } catch (error) {
@@ -96,18 +101,20 @@ export const useVote = ({ itemId, itemType }: {
             },
             onError: (error) => {
                 console.log(error);
-                alert("Something wrong happened...")
-                setPaymentStatus(PaymentStatus.NOT_PAID);
+                setPaymentStatus(PaymentStatus.NETWORK_ERROR);
                 config?.onError?.(error);
                 config?.onSetteled?.();
+                alert("A network error happened...")
             }
         })
     }, [confirmVote, itemId, itemType, voteMutaion]);
 
 
+    const isLoading = paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.PAYMENT_CONFIRMED && paymentStatus !== PaymentStatus.NOT_PAID && paymentStatus !== PaymentStatus.NETWORK_ERROR
 
     return {
         paymentStatus,
-        vote
+        vote,
+        isLoading,
     }
 }

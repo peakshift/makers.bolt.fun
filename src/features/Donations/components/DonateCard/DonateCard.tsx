@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from 'react';
-import { PaymentStatus, useVote } from 'src/utils/hooks';
+import { PaymentStatus, } from 'src/utils/hooks';
 import Confetti from "react-confetti";
 import { useWindowSize } from '@react-hookz/web';
-import { Vote_Item_Type } from 'src/graphql';
+import { useDonate } from './useDonate';
 
 const defaultOptions = [
     { text: '500', value: 500 },
@@ -12,18 +12,13 @@ const defaultOptions = [
 ]
 
 
-
 export default function DonateCard() {
-    const { width, height } = useWindowSize()
 
-
+    const size = useWindowSize();
     const [selectedOption, setSelectedOption] = useState(-1);
     const [donationAmount, setDonationAmount] = useState<number>();
 
-    const { vote, paymentStatus } = useVote({
-        itemId: 123,
-        itemType: Vote_Item_Type.Project
-    })
+    const { donate, paymentStatus, isLoading } = useDonate()
 
     const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(-1);
@@ -38,7 +33,7 @@ export default function DonateCard() {
     const requestPayment = (e: FormEvent) => {
         e.preventDefault();
         if (donationAmount)
-            vote(donationAmount, {
+            donate(donationAmount, {
                 onSuccess: () => {
                     setTimeout(() => {
                         setDonationAmount(undefined);
@@ -86,18 +81,20 @@ export default function DonateCard() {
                 </div>
                 {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 mt-12 text-yellow-500">Please wait while we the fetch payment details.</p>}
                 {paymentStatus === PaymentStatus.NOT_PAID && <p className="text-body6 mt-12 text-red-500">You did not confirm the payment. Please try again.</p>}
+                {paymentStatus === PaymentStatus.NETWORK_ERROR && <p className="text-body6 mt-12 text-red-500">A network error happened while fetching data.</p>}
                 {paymentStatus === PaymentStatus.PAID && <p className="text-body6 mt-12 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
                 {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Waiting for your payment...</p>}
                 {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your vote</p>}
                 <button
                     type='submit'
                     className="btn btn-primary w-full mt-32"
-                    disabled={paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.NOT_PAID}
+                    disabled={isLoading}
                 >
-                    {paymentStatus === PaymentStatus.DEFAULT || paymentStatus === PaymentStatus.NOT_PAID ? "Make a donation" : "Donating..."}
+                    {!isLoading ? "Make a donation" : "Donating..."}
                 </button>
             </form>
-            {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti width={width} height={height} />}
+            {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti className='!fixed top-0 left-0' recycle={false} width={size.width} height={size.height} />}
+
         </div>
     )
 }
