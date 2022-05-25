@@ -39,6 +39,7 @@
     "node-sass": "^7.0.1",
     "prisma": "^3.12.0",
     "react": "^18.0.0",
+    "react-accessible-accordion": "^5.0.0",
     "react-confetti": "^6.0.1",
     "react-copy-to-clipboard": "^5.1.0",
     "react-datepicker": "^4.7.0",

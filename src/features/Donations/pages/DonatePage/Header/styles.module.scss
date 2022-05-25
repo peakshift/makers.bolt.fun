@@ -1,14 +1,16 @@
 @import "/src/styles/mixins";
 
 .header {
-  padding: 56px 24px;
+  padding: 56px 0;
   background: #ffecf9;
   background: linear-gradient(40deg, white -5%, #ffb7d963 74%, #e3faff61 100%);
 
+  display: grid;
+  grid-template-areas: ". content .";
+  grid-template-columns: minmax(16px, 1fr) minmax(auto, 910px) minmax(16px, 1fr);
+
   & > div {
-    max-width: calc(min(100%, 910px));
-    margin-left: auto;
-    margin-right: auto;
+    grid-area: content;
   }
 
   @include gt-md {
