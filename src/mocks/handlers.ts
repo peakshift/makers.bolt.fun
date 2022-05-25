@@ -25,6 +25,7 @@ import {
     GetHackathonsQueryVariables,
     AllTopicsQuery,
     AllTopicsQueryVariables,
+    DonationsStatsQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -168,6 +169,22 @@ export const handlers = [
         return res(
             ctx.data({
                 getAllHackathons: getAllHackathons()
+            })
+        )
+    }),
+
+
+    graphql.query<DonationsStatsQuery>('DonationsStats', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getDonationsStats: {
+                    applications: '32',
+                    donations: "$2.6k",
+                    prizes: "$2.5k",
+                    touranments: "1",
+                }
             })
         )
     }),

@@ -58,10 +58,10 @@ type Donation {
 }
 
 type DonationsStats {
-  applications: Int!
-  donations: Int!
-  prizes: Int!
-  touranments: Int!
+  applications: String!
+  donations: String!
+  prizes: String!
+  touranments: String!
 }
 
 type Hackathon {
@@ -138,7 +138,7 @@ type Query {
   allTopics: [Topic!]!
   getAllHackathons(sortBy: String, topic: Int): [Hackathon!]!
   getCategory(id: Int!): Category!
-  getDonationsStats: [DonationsStats!]!
+  getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String = "all", take: Int = 10, topic: Int = 0): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!, type: POST_TYPE!): Post!

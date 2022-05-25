@@ -85,10 +85,10 @@ export interface NexusGenObjects {
     payment_request: string; // String!
   }
   DonationsStats: { // root type
-    applications: number; // Int!
-    donations: number; // Int!
-    prizes: number; // Int!
-    touranments: number; // Int!
+    applications: string; // String!
+    donations: string; // String!
+    prizes: string; // String!
+    touranments: string; // String!
   }
   Hackathon: { // root type
     cover_image: string; // String!
@@ -232,10 +232,10 @@ export interface NexusGenFieldTypes {
     payment_request: string; // String!
   }
   DonationsStats: { // field return type
-    applications: number; // Int!
-    donations: number; // Int!
-    prizes: number; // Int!
-    touranments: number; // Int!
+    applications: string; // String!
+    donations: string; // String!
+    prizes: string; // String!
+    touranments: string; // String!
   }
   Hackathon: { // field return type
     cover_image: string; // String!
@@ -289,7 +289,7 @@ export interface NexusGenFieldTypes {
     allTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
-    getDonationsStats: NexusGenRootTypes['DonationsStats'][]; // [DonationsStats!]!
+    getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getPostById: NexusGenRootTypes['Post']; // Post!
@@ -411,10 +411,10 @@ export interface NexusGenFieldTypeNames {
     payment_request: 'String'
   }
   DonationsStats: { // field return type name
-    applications: 'Int'
-    donations: 'Int'
-    prizes: 'Int'
-    touranments: 'Int'
+    applications: 'String'
+    donations: 'String'
+    prizes: 'String'
+    touranments: 'String'
   }
   Hackathon: { // field return type name
     cover_image: 'String'

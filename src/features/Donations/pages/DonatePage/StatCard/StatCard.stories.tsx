@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { FiGrid } from 'react-icons/fi'
 import StatCard from './StatCard';
+import StatCardSkeleton from './StatCard.Skeleton';
 
 export default {
     title: 'Donations/Donate Page/StatCard',
@@ -20,4 +21,9 @@ Default.args = {
     value: '36'
 }
 
+const LoadingTemplate: ComponentStory<typeof StatCard> = (args) => <div className="max-w-[220px]"><StatCardSkeleton ></StatCardSkeleton></div>
+
+export const Loading = LoadingTemplate.bind({});
+Loading.args = {
+}
 

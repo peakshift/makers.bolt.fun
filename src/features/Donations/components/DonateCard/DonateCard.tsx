@@ -57,7 +57,7 @@ export default function DonateCard() {
             <form onSubmit={requestPayment} className="mt-32 ">
                 <div className="input-wrapper">
                     <input
-                        className={` input-text input-removed-arrows`}
+                        className={`input-text input-removed-arrows`}
                         value={donationAmount} onChange={onChangeInput}
                         type="number"
                         placeholder="1,000"

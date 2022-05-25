@@ -6,7 +6,7 @@ import styles from './styles.module.scss'
 export default function Header() {
     return (
         <div className={`${styles.header}`}>
-            <div>
+            <div className='min-w-0'>
                 <div className="flex items-center gap-24 flex-col md:flex-row">
                     <div>
                         <h1 className="text-[54px] font-bolder">

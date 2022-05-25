@@ -1,4 +1,4 @@
-import React, { ComponentProps, ComponentType, Suspense } from "react";
+import React, { ComponentProps, ComponentType, ReactNode, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 
 export function random(min: number, max: number) {
@@ -84,4 +84,9 @@ export function shuffle<T>(_array: Array<T>) {
   }
 
   return array;
+}
+
+
+export function generateList(component: React.ReactElement, cnt: number) {
+  return Array(cnt).fill(0).map((_, idx) => React.cloneElement(component, { key: idx }))
 }

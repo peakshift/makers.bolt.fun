@@ -76,10 +76,10 @@ export type Donation = {
 
 export type DonationsStats = {
   __typename?: 'DonationsStats';
-  applications: Scalars['Int'];
-  donations: Scalars['Int'];
-  prizes: Scalars['Int'];
-  touranments: Scalars['Int'];
+  applications: Scalars['String'];
+  donations: Scalars['String'];
+  prizes: Scalars['String'];
+  touranments: Scalars['String'];
 };
 
 export type Hackathon = {
@@ -186,7 +186,7 @@ export type Query = {
   allTopics: Array<Topic>;
   getAllHackathons: Array<Hackathon>;
   getCategory: Category;
-  getDonationsStats: Array<DonationsStats>;
+  getDonationsStats: DonationsStats;
   getFeed: Array<Post>;
   getLnurlDetailsForProject: LnurlDetails;
   getPostById: Post;
@@ -349,6 +349,11 @@ export type SearchProjectsQueryVariables = Exact<{
 
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
+
+export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DonationsStatsQuery = { __typename?: 'Query', getDonationsStats: { __typename?: 'DonationsStats', prizes: string, touranments: string, donations: string, applications: string } };
 
 export type DonateMutationVariables = Exact<{
   amountInSat: Scalars['Int'];
@@ -531,6 +536,43 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const DonationsStatsDocument = gql`
+    query DonationsStats {
+  getDonationsStats {
+    prizes
+    touranments
+    donations
+    applications
+  }
+}
+    `;
+
+/**
+ * __useDonationsStatsQuery__
+ *
+ * To run a query within a React component, call `useDonationsStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDonationsStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDonationsStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDonationsStatsQuery(baseOptions?: Apollo.QueryHookOptions<DonationsStatsQuery, DonationsStatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DonationsStatsQuery, DonationsStatsQueryVariables>(DonationsStatsDocument, options);
+      }
+export function useDonationsStatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DonationsStatsQuery, DonationsStatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DonationsStatsQuery, DonationsStatsQueryVariables>(DonationsStatsDocument, options);
+        }
+export type DonationsStatsQueryHookResult = ReturnType<typeof useDonationsStatsQuery>;
+export type DonationsStatsLazyQueryHookResult = ReturnType<typeof useDonationsStatsLazyQuery>;
+export type DonationsStatsQueryResult = Apollo.QueryResult<DonationsStatsQuery, DonationsStatsQueryVariables>;
 export const DonateDocument = gql`
     mutation Donate($amountInSat: Int!) {
   donate(amount_in_sat: $amountInSat) {

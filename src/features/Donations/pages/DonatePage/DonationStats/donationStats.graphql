@@ -1,0 +1,8 @@
+query DonationsStats {
+  getDonationsStats {
+    prizes
+    touranments
+    donations
+    applications
+  }
+}

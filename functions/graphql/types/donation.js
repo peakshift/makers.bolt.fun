@@ -106,31 +106,36 @@ const confirmDonateMutation = extendType({
 const DonationsStats = objectType({
     name: 'DonationsStats',
     definition(t) {
-        t.nonNull.int("prizes");
-        t.nonNull.int("touranments");
-        t.nonNull.int("donations");
-        t.nonNull.int("applications");
+        t.nonNull.string("prizes");
+        t.nonNull.string("touranments");
+        t.nonNull.string("donations");
+        t.nonNull.string("applications");
     },
 })
 
 const getDonationsStats = extendType({
     type: "Query",
     definition(t) {
-        t.nonNull.list.nonNull.field('getDonationsStats', {
+        t.nonNull.field('getDonationsStats', {
             type: "DonationsStats",
-            resolve() {
-                return {
-                    prizes: 2600,
-                    touranments: 2,
-                    donations: prisma.donation.aggregate({
+            async resolve() {
+                const [donations, applications] = await Promise.all([
+                    prisma.donation.aggregate({
                         _sum: {
                             amount: true
                         },
                         where: {
                             paid: true
                         }
-                    }),
-                    applications: prisma.project.count()
+                    }).then(d => d._sum.amount),
+                    prisma.project.count()]);
+
+                // #TODO add a measurement unit for prizes & donations (eg. $ or sats or BTC)
+                return {
+                    prizes: 2600,
+                    touranments: 2,
+                    donations,
+                    applications
                 }
             }
         })

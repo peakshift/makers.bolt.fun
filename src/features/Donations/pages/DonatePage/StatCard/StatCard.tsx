@@ -16,7 +16,7 @@ export default function StatCard(props: Props) {
             <p className="text-body4">
                 {props.label}
             </p>
-            <p className="text-h2 mt-8 font-bolder">
+            <p className="text-h3 sm:text-h2 mt-8 font-bolder">
                 {props.value}
             </p>
         </div>
