@@ -127,9 +127,8 @@ const getDonationsStats = extendType({
                         where: {
                             paid: true
                         }
-                    }).then(d => d._sum.amount),
+                    }).then(d => d._sum.amount ?? 0),
                     prisma.project.count()]);
-
                 // #TODO add a measurement unit for prizes & donations (eg. $ or sats or BTC)
                 return {
                     prizes: 2600,
