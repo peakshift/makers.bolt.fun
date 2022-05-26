@@ -33,7 +33,7 @@ export default function CategoriesList({ classes = {}, onClick }: Props) {
         <>
             {data?.allCategories.map(category =>
                 <MenuItem
-                    className={`w-full !p-16 text-body4 font-semibold hover:bg-gray-100 !rounded-8 ${classes.item}`}
+                    className={`w-full !p-16 text-body4 font-semibold hover:bg-gray-100 !rounded-8 flex w-items-center ${classes.item}`}
                     onClick={() => {
                         onClick?.(category.id)
                         navigate(`/category/${category.id}`)
@@ -41,10 +41,7 @@ export default function CategoriesList({ classes = {}, onClick }: Props) {
                     key={category.id}
                     href={`/category/${category.id}`}
                 >
-
-                    <li className={`flex w-items-center `} >
-                        <span className="text-body3 mr-8">{category.icon}</span> {category.title} <span className="ml-auto pl-8 text-body5 font-normal text-gray-400">{numberFormatter(category.votes_sum)}</span>
-                    </li>
+                    <span className="text-body3 mr-8">{category.icon}</span> {category.title} <span className="ml-auto pl-8 text-body5 font-normal text-gray-400">{numberFormatter(category.votes_sum)}</span>
                 </MenuItem>
             )}
         </>

@@ -74,7 +74,7 @@ export default function NavDesktop() {
         </a>
         <ul className="flex gap-32 xl:gap-64">
             <li>
-                <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
+                <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
                     <MenuItem
                         href="/"
                         onClick={(e) => {
@@ -112,7 +112,7 @@ export default function NavDesktop() {
                 </Menu>
             </li>
             <li>
-                <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
+                <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
                     <MenuItem
                         href="/blog"
                         onClick={(e) => {

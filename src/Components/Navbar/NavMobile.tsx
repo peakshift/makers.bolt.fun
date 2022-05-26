@@ -161,7 +161,7 @@ export default function NavMobile({ }: Props) {
               <Link to={link.url} onClick={() => toggleDrawerOpen(false)}><link.icon className={`text-body2  inline-block mr-12 text-primary-600`} /> <span className="align-middle">{link.text}</span> </Link></li>
             )} */}
             <li>
-              <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
+              <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
                 <MenuItem
                   href="/"
                   onClick={(e) => {
@@ -200,7 +200,7 @@ export default function NavMobile({ }: Props) {
               </Menu>
             </li>
             <li>
-              <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
+              <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
                 <MenuItem
                   href="/blog"
                   onClick={(e) => {
