@@ -1,5 +1,6 @@
 import React, { ComponentProps, ComponentType, ReactNode, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
+import { isNullOrUndefined } from "remirror";
 
 export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -18,7 +19,7 @@ export function isMobileScreen() {
 }
 
 export function numberFormatter(num?: number, digits = 1) {
-  if (!num) return;
+  if (isNullOrUndefined(num)) return;
 
   const lookup = [
     { value: 1, symbol: "" },
