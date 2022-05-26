@@ -1,7 +1,7 @@
 
 import { BsSearch } from "react-icons/bs";
 import { motion } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "src/utils/hooks";
+import { useAppDispatch, useAppSelector, useCurrentSection } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import Button from "../Button/Button";
 import ASSETS from "src/assets";
@@ -46,27 +46,11 @@ export default function NavDesktop() {
     };
 
 
-
-    const onConnectWallet = () => {
-        dispatch(
-            openModal({
-                Modal: "Login_ScanningWalletCard",
-            })
-        );
-    };
-
-    const onWithdraw = () => {
-        dispatch(
-            openModal({
-                Modal: "Claim_FundWithdrawCard",
-            })
-        );
-    };
-
+    const currentSection = useCurrentSection();
     const navigate = useNavigate()
 
 
-    return (<nav className="bg-white w-full flex fixed h-[118px] top-0 left-0 py-36 px-32 items-center z-[2010]">
+    return (<nav className="bg-white w-full flex fixed h-[72px] top-0 left-0 py-36 px-32 items-center z-[2010]">
         <a href="https://bolt.fun/">
             <h2 className="text-h5 font-bold mr-40 lg:mr-64">
                 <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
@@ -76,20 +60,20 @@ export default function NavDesktop() {
             <li>
                 <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
                     <MenuItem
-                        href="/"
+                        href="/products"
                         onClick={(e) => {
                             e.syntheticEvent.preventDefault();
-                            navigate("/");
+                            navigate("/products");
                         }}
                         className='!px-24 !py-16 font-medium'
                     >
                         <MdOutlineExplore className={`text-body1 inline-block mr-12 text-primary-600 `} /> Explore
                     </MenuItem>
                     <MenuItem
-                        href="/hottest"
+                        href="/products/hottest"
                         onClick={(e) => {
                             e.syntheticEvent.preventDefault();
-                            navigate("/hottest");
+                            navigate("/products/hottest");
                         }}
                         className='!px-24 !py-16 font-medium'
                     >
@@ -172,9 +156,9 @@ export default function NavDesktop() {
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         } */}
 
-            <IconButton className='ml-16 self-center' onClick={handleSearchClick}>
+            {currentSection === 'products' && <IconButton className='ml-16 self-center' onClick={handleSearchClick}>
                 <BsSearch className='scale-125 text-gray-400' />
-            </IconButton>
+            </IconButton>}
         </motion.div>
         <Search />
 

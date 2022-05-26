@@ -26,7 +26,7 @@ export default function HackathonsPage() {
 
     return (
         <div
-            className={`page-container pt-16 w-full ${styles.grid}`}
+            className={`page-container  pt-16 w-full ${styles.grid}`}
         >
             <aside className='no-scrollbar'>
                 <div className="sticky flex flex-col gap-24 md:overflow-y-scroll"

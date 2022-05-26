@@ -40,7 +40,7 @@ export default function SortBy({ filterChanged }: Props) {
         <>
             {
                 isMdScreen ?
-                    <div className='bg-white border rounded-12 p-16'>
+                    <div className='bg-white border-2 rounded-12 p-16'>
                         < p className="text-body2 font-bolder text-black mb-16" > Sort By</p >
                         <ul>
                             {filters.map((f, idx) => <li

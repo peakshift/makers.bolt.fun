@@ -14,7 +14,7 @@ interface Props {
 
 export default function HackathonCard({ hackathon }: Props) {
     return (
-        <div className="rounded-16 bg-white overflow-hidden">
+        <div className="rounded-16 bg-white overflow-hidden border-2">
             <img className="w-full h-[120px] object-cover" src={hackathon.cover_image} alt="" />
             <div className="p-16">
                 <div className="flex flex-col gap-8">

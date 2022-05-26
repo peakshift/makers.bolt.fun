@@ -22,7 +22,7 @@ interface Props {
 
 export default function SortByFilter({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState<string | null>(null);
+    const [selected, setSelected] = useState<string | null>('Upcoming');
 
     const filterClicked = (_newValue: string | null) => {
         const newValue = selected !== _newValue ? _newValue : null;
@@ -37,7 +37,7 @@ export default function SortByFilter({ filterChanged }: Props) {
         <>
             {
                 isMdScreen ?
-                    <div className='bg-white border rounded-12 p-16'>
+                    <div className='bg-white border-2 rounded-12 p-16'>
                         < p className="text-body2 font-bolder text-black mb-16" > Sort By</p >
                         <ul>
                             {filters.map((f, idx) => <li

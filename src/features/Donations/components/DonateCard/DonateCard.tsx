@@ -15,18 +15,15 @@ const defaultOptions = [
 export default function DonateCard() {
 
     const size = useWindowSize();
-    const [selectedOption, setSelectedOption] = useState(-1);
     const [donationAmount, setDonationAmount] = useState<number>();
 
     const { donate, paymentStatus, isLoading } = useDonate()
 
     const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedOption(-1);
         setDonationAmount(Number(event.target.value));
     };
 
     const onSelectOption = (idx: number) => {
-        setSelectedOption(idx);
         setDonationAmount(defaultOptions[idx].value);
     }
 
@@ -37,13 +34,11 @@ export default function DonateCard() {
                 onSuccess: () => {
                     setTimeout(() => {
                         setDonationAmount(undefined);
-                        setSelectedOption(-1);
                     }, 4000);
                 },
                 onError: () => {
                     setTimeout(() => {
                         setDonationAmount(undefined);
-                        setSelectedOption(-1);
                     }, 4000);
                 }
             });
@@ -60,7 +55,7 @@ export default function DonateCard() {
                         className={`input-text input-removed-arrows`}
                         value={donationAmount} onChange={onChangeInput}
                         type="number"
-                        placeholder="1,000"
+                        placeholder="Select or enter amount"
                         autoFocus
                     />
                     <p className='px-16 shrink-0 self-center text-primary-400'>
@@ -72,7 +67,7 @@ export default function DonateCard() {
                         <button
                             type='button'
                             key={idx}
-                            className={`btn border px-12 rounded-md py-8 text-body5 bg-primary-100 hover:bg-primary-50 text-primary-600 ${idx === selectedOption && "border-primary-500 bg-primary-100 hover:bg-primary-100 text-primary-600"}`}
+                            className={`btn border-0 px-12 rounded-md py-8 text-body5 bg-primary-50 hover:bg-primary-100 outline-2 outline-primary-200 active:outline `}
                             onClick={() => onSelectOption(idx)}
                         >
                             {option.text}

@@ -7,3 +7,5 @@ export * from "./useAutoResizableTextArea";
 export * from "./useCopyToClipboard";
 export * from "./useVote";
 export * from './useWindowSize'
+export * from './useMediaQuery'
+export * from './useCurrentSection'

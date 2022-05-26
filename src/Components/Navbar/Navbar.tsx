@@ -1,14 +1,14 @@
 import NavMobile from "./NavMobile";
 import { MdComment, MdHomeFilled, MdLocalFireDepartment } from "react-icons/md";
 import { IoExtensionPuzzle } from "react-icons/io5";
-import { useCallback, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "src/utils/hooks";
+import { useCallback, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector, useMediaQuery } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import { setNavHeight } from "src/redux/features/ui.slice";
 import NavDesktop from "./NavDesktop";
-import { useMediaQuery } from "@react-hookz/web";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import { IoMdTrophy } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 
 
 export const navLinks = [
@@ -39,32 +39,16 @@ export const navLinks = [
   // },
 ];
 
+
 export default function Navbar() {
 
   const dispatch = useAppDispatch();
-  const { isWalletConnected, isMobileScreen } = useAppSelector((state) => ({
-    isWalletConnected: state.wallet.isConnected,
-    isMobileScreen: state.ui.isMobileScreen
-  }));
+  // const { isWalletConnected, isMobileScreen } = useAppSelector((state) => ({
+  //   isWalletConnected: state.wallet.isConnected,
+  //   isMobileScreen: state.ui.isMobileScreen
+  // }));
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
-
-
-  const onConnectWallet = () => {
-    dispatch(
-      openModal({
-        Modal: "Login_ScanningWalletCard",
-      })
-    );
-  };
-
-  const onWithdraw = () => {
-    dispatch(
-      openModal({
-        Modal: "Claim_FundWithdrawCard",
-      })
-    );
-  };
 
 
   useEffect(() => {
@@ -84,17 +68,15 @@ export default function Navbar() {
       document.body.style.paddingTop = oldPadding
     }
 
-  }, [dispatch, isMobileScreen, isLargeScreen])
-
-
+  }, [dispatch])
 
 
   return (
     <>
-      {(isMobileScreen || !isLargeScreen) ?
-        <NavMobile />
-        :
+      {(isLargeScreen) ?
         <NavDesktop />
+        :
+        <NavMobile />
       }
     </>
   );

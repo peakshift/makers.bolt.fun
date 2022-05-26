@@ -3,7 +3,7 @@ import Navbar from "src/Components/Navbar/Navbar";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { useAppSelector } from './utils/hooks';
 import { Wallet_Service } from "./services";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
 
@@ -45,13 +45,18 @@ function App() {
     <Navbar />
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path="/hottest" element={<HottestPage />} />
-        <Route path="/category/:id" element={<CategoryPage />} />
+        <Route path="/products/hottest" element={<HottestPage />} />
+        <Route path="/products/category/:id" element={<CategoryPage />} />
+        <Route path="/products" element={<ExplorePage />} />
+
         <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
         <Route path="/blog" element={<FeedPage />} />
+
         <Route path="/hackathons" element={<HackathonsPage />} />
+
         <Route path="/donate" element={<DonatePage />} />
-        <Route path="/" element={<ExplorePage />} />
+
+        <Route path="/" element={<Navigate to="/products" />} />
       </Routes>
     </Suspense>
     <ModalsContainer />

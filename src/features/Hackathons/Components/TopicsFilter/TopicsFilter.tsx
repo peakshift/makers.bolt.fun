@@ -29,7 +29,7 @@ export default function PopularTopicsFilter({ filterChanged }: Props) {
     return (
         <>
             {isMdScreen ?
-                <div className='bg-white border rounded-12 p-16'>
+                <div className='bg-white border-2 rounded-12 p-16'>
                     <p className="text-body2 font-bolder text-black mb-16">Topics</p>
                     <ul className=' flex flex-col gap-16'>
                         {topicsQuery.loading ?

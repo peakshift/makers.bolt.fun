@@ -163,20 +163,20 @@ export default function NavMobile({ }: Props) {
             <li>
               <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
                 <MenuItem
-                  href="/"
+                  href="/products"
                   onClick={(e) => {
                     e.syntheticEvent.preventDefault();
-                    navigate("/");
+                    navigate("/products");
                   }}
                   className='!px-24 !py-16 font-medium'
                 >
                   <MdOutlineExplore className={`text-body1 inline-block mr-12 text-primary-600 `} /> Explore
                 </MenuItem>
                 <MenuItem
-                  href="/hottest"
+                  href="/products/hottest"
                   onClick={(e) => {
                     e.syntheticEvent.preventDefault();
-                    navigate("/hottest");
+                    navigate("/products/hottest");
                   }}
                   className='!px-24 !py-16 font-medium'
                 >

@@ -6,7 +6,7 @@ export default function DonatePage() {
 
     return (
         <div
-            className={`w-full`}
+            className={`w-full bg-white`}
         >
             <Header />
             <div className={`${styles.faq}`}>
