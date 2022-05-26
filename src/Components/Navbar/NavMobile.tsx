@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsChevronDown, BsSearch } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import Button from "../Button/Button";
@@ -8,13 +8,17 @@ import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { toggleSearch } from "src/redux/features/ui.slice";
-import { FiMenu } from "react-icons/fi";
+import { FiChevronDown, FiMenu, FiSend } from "react-icons/fi";
 import { navLinks } from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import CategoriesList from "./CategoriesList/CategoriesList";
 import { useToggle } from "@react-hookz/web";
 import styles from './styles.module.css'
+import { Menu, MenuButton, MenuItem, SubMenu } from "@szhsin/react-menu";
+import '@szhsin/react-menu/dist/index.css';
+import { IoMdTrophy } from "react-icons/io";
+import { MdComment, MdOutlineExplore, MdOutlineLocalFireDepartment } from "react-icons/md";
 
 interface Props {
 }
@@ -58,6 +62,7 @@ const categoriesArrowVariants = {
 
 export default function NavMobile({ }: Props) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const { searchOpen } = useAppSelector((state) => ({
     isWalletConnected: state.wallet.isConnected,
     searchOpen: state.ui.isSearchOpen
@@ -99,13 +104,6 @@ export default function NavMobile({ }: Props) {
           animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
           className="flex"
         >
-          {/* <Button size="sm"
-            color="primary"
-            className="rounded-24"
-            href="https://airtable.com/shr2VkxarNsIFilDz"
-            newTab>
-            Submit App️
-          </Button> */}
           {/* <IconButton className='ml-8  self-center' onClick={handleSearchClick}>
             <BsSearch className="text-gray-400" />
           </IconButton> */}
@@ -132,15 +130,6 @@ export default function NavMobile({ }: Props) {
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
-            {/* <form className='relative' onSubmit={handleSubmit}>
-                            <BsSearch className='absolute top-1/2 left-20 transform -translate-x-1/2  -translate-y-1/2 text-gray-500' />
-                            <input
-                                value={searchInput}
-                                onChange={e => setSearchInput(e.target.value)}
-                                className="bg-gray-100 text-gray-600 focus:outline-primary w-full py-12 px-20 pl-40 rounded-24 placeholder-gray-500" placeholder="Search" />
-
-                            <input className="btn bg-gray-100 w-full  rounded-24 mt-16 placeholder-gray-500" placeholder="Search" />
-                        </form> */}
             <a
               href="https://airtable.com/shr2VkxarNsIFilDz"
               target="_blank"
@@ -151,7 +140,7 @@ export default function NavMobile({ }: Props) {
                 fullWidth
                 className="py-12 px-40 rounded-24 "
               >
-                Submit App️
+                Submit LApp️
               </Button>
             </a>
 
@@ -167,33 +156,87 @@ export default function NavMobile({ }: Props) {
             </Button>
             {/* <Button color='gray' fullWidth className="py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button> */}
           </div>
-          <ul className="py-16 gap-64 border-t">
-            {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 active:bg-gray-200">
+          <ul className="px-32 flex flex-col py-16 gap-32 border-t">
+            {/* {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 active:bg-gray-200">
               <Link to={link.url} onClick={() => toggleDrawerOpen(false)}><link.icon className={`text-body2  inline-block mr-12 text-primary-600`} /> <span className="align-middle">{link.text}</span> </Link></li>
-            )}
-            <li >
-              <p className="text-body3 flex items-center p-16 active:bg-gray-200 cursor-pointer"
-                onClick={() => toggleCategories(!categoriesOpen)}
+            )} */}
+            <li>
+              <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
+                <MenuItem
+                  href="/"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/");
+                  }}
+                  className='!px-24 !py-16 font-medium'
+                >
+                  <MdOutlineExplore className={`text-body1 inline-block mr-12 text-primary-600 `} /> Explore
+                </MenuItem>
+                <MenuItem
+                  href="/hottest"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/hottest");
+                  }}
+                  className='!px-24 !py-16 font-medium'
+                >
+                  <MdOutlineLocalFireDepartment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hottest
+                </MenuItem>
+                <SubMenu
+                  itemProps={{ className: '!p-0' }}
+                  direction='bottom'
+                  overflow="auto"
+                  label={<div className='!px-24 !py-16 font-medium'><IoExtensionPuzzle className={`text-body1 inline-block mr-12 text-primary-600 `} /> Categories</div>}
+                >
+                  <CategoriesList />
+                </SubMenu>
+                <MenuItem
+                  href="https://airtable.com/shr2VkxarNsIFilDz"
+                  target="_blank" rel="noopener noreferrer"
+                  className='!px-24 !py-16 font-medium'
+                >
+                  <FiSend className={`text-body1 inline-block mr-12 text-primary-600 `} />  Submit LApp
+                </MenuItem>
+              </Menu>
+            </li>
+            <li>
+              <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
+                <MenuItem
+                  href="/blog"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/blog");
+                  }}
+                  className='!px-24 !py-16 font-medium'
+                >
+                  <MdComment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Stories
+                </MenuItem>
+                <MenuItem
+                  href="/hackathons"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/hackathons");
+                  }}
+                  className='!px-24 !py-16 font-medium'
+                >
+                  <IoMdTrophy className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hackathons
+                </MenuItem>
+              </Menu>
+            </li>
+            <li className="relative">
+              <a
+                href={'https://bolt.fun/guide/'}
+                target="_blank"
+                rel="noreferrer"
+                className='text-body4 font-bold hover:text-primary-600'
               >
-                <IoExtensionPuzzle className={`text-body2  inline-block mr-12 text-primary-600`} /> Categories
-                <motion.span
-                  variants={categoriesArrowVariants}
-                  initial={'closed'}
-                  animate={categoriesOpen ? 'open' : 'closed'}
-                  className="ml-auto">
-                  <BsChevronDown className=" text-gray-400" />
-                </motion.span>
-              </p>
-              {<motion.div
-                variants={categoriesListVariants}
-                initial={'closed'}
-                animate={categoriesOpen ? 'open' : 'closed'}
-              >
-                <CategoriesList
-                  classes={{ list: "pl-32" }}
-                  onClick={() => toggleDrawerOpen(false)}
-                />
-              </motion.div>}
+                Guide
+              </a>
+            </li>
+            <li className="relative">
+              <Link to={'/donate'} className='text-body4 font-bold hover:text-primary-600'>
+                Donate
+              </Link>
             </li>
           </ul>
           <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t pt-32 mt-auto">

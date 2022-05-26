@@ -2,7 +2,7 @@ import { BiCoinStack } from "react-icons/bi";
 import { FiGrid } from "react-icons/fi";
 import { IoMedalOutline, IoRocketOutline } from "react-icons/io5";
 import { useDonationsStatsQuery } from "src/graphql";
-import { generateList } from "src/utils/helperFunctions";
+import { generateList, numberFormatter } from "src/utils/helperFunctions";
 import StatCard from "../StatCard/StatCard";
 import StatCardSkeleton from "../StatCard/StatCard.Skeleton";
 
@@ -23,7 +23,7 @@ export default function DonationStats() {
                     <StatCard
                         color="#8B5CF6"
                         label={<><BiCoinStack className='w-full lg:w-auto scale-125 mr-8' /> <span className="align-middle">Donations</span></>}
-                        value={donationsStatQuery.data?.getDonationsStats.donations}
+                        value={<>{numberFormatter(Number(donationsStatQuery.data?.getDonationsStats.donations))} < span className="text-body4">Sats</span></>}
                     />
                     <StatCard
                         color="#F59E0B"

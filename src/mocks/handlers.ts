@@ -181,7 +181,7 @@ export const handlers = [
             ctx.data({
                 getDonationsStats: {
                     applications: '32',
-                    donations: "$2.6k",
+                    donations: '2600',
                     prizes: "$2.5k",
                     touranments: "1",
                 }

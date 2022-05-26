@@ -14,28 +14,35 @@ const items = [
     {
         heading: "What is BOLT.FUN ??",
         content: <p className='text-body4 text-gray-600'>
-            Exercitation in fugiat est ut ad ea cupidatat ut in
-            cupidatat occaecat ut occaecat consequat est minim minim
-            esse tempor laborum consequat esse adipisicing eu
-            reprehenderit enim.
+            BOLT.FUN is a place by the community for the community of Lapps makers, developers, passionates, & anyone else interested.
         </p>
     },
     {
-        heading: "What Do we do ??",
+        heading: "What can you do here ??",
         content: <p className='text-body4 text-gray-600'>
-            Exercitation in fugiat est ut ad ea cupidatat ut in
-            cupidatat occaecat ut occaecat consequat est minim minim
-            esse tempor laborum consequat esse adipisicing eu
-            reprehenderit enim.
+            - Publish & view the various Lapps out there
+            <br />
+            - Read stories
+            <br />
+            - Ask/Answer questions
+            <br />
+            - Offer/Complete bounties
+            <br />
+            - View/Add hackathons
+            <br />
         </p>
     },
     {
         heading: "Who is working on BOLT.FUN ??",
         content: <p className='text-body4 text-gray-600'>
-            Exercitation in fugiat est ut ad ea cupidatat ut in
-            cupidatat occaecat ut occaecat consequat est minim minim
-            esse tempor laborum consequat esse adipisicing eu
-            reprehenderit enim.
+            - Johns (Manager)
+            <br />
+            - Ed (Product Designer)
+            <br />
+            - Alexandare (Designer)
+            <br />
+            - MTG (Developer)
+            <br />
         </p>
     },
 ]

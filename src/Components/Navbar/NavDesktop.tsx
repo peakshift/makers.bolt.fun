@@ -9,11 +9,23 @@ import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { toggleSearch } from "src/redux/features/ui.slice";
 import { navLinks } from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CategoriesList from "./CategoriesList/CategoriesList";
 import { useEffect, useRef, useState } from "react";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import { useClickOutside, useToggle } from "@react-hookz/web";
+import {
+    Menu,
+    MenuItem,
+    MenuButton,
+    MenuDivider,
+    SubMenu
+} from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
+import { FiChevronDown, FiSend } from "react-icons/fi";
+import { MdComment, MdOutlineExplore, MdOutlineLocalFireDepartment } from "react-icons/md";
+import { IoMdTrophy } from "react-icons/io";
+import { BiCoinStack } from "react-icons/bi";
 
 
 export default function NavDesktop() {
@@ -51,6 +63,8 @@ export default function NavDesktop() {
         );
     };
 
+    const navigate = useNavigate()
+
 
     return (<nav className="bg-white w-full flex fixed h-[118px] top-0 left-0 py-36 px-32 items-center z-[2010]">
         <a href="https://bolt.fun/">
@@ -59,47 +73,82 @@ export default function NavDesktop() {
             </h2>
         </a>
         <ul className="flex gap-32 xl:gap-64">
-            {navLinks.map((link, idx) => <li key={idx} className=" relative">
-                <Link to={link.url} className='text-body4 hover:text-primary-600'>
-                    <link.icon className={`text-body2  inline-block mr-8 text-primary-600`} />
-                    <span className="align-middle">{link.text}</span>
-                </Link>
-
+            <li>
+                <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
+                    <MenuItem
+                        href="/"
+                        onClick={(e) => {
+                            e.syntheticEvent.preventDefault();
+                            navigate("/");
+                        }}
+                        className='!px-24 !py-16 font-medium'
+                    >
+                        <MdOutlineExplore className={`text-body1 inline-block mr-12 text-primary-600 `} /> Explore
+                    </MenuItem>
+                    <MenuItem
+                        href="/hottest"
+                        onClick={(e) => {
+                            e.syntheticEvent.preventDefault();
+                            navigate("/hottest");
+                        }}
+                        className='!px-24 !py-16 font-medium'
+                    >
+                        <MdOutlineLocalFireDepartment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hottest
+                    </MenuItem>
+                    <SubMenu
+                        overflow="auto"
+                        itemProps={{ className: '!p-0' }}
+                        label={<div className='!px-24 !py-16 font-medium'><IoExtensionPuzzle className={`text-body1 inline-block mr-12 text-primary-600 `} /> Categories</div>}
+                    >
+                        <CategoriesList />
+                    </SubMenu>
+                    <MenuItem
+                        href="https://airtable.com/shr2VkxarNsIFilDz"
+                        target="_blank" rel="noopener noreferrer"
+                        className='!px-24 !py-16 font-medium'
+                    >
+                        <FiSend className={`text-body1 inline-block mr-12 text-primary-600 `} />  Submit LApp
+                    </MenuItem>
+                </Menu>
             </li>
-            )}
-            <li
-                ref={categoriesRef}
-                className="relative"
-            >
-                <button
-                    onClick={() => toggleCategories(!categoriesOpen)}
-                    onKeyDown={e => (e.key !== 'Escape') || toggleCategories(false)}
-                    className='text-body4 hover:text-primary-600 cursor-pointer'
+            <li>
+                <Menu offsetY={24} menuClassName='!rounded-12 !p-0' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
+                    <MenuItem
+                        href="/blog"
+                        onClick={(e) => {
+                            e.syntheticEvent.preventDefault();
+                            navigate("/blog");
+                        }}
+                        className='!px-24 !py-16 font-medium'
+                    >
+                        <MdComment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Stories
+                    </MenuItem>
+                    <MenuItem
+                        href="/hackathons"
+                        onClick={(e) => {
+                            e.syntheticEvent.preventDefault();
+                            navigate("/hackathons");
+                        }}
+                        className='!px-24 !py-16 font-medium'
+                    >
+                        <IoMdTrophy className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hackathons
+                    </MenuItem>
+                </Menu>
+            </li>
+            <li className="relative">
+                <a
+                    href={'https://bolt.fun/guide/'}
+                    target="_blank"
+                    rel="noreferrer"
+                    className='text-body4 font-bold hover:text-primary-600'
                 >
-                    <IoExtensionPuzzle className={`text-body2  inline-block mr-8 text-primary-600`} />
-                    <span className="align-middle">Categories</span>
-                </button>
-                {<motion.div
-                    initial={{ opacity: 0, y: 200, display: 'none' }}
-                    animate={categoriesOpen ? {
-
-                        opacity: 1, y: 16, display: 'initial',
-                        transition: { ease: 'easeOut' }
-                    } : {
-                        opacity: [1, 0, 0],
-                        y: [16, 40, 200],
-                        transition: {
-                            times: [0, .5, 1],
-                            ease: "easeIn",
-                            duration: .2
-                        },
-                        transitionEnd: {
-                            display: 'none'
-                        }
-                    }}
-                    className="absolute top-full left-0 w-[256px] bg-white border border-primary-50 rounded-8 shadow-3xl">
-                    <CategoriesList onClick={() => toggleCategories(false)} />
-                </motion.div>}
+                    Guide
+                </a>
+            </li>
+            <li className="relative">
+                <Link to={'/donate'} className='text-body4 font-bold hover:text-primary-600'>
+                    Donate
+                </Link>
             </li>
         </ul>
 
@@ -109,7 +158,7 @@ export default function NavDesktop() {
             className="flex"
         >
 
-            <Button
+            {/* <Button
                 color="primary"
                 size="md"
                 className="lg:px-40"
@@ -117,7 +166,7 @@ export default function NavDesktop() {
                 newTab
             >
                 Submit App️
-            </Button>
+            </Button> */}
             {/* {isWalletConnected ?
                             <Button className="ml-16 py-12 px-16 lg:px-20">Connected <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
@@ -128,20 +177,6 @@ export default function NavDesktop() {
             </IconButton>
         </motion.div>
         <Search />
-        {/* <form onBlur={toggleSearch} className='relative flex items-center' onSubmit={handleSubmit}>
-                        {searchOpen ? <GrClose onClick={toggleSearch} className='text-gray-500 w-24 h-24 mx-12 z-20 hover:cursor-pointer' /> : <BsSearch onClick={toggleSearch} className='text-gray-500 w-24 h-24 mx-12 z-20 hover:cursor-pointer' />}
-                        {searchOpen && <motion.input
-                            ref={inputRef}
-                            value={searchInput}
-                            onChange={e => setSearchInput(e.target.value)}
-                            initial={{ scaleX: .3, opacity: 0, originX: 'right' }}
-                            animate={searchOpen ? { scaleX: 1, opacity: 1, originX: 'right' } : { scaleX: .3, opacity: 0, originX: 'right' }}
-                            onAnimationComplete={() => {
-                                if (searchOpen) inputRef.current?.focus()
-                            }}
-                            className="absolute top-0 right-0 z-10 bg-gray-100 text-gray-600 focus:outline-primary w-[300px] py-12 px-20 pr-40 rounded-24 placeholder-gray-500" placeholder="Search" />
-                        }
-                    </form> */}
 
     </nav>
     );
