@@ -1,15 +1,16 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BsSearch } from 'react-icons/bs';
-import { useClickOutside, useThrottledCallback } from '@react-hookz/web'
+import { useClickOutside, useThrottledCallback, useUpdateEffect } from '@react-hookz/web'
 import SearchResults from './SearchResults/SearchResults'
-import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
-import { toggleSearch } from 'src/redux/features/ui.slice';
 import { SearchProjectsQuery, useSearchProjectsLazyQuery } from 'src/graphql';
 
 interface Props {
     height?: number | string;
     width?: number | string;
+    onClose?: () => void;
+    onResultClick?: () => void;
+    isOpen?: boolean;
 }
 
 export type ProjectSearchItem = SearchProjectsQuery['searchProjects'][number];
@@ -27,24 +28,26 @@ const SearchResultsListVariants = {
     }
 }
 
-export default function Search({
 
+export default function Search({
     width,
     height,
+    onClose,
+    onResultClick,
+    isOpen
 }: Props) {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [searchInput, setSearchInput] = useState("");
     const containerRef = useRef<HTMLDivElement>(null)
 
-    const { isOpen } = useAppSelector(state => ({
-        isOpen: state.ui.isSearchOpen
-    }))
-    const dispatch = useAppDispatch()
+    // const { isOpen } = useAppSelector(state => ({
+    //     isOpen:  state.ui.isSearchOpen
+    // }))
+    // const dispatch = useAppDispatch()
 
     useClickOutside(containerRef, () => {
-        if (isOpen)
-            dispatch(toggleSearch(false))
+        onClose?.()
     })
 
 
@@ -72,7 +75,7 @@ export default function Search({
         // onSearch(searchInput);
     };
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         if (isOpen)
             inputRef.current?.focus();
         else {
@@ -83,43 +86,27 @@ export default function Search({
 
 
     return (
-        <div className="relative h-full" ref={containerRef}>
-
-            {<motion.form
-                initial={{
-                    opacity: 0,
-                    x: '100%'
-                }}
-                animate={isOpen ? {
-                    opacity: 1,
-                    x: '0',
-                    transition: { type: "spring", stiffness: 70 }
-
-                } : {
-                    opacity: 0,
-                    x: '100%',
-                    transition: {
-                        ease: "easeIn"
-                    }
-                }}
-                className='absolute top-0 right-0 flex items-center h-full'
+        <div className="relative z-20 h-full" ref={containerRef}>
+            {<form
+                className='flex items-center h-full'
                 onSubmit={handleSubmit}
                 style={{
-                    width: width ?? '326px',
+                    width: width ?? '100%',
                     height: height ?? '100%'
                 }}
             >
-                <div className="input-wrapper bg-white !rounded-12 ring-1 ring-gray-400">
-                    <BsSearch className={`input-icon`} />
+                <div className="input-wrapper border-0 !p-16 md:!py-12 !bg-gray-100 focus-within:!bg-gray-50 focus:ring-1 focus:ring-gray-300 !rounded-12">
+                    <BsSearch className={`input-icon w-16 mr-10 !p-0`} />
                     <input
+                        autoFocus
                         type='text'
                         ref={inputRef}
-                        className="input-text placeholder-black pl-0"
+                        className="input-text placeholder-black !p-0"
                         placeholder='Search'
                         value={searchInput}
                         onChange={handleChange}
                         onKeyDown={e => {
-                            if (e.key === 'Escape') dispatch(toggleSearch(false))
+                            if (e.key === 'Escape') onClose?.()
 
                         }}
                     />
@@ -134,9 +121,10 @@ export default function Search({
                     <SearchResults
                         isLoading={loading}
                         projects={data?.searchProjects}
+                        onResultClick={onResultClick}
                     />
                 </motion.div>
-            </motion.form>}
+            </form>}
         </div>
     )
 }

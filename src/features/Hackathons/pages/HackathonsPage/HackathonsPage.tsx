@@ -37,9 +37,9 @@ export default function HackathonsPage() {
                     <SortByFilter
                         filterChanged={setSortByFilter}
                     />
-                    <TopicsFilter
+                    {/* <TopicsFilter
                         filterChanged={setTopicsFilter}
-                    />
+                    /> */}
                     <Button
                         href='https://airtable.com/some-registration-form'
                         newTab

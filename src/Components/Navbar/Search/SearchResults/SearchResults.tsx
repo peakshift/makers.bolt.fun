@@ -1,7 +1,6 @@
 
 import { openModal } from 'src/redux/features/modals.slice';
 import { openProject } from 'src/redux/features/project.slice';
-import { toggleSearch } from 'src/redux/features/ui.slice';
 import { useAppDispatch } from 'src/utils/hooks';
 import { ProjectSearchItem } from '../Search';
 import SearchProjectCard from '../SearchProjectCard/SearchProjectCard';
@@ -10,14 +9,15 @@ import styles from './styles.module.css'
 interface Props {
     isLoading?: boolean;
     projects: ProjectSearchItem[] | undefined,
+    onResultClick?: () => void
 }
 
-export default function SearchResults({ projects, isLoading }: Props) {
+export default function SearchResults({ projects, isLoading, onResultClick }: Props) {
 
     const dispatch = useAppDispatch();
 
     const handleOpenProject = (projectId: number) => {
-        dispatch(toggleSearch(false))
+        onResultClick?.()
         dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
     }
 

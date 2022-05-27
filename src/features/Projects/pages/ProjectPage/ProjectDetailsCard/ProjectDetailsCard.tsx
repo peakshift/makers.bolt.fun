@@ -15,6 +15,7 @@ import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
 import { setVoteAmount } from 'src/redux/features/vote.slice';
+import { numberFormatter } from 'src/utils/helperFunctions';
 
 
 interface Props extends ModalCard {
@@ -114,7 +115,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         <div>
                             <span className="chip-small font-light text-body5 py-4 px-12 mr-8"> {project?.category.title}</span>
 
-                            <span className="chip-small bg-warning-50 font-light text-body5 py-4 px-12"><MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {project?.votes_count}</span>
+                            <span className="chip-small bg-warning-50 font-light text-body5 py-4 px-12"><MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {numberFormatter(project?.votes_count)}</span>
 
                         </div>
                     </div>

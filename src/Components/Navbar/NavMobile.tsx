@@ -1,22 +1,18 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { BsChevronDown, BsSearch } from "react-icons/bs";
+import { useEffect } from "react";
+import { BsChevronDown } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import Button from "../Button/Button";
 import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
-import { useAppDispatch, useAppSelector } from "src/utils/hooks";
-import { toggleSearch } from "src/redux/features/ui.slice";
-import { FiAward, FiChevronDown, FiFeather, FiMenu, FiMic, } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { useAppSelector } from "src/utils/hooks";
+import { FiAward, FiFeather, FiMenu, FiMic, } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
 import styles from './styles.module.css'
-import { Menu, MenuButton, MenuItem, } from "@szhsin/react-menu";
 import '@szhsin/react-menu/dist/index.css';
 
-interface Props {
-}
 
 
 const navBtnVariant = {
@@ -55,17 +51,11 @@ const listArrowVariants = {
 }
 
 
-export default function NavMobile({ }: Props) {
-  const dispatch = useAppDispatch();
-  const { searchOpen } = useAppSelector((state) => ({
-    isWalletConnected: state.wallet.isConnected,
-    searchOpen: state.ui.isSearchOpen
-  }));
+export default function NavMobile() {
+
 
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
   const [communityOpen, toggleCommunityOpen] = useToggle(false)
-
-
 
 
   useEffect(() => {
@@ -75,39 +65,19 @@ export default function NavMobile({ }: Props) {
 
 
 
-  const handleSearchClick = () => {
-    toggleDrawerOpen(false)
-    dispatch(toggleSearch())
-  };
-
-
-
-
   return (
     <div className={`${styles.navMobile} w-screen z-[2010]`}>
       <nav className={`bg-white fixed top-0 left-0  h-[67px] w-full p-16 px-32 flex justify-between items-center z-[2010]`}>
-        {/* <div className="w-40 h-40 bg-gray-100 rounded-8 mr-auto">
-                    <img className="w-full h-full object-cover" src="https://www.figma.com/file/OFowr5RJk9YZCW35KT7D5K/image/07b85d84145942255afd215b3da26dbbf1dd03bd?fuid=772401335362859303" alt="" />
-                </div> */}
         <a href="https://bolt.fun/">
           <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
         </a>
 
         <div className="ml-auto"></div>
-        <motion.div
-          animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
-          className="flex"
-        >
-          {/* <IconButton className='ml-8  self-center' onClick={handleSearchClick}>
-            <BsSearch className="text-gray-400" />
-          </IconButton> */}
-          <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
-            {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
-              : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
-          </IconButton>
-        </motion.div>
-        <Search width='calc(100vw - 64px)' />
 
+        <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
+          {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
+            : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
+        </IconButton>
       </nav>
 
       <div className="fixed  left-0 pointer-events-none z-[2010] w-full min-h-[calc(100vh-76px)]">
@@ -124,6 +94,7 @@ export default function NavMobile({ }: Props) {
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
+            <Search onResultClick={() => toggleDrawerOpen(false)} />
             <a
               href="https://airtable.com/shr2VkxarNsIFilDz"
               target="_blank"
@@ -132,28 +103,14 @@ export default function NavMobile({ }: Props) {
               <Button
                 color="primary"
                 fullWidth
-                className="py-12 px-40 rounded-24 "
+                className="!py-16 px-40 rounded-12 "
               >
-                Submit LApp️
+                Get your product listed
               </Button>
             </a>
-
-            <Button
-              color='white'
-              fullWidth
-              className="py-12 px-40 rounded-24"
-              onClick={() => handleSearchClick()}
-
-            >
-              <BsSearch className='inline-block transform scale-125' />
-              <span className="align-middle"> Search Apps</span>
-            </Button>
-            {/* <Button color='gray' fullWidth className="py-12 px-40 rounded-24 my-16"> <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button> */}
           </div>
           <ul className="px-32 flex flex-col py-16 gap-32 border-t">
-            {/* {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 active:bg-gray-200">
-              <Link to={link.url} onClick={() => toggleDrawerOpen(false)}><link.icon className={`text-body2  inline-block mr-12 text-primary-600`} /> <span className="align-middle">{link.text}</span> </Link></li>
-            )} */}
+
             <li className="relative">
               <Link
                 to={'/products'}
@@ -198,7 +155,7 @@ export default function NavMobile({ }: Props) {
                       </p>
                     </div>
                   </Link>
-                  <p
+                  <div
 
                     className='font-medium flex gap-16 !rounded-12 opacity-60'
                   >
@@ -213,7 +170,7 @@ export default function NavMobile({ }: Props) {
                         Coming soon
                       </p>
                     </div>
-                  </p>
+                  </div>
                   <Link
                     to="/hackathons"
                     onClick={() => toggleDrawerOpen(false)}

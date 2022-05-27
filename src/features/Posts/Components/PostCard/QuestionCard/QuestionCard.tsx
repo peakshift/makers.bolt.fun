@@ -30,7 +30,7 @@ interface Props {
 }
 export default function QuestionCard({ question }: Props) {
     return (
-        <div className="bg-white rounded-12 overflow-hidden border">
+        <div className="bg-white rounded-12 overflow-hidden  border-2">
             {/* <img src={question.cover_image} className='h-[200px] w-full object-cover' alt="" /> */}
             <div className="p-24">
                 <Header author={question.author} date={question.createdAt} />

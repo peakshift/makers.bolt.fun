@@ -30,7 +30,7 @@ export default function BountyCard({ bounty }: Props) {
     }
 
     return (
-        <div className="bg-white rounded-12 overflow-hidden border">
+        <div className="bg-white rounded-12 overflow-hidden  border-2">
             <img src={bounty.cover_image} className='h-[200px] w-full object-cover bg-gray-100' alt="" />
             <div className="p-24">
                 <Header author={bounty.author} date={bounty.createdAt} />

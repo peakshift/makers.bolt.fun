@@ -1,48 +1,30 @@
-
 import { BsSearch } from "react-icons/bs";
 import { motion } from "framer-motion";
-import { useAppDispatch, useAppSelector, useCurrentSection } from "src/utils/hooks";
-import { openModal } from "src/redux/features/modals.slice";
-import Button from "../Button/Button";
+import { useAppSelector, useCurrentSection } from "src/utils/hooks";
 import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
-import { toggleSearch } from "src/redux/features/ui.slice";
-import { navLinks } from "./Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import CategoriesList from "./CategoriesList/CategoriesList";
-import { useEffect, useRef, useState } from "react";
-import { IoExtensionPuzzle } from "react-icons/io5";
-import { useClickOutside, useToggle } from "@react-hookz/web";
+import { useState } from "react";
 import {
     Menu,
     MenuItem,
     MenuButton,
-    MenuDivider,
-    SubMenu
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
-import { FiAward, FiChevronDown, FiFeather, FiMic, FiSend } from "react-icons/fi";
-import { MdComment, MdOutlineExplore, MdOutlineLocalFireDepartment } from "react-icons/md";
-import { IoMdTrophy } from "react-icons/io";
-import { BiCoinStack } from "react-icons/bi";
+import { FiAward, FiChevronDown, FiFeather, FiMic } from "react-icons/fi";
 
 
 export default function NavDesktop() {
-    const dispatch = useAppDispatch();
-    const [categoriesOpen, toggleCategories] = useToggle(false)
-    const categoriesRef = useRef<HTMLLIElement>(null)
-    useClickOutside(categoriesRef, () => toggleCategories(false))
+    const [searchOpen, setSearchOpen] = useState(false)
 
-
-    const { isWalletConnected, searchOpen } = useAppSelector((state) => ({
+    const { isWalletConnected } = useAppSelector((state) => ({
         isWalletConnected: state.wallet.isConnected,
-        searchOpen: state.ui.isSearchOpen
     }));
 
 
-    const handleSearchClick = () => {
-        dispatch(toggleSearch())
+    const openSearch = () => {
+        setSearchOpen(true);
     };
 
 
@@ -50,7 +32,7 @@ export default function NavDesktop() {
     const navigate = useNavigate()
 
 
-    return (<nav className="bg-white w-full flex fixed h-[72px] top-0 left-0 py-36 px-32 items-center z-[2010]">
+    return (<nav className="bg-white w-full flex fixed  top-0 left-0 py-16 px-32 items-center z-[2010]">
         <a href="https://bolt.fun/">
             <h2 className="text-h5 font-bold mr-40 lg:mr-64">
                 <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
@@ -159,12 +141,39 @@ export default function NavDesktop() {
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         } */}
 
-            {currentSection === 'products' && <IconButton className='ml-16 self-center' onClick={handleSearchClick}>
+            {currentSection === 'products' && <IconButton className='ml-16 self-center' onClick={openSearch}>
                 <BsSearch className='scale-125 text-gray-400' />
             </IconButton>}
         </motion.div>
-        <Search />
 
+        <div className="relative h-24">
+            <motion.div
+                initial={{
+                    opacity: 0,
+                    x: '100%'
+                }}
+                animate={searchOpen ? {
+                    opacity: 1,
+                    x: '0',
+                    transition: { type: "spring", stiffness: 70 }
+
+                } : {
+                    opacity: 0,
+                    x: '100%',
+                    transition: {
+                        ease: "easeIn"
+                    }
+                }}
+                className='absolute top-0 right-0 flex items-center h-full'
+            >
+                <Search
+                    width={326}
+                    isOpen={searchOpen}
+                    onClose={() => setSearchOpen(false)}
+                    onResultClick={() => setSearchOpen(false)}
+                />
+            </motion.div>
+        </div>
     </nav>
     );
 }
