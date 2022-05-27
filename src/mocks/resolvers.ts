@@ -3,6 +3,7 @@ import { Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
 import { Chance } from "chance";
 import { topics } from "./data/topics";
 import { hackathons } from "./data/hackathon";
+import { shuffle } from "src/utils/helperFunctions";
 
 const chance = new Chance()
 
@@ -28,7 +29,7 @@ export function allCategories() {
 }
 
 export function newProjects() {
-    return MOCK_DATA.projects;
+    return shuffle(MOCK_DATA.projects).slice(0, 10);
 }
 
 export function getProject(projectId: number) {

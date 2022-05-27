@@ -22,7 +22,7 @@ import {
     SubMenu
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
-import { FiChevronDown, FiSend } from "react-icons/fi";
+import { FiAward, FiChevronDown, FiFeather, FiMic, FiSend } from "react-icons/fi";
 import { MdComment, MdOutlineExplore, MdOutlineLocalFireDepartment } from "react-icons/md";
 import { IoMdTrophy } from "react-icons/io";
 import { BiCoinStack } from "react-icons/bi";
@@ -57,55 +57,48 @@ export default function NavDesktop() {
             </h2>
         </a>
         <ul className="flex gap-32 xl:gap-64">
-            <li>
-                <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
-                    <MenuItem
-                        href="/products"
-                        onClick={(e) => {
-                            e.syntheticEvent.preventDefault();
-                            navigate("/products");
-                        }}
-                        className='!px-24 !py-16 font-medium'
-                    >
-                        <MdOutlineExplore className={`text-body1 inline-block mr-12 text-primary-600 `} /> Explore
-                    </MenuItem>
-                    <MenuItem
-                        href="/products/hottest"
-                        onClick={(e) => {
-                            e.syntheticEvent.preventDefault();
-                            navigate("/products/hottest");
-                        }}
-                        className='!px-24 !py-16 font-medium'
-                    >
-                        <MdOutlineLocalFireDepartment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hottest
-                    </MenuItem>
-                    <SubMenu
-                        overflow="auto"
-                        itemProps={{ className: '!p-0' }}
-                        label={<div className='!px-24 !py-16 font-medium'><IoExtensionPuzzle className={`text-body1 inline-block mr-12 text-primary-600 `} /> Categories</div>}
-                    >
-                        <CategoriesList />
-                    </SubMenu>
-                    <MenuItem
-                        href="https://airtable.com/shr2VkxarNsIFilDz"
-                        target="_blank" rel="noopener noreferrer"
-                        className='!px-24 !py-16 font-medium'
-                    >
-                        <FiSend className={`text-body1 inline-block mr-12 text-primary-600 `} />  Submit LApp
-                    </MenuItem>
-                </Menu>
+            <li className="relative">
+                <Link to={'/products'} className='text-body4 font-bold hover:text-primary-600'>
+                    Products
+                </Link>
             </li>
             <li>
-                <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
+                <Menu offsetY={28} menuClassName='!rounded-12 !p-8 !border-gray-200' menuStyle={{ border: '1px solid' }} menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
                     <MenuItem
                         href="/blog"
                         onClick={(e) => {
                             e.syntheticEvent.preventDefault();
                             navigate("/blog");
                         }}
-                        className='!px-24 !py-16 font-medium'
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 '
                     >
-                        <MdComment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Stories
+                        <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                            <FiFeather className={`text-body1 inline-block text-primary-600 `} />
+                        </div>
+                        <div>
+                            <p className="text-body4 text-black font-medium">
+                                Stories
+                            </p>
+                            <p className="text-body5 text-gray-600 mt-4">
+                                Tales from the maker community
+                            </p>
+                        </div>
+                    </MenuItem>
+                    <MenuItem
+
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
+                    >
+                        <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                            <FiMic className={`text-body1 inline-block text-primary-600 `} />
+                        </div>
+                        <div>
+                            <p className="text-body4 text-black font-medium">
+                                Discussions
+                            </p>
+                            <p className="text-body5 text-gray-600 mt-4">
+                                Coming soon
+                            </p>
+                        </div>
                     </MenuItem>
                     <MenuItem
                         href="/hackathons"
@@ -113,9 +106,19 @@ export default function NavDesktop() {
                             e.syntheticEvent.preventDefault();
                             navigate("/hackathons");
                         }}
-                        className='!px-24 !py-16 font-medium'
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                     >
-                        <IoMdTrophy className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hackathons
+                        <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                            <FiAward className={`text-body1 inline-block text-primary-600 `} />
+                        </div>
+                        <div>
+                            <p className="text-body4 text-black font-medium">
+                                Hackathons
+                            </p>
+                            <p className="text-body5 text-gray-600 mt-4">
+                                Take part in hackathons & tournaments
+                            </p>
+                        </div>
                     </MenuItem>
                 </Menu>
             </li>

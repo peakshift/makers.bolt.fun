@@ -35,11 +35,20 @@ type Props<T extends object | string> = {
 
 
 const colourStyles: StylesConfig = {
+    control: (styles, state) => ({
+        ...styles,
+        padding: '9px 16px',
+        borderRadius: 12,
+    }),
+    indicatorSeparator: (styles, state) => ({
+        ...styles,
+        display: "none"
+    }),
     input: (styles, state) => ({
         ...styles,
         " input": {
             boxShadow: 'none !important'
-        }
+        },
     }),
 };
 
@@ -77,6 +86,7 @@ export default function AutoComplete<T extends object>({
                 value={value as any}
                 onChange={v => onChange?.(v as any)}
                 onBlur={onBlur}
+
 
                 styles={colourStyles}
                 theme={(theme) => ({

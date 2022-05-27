@@ -13,7 +13,7 @@ import ProjectCardMini from "src/features/Projects/Components/ProjectCardMini/Pr
 
 interface Props {
     title: string | ReactNode,
-    categoryId: number,
+    link?: string;
     projects: ProjectCard[]
 }
 
@@ -37,7 +37,7 @@ function calcNumItems() {
 
 
 
-export default function ProjectsRow({ title, categoryId, projects }: Props) {
+export default function ProjectsRow({ title, link, projects }: Props) {
 
     const [carouselItmsCnt, setCarouselItmsCnt] = useState(calcNumItems);
     const dispatch = useAppDispatch()
@@ -85,7 +85,7 @@ export default function ProjectsRow({ title, categoryId, projects }: Props) {
         <div className='mb-48'>
             <h3 className="font-bolder text-body3 mb-24">
                 <span className="align-middle">{title}</span>
-                {categoryId > 0 && <Link to={`/category/${categoryId}`}>
+                {link && <Link to={link}>
                     <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer transform scale-y-110 scale-x-125 origin-left' />
                 </Link>}
             </h3>

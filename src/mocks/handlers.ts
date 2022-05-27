@@ -58,7 +58,8 @@ export const handlers = [
         return res(
             ctx.data({
                 allCategories: allCategories(),
-                newProjects: newProjects()
+                newProjects: newProjects(),
+                hottestProjects: hottestProjects()
             })
         )
     }),

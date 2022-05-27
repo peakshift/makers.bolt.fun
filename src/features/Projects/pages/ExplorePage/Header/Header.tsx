@@ -18,11 +18,11 @@ const headerLinks = [
   },
   {
     title:
-      "Want to learn to build lightning applications? Join Shock the Web hackathon on March 22 - 28",
+      "Shock the web is back !! Join us from 16 to 19 June.",
     img: Assets.Images_ExploreHeader2,
     link: {
       content: "Register Now",
-      url: "https://bolt.fun/hackathons/shock-the-web/",
+      url: "https://bolt.fun/hackathons/shock-the-web-2/",
     },
   },
 ];

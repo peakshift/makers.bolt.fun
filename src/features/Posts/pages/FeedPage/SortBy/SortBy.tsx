@@ -1,4 +1,4 @@
-import { useMediaQuery } from '@react-hookz/web';
+import { useMediaQuery } from 'src/utils/hooks';
 import React, { useState } from 'react'
 import { Nullable } from 'remirror';
 import AutoComplete from 'src/Components/Inputs/Autocomplete/Autocomplete';

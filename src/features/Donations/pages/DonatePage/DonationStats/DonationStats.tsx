@@ -1,5 +1,5 @@
 import { BiCoinStack } from "react-icons/bi";
-import { FiGrid } from "react-icons/fi";
+import { FiAward, FiGrid } from "react-icons/fi";
 import { IoMedalOutline, IoRocketOutline } from "react-icons/io5";
 import { useDonationsStatsQuery } from "src/graphql";
 import { generateList, numberFormatter } from "src/utils/helperFunctions";
@@ -14,7 +14,7 @@ export default function DonationStats() {
 
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-16">
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-16">
 
             {donationsStatQuery.loading && generateList(<StatCardSkeleton />, 4)}
 
@@ -32,7 +32,7 @@ export default function DonationStats() {
                     />
                     <StatCard
                         color="#22C55E"
-                        label={<><IoMedalOutline className='w-full lg:w-auto scale-125 mr-8' /> <span className="align-middle">Prizes</span></>}
+                        label={<><FiAward className='w-full lg:w-auto scale-125 mr-8' /> <span className="align-middle">Prizes</span></>}
                         value={donationsStatQuery.data?.getDonationsStats.prizes}
                     />
                     <StatCard

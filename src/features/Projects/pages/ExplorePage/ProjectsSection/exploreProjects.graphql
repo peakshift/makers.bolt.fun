@@ -1,4 +1,26 @@
 query ExploreProjects {
+  hottestProjects(take: 10, skip: 0) {
+    id
+    title
+    thumbnail_image
+    votes_count
+    category {
+      title
+      id
+    }
+  }
+
+  newProjects {
+    id
+    title
+    thumbnail_image
+    votes_count
+    category {
+      title
+      id
+    }
+  }
+
   allCategories {
     id
     title
@@ -11,16 +33,6 @@ query ExploreProjects {
         title
         id
       }
-    }
-  }
-  newProjects {
-    id
-    title
-    thumbnail_image
-    votes_count
-    category {
-      title
-      id
     }
   }
 }

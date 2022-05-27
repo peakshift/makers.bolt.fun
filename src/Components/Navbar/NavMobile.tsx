@@ -8,17 +8,12 @@ import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { toggleSearch } from "src/redux/features/ui.slice";
-import { FiChevronDown, FiMenu, FiSend } from "react-icons/fi";
-import { navLinks } from "./Navbar";
+import { FiAward, FiChevronDown, FiFeather, FiMenu, FiMic, } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
-import { IoExtensionPuzzle } from "react-icons/io5";
-import CategoriesList from "./CategoriesList/CategoriesList";
 import { useToggle } from "@react-hookz/web";
 import styles from './styles.module.css'
-import { Menu, MenuButton, MenuItem, SubMenu } from "@szhsin/react-menu";
+import { Menu, MenuButton, MenuItem, } from "@szhsin/react-menu";
 import '@szhsin/react-menu/dist/index.css';
-import { IoMdTrophy } from "react-icons/io";
-import { MdComment, MdOutlineExplore, MdOutlineLocalFireDepartment } from "react-icons/md";
 
 interface Props {
 }
@@ -54,7 +49,7 @@ const categoriesListVariants = {
   }
 }
 
-const categoriesArrowVariants = {
+const listArrowVariants = {
   open: { rotate: 180 },
   closed: { rotate: 0 }
 }
@@ -62,14 +57,13 @@ const categoriesArrowVariants = {
 
 export default function NavMobile({ }: Props) {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
   const { searchOpen } = useAppSelector((state) => ({
     isWalletConnected: state.wallet.isConnected,
     searchOpen: state.ui.isSearchOpen
   }));
 
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
-  const [categoriesOpen, toggleCategories] = useToggle(false)
+  const [communityOpen, toggleCommunityOpen] = useToggle(false)
 
 
 
@@ -160,68 +154,85 @@ export default function NavMobile({ }: Props) {
             {/* {navLinks.map((link, idx) => <li key={idx} className="text-body3 p-16 active:bg-gray-200">
               <Link to={link.url} onClick={() => toggleDrawerOpen(false)}><link.icon className={`text-body2  inline-block mr-12 text-primary-600`} /> <span className="align-middle">{link.text}</span> </Link></li>
             )} */}
-            <li>
-              <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>LApps <FiChevronDown className="ml-8" /></MenuButton>}>
-                <MenuItem
-                  href="/products"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/products");
-                  }}
-                  className='!px-24 !py-16 font-medium'
-                >
-                  <MdOutlineExplore className={`text-body1 inline-block mr-12 text-primary-600 `} /> Explore
-                </MenuItem>
-                <MenuItem
-                  href="/products/hottest"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/products/hottest");
-                  }}
-                  className='!px-24 !py-16 font-medium'
-                >
-                  <MdOutlineLocalFireDepartment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hottest
-                </MenuItem>
-                <SubMenu
-                  itemProps={{ className: '!p-0' }}
-                  direction='bottom'
-                  overflow="auto"
-                  label={<div className='!px-24 !py-16 font-medium'><IoExtensionPuzzle className={`text-body1 inline-block mr-12 text-primary-600 `} /> Categories</div>}
-                >
-                  <CategoriesList />
-                </SubMenu>
-                <MenuItem
-                  href="https://airtable.com/shr2VkxarNsIFilDz"
-                  target="_blank" rel="noopener noreferrer"
-                  className='!px-24 !py-16 font-medium'
-                >
-                  <FiSend className={`text-body1 inline-block mr-12 text-primary-600 `} />  Submit LApp
-                </MenuItem>
-              </Menu>
+            <li className="relative">
+              <Link
+                to={'/products'}
+                onClick={() => toggleDrawerOpen(false)}
+                className='text-body4 font-bold hover:text-primary-600'>
+                Products
+              </Link>
             </li>
             <li>
-              <Menu offsetY={24} menuClassName='!rounded-12' menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
-                <MenuItem
-                  href="/blog"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/blog");
-                  }}
-                  className='!px-24 !py-16 font-medium'
-                >
-                  <MdComment className={`text-body1 inline-block mr-12 text-primary-600 `} /> Stories
-                </MenuItem>
-                <MenuItem
-                  href="/hackathons"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/hackathons");
-                  }}
-                  className='!px-24 !py-16 font-medium'
-                >
-                  <IoMdTrophy className={`text-body1 inline-block mr-12 text-primary-600 `} /> Hackathons
-                </MenuItem>
-              </Menu>
+              <button
+                className='text-body4 font-bold hover:text-primary-600 w-full flex justify-between'
+                onClick={() => toggleCommunityOpen()}
+              >Community
+                <motion.span
+                  variants={listArrowVariants}
+                  initial={'closed'}
+                  animate={communityOpen ? 'open' : 'closed'}
+                  className="ml-auto">
+                  <BsChevronDown className=" text-gray-400" />
+                </motion.span>
+              </button>
+              {<motion.div
+                variants={categoriesListVariants}
+                initial={'closed'}
+                animate={communityOpen ? 'open' : 'closed'}
+              >
+                <div className='flex flex-col gap-24 pt-16'    >
+                  <Link
+                    to="/blog"
+                    onClick={() => toggleDrawerOpen(false)}
+                    className='font-medium flex gap-16 !rounded-12 '
+                  >
+                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <FiFeather className={`text-body1 inline-block text-primary-600 `} />
+                    </div>
+                    <div>
+                      <p className="text-body4 text-black font-medium">
+                        Stories
+                      </p>
+                      <p className="text-body5 font-normal text-gray-600 mt-4">
+                        Tales from the maker community
+                      </p>
+                    </div>
+                  </Link>
+                  <p
+
+                    className='font-medium flex gap-16 !rounded-12 opacity-60'
+                  >
+                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <FiMic className={`text-body1 inline-block text-primary-600 `} />
+                    </div>
+                    <div>
+                      <p className="text-body4 text-black font-medium">
+                        Discussions
+                      </p>
+                      <p className="text-body5 font-normal text-gray-600 mt-4">
+                        Coming soon
+                      </p>
+                    </div>
+                  </p>
+                  <Link
+                    to="/hackathons"
+                    onClick={() => toggleDrawerOpen(false)}
+                    className='font-medium flex gap-16 !rounded-12'
+                  >
+                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <FiAward className={`text-body1 inline-block text-primary-600 `} />
+                    </div>
+                    <div>
+                      <p className="text-body4 text-black font-medium">
+                        Hackathons
+                      </p>
+                      <p className="text-body5 font-normal text-gray-600 mt-4">
+                        Take part in hackathons & tournaments
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              </motion.div>}
             </li>
             <li className="relative">
               <a
@@ -234,7 +245,10 @@ export default function NavMobile({ }: Props) {
               </a>
             </li>
             <li className="relative">
-              <Link to={'/donate'} className='text-body4 font-bold hover:text-primary-600'>
+              <Link
+                to={'/donate'}
+                onClick={() => toggleDrawerOpen(false)}
+                className='text-body4 font-bold hover:text-primary-600'>
                 Donate
               </Link>
             </li>

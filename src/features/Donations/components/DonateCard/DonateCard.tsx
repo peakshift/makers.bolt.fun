@@ -59,7 +59,7 @@ export default function DonateCard() {
                         autoFocus
                     />
                     <p className='px-16 shrink-0 self-center text-primary-400'>
-                        Sats
+                        sats
                     </p>
                 </div>
                 <div className="flex mt-16 justify-between">

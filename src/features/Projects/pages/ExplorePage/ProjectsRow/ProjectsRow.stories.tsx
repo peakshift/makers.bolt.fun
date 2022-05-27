@@ -20,14 +20,13 @@ Hottest.args = {
         <MdLocalFireDepartment
             className='inline-block text-fire align-bottom scale-125 ml-4 origin-bottom'
         /></>,
-    categoryId: 0,
     projects: MOCK_DATA.projects
 }
 
 export const Defi = Template.bind({});
 Defi.args = {
     title: 'DeFi',
-    categoryId: 8,
+    link: "category-page-url",
     projects: MOCK_DATA.projects
 }
 

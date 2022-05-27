@@ -11,7 +11,7 @@ export default function ProjectCardMini({ project, onClick }: Props) {
 
     return (
         <div
-            className="bg-gray-25 select-none px-16 py-16 flex min-w-[296px] gap-16 border border-gray-200 rounded-10 hover:cursor-pointer hover:bg-gray-100"
+            className="bg-gray-25 select-none px-16 py-16 flex min-w-[296px] gap-16 border-2 border-gray-200 rounded-10 hover:cursor-pointer hover:bg-gray-100"
             onClick={() => onClick(project.id)}
             onKeyDown={e => e.key !== 'Enter' || onClick(project.id)}
             tabIndex={0}

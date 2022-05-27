@@ -426,7 +426,7 @@ export type AllCategoriesQuery = { __typename?: 'Query', allCategories: Array<{ 
 export type ExploreProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ExploreProjectsQuery = { __typename?: 'Query', allCategories: Array<{ __typename?: 'Category', id: number, title: string, project: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> }>, newProjects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> };
+export type ExploreProjectsQuery = { __typename?: 'Query', hottestProjects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }>, newProjects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }>, allCategories: Array<{ __typename?: 'Category', id: number, title: string, project: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> }> };
 
 export type HottestProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1139,6 +1139,26 @@ export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategorie
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
 export const ExploreProjectsDocument = gql`
     query ExploreProjects {
+  hottestProjects(take: 10, skip: 0) {
+    id
+    title
+    thumbnail_image
+    votes_count
+    category {
+      title
+      id
+    }
+  }
+  newProjects {
+    id
+    title
+    thumbnail_image
+    votes_count
+    category {
+      title
+      id
+    }
+  }
   allCategories {
     id
     title
@@ -1151,16 +1171,6 @@ export const ExploreProjectsDocument = gql`
         title
         id
       }
-    }
-  }
-  newProjects {
-    id
-    title
-    thumbnail_image
-    votes_count
-    category {
-      title
-      id
     }
   }
 }
