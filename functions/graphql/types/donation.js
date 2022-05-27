@@ -131,7 +131,7 @@ const getDonationsStats = extendType({
                     prisma.project.count()]);
                 // #TODO add a measurement unit for prizes & donations (eg. $ or sats or BTC)
                 return {
-                    prizes: 2600,
+                    prizes: '$2.6k',
                     touranments: 2,
                     donations,
                     applications
