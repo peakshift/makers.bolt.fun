@@ -46,7 +46,10 @@ export const useDonate = () => {
                             config?.onError?.(error);
                             config?.onSetteled?.();
                             alert("A network error happened while confirming the payment...")
-                        }
+                        },
+                        refetchQueries: [
+                            'DonationsStats'
+                        ]
                     })
                 } catch (error) {
                     setPaymentStatus(PaymentStatus.CANCELED);
@@ -66,7 +69,7 @@ export const useDonate = () => {
         })
     }, [confirmDonation, donateMutation]);
 
-    const isLoading = paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.PAYMENT_CONFIRMED && paymentStatus !== PaymentStatus.NOT_PAID && paymentStatus !== PaymentStatus.NETWORK_ERROR
+    const isLoading = paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.PAYMENT_CONFIRMED && paymentStatus !== PaymentStatus.NOT_PAID && paymentStatus !== PaymentStatus.NETWORK_ERROR && paymentStatus !== PaymentStatus.CANCELED
 
     return {
         paymentStatus,

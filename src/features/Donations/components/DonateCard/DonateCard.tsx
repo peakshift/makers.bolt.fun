@@ -15,30 +15,30 @@ const defaultOptions = [
 export default function DonateCard() {
 
     const size = useWindowSize();
-    const [donationAmount, setDonationAmount] = useState<number>();
+    const [donationAmount, setDonationAmount] = useState("");
 
     const { donate, paymentStatus, isLoading } = useDonate()
 
     const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDonationAmount(Number(event.target.value));
+        setDonationAmount(event.target.value);
     };
 
     const onSelectOption = (idx: number) => {
-        setDonationAmount(defaultOptions[idx].value);
+        setDonationAmount(defaultOptions[idx].value.toString());
     }
 
     const requestPayment = (e: FormEvent) => {
         e.preventDefault();
-        if (donationAmount)
-            donate(donationAmount, {
+        if (Number(donationAmount))
+            donate(Number(donationAmount), {
                 onSuccess: () => {
                     setTimeout(() => {
-                        setDonationAmount(undefined);
+                        setDonationAmount("");
                     }, 4000);
                 },
                 onError: () => {
                     setTimeout(() => {
-                        setDonationAmount(undefined);
+                        setDonationAmount("");
                     }, 4000);
                 }
             });
@@ -74,12 +74,6 @@ export default function DonateCard() {
                         </button>
                     )}
                 </div>
-                {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 mt-12 text-yellow-500">Please wait while we the fetch payment details.</p>}
-                {paymentStatus === PaymentStatus.NOT_PAID && <p className="text-body6 mt-12 text-red-500">You did not confirm the payment. Please try again.</p>}
-                {paymentStatus === PaymentStatus.NETWORK_ERROR && <p className="text-body6 mt-12 text-red-500">A network error happened while fetching data.</p>}
-                {paymentStatus === PaymentStatus.PAID && <p className="text-body6 mt-12 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
-                {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Waiting for your payment...</p>}
-                {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your vote</p>}
                 <button
                     type='submit'
                     className="btn btn-primary w-full mt-32"
@@ -87,6 +81,15 @@ export default function DonateCard() {
                 >
                     {!isLoading ? "Make a donation" : "Donating..."}
                 </button>
+                <div className="mt-12 text-center">
+                    {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 text-yellow-500">Please wait while we fetch payment details.</p>}
+                    {paymentStatus === PaymentStatus.NOT_PAID && <p className="text-body6 text-red-500">You did not confirm the payment. Please try again.</p>}
+                    {paymentStatus === PaymentStatus.CANCELED && <p className="text-body6 text-red-500">Payment canceled by user.</p>}
+                    {paymentStatus === PaymentStatus.NETWORK_ERROR && <p className="text-body6 text-red-500">A network error happened while fetching data.</p>}
+                    {paymentStatus === PaymentStatus.PAID && <p className="text-body6 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
+                    {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 text-yellow-500">Waiting for your payment...</p>}
+                    {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 text-green-500">Thanks for your vote</p>}
+                </div>
             </form>
             {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti className='!fixed top-0 left-0' recycle={false} width={size.width} height={size.height} />}
 
