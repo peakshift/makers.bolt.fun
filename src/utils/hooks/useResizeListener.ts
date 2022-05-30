@@ -1,19 +1,17 @@
-import { useEffect } from "react";
-import _throttle from "lodash.throttle";
+import { useDebouncedCallback, useMountEffect } from "@react-hookz/web";
 
 export const useResizeListener = (
   listener: () => void,
-  options: { throttleValue?: number } = {}
+  options: { debounce?: number } = {}
 ) => {
-  options.throttleValue = options.throttleValue ?? 250;
-  useEffect(() => {
-    const func = _throttle(listener, 250);
-    func();
+  options.debounce = options.debounce ?? 250;
 
-    window.addEventListener("resize", listener);
+  const func = useDebouncedCallback(listener, [], options.debounce)
+  useMountEffect(() => {
+    window.addEventListener("resize", func);
 
     return () => {
-      window.removeEventListener("resize", listener);
+      window.removeEventListener("resize", func);
     };
-  }, [listener]);
+  });
 };

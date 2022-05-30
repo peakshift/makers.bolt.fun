@@ -1,6 +1,6 @@
 import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
-import { useAppSelector, usePressHolder } from 'src/utils/hooks'
+import { useAppSelector, usePressHolder, useResizeListener } from 'src/utils/hooks'
 import { ComponentProps, useRef, useState } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
@@ -156,6 +156,10 @@ export default function VoteButton({
         setBtnBoundingRect(btnContainerRef.current.getBoundingClientRect())
     })
 
+    useResizeListener(() => {
+        setBtnBoundingRect(btnContainerRef.current.getBoundingClientRect())
+    }, { debounce: 300 })
+
     return (
         <button
             onMouseDown={handlePressDown}
@@ -215,6 +219,7 @@ export default function VoteButton({
 
             <Portal id='effects-container'>
                 <div
+                    className='absolute pointer-events-none'
                     style={btnBoundingRect && {
                         position: 'absolute',
                         top: btnBoundingRect.top + window.scrollY,
