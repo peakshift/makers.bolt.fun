@@ -5,11 +5,13 @@ import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
     Menu,
     MenuItem,
     MenuButton,
+    useMenuState,
+    ControlledMenu,
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import { FiAward, FiChevronDown, FiFeather, FiMic } from "react-icons/fi";
@@ -17,6 +19,8 @@ import { FiAward, FiChevronDown, FiFeather, FiMic } from "react-icons/fi";
 
 export default function NavDesktop() {
     const [searchOpen, setSearchOpen] = useState(false)
+    const communityRef = useRef(null);
+    const [communitymenuProps, toggleCommunityMenu] = useMenuState({ transition: true });
 
     const { isWalletConnected } = useAppSelector((state) => ({
         isWalletConnected: state.wallet.isConnected,
@@ -45,7 +49,18 @@ export default function NavDesktop() {
                 </Link>
             </li>
             <li>
-                <Menu offsetY={28} menuClassName='!rounded-12 !p-8 !border-gray-200' menuStyle={{ border: '1px solid' }} menuButton={<MenuButton className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></MenuButton>}>
+                <button
+                    ref={communityRef}
+                    onMouseEnter={() => toggleCommunityMenu(true)}
+                    className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></button>
+                <ControlledMenu {...communitymenuProps}
+                    anchorRef={communityRef}
+                    offsetY={28}
+                    onMouseLeave={() => toggleCommunityMenu(false)}
+                    onClose={() => toggleCommunityMenu(false)}
+                    menuClassName='!rounded-12 !p-8 !border-gray-200'
+                    menuStyle={{ border: '1px solid' }}
+                >
                     <MenuItem
                         href="/blog"
                         onClick={(e) => {
@@ -102,7 +117,7 @@ export default function NavDesktop() {
                             </p>
                         </div>
                     </MenuItem>
-                </Menu>
+                </ControlledMenu>
             </li>
             <li className="relative">
                 <a

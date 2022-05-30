@@ -10,7 +10,7 @@ export default function ExplorePage() {
                 <title>{`Explore Lightning Products`}</title>
                 <meta property="og:title" content={`Explore Lightning Products`} />
             </Helmet>
-            <div className="page-container">
+            <div className="page-container pt-16">
 
                 <Header />
 

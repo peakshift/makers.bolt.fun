@@ -5,6 +5,7 @@ import { ComponentProps, useRef, useState } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
 import { useDebouncedCallback, useThrottledCallback } from '@react-hookz/web'
+import { UnionToObjectKeys } from 'src/utils/types/utils'
 
 
 
@@ -26,8 +27,21 @@ type Props = {
     disableCounter?: boolean
     disableShake?: boolean
     dense?: boolean
+    size?: 'sm' | 'md'
     resetCounterOnRelease?: boolean
 } & Omit<ComponentProps<typeof Button>, 'children'>
+
+
+const btnPadding: UnionToObjectKeys<Props, 'direction', any> = {
+    horizontal: {
+        sm: '',
+        md: '',
+    } as UnionToObjectKeys<Props, 'size'>,
+    vertical: {
+        sm: 'p-8',
+        md: '',
+    } as UnionToObjectKeys<Props, 'size'>
+}
 
 export default function VoteButton({
     votes,
@@ -169,7 +183,7 @@ export default function VoteButton({
                         dense ? "py-4 px-12" : "py-8 px-20"
                         :
                         dense ? "py-4 px-8" : "p-8"}
-                ${incrementsCount && "outline"} active:outline outline-1 outline-red-500 
+                ${voteCntRef.current > 0 && "outline"} active:outline outline-1 outline-red-500 
                 ${btnShakeClass} 
                 `}
 
@@ -187,11 +201,11 @@ export default function VoteButton({
                 </div>
                 <div className={`
                 relative z-10 
-                ${incrementsCount ? "text-red-800" : "text-gray-600"}
+                ${incrementsCount ? "text-red-800" : "text-gray-500"}
                 flex justify-center items-center gap-8 text-left ${direction === 'vertical' && "flex-col !text-center"}
                 `}>
                     <MdLocalFireDepartment
-                        className={`text-body2 ${incrementsCount ? "text-red-600" : "text-red-600"}`}
+                        className={`text-body2 ${incrementsCount ? "text-red-600" : "text-gray-400"}`}
 
                     /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
                 </div>

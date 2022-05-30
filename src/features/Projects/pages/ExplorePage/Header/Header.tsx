@@ -9,16 +9,19 @@ import styles from './styles.module.css'
 
 const headerLinks = [
   {
-    title: "A fun directory of Lightning Enabled Applications on the Open Web",
+    title: <p className="text-body1 font-bolder text-white">Explore a fun directory of lightning web apps</p>,
     img: Assets.Images_ExploreHeader1,
     link: {
-      content: "Submit App",
+      content: "Submit app",
       url: "https://form.jotform.com/220301236112030",
     },
   },
   {
     title:
-      "Shock the web is back !! Join us from 16 to 19 June.",
+      <>
+        <p className="text-body1 font-bolder text-white">Take part in BOLT🔩FUN’s Shock the Web 2 ⚡️</p>
+        <p className="text-body3 font-medium text-white mt-8">22nd - 28th March, 2022</p>
+      </>,
     img: Assets.Images_ExploreHeader2,
     link: {
       content: "Register Now",
@@ -59,11 +62,11 @@ export default function Header() {
           alt=""
         />
         <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
-        <h3 className="text-white text-h4 lg:text-h3 max-w-[80%]">
+        <div className="max-w-[90%]">
           {headerLinks[0].title}
-        </h3>
+        </div>
 
-        <Button href={headerLinks[0].link.url} newTab color="primary" className="font-regular mt-36">
+        <Button href={headerLinks[0].link.url} newTab color="white" className="mt-24">
           {headerLinks[0].link.content}
         </Button>
       </div>
@@ -74,10 +77,10 @@ export default function Header() {
           alt=""
         />
         <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
-        <h3 className="text-white text-h4 lg:text-h3 max-w-[80%]">
+        <div className="max-w-[90%]">
           {headerLinks[1].title}
-        </h3>
-        <Button href={headerLinks[1].link.url} newTab className="font-regular mt-36">
+        </div>
+        <Button color="white" href={headerLinks[1].link.url} newTab className="mt-24">
           {headerLinks[1].link.content}
         </Button>
       </div>
