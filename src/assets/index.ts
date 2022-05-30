@@ -1,5 +1,5 @@
-import Images_ExploreHeader1 from './images/explore_page_header_1.jfif'
-import Images_ExploreHeader2 from './images/shock-the-web.png'
+import Images_ExploreHeader1 from './images/explore_page_header_1.jpg'
+import Images_ExploreHeader2 from './images/shock-the-web.jpg'
 import Image_Hottest_Header from './images/hottest.jfif'
 import Logo from './images/logo.png'
 
