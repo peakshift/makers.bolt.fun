@@ -3,6 +3,7 @@ import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
 import { useCategoryPageQuery } from 'src/graphql';
 import HeaderImage from './HeaderImage/HeaderImage';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
+import { Helmet } from "react-helmet";
 
 export default function CategoryPage() {
 
@@ -30,19 +31,25 @@ export default function CategoryPage() {
 
 
     return (
-        <div className='px-32'>
-            <HeaderImage
-                isLoading={loading}
-                title={data?.getCategory.title!}
-                img={data?.getCategory.cover_image!}
-                apps_count={data?.getCategory.apps_count!}
-            />
-            <div className="mt-40">
-                <ProjectsGrid
+        <>
+            <Helmet>
+                <title>{`${data?.getCategory.title!} Lightning Products`}</title>
+                <meta property="og:title" content={`${data?.getCategory.title!} Lightning Products`} />
+            </Helmet>
+            <div className='px-32'>
+                <HeaderImage
                     isLoading={loading}
-                    projects={data?.projectsByCategory!}
+                    title={data?.getCategory.title!}
+                    img={data?.getCategory.cover_image!}
+                    apps_count={data?.getCategory.apps_count!}
                 />
+                <div className="mt-40">
+                    <ProjectsGrid
+                        isLoading={loading}
+                        projects={data?.projectsByCategory!}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     )
 }

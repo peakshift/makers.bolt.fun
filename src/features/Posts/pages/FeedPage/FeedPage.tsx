@@ -9,6 +9,7 @@ import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import PopularTopicsFilter from './PopularTopicsFilter/PopularTopicsFilter'
 import SortBy from './SortBy/SortBy'
 import styles from './styles.module.scss'
+import { Helmet } from "react-helmet";
 
 
 export default function FeedPage() {
@@ -33,40 +34,46 @@ export default function FeedPage() {
     }));
 
     return (
-        <div
-            className={`page-container pt-16 w-full ${styles.grid}`}
-        >
-            <aside className='no-scrollbar'>
-                <div className="sticky md:overflow-y-scroll"
-                    style={{
-                        top: `${navHeight + 16}px`,
-                        maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                    }}>
-                    <SortBy
-                        filterChanged={setSortByFilter}
-                    />
-                    <div className="my-24"></div>
-                    <PopularTopicsFilter
-                        filterChanged={setTopicFilter}
-                    />
-                </div>
-            </aside>
-            <PostsList
-                isLoading={feedQuery.loading}
-                items={feedQuery.data?.getFeed}
-                isFetching={isFetchingMore}
-                onReachedBottom={fetchMore}
-            />
-            <aside className='no-scrollbar hidden md:block'>
-                <div className="sticky"
-                    style={{
-                        top: `${navHeight + 16}px`,
-                        maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                        overflowY: "scroll",
-                    }}>
-                    <TrendingCard />
-                </div>
-            </aside>
-        </div>
+        <>
+            <Helmet>
+                <title>{`Bolt.Fun Blog`}</title>
+                <meta property="og:title" content={`Bolt.Fun Blog`} />
+            </Helmet>
+            <div
+                className={`page-container pt-16 w-full ${styles.grid}`}
+            >
+                <aside className='no-scrollbar'>
+                    <div className="sticky md:overflow-y-scroll"
+                        style={{
+                            top: `${navHeight + 16}px`,
+                            maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
+                        }}>
+                        <SortBy
+                            filterChanged={setSortByFilter}
+                        />
+                        <div className="my-24"></div>
+                        <PopularTopicsFilter
+                            filterChanged={setTopicFilter}
+                        />
+                    </div>
+                </aside>
+                <PostsList
+                    isLoading={feedQuery.loading}
+                    items={feedQuery.data?.getFeed}
+                    isFetching={isFetchingMore}
+                    onReachedBottom={fetchMore}
+                />
+                <aside className='no-scrollbar hidden md:block'>
+                    <div className="sticky"
+                        style={{
+                            top: `${navHeight + 16}px`,
+                            maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
+                            overflowY: "scroll",
+                        }}>
+                        <TrendingCard />
+                    </div>
+                </aside>
+            </div>
+        </>
     )
 }

@@ -5,8 +5,8 @@ import { useGetHackathonsQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import HackathonsList from '../../Components/HackathonsList/HackathonsList'
 import SortByFilter from '../../Components/SortByFilter/SortByFilter'
-import TopicsFilter from '../../Components/TopicsFilter/TopicsFilter'
 import styles from './styles.module.scss'
+import { Helmet } from 'react-helmet'
 
 
 export default function HackathonsPage() {
@@ -25,36 +25,41 @@ export default function HackathonsPage() {
     }));
 
     return (
-        <div
-            className={`page-container  pt-16 w-full ${styles.grid}`}
-        >
-            <aside className='no-scrollbar'>
-                <div className="sticky flex flex-col gap-24 md:overflow-y-scroll"
-                    style={{
-                        top: `${navHeight + 16}px`,
-                        maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                    }}>
-                    <SortByFilter
-                        filterChanged={setSortByFilter}
-                    />
-                    {/* <TopicsFilter
+        <>
+            <Helmet>
+                <title>{'Hackathons'}</title>
+                <meta property="og:title" content={'Hackathons'} />
+            </Helmet>
+            <div
+                className={`page-container  pt-16 w-full ${styles.grid}`}
+            >
+                <aside className='no-scrollbar'>
+                    <div className="sticky flex flex-col gap-24 md:overflow-y-scroll"
+                        style={{
+                            top: `${navHeight + 16}px`,
+                            maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
+                        }}>
+                        <SortByFilter
+                            filterChanged={setSortByFilter}
+                        />
+                        {/* <TopicsFilter
                         filterChanged={setTopicsFilter}
                     /> */}
-                    <Button
-                        href='https://airtable.com/some-registration-form'
-                        newTab
-                        color='primary'
-                        fullWidth
-                    >
-                        List Your Hackathon
-                    </Button>
+                        <Button
+                            href='https://airtable.com/some-registration-form'
+                            newTab
+                            color='primary'
+                            fullWidth
+                        >
+                            List Your Hackathon
+                        </Button>
+                    </div>
+                </aside>
+                <div className="self-start">
+                    <HackathonsList
+                        isLoading={hackathonsQuery.loading}
+                        items={hackathonsQuery.data?.getAllHackathons} />
                 </div>
-            </aside>
-            <div className="self-start">
-                <HackathonsList
-                    isLoading={hackathonsQuery.loading}
-                    items={hackathonsQuery.data?.getAllHackathons} />
-            </div>
-        </div>
+            </div></>
     )
 }

@@ -3,6 +3,7 @@ import ASSETS from 'src/assets';
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
 import HeaderImage from 'src/features/Projects/pages/CategoryPage/HeaderImage/HeaderImage';
 import ProjectsGrid from 'src/features/Projects/pages/CategoryPage/ProjectsGrid/ProjectsGrid';
+import { Helmet } from "react-helmet";
 
 import { useHottestProjectsQuery } from 'src/graphql'
 
@@ -18,18 +19,24 @@ export default function HottestPage() {
 
 
     return (
-        <div className='px-32'>
-            <HeaderImage
-                isLoading={loading}
-                title={"Hottest Projects"}
-                img={ASSETS.Image_Hottest_Header}
-            />
-            <div className="mt-40">
-                <ProjectsGrid
+        <>
+            <Helmet>
+                <title>{`Hottest Lightning Products`}</title>
+                <meta property="og:title" content={`Hottest Lightning Products`} />
+            </Helmet>
+            <div className='px-32'>
+                <HeaderImage
                     isLoading={loading}
-                    projects={data?.hottestProjects!}
+                    title={"Hottest Projects"}
+                    img={ASSETS.Image_Hottest_Header}
                 />
+                <div className="mt-40">
+                    <ProjectsGrid
+                        isLoading={loading}
+                        projects={data?.hottestProjects!}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     )
 }
