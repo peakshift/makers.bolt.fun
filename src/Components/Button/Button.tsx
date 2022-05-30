@@ -38,8 +38,8 @@ const btnStylesOutline: UnionToObjectKeys<Props, 'color'> = {
 }
 
 const baseBtnStyles: UnionToObjectKeys<Props, 'variant'> = {
-    fill: "active:scale-95",
-    outline: "bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 "
+    fill: "transition-transform active:scale-95",
+    outline: "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 "
 }
 
 

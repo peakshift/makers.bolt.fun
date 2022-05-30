@@ -62,6 +62,8 @@ export default function ProjectsRow({ title, link, projects }: Props) {
 
 
     const handleClick = (projectId: number) => {
+        console.log(projectId);
+
         if (!drag.current) {
             dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
         }

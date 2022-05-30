@@ -45,7 +45,11 @@ export default function PopularTopicsFilter({ filterChanged }: Props) {
                             :
                             topicsQuery.data?.popularTopics.map((topic, idx) => <li
                                 key={topic.id}
-                                className={`flex items-start rounded-8 cursor-pointer font-bold ${topic.id === selected && 'bg-gray-200'}`}
+                                className={`flex items-start rounded-8 cursor-pointer font-bold 
+                                 active:scale-95 transition-transform
+                                ${topic.id === selected ? 'bg-gray-200' : 'hover:bg-gray-100'}
+                                `}
+                                role='button'
                                 onClick={() => filterClicked(topic.id)}
                             >
                                 <span className={`${topic.id !== selected && 'bg-gray-50'} rounded-8 w-40 h-40 text-center py-8`}>{topic.icon}</span>

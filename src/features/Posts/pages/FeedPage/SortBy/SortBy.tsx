@@ -42,11 +42,15 @@ export default function SortBy({ filterChanged }: Props) {
                 isMdScreen ?
                     <div className='bg-white border-2 rounded-12 p-16'>
                         < p className="text-body2 font-bolder text-black mb-16" > Sort By</p >
-                        <ul>
+                        <ul className='flex flex-col gap-4'>
                             {filters.map((f, idx) => <li
                                 key={f.value}
-                                className={`p-12 rounded-8 cursor-pointer font-bold ${f.value === selected && 'bg-gray-200'}`}
+                                className={`
+                                p-12 rounded-8 cursor-pointer font-bold 
+                                active:scale-95 transition-transform
+                                ${f.value === selected ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
                                 onClick={() => filterClicked(f.value)}
+                                role='button'
                             >
                                 {f.text}
                             </li>)}

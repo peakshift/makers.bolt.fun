@@ -8,6 +8,7 @@ const getContainer = (id) => {
   const newEl = document.createElement("div");
   newEl.id = id;
   document.body.appendChild(newEl);
+  return newEl;
 };
 
 export const Portal = ({ children, id = "root-id" }) => {
