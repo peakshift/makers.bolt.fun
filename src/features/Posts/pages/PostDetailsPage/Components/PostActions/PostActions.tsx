@@ -48,6 +48,7 @@ export default function PostActions({ post }: Props) {
                 </li>
             </ul> */}
             <ul className="bg-white rounded-12 p-16 border flex justify-around md:flex-col gap-32 mt-32">
+                <VoteButton votes={post.votes_count} onVote={vote} direction='vertical' fillType="upDown" />
                 {actions.map((action, idx) => <li
                     key={idx}
                     className={`py-8 px-20 text-body5 flex flex-col justify-center items-center cursor-pointer rounded-8 
@@ -55,7 +56,6 @@ export default function PostActions({ post }: Props) {
                     <action.icon className={"text-body4 mb-8"}></action.icon>
                     <span>{action.value}</span>
                 </li>)}
-                <VoteButton votes={post.votes_count} onVote={vote} direction='vertical' fillType="upDown" />
             </ul>
         </div>
     )

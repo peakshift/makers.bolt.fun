@@ -20,7 +20,7 @@ const headerLinks = [
     title:
       <>
         <p className="text-body1 font-bolder text-white">Take part in BOLT🔩FUN’s Shock the Web 2 ⚡️</p>
-        <p className="text-body3 font-medium text-white mt-8">22nd - 28th March, 2022</p>
+        <p className="text-body3 font-medium text-white mt-8">16th - 19th June, 2022</p>
       </>,
     img: Assets.Images_ExploreHeader2,
     link: {

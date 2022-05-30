@@ -4,8 +4,9 @@ import { useAppSelector, usePressHolder } from 'src/utils/hooks'
 import { ComponentProps, useRef, useState } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
-import { useDebouncedCallback, useThrottledCallback } from '@react-hookz/web'
+import { useDebouncedCallback, useMountEffect, useThrottledCallback } from '@react-hookz/web'
 import { UnionToObjectKeys } from 'src/utils/types/utils'
+import { Portal } from '../Portal/Portal'
 
 
 
@@ -62,11 +63,10 @@ export default function VoteButton({
     const [incrementsCount, setIncrementsCount] = useState(0);
     const totalIncrementsCountRef = useRef(0)
     const currentIncrementsCountRef = useRef(0);
-    const [increments, setIncrements] = useState<Array<{ id: string, value: number }>>([])
+    const [increments, setIncrements] = useState<Array<{ id: string, value: number }>>([]);
+    const [btnBoundingRect, setBtnBoundingRect] = useState<DOMRect>()
 
     const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen);
-
-
     const resetCounterOnRelease = resetCounterOnReleaseProp;
 
     const doVote = useDebouncedCallback(() => {
@@ -77,8 +77,6 @@ export default function VoteButton({
     }, [], 2000)
 
     const clickIncrement = () => {
-
-
         if (!disableShake)
             setBtnShakeClass(s => s === styles.clicked_2 ? styles.clicked_1 : styles.clicked_2)
 
@@ -154,6 +152,10 @@ export default function VoteButton({
                     currentIncrementsCountRef.current = 0, 150)
     }
 
+    useMountEffect(() => {
+        setBtnBoundingRect(btnContainerRef.current.getBoundingClientRect())
+    })
+
     return (
         <button
             onMouseDown={handlePressDown}
@@ -210,28 +212,39 @@ export default function VoteButton({
                     /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
                 </div>
             </div>
-            {increments.map(increment => <span
-                key={increment.id}
-                className={styles.vote_counter}
-            >+{increment.value}</span>)}
 
-            <div className="relative z-50">
+            <Portal id='effects-container'>
+                <div
+                    style={btnBoundingRect && {
+                        position: 'absolute',
+                        top: btnBoundingRect.top + window.scrollY,
+                        left: btnBoundingRect.left + window.scrollX,
+                        width: btnBoundingRect.width,
+                        height: btnBoundingRect.height,
+                        pointerEvents: 'none'
+                    }}
 
-                {sparks.map(spark =>
-                    <div
-                        key={spark.id}
-                        className={styles.spark}
-                        style={{
-                            "--offsetX": spark.offsetX,
-                            "--offsetY": spark.offsetY,
-                            "--animationSpeed": spark.animationSpeed,
-                            "--scale": spark.scale,
-                            "animationName": spark.animation,
-                            "color": spark.color
-                        } as any}
-                    ><MdLocalFireDepartment className='' /></div>)
-                }
-            </div>
+                >
+                    {increments.map(increment => <span
+                        key={increment.id}
+                        className={styles.vote_counter}
+                    >+{increment.value}</span>)}
+                    {sparks.map(spark =>
+                        <div
+                            key={spark.id}
+                            className={styles.spark}
+                            style={{
+                                "--offsetX": spark.offsetX,
+                                "--offsetY": spark.offsetY,
+                                "--animationSpeed": spark.animationSpeed,
+                                "--scale": spark.scale,
+                                "animationName": spark.animation,
+                                "color": spark.color
+                            } as any}
+                        ><MdLocalFireDepartment className='' /></div>)
+                    }
+                </div>
+            </Portal>
             <div
                 className={styles.spark}
 

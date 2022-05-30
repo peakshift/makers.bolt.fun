@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ReactDOM from "react-dom";
 
-export const Portal = ({ children, className = "root-portal", el = "div" }) => {
-  const [container] = React.useState(document.createElement(el));
+const getContainer = (id) => {
+  const el = document.getElementById(id);
+  if (el) return el;
 
-  container.classList.add(className);
+  const newEl = document.createElement("div");
+  newEl.id = id;
+  document.body.appendChild(newEl);
+};
 
-  React.useEffect(() => {
-    document.body.appendChild(container);
-    return () => {
-      document.body.removeChild(container);
-    };
-  }, [container]);
+export const Portal = ({ children, id = "root-id" }) => {
+  const container = useMemo(() => getContainer(id), [id]);
 
   return ReactDOM.createPortal(children, container);
 };
