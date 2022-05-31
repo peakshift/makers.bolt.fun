@@ -36,7 +36,11 @@ export default function ProjectCardMini({ project, onClick }: Props) {
                 <p className="text-body5 text-gray-600 font-light my-[5px]">{project.category.title}</p>
                 {/* <span className="chip-small bg-warning-50 text-yellow-700 font-light text-body5 py-[3px] px-10"> <MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {numberFormatter(project.votes_count)} </span> */}
             </div>
-            <VoteButton votes={project.votes_count} direction='vertical' dense onVote={vote}></VoteButton>
+            {/* <VoteButton votes={project.votes_count} direction='vertical' dense onVote={vote}></VoteButton> */}
+            <div className="flex flex-col text-gray-500 items-center">
+                <MdLocalFireDepartment className="text-gray-400" />
+                <span>{numberFormatter(project.votes_count)}</span>
+            </div>
         </div>
     );
 }

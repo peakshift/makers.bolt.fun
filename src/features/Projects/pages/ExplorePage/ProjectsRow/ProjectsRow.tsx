@@ -31,7 +31,7 @@ const responsive = {
 // }
 
 function calcNumItems() {
-    const items = (((window.innerWidth - 2 * 32) / (300 + 20)));
+    const items = (((window.innerWidth - 2 * 32) / (296 + 20)));
     return items;
 }
 
@@ -112,7 +112,7 @@ export default function ProjectsRow({ title, link, projects }: Props) {
                     }
                 >
                     {projects.map((project, idx) =>
-                        <div key={project.id} className='max-w-[300px]' >
+                        <div key={project.id} className='max-w-[296px]' >
                             <ProjectCardMini project={project} onClick={handleClick} />
                         </div>
                     )}
