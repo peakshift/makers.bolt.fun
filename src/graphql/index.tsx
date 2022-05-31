@@ -421,7 +421,7 @@ export type CategoryPageQuery = { __typename?: 'Query', projectsByCategory: Arra
 export type AllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllCategoriesQuery = { __typename?: 'Query', allCategories: Array<{ __typename?: 'Category', id: number, title: string }> };
+export type AllCategoriesQuery = { __typename?: 'Query', allCategories: Array<{ __typename?: 'Category', id: number, title: string, icon: string | null }> };
 
 export type ExploreProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1107,6 +1107,7 @@ export const AllCategoriesDocument = gql`
   allCategories {
     id
     title
+    icon
   }
 }
     `;

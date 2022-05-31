@@ -1,6 +1,7 @@
 import Header from "./Header/Header";
 import ProjectsSection from "./ProjectsSection/ProjectsSection";
 import { Helmet } from "react-helmet";
+import Categories from "./Categories/Categories";
 
 
 export default function ExplorePage() {
@@ -14,9 +15,9 @@ export default function ExplorePage() {
 
                 <Header />
 
-                {/* <div className="my-40 px-32">
-                <Categories />
-            </div> */}
+                <div className="my-32 ">
+                    <Categories />
+                </div>
                 <div className="w-full overflow-hidden">
                     <ProjectsSection />
                 </div>
