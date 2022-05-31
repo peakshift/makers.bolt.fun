@@ -57,13 +57,15 @@ export default function FeedPage() {
                         />
                     </div>
                 </aside>
-                <PostsList
-                    isLoading={feedQuery.loading}
-                    items={feedQuery.data?.getFeed}
-                    isFetching={isFetchingMore}
-                    onReachedBottom={fetchMore}
-                />
-                <aside className='no-scrollbar hidden md:block'>
+                <main>
+                    <PostsList
+                        isLoading={feedQuery.loading}
+                        items={feedQuery.data?.getFeed}
+                        isFetching={isFetchingMore}
+                        onReachedBottom={fetchMore}
+                    />
+                </main>
+                <aside className='no-scrollbar'>
                     <div className="sticky"
                         style={{
                             top: `${navHeight + 16}px`,

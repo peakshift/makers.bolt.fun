@@ -2,13 +2,31 @@
   display: grid;
   grid-template-columns: 100%;
   gap: 24px;
+  > aside:last-of-type {
+    display: none;
+  }
 
   @media screen and (min-width: 768px) {
-    grid-template-columns: 1fr 3fr 0;
-    gap: 24px;
+    grid-template-columns: repeat(4, 1fr);
+
+    > aside:first-of-type {
+      grid-column: 1/2;
+    }
+    > main {
+      grid-column: 2/-1;
+    }
   }
 
   @media screen and (min-width: 1024px) {
-    grid-template-columns: 1fr 2fr 1fr;
+    > aside:first-of-type {
+      grid-column: 1/2;
+    }
+    > main {
+      grid-column: 2/-2;
+    }
+    > aside:last-of-type {
+      display: block;
+      grid-column: -1/-2;
+    }
   }
 }

@@ -55,11 +55,11 @@ export default function HackathonsPage() {
                         </Button>
                     </div>
                 </aside>
-                <div className="self-start">
+                <main className="self-start">
                     <HackathonsList
                         isLoading={hackathonsQuery.loading}
                         items={hackathonsQuery.data?.getAllHackathons} />
-                </div>
+                </main>
             </div></>
     )
 }
