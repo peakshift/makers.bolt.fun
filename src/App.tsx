@@ -6,7 +6,6 @@ import { Wallet_Service } from "./services";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
-import LoginPage from "./features/Auth/pages/LoginPage";
 
 // Pages
 const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage"))
@@ -16,6 +15,8 @@ const PostDetailsPage = React.lazy(() => import("./features/Posts/pages/PostDeta
 const CategoryPage = React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage"))
 const ExplorePage = React.lazy(() => import("src/features/Projects/pages/ExplorePage"))
 const DonatePage = React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage"))
+const LoginPage = React.lazy(() => import("./features/Auth/pages/LoginPage/LoginPage"))
+const LogoutPage = React.lazy(() => import("./features/Auth/pages/LogoutPage/LogoutPage"))
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -58,6 +59,7 @@ function App() {
         <Route path="/donate" element={<DonatePage />} />
 
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/logout" element={<LogoutPage />} />
 
         <Route path="/" element={<Navigate to="/products" />} />
       </Routes>

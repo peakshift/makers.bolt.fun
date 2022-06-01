@@ -15,12 +15,16 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import { FiAward, FiChevronDown, FiFeather, FiLogIn, FiMic } from "react-icons/fi";
+import { useMeQuery } from "src/graphql";
+import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 
 
 export default function NavDesktop() {
     const [searchOpen, setSearchOpen] = useState(false)
     const communityRef = useRef(null);
     const [communitymenuProps, toggleCommunityMenu] = useMenuState({ transition: true });
+
+    const meQuery = useMeQuery();
 
     const { isWalletConnected } = useAppSelector((state) => ({
         isWalletConnected: state.wallet.isConnected,
@@ -157,13 +161,34 @@ export default function NavDesktop() {
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         } */}
 
-            {currentSection === 'products' && <IconButton className='ml-16 self-center' onClick={openSearch}>
+            {currentSection === 'products' && <IconButton className='mr-16 self-center' onClick={openSearch}>
                 <BsSearch className='scale-125 text-gray-400' />
             </IconButton>}
         </motion.div>
-        <Link to='/login' className="ml-16 font-bold hover:text-primary-800 hover:underline">
-            Login <FiLogIn />
-        </Link>
+        {meQuery.data?.me ?
+            <Menu menuButton={<MenuButton ><Avatar src={meQuery.data.me.avatar} width={40} /> </MenuButton>}>
+                <MenuItem
+                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
+                >
+                    Profile (soon)
+                </MenuItem>
+                <MenuItem
+                    href="/logout"
+                    onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/logout");
+                    }}
+                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                    Logout
+                </MenuItem>
+            </Menu>
+
+            :
+            <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
+                Login <FiLogIn />
+            </Link>
+        }
         <div className="relative h-24">
             <motion.div
                 initial={{
