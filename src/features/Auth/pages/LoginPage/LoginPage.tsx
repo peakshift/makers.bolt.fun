@@ -14,7 +14,6 @@ export default function LoginPage() {
 
     const meQuery = useMeQuery({
         onCompleted: (data) => {
-
             if (data.me) {
                 setIsLoggedIn(true);
                 meQuery.stopPolling();

@@ -1,6 +1,7 @@
 const lnurl = require('lnurl')
 const crypto = require('crypto')
 const { prisma } = require('../../prisma')
+const { CONSTS } = require('../../utils')
 
 
 async function generateSecret() {
@@ -57,7 +58,7 @@ function removeExpiredHashes() {
 }
 
 async function generateAuthUrl() {
-    const hostname = 'http://localhost:8888/dev/auth/login'
+    const hostname = CONSTS.LNURL_AUTH_HOST;
     const secret = await generateSecret()
     addHash(createHash(secret))
     const url = `${hostname}?tag=login&k1=${secret}`
