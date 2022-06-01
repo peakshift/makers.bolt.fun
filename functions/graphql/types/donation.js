@@ -7,8 +7,8 @@ const {
     extendType,
     nonNull,
 } = require('nexus');
-const { BOLT_FUN_LIGHTNING_ADDRESS } = require('../helpers/consts');
-const { prisma } = require('../prisma');
+const { prisma } = require('../../prisma');
+const { CONSTS } = require('../../utils');
 const { getPaymetRequestForItem, hexToUint8Array } = require('./helpers');
 
 
@@ -45,7 +45,7 @@ const donateMutation = extendType({
             resolve: async (_, args) => {
 
                 const { amount_in_sat } = args;
-                const lightning_address = BOLT_FUN_LIGHTNING_ADDRESS;
+                const lightning_address = CONSTS.BOLT_FUN_LIGHTNING_ADDRESS;
                 const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
                 const invoice = parsePaymentRequest({ request: pr });
 

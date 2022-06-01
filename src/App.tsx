@@ -6,6 +6,7 @@ import { Wallet_Service } from "./services";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
+import LoginPage from "./features/Auth/pages/LoginPage";
 
 // Pages
 const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage"))
@@ -55,6 +56,8 @@ function App() {
         <Route path="/hackathons" element={<HackathonsPage />} />
 
         <Route path="/donate" element={<DonatePage />} />
+
+        <Route path="/login" element={<LoginPage />} />
 
         <Route path="/" element={<Navigate to="/products" />} />
       </Routes>

@@ -1,4 +1,7 @@
-const { objectType } = require("nexus");
+const { objectType, extendType } = require("nexus");
+const { getUserByPubKey } = require("../../auth/utils/helperFuncs");
+
+
 
 const User = objectType({
     name: 'User',
@@ -10,7 +13,23 @@ const User = objectType({
 })
 
 
+const me = extendType({
+    type: "Query",
+    definition(t) {
+        t.field('me', {
+            type: "User",
+            async resolve(parent, args, context) {
+                const user = await getUserByPubKey(context.userPubKey)
+                return user
+            }
+        })
+    }
+})
+
 module.exports = {
     // Types
-    User
+    User,
+
+    // Queries
+    me,
 }

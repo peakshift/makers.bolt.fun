@@ -36,10 +36,14 @@ model Vote {
 // -----------------
 
 model User {
-  id                Int     @id @default(autoincrement())
-  name              String  @unique
+  id     Int     @id @default(autoincrement())
+  pubKey String? @unique
+
+  name              String? @unique
+  email             String?
+  website           String?
   lightning_address String?
-  avatar            String
+  avatar            String?
 
   stories        Story[]
   questions      Question[]
@@ -198,4 +202,12 @@ model Donation {
 
   donor    User? @relation(fields: [donor_id], references: [id])
   donor_id Int?
+}
+
+// -----------------
+// Auth
+// -----------------
+model GeneratedK1 {
+  value     String   @id
+  createdAt DateTime @default(now())
 }

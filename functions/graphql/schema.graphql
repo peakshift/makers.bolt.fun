@@ -145,6 +145,7 @@ type Query {
   getProject(id: Int!): Project!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  me: User
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
   popularTopics: [Topic!]!
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!

@@ -5,7 +5,7 @@ const {
     extendType,
     nonNull,
 } = require('nexus')
-const { prisma } = require('../prisma')
+const { prisma } = require('../../prisma')
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 

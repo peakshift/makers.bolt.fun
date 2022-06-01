@@ -14,7 +14,7 @@ import {
     ControlledMenu,
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
-import { FiAward, FiChevronDown, FiFeather, FiMic } from "react-icons/fi";
+import { FiAward, FiChevronDown, FiFeather, FiLogIn, FiMic } from "react-icons/fi";
 
 
 export default function NavDesktop() {
@@ -137,6 +137,7 @@ export default function NavDesktop() {
         </ul>
 
         <div className="ml-auto"></div>
+
         <motion.div
             animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
             className="flex"
@@ -160,7 +161,9 @@ export default function NavDesktop() {
                 <BsSearch className='scale-125 text-gray-400' />
             </IconButton>}
         </motion.div>
-
+        <Link to='/login' className="ml-16 font-bold hover:text-primary-800 hover:underline">
+            Login <FiLogIn />
+        </Link>
         <div className="relative h-24">
             <motion.div
                 initial={{

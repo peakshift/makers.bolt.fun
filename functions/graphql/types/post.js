@@ -10,7 +10,7 @@ const {
     arg,
 } = require('nexus');
 const { paginationArgs } = require('./helpers');
-const { prisma } = require('../prisma')
+const { prisma } = require('../../prisma')
 
 
 const POST_TYPE = enumType({

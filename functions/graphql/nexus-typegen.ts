@@ -296,6 +296,7 @@ export interface NexusGenFieldTypes {
     getProject: NexusGenRootTypes['Project']; // Project!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    me: NexusGenRootTypes['User'] | null; // User
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     popularTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -475,6 +476,7 @@ export interface NexusGenFieldTypeNames {
     getProject: 'Project'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
+    me: 'User'
     newProjects: 'Project'
     popularTopics: 'Topic'
     projectsByCategory: 'Project'

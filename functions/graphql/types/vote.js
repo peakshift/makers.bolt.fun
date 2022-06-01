@@ -10,8 +10,9 @@ const {
 const { parsePaymentRequest } = require('invoices');
 const { getPaymetRequestForItem, hexToUint8Array } = require('./helpers');
 const { createHash } = require('crypto');
-const { prisma } = require('../prisma');
-const { BOLT_FUN_LIGHTNING_ADDRESS } = require('../helpers/consts');
+const { prisma } = require('../../prisma');
+const { CONSTS } = require('../../utils');
+
 
 
 // the types of items we can vote to
@@ -131,7 +132,7 @@ const voteMutation = extendType({
             resolve: async (_, args) => {
 
                 const { item_id, item_type, amount_in_sat } = args;
-                const lightning_address = (await getLightningAddress(item_id, item_type)) ?? BOLT_FUN_LIGHTNING_ADDRESS;
+                const lightning_address = (await getLightningAddress(item_id, item_type)) ?? CONSTS.BOLT_FUN_LIGHTNING_ADDRESS;
                 const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
                 const invoice = parsePaymentRequest({ request: pr });
 

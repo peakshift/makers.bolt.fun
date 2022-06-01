@@ -22,3 +22,25 @@ functions:
           path: graphql
           method: get
           cors: true
+  login:
+    handler: functions/auth/login.handler
+    events:
+      - http:
+          path: auth/login
+          method: post
+          cors: true
+      - http:
+          path: auth/login
+          method: get
+          cors: true
+  logout:
+    handler: functions/auth/logout.handler
+    events:
+      - http:
+          path: auth/logout
+          method: post
+          cors: true
+      - http:
+          path: auth/logout
+          method: get
+          cors: true
