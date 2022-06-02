@@ -165,29 +165,30 @@ export default function NavDesktop() {
                 <BsSearch className='scale-125 text-gray-400' />
             </IconButton>}
         </motion.div>
-        {meQuery.data?.me ?
-            <Menu menuButton={<MenuButton ><Avatar src={meQuery.data.me.avatar} width={40} /> </MenuButton>}>
-                <MenuItem
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
-                >
-                    Profile (soon)
-                </MenuItem>
-                <MenuItem
-                    href="/logout"
-                    onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate("/logout");
-                    }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                >
-                    Logout
-                </MenuItem>
-            </Menu>
+        {!meQuery.loading &&
+            (meQuery.data?.me ?
+                <Menu menuButton={<MenuButton ><Avatar src={meQuery.data.me.avatar} width={40} /> </MenuButton>}>
+                    <MenuItem
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
+                    >
+                        Profile (soon)
+                    </MenuItem>
+                    <MenuItem
+                        href="/logout"
+                        onClick={(e) => {
+                            e.syntheticEvent.preventDefault();
+                            navigate("/logout");
+                        }}
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                    >
+                        Logout
+                    </MenuItem>
+                </Menu>
 
-            :
-            <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
-                Login <FiLogIn />
-            </Link>
+                :
+                <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
+                    Login <FiLogIn />
+                </Link>)
         }
         <div className="relative h-24">
             <motion.div
