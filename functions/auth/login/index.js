@@ -1,9 +1,9 @@
 
-const { prisma } = require('../prisma');
-const LnurlService = require('./services/lnurl.service')
+const { prisma } = require('../../prisma');
+const LnurlService = require('../services/lnurl.service')
 const cookie = require('cookie')
 const jose = require('jose');
-const { CONSTS } = require('../utils');
+const { CONSTS } = require('../../utils');
 
 
 async function generateAuthUrl() {

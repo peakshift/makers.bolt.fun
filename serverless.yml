@@ -23,7 +23,7 @@ functions:
           method: get
           cors: true
   login:
-    handler: functions/auth/login.handler
+    handler: functions/auth/login/index.handler
     events:
       - http:
           path: auth/login
@@ -34,7 +34,7 @@ functions:
           method: get
           cors: true
   logout:
-    handler: functions/auth/logout.handler
+    handler: functions/auth/logout/index.handler
     events:
       - http:
           path: auth/logout
