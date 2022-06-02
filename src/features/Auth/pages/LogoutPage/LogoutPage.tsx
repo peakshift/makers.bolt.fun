@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
-import { BsFillLightningChargeFill } from "react-icons/bs";
-import { Grid, LineWave } from "react-loader-spinner";
+import { useEffect } from "react"
+import { LineWave } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
+import CONSTS from "src/utils/consts";
 
 
 export default function LoginPage() {
@@ -9,7 +9,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API_END_POINT! + '/logout', {
+        fetch(CONSTS.apiEndpoint + '/logout', {
             method: "GET",
             'credentials': "include"
         })

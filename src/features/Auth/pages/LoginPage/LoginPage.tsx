@@ -4,11 +4,12 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 import { Grid } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { useMeQuery } from "src/graphql"
+import CONSTS from "src/utils/consts";
 
 
 
 const getLnurlAuth = async () => {
-    const res = await fetch(process.env.REACT_APP_API_END_POINT! + '/login')
+    const res = await fetch(CONSTS.apiEndpoint + '/login')
     const data = await res.json()
     return data;
 }

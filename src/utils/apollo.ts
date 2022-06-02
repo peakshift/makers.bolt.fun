@@ -1,11 +1,10 @@
 import { ApolloClient, HttpLink, InMemoryCache, from, Reference, FieldPolicy } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
+import CONSTS from "./consts";
 
-let apiClientUri = '/.netlify/functions/graphql';
+let apiClientUri = CONSTS.apiEndpoint + '/graphql';
 
-if (process.env.REACT_APP_API_END_POINT)
-    apiClientUri = process.env.REACT_APP_API_END_POINT + '/graphql'
 
 const httpLink = new HttpLink({
     uri: apiClientUri,

@@ -9,7 +9,7 @@ const { CONSTS } = require('../utils');
 async function generateAuthUrl() {
     const data = await LnurlService.generateAuthUrl();
     return {
-        status: "OK",
+        statusCode: 200,
         body: JSON.stringify(data)
     };
 }
@@ -17,13 +17,17 @@ async function generateAuthUrl() {
 
 async function login(tag, k1, sig, key) {
     if (tag !== 'login') {
-        return { status: 'ERROR', reason: 'Not a login request' }
+        return {
+            body: JSON.stringify({ status: 'ERROR', reason: 'Not a login request' })
+        }
     }
 
     try {
         await LnurlService.verifySig(sig, k1, key)
     } catch (error) {
-        return { status: 'ERROR', reason: 'Invalid Signature' }
+        return {
+            body: JSON.stringify({ status: 'ERROR', reason: 'Invalid Signature' })
+        }
     }
 
 
@@ -66,14 +70,20 @@ async function login(tag, k1, sig, key) {
         })
 
         return {
-            status: 'OK',
+
             'headers': {
                 'Set-Cookie': authCookie,
                 'Cache-Control': 'no-cache',
             },
+            body: JSON.stringify({
+                status: 'OK',
+            })
         }
     } catch (error) {
-        return { status: 'ERROR', reason: 'Unexpected error happened, please try again' }
+        return {
+            body: JSON.stringify({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
+        }
+
 
     }
 }
