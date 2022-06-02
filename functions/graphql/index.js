@@ -8,9 +8,10 @@ const extractKey = async (cookieHeader) => {
 
   console.log('START');
 
-  console.log('cookieHeader');
+  console.log(cookieHeader);
   const cookies = cookie.parse(cookieHeader ?? '');
   const authToken = cookies.Authorization;
+  console.log(authToken);
   if (authToken) {
     const token = authToken.split(' ')[1];
     const { payload } = await jose.jwtVerify(token, Buffer.from(CONSTS.JWT_SECRET), {
