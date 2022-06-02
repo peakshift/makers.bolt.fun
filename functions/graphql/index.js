@@ -28,6 +28,8 @@ const extractKey = async (cookieHeader) => {
 const server = new ApolloServer({
   schema,
   context: async ({ event }) => {
+    console.log(event);
+    console.log(event.headers);
     const userPubKey = await extractKey(event.headers.Cookie)
     return { userPubKey }
   },
