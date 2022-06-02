@@ -5,6 +5,10 @@ const jose = require('jose');
 const { CONSTS } = require('../utils');
 
 const extractKey = async (cookieHeader) => {
+
+  console.log('START');
+
+  console.log('cookieHeader');
   const cookies = cookie.parse(cookieHeader ?? '');
   const authToken = cookies.Authorization;
   if (authToken) {
@@ -12,6 +16,8 @@ const extractKey = async (cookieHeader) => {
     const { payload } = await jose.jwtVerify(token, Buffer.from(CONSTS.JWT_SECRET), {
       algorithms: ['HS256'],
     })
+
+    console.log(payload);
     return payload.pubKey
   }
   return null;
@@ -22,7 +28,7 @@ const server = new ApolloServer({
   schema,
   context: async ({ event }) => {
     const userPubKey = await extractKey(event.headers.Cookie)
-    return { userPubKey, }
+    return { userPubKey }
   },
 });
 
