@@ -29,7 +29,7 @@ function isHashUsed(hash) {
 }
 
 function addHash(hash) {
-    prisma.generatedK1.create({
+    return prisma.generatedK1.create({
         data: {
             value: hash,
         }
@@ -37,7 +37,7 @@ function addHash(hash) {
 }
 
 function removeHash(hash) {
-    prisma.generatedK1.delete({
+    return prisma.generatedK1.delete({
         where: {
             value: hash,
         }
@@ -48,7 +48,7 @@ function removeExpiredHashes() {
     const now = new Date();
     const lastHourDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() - 1, now.getMinutes());
 
-    prisma.generatedK1.deleteMany({
+    return prisma.generatedK1.deleteMany({
         where: {
             createdAt: {
                 lt: lastHourDate
@@ -60,7 +60,7 @@ function removeExpiredHashes() {
 async function generateAuthUrl() {
     const hostname = CONSTS.LNURL_AUTH_HOST;
     const secret = await generateSecret()
-    addHash(createHash(secret))
+    await addHash(createHash(secret))
     const url = `${hostname}?tag=login&k1=${secret}`
     return {
         url,
@@ -69,12 +69,15 @@ async function generateAuthUrl() {
     }
 }
 
-function verifySig(sig, k1, key) {
+async function verifySig(sig, k1, key) {
     if (!lnurl.verifyAuthorizationSignature(sig, k1, key)) {
         const message = 'Signature verification failed'
         throw new Error(message)
     }
     const hash = createHash(k1)
+    const hashExist = await isHashUsed(hash);
+    if (!hashExist)
+        throw new Error('Provided k1 is not issued by server')
     return { key, hash }
 }
 
@@ -94,5 +97,6 @@ module.exports = {
     generateAuthUrl: generateAuthUrl,
     verifySig: verifySig,
     removeHash: removeHash,
+    createHash: createHash,
     removeExpiredHashes: removeExpiredHashes
 }

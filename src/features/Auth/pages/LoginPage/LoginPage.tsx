@@ -1,8 +1,17 @@
+import { useMountEffect } from "@react-hookz/web";
 import { useEffect, useState } from "react"
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { Grid } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { useMeQuery } from "src/graphql"
+
+
+
+const getLnurlAuth = async () => {
+    const res = await fetch(process.env.REACT_APP_AUTH_END_POINT! + '/login')
+    const data = await res.json()
+    return data;
+}
 
 
 export default function LoginPage() {
@@ -27,14 +36,12 @@ export default function LoginPage() {
 
 
 
-    useEffect(() => {
-        (async () => {
-            const res = await fetch(process.env.REACT_APP_AUTH_END_POINT! + '/login')
-            const data = await res.json()
+    useMountEffect(() => {
+        getLnurlAuth().then(data => {
             setLoadingLnurl(false);
             setLnurlAuth(data.encoded)
-        })();
-    }, [])
+        })
+    })
 
 
 
@@ -63,7 +70,7 @@ export default function LoginPage() {
                         <p className="text-body1 font-bolder text-center">
                             Login
                         </p>
-                        <p className="text-gray-600 text-body-4">
+                        <p className="text-gray-600 text-body4 text-center">
                             Zero credentials authentication.
                             <br />
                             All you need is a connected <a href='https://getalby.com'
