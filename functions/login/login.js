@@ -18,6 +18,7 @@ async function generateAuthUrl() {
 async function login(tag, k1, sig, key) {
     if (tag !== 'login') {
         return {
+            statusCode: 400,
             body: JSON.stringify({ status: 'ERROR', reason: 'Not a login request' })
         }
     }
@@ -26,6 +27,7 @@ async function login(tag, k1, sig, key) {
         await LnurlService.verifySig(sig, k1, key)
     } catch (error) {
         return {
+            statusCode: 400,
             body: JSON.stringify({ status: 'ERROR', reason: 'Invalid Signature' })
         }
     }
@@ -71,6 +73,7 @@ async function login(tag, k1, sig, key) {
 
         return {
 
+            statusCode: 200,
             'headers': {
                 'Set-Cookie': authCookie,
                 'Cache-Control': 'no-cache',
@@ -81,6 +84,7 @@ async function login(tag, k1, sig, key) {
         }
     } catch (error) {
         return {
+            statusCode: 200,
             body: JSON.stringify({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
         }
 

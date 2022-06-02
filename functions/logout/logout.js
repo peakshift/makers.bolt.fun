@@ -9,6 +9,7 @@ exports.handler = async (event, context) => {
         maxAge: -1,
     })
     return {
+        statusCode: 200,
         body: JSON.stringify({
             status: 'OK',
         }),
