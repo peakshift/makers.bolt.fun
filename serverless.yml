@@ -23,24 +23,24 @@ functions:
           method: get
           cors: true
   login:
-    handler: functions/auth/login/index.handler
+    handler: functions/login/login.handler
     events:
       - http:
-          path: auth/login
+          path: login
           method: post
           cors: true
       - http:
-          path: auth/login
+          path: login
           method: get
           cors: true
   logout:
-    handler: functions/auth/logout/index.handler
+    handler: functions/logout/logout.handler
     events:
       - http:
-          path: auth/logout
+          path: logout
           method: post
           cors: true
       - http:
-          path: auth/logout
+          path: logout
           method: get
           cors: true

@@ -59,6 +59,7 @@ function removeExpiredHashes() {
 
 async function generateAuthUrl() {
     const hostname = CONSTS.LNURL_AUTH_HOST;
+    console.log(hostname);
     const secret = await generateSecret()
     await addHash(createHash(secret))
     const url = `${hostname}?tag=login&k1=${secret}`

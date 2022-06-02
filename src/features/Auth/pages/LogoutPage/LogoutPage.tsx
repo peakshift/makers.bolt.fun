@@ -9,7 +9,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_AUTH_END_POINT! + '/logout', {
+        fetch(process.env.REACT_APP_API_END_POINT! + '/logout', {
             method: "GET",
             'credentials': "include"
         })

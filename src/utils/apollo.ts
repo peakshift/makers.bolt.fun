@@ -4,8 +4,8 @@ import { RetryLink } from "@apollo/client/link/retry";
 
 let apiClientUri = '/.netlify/functions/graphql';
 
-if (process.env.REACT_APP_GRAPHQL_END_POINT)
-    apiClientUri = process.env.REACT_APP_GRAPHQL_END_POINT
+if (process.env.REACT_APP_API_END_POINT)
+    apiClientUri = process.env.REACT_APP_API_END_POINT + '/graphql'
 
 const httpLink = new HttpLink({
     uri: apiClientUri,

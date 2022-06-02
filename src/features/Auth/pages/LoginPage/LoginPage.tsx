@@ -8,7 +8,7 @@ import { useMeQuery } from "src/graphql"
 
 
 const getLnurlAuth = async () => {
-    const res = await fetch(process.env.REACT_APP_AUTH_END_POINT! + '/login')
+    const res = await fetch(process.env.REACT_APP_API_END_POINT! + '/login')
     const data = await res.json()
     return data;
 }
