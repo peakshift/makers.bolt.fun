@@ -1,15 +1,19 @@
+import { spawn } from 'child_process';
 import React, { useState } from 'react'
 
 const types = [
     {
         text: "📜 Story",
-        value: 'story'
+        value: 'story',
+        disabled: false
     }, {
         text: "💰 Bounty",
-        value: 'bounty'
+        value: 'bounty',
+        disabled: true,
     }, {
         text: "❓ Question",
-        value: 'question'
+        value: 'question',
+        disabled: true,
     },
 ] as const;
 
@@ -36,10 +40,14 @@ export default function PostTypeList({ selectionChanged }: Props) {
             <ul>
                 {types.map((f, idx) => <li
                     key={f.value}
-                    className={`p-12 rounded-8 cursor-pointer font-bold ${f.value === selected && 'bg-gray-100'}`}
-                    onClick={() => handleClick(f.value)}
+                    className={`
+                    p-12 rounded-8 cursor-pointer font-bold 
+                    ${f.value === selected && 'bg-gray-100'}
+                    ${f.disabled && 'opacity-40'}
+                    `}
+                    onClick={() => !f.disabled && handleClick(f.value)}
                 >
-                    {f.text}
+                    {f.text} {f.disabled && <span className="text-gray-400 text-body5">(WIP)</span>}
                 </li>)}
             </ul>
         </div>

@@ -88,7 +88,7 @@ export default function NavMobile() {
           ></div>
         )}
         <motion.div
-          className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border shadow-2xl px-16 flex flex-col"
+          className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border px-16 flex flex-col"
           variants={navListVariants}
           style={{ height: 'calc(100vh - 67px)' }}
           animate={drawerOpen ? "show" : "hide"}

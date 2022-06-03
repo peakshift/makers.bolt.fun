@@ -8,7 +8,7 @@ let apiClientUri = CONSTS.apiEndpoint + '/graphql';
 
 const httpLink = new HttpLink({
     uri: apiClientUri,
-    credentials: 'same-origin'
+    credentials: process.env.REACT_APP_API_END_POINT?.includes('localhost') ? 'include' : "same-origin"
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {

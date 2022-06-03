@@ -86,6 +86,7 @@ type LnurlDetails {
 type Mutation {
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  createStory(data: StoryInputType): Story
   donate(amount_in_sat: Int!): Donation!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
@@ -180,6 +181,15 @@ type Story implements PostBase {
   topic: Topic!
   type: String!
   votes_count: Int!
+}
+
+input StoryInputType {
+  body: String!
+  cover_image: String!
+  id: Int
+  tags: [String!]!
+  title: String!
+  topicId: Int!
 }
 
 type Tag {

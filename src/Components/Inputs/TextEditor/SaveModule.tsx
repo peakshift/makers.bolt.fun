@@ -23,7 +23,7 @@ export default function SaveModule(props: Props) {
 
     useRemirrorContext(changeCallback)
 
-    useEvent('blur', () => onBlur())
+    // useEvent('focus', () => onBlur())
 
     return <></>
 }

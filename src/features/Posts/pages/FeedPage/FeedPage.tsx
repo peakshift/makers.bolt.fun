@@ -10,6 +10,7 @@ import PopularTopicsFilter from './PopularTopicsFilter/PopularTopicsFilter'
 import SortBy from './SortBy/SortBy'
 import styles from './styles.module.scss'
 import { Helmet } from "react-helmet";
+import Button from 'src/Components/Button/Button'
 
 
 export default function FeedPage() {
@@ -48,6 +49,14 @@ export default function FeedPage() {
                             top: `${navHeight + 16}px`,
                             maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         }}>
+                        <Button
+                            href='/blog/create-post'
+                            color='primary'
+                            fullWidth
+                        >
+                            Write a post
+                        </Button>
+                        <div className="my-24"></div>
                         <SortBy
                             filterChanged={setSortByFilter}
                         />
@@ -55,6 +64,7 @@ export default function FeedPage() {
                         <PopularTopicsFilter
                             filterChanged={setTopicFilter}
                         />
+
                     </div>
                 </aside>
                 <main>

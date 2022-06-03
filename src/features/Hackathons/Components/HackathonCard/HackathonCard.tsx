@@ -14,9 +14,9 @@ interface Props {
 
 export default function HackathonCard({ hackathon }: Props) {
     return (
-        <div className="rounded-16 bg-white overflow-hidden border-2">
+        <div className="rounded-16 bg-white overflow-hidden border-2 flex flex-col">
             <img className="w-full h-[120px] object-cover" src={hackathon.cover_image} alt="" />
-            <div className="p-16">
+            <div className="p-16 grow flex flex-col">
                 <div className="flex flex-col gap-8">
                     <h3 className="text-body1 font-bold text-gray-900">
                         {hackathon.title}
@@ -34,6 +34,7 @@ export default function HackathonCard({ hackathon }: Props) {
                 <div className="mt-16 flex flex-wrap gap-8">
                     {hackathon.topics.map(topic => <div key={topic.id} className="p-8 bg-gray-50 rounded-8 text-body5">{topic.icon} {topic.title}</div>)}
                 </div>
+                <div className="mt-auto"></div>
                 <Button href={hackathon.website} newTab color="gray" fullWidth className="mt-16">
                     Learn more
                 </Button>

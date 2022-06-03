@@ -13,6 +13,7 @@ body {
 .page-container {
   width: calc(min(100% - 32px, 1440px));
   margin: 0 auto;
+  padding: 32px 0;
 }
 
 @media screen and (min-width: 780px) {

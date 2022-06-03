@@ -1,3 +1,7 @@
+.body :where(h1, h2, h3, h4, h5, h6) {
+  font-weight: 700;
+}
+
 .body h1 {
   font-size: 48px;
   line-height: 54px;
@@ -29,4 +33,11 @@
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 1.5em;
+}
+
+.body pre {
+  background-color: #2b2b2b;
+  padding: 16px;
+  border-radius: 12px;
+  color: whitesmoke;
 }

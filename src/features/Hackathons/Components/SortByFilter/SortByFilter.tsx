@@ -56,10 +56,12 @@ export default function SortByFilter({ filterChanged }: Props) {
                     :
                     <AutoComplete
                         isClearable
+                        isMulti={false}
                         placeholder='Sort By'
                         options={filters}
                         labelField='text'
                         valueField='value'
+                        size='lg'
                         onChange={(o) => filterClicked(o ? o.value : null)} />
             }</>
 

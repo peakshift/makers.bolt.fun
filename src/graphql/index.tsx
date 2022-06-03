@@ -107,6 +107,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   confirmDonation: Donation;
   confirmVote: Vote;
+  createStory: Maybe<Story>;
   donate: Donation;
   vote: Vote;
 };
@@ -121,6 +122,11 @@ export type MutationConfirmDonationArgs = {
 export type MutationConfirmVoteArgs = {
   payment_request: Scalars['String'];
   preimage: Scalars['String'];
+};
+
+
+export type MutationCreateStoryArgs = {
+  data: InputMaybe<StoryInputType>;
 };
 
 
@@ -299,6 +305,15 @@ export type Story = PostBase & {
   votes_count: Scalars['Int'];
 };
 
+export type StoryInputType = {
+  body: Scalars['String'];
+  cover_image: Scalars['String'];
+  id: InputMaybe<Scalars['Int']>;
+  tags: Array<Scalars['String']>;
+  title: Scalars['String'];
+  topicId: Scalars['Int'];
+};
+
 export type Tag = {
   __typename?: 'Tag';
   id: Scalars['Int'];
@@ -393,6 +408,13 @@ export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } }> };
+
+export type CreateStoryMutationVariables = Exact<{
+  data: InputMaybe<StoryInputType>;
+}>;
+
+
+export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number } | null };
 
 export type PopularTopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -828,6 +850,39 @@ export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
+export const CreateStoryDocument = gql`
+    mutation createStory($data: StoryInputType) {
+  createStory(data: $data) {
+    id
+  }
+}
+    `;
+export type CreateStoryMutationFn = Apollo.MutationFunction<CreateStoryMutation, CreateStoryMutationVariables>;
+
+/**
+ * __useCreateStoryMutation__
+ *
+ * To run a mutation, you first call `useCreateStoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStoryMutation, { data, loading, error }] = useCreateStoryMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateStoryMutation(baseOptions?: Apollo.MutationHookOptions<CreateStoryMutation, CreateStoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStoryMutation, CreateStoryMutationVariables>(CreateStoryDocument, options);
+      }
+export type CreateStoryMutationHookResult = ReturnType<typeof useCreateStoryMutation>;
+export type CreateStoryMutationResult = Apollo.MutationResult<CreateStoryMutation>;
+export type CreateStoryMutationOptions = Apollo.BaseMutationOptions<CreateStoryMutation, CreateStoryMutationVariables>;
 export const PopularTopicsDocument = gql`
     query PopularTopics {
   popularTopics {

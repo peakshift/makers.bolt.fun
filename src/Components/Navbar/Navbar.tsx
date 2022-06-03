@@ -9,6 +9,8 @@ import NavDesktop from "./NavDesktop";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import { IoMdTrophy } from "react-icons/io";
 import { useLocation } from "react-router-dom";
+import { useMeQuery } from "src/graphql";
+import { setUser } from "src/redux/features/user.slice";
 
 
 export const navLinks = [
@@ -50,6 +52,11 @@ export default function Navbar() {
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
 
+  useMeQuery({
+    onCompleted: (data) => {
+      dispatch(setUser(data.me))
+    }
+  });
 
   useEffect(() => {
     const nav = document.querySelector("nav");
@@ -63,7 +70,6 @@ export default function Navbar() {
         document.body.style.paddingTop = `${nav.clientHeight}px`;
       }
     }
-
     return () => {
       document.body.style.paddingTop = oldPadding
     }

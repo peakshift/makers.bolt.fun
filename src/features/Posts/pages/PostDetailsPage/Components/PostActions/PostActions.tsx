@@ -36,7 +36,7 @@ export default function PostActions({ post }: Props) {
             <button className={`
             hidden md:flex w-full aspect-square bg-white rounded-12 border justify-around items-center text-gray-500 hover:bg-gray-50 active:bg-gray-100
             `}
-                onClick={() => navigate(-1)}
+                onClick={() => navigate('/blog')}
             >
                 <FiArrowLeft className={"text-body1"} />
             </button>

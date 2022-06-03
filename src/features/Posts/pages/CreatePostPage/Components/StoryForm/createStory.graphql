@@ -1,0 +1,5 @@
+mutation createStory($data: StoryInputType) {
+  createStory(data: $data) {
+    id
+  }
+}

@@ -15,7 +15,6 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import { FiAward, FiChevronDown, FiFeather, FiLogIn, FiMic } from "react-icons/fi";
-import { useMeQuery } from "src/graphql";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 
 
@@ -24,10 +23,11 @@ export default function NavDesktop() {
     const communityRef = useRef(null);
     const [communitymenuProps, toggleCommunityMenu] = useMenuState({ transition: true });
 
-    const meQuery = useMeQuery();
 
-    const { isWalletConnected } = useAppSelector((state) => ({
+
+    const { isWalletConnected, curUser } = useAppSelector((state) => ({
         isWalletConnected: state.wallet.isConnected,
+        curUser: state.user.me,
     }));
 
 
@@ -165,9 +165,9 @@ export default function NavDesktop() {
                 <BsSearch className='scale-125 text-gray-400' />
             </IconButton>}
         </motion.div>
-        {!meQuery.loading &&
-            (meQuery.data?.me ?
-                <Menu menuButton={<MenuButton ><Avatar src={meQuery.data.me.avatar} width={40} /> </MenuButton>}>
+        {curUser !== undefined &&
+            (curUser ?
+                <Menu menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
                     <MenuItem
                         className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
                     >

@@ -1,8 +1,10 @@
 
+import { useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
+import { ControlledStateHandler } from "src/utils/interfaces";
 
 
-type Props<T extends object | string> = {
+type Props<T extends object | string, IsMulti extends boolean = false> = {
     options: T[];
     labelField?: keyof T
     valueField?: keyof T
@@ -14,45 +16,13 @@ type Props<T extends object | string> = {
     name?: string,
     className?: string,
     onBlur?: () => void;
-
-} &
-    (
-        {
-
-            isMulti: true
-            onChange?: (values: T[] | null) => void
-            value?: T[] | null
-        }
-        |
-        {
-
-            isMulti?: false
-            onChange?: (values: T | null) => void
-            value?: T | null
-        }
-    )
+    size?: 'sm' | 'md' | 'lg'
+} & ControlledStateHandler<T, IsMulti>
 
 
 
-const colourStyles: StylesConfig = {
-    control: (styles, state) => ({
-        ...styles,
-        padding: '9px 16px',
-        borderRadius: 12,
-    }),
-    indicatorSeparator: (styles, state) => ({
-        ...styles,
-        display: "none"
-    }),
-    input: (styles, state) => ({
-        ...styles,
-        " input": {
-            boxShadow: 'none !important'
-        },
-    }),
-};
 
-export default function AutoComplete<T extends object>({
+export default function AutoComplete<T extends object, IsMulti extends boolean>({
     options,
     labelField,
     valueField,
@@ -64,10 +34,28 @@ export default function AutoComplete<T extends object>({
     value,
     onChange,
     onBlur,
+    size = 'md',
     ...props
+}: Props<T, IsMulti>) {
 
-}: Props<T>) {
 
+    const colourStyles: StylesConfig = useMemo(() => ({
+        control: (styles, state) => ({
+            ...styles,
+            padding: size === 'md' ? '1px 4px' : '8px 12px',
+            borderRadius: size === 'md' ? 8 : 12,
+        }),
+        indicatorSeparator: (styles, state) => ({
+            ...styles,
+            display: "none"
+        }),
+        input: (styles, state) => ({
+            ...styles,
+            " input": {
+                boxShadow: 'none !important'
+            },
+        }),
+    }), [size])
 
     return (
         <div className='w-full'>

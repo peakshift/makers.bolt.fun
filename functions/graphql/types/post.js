@@ -8,9 +8,11 @@ const {
     stringArg,
     enumType,
     arg,
+    inputObjectType,
 } = require('nexus');
 const { paginationArgs } = require('./helpers');
-const { prisma } = require('../../prisma')
+const { prisma } = require('../../prisma');
+const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
 
 
 const POST_TYPE = enumType({
@@ -133,6 +135,75 @@ const Story = objectType({
 
         });
 
+    },
+})
+
+const StoryInputType = inputObjectType({
+    name: 'StoryInputType',
+    definition(t) {
+        t.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('body');
+        t.nonNull.string('cover_image');
+        t.nonNull.list.nonNull.string('tags');
+        t.nonNull.int('topicId');
+    }
+})
+const StoryMutation = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('createStory', {
+            type: 'Story',
+            args: { data: StoryInputType },
+            async resolve(_root, args, ctx) {
+                console.log(args.data);
+                const { id, title, body, cover_image, tags, topicId } = args.data;
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                // Do some validation
+                if (!user)
+                    throw new Error("You have to login");
+                // TODO: validate post data
+
+
+                // Preprocess & insert
+                const excerpt = body.replace(/<[^>]+>/g, '').slice(0, 120);
+
+
+                return prisma.story.create({
+                    data: {
+                        title,
+                        body,
+                        cover_image,
+                        excerpt,
+                        tags: {
+                            connectOrCreate:
+                                tags.map(tag => {
+                                    tag = tag.toLowerCase().trim();
+                                    return {
+                                        where: {
+                                            title: tag,
+                                        },
+                                        create: {
+                                            title: tag
+                                        }
+                                    }
+                                })
+                        },
+                        topic: {
+                            connect: {
+                                id: topicId
+                            }
+                        },
+                        user: {
+                            connect: {
+                                id: user.id,
+                            }
+                        }
+                    }
+                })
+            }
+        })
     },
 })
 
@@ -325,6 +396,7 @@ module.exports = {
     BountyApplication,
     Bounty,
     Story,
+    StoryInputType,
     Question,
     PostComment,
     Post,
@@ -333,5 +405,8 @@ module.exports = {
     popularTopics,
     getFeed,
     getPostById,
-    getTrendingPosts
+    getTrendingPosts,
+
+    // Mutations
+    StoryMutation
 }

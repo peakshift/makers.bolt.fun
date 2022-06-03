@@ -28,6 +28,14 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  StoryInputType: { // input type
+    body: string; // String!
+    cover_image: string; // String!
+    id?: number | null; // Int
+    tags: string[]; // [String!]!
+    title: string; // String!
+    topicId: number; // Int!
+  }
 }
 
 export interface NexusGenEnums {
@@ -257,6 +265,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
+    createStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
@@ -437,6 +446,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
+    createStory: 'Story'
     donate: 'Donation'
     vote: 'Vote'
   }
@@ -553,6 +563,9 @@ export interface NexusGenArgTypes {
       payment_request: string; // String!
       preimage: string; // String!
     }
+    createStory: { // args
+      data?: NexusGenInputs['StoryInputType'] | null; // StoryInputType
+    }
     donate: { // args
       amount_in_sat: number; // Int!
     }
@@ -624,7 +637,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = keyof NexusGenEnums;
 

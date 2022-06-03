@@ -1,6 +1,11 @@
-import React, { ChangeEvent, useRef } from "react"
+import { createAction } from "@reduxjs/toolkit";
+import React, { ChangeEvent, useCallback, useRef } from "react"
 import { BsUpload } from "react-icons/bs";
+import { FaImage } from "react-icons/fa";
 import Button from "src/Components/Button/Button"
+import { openModal } from "src/redux/features/modals.slice";
+import { useAppDispatch } from "src/utils/hooks";
+import { useReduxEffect } from "src/utils/hooks/useReduxEffect";
 import { UnionToObjectKeys } from "src/utils/types/utils";
 import FilesThumbnails from "./FilesThumbnails";
 
@@ -28,6 +33,9 @@ const fileUrlToObject = async (url: string, fileName: string = 'filename') => {
     return file
 }
 
+const INSERT_IMAGE_ACTION = createAction<{ src: string, alt?: string }>('COVER_IMAGE_INSERTED')({ src: '', alt: "" })
+
+
 export default function FilesInput({
     multiple,
     value,
@@ -41,9 +49,32 @@ export default function FilesInput({
 
     const ref = useRef<HTMLInputElement>(null!)
 
+    const dispatch = useAppDispatch();
+
     const handleClick = () => {
-        ref.current.click();
+        // ref.current.click();
+        dispatch(openModal({
+            Modal: "InsertImageModal",
+            props: {
+                callbackAction: {
+                    type: INSERT_IMAGE_ACTION.type,
+                    payload: {
+                        src: "",
+                        alt: ""
+                    }
+                }
+            }
+        }))
     }
+
+    const onInsertImgUrl = useCallback(({ payload: { src, alt } }: typeof INSERT_IMAGE_ACTION) => {
+        if (typeof value === 'string')
+            onChange?.([value, src]);
+        else
+            onChange?.([...(value ?? []), src]);
+    }, [onChange, value])
+
+    useReduxEffect(onInsertImgUrl, INSERT_IMAGE_ACTION.type)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files && Array.from(e.target.files).slice(0, max);
@@ -80,7 +111,7 @@ export default function FilesInput({
     const uploadBtn = props.uploadBtn ?
         React.cloneElement(props.uploadBtn, { onClick: handleClick })
         :
-        <Button type='button' onClick={handleClick} ><span className="align-middle">{uploadText}</span> <BsUpload className="ml-12 scale-125" /></Button>
+        <Button type='button' onClick={handleClick} ><span className="align-middle">{uploadText}</span> <FaImage className="ml-12 scale-125" /></Button>
 
     return (
         <>

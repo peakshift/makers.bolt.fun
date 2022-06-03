@@ -55,7 +55,7 @@ export default function PostDetailsPage() {
 
 
                 <PageContent post={post} />
-                <aside id='author' className='no-scrollbar'>
+                <aside id='author' className='no-scrollbar min-w-0'>
                     <div className="flex flex-col gap-24"
                         style={{
                             top: `${navHeight + 16}px`,

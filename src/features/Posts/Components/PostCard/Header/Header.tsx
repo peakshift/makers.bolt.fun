@@ -1,6 +1,7 @@
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import dayjs from 'dayjs'
 import { UnionToObjectKeys } from 'src/utils/types/utils';
+import { trimText } from 'src/utils/helperFunctions';
 
 interface Props {
     author: {
@@ -43,8 +44,8 @@ export default function Header({
     return (
         <div className='flex gap-8'>
             <Avatar width={avatarSize[size]} src={props.author.avatar} />
-            <div>
-                <p className={`${nameSize[size]} text-black font-medium`}>{props.author.name}</p>
+            <div className='overflow-hidden'>
+                <p className={`${nameSize[size]} text-black font-medium overflow-hidden text-ellipsis`}>{trimText(props.author.name, 30)}</p>
                 <p className={`text-body6 text-gray-600`}>{dateToShow()}</p>
             </div>
             {/* {showTimeAgo && <p className={`${nameSize[size]} text-gray-500 ml-auto `}>

@@ -12,6 +12,7 @@ const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPa
 const HackathonsPage = React.lazy(() => import("./features/Hackathons/pages/HackathonsPage/HackathonsPage"))
 const HottestPage = React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage"))
 const PostDetailsPage = React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage"))
+const CreatePostPage = React.lazy(() => import("./features/Posts/pages/CreatePostPage/CreatePostPage"))
 const CategoryPage = React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage"))
 const ExplorePage = React.lazy(() => import("src/features/Projects/pages/ExplorePage"))
 const DonatePage = React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage"))
@@ -52,6 +53,7 @@ function App() {
         <Route path="/products" element={<ExplorePage />} />
 
         <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
+        <Route path="/blog/create-post" element={<CreatePostPage />} />
         <Route path="/blog" element={<FeedPage />} />
 
         <Route path="/hackathons" element={<HackathonsPage />} />

@@ -5,6 +5,10 @@
   //   grid-template-columns: 1fr;
   gap: 32px;
 
+  & > * {
+    min-width: 0;
+  }
+
   grid-template-areas:
     "content"
     "actions"

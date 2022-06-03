@@ -12,4 +12,22 @@ export type ListComponentProps<T> = {
     onReachedBottom?: () => void
 }
 
+export type ControlledStateHandler<T, IsMulti extends boolean> = {
+    isMulti?: IsMulti;
+    value?:
+    | (true extends IsMulti ? T[] : never)
+    | (false extends IsMulti ? T : never)
+    | null
+    onChange?: (
+        nv: | (true extends IsMulti ? T[] : never)
+            | (false extends IsMulti ? T : never)
+            | null
+    ) => void
+    onBlur?: () => void
+}
+
+
+export type Override<A, B> = Omit<A, keyof B> & B;
+
+
 export type Image = string;
