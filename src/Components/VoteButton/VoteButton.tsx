@@ -208,7 +208,7 @@ export default function VoteButton({
                 <div className={`
                 relative z-10 
                 ${incrementsCount ? "text-red-800" : "text-gray-500"}
-                flex justify-center items-center gap-8 text-left ${direction === 'vertical' && "flex-col !text-center"}
+                flex justify-center items-center gap-8 text-center ${direction === 'vertical' && "flex-col !text-center"}
                 `}>
                     <MdLocalFireDepartment
                         className={`text-body2 ${incrementsCount ? "text-red-600" : "text-gray-400"}`}

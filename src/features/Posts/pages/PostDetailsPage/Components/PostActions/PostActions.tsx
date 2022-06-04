@@ -12,10 +12,11 @@ interface Props {
         | 'id'
         | 'votes_count'
         | '__typename'
-    >
+    >,
+    isPreview?: boolean;
 }
 
-export default function PostActions({ post }: Props) {
+export default function PostActions({ post, isPreview }: Props) {
 
     const actions = [
         {
@@ -26,17 +27,14 @@ export default function PostActions({ post }: Props) {
 
     const navigate = useNavigate();
 
-    const { vote } = useVote({
-        itemId: post.id,
-        itemType: Vote_Item_Type[post.__typename!]
-    });
+    const vote = () => { }
 
     return (
         <div>
             <button className={`
             hidden md:flex w-full aspect-square bg-white rounded-12 border justify-around items-center text-gray-500 hover:bg-gray-50 active:bg-gray-100
             `}
-                onClick={() => navigate('/blog')}
+                onClick={() => isPreview ? navigate(-1) : navigate('/blog')}
             >
                 <FiArrowLeft className={"text-body1"} />
             </button>

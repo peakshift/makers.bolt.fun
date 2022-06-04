@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, newProjects, popularTopics, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTopics, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -26,6 +26,7 @@ import {
     AllTopicsQuery,
     AllTopicsQueryVariables,
     DonationsStatsQuery,
+    MeQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -186,6 +187,16 @@ export const handlers = [
                     prizes: "$2.5k",
                     touranments: "1",
                 }
+            })
+        )
+    }),
+
+    graphql.query<MeQuery>('Me', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                me: me()
             })
         )
     }),

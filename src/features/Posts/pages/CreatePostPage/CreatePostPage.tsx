@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import BountyForm from "./Components/BountyForm/BountyForm";
 import QuestionForm from "./Components/QuestionForm/QuestionForm";
 import StoryForm from "./Components/StoryForm/StoryForm";
@@ -12,7 +13,10 @@ export default function CreatePostPage() {
 
     const [postType, setPostType] = useState<'story' | 'bounty' | 'question'>('story');
 
-    return (
+    return (<>
+        <Helmet>
+            <title>Create Post</title>
+        </Helmet>
         <div
             className="page-container grid gap-32"
             style={{ gridTemplateColumns: "326px 1fr" }}
@@ -41,5 +45,6 @@ export default function CreatePostPage() {
                 </>}
             </div>
         </div>
+    </>
     )
 }

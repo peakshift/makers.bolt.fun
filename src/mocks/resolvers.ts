@@ -70,3 +70,12 @@ export function popularTopics() {
 export function getAllHackathons() {
     return hackathons;
 }
+
+export function me() {
+    return {
+        id: 111,
+        name: "Mtg",
+        avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
+        join_date: new Date(2020).toISOString()
+    }
+}

@@ -39,11 +39,12 @@ model User {
   id     Int     @id @default(autoincrement())
   pubKey String? @unique
 
-  name              String? @unique
+  name              String?  @unique
   email             String?
   website           String?
   lightning_address String?
   avatar            String?
+  join_date         DateTime @default(now())
 
   stories        Story[]
   questions      Question[]

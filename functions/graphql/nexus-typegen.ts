@@ -166,6 +166,7 @@ export interface NexusGenObjects {
   User: { // root type
     avatar: string; // String!
     id: number; // Int!
+    join_date: NexusGenScalars['Date']; // Date!
     name: string; // String!
   }
   Vote: { // root type
@@ -351,6 +352,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     avatar: string; // String!
     id: number; // Int!
+    join_date: NexusGenScalars['Date']; // Date!
     name: string; // String!
   }
   Vote: { // field return type
@@ -532,6 +534,7 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     avatar: 'String'
     id: 'Int'
+    join_date: 'Date'
     name: 'String'
   }
   Vote: { // field return type name

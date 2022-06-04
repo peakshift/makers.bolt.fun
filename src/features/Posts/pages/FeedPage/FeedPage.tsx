@@ -30,15 +30,17 @@ export default function FeedPage() {
     const { fetchMore, isFetchingMore, variablesChanged } = useInfiniteQuery(feedQuery, 'getFeed')
     useUpdateEffect(variablesChanged, [sortByFilter, topicFilter]);
 
-    const { navHeight } = useAppSelector((state) => ({
-        navHeight: state.ui.navHeight
+    const { navHeight, isLoggedIn } = useAppSelector((state) => ({
+        navHeight: state.ui.navHeight,
+        isLoggedIn: Boolean(state.user.me),
     }));
+
 
     return (
         <>
             <Helmet>
-                <title>{`Bolt.Fun Blog`}</title>
-                <meta property="og:title" content={`Bolt.Fun Blog`} />
+                <title>{`Bolt.Fun Stories`}</title>
+                <meta property="og:title" content={`Bolt.Fun Stories`} />
             </Helmet>
             <div
                 className={`page-container pt-16 w-full ${styles.grid}`}
@@ -49,13 +51,14 @@ export default function FeedPage() {
                             top: `${navHeight + 16}px`,
                             maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         }}>
-                        <Button
-                            href='/blog/create-post'
-                            color='primary'
-                            fullWidth
-                        >
-                            Write a post
-                        </Button>
+                        {isLoggedIn &&
+                            <Button
+                                href='/blog/create-post'
+                                color='primary'
+                                fullWidth
+                            >
+                                Create a new post
+                            </Button>}
                         <div className="my-24"></div>
                         <SortBy
                             filterChanged={setSortByFilter}

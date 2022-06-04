@@ -9,6 +9,7 @@ const User = objectType({
         t.nonNull.int('id');
         t.nonNull.string('name');
         t.nonNull.string('avatar');
+        t.nonNull.date('join_date');
     }
 })
 

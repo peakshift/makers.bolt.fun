@@ -98,8 +98,10 @@ export default function StoryForm() {
         const data = getValues()
         console.log(data);
 
-        if (isValid)
+        if (isValid) {
             dispatch(stageStory(data))
+            navigate('/blog/preview-post/Story')
+        }
     }
 
     const onSubmit: SubmitHandler<IFormInputs> = data => {
@@ -188,6 +190,7 @@ export default function StoryForm() {
                         </p>}
                     </div>
                     <ContentEditor
+                        initialContent={story?.body}
                         placeholder="Write your story content here..."
                         name="body"
                     />
@@ -202,7 +205,7 @@ export default function StoryForm() {
                         color="primary"
                         disabled={loading}
                     >
-                        Publish
+                        {loading ? "Publishing..." : "Publish"}
                     </Button>
                     <Button
                         color="gray"

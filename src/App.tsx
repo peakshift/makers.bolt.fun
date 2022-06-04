@@ -9,12 +9,16 @@ import LoadingPage from "./Components/LoadingPage/LoadingPage";
 
 // Pages
 const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage"))
-const HackathonsPage = React.lazy(() => import("./features/Hackathons/pages/HackathonsPage/HackathonsPage"))
-const HottestPage = React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage"))
 const PostDetailsPage = React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage"))
 const CreatePostPage = React.lazy(() => import("./features/Posts/pages/CreatePostPage/CreatePostPage"))
+const PreviewPostPage = React.lazy(() => import("./features/Posts/pages/PreviewPostPage/PreviewPostPage"))
+
+const HottestPage = React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage"))
 const CategoryPage = React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage"))
 const ExplorePage = React.lazy(() => import("src/features/Projects/pages/ExplorePage"))
+
+const HackathonsPage = React.lazy(() => import("./features/Hackathons/pages/HackathonsPage/HackathonsPage"))
+
 const DonatePage = React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage"))
 const LoginPage = React.lazy(() => import("./features/Auth/pages/LoginPage/LoginPage"))
 const LogoutPage = React.lazy(() => import("./features/Auth/pages/LogoutPage/LogoutPage"))
@@ -53,6 +57,7 @@ function App() {
         <Route path="/products" element={<ExplorePage />} />
 
         <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
+        <Route path="/blog/preview-post/:type" element={<PreviewPostPage />} />
         <Route path="/blog/create-post" element={<CreatePostPage />} />
         <Route path="/blog" element={<FeedPage />} />
 

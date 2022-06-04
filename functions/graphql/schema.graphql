@@ -206,6 +206,7 @@ type Topic {
 type User {
   avatar: String!
   id: Int!
+  join_date: Date!
   name: String!
 }
 

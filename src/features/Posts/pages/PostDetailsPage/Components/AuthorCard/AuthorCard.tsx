@@ -5,7 +5,11 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { trimText } from "src/utils/helperFunctions";
 
 interface Props {
-    author: Author
+    author: Pick<Author,
+        | 'id'
+        | 'name'
+        | 'avatar'
+        | 'join_date'>
 }
 
 export default function AuthorCard({ author }: Props) {
