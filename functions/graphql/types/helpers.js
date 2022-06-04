@@ -67,10 +67,21 @@ const paginationArgs = (args) => {
     }
 }
 
+const removeNulls = (obj) => {
+    let res = {};
+    for (const key in obj) {
+        if (obj[key] != null) {
+            res[key] = obj[key];
+        }
+    }
+    return res
+}
+
 module.exports = {
     getPaymetRequestForItem,
     hexToUint8Array,
     lightningAddressToLnurl,
     getLnurlDetails,
-    paginationArgs
+    paginationArgs,
+    removeNulls
 }

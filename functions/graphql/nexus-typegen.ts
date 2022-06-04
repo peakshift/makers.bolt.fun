@@ -36,6 +36,19 @@ export interface NexusGenInputs {
     title: string; // String!
     topicId: number; // Int!
   }
+  UpdateProfileInput: { // input type
+    avatar?: string | null; // String
+    bio?: string | null; // String
+    email?: string | null; // String
+    github?: string | null; // String
+    jobTitle?: string | null; // String
+    lightning_address?: string | null; // String
+    linkedin?: string | null; // String
+    location?: string | null; // String
+    name?: string | null; // String
+    twitter?: string | null; // String
+    website?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -53,6 +66,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Author: { // root type
+    avatar: string; // String!
+    id: number; // Int!
+    join_date: NexusGenScalars['Date']; // Date!
+    name: string; // String!
+  }
   Award: { // root type
     id: number; // Int!
     image: string; // String!
@@ -73,7 +92,7 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   BountyApplication: { // root type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     date: string; // String!
     id: number; // Int!
     workplan: string; // String!
@@ -116,7 +135,7 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   PostComment: { // root type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -165,9 +184,19 @@ export interface NexusGenObjects {
   }
   User: { // root type
     avatar: string; // String!
+    bio?: string | null; // String
+    email?: string | null; // String
+    github?: string | null; // String
     id: number; // Int!
+    jobTitle?: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    lightning_address?: string | null; // String
+    linkedin?: string | null; // String
+    location?: string | null; // String
     name: string; // String!
+    role?: string | null; // String
+    twitter?: string | null; // String
+    website?: string | null; // String
   }
   Vote: { // root type
     amount_in_sat: number; // Int!
@@ -193,6 +222,12 @@ export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects & NexusGenU
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Author: { // field return type
+    avatar: string; // String!
+    id: number; // Int!
+    join_date: NexusGenScalars['Date']; // Date!
+    name: string; // String!
+  }
   Award: { // field return type
     id: number; // Int!
     image: string; // String!
@@ -203,7 +238,7 @@ export interface NexusGenFieldTypes {
   Bounty: { // field return type
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
     cover_image: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
@@ -217,7 +252,7 @@ export interface NexusGenFieldTypes {
     votes_count: number; // Int!
   }
   BountyApplication: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     date: string; // String!
     id: number; // Int!
     workplan: string; // String!
@@ -268,10 +303,11 @@ export interface NexusGenFieldTypes {
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
+    updateProfile: NexusGenRootTypes['User'] | null; // User
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
   PostComment: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -309,12 +345,13 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     popularTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
+    profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
   Question: { // field return type
     answers_count: number; // Int!
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     createdAt: NexusGenScalars['Date']; // Date!
@@ -326,7 +363,7 @@ export interface NexusGenFieldTypes {
     votes_count: number; // Int!
   }
   Story: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
@@ -351,9 +388,19 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     avatar: string; // String!
+    bio: string | null; // String
+    email: string | null; // String
+    github: string | null; // String
     id: number; // Int!
+    jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    lightning_address: string | null; // String
+    linkedin: string | null; // String
+    location: string | null; // String
     name: string; // String!
+    role: string | null; // String
+    twitter: string | null; // String
+    website: string | null; // String
   }
   Vote: { // field return type
     amount_in_sat: number; // Int!
@@ -375,6 +422,12 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Author: { // field return type name
+    avatar: 'String'
+    id: 'Int'
+    join_date: 'Date'
+    name: 'String'
+  }
   Award: { // field return type name
     id: 'Int'
     image: 'String'
@@ -385,7 +438,7 @@ export interface NexusGenFieldTypeNames {
   Bounty: { // field return type name
     applicants_count: 'Int'
     applications: 'BountyApplication'
-    author: 'User'
+    author: 'Author'
     body: 'String'
     cover_image: 'String'
     createdAt: 'Date'
@@ -399,7 +452,7 @@ export interface NexusGenFieldTypeNames {
     votes_count: 'Int'
   }
   BountyApplication: { // field return type name
-    author: 'User'
+    author: 'Author'
     date: 'String'
     id: 'Int'
     workplan: 'String'
@@ -450,10 +503,11 @@ export interface NexusGenFieldTypeNames {
     confirmVote: 'Vote'
     createStory: 'Story'
     donate: 'Donation'
+    updateProfile: 'User'
     vote: 'Vote'
   }
   PostComment: { // field return type name
-    author: 'User'
+    author: 'Author'
     body: 'String'
     createdAt: 'Date'
     id: 'Int'
@@ -491,12 +545,13 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
     newProjects: 'Project'
     popularTopics: 'Topic'
+    profile: 'User'
     projectsByCategory: 'Project'
     searchProjects: 'Project'
   }
   Question: { // field return type name
     answers_count: 'Int'
-    author: 'User'
+    author: 'Author'
     body: 'String'
     comments: 'PostComment'
     createdAt: 'Date'
@@ -508,7 +563,7 @@ export interface NexusGenFieldTypeNames {
     votes_count: 'Int'
   }
   Story: { // field return type name
-    author: 'User'
+    author: 'Author'
     body: 'String'
     comments: 'PostComment'
     comments_count: 'Int'
@@ -533,9 +588,19 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     avatar: 'String'
+    bio: 'String'
+    email: 'String'
+    github: 'String'
     id: 'Int'
+    jobTitle: 'String'
     join_date: 'Date'
+    lightning_address: 'String'
+    linkedin: 'String'
+    location: 'String'
     name: 'String'
+    role: 'String'
+    twitter: 'String'
+    website: 'String'
   }
   Vote: { // field return type name
     amount_in_sat: 'Int'
@@ -571,6 +636,9 @@ export interface NexusGenArgTypes {
     }
     donate: { // args
       amount_in_sat: number; // Int!
+    }
+    updateProfile: { // args
+      data?: NexusGenInputs['UpdateProfileInput'] | null; // UpdateProfileInput
     }
     vote: { // args
       amount_in_sat: number; // Int!
@@ -613,6 +681,9 @@ export interface NexusGenArgTypes {
     newProjects: { // args
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    profile: { // args
+      id: number; // Int!
     }
     projectsByCategory: { // args
       category_id: number; // Int!

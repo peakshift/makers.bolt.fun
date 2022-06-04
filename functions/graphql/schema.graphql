@@ -2,6 +2,13 @@
 ### Do not make changes to this file directly
 
 
+type Author {
+  avatar: String!
+  id: Int!
+  join_date: Date!
+  name: String!
+}
+
 type Award {
   id: Int!
   image: String!
@@ -13,7 +20,7 @@ type Award {
 type Bounty implements PostBase {
   applicants_count: Int!
   applications: [BountyApplication!]!
-  author: User!
+  author: Author!
   body: String!
   cover_image: String!
   createdAt: Date!
@@ -28,7 +35,7 @@ type Bounty implements PostBase {
 }
 
 type BountyApplication {
-  author: User!
+  author: Author!
   date: String!
   id: Int!
   workplan: String!
@@ -88,6 +95,7 @@ type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createStory(data: StoryInputType): Story
   donate(amount_in_sat: Int!): Donation!
+  updateProfile(data: UpdateProfileInput): User
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
 
@@ -109,7 +117,7 @@ interface PostBase {
 }
 
 type PostComment {
-  author: User!
+  author: Author!
   body: String!
   createdAt: Date!
   id: Int!
@@ -149,13 +157,14 @@ type Query {
   me: User
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
   popularTopics: [Topic!]!
+  profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
 }
 
 type Question implements PostBase {
   answers_count: Int!
-  author: User!
+  author: Author!
   body: String!
   comments: [PostComment!]!
   createdAt: Date!
@@ -168,7 +177,7 @@ type Question implements PostBase {
 }
 
 type Story implements PostBase {
-  author: User!
+  author: Author!
   body: String!
   comments: [PostComment!]!
   comments_count: Int!
@@ -203,11 +212,35 @@ type Topic {
   title: String!
 }
 
+input UpdateProfileInput {
+  avatar: String
+  bio: String
+  email: String
+  github: String
+  jobTitle: String
+  lightning_address: String
+  linkedin: String
+  location: String
+  name: String
+  twitter: String
+  website: String
+}
+
 type User {
   avatar: String!
+  bio: String
+  email: String
+  github: String
   id: Int!
+  jobTitle: String
   join_date: Date!
+  lightning_address: String
+  linkedin: String
+  location: String
   name: String!
+  role: String
+  twitter: String
+  website: String
 }
 
 enum VOTE_ITEM_TYPE {

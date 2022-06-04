@@ -5,6 +5,7 @@ interface StoreState {
         id: number;
         name: string;
         avatar: string;
+        join_date: string;
     }
     | undefined // fetching user data if exist
     | null // user not logged in

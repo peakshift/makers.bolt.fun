@@ -38,13 +38,23 @@ model Vote {
 model User {
   id     Int     @id @default(autoincrement())
   pubKey String? @unique
+  name   String? @unique
+  avatar String?
+  role   String  @default("user")
 
-  name              String?  @unique
+
   email             String?
-  website           String?
+  jobTitle          String?
   lightning_address String?
-  avatar            String?
-  join_date         DateTime @default(now())
+  website           String?
+  twitter           String?
+  github            String?
+  linkedin          String?
+  bio               String?
+  location          String?
+
+
+  join_date DateTime @default(now())
 
   stories        Story[]
   questions      Question[]

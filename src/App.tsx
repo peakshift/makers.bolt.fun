@@ -25,6 +25,7 @@ const HackathonsPage = React.lazy(() => import("./features/Hackathons/pages/Hack
 const DonatePage = React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage"))
 const LoginPage = React.lazy(() => import("./features/Auth/pages/LoginPage/LoginPage"))
 const LogoutPage = React.lazy(() => import("./features/Auth/pages/LogoutPage/LogoutPage"))
+const ProfilePage = React.lazy(() => import("./features/Profiles/pages/ProfilePage/ProfilePage"))
 
 function App() {
   const { isWalletConnected } = useAppSelector(state => ({
@@ -77,6 +78,7 @@ function App() {
 
         <Route path="/donate" element={<DonatePage />} />
 
+        <Route path="/profile/:id" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<LogoutPage />} />
 

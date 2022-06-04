@@ -1,0 +1,16 @@
+mutation updateProfileAbout($data: UpdateProfileInput) {
+  updateProfile(data: $data) {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    lightning_address
+    website
+    twitter
+    github
+    bio
+    location
+  }
+}

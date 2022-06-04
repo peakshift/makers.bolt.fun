@@ -17,6 +17,14 @@ export type Scalars = {
   Date: any;
 };
 
+export type Author = {
+  __typename?: 'Author';
+  avatar: Scalars['String'];
+  id: Scalars['Int'];
+  join_date: Scalars['Date'];
+  name: Scalars['String'];
+};
+
 export type Award = {
   __typename?: 'Award';
   id: Scalars['Int'];
@@ -30,7 +38,7 @@ export type Bounty = PostBase & {
   __typename?: 'Bounty';
   applicants_count: Scalars['Int'];
   applications: Array<BountyApplication>;
-  author: User;
+  author: Author;
   body: Scalars['String'];
   cover_image: Scalars['String'];
   createdAt: Scalars['Date'];
@@ -46,7 +54,7 @@ export type Bounty = PostBase & {
 
 export type BountyApplication = {
   __typename?: 'BountyApplication';
-  author: User;
+  author: Author;
   date: Scalars['String'];
   id: Scalars['Int'];
   workplan: Scalars['String'];
@@ -109,6 +117,7 @@ export type Mutation = {
   confirmVote: Vote;
   createStory: Maybe<Story>;
   donate: Donation;
+  updateProfile: Maybe<User>;
   vote: Vote;
 };
 
@@ -132,6 +141,11 @@ export type MutationCreateStoryArgs = {
 
 export type MutationDonateArgs = {
   amount_in_sat: Scalars['Int'];
+};
+
+
+export type MutationUpdateProfileArgs = {
+  data: InputMaybe<UpdateProfileInput>;
 };
 
 
@@ -160,7 +174,7 @@ export type PostBase = {
 
 export type PostComment = {
   __typename?: 'PostComment';
-  author: User;
+  author: Author;
   body: Scalars['String'];
   createdAt: Scalars['Date'];
   id: Scalars['Int'];
@@ -202,6 +216,7 @@ export type Query = {
   me: Maybe<User>;
   newProjects: Array<Project>;
   popularTopics: Array<Topic>;
+  profile: Maybe<User>;
   projectsByCategory: Array<Project>;
   searchProjects: Array<Project>;
 };
@@ -260,6 +275,11 @@ export type QueryNewProjectsArgs = {
 };
 
 
+export type QueryProfileArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type QueryProjectsByCategoryArgs = {
   category_id: Scalars['Int'];
   skip?: InputMaybe<Scalars['Int']>;
@@ -276,7 +296,7 @@ export type QuerySearchProjectsArgs = {
 export type Question = PostBase & {
   __typename?: 'Question';
   answers_count: Scalars['Int'];
-  author: User;
+  author: Author;
   body: Scalars['String'];
   comments: Array<PostComment>;
   createdAt: Scalars['Date'];
@@ -290,7 +310,7 @@ export type Question = PostBase & {
 
 export type Story = PostBase & {
   __typename?: 'Story';
-  author: User;
+  author: Author;
   body: Scalars['String'];
   comments: Array<PostComment>;
   comments_count: Scalars['Int'];
@@ -327,11 +347,34 @@ export type Topic = {
   title: Scalars['String'];
 };
 
+export type UpdateProfileInput = {
+  avatar: InputMaybe<Scalars['String']>;
+  bio: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  github: InputMaybe<Scalars['String']>;
+  lightning_address: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   avatar: Scalars['String'];
+  bio: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  jobTitle: Maybe<Scalars['String']>;
+  join_date: Scalars['Date'];
+  lightning_address: Maybe<Scalars['String']>;
+  linkedin: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  role: Maybe<Scalars['String']>;
+  twitter: Maybe<Scalars['String']>;
+  website: Maybe<Scalars['String']>;
 };
 
 export enum Vote_Item_Type {
@@ -369,7 +412,7 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -407,7 +450,7 @@ export type GetHackathonsQuery = { __typename?: 'Query', getAllHackathons: Array
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } }> };
+export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } }> };
 
 export type CreateStoryMutationVariables = Exact<{
   data: InputMaybe<StoryInputType>;
@@ -429,7 +472,7 @@ export type FeedQueryVariables = Exact<{
 }>;
 
 
-export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
+export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> }> };
 
 export type PostDetailsQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -437,7 +480,21 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } };
+
+export type ProfileQueryVariables = Exact<{
+  profileId: Scalars['Int'];
+}>;
+
+
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+
+export type UpdateProfileAboutMutationVariables = Exact<{
+  data: InputMaybe<UpdateProfileInput>;
+}>;
+
+
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, bio: string | null, location: string | null } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -570,6 +627,7 @@ export const MeDocument = gql`
     id
     name
     avatar
+    join_date
   }
 }
     `;
@@ -930,6 +988,7 @@ export const FeedDocument = gql`
         id
         name
         avatar
+        join_date
       }
       excerpt
       tags {
@@ -949,6 +1008,7 @@ export const FeedDocument = gql`
         id
         name
         avatar
+        join_date
       }
       excerpt
       tags {
@@ -970,6 +1030,7 @@ export const FeedDocument = gql`
         id
         name
         avatar
+        join_date
       }
       excerpt
       tags {
@@ -987,6 +1048,7 @@ export const FeedDocument = gql`
           id
           name
           avatar
+          join_date
         }
       }
     }
@@ -1035,6 +1097,7 @@ export const PostDetailsDocument = gql`
         id
         name
         avatar
+        join_date
       }
       body
       tags {
@@ -1066,6 +1129,7 @@ export const PostDetailsDocument = gql`
         id
         name
         avatar
+        join_date
       }
       body
       tags {
@@ -1097,6 +1161,7 @@ export const PostDetailsDocument = gql`
         id
         name
         avatar
+        join_date
       }
       body
       tags {
@@ -1151,6 +1216,98 @@ export function usePostDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type PostDetailsQueryHookResult = ReturnType<typeof usePostDetailsQuery>;
 export type PostDetailsLazyQueryHookResult = ReturnType<typeof usePostDetailsLazyQuery>;
 export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDetailsQueryVariables>;
+export const ProfileDocument = gql`
+    query profile($profileId: Int!) {
+  profile(id: $profileId) {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    jobTitle
+    lightning_address
+    website
+    twitter
+    github
+    linkedin
+    bio
+    location
+  }
+}
+    `;
+
+/**
+ * __useProfileQuery__
+ *
+ * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfileQuery({
+ *   variables: {
+ *      profileId: // value for 'profileId'
+ *   },
+ * });
+ */
+export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+      }
+export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+        }
+export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
+export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
+export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const UpdateProfileAboutDocument = gql`
+    mutation updateProfileAbout($data: UpdateProfileInput) {
+  updateProfile(data: $data) {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    lightning_address
+    website
+    twitter
+    github
+    bio
+    location
+  }
+}
+    `;
+export type UpdateProfileAboutMutationFn = Apollo.MutationFunction<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
+
+/**
+ * __useUpdateProfileAboutMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileAboutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileAboutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProfileAboutMutation, { data, loading, error }] = useUpdateProfileAboutMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>(UpdateProfileAboutDocument, options);
+      }
+export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
+export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
+export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
 export const CategoryPageDocument = gql`
     query CategoryPage($categoryId: Int!) {
   projectsByCategory(category_id: $categoryId) {

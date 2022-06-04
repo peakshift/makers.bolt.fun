@@ -69,6 +69,13 @@ export default function InsertImageModal({ onClose, direction, callbackAction, .
                         </div>
                     </div>
                 </div>
+                <div className="mt-32 w-1/2 mx-auto aspect-video bg-gray-200 rounded-10">
+                    {urlInput && <img
+                        src={urlInput}
+                        className='w-full h-full object-cover rounded-10'
+                        alt={altInput}
+                    />}
+                </div>
                 <div className="flex gap-16 justify-end mt-32">
                     <Button onClick={onClose}>
                         Cancel

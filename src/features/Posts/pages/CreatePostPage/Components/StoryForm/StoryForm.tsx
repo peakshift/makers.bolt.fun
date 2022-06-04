@@ -73,9 +73,9 @@ export default function StoryForm() {
             cover_image: story?.cover_image ?? [],
             tags: story?.tags ?? [],
             body: story?.body ?? '',
-        }
+        },
     });
-    const { handleSubmit, control, register, formState: { errors, }, trigger, getValues } = formMethods;
+    const { handleSubmit, control, register, formState: { errors, }, trigger, getValues, } = formMethods;
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()

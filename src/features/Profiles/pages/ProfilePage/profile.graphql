@@ -1,0 +1,18 @@
+query profile($profileId: Int!) {
+  profile(id: $profileId) {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    jobTitle
+    lightning_address
+    website
+    twitter
+    github
+    linkedin
+    bio
+    location
+  }
+}

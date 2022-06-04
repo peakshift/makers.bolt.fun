@@ -7,9 +7,7 @@ export type User = {
     avatar: string
 }
 
-export type Author = User & {
-    join_date?: string
-}
+export type Author = ApiTypes.Author
 
 export type PostBase1 = {
     id: number

@@ -3,5 +3,6 @@ query Me {
     id
     name
     avatar
+    join_date
   }
 }

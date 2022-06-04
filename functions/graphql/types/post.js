@@ -39,6 +39,16 @@ const Topic = objectType({
     }
 })
 
+const Author = objectType({
+    name: 'Author',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('name');
+        t.nonNull.string('avatar');
+        t.nonNull.date('join_date');
+    }
+})
+
 
 const allTopics = extendType({
     type: "Query",
@@ -129,7 +139,7 @@ const Story = objectType({
             }
         })
         t.nonNull.field('author', {
-            type: "User",
+            type: "Author",
             resolve: (parent) =>
                 prisma.story.findUnique({ where: { id: parent.id } }).user()
 
@@ -214,7 +224,7 @@ const BountyApplication = objectType({
         t.nonNull.string('date');
         t.nonNull.string('workplan');
         t.nonNull.field('author', {
-            type: "User"
+            type: "Author"
         });
     }
 })
@@ -234,7 +244,7 @@ const Bounty = objectType({
             type: "BountyApplication"
         });
         t.nonNull.field('author', {
-            type: "User",
+            type: "Author",
             resolve: (parent) => {
                 return prisma.bounty.findUnique({ where: { id: parent.id } }).user();
             }
@@ -270,7 +280,7 @@ const Question = objectType({
         });
 
         t.nonNull.field('author', {
-            type: "User",
+            type: "Author",
             resolve: (parent) => {
                 return prisma.question.findUnique({ where: { id: parent.id } }).user();
             }
@@ -285,7 +295,7 @@ const PostComment = objectType({
         t.nonNull.date('createdAt');
         t.nonNull.string('body');
         t.nonNull.field('author', {
-            type: "User"
+            type: "Author"
         });
         t.int('parentId');
         t.nonNull.int('votes_count');
@@ -391,6 +401,7 @@ const getPostById = extendType({
 module.exports = {
     // Types
     POST_TYPE,
+    Author,
     Topic,
     PostBase,
     BountyApplication,

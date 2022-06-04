@@ -169,9 +169,14 @@ export default function NavDesktop() {
             (curUser ?
                 <Menu menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
                     <MenuItem
-                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
+                        href={`/profile/${curUser.id}`}
+                        onClick={(e) => {
+                            e.syntheticEvent.preventDefault();
+                            navigate(`/profile/${curUser.id}`);
+                        }}
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                     >
-                        Profile (soon)
+                        Profile
                     </MenuItem>
                     <MenuItem
                         href="/logout"
