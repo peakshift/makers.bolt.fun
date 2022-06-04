@@ -2,6 +2,7 @@ import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import dayjs from 'dayjs'
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { trimText } from 'src/utils/helperFunctions';
+import { Link } from 'react-router-dom';
 
 interface Props {
     author: {
@@ -43,7 +44,9 @@ export default function Header({
 
     return (
         <div className='flex gap-8'>
-            <Avatar width={avatarSize[size]} src={props.author.avatar} />
+            <Link to={`/profile/${props.author.id}`}>
+                <Avatar width={avatarSize[size]} src={props.author.avatar} />
+            </Link>
             <div className='overflow-hidden'>
                 <p className={`${nameSize[size]} text-black font-medium overflow-hidden text-ellipsis`}>{trimText(props.author.name, 30)}</p>
                 <p className={`text-body6 text-gray-600`}>{dateToShow()}</p>

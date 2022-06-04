@@ -11,7 +11,9 @@ const httpLink = new HttpLink({
     credentials: process.env.REACT_APP_API_END_POINT?.includes('localhost') ? 'include' : "same-origin"
 });
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+    console.log('AHIHIHA');
+
     if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) =>
             console.log(
@@ -19,7 +21,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             ),
         );
 
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError) {
+        console.log(`[Network error]: ${networkError}`);
+    }
 });
 
 

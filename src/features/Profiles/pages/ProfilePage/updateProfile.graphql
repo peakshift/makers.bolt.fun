@@ -4,12 +4,14 @@ mutation updateProfileAbout($data: UpdateProfileInput) {
     name
     avatar
     join_date
+    website
     role
     email
     lightning_address
-    website
+    jobTitle
     twitter
     github
+    linkedin
     bio
     location
   }

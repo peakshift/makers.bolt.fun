@@ -72,10 +72,9 @@ export function getAllHackathons() {
 }
 
 export function me() {
-    return {
-        id: 111,
-        name: "Mtg",
-        avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
-        join_date: new Date(2020).toISOString()
-    }
+    return MOCK_DATA['user']
+}
+
+export function profile() {
+    return MOCK_DATA['user']
 }

@@ -352,7 +352,9 @@ export type UpdateProfileInput = {
   bio: InputMaybe<Scalars['String']>;
   email: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
+  jobTitle: InputMaybe<Scalars['String']>;
   lightning_address: InputMaybe<Scalars['String']>;
+  linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
@@ -494,7 +496,7 @@ export type UpdateProfileAboutMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, bio: string | null, location: string | null } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, website: string | null, role: string | null, email: string | null, lightning_address: string | null, jobTitle: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1271,12 +1273,14 @@ export const UpdateProfileAboutDocument = gql`
     name
     avatar
     join_date
+    website
     role
     email
     lightning_address
-    website
+    jobTitle
     twitter
     github
+    linkedin
     bio
     location
   }

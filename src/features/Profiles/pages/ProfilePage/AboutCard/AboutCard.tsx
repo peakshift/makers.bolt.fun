@@ -1,12 +1,18 @@
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar"
 import { User } from "src/graphql"
-import { trimText } from "src/utils/helperFunctions"
+import { trimText, withHttp } from "src/utils/helperFunctions"
 import { FiGithub, FiGlobe, FiLinkedin, FiTwitter } from 'react-icons/fi'
+import Button from "src/Components/Button/Button";
+import { useState } from "react";
+import { useToggle } from "@react-hookz/web";
+import UpdateAboutForm from "./UpdateAboutForm";
 
 interface Props {
+    isOwner?: boolean;
     user: Pick<User,
         | 'name'
         | 'email'
+        | 'lightning_address'
         | 'jobTitle'
         | 'avatar'
         | 'website'
@@ -18,7 +24,37 @@ interface Props {
     >
 }
 
-export default function AboutCard({ user }: Props) {
+export default function AboutCard({ user, isOwner }: Props) {
+
+    const links = [
+        {
+            hasValue: user.website,
+            text: user.website?.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ""),
+            icon: FiGlobe,
+            url: user.website && withHttp(user.website)
+        },
+        {
+            hasValue: user.twitter,
+            text: user.twitter,
+            icon: FiTwitter,
+            url: `https://twitter.com/@${user.twitter}`
+        },
+        {
+            hasValue: user.github,
+            text: user.github,
+            icon: FiGithub,
+            url: `https://github.com/${user.github}`
+        },
+        {
+            hasValue: user.linkedin,
+            text: "LinkedIn",
+            icon: FiLinkedin,
+            url: user.linkedin && withHttp(user.linkedin),
+        }
+    ];
+
+    const [editMode, toggleEditMode] = useToggle(false);
+
     return (
         <div className="rounded-16 bg-white border-2 border-gray-200">
             <div className="bg-gray-600 relative h-[160px] rounded-t-16">
@@ -26,48 +62,52 @@ export default function AboutCard({ user }: Props) {
                     <Avatar src={user.avatar} width={120} />
                 </div>
             </div>
-            <div className="h-64"></div>
-            <div className="p-24 pt-0 flex flex-col gap-16">
-                <h1 className="text-h2 font-bolder">
-                    {trimText(user.name, 20)}
-                </h1>
+            <div className="h-64 flex justify-end items-center px-24">
+                {(isOwner && !editMode) && <Button size="sm" color="gray" onClick={() => toggleEditMode(true)}>Edit Profile</Button>}
+            </div>
+            <div className="p-24 pt-0">
+                {editMode === true ?
 
-                <div className="flex flex-wrap gap-16">
-                    {user.website && <a
-                        href={user.website}
-                        className="text-body4 text-primary-700 font-medium"
-                        target='_blank'
-                        rel="noreferrer">
-                        <FiGlobe className="scale-125 mr-8" /> <span className="align-middle">Website</span>
-                    </a>}
-                    {user.twitter && <a
-                        href={`https://twitter.com/@${user.twitter}`}
-                        className="text-body4 text-primary-700 font-medium"
-                        target='_blank'
-                        rel="noreferrer">
-                        <FiTwitter className="scale-125 mr-8" /> <span className="align-middle">{user.twitter}</span>
-                    </a>}
-                    {user.github && <a
-                        href={`https://github.com/${user.github}`}
-                        className="text-body4 text-primary-700 font-medium"
-                        target='_blank'
-                        rel="noreferrer">
-                        <FiGithub className="scale-125 mr-8" /> <span className="align-middle">{user.github}</span>
-                    </a>}
-                    {user.linkedin && <a
-                        href={user.linkedin}
-                        className="text-body4 text-primary-700 font-medium"
-                        target='_blank'
-                        rel="noreferrer">
-                        <FiLinkedin className="scale-125 mr-8" /> <span className="align-middle">LinkedIn</span>
-                    </a>}
-                </div>
-                {user.jobTitle && <p className="text-body4 font-medium">
-                    {user.jobTitle}
-                </p>}
-                {user.bio && <p className="text-body5 font-medium">
-                    {user.bio}
-                </p>}
+                    <UpdateAboutForm data={user} onClose={toggleEditMode} />
+
+                    :
+
+                    <div className="flex flex-col gap-16">
+                        <h1 className="text-h2 font-bolder">
+                            {trimText(user.name, 20)}
+                        </h1>
+
+                        {links.some(link => link.hasValue) && <div className="flex flex-wrap gap-16">
+                            {links.filter(link => link.hasValue || isOwner).map((link, idx) => link.hasValue ?
+                                <a
+                                    key={idx}
+                                    href={link.url!}
+                                    className="text-body4 text-primary-700 font-medium"
+                                    target='_blank'
+                                    rel="noreferrer">
+                                    <link.icon className="scale-125 mr-8" /> <span className="align-middle">{link.text}</span>
+                                </a> :
+                                <p
+                                    key={idx}
+                                    className="text-body4 text-primary-700 font-medium"
+                                >
+                                    <link.icon className="scale-125 mr-8" /> <span className="align-middle">---</span>
+                                </p>)}
+                        </div>}
+
+                        {(user.jobTitle || isOwner) && <p className="text-body4 font-medium">
+                            {user.jobTitle ? user.jobTitle : "No job title added"}
+                        </p>}
+
+                        {(user.lightning_address || isOwner) && <p className="text-body5 font-medium">
+                            {user.lightning_address ? `⚡${user.lightning_address}` : "⚡ No lightning address"}
+                        </p>}
+
+                        {(user.bio || isOwner) && <p className="text-body5 font-medium">
+                            {user.bio ? user.bio : "No bio added"}
+                        </p>}
+                    </div>
+                }
             </div>
         </div>
     )

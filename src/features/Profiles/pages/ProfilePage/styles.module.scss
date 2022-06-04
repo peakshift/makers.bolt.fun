@@ -1,0 +1,21 @@
+.grid {
+  display: grid;
+  grid-template-columns: 100%;
+  gap: 24px;
+  grid-template-areas: "main";
+
+  > aside:first-of-type {
+    grid-area: aside1;
+  }
+  > main {
+    grid-area: main;
+  }
+  > aside:last-of-type {
+    grid-area: aside2;
+  }
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: "aside1 main aside2";
+  }
+}

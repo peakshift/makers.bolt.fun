@@ -91,3 +91,5 @@ export function shuffle<T>(_array: Array<T>) {
 export function generateList(component: React.ReactElement, cnt: number) {
   return Array(cnt).fill(0).map((_, idx) => React.cloneElement(component, { key: idx }))
 }
+
+export const withHttp = (url: string) => !/^https?:\/\//i.test(url) ? `http://${url}` : url;
