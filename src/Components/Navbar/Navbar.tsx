@@ -52,11 +52,6 @@ export default function Navbar() {
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
 
-  useMeQuery({
-    onCompleted: (data) => {
-      dispatch(setUser(data.me))
-    }
-  });
 
   useEffect(() => {
     const nav = document.querySelector("nav");

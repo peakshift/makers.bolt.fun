@@ -1,11 +1,14 @@
 import React, { Suspense, useEffect } from "react";
 import Navbar from "src/Components/Navbar/Navbar";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
-import { useAppSelector } from './utils/hooks';
+import { useAppDispatch, useAppSelector } from './utils/hooks';
 import { Wallet_Service } from "./services";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
+import { useMeQuery } from "./graphql";
+import { setUser } from "./redux/features/user.slice";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 
 // Pages
 const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage"))
@@ -28,8 +31,17 @@ function App() {
     isWalletConnected: state.wallet.isConnected,
   }));
 
+  const dispatch = useAppDispatch();
   useWrapperSetup()
 
+  useMeQuery({
+    onCompleted: (data) => {
+      dispatch(setUser(data.me))
+    },
+    onError: (error) => {
+      dispatch(setUser(null))
+    },
+  });
 
   useEffect(() => {
     // if (typeof window.webln != "undefined") {
@@ -58,7 +70,7 @@ function App() {
 
         <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
         <Route path="/blog/preview-post/:type" element={<PreviewPostPage />} />
-        <Route path="/blog/create-post" element={<CreatePostPage />} />
+        <Route path="/blog/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
         <Route path="/blog" element={<FeedPage />} />
 
         <Route path="/hackathons" element={<HackathonsPage />} />

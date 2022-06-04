@@ -2,6 +2,7 @@
 import { Helmet } from 'react-helmet'
 import { useParams } from 'react-router-dom'
 import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
+import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
 import { usePostDetailsQuery } from 'src/graphql'
 import { useAppSelector, } from 'src/utils/hooks'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
@@ -32,7 +33,7 @@ export default function PostDetailsPage() {
     const post = postDetailsQuery.data?.getPostById;
 
     if (!post)
-        return <h2>404</h2>
+        return <NotFoundPage />
 
     return (
         <>
