@@ -1,19 +1,17 @@
 import { ApolloClient, HttpLink, InMemoryCache, from, Reference, FieldPolicy } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
-import CONSTS from "./consts";
+import { CONSTS } from "src/utils";
 
 let apiClientUri = CONSTS.apiEndpoint + '/graphql';
 
 
 const httpLink = new HttpLink({
     uri: apiClientUri,
-    credentials: process.env.REACT_APP_API_END_POINT?.includes('localhost') ? 'include' : "same-origin"
+    credentials: "include"
 });
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {
-    console.log('AHIHIHA');
-
     if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) =>
             console.log(

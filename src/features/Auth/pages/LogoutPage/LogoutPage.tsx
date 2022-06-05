@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { LineWave } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
-import CONSTS from "src/utils/consts";
+import { CONSTS } from "src/utils";
 
 
 export default function LoginPage() {

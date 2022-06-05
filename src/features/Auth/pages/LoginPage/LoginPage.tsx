@@ -3,7 +3,7 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 import { Grid } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { useMeQuery } from "src/graphql"
-import CONSTS from "src/utils/consts";
+import { CONSTS } from "src/utils";
 
 
 

@@ -29,7 +29,7 @@ const server = new ApolloServer({
 const apolloHandler = server.createHandler({
   expressGetMiddlewareOptions: {
     cors: {
-      origin: true,
+      origin: 'http://localhost:3000',
       credentials: true,
     }
   },

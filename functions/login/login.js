@@ -4,12 +4,14 @@ const LnurlService = require('../auth/services/lnurl.service')
 const cookie = require('cookie')
 const jose = require('jose');
 const { CONSTS } = require('../utils');
+const { CORS_HEADERS } = require('../utils/consts');
 
 
 async function generateAuthUrl() {
     const data = await LnurlService.generateAuthUrl();
     return {
         statusCode: 200,
+        headers: CORS_HEADERS,
         body: JSON.stringify(data)
     };
 }
@@ -19,6 +21,7 @@ async function login(tag, k1, sig, key) {
     if (tag !== 'login') {
         return {
             statusCode: 400,
+            CORS_HEADERS,
             body: JSON.stringify({ status: 'ERROR', reason: 'Not a login request' })
         }
     }
@@ -28,6 +31,7 @@ async function login(tag, k1, sig, key) {
     } catch (error) {
         return {
             statusCode: 400,
+            CORS_HEADERS,
             body: JSON.stringify({ status: 'ERROR', reason: 'Invalid Signature' })
         }
     }
@@ -77,6 +81,7 @@ async function login(tag, k1, sig, key) {
             'headers': {
                 'Set-Cookie': authCookie,
                 'Cache-Control': 'no-cache',
+                ...CORS_HEADERS
             },
             body: JSON.stringify({
                 status: 'OK',
@@ -85,6 +90,7 @@ async function login(tag, k1, sig, key) {
     } catch (error) {
         return {
             statusCode: 200,
+            headers: CORS_HEADERS,
             body: JSON.stringify({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
         }
 
