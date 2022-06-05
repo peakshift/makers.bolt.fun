@@ -1,5 +1,5 @@
 const CONSTS = {
-    apiEndpoint: process.env.REACT_APP_API_END_POINT ?? '/.netlify/functions'
+    apiEndpoint: 'http://localhost:8888/.netlify/functions'
 }
 
 export default CONSTS;

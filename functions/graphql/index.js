@@ -27,10 +27,11 @@ const server = new ApolloServer({
 });
 
 const apolloHandler = server.createHandler({
-  cors: {
-    origin: "*",
-    methods: "*",
-    credentials: true,
+  expressGetMiddlewareOptions: {
+    cors: {
+      origin: true,
+      credentials: true,
+    }
   },
 });
 
