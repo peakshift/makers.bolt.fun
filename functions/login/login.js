@@ -73,6 +73,7 @@ async function login(tag, k1, sig, key) {
             httpOnly: true,
             path: '/',
             maxAge: maxAge,
+            sameSite: 'none',
         })
 
         return {
