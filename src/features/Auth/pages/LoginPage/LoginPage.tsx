@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Helmet } from "react-helmet";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { Grid } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
@@ -99,6 +100,10 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-[80vh] page-container flex flex-col justify-center items-center">
+            <Helmet>
+                <title>{`makers.bolt.fun`}</title>
+                <meta property="og:title" content={`makers.bolt.fun`} />
+            </Helmet>
             {content}
         </div>
     )

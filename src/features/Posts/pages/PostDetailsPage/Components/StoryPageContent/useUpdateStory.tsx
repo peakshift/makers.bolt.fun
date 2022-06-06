@@ -21,7 +21,8 @@ export const useUpdateStory = (story: Story) => {
             deleteStoryId: story.id
         },
         onError: (error) => NotificationsService.error('Unexpected error happened, please try again', { error }),
-        onCompleted: () => window.location.pathname = '/blog'
+        onCompleted: () => window.location.pathname = '/blog',
+        refetchQueries: ['Feed', 'TrendingPosts']
     })
 
     const handleEdit = () => {
