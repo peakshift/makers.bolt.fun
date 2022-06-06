@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { Link } from 'react-router-dom'
 // import Loading from '../Loading/Loading';
@@ -57,7 +57,7 @@ const btnPadding: UnionToObjectKeys<Props, 'size'> = {
     lg: 'py-12 px-36 text-body4'
 }
 
-export default function Button({ color = 'white',
+const Button = React.forwardRef<any, Props>(({ color = 'white',
     variant = 'fill',
     isLoading,
     disableOnLoading = true,
@@ -69,7 +69,7 @@ export default function Button({ color = 'white',
     className,
     onClick,
     children,
-    ...props }: Props) {
+    ...props }, ref) => {
 
     let classes = `
     inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center
@@ -92,6 +92,7 @@ export default function Button({ color = 'white',
     if (href)
         if (newTab)
             return <a
+                ref={ref}
                 href={href}
                 className={`${classes} ${className}`}
                 target="_blank" rel="noopener noreferrer"
@@ -101,6 +102,7 @@ export default function Button({ color = 'white',
             </a>
         else
             return <Link
+                ref={ref}
                 to={href}
                 className={`${classes} ${className}`} >
                 {children}
@@ -109,6 +111,7 @@ export default function Button({ color = 'white',
 
     return (
         <button
+            ref={ref}
             type='button'
             className={`${classes} ${className}`}
             onClick={() => handleClick()}
@@ -120,4 +123,6 @@ export default function Button({ color = 'white',
         </button>
     )
 
-}
+})
+
+export default Button;

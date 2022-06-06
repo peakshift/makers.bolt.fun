@@ -50,17 +50,21 @@ export default function ModalsContainer() {
     }
 
     useEffect(() => {
-        if (isOpen) {
-            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-            document.documentElement.style.overflow = 'hidden';
-            if (scrollbarWidth) {
-                document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
-            }
-        }
-        else {
-            document.documentElement.style.overflow = "";
-            document.documentElement.style.paddingRight = "";
-        }
+        // let prevOverflow = document.body.style.overflow;
+
+        // if (isOpen) {
+        //     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        //     prevOverflow = document.body.style.overflow;
+        //     console.log(prevOverflow);
+        //     document.body.style.overflow = 'hidden';
+        //     if (scrollbarWidth) {
+        //         document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+        //     }
+        // }
+        // else {
+        //     document.body.style.overflow = prevOverflow;
+        //     document.documentElement.style.paddingRight = "";
+        // }
     }, [isOpen]);
 
     return (

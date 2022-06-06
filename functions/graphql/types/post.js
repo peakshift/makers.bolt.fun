@@ -13,6 +13,7 @@ const {
 const { paginationArgs } = require('./helpers');
 const { prisma } = require('../../prisma');
 const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
+const { ApolloError } = require('apollo-server-lambda');
 
 
 const POST_TYPE = enumType({
@@ -159,25 +160,66 @@ const StoryInputType = inputObjectType({
         t.nonNull.int('topicId');
     }
 })
-const StoryMutation = extendType({
+const createStory = extendType({
     type: 'Mutation',
     definition(t) {
         t.field('createStory', {
             type: 'Story',
             args: { data: StoryInputType },
             async resolve(_root, args, ctx) {
-                console.log(args.data);
                 const { id, title, body, cover_image, tags, topicId } = args.data;
                 const user = await getUserByPubKey(ctx.userPubKey);
 
                 // Do some validation
                 if (!user)
-                    throw new Error("You have to login");
+                    throw new ApolloError("Not Authenticated");
+
+
+                if (id) {
+                    const oldPost = await prisma.story.findFirst({
+                        where: { id },
+                        select: {
+                            user_id: true
+                        }
+                    })
+                    if (user.id !== oldPost.user_id)
+                        throw new ApolloError("Not post author")
+                }
                 // TODO: validate post data
 
 
                 // Preprocess & insert
                 const excerpt = body.replace(/<[^>]+>/g, '').slice(0, 120);
+
+                if (id)
+                    return prisma.story.update({
+                        where: { id },
+                        data: {
+                            title,
+                            body,
+                            cover_image,
+                            excerpt,
+                            tags: {
+                                connectOrCreate:
+                                    tags.map(tag => {
+                                        tag = tag.toLowerCase().trim();
+                                        return {
+                                            where: {
+                                                title: tag,
+                                            },
+                                            create: {
+                                                title: tag
+                                            }
+                                        }
+                                    })
+                            },
+                            topic: {
+                                connect: {
+                                    id: topicId
+                                }
+                            },
+                        }
+                    })
 
 
                 return prisma.story.create({
@@ -210,6 +252,39 @@ const StoryMutation = extendType({
                                 id: user.id,
                             }
                         }
+                    }
+                })
+            }
+        })
+    },
+})
+
+const deleteStory = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('deleteStory', {
+            type: 'Story',
+            args: { id: nonNull(intArg()) },
+            async resolve(_root, args, ctx) {
+                const { id } = args;
+                const user = await getUserByPubKey(ctx.userPubKey);
+                // Do some validation
+                if (!user)
+                    throw new ApolloError("Not Authenticated");
+
+
+                const oldPost = await prisma.story.findFirst({
+                    where: { id },
+                    select: {
+                        user_id: true
+                    }
+                })
+                if (user.id !== oldPost.user_id)
+                    throw new ApolloError("Not post author")
+
+                return prisma.story.delete({
+                    where: {
+                        id
                     }
                 })
             }
@@ -419,5 +494,6 @@ module.exports = {
     getTrendingPosts,
 
     // Mutations
-    StoryMutation
+    createStory,
+    deleteStory,
 }

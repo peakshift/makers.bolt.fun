@@ -6,6 +6,8 @@ import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageMo
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
+import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
+
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 
@@ -29,6 +31,7 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+  ConfirmModal,
 
   // Text Editor Modals
   InsertImageModal,

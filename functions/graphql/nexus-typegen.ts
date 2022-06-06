@@ -302,6 +302,7 @@ export interface NexusGenFieldTypes {
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createStory: NexusGenRootTypes['Story'] | null; // Story
+    deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     updateProfile: NexusGenRootTypes['User'] | null; // User
     vote: NexusGenRootTypes['Vote']; // Vote!
@@ -502,6 +503,7 @@ export interface NexusGenFieldTypeNames {
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
     createStory: 'Story'
+    deleteStory: 'Story'
     donate: 'Donation'
     updateProfile: 'User'
     vote: 'Vote'
@@ -633,6 +635,9 @@ export interface NexusGenArgTypes {
     }
     createStory: { // args
       data?: NexusGenInputs['StoryInputType'] | null; // StoryInputType
+    }
+    deleteStory: { // args
+      id: number; // Int!
     }
     donate: { // args
       amount_in_sat: number; // Int!

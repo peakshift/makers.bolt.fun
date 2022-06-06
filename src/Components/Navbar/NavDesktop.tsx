@@ -167,7 +167,9 @@ export default function NavDesktop() {
         </motion.div>
         {curUser !== undefined &&
             (curUser ?
-                <Menu menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
+                <Menu
+                    menuClassName='!p-8 !rounded-12'
+                    menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
                     <MenuItem
                         href={`/profile/${curUser.id}`}
                         onClick={(e) => {

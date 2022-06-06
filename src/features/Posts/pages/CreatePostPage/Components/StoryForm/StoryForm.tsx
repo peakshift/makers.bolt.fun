@@ -12,6 +12,7 @@ import TopicsInput from '../TopicsInput/TopicsInput'
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { stageStory } from 'src/redux/features/staging.slice'
 import { Override } from 'src/utils/interfaces';
+import { NotificationsService } from "src/services/notifications.service";
 
 const FileSchema = yup.lazy((value: string | File[]) => {
 
@@ -87,8 +88,7 @@ export default function StoryForm() {
         },
 
         onError: (error) => {
-            console.log(error)
-            alert('Unexpected error happened, please try again')
+            NotificationsService.error('Unexpected error happened, please try again', { error })
             setLoading(false)
         }
     });
@@ -96,7 +96,6 @@ export default function StoryForm() {
     const clickPreview = async () => {
         const isValid = await trigger();
         const data = getValues()
-        console.log(data);
 
         if (isValid) {
             dispatch(stageStory(data))
@@ -119,6 +118,8 @@ export default function StoryForm() {
             }
         })
     }
+
+    const isUpdating = story?.id;
 
     return (
         <FormProvider {...formMethods}>
@@ -205,7 +206,10 @@ export default function StoryForm() {
                         color="primary"
                         disabled={loading}
                     >
-                        {loading ? "Publishing..." : "Publish"}
+                        {isUpdating ?
+                            loading ? "Updating..." : "Update" :
+                            loading ? "Publishing..." : "Publish"
+                        }
                     </Button>
                     <Button
                         color="gray"

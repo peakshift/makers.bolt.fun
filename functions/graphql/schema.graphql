@@ -94,6 +94,7 @@ type Mutation {
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createStory(data: StoryInputType): Story
+  deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   updateProfile(data: UpdateProfileInput): User
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!

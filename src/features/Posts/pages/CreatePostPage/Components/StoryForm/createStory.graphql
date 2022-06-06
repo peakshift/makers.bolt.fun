@@ -3,3 +3,9 @@ mutation createStory($data: StoryInputType) {
     id
   }
 }
+
+mutation deleteStory($deleteStoryId: Int!) {
+  deleteStory(id: $deleteStoryId) {
+    id
+  }
+}

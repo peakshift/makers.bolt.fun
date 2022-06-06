@@ -116,6 +116,7 @@ export type Mutation = {
   confirmDonation: Donation;
   confirmVote: Vote;
   createStory: Maybe<Story>;
+  deleteStory: Maybe<Story>;
   donate: Donation;
   updateProfile: Maybe<User>;
   vote: Vote;
@@ -136,6 +137,11 @@ export type MutationConfirmVoteArgs = {
 
 export type MutationCreateStoryArgs = {
   data: InputMaybe<StoryInputType>;
+};
+
+
+export type MutationDeleteStoryArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -461,6 +467,13 @@ export type CreateStoryMutationVariables = Exact<{
 
 export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number } | null };
 
+export type DeleteStoryMutationVariables = Exact<{
+  deleteStoryId: Scalars['Int'];
+}>;
+
+
+export type DeleteStoryMutation = { __typename?: 'Mutation', deleteStory: { __typename?: 'Story', id: number } | null };
+
 export type PopularTopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -482,7 +495,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, topic: { __typename?: 'Topic', id: number, title: string, icon: string }, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } };
 
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
@@ -943,6 +956,39 @@ export function useCreateStoryMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateStoryMutationHookResult = ReturnType<typeof useCreateStoryMutation>;
 export type CreateStoryMutationResult = Apollo.MutationResult<CreateStoryMutation>;
 export type CreateStoryMutationOptions = Apollo.BaseMutationOptions<CreateStoryMutation, CreateStoryMutationVariables>;
+export const DeleteStoryDocument = gql`
+    mutation deleteStory($deleteStoryId: Int!) {
+  deleteStory(id: $deleteStoryId) {
+    id
+  }
+}
+    `;
+export type DeleteStoryMutationFn = Apollo.MutationFunction<DeleteStoryMutation, DeleteStoryMutationVariables>;
+
+/**
+ * __useDeleteStoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteStoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteStoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteStoryMutation, { data, loading, error }] = useDeleteStoryMutation({
+ *   variables: {
+ *      deleteStoryId: // value for 'deleteStoryId'
+ *   },
+ * });
+ */
+export function useDeleteStoryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteStoryMutation, DeleteStoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteStoryMutation, DeleteStoryMutationVariables>(DeleteStoryDocument, options);
+      }
+export type DeleteStoryMutationHookResult = ReturnType<typeof useDeleteStoryMutation>;
+export type DeleteStoryMutationResult = Apollo.MutationResult<DeleteStoryMutation>;
+export type DeleteStoryMutationOptions = Apollo.BaseMutationOptions<DeleteStoryMutation, DeleteStoryMutationVariables>;
 export const PopularTopicsDocument = gql`
     query PopularTopics {
   popularTopics {
@@ -1105,6 +1151,11 @@ export const PostDetailsDocument = gql`
       tags {
         id
         title
+      }
+      topic {
+        id
+        title
+        icon
       }
       votes_count
       type

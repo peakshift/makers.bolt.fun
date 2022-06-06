@@ -1,8 +1,10 @@
+import React from 'react';
 import { Link } from 'react-router-dom'
 import { UnionToObjectKeys } from 'src/utils/types/utils'
 
 interface Props {
     onClick?: () => void;
+    onKeyDown?: (v: any) => void
     href?: string;
     children: JSX.Element
     className?: string
@@ -24,12 +26,20 @@ const baseBtnStyles: UnionToObjectKeys<Props, 'variant'> = {
     blank: "bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 active:scale-95 !border-0"
 }
 
-export default function IconButton({ href, size = "md", className = "", children, onClick = () => { }, variant = 'blank' }: Props) {
-
+const IconButton = React.forwardRef<any, Props>(({
+    href,
+    size = "md",
+    className = "",
+    children,
+    onClick = () => { },
+    onKeyDown,
+    variant = 'blank'
+}, ref) => {
 
     if (href)
         return (
             <Link
+                ref={ref}
                 to={href}
                 className={`
                 ${sizeToPadding[size]} 
@@ -37,6 +47,7 @@ export default function IconButton({ href, size = "md", className = "", children
                 inline-block active:scale-95 rounded-full ${className}`}
                 style={{ lineHeight: 0 }}
                 onClick={onClick}
+                onKeyDown={onKeyDown}
             >
                 {children}
             </Link>
@@ -44,6 +55,7 @@ export default function IconButton({ href, size = "md", className = "", children
 
     return (
         <button
+            ref={ref}
             type='button'
             className={`
             ${sizeToPadding[size]} 
@@ -51,8 +63,11 @@ export default function IconButton({ href, size = "md", className = "", children
             active:scale-95 rounded-full ${className}`}
             style={{ lineHeight: 0 }}
             onClick={onClick}
+            onKeyDown={onKeyDown}
         >
             {children}
         </button>
     )
-}
+})
+
+export default IconButton;

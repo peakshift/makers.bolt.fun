@@ -20,7 +20,7 @@
   }
 
   .input-text {
-    @apply flex-grow border-none focus:border-0 focus:ring-0 bg-transparent min-w-0 text-primary-500;
+    @apply flex-grow border-none focus:border-0 focus:ring-0 bg-transparent min-w-0 text-gray-900;
   }
 
   .input-checkbox {
