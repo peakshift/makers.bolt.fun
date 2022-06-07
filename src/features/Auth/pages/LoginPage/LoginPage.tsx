@@ -5,11 +5,16 @@ import { Grid } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { useMeQuery } from "src/graphql"
 import { CONSTS } from "src/utils";
+import { QRCodeSVG } from 'qrcode.react';
+import { IoQrCode } from "react-icons/io5";
+import Button from "src/Components/Button/Button";
 
 
 
 const getLnurlAuth = async () => {
-    const res = await fetch(CONSTS.apiEndpoint + '/login')
+    const res = await fetch(CONSTS.apiEndpoint + '/login', {
+        credentials: 'include'
+    })
     const data = await res.json()
     return data;
 }
@@ -17,6 +22,7 @@ const getLnurlAuth = async () => {
 
 export default function LoginPage() {
     const [loadingLnurl, setLoadingLnurl] = useState(true)
+    const [showQr, setShowQr] = useState(false)
     const [lnurlAuth, setLnurlAuth] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [error, setError] = useState(null)
@@ -49,9 +55,11 @@ export default function LoginPage() {
             })
     }, [])
 
-    const onLogin = () => {
+    const startPolling = () => {
         meQuery.startPolling(1500)
     }
+
+
 
 
     let content = <></>
@@ -92,10 +100,20 @@ export default function LoginPage() {
             </p>
             <a
                 href={lnurlAuth}
-                onClick={onLogin}
+                onClick={startPolling}
                 className='block text-black font-bolder bg-yellow-200 hover:bg-yellow-300 rounded-12 px-16 py-12 active:scale-90 transition-transform'>
-                Login with Lightning <BsFillLightningChargeFill className="scale-125" />
+                Login with WebLN <BsFillLightningChargeFill className="scale-125" />
             </a>
+
+            <div className="text-gray-500 text-body5 font-bold">OR</div>
+            {!showQr && <button className="text-blue-500 text-body4 px-12 py-8 hover:bg-gray-100 rounded-8" onClick={() => { setShowQr(true); startPolling() }}>
+                Scan QR <IoQrCode width={'100%'} />
+            </button>}
+            {showQr && <QRCodeSVG
+                width={160}
+                height={160}
+                value={lnurlAuth}
+            />}
         </div>;
 
     return (

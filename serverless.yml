@@ -1,3 +1,5 @@
+useDotenv: true
+
 custom:
   serverless-offline:
     httpPort: 8888
@@ -17,30 +19,24 @@ functions:
       - http:
           path: graphql
           method: post
-          cors: true
       - http:
           path: graphql
           method: get
-          cors: true
   login:
     handler: functions/login/login.handler
     events:
       - http:
           path: login
           method: post
-          cors: true
       - http:
           path: login
           method: get
-          cors: true
   logout:
     handler: functions/logout/logout.handler
     events:
       - http:
           path: logout
           method: post
-          cors: true
       - http:
           path: logout
           method: get
-          cors: true

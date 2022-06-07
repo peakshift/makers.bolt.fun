@@ -220,5 +220,6 @@ model Donation {
 // -----------------
 model GeneratedK1 {
   value     String   @id
+  sid       String?
   createdAt DateTime @default(now())
 }

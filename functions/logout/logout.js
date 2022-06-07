@@ -1,24 +1,16 @@
+const serverless = require('serverless-http');
+const { createExpressApp } = require('../utils/express-app');
+const app = createExpressApp();
 
-const cookie = require('cookie');
-const { CORS_HEADERS } = require('../utils/consts');
-
-exports.handler = async (event, context) => {
-    const myCookie = cookie.serialize('Authorization', '', {
-        secure: true,
-        httpOnly: true,
-        path: '/',
-        maxAge: -1,
-    })
-    return {
-        statusCode: 200,
-
-        body: JSON.stringify({
-            status: 'OK',
-        }),
-        'headers': {
-            'Set-Cookie': myCookie,
-            'Cache-Control': 'no-cache',
-            ...CORS_HEADERS
-        }
+app.get('/logout', (req, res, next) => {
+    if (req.user) {
+        req.session.destroy();
+        return res.redirect("/");
     }
+    next();
+})
+
+const handler = serverless(app);
+exports.handler = async (event, context) => {
+    return await handler(event, context);
 };
