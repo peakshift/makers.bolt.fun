@@ -7,7 +7,6 @@ import { useMeQuery } from "src/graphql"
 import { CONSTS } from "src/utils";
 import { QRCodeSVG } from 'qrcode.react';
 import { IoQrCode } from "react-icons/io5";
-import Button from "src/Components/Button/Button";
 
 
 
@@ -56,7 +55,7 @@ export default function LoginPage() {
     }, [])
 
     const startPolling = () => {
-        meQuery.startPolling(1500)
+        meQuery.startPolling(3000)
     }
 
 

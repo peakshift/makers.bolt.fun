@@ -48,4 +48,11 @@ const createExpressApp = () => {
     return app;
 }
 
-module.exports = { createExpressApp };
+let expressApp;
+
+if (!global.expressApp) {
+    global.expressApp = createExpressApp();
+}
+expressApp = global.expressApp;
+
+module.exports = { createExpressApp: () => expressApp };
