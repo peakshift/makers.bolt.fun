@@ -11,7 +11,7 @@ const sessionsStore = require('./sessions-store');
 const createExpressApp = (router) => {
 
     const app = express();
-
+    console.log(`NETLIFY: ${process.env.NETLIFY}`);
     const routerBasePath = process.env.NETLIFY ? `/.netlify/functions` : `/dev`
 
     app.use(cors({
