@@ -25,6 +25,7 @@
     "axios": "^0.26.1",
     "better-sqlite3": "^7.5.3",
     "better-sqlite3-session-store": "^0.0.3",
+    "body-parser": "^1.20.0",
     "chance": "^1.1.8",
     "connect-pg-simple": "^7.0.0",
     "connect-sqlite3": "^0.9.13",
@@ -105,7 +106,7 @@
     "db:reset": "prisma migrate reset",
     "db:seed": "prisma db seed",
     "db:gui": "prisma studio",
-    "netlify:start": "netlify dev"
+    "netlify:start": "set NETLIFY=true&& netlify dev"
   },
   "prisma": {
     "seed": "node prisma/seed/index.js"

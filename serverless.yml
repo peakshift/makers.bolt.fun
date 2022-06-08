@@ -14,7 +14,7 @@ provider:
 
 functions:
   graphql:
-    handler: functions/graphql/index.handler
+    handler: api/functions/graphql/index.handler
     events:
       - http:
           path: graphql
@@ -23,7 +23,7 @@ functions:
           path: graphql
           method: get
   login:
-    handler: functions/login/login.handler
+    handler: api/functions/login/login.handler
     events:
       - http:
           path: login
@@ -32,7 +32,7 @@ functions:
           path: login
           method: get
   logout:
-    handler: functions/logout/logout.handler
+    handler: api/functions/logout/logout.handler
     events:
       - http:
           path: logout
