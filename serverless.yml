@@ -11,6 +11,8 @@ service: serverless-graphql
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    LOCAL: true
 
 functions:
   graphql:

@@ -74,14 +74,14 @@ const loginHandler = async (req, res) => {
 
 let app;
 
-if (process.env.NETLIFY) {
+if (process.env.LOCAL) {
+    app = createExpressApp()
+    app.get('/login', loginHandler);
+}
+else {
     const router = express.Router();
     router.get('/login', loginHandler)
     app = createExpressApp(router)
-}
-else {
-    app = createExpressApp()
-    app.get('/login', loginHandler);
 }
 
 

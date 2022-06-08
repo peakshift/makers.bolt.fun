@@ -12,14 +12,14 @@ const logoutHandler = (req, res, next) => {
 
 let app;
 
-if (process.env.NETLIFY) {
+if (process.env.LOCAL) {
+    app = createExpressApp()
+    app.get('/login', logoutHandler);
+}
+else {
     const router = express.Router();
     router.get('/login', logoutHandler)
     app = createExpressApp(router)
-}
-else {
-    app = createExpressApp()
-    app.get('/login', logoutHandler);
 }
 
 
