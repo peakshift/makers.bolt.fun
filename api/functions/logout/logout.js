@@ -14,11 +14,11 @@ let app;
 
 if (process.env.LOCAL) {
     app = createExpressApp()
-    app.get('/login', logoutHandler);
+    app.get('/logout', logoutHandler);
 }
 else {
     const router = express.Router();
-    router.get('/login', logoutHandler)
+    router.get('/logout', logoutHandler)
     app = createExpressApp(router)
 }
 
