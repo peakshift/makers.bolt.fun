@@ -24,7 +24,7 @@ export default function LoginPage() {
     const [showQr, setShowQr] = useState(false)
     const [lnurlAuth, setLnurlAuth] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState<any>(null)
     const navigate = useNavigate()
 
 
@@ -47,7 +47,9 @@ export default function LoginPage() {
         getLnurlAuth()
             .then(data => {
                 setLoadingLnurl(false);
-                setLnurlAuth(data.encoded)
+                setLnurlAuth(data.encoded);
+                if (!data?.encoded)
+                    setError(true);
             })
             .catch((error) => {
                 setError(error)
