@@ -3,7 +3,7 @@ import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { Link } from 'react-router-dom'
 // import Loading from '../Loading/Loading';
 
-interface Props {
+type Props = {
     color?: 'primary' | 'red' | 'white' | 'gray' | "black" | 'none',
     variant?: 'fill' | 'outline'
     size?: 'sm' | 'md' | 'lg'
@@ -16,8 +16,7 @@ interface Props {
     isLoading?: boolean;
     disableOnLoading?: boolean;
     disabled?: boolean;
-    [rest: string]: any;
-}
+} & React.ComponentPropsWithoutRef<'button'>
 
 const btnStylesFill: UnionToObjectKeys<Props, 'color'> = {
     none: "",
@@ -85,43 +84,31 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
 
     const handleClick = () => {
         if (isLoading && disableOnLoading) return;
-        if (onClick) onClick();
 
+        if (onClick) onClick();
     }
 
-    if (href)
-        if (newTab)
-            return <a
-                ref={ref}
-                href={href}
-                className={`${classes} ${className}`}
-                target="_blank" rel="noopener noreferrer"
-                {...props}
-            >
-                {children}
-            </a>
-        else
-            return <Link
-                ref={ref}
-                to={href}
-                className={`${classes} ${className}`} >
-                {children}
-            </Link>
+    const btn = <button
+        ref={ref}
+        type='button'
+        className={`${classes} ${className}`}
+        onClick={() => handleClick()}
+        disabled={disabled}
+        {...props}
+    >
+        {/* {isLoading ? <Loading color={loadingColor[color]} /> : children} */}
+        {children}
+    </button>;
 
+    if (href && newTab) return <a href={href} target='_blank' rel="noopener noreferrer">
+        {btn}
+    </a>
 
-    return (
-        <button
-            ref={ref}
-            type='button'
-            className={`${classes} ${className}`}
-            onClick={() => handleClick()}
-            disabled={disabled}
-            {...props}
-        >
-            {/* {isLoading ? <Loading color={loadingColor[color]} /> : children} */}
-            {children}
-        </button>
-    )
+    if (href) return <Link to={href}>
+        {btn}
+    </Link>
+
+    return btn
 
 })
 
