@@ -8,10 +8,12 @@ import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
 import { FiAward, FiFeather, FiMenu, FiMic, } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
 import styles from './styles.module.css'
 import '@szhsin/react-menu/dist/index.css';
+import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
+import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 
 
 
@@ -57,6 +59,10 @@ export default function NavMobile() {
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
   const [communityOpen, toggleCommunityOpen] = useToggle(false)
 
+  const { curUser } = useAppSelector((state) => ({
+    curUser: state.user.me,
+  }));
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (drawerOpen) document.body.style.overflowY = "hidden";
@@ -73,7 +79,38 @@ export default function NavMobile() {
         </a>
 
         <div className="ml-auto"></div>
+        {curUser !== undefined &&
+          (curUser ?
+            <Menu
+              menuClassName='!p-8 !rounded-12'
+              menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
+              <MenuItem
+                href={`/profile/${curUser.id}`}
+                onClick={(e) => {
+                  e.syntheticEvent.preventDefault();
+                  navigate(`/profile/${curUser.id}`);
+                }}
+                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+              >
+                Profile
+              </MenuItem>
+              <MenuItem
+                href="/logout"
+                onClick={(e) => {
+                  e.syntheticEvent.preventDefault();
+                  navigate("/logout");
+                }}
+                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+              >
+                Logout
+              </MenuItem>
+            </Menu>
 
+            :
+            <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
+              Login
+            </Link>)
+        }
         <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
           {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
             : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
