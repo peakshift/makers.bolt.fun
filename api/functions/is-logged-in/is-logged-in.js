@@ -38,6 +38,8 @@ const isLoggedInHandler = async (req, res) => {
                     httpOnly: true,
                 })
                 .json({
+                    hash,
+                    token,
                     logged_in: true
                 });
             // console.log(payload);
