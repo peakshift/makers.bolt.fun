@@ -10,7 +10,7 @@ import { IoQrCode } from "react-icons/io5";
 
 
 
-const getLnurlAuth = async () => {
+const fetchLnurlAuth = async () => {
     const res = await fetch(CONSTS.apiEndpoint + '/login', {
         credentials: 'include'
     })
@@ -18,14 +18,45 @@ const getLnurlAuth = async () => {
     return data;
 }
 
+const useLnurlQuery = () => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<any>(null);
+    const [data, setData] = useState("")
+
+
+    useEffect(() => {
+
+        let timeOut: NodeJS.Timeout;
+        const doFetch = async () => {
+            const res = await fetchLnurlAuth();
+            if (!res?.encoded)
+                setError(true)
+            else {
+                setLoading(false);
+                setData(res.encoded);
+                timeOut = setTimeout(doFetch, 1000 * 60 * 2)
+            }
+        }
+        doFetch()
+
+        return () => clearTimeout(timeOut)
+    }, [])
+
+    return {
+        loadingLnurl: loading,
+        error,
+        lnurlAuth: data
+    }
+}
+
 
 export default function LoginPage() {
-    const [loadingLnurl, setLoadingLnurl] = useState(true)
     const [showQr, setShowQr] = useState(false)
-    const [lnurlAuth, setLnurlAuth] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [error, setError] = useState<any>(null)
     const navigate = useNavigate()
+
+    const { loadingLnurl, lnurlAuth, error } = useLnurlQuery()
+    console.log(lnurlAuth);
 
 
     const meQuery = useMeQuery({
@@ -41,23 +72,7 @@ export default function LoginPage() {
         }
     })
 
-
-
-    useEffect(() => {
-        getLnurlAuth()
-            .then(data => {
-                setLoadingLnurl(false);
-                setLnurlAuth(data.encoded);
-                if (!data?.encoded)
-                    setError(true);
-            })
-            .catch((error) => {
-                setError(error)
-            })
-    }, [])
-
     const startPolling = () => {
-        // meQuery.startPolling(3000)
         const interval = setInterval(() => {
             fetch(CONSTS.apiEndpoint + '/is-logged-in', {
                 credentials: 'include'

@@ -9,10 +9,8 @@ const lnurlService = require('../../auth/services/lnurl.service');
 
 
 const isLoggedInHandler = async (req, res) => {
-    // console.log(req.cookies);
     try {
         const login_session = req.cookies?.login_session;
-        // console.log(login_session);
         if (login_session) {
 
             const { payload } = await jose.jwtVerify(login_session, Buffer.from(JWT_SECRET), {
@@ -38,8 +36,6 @@ const isLoggedInHandler = async (req, res) => {
                     httpOnly: true,
                 })
                 .json({
-                    hash,
-                    token,
                     logged_in: true
                 });
         } else {

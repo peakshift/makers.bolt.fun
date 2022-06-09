@@ -2,8 +2,8 @@
 const { prisma } = require('../../prisma');
 const LnurlService = require('../../auth/services/lnurl.service')
 const serverless = require('serverless-http');
-const { getAuthTokenByHash, createHash, associateTokenToHash } = require('../../auth/services/lnurl.service');
-const { sessionsStore, createExpressApp } = require('../../modules');
+const { createHash, associateTokenToHash } = require('../../auth/services/lnurl.service');
+const { createExpressApp } = require('../../modules');
 const express = require('express');
 const jose = require('jose');
 const { JWT_SECRET } = require('../../utils/consts');
