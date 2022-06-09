@@ -20,7 +20,7 @@ const isLoggedInHandler = async (req, res) => {
             });
             const hash = payload.hash;
             const token = await getAuthTokenByHash(hash);
-            if (token)
+            if (!token)
                 throw new Error("Not logged in yet")
 
             lnurlService.removeHash(hash).catch();
