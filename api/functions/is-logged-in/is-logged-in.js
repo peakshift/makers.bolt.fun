@@ -19,9 +19,9 @@ const isLoggedInHandler = async (req, res) => {
                 algorithms: ['HS256'],
             });
             const hash = payload.hash;
-            console.log(hash);
             const token = await getAuthTokenByHash(hash);
-            console.log(token);
+            if (token)
+                throw new Error("Not logged in yet")
 
             lnurlService.removeHash(hash).catch();
             lnurlService.removeExpiredHashes().catch();
@@ -42,9 +42,7 @@ const isLoggedInHandler = async (req, res) => {
                     token,
                     logged_in: true
                 });
-            // console.log(payload);
         } else {
-
             res.json({
                 me: null
             });
@@ -65,10 +63,6 @@ const isLoggedInHandler = async (req, res) => {
     // remove the data row
 
 }
-
-express.Router().get('id', (req, res) => {
-    res.clearCookie('Au')
-})
 
 
 let app;
