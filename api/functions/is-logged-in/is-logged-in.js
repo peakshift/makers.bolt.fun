@@ -19,20 +19,21 @@ const isLoggedInHandler = async (req, res) => {
                 algorithms: ['HS256'],
             });
             const hash = payload.hash;
+            console.log(hash);
             const token = await getAuthTokenByHash(hash);
-
+            console.log(token);
 
             lnurlService.removeHash(hash).catch();
             lnurlService.removeExpiredHashes().catch();
 
             res
                 .status(200)
-                .cookie('Authorization', token, {
-                    maxAge: 3600000 * 24 * 30,
+                .clearCookie('login_session', {
                     secure: true,
                     httpOnly: true,
                 })
-                .clearCookie('login_session', {
+                .cookie('Authorization', token, {
+                    maxAge: 3600000 * 24 * 30,
                     secure: true,
                     httpOnly: true,
                 })

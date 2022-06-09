@@ -2,17 +2,20 @@ const { ApolloServer } = require("apollo-server-lambda");
 const schema = require('./schema')
 const cookie = require('cookie')
 const jose = require('jose');
-const { createExpressApp } = require("../../modules");
 const { JWT_SECRET } = require("../../utils/consts");
 
 const extractKey = async (cookieHeader) => {
   const cookies = cookie.parse(cookieHeader ?? '');
   const token = cookies.Authorization;
   if (token) {
-    const { payload } = await jose.jwtVerify(token, Buffer.from(JWT_SECRET), {
-      algorithms: ['HS256'],
-    })
-    return payload.pubKey
+    try {
+      const { payload } = await jose.jwtVerify(token, Buffer.from(JWT_SECRET), {
+        algorithms: ['HS256'],
+      })
+      return payload.pubKey
+    } catch (error) {
+      return null
+    }
   }
   return null;
 }
