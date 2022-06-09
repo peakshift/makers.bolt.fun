@@ -16,6 +16,7 @@ router.get('/login', (req, res) => {
         maxAge: 1000 * 60 * 2, // 2 mins
         secure: true,
         httpOnly: true,
+        sameSite: "none",
     })
 })
 
@@ -38,6 +39,7 @@ const loginHandler = async (req, res) => {
                 maxAge,
                 secure: true,
                 httpOnly: true,
+                sameSite: "none",
             })
             .json(data);
     }

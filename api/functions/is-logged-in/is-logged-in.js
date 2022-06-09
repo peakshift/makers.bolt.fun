@@ -29,11 +29,13 @@ const isLoggedInHandler = async (req, res) => {
                 .clearCookie('login_session', {
                     secure: true,
                     httpOnly: true,
+                    sameSite: "none",
                 })
                 .cookie('Authorization', token, {
                     maxAge: 3600000 * 24 * 30,
                     secure: true,
                     httpOnly: true,
+                    sameSite: "none",
                 })
                 .json({
                     logged_in: true

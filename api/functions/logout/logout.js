@@ -8,6 +8,7 @@ const logoutHandler = (req, res, next) => {
         .clearCookie('Authorization', {
             secure: true,
             httpOnly: true,
+            sameSite: "none",
         })
         .redirect("/")
         .end()
