@@ -2,18 +2,44 @@
 const { prisma } = require('../../prisma');
 const LnurlService = require('../../auth/services/lnurl.service')
 const serverless = require('serverless-http');
-const { getSidByK1 } = require('../../auth/services/lnurl.service');
+const { getAuthTokenByHash, createHash, associateTokenToHash } = require('../../auth/services/lnurl.service');
 const { sessionsStore, createExpressApp } = require('../../modules');
 const express = require('express');
+const jose = require('jose');
+const { JWT_SECRET } = require('../../utils/consts');
 
+
+
+const router = express.Router();
+router.get('/login', (req, res) => {
+    res.cookie('login_session', 'value', {
+        maxAge: 1000 * 60 * 2, // 2 mins
+        secure: true,
+        httpOnly: true,
+    })
+})
 
 const loginHandler = async (req, res) => {
     const { tag, k1, sig, key } = req.query;
     // Generate an auth URL
     if (!sig || !key) {
+        const data = await LnurlService.generateAuthUrl();
+        const maxAge = 1000 * 60 * 3; //2 mins
 
-        const data = await LnurlService.generateAuthUrl(req.sessionID);
-        return res.status(200).json(data);
+        const jwt = await new jose.SignJWT({ hash: data.secretHash })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setIssuedAt()
+            .setExpirationTime('5min')
+            .sign(Buffer.from(JWT_SECRET, 'utf-8'))
+
+        return res
+            .status(200)
+            .cookie('login_session', jwt, {
+                maxAge,
+                secure: true,
+                httpOnly: true,
+            })
+            .json(data);
     }
     else {
         if (tag !== 'login')
@@ -41,26 +67,26 @@ const loginHandler = async (req, res) => {
                 })
             }
 
+            // calc the hash of k1
+            const hash = createHash(k1);
 
-            // Update the session with the secret
-            const sid = await getSidByK1(k1);
-            const d = await new Promise((res, rej) => {
-                sessionsStore.get(sid, (err, d) => {
-                    if (err) rej(err);
-                    res(d)
-                })
-            });
-            // console.log(d);
-            await new Promise((res, rej) => {
-                sessionsStore.set(sid, { ...d, lnurlAuth: { linkingPublicKey: key } }, (err) => {
-                    if (err) rej(err);
-                    res()
-                })
-            });
+            // generate the auth jwt token
+            const hour = 3600000
+            const maxAge = 30 * 24 * hour;
 
+            const jwt = await new jose.SignJWT({ pubKey: key })
+                .setProtectedHeader({ alg: 'HS256' })
+                .setIssuedAt()
+                .setExpirationTime(maxAge)
+                //TODO: Set audience, issuer
+                .sign(Buffer.from(JWT_SECRET, 'utf-8'))
 
-            LnurlService.removeHash(LnurlService.createHash(k1)).catch();
-            LnurlService.removeExpiredHashes().catch();
+            // associate the auth token with the hash in the db
+            console.log(hash);
+            await associateTokenToHash(hash, jwt);
+
+            // LnurlService.removeHash(LnurlService.createHash(k1)).catch();
+            // LnurlService.removeExpiredHashes().catch();
 
             return res.status(200).json({ status: "OK" })
 

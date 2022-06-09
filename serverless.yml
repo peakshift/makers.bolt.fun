@@ -29,16 +29,16 @@ functions:
     events:
       - http:
           path: login
-          method: post
-      - http:
-          path: login
           method: get
   logout:
     handler: api/functions/logout/logout.handler
     events:
       - http:
           path: logout
-          method: post
+          method: get
+  is-logged-in:
+    handler: api/functions/is-logged-in/is-logged-in.handler
+    events:
       - http:
-          path: logout
+          path: is-logged-in
           method: get

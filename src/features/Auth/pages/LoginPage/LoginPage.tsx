@@ -57,7 +57,18 @@ export default function LoginPage() {
     }, [])
 
     const startPolling = () => {
-        meQuery.startPolling(3000)
+        // meQuery.startPolling(3000)
+        const interval = setInterval(() => {
+            fetch(CONSTS.apiEndpoint + '/is-logged-in', {
+                credentials: 'include'
+            }).then(data => data.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        clearInterval(interval)
+                        meQuery.refetch();
+                    }
+                })
+        }, 2000)
     }
 
 

@@ -3,11 +3,15 @@ const { createExpressApp } = require('../../modules');
 const express = require('express');
 
 const logoutHandler = (req, res, next) => {
-    if (req.user) {
-        req.session.destroy();
-        return res.redirect("/");
-    }
-    next();
+
+    res
+        .clearCookie('Authorization', {
+            secure: true,
+            httpOnly: true,
+        })
+        .redirect("/")
+        .end()
+
 };
 
 let app;

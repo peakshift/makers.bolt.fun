@@ -9,6 +9,7 @@ import LoadingPage from "./Components/LoadingPage/LoadingPage";
 import { useMeQuery } from "./graphql";
 import { setUser } from "./redux/features/user.slice";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import { Helmet } from "react-helmet";
 
 // Pages
 const FeedPage = React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage"))
@@ -62,6 +63,19 @@ function App() {
 
 
   return <div id="app" className='w-full'>
+    <Helmet>
+      <title >makers.bolt.fun</title>
+      <meta
+        name="description"
+        content="A lightning app directory made for and by the bitcoin community."
+
+      />
+      <meta
+        property="og:title"
+        content="makers.bolt.fun"
+
+      />
+    </Helmet>
     <Navbar />
     <Suspense fallback={<LoadingPage />}>
       <Routes>
