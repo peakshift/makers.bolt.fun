@@ -1,28 +1,26 @@
 
 const serverless = require('serverless-http');
-const { getAuthTokenByHash } = require('../../auth/services/lnurl.service');
 const { createExpressApp } = require('../../modules');
 const express = require('express');
 const jose = require('jose');
 const { JWT_SECRET } = require('../../utils/consts');
-const lnurlService = require('../../auth/services/lnurl.service');
+const lnurlAuthService = require('../../auth/services/lnurlAuth.service');
 
 
 const isLoggedInHandler = async (req, res) => {
     try {
         const login_session = req.cookies?.login_session;
         if (login_session) {
-
             const { payload } = await jose.jwtVerify(login_session, Buffer.from(JWT_SECRET), {
                 algorithms: ['HS256'],
             });
             const hash = payload.hash;
-            const token = await getAuthTokenByHash(hash);
-            if (!token)
+            const authToken = await lnurlAuthService.getAuthTokenByHash(hash);
+            if (!authToken)
                 throw new Error("Not logged in yet")
 
-            lnurlService.removeHash(hash).catch();
-            lnurlService.removeExpiredHashes().catch();
+            lnurlAuthService.removeHash(hash).catch();
+            lnurlAuthService.removeExpiredHashes().catch();
 
             res
                 .status(200)
@@ -31,7 +29,7 @@ const isLoggedInHandler = async (req, res) => {
                     httpOnly: true,
                     sameSite: "none",
                 })
-                .cookie('Authorization', token, {
+                .cookie('Authorization', authToken, {
                     maxAge: 3600000 * 24 * 30,
                     secure: true,
                     httpOnly: true,
@@ -42,23 +40,15 @@ const isLoggedInHandler = async (req, res) => {
                 });
         } else {
             res.json({
-                me: null
+                logged_in: false
             });
         }
     } catch (error) {
-        console.log(error);
         res.json({
             logged_in: false
         })
     }
 
-
-    // get session token
-    // check DB to see if this token has an accossiated jwt auth token to it
-    // if yes: 
-    // set the auth token to cookie
-    // remove the session token
-    // remove the data row
 
 }
 

@@ -3,24 +3,24 @@ const crypto = require('crypto')
 const { prisma } = require('../../prisma')
 const { CONSTS } = require('../../utils')
 
-async function generateSecret() {
-    let secret = null
+async function generateK1() {
+    let k1 = null
     const maxAttempts = 5
     let attempt = 0
-    while (secret === null && attempt < maxAttempts) {
-        secret = crypto.randomBytes(32).toString('hex')
-        const hash = createHash(secret)
+    while (k1 === null && attempt < maxAttempts) {
+        k1 = crypto.randomBytes(32).toString('hex')
+        const hash = createHash(k1)
         const isUsed = await isHashUsed(hash);
         if (isUsed) {
-            secret = null
+            k1 = null
         }
         attempt++
     }
-    if (!secret) {
-        const message = 'Too many failed attempts to generate unique secret'
+    if (!k1) {
+        const message = 'Too many failed attempts to generate unique k1'
         throw new Error(message)
     }
-    return secret
+    return k1
 }
 
 function isHashUsed(hash) {
@@ -58,7 +58,7 @@ function removeExpiredHashes() {
 
 async function generateAuthUrl() {
     const hostname = CONSTS.LNURL_AUTH_HOST;
-    const secret = await generateSecret();
+    const secret = await generateK1();
     const hash = createHash(secret);
     await addHash(hash)
     const url = `${hostname}?tag=login&k1=${secret}`

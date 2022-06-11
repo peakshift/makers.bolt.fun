@@ -24,6 +24,12 @@ functions:
       - http:
           path: graphql
           method: get
+  get-login-url:
+    handler: api/functions/get-login-url/get-login-url.handler
+    events:
+      - http:
+          path: get-login-url
+          method: get
   login:
     handler: api/functions/login/login.handler
     events:

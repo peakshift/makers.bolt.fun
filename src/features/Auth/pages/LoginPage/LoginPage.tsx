@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
 import { Helmet } from "react-helmet";
-import { BsFillLightningChargeFill } from "react-icons/bs";
 import { Grid } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { useMeQuery } from "src/graphql"
 import { CONSTS } from "src/utils";
 import { QRCodeSVG } from 'qrcode.react';
-import { IoQrCode, IoRocketOutline } from "react-icons/io5";
+import { IoRocketOutline } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
@@ -14,7 +13,7 @@ import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 
 
 const fetchLnurlAuth = async () => {
-    const res = await fetch(CONSTS.apiEndpoint + '/login', {
+    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url', {
         credentials: 'include'
     })
     const data = await res.json()
@@ -88,8 +87,6 @@ export default function LoginPage() {
     const refetch = meQuery.refetch;
     const startPolling = useCallback(
         () => {
-            console.log('HEEY');
-
             const interval = setInterval(() => {
                 fetch(CONSTS.apiEndpoint + '/is-logged-in', {
                     credentials: 'include'
