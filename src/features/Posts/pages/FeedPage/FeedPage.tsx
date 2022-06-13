@@ -1,7 +1,6 @@
 
 import { useUpdateEffect } from '@react-hookz/web'
-import { useReducer, useState } from 'react'
-import { Nullable } from 'remirror'
+import { useState } from 'react'
 import { useFeedQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'

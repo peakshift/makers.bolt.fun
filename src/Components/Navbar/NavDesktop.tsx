@@ -14,7 +14,7 @@ import {
     ControlledMenu,
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
-import { FiAward, FiChevronDown, FiFeather, FiLogIn, FiMic } from "react-icons/fi";
+import { FiChevronDown, FiLogIn } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 
 
@@ -25,8 +25,7 @@ export default function NavDesktop() {
 
 
 
-    const { isWalletConnected, curUser } = useAppSelector((state) => ({
-        isWalletConnected: state.wallet.isConnected,
+    const { curUser } = useAppSelector((state) => ({
         curUser: state.user.me,
     }));
 

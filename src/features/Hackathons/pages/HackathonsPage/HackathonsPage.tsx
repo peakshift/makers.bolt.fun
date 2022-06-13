@@ -1,8 +1,8 @@
 
-import { useReducer, useState } from 'react'
+import { useState } from 'react'
 import Button from 'src/Components/Button/Button'
 import { useGetHackathonsQuery } from 'src/graphql'
-import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
+import { useAppSelector } from 'src/utils/hooks'
 import HackathonsList from '../../Components/HackathonsList/HackathonsList'
 import SortByFilter from '../../Components/SortByFilter/SortByFilter'
 import styles from './styles.module.scss'

@@ -1,8 +1,7 @@
 
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 
-interface Props {
-}
+
 
 export default function Toolbar() {
 

@@ -7,7 +7,7 @@ import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
-import { FiAward, FiFeather, FiMenu, FiMic, } from "react-icons/fi";
+import { FiMenu, } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
 import styles from './styles.module.css'

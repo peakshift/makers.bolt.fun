@@ -20,14 +20,11 @@ import {
     OrderedListExtension,
     PlaceholderExtension,
     IframeExtension,
-    StrikeExtension,
-    TableExtension,
-    TrailingNodeExtension,
     UnderlineExtension,
 } from 'remirror/extensions';
 import { ExtensionPriority, InvalidContentHandler } from 'remirror';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback } from 'react';
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Toolbar from './Toolbar';
 

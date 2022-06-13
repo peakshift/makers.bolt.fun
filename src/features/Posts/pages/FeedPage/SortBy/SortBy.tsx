@@ -1,8 +1,5 @@
-import { useMediaQuery } from 'src/utils/hooks';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Nullable } from 'remirror';
-import AutoComplete from 'src/Components/Inputs/Autocomplete/Autocomplete';
-import { MEDIA_QUERIES } from 'src/utils/theme';
 
 const filters = [
     {
