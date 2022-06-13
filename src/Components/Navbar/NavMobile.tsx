@@ -181,7 +181,7 @@ export default function NavMobile() {
                     className='font-medium flex gap-16 !rounded-12 '
                   >
                     <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <FiFeather className={`text-body1 inline-block text-primary-600 `} />
+                      <span className="text-body2">✍🏼</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -197,7 +197,7 @@ export default function NavMobile() {
                     className='font-medium flex gap-16 !rounded-12 opacity-60'
                   >
                     <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <FiMic className={`text-body1 inline-block text-primary-600 `} />
+                      <span className="text-body2">💬</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -214,7 +214,7 @@ export default function NavMobile() {
                     className='font-medium flex gap-16 !rounded-12'
                   >
                     <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <FiAward className={`text-body1 inline-block text-primary-600 `} />
+                      <span className="text-body2">🏆</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">

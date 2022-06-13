@@ -1,6 +1,22 @@
 mutation createStory($data: StoryInputType) {
   createStory(data: $data) {
     id
+    title
+    createdAt
+    body
+    tags {
+      id
+      title
+    }
+    topic {
+      id
+      title
+      icon
+    }
+    votes_count
+    type
+    cover_image
+    comments_count
   }
 }
 

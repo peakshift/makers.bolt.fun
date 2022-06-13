@@ -2,9 +2,6 @@ import Header from "src/features/Posts/Components/PostCard/Header/Header"
 import { marked } from 'marked';
 import styles from '../../PostDetailsPage/Components/PageContent/styles.module.css'
 import Badge from "src/Components/Badge/Badge";
-import { BiComment } from "react-icons/bi";
-import { RiFlashlightLine } from "react-icons/ri";
-import { numberFormatter } from "src/utils/helperFunctions";
 import { Post } from "src/graphql";
 
 
@@ -31,17 +28,9 @@ export default function PreviewPostContent({ post }: Props) {
                             {tag.title}
                         </Badge>)}
                     </div>}
-                    <div className="flex gap-24">
-                        <div className="text-black font-medium">
-                            <RiFlashlightLine /> <span className="align-middle text-body5">{numberFormatter(123)} votes</span>
-                        </div>
-                        <div className="text-black font-medium">
-                            <BiComment /> <span className="align-middle text-body5">{17} Comments</span>
-                        </div>
-                    </div>
                 </div>
 
-                <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(post.body) }}>
+                <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(post.body, {}) }}>
                 </div>
             </div>
             {/* <div id="comments" className="mt-10 comments_col">

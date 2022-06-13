@@ -149,7 +149,7 @@ type Query {
   getAllHackathons(sortBy: String, topic: Int): [Hackathon!]!
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
-  getFeed(skip: Int = 0, sortBy: String = "all", take: Int = 10, topic: Int = 0): [Post!]!
+  getFeed(skip: Int = 0, sortBy: String, take: Int = 10, topic: Int = 0): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!

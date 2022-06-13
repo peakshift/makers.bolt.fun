@@ -6,14 +6,14 @@ import { MEDIA_QUERIES } from 'src/utils/theme';
 
 const filters = [
     {
-        text: "🔥 Hottest",
-        value: 'hottest'
+        text: "Popular",
+        value: 'popular'
     }, {
-        text: "📆 Newest",
+        text: "Newest",
         value: 'newest'
     }, {
-        text: "🎭 Trending",
-        value: 'trending'
+        text: "Following",
+        value: 'following'
     },
 ]
 
@@ -23,7 +23,7 @@ interface Props {
 
 export default function SortBy({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState<Nullable<string>>(filters[0].value);
+    const [selected, setSelected] = useState<Nullable<string>>(null);
 
     const filterClicked = (_newValue: string | null) => {
         const newValue = selected !== _newValue ? _newValue : null;
@@ -31,42 +31,20 @@ export default function SortBy({ filterChanged }: Props) {
         filterChanged?.(newValue);
     }
 
-
-    const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
-
-
-
     return (
-        <>
-            {
-                isMdScreen ?
-                    <div className='bg-white border-2 rounded-12 p-16'>
-                        < p className="text-body2 font-bolder text-black mb-16" > Sort By</p >
-                        <ul className='flex flex-col gap-4'>
-                            {filters.map((f, idx) => <li
-                                key={f.value}
-                                className={`
-                                p-12 rounded-8 cursor-pointer font-bold 
-                                active:scale-95 transition-transform
-                                ${f.value === selected ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
-                                onClick={() => filterClicked(f.value)}
-                                role='button'
-                            >
-                                {f.text}
-                            </li>)}
-                        </ul>
-                    </div >
-                    :
-                    <AutoComplete
-                        isClearable
-                        isMulti={false}
-                        placeholder='Sort By'
-                        options={filters}
-                        labelField='text'
-                        valueField='value'
-                        size='lg'
-                        onChange={(o) => filterClicked(o ? o.value : null)} />
-            }</>
+        <ul className='flex gap-8'>
+            {filters.map((f, idx) => <li
+                key={f.value}
+                className={` 
+                  text-primary-600 rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${f.value === selected ? 'bg-primary-100' : 'bg-gray-100 hover:bg-gray-200'}`}
+                onClick={() => filterClicked(f.value)}
+                role='button'
+            >
+                {f.text}
+            </li>)}
+        </ul>
 
     )
 }

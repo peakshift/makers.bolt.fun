@@ -11,7 +11,7 @@ export default function TrendingCard() {
 
 
     return (
-        <div className="bg-white rounded-8 border p-16">
+        <div className="bg-white rounded-8 border-2 border-gray-100 p-16">
             <h3 className="text-body2 font-bolder mb-16">Trending on BOLT.FUN</h3>
             <ul className='flex flex-col'>
                 {

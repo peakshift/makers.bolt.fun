@@ -18,7 +18,10 @@ export default function SaveModule(props: Props) {
 
     const changeCallback = useDebouncedCallback(ctx => {
         const { state } = ctx;
-        onChange(getHTML(state));
+        const md = getMarkdown(state);
+        console.log(md);
+
+        onChange(md);
     }, [], 500)
 
     useRemirrorContext(changeCallback)

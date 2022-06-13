@@ -465,7 +465,7 @@ export type CreateStoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number } | null };
+export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, topic: { __typename?: 'Topic', id: number, title: string, icon: string } } | null };
 
 export type DeleteStoryMutationVariables = Exact<{
   deleteStoryId: Scalars['Int'];
@@ -927,6 +927,22 @@ export const CreateStoryDocument = gql`
     mutation createStory($data: StoryInputType) {
   createStory(data: $data) {
     id
+    title
+    createdAt
+    body
+    tags {
+      id
+      title
+    }
+    topic {
+      id
+      title
+      icon
+    }
+    votes_count
+    type
+    cover_image
+    comments_count
   }
 }
     `;

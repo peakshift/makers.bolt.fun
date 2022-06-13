@@ -15,7 +15,7 @@ interface Props {
 
 export default function AuthorCard({ author }: Props) {
     return (
-        <div className="bg-white p-16 border rounded-8">
+        <div className="bg-white p-16 border-2 border-gray-100 rounded-8">
             <div className='flex gap-8'>
                 <Link to={`/profile/${author.id}`}>
                     <Avatar width={48} src={author.avatar} />

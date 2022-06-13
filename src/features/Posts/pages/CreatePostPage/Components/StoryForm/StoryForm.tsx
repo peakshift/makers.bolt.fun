@@ -108,7 +108,7 @@ export default function StoryForm() {
         createStory({
             variables: {
                 data: {
-                    id: null,
+                    id: data.id,
                     title: data.title,
                     body: data.body,
                     tags: data.tags.map(t => t.title),
@@ -127,7 +127,7 @@ export default function StoryForm() {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div
-                    className='bg-white shadow-lg rounded-8 overflow-hidden'>
+                    className='bg-white border-2 border-gray-100 rounded-12 overflow-hidden'>
                     <div className="p-32">
                         <Controller
                             control={control}
@@ -183,7 +183,7 @@ export default function StoryForm() {
                             Tags
                         </p>
                         <TagsInput
-                            placeholder="webln, alby, lnurl, wallet, ..."
+                            placeholder="Enter your tag and click enter. You can add multiple tags to your post"
                             classes={{ container: 'mt-8' }}
                         />
                         {errors.tags && <p className="input-error">

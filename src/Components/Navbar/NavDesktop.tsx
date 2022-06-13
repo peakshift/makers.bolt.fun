@@ -74,7 +74,8 @@ export default function NavDesktop() {
                         className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 '
                     >
                         <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                            <FiFeather className={`text-body1 inline-block text-primary-600 `} />
+                            {/* <FiFeather className={`text-body1 inline-block text-primary-600 `} /> */}
+                            <span className="text-body2">✍🏼</span>
                         </div>
                         <div>
                             <p className="text-body4 text-black font-medium">
@@ -87,10 +88,10 @@ export default function NavDesktop() {
                     </MenuItem>
                     <MenuItem
 
-                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-60'
+                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-40'
                     >
                         <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                            <FiMic className={`text-body1 inline-block text-primary-600 `} />
+                            <span className="text-body2">💬</span>
                         </div>
                         <div>
                             <p className="text-body4 text-black font-medium">
@@ -110,7 +111,7 @@ export default function NavDesktop() {
                         className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                     >
                         <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                            <FiAward className={`text-body1 inline-block text-primary-600 `} />
+                            <span className="text-body2">🏆</span>
                         </div>
                         <div>
                             <p className="text-body4 text-black font-medium">

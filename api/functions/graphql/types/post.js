@@ -14,6 +14,7 @@ const { paginationArgs } = require('./helpers');
 const { prisma } = require('../../../prisma');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { ApolloError } = require('apollo-server-lambda');
+const { marked } = require('marked');
 
 
 const POST_TYPE = enumType({
@@ -189,7 +190,8 @@ const createStory = extendType({
 
 
                 // Preprocess & insert
-                const excerpt = body.replace(/<[^>]+>/g, '').slice(0, 120);
+                const htmlBody = marked.parse(body);
+                const excerpt = htmlBody.replace(/<[^>]+>/g, '').slice(0, 120);
 
                 if (id)
                     return prisma.story.update({
@@ -395,9 +397,7 @@ const getFeed = extendType({
             type: "Post",
             args: {
                 ...paginationArgs({ take: 10 }),
-                sortBy: stringArg({
-                    default: "all"
-                }), // all, popular, trending, newest
+                sortBy: stringArg(), // all, popular, trending, newest
                 topic: intArg({
                     default: 0
                 })
@@ -405,8 +405,15 @@ const getFeed = extendType({
             resolve(_, { take, skip, topic, sortBy, }) {
 
 
+                let orderBy = { createdAt: "desc" };
+
+                if (sortBy === 'popular')
+                    orderBy = { votes_count: 'desc' };
+                else if (sortBy === 'newest')
+                    orderBy = { createdAt: "desc" };
+
                 return prisma.story.findMany({
-                    orderBy: { createdAt: "desc" },
+                    orderBy: orderBy,
                     where: {
                         topic_id: topic ? topic : undefined,
                     },

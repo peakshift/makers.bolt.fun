@@ -40,16 +40,6 @@ interface Props {
 
 export default function ContentEditor({ placeholder, initialContent, name }: Props) {
 
-    const linkExtension = useMemo(() => {
-        const extension = new LinkExtension({ autoLink: true });
-        extension.addHandler('onClick', (_, data) => {
-            window.open(data.href, '_blank')?.focus();
-            return true;
-        });
-        return extension;
-    }, []);
-
-
     const onError: InvalidContentHandler = useCallback(({ json, invalidContent, transformers }) => {
         // Automatically remove all invalid nodes and marks.
         return transformers.remove(json, invalidContent);
@@ -59,7 +49,13 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
     const extensions = useCallback(
         () => [
             new PlaceholderExtension({ placeholder }),
-            linkExtension,
+            new LinkExtension({
+                autoLink: true,
+                defaultTarget: "_blank",
+                extraAttributes: {
+                    rel: 'noopener noreferrer'
+                }
+            }),
             new BoldExtension(),
             // new StrikeExtension(),
             new UnderlineExtension(),
@@ -78,7 +74,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
             new IframeExtension(),
             // new TrailingNodeExtension(),
             // new TableExtension(),
-            new MarkdownExtension({ copyAsMarkdown: false }),
+            new MarkdownExtension({ copyAsMarkdown: true, }),
             new NodeFormattingExtension(),
             /**
              * `HardBreakExtension` allows us to create a newline inside paragraphs.
@@ -86,7 +82,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
              */
             new HardBreakExtension(),
         ],
-        [linkExtension, placeholder],
+        [placeholder],
     );
 
 

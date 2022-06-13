@@ -35,6 +35,13 @@
   margin-bottom: 1.5em;
 }
 
+.body a {
+  color: rgb(107, 107, 249);
+}
+.body a:hover {
+  text-decoration: underline;
+}
+
 .body pre {
   background-color: #2b2b2b;
   padding: 16px;

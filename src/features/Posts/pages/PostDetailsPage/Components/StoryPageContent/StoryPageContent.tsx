@@ -28,7 +28,7 @@ export default function StoryPageContent({ story }: Props) {
 
     return (
         <>
-            <div id="content" className="bg-white p-32 border rounded-16 relative">
+            <div id="content" className="bg-white p-32 border-2 border-gray-100 rounded-16 relative">
                 {curUser?.id === story.author.id && <Menu
                     menuClassName='!p-8 !rounded-12'
                     menuButton={<IconButton className="absolute top-32 right-32"><BsThreeDotsVertical /></IconButton>}>
@@ -54,14 +54,14 @@ export default function StoryPageContent({ story }: Props) {
                             {tag.title}
                         </Badge>)}
                     </div>}
-                    <div className="flex gap-24">
+                    {/* <div className="flex gap-24">
                         <div className="text-black font-medium">
                             <RiFlashlightLine /> <span className="align-middle text-body5">{numberFormatter(story.votes_count)} votes</span>
                         </div>
                         <div className="text-black font-medium">
                             <BiComment /> <span className="align-middle text-body5">{story.comments_count} Comments</span>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(story.body) }}>

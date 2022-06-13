@@ -665,7 +665,7 @@ export interface NexusGenArgTypes {
     }
     getFeed: { // args
       skip?: number | null; // Int
-      sortBy: string | null; // String
+      sortBy?: string | null; // String
       take: number | null; // Int
       topic?: number | null; // Int
     }

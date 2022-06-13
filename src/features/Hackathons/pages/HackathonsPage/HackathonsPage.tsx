@@ -39,6 +39,7 @@ export default function HackathonsPage() {
                             top: `${navHeight + 16}px`,
                             maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         }}>
+                        <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
                         <SortByFilter
                             filterChanged={setSortByFilter}
                         />

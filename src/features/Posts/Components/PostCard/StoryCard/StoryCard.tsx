@@ -36,7 +36,7 @@ export default function StoryCard({ story }: Props) {
                 <Link to={`/blog/post/Story/${story.id}`}>
                     <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
                 </Link>
-                <p className="text-body4 text-gray-600 mt-8">{story.excerpt}</p>
+                <p className="text-body4 text-gray-600 mt-8">{story.excerpt}...</p>
 
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">

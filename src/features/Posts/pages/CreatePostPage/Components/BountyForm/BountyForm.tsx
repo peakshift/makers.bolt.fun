@@ -156,7 +156,7 @@ export default function BountyForm() {
                             Tags
                         </p>
                         <TagsInput
-                            placeholder="webln, alby, lnurl, wallet, ..."
+                            placeholder="Enter your tag and click enter. You can add multiple tags to your post"
                             classes={{ container: 'mt-8' }}
                         />
                         {errors.tags && <p className="input-error">

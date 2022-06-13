@@ -9,17 +9,17 @@ export default function Toolbar() {
         <ToolButton cmd='bold' />
         <ToolButton cmd='italic' />
         <ToolButton cmd='underline' />
-        <ToolButton cmd='code' />
-        <ToolButton cmd='codeBlock' />
       </div>
       <div className="flex">
-        <ToolButton cmd='leftAlign' />
+        {/* <ToolButton cmd='leftAlign' />
         <ToolButton cmd='centerAlign' />
-        <ToolButton cmd='rightAlign' />
+      <ToolButton cmd='rightAlign' /> */}
+        <ToolButton cmd='code' />
+        <ToolButton cmd='codeBlock' />
         <ToolButton cmd='bulletList' />
         <ToolButton cmd='orderedList' />
         <ToolButton cmd='img' />
-        <ToolButton cmd='youtube' />
+        {/* <ToolButton cmd='youtube' /> */}
       </div>
 
 
