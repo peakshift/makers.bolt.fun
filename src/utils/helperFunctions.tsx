@@ -1,4 +1,4 @@
-import React, { ComponentProps, ComponentType, ReactNode, Suspense } from "react";
+import React, { ComponentProps, ComponentType, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { isNullOrUndefined } from "remirror";
 

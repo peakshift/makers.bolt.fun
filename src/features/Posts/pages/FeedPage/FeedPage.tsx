@@ -5,18 +5,19 @@ import { useFeedQuery } from 'src/graphql'
 import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
-import PopularTopicsFilter from './PopularTopicsFilter/PopularTopicsFilter'
+import PopularTagsFilter, { FilterTag } from './PopularTagsFilter/PopularTagsFilter'
 import SortBy from './SortBy/SortBy'
 import styles from './styles.module.scss'
 import { Helmet } from "react-helmet";
 import Button from 'src/Components/Button/Button'
 import { FaDiscord } from 'react-icons/fa'
+import { FiArrowRight } from 'react-icons/fi'
 
 
 export default function FeedPage() {
 
     const [sortByFilter, setSortByFilter] = useState<string | null>(null)
-    const [topicFilter, setTopicFilter] = useState<number | null>(null)
+    const [tagFilter, setTagFilter] = useState<FilterTag | null>(null)
 
 
     const feedQuery = useFeedQuery({
@@ -24,11 +25,11 @@ export default function FeedPage() {
             take: 10,
             skip: 0,
             sortBy: sortByFilter,
-            topic: topicFilter
+            tag: tagFilter?.id ?? null
         },
     })
     const { fetchMore, isFetchingMore, variablesChanged } = useInfiniteQuery(feedQuery, 'getFeed')
-    useUpdateEffect(variablesChanged, [sortByFilter, topicFilter]);
+    useUpdateEffect(variablesChanged, [sortByFilter, tagFilter]);
 
     const { navHeight, isLoggedIn } = useAppSelector((state) => ({
         navHeight: state.ui.navHeight,
@@ -45,7 +46,19 @@ export default function FeedPage() {
             <div
                 className={`page-container pt-16 w-full ${styles.grid}`}
             >
-                <h1 id='title' className="text-h2 font-bolder">Stories ✍🏼</h1>
+                <div id="title">
+                    {tagFilter && <p className="text-body6 text-gray-500 font-medium mb-8">
+                        <span className='cursor-pointer' onClick={() => setTagFilter(null)}>Stories </span>
+                        <FiArrowRight />
+                        <span> {tagFilter.title}</span>
+                    </p>}
+                    <h1 className="text-h2 font-bolder">{
+                        tagFilter ?
+                            <>{tagFilter.icon} {tagFilter.title}</>
+                            :
+                            "Stories ✍🏼"
+                    }</h1>
+                </div>
                 <div id="sort-by">
                     <SortBy
                         filterChanged={setSortByFilter}
@@ -71,12 +84,13 @@ export default function FeedPage() {
                                 color='primary'
                                 fullWidth
                             >
-                                Create a story
+                                Write a story
                             </Button>}
                         <div className="my-24"></div>
                         <div className="my-24"></div>
-                        <PopularTopicsFilter
-                            filterChanged={setTopicFilter}
+                        <PopularTagsFilter
+                            value={tagFilter}
+                            onChange={setTagFilter as any}
                         />
 
                     </div>

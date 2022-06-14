@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { Action, AnyAction } from '@reduxjs/toolkit'
+import { Action } from '@reduxjs/toolkit'
 import { useStore } from 'react-redux'
 
 /**

@@ -1,7 +1,6 @@
-import { useQuery } from '@apollo/client';
-import Badge from 'src/Components/Badge/Badge'
+
 import Slider from 'src/Components/Slider/Slider'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAllCategoriesQuery } from 'src/graphql';
 
 const colors = [

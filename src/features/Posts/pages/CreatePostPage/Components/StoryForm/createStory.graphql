@@ -8,11 +8,6 @@ mutation createStory($data: StoryInputType) {
       id
       title
     }
-    topic {
-      id
-      title
-      icon
-    }
     votes_count
     type
     cover_image

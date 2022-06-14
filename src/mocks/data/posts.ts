@@ -1,10 +1,10 @@
 
 import dayjs from "dayjs";
 import { Bounty, Post, Question, Story } from "src/features/Posts/types";
-import { random, randomItem } from "src/utils/helperFunctions";
+import { random, randomItem, randomItems } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
 import { Chance } from 'chance'
-import { topics } from "./topics";
+import { tags } from "./tags";
 
 const getDate = () => dayjs().subtract(random(5, 48), 'hour').toString();
 
@@ -90,14 +90,9 @@ export let posts = {
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             type: "Story",
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
+            tags: randomItems(3, ...tags),
             author: getAuthor(),
             comments: generatePostComments(3),
-            topic: randomItem(...topics)
 
         },
     ] as Story[],
@@ -112,11 +107,7 @@ export let posts = {
             createdAt: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
-                { id: 3, title: "guide" },
-            ],
+            tags: randomItems(3, ...tags),
             author: getAuthor(),
             deadline: "25 May",
             reward_amount: 200_000,

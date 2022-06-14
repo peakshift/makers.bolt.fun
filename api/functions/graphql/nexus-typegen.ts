@@ -34,7 +34,6 @@ export interface NexusGenInputs {
     id?: number | null; // Int
     tags: string[]; // [String!]!
     title: string; // String!
-    topicId: number; // Int!
   }
   UpdateProfileInput: { // input type
     avatar?: string | null; // String
@@ -174,12 +173,9 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Tag: { // root type
+    icon?: string | null; // String
     id: number; // Int!
-    title: string; // String!
-  }
-  Topic: { // root type
-    icon: string; // String!
-    id: number; // Int!
+    isOfficial?: boolean | null; // Boolean
     title: string; // String!
   }
   User: { // root type
@@ -288,8 +284,8 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     location: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
+    tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
-    topics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     website: string; // String!
   }
   LnurlDetails: { // field return type
@@ -333,7 +329,6 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
-    allTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
@@ -345,7 +340,8 @@ export interface NexusGenFieldTypes {
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     me: NexusGenRootTypes['User'] | null; // User
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
-    popularTopics: NexusGenRootTypes['Topic'][]; // [Topic!]!
+    officialTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -374,17 +370,13 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
-    topic: NexusGenRootTypes['Topic']; // Topic!
     type: string; // String!
     votes_count: number; // Int!
   }
   Tag: { // field return type
+    icon: string | null; // String
     id: number; // Int!
-    title: string; // String!
-  }
-  Topic: { // field return type
-    icon: string; // String!
-    id: number; // Int!
+    isOfficial: boolean | null; // Boolean
     title: string; // String!
   }
   User: { // field return type
@@ -489,8 +481,8 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     location: 'String'
     start_date: 'Date'
+    tags: 'Tag'
     title: 'String'
-    topics: 'Topic'
     website: 'String'
   }
   LnurlDetails: { // field return type name
@@ -534,7 +526,6 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     allCategories: 'Category'
     allProjects: 'Project'
-    allTopics: 'Topic'
     getAllHackathons: 'Hackathon'
     getCategory: 'Category'
     getDonationsStats: 'DonationsStats'
@@ -546,7 +537,8 @@ export interface NexusGenFieldTypeNames {
     hottestProjects: 'Project'
     me: 'User'
     newProjects: 'Project'
-    popularTopics: 'Topic'
+    officialTags: 'Tag'
+    popularTags: 'Tag'
     profile: 'User'
     projectsByCategory: 'Project'
     searchProjects: 'Project'
@@ -575,17 +567,13 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     tags: 'Tag'
     title: 'String'
-    topic: 'Topic'
     type: 'String'
     votes_count: 'Int'
   }
   Tag: { // field return type name
-    id: 'Int'
-    title: 'String'
-  }
-  Topic: { // field return type name
     icon: 'String'
     id: 'Int'
+    isOfficial: 'Boolean'
     title: 'String'
   }
   User: { // field return type name
@@ -658,7 +646,7 @@ export interface NexusGenArgTypes {
     }
     getAllHackathons: { // args
       sortBy?: string | null; // String
-      topic?: number | null; // Int
+      tag?: number | null; // Int
     }
     getCategory: { // args
       id: number; // Int!
@@ -666,8 +654,8 @@ export interface NexusGenArgTypes {
     getFeed: { // args
       skip?: number | null; // Int
       sortBy?: string | null; // String
+      tag?: number | null; // Int
       take: number | null; // Int
-      topic?: number | null; // Int
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!

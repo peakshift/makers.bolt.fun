@@ -6,6 +6,7 @@ import Badge from "src/Components/Badge/Badge"
 import { Link } from "react-router-dom"
 import { trimText } from "src/utils/helperFunctions"
 import VoteButton from "src/Components/VoteButton/VoteButton"
+import { Tag } from "src/graphql"
 
 export type QuestionCardType = Pick<Question,
     | 'id'
@@ -15,7 +16,6 @@ export type QuestionCardType = Pick<Question,
     | 'author'
     | 'excerpt'
     | 'votes_count'
-    | "tags"
     | "answers_count"
 > & {
     comments: Array<Pick<Question['comments'][number],
@@ -24,6 +24,7 @@ export type QuestionCardType = Pick<Question,
         | 'body'
         | 'createdAt'
     >>
+    tags: Array<Pick<Tag, 'id' | "title">>
 };
 interface Props {
     question: QuestionCardType

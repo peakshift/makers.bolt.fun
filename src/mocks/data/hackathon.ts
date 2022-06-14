@@ -1,9 +1,9 @@
 import { Hackathon } from "src/graphql"
-import { topics } from "./topics"
+import { tags } from "./tags"
 import { getCoverImage, getItems } from "./utils"
 
 
-const generateTopics = () => getItems(topics, {
+const generateTags = () => getItems(tags, {
     min: 1,
     max: 4
 })
@@ -18,7 +18,7 @@ export const hackathons = [
         location: "Instanbul, Turkey",
         cover_image: getCoverImage(),
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
-        topics: generateTopics(),
+        tags: generateTags(),
         website: "https://bolt.fun/hackathons/shock-the-web"
     },
     {
@@ -29,7 +29,7 @@ export const hackathons = [
         location: "Instanbul, Turkey",
         cover_image: getCoverImage(),
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
-        topics: generateTopics(),
+        tags: generateTags(),
         website: "https://bolt.fun/hackathons/shock-the-web"
     },
     {
@@ -40,7 +40,7 @@ export const hackathons = [
         location: "Instanbul, Turkey",
         cover_image: getCoverImage(),
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
-        topics: generateTopics(),
+        tags: generateTags(),
         website: "https://bolt.fun/hackathons/shock-the-web"
     },
     {
@@ -51,7 +51,7 @@ export const hackathons = [
         location: "Instanbul, Turkey",
         cover_image: getCoverImage(),
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
-        topics: generateTopics(),
+        tags: generateTags(),
         website: "https://bolt.fun/hackathons/shock-the-web"
     },
     {
@@ -62,7 +62,7 @@ export const hackathons = [
         location: "Instanbul, Turkey",
         cover_image: getCoverImage(),
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
-        topics: generateTopics(),
+        tags: generateTags(),
         website: "https://bolt.fun/hackathons/shock-the-web"
     },
     {
@@ -73,7 +73,7 @@ export const hackathons = [
         location: "Instanbul, Turkey",
         cover_image: getCoverImage(),
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
-        topics: generateTopics(),
+        tags: generateTags(),
         website: "https://bolt.fun/hackathons/shock-the-web"
     },
 ].map(i => ({ ...i, __typename: "Hackathon" })) as Hackathon[]

@@ -3,14 +3,11 @@ import { Story } from "src/features/Posts/types"
 import { marked } from 'marked';
 import styles from '../PageContent/styles.module.css'
 import Badge from "src/Components/Badge/Badge";
-import { BiComment } from "react-icons/bi";
-import { RiFlashlightLine } from "react-icons/ri";
-import { numberFormatter } from "src/utils/helperFunctions";
 import IconButton from "src/Components/IconButton/IconButton";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
+import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useAppSelector } from "src/utils/hooks";
 import { useUpdateStory } from './useUpdateStory'
+import { FaPen } from "react-icons/fa";
 
 
 interface Props {
@@ -29,28 +26,29 @@ export default function StoryPageContent({ story }: Props) {
     return (
         <>
             <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16 relative">
-                {curUser?.id === story.author.id && <Menu
-                    menuClassName='!p-8 !rounded-12'
-                    menuButton={<IconButton className="absolute top-32 right-32"><BsThreeDotsVertical /></IconButton>}>
-                    <MenuItem
-                        onClick={handleEdit}
-                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                    >
-                        Edit story
-                    </MenuItem>
-                    <MenuItem
-                        onClick={handleDelete}
-                        className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                    >
-                        Delete
-                    </MenuItem>
-                </Menu>}
+
 
                 {story.cover_image &&
                     <img src={story.cover_image}
                         className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
                         alt="" />}
-                <div className="flex flex-col gap-24">
+                <div className="flex flex-col gap-24 relative">
+                    {curUser?.id === story.author.id && <Menu
+                        menuClassName='!p-8 !rounded-12'
+                        menuButton={<IconButton className="absolute top-0 right-0 text-gray-400"><FaPen /></IconButton>}>
+                        <MenuItem
+                            onClick={handleEdit}
+                            className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                        >
+                            Edit story
+                        </MenuItem>
+                        <MenuItem
+                            onClick={handleDelete}
+                            className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                        >
+                            Delete
+                        </MenuItem>
+                    </Menu>}
                     <h1 className="text-h2 font-bolder">{story.title}</h1>
                     <Header size="lg" showTimeAgo={false} author={story.author} date={story.createdAt} />
                     {story.tags.length > 0 && <div className="flex gap-8">

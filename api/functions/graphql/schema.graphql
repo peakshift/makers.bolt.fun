@@ -78,8 +78,8 @@ type Hackathon {
   id: Int!
   location: String!
   start_date: Date!
+  tags: [Tag!]!
   title: String!
-  topics: [Topic!]!
   website: String!
 }
 
@@ -145,11 +145,10 @@ type Project {
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
-  allTopics: [Topic!]!
-  getAllHackathons(sortBy: String, topic: Int): [Hackathon!]!
+  getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
-  getFeed(skip: Int = 0, sortBy: String, take: Int = 10, topic: Int = 0): [Post!]!
+  getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
@@ -157,7 +156,8 @@ type Query {
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: User
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
-  popularTopics: [Topic!]!
+  officialTags: [Tag!]!
+  popularTags: [Tag!]!
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
@@ -188,7 +188,6 @@ type Story implements PostBase {
   id: Int!
   tags: [Tag!]!
   title: String!
-  topic: Topic!
   type: String!
   votes_count: Int!
 }
@@ -199,17 +198,12 @@ input StoryInputType {
   id: Int
   tags: [String!]!
   title: String!
-  topicId: Int!
 }
 
 type Tag {
+  icon: String
   id: Int!
-  title: String!
-}
-
-type Topic {
-  icon: String!
-  id: Int!
+  isOfficial: Boolean
   title: String!
 }
 

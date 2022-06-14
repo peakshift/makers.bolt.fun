@@ -1,7 +1,7 @@
 import { MOCK_DATA } from "./data";
 import { Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
 import { Chance } from "chance";
-import { topics } from "./data/topics";
+import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
 import { shuffle } from "src/utils/helperFunctions";
 
@@ -63,8 +63,8 @@ export function getTrendingPosts(): Query['getTrendingPosts'] {
     return chance.pickset(MOCK_DATA.feed, 5);
 }
 
-export function popularTopics() {
-    return topics;
+export function popularTags() {
+    return tags;
 }
 
 export function getAllHackathons() {

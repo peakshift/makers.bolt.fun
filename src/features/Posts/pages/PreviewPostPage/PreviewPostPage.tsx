@@ -56,7 +56,7 @@ export default function PreviewPostPage() {
                         />
                     </div>
                 </aside>
-                <PreviewPostContent post={{ ...post, createdAt: new Date().toISOString(), author: author! }} />
+                <PreviewPostContent post={{ ...post, createdAt: new Date().toISOString(), author: author!, cover_image: post.cover_image[0] }} />
                 <aside id='author' className='no-scrollbar min-w-0'>
                     <div className="flex flex-col gap-24"
                         style={{

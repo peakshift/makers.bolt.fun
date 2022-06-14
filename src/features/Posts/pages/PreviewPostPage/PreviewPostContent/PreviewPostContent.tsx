@@ -13,13 +13,28 @@ interface Props {
         | 'author'
     > & {
         tags: Array<{ title: string }>
+        cover_image?: string | File
     }
 }
 
 export default function PreviewPostContent({ post }: Props) {
+
+    let coverImg: string;
+    if (!post.cover_image)
+        coverImg = "";
+    else if (typeof post.cover_image === 'string')
+        coverImg = post.cover_image;
+    else
+        coverImg = URL.createObjectURL(post.cover_image);
+
+
     return (
         <>
             <div id="content" className="bg-white p-32 border rounded-16">
+                {coverImg &&
+                    <img src={coverImg}
+                        className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
+                        alt="" />}
                 <div className="flex flex-col gap-24">
                     <Header size="lg" showTimeAgo={false} author={post.author} date={post.createdAt} />
                     <h1 className="text-h2 font-bolder">{post.title}</h1>

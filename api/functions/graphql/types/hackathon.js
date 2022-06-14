@@ -20,10 +20,10 @@ const Hackathon = objectType({
         t.nonNull.date('end_date');
         t.nonNull.string('location');
         t.nonNull.string('website');
-        t.nonNull.list.nonNull.field('topics', {
-            type: "Topic",
+        t.nonNull.list.nonNull.field('tags', {
+            type: "Tag",
             resolve: (parent) => {
-                return prisma.hackathon.findUnique({ where: { id: parent.id } }).topics();
+                return prisma.hackathon.findUnique({ where: { id: parent.id } }).tags();
             }
         });
     }
@@ -36,10 +36,10 @@ const getAllHackathons = extendType({
             type: "Hackathon",
             args: {
                 sortBy: stringArg(),
-                topic: intArg(),
+                tag: intArg(),
             },
             resolve(_, args) {
-                const { sortBy, topic } = args;
+                const { sortBy, tag } = args;
                 return prisma.hackathon.findMany({
                     where: {
                         ...(sortBy === 'Upcoming' && {
@@ -57,10 +57,12 @@ const getAllHackathons = extendType({
                             }
                         }),
 
-                        ...(topic && {
-                            topics: {
+
+
+                        ...(tag && {
+                            tags: {
                                 some: {
-                                    id: topic
+                                    id: tag
                                 }
                             }
                         })

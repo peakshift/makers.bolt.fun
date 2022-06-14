@@ -1,7 +1,0 @@
-query PopularTopics {
-  popularTopics {
-    id
-    title
-    icon
-  }
-}

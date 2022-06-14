@@ -1,5 +1,5 @@
-query Feed($take: Int, $skip: Int, $sortBy: String, $topic: Int) {
-  getFeed(take: $take, skip: $skip, sortBy: $sortBy, topic: $topic) {
+query Feed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, tag: $tag) {
     ... on Story {
       id
       title

@@ -12,12 +12,12 @@ import { Helmet } from 'react-helmet'
 export default function HackathonsPage() {
 
     const [sortByFilter, setSortByFilter] = useState<string | null>('Upcoming')
-    const [topicsFilter, setTopicsFilter] = useState<number | null>(null)
+    const [tagFilter, setTagFilter] = useState<number | null>(null)
 
     const hackathonsQuery = useGetHackathonsQuery({
         variables: {
             sortBy: sortByFilter,
-            topic: Number(topicsFilter)
+            tag: Number(tagFilter)
         },
     })
     const { navHeight } = useAppSelector((state) => ({

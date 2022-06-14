@@ -6,9 +6,8 @@ import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import * as yup from "yup";
 import ContentEditor from "../ContentEditor/ContentEditor";
-import { Topic, useCreateStoryMutation } from 'src/graphql'
+import { useCreateStoryMutation } from 'src/graphql'
 import { useNavigate } from 'react-router-dom'
-import TopicsInput from '../TopicsInput/TopicsInput'
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { stageStory } from 'src/redux/features/staging.slice'
 import { Override } from 'src/utils/interfaces';
@@ -32,7 +31,6 @@ const FileSchema = yup.lazy((value: string | File[]) => {
 
 const schema = yup.object({
     title: yup.string().required().min(10),
-    topic: yup.object().nullable().required(),
     tags: yup.array().required().min(1),
     body: yup.string().required().min(50, 'you have to write at least 10 words'),
     cover_image: yup.array().of(FileSchema as any)
@@ -43,7 +41,6 @@ const schema = yup.object({
 interface IFormInputs {
     id: number | null
     title: string
-    topic: NestedValue<Topic> | null
     tags: NestedValue<{ title: string }[]>
     cover_image: NestedValue<File[]> | NestedValue<string[]>
     body: string
@@ -52,7 +49,6 @@ interface IFormInputs {
 
 
 export type CreateStoryType = Override<IFormInputs, {
-    topic: Topic | null
     tags: { title: string }[]
     cover_image: File[] | string[]
 }>
@@ -70,7 +66,6 @@ export default function StoryForm() {
         defaultValues: {
             id: story?.id ?? null,
             title: story?.title ?? '',
-            topic: story?.topic ?? null,
             cover_image: story?.cover_image ?? [],
             tags: story?.tags ?? [],
             body: story?.body ?? '',
@@ -113,7 +108,6 @@ export default function StoryForm() {
                     body: data.body,
                     tags: data.tags.map(t => t.title),
                     cover_image: data.cover_image[0] as string,
-                    topicId: 1,
                 },
             }
         })
@@ -161,29 +155,10 @@ export default function StoryForm() {
                         </p>}
 
                         <p className="text-body5 mt-16">
-                            Topic
-                        </p>
-                        <div className="mt-16">
-                            <Controller
-                                control={control}
-                                name="topic"
-                                render={({ field: { onChange, value, onBlur } }) => (
-                                    <TopicsInput
-                                        value={value}
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                    />
-                                )}
-                            />
-                        </div>
-                        {errors.topic && <p className="input-error">
-                            {errors.topic.message}
-                        </p>}
-                        <p className="text-body5 mt-16">
                             Tags
                         </p>
                         <TagsInput
-                            placeholder="Enter your tag and click enter. You can add multiple tags to your post"
+                            placeholder="Search from popular tags or add your own by clicking Enter."
                             classes={{ container: 'mt-8' }}
                         />
                         {errors.tags && <p className="input-error">

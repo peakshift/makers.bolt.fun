@@ -1,0 +1,7 @@
+query OfficialTags {
+  officialTags {
+    id
+    title
+    icon
+  }
+}

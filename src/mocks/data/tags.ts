@@ -1,6 +1,7 @@
-import { Topic } from "src/graphql";
+import { Tag } from "src/graphql";
 
-export const topics = [
+
+export const tags = [
     {
         id: 1,
         title: 'Bitcoin',
@@ -27,4 +28,4 @@ export const topics = [
         title: 'Design',
         icon: '🎨'
     }
-].map(i => ({ __typename: "Topic", ...i })) as Topic[]
+].map(i => ({ __typename: "Tag", ...i })) as Tag[]

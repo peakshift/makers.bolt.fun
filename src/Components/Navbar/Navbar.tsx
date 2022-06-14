@@ -1,16 +1,11 @@
 import NavMobile from "./NavMobile";
 import { MdComment, MdHomeFilled, MdLocalFireDepartment } from "react-icons/md";
-import { IoExtensionPuzzle } from "react-icons/io5";
-import { useCallback, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector, useMediaQuery } from "src/utils/hooks";
-import { openModal } from "src/redux/features/modals.slice";
+import { useEffect, } from "react";
+import { useAppDispatch, useMediaQuery } from "src/utils/hooks";
 import { setNavHeight } from "src/redux/features/ui.slice";
 import NavDesktop from "./NavDesktop";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import { IoMdTrophy } from "react-icons/io";
-import { useLocation } from "react-router-dom";
-import { useMeQuery } from "src/graphql";
-import { setUser } from "src/redux/features/user.slice";
 
 
 export const navLinks = [

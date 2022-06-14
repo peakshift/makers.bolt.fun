@@ -6,6 +6,7 @@ import Badge from "src/Components/Badge/Badge"
 import Button from "src/Components/Button/Button"
 import { Link } from "react-router-dom"
 import VoteButton from "src/Components/VoteButton/VoteButton"
+import { Tag } from "src/graphql"
 
 export type BountyCardType = Pick<Bounty,
     | 'id'
@@ -17,9 +18,10 @@ export type BountyCardType = Pick<Bounty,
     | 'excerpt'
     | 'votes_count'
     | "reward_amount"
-    | "tags"
     | "applicants_count"
->;
+> & {
+    tags: Array<Pick<Tag, 'id' | "title">>
+};
 interface Props {
     bounty: BountyCardType
 }

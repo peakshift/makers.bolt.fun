@@ -32,15 +32,6 @@ const asQuestionType = asType('Question')
 const asBountyType = asType('Bounty')
 
 
-const Topic = objectType({
-    name: 'Topic',
-    definition(t) {
-        t.nonNull.int('id');
-        t.nonNull.string('title');
-        t.nonNull.string('icon');
-    }
-})
-
 const Author = objectType({
     name: 'Author',
     definition(t) {
@@ -52,39 +43,7 @@ const Author = objectType({
 })
 
 
-const allTopics = extendType({
-    type: "Query",
-    definition(t) {
-        t.nonNull.list.nonNull.field('allTopics', {
-            type: "Topic",
-            resolve: () => {
-                return prisma.topic.findMany({
 
-                });
-            }
-        })
-    }
-})
-
-
-const popularTopics = extendType({
-    type: "Query",
-    definition(t) {
-        t.nonNull.list.nonNull.field('popularTopics', {
-            type: "Topic",
-            resolve: () => {
-                return prisma.topic.findMany({
-                    take: 6,
-                    orderBy: {
-                        stories: {
-                            _count: 'desc'
-                        }
-                    },
-                });
-            }
-        })
-    }
-})
 
 const PostBase = interfaceType({
     name: 'PostBase',
@@ -132,14 +91,6 @@ const Story = objectType({
                 return post._count.comments;
             }
         });
-        t.nonNull.field('topic', {
-            type: "Topic",
-            resolve: parent => {
-                return prisma.story.findUnique({
-                    where: { id: parent.id }
-                }).topic()
-            }
-        })
         t.nonNull.field('author', {
             type: "Author",
             resolve: (parent) =>
@@ -158,7 +109,6 @@ const StoryInputType = inputObjectType({
         t.nonNull.string('body');
         t.nonNull.string('cover_image');
         t.nonNull.list.nonNull.string('tags');
-        t.nonNull.int('topicId');
     }
 })
 const createStory = extendType({
@@ -168,7 +118,7 @@ const createStory = extendType({
             type: 'Story',
             args: { data: StoryInputType },
             async resolve(_root, args, ctx) {
-                const { id, title, body, cover_image, tags, topicId } = args.data;
+                const { id, title, body, cover_image, tags } = args.data;
                 const user = await getUserByPubKey(ctx.userPubKey);
 
                 // Do some validation
@@ -215,11 +165,6 @@ const createStory = extendType({
                                         }
                                     })
                             },
-                            topic: {
-                                connect: {
-                                    id: topicId
-                                }
-                            },
                         }
                     })
 
@@ -243,11 +188,6 @@ const createStory = extendType({
                                         }
                                     }
                                 })
-                        },
-                        topic: {
-                            connect: {
-                                id: topicId
-                            }
                         },
                         user: {
                             connect: {
@@ -398,11 +338,11 @@ const getFeed = extendType({
             args: {
                 ...paginationArgs({ take: 10 }),
                 sortBy: stringArg(), // all, popular, trending, newest
-                topic: intArg({
+                tag: intArg({
                     default: 0
                 })
             },
-            resolve(_, { take, skip, topic, sortBy, }) {
+            resolve(_, { take, skip, tag, sortBy, }) {
 
 
                 let orderBy = { createdAt: "desc" };
@@ -415,7 +355,13 @@ const getFeed = extendType({
                 return prisma.story.findMany({
                     orderBy: orderBy,
                     where: {
-                        topic_id: topic ? topic : undefined,
+                        ...(tag && {
+                            tags: {
+                                some: {
+                                    id: tag
+                                }
+                            },
+                        })
                     },
                     skip,
                     take,
@@ -485,7 +431,6 @@ module.exports = {
     // Types
     POST_TYPE,
     Author,
-    Topic,
     PostBase,
     BountyApplication,
     Bounty,
@@ -495,8 +440,6 @@ module.exports = {
     PostComment,
     Post,
     // Queries
-    allTopics,
-    popularTopics,
     getFeed,
     getPostById,
     getTrendingPosts,

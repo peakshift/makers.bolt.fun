@@ -70,6 +70,7 @@
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto 1fr;
 
     grid-template-areas:
       "categories title title side"

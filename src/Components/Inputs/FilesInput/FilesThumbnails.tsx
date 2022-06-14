@@ -1,6 +1,4 @@
-import React, { useMemo } from 'react'
-import { MdClose } from 'react-icons/md';
-import IconButton from 'src/Components/IconButton/IconButton';
+import { useMemo } from 'react'
 import FileThumbnail from './FileThumbnail';
 
 interface Props {

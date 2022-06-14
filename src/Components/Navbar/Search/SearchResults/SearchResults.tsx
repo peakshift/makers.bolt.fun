@@ -1,6 +1,5 @@
 
 import { openModal } from 'src/redux/features/modals.slice';
-import { openProject } from 'src/redux/features/project.slice';
 import { useAppDispatch } from 'src/utils/hooks';
 import { ProjectSearchItem } from '../Search';
 import SearchProjectCard from '../SearchProjectCard/SearchProjectCard';

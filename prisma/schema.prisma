@@ -12,12 +12,15 @@ generator client {
 // -----------------
 
 model Tag {
-  id    Int    @id @default(autoincrement())
-  title String @unique
+  id         Int     @id @default(autoincrement())
+  title      String  @unique
+  icon       String?
+  isOfficial Boolean @default(false)
 
-  project   Project[]
-  stories   Story[]
-  questions Question[]
+  project    Project[]
+  stories    Story[]
+  questions  Question[]
+  hackathons Hackathon[]
 }
 
 model Vote {
@@ -119,8 +122,6 @@ model Story {
   cover_image String
   votes_count Int      @default(0)
 
-  topic    Topic @relation(fields: [topic_id], references: [id])
-  topic_id Int
 
   tags Tag[]
 
@@ -139,8 +140,6 @@ model Question {
   excerpt     String
   votes_count Int      @default(0)
 
-  topic    Topic @relation(fields: [topic_id], references: [id])
-  topic_id Int
 
   tags Tag[]
 
@@ -148,16 +147,6 @@ model Question {
   user_id Int?
 
   comments PostComment[] @relation("QuestionComment")
-}
-
-model Topic {
-  id    Int    @id @default(autoincrement())
-  title String @unique
-  icon  String
-
-  stories    Story[]
-  questions  Question[]
-  hackathons Hackathon[]
 }
 
 model PostComment {
@@ -196,7 +185,7 @@ model Hackathon {
   website     String
   votes_count Int      @default(0)
 
-  topics Topic[]
+  tags Tag[]
 }
 
 // -----------------

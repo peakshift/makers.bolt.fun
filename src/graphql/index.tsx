@@ -98,8 +98,8 @@ export type Hackathon = {
   id: Scalars['Int'];
   location: Scalars['String'];
   start_date: Scalars['Date'];
+  tags: Array<Tag>;
   title: Scalars['String'];
-  topics: Array<Topic>;
   website: Scalars['String'];
 };
 
@@ -209,7 +209,6 @@ export type Query = {
   __typename?: 'Query';
   allCategories: Array<Category>;
   allProjects: Array<Project>;
-  allTopics: Array<Topic>;
   getAllHackathons: Array<Hackathon>;
   getCategory: Category;
   getDonationsStats: DonationsStats;
@@ -221,7 +220,8 @@ export type Query = {
   hottestProjects: Array<Project>;
   me: Maybe<User>;
   newProjects: Array<Project>;
-  popularTopics: Array<Topic>;
+  officialTags: Array<Tag>;
+  popularTags: Array<Tag>;
   profile: Maybe<User>;
   projectsByCategory: Array<Project>;
   searchProjects: Array<Project>;
@@ -236,7 +236,7 @@ export type QueryAllProjectsArgs = {
 
 export type QueryGetAllHackathonsArgs = {
   sortBy: InputMaybe<Scalars['String']>;
-  topic: InputMaybe<Scalars['Int']>;
+  tag: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -247,9 +247,9 @@ export type QueryGetCategoryArgs = {
 
 export type QueryGetFeedArgs = {
   skip?: InputMaybe<Scalars['Int']>;
-  sortBy?: InputMaybe<Scalars['String']>;
+  sortBy: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
-  topic?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -326,7 +326,6 @@ export type Story = PostBase & {
   id: Scalars['Int'];
   tags: Array<Tag>;
   title: Scalars['String'];
-  topic: Topic;
   type: Scalars['String'];
   votes_count: Scalars['Int'];
 };
@@ -337,19 +336,13 @@ export type StoryInputType = {
   id: InputMaybe<Scalars['Int']>;
   tags: Array<Scalars['String']>;
   title: Scalars['String'];
-  topicId: Scalars['Int'];
 };
 
 export type Tag = {
   __typename?: 'Tag';
+  icon: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  title: Scalars['String'];
-};
-
-export type Topic = {
-  __typename?: 'Topic';
-  icon: Scalars['String'];
-  id: Scalars['Int'];
+  isOfficial: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
 };
 
@@ -405,6 +398,11 @@ export type Vote = {
   payment_request: Scalars['String'];
 };
 
+export type OfficialTagsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OfficialTagsQuery = { __typename?: 'Query', officialTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> };
+
 export type NavCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -442,18 +440,13 @@ export type ConfirmDonationMutationVariables = Exact<{
 
 export type ConfirmDonationMutation = { __typename?: 'Mutation', confirmDonation: { __typename?: 'Donation', id: number, amount: number, paid: boolean } };
 
-export type AllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllTopicsQuery = { __typename?: 'Query', allTopics: Array<{ __typename?: 'Topic', id: number, title: string, icon: string }> };
-
 export type GetHackathonsQueryVariables = Exact<{
   sortBy: InputMaybe<Scalars['String']>;
-  topic: InputMaybe<Scalars['Int']>;
+  tag: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetHackathonsQuery = { __typename?: 'Query', getAllHackathons: Array<{ __typename?: 'Hackathon', id: number, title: string, description: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, topics: Array<{ __typename?: 'Topic', id: number, title: string, icon: string }> }> };
+export type GetHackathonsQuery = { __typename?: 'Query', getAllHackathons: Array<{ __typename?: 'Hackathon', id: number, title: string, description: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> };
 
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -465,7 +458,7 @@ export type CreateStoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, topic: { __typename?: 'Topic', id: number, title: string, icon: string } } | null };
+export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | null };
 
 export type DeleteStoryMutationVariables = Exact<{
   deleteStoryId: Scalars['Int'];
@@ -474,16 +467,16 @@ export type DeleteStoryMutationVariables = Exact<{
 
 export type DeleteStoryMutation = { __typename?: 'Mutation', deleteStory: { __typename?: 'Story', id: number } | null };
 
-export type PopularTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PopularTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PopularTopicsQuery = { __typename?: 'Query', popularTopics: Array<{ __typename?: 'Topic', id: number, title: string, icon: string }> };
+export type PopularTagsQuery = { __typename?: 'Query', popularTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> };
 
 export type FeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
   skip: InputMaybe<Scalars['Int']>;
   sortBy: InputMaybe<Scalars['String']>;
-  topic: InputMaybe<Scalars['Int']>;
+  tag: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -495,7 +488,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, topic: { __typename?: 'Topic', id: number, title: string, icon: string }, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, answers_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, comments: Array<{ __typename?: 'PostComment', id: number, createdAt: any, body: string, votes_count: number, parentId: number | null, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } };
 
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
@@ -558,6 +551,42 @@ export type ConfirmVoteMutationVariables = Exact<{
 export type ConfirmVoteMutation = { __typename?: 'Mutation', confirmVote: { __typename?: 'Vote', id: number, amount_in_sat: number, payment_request: string, payment_hash: string, paid: boolean, item_type: Vote_Item_Type, item_id: number } };
 
 
+export const OfficialTagsDocument = gql`
+    query OfficialTags {
+  officialTags {
+    id
+    title
+    icon
+  }
+}
+    `;
+
+/**
+ * __useOfficialTagsQuery__
+ *
+ * To run a query within a React component, call `useOfficialTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOfficialTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOfficialTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOfficialTagsQuery(baseOptions?: Apollo.QueryHookOptions<OfficialTagsQuery, OfficialTagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OfficialTagsQuery, OfficialTagsQueryVariables>(OfficialTagsDocument, options);
+      }
+export function useOfficialTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OfficialTagsQuery, OfficialTagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OfficialTagsQuery, OfficialTagsQueryVariables>(OfficialTagsDocument, options);
+        }
+export type OfficialTagsQueryHookResult = ReturnType<typeof useOfficialTagsQuery>;
+export type OfficialTagsLazyQueryHookResult = ReturnType<typeof useOfficialTagsLazyQuery>;
+export type OfficialTagsQueryResult = Apollo.QueryResult<OfficialTagsQuery, OfficialTagsQueryVariables>;
 export const NavCategoriesDocument = gql`
     query NavCategories {
   allCategories {
@@ -782,45 +811,9 @@ export function useConfirmDonationMutation(baseOptions?: Apollo.MutationHookOpti
 export type ConfirmDonationMutationHookResult = ReturnType<typeof useConfirmDonationMutation>;
 export type ConfirmDonationMutationResult = Apollo.MutationResult<ConfirmDonationMutation>;
 export type ConfirmDonationMutationOptions = Apollo.BaseMutationOptions<ConfirmDonationMutation, ConfirmDonationMutationVariables>;
-export const AllTopicsDocument = gql`
-    query allTopics {
-  allTopics {
-    id
-    title
-    icon
-  }
-}
-    `;
-
-/**
- * __useAllTopicsQuery__
- *
- * To run a query within a React component, call `useAllTopicsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllTopicsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAllTopicsQuery(baseOptions?: Apollo.QueryHookOptions<AllTopicsQuery, AllTopicsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllTopicsQuery, AllTopicsQueryVariables>(AllTopicsDocument, options);
-      }
-export function useAllTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllTopicsQuery, AllTopicsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllTopicsQuery, AllTopicsQueryVariables>(AllTopicsDocument, options);
-        }
-export type AllTopicsQueryHookResult = ReturnType<typeof useAllTopicsQuery>;
-export type AllTopicsLazyQueryHookResult = ReturnType<typeof useAllTopicsLazyQuery>;
-export type AllTopicsQueryResult = Apollo.QueryResult<AllTopicsQuery, AllTopicsQueryVariables>;
 export const GetHackathonsDocument = gql`
-    query getHackathons($sortBy: String, $topic: Int) {
-  getAllHackathons(sortBy: $sortBy, topic: $topic) {
+    query getHackathons($sortBy: String, $tag: Int) {
+  getAllHackathons(sortBy: $sortBy, tag: $tag) {
     id
     title
     description
@@ -829,7 +822,7 @@ export const GetHackathonsDocument = gql`
     end_date
     location
     website
-    topics {
+    tags {
       id
       title
       icon
@@ -851,7 +844,7 @@ export const GetHackathonsDocument = gql`
  * const { data, loading, error } = useGetHackathonsQuery({
  *   variables: {
  *      sortBy: // value for 'sortBy'
- *      topic: // value for 'topic'
+ *      tag: // value for 'tag'
  *   },
  * });
  */
@@ -934,11 +927,6 @@ export const CreateStoryDocument = gql`
       id
       title
     }
-    topic {
-      id
-      title
-      icon
-    }
     votes_count
     type
     cover_image
@@ -1005,9 +993,9 @@ export function useDeleteStoryMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteStoryMutationHookResult = ReturnType<typeof useDeleteStoryMutation>;
 export type DeleteStoryMutationResult = Apollo.MutationResult<DeleteStoryMutation>;
 export type DeleteStoryMutationOptions = Apollo.BaseMutationOptions<DeleteStoryMutation, DeleteStoryMutationVariables>;
-export const PopularTopicsDocument = gql`
-    query PopularTopics {
-  popularTopics {
+export const PopularTagsDocument = gql`
+    query PopularTags {
+  popularTags {
     id
     title
     icon
@@ -1016,34 +1004,34 @@ export const PopularTopicsDocument = gql`
     `;
 
 /**
- * __usePopularTopicsQuery__
+ * __usePopularTagsQuery__
  *
- * To run a query within a React component, call `usePopularTopicsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePopularTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePopularTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePopularTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePopularTopicsQuery({
+ * const { data, loading, error } = usePopularTagsQuery({
  *   variables: {
  *   },
  * });
  */
-export function usePopularTopicsQuery(baseOptions?: Apollo.QueryHookOptions<PopularTopicsQuery, PopularTopicsQueryVariables>) {
+export function usePopularTagsQuery(baseOptions?: Apollo.QueryHookOptions<PopularTagsQuery, PopularTagsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PopularTopicsQuery, PopularTopicsQueryVariables>(PopularTopicsDocument, options);
+        return Apollo.useQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
       }
-export function usePopularTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PopularTopicsQuery, PopularTopicsQueryVariables>) {
+export function usePopularTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PopularTagsQuery, PopularTagsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PopularTopicsQuery, PopularTopicsQueryVariables>(PopularTopicsDocument, options);
+          return Apollo.useLazyQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
         }
-export type PopularTopicsQueryHookResult = ReturnType<typeof usePopularTopicsQuery>;
-export type PopularTopicsLazyQueryHookResult = ReturnType<typeof usePopularTopicsLazyQuery>;
-export type PopularTopicsQueryResult = Apollo.QueryResult<PopularTopicsQuery, PopularTopicsQueryVariables>;
+export type PopularTagsQueryHookResult = ReturnType<typeof usePopularTagsQuery>;
+export type PopularTagsLazyQueryHookResult = ReturnType<typeof usePopularTagsLazyQuery>;
+export type PopularTagsQueryResult = Apollo.QueryResult<PopularTagsQuery, PopularTagsQueryVariables>;
 export const FeedDocument = gql`
-    query Feed($take: Int, $skip: Int, $sortBy: String, $topic: Int) {
-  getFeed(take: $take, skip: $skip, sortBy: $sortBy, topic: $topic) {
+    query Feed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, tag: $tag) {
     ... on Story {
       id
       title
@@ -1135,7 +1123,7 @@ export const FeedDocument = gql`
  *      take: // value for 'take'
  *      skip: // value for 'skip'
  *      sortBy: // value for 'sortBy'
- *      topic: // value for 'topic'
+ *      tag: // value for 'tag'
  *   },
  * });
  */
@@ -1167,11 +1155,6 @@ export const PostDetailsDocument = gql`
       tags {
         id
         title
-      }
-      topic {
-        id
-        title
-        icon
       }
       votes_count
       type

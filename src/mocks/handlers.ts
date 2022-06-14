@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTopics, profile, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -19,12 +19,12 @@ import {
     PostDetailsQueryVariables,
     FeedQueryVariables,
     TrendingPostsQuery,
-    PopularTopicsQuery,
-    PopularTopicsQueryVariables,
+    PopularTagsQuery,
+    PopularTagsQueryVariables,
     GetHackathonsQuery,
     GetHackathonsQueryVariables,
-    AllTopicsQuery,
-    AllTopicsQueryVariables,
+    OfficialTagsQuery,
+    OfficialTagsQueryVariables,
     DonationsStatsQuery,
     MeQuery,
     ProfileQuery,
@@ -111,20 +111,20 @@ export const handlers = [
         )
     }),
 
-    graphql.query<PopularTopicsQuery, PopularTopicsQueryVariables>('PopularTopics', async (req, res, ctx) => {
+    graphql.query<PopularTagsQuery, PopularTagsQueryVariables>('PopularTags', async (req, res, ctx) => {
         await delay()
         return res(
             ctx.data({
-                popularTopics: popularTopics()
+                popularTags: popularTags()
             })
         )
     }),
 
-    graphql.query<AllTopicsQuery, AllTopicsQueryVariables>('allTopics', async (req, res, ctx) => {
+    graphql.query<OfficialTagsQuery, OfficialTagsQueryVariables>('OfficialTags', async (req, res, ctx) => {
         await delay()
         return res(
             ctx.data({
-                allTopics: popularTopics()
+                officialTags: popularTags()
             })
         )
     }),
@@ -135,7 +135,7 @@ export const handlers = [
         const { take, skip } = req.variables;
         return res(
             ctx.data({
-                getFeed: getFeed({ take, skip, })
+                getFeed: getFeed({ take, skip, sortBy: null, tag: null })
             })
         )
     }),

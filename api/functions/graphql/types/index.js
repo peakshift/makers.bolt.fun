@@ -6,8 +6,10 @@ const post = require('./post')
 const users = require('./users')
 const hackathon = require('./hackathon')
 const donation = require('./donation')
+const tag = require('./tag')
 
 module.exports = {
+    ...tag,
     ...scalars,
     ...category,
     ...project,

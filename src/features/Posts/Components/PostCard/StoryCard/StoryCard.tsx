@@ -4,7 +4,8 @@ import { BiComment } from 'react-icons/bi'
 import { Link } from "react-router-dom"
 import VoteButton from "src/Components/VoteButton/VoteButton"
 import { useVote } from "src/utils/hooks"
-import { Vote_Item_Type } from 'src/graphql';
+import { Tag, Vote_Item_Type } from 'src/graphql';
+import Badge from "src/Components/Badge/Badge"
 
 export type StoryCardType = Pick<Story,
     | 'id'
@@ -16,7 +17,9 @@ export type StoryCardType = Pick<Story,
     | 'excerpt'
     | 'votes_count'
     | 'comments_count'
->;
+> & {
+    tags: Array<Pick<Tag, 'id' | "title">>
+};
 
 interface Props {
     story: StoryCardType
@@ -37,6 +40,11 @@ export default function StoryCard({ story }: Props) {
                     <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
                 </Link>
                 <p className="text-body4 text-gray-600 mt-8">{story.excerpt}...</p>
+                <div className="flex gap-8 mt-8">
+                    {story.tags.map(tag => <Badge key={tag.id} size='sm'>
+                        {tag.title}
+                    </Badge>)}
+                </div>
 
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">

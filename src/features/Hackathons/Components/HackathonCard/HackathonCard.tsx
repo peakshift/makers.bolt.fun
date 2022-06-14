@@ -4,9 +4,18 @@ import Button from "src/Components/Button/Button"
 import dayjs from "dayjs";
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { trimText } from "src/utils/helperFunctions";
+import { Override } from "src/utils/interfaces";
+import { Tag } from "src/graphql";
 dayjs.extend(advancedFormat)
 
-export type HackathonCardType = Hackathon;
+export type HackathonCardType = Override<Hackathon,
+    {
+        tags: Pick<Tag,
+            | 'id'
+            | 'title'
+            | 'icon'>[]
+    }
+>;
 
 interface Props {
     hackathon: HackathonCardType
@@ -32,7 +41,7 @@ export default function HackathonCard({ hackathon }: Props) {
                     </p>
                 </div>
                 <div className="mt-16 flex flex-wrap gap-8">
-                    {hackathon.topics.map(topic => <div key={topic.id} className="p-8 bg-gray-50 rounded-8 text-body5">{topic.icon} {topic.title}</div>)}
+                    {hackathon.tags.map(tag => <div key={tag.id} className="p-8 bg-gray-50 rounded-8 text-body5">{tag.icon} {tag.title}</div>)}
                 </div>
                 <div className="mt-auto"></div>
                 <Button href={hackathon.website} newTab color="gray" fullWidth className="mt-16">
