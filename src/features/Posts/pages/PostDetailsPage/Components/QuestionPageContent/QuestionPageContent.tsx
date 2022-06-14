@@ -16,7 +16,7 @@ interface Props {
 export default function QuestionPageContent({ question }: Props) {
     return (
         <>
-            <div id="content" className="bg-white p-32 border rounded-16">
+            <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16">
                 <div className="flex flex-col gap-24">
                     <Header size="lg" showTimeAgo={false} author={question.author} date={question.createdAt} />
                     <h1 className="text-h2 font-bolder">{question.title}</h1>

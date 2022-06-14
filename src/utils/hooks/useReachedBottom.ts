@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 
 export const useReachedBottom = <T extends HTMLElement>(cb?: () => void, options: Partial<{ offset: number, throttle: number }> = {}) => {
 
-    const { offset = window.innerHeight, throttle = 600 } = options
+    const { offset = window.innerHeight * 2, throttle = 600 } = options
 
     const ref = useRef<T>(null);
     const callbackHandler = useRef<Function>();

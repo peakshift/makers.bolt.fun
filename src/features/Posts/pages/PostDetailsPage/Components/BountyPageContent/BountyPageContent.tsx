@@ -19,7 +19,7 @@ interface Props {
 
 export default function BountyPageContent({ bounty }: Props) {
     return (
-        <div id="content" className="bg-white p-32 border rounded-16">
+        <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16">
 
             {/* Header */}
             <div className="flex flex-col gap-24">

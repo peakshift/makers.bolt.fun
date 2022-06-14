@@ -28,7 +28,7 @@ export default function StoryPageContent({ story }: Props) {
 
     return (
         <>
-            <div id="content" className="bg-white p-32 border-2 border-gray-100 rounded-16 relative">
+            <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16 relative">
                 {curUser?.id === story.author.id && <Menu
                     menuClassName='!p-8 !rounded-12'
                     menuButton={<IconButton className="absolute top-32 right-32"><BsThreeDotsVertical /></IconButton>}>
@@ -46,9 +46,13 @@ export default function StoryPageContent({ story }: Props) {
                     </MenuItem>
                 </Menu>}
 
+                {story.cover_image &&
+                    <img src={story.cover_image}
+                        className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
+                        alt="" />}
                 <div className="flex flex-col gap-24">
-                    <Header size="lg" showTimeAgo={false} author={story.author} date={story.createdAt} />
                     <h1 className="text-h2 font-bolder">{story.title}</h1>
+                    <Header size="lg" showTimeAgo={false} author={story.author} date={story.createdAt} />
                     {story.tags.length > 0 && <div className="flex gap-8">
                         {story.tags.map(tag => <Badge key={tag.id} size='sm'>
                             {tag.title}

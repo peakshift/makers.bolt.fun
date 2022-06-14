@@ -25,33 +25,31 @@ export default function DonatePage() {
                                 {
                                     heading: "How are donations spent?",
                                     content: <p className=" whitespace-pre-line">
-                                        Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there.
-                                        <br />
-                                        Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.
+                                        Donations that are sent to us directly via our Donate page are used to help fund the design and development of BOLT🔩FUN's Makers platform, as well as helping to fund our tournament and hackathon prize pools.
                                     </p>
                                 },
                                 {
                                     heading: "Who is working on BOLT🔩FUN?",
                                     content: <p className=" whitespace-pre-line">
-                                        Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there.
+                                        BOLT🔩FUN is an open-source project, so technically anyone can work on the platform's features & upgrades. That being said, the project was started by a core team of designers and developers from Peak Shift, a bitcoin only product design and development studio.
                                         <br />
-                                        Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.
+                                        <br />
+                                        If you are interested in helping contribute to BOLT🔩FUN, feel free to <a href='https://discord.gg/HFqtxavb7x' className="text-blue-400 underline" target='_blank' rel="noreferrer" >hop into our Discord</a> and let us know how you'd like to help.
                                     </p>
                                 },
                                 {
                                     heading: "How can makers win prizes?",
                                     content: <p className=" whitespace-pre-line">
-                                        Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there.
+                                        Makers can win prizes through one of BOLT🔩FUN's online #ShockTheWeb ⚡️ hackathons. These hackathons provide an opportunity for makers to get hands on experience learning to build lightning enabled web applications in a fun, collaborative, and supportive environment.
                                         <br />
-                                        Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.
+                                        <br />
+                                        Later on, we'd like to create ongoing monthly tournaments & prizes for makers who regularly submit standup reporting (plans, problems, and progress) on their current projects, as well as being active on our platform through Stories, Discussions, and voting.
                                     </p>
                                 },
                                 {
                                     heading: "How can I donate?",
                                     content: <p className=" whitespace-pre-line">
-                                        Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there.
-                                        <br />
-                                        Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.
+                                        Currently we are only accepting lightning donations through WebLN. To do this, you will first need to install the Alby extension on your browser. Once you've finished setting up your wallet, you can send us some sats using our donation widget, you'll have to confirm the transaction within your Alby extension.
                                     </p>
                                 },
                             ]}

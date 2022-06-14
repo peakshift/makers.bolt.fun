@@ -21,7 +21,7 @@ export default function FeedPage() {
 
     const feedQuery = useFeedQuery({
         variables: {
-            take: 3,
+            take: 10,
             skip: 0,
             sortBy: sortByFilter,
             topic: topicFilter

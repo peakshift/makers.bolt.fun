@@ -29,7 +29,7 @@ export default function StoryCard({ story }: Props) {
     });
 
     return (
-        <div className="bg-white rounded-12 overflow-hidden border-2">
+        <div className="bg-white rounded-12 overflow-hidden border-2 border-gray-200">
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
                 <Header author={story.author} date={story.createdAt} />

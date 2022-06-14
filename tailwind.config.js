@@ -30,7 +30,7 @@ module.exports = {
         none: "none",
       },
       fontSize: {
-        h1: ["48px", "54px"],
+        h1: ["36px", "50px"],
         h2: ["32px", "44px"],
         h3: ["29px", "40px"],
         h4: ["22px", "31px"],

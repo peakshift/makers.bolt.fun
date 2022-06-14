@@ -437,12 +437,13 @@ const getTrendingPosts = extendType({
                 const now = new Date();
                 const lastWeekDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)
                 return prisma.story.findMany({
-                    take: 5,
                     where: {
                         createdAt: {
                             gte: lastWeekDate
                         }
-                    }
+                    },
+                    orderBy: { votes_count: 'desc' },
+                    take: 5,
                 }).then(asStoryType)
             }
         })

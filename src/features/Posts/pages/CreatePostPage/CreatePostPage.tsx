@@ -23,13 +23,13 @@ export default function CreatePostPage() {
             <title>Create Post</title>
         </Helmet>
         <div
-            className="page-container grid gap-32 grid-cols-1 lg:grid-cols-[1fr_min(100%,910px)_1fr]"
+            className="page-container grid gap-24 grid-cols-1 lg:grid-cols-[1fr_min(100%,910px)_1fr]"
         // style={{ gridTemplateColumns: "326px 1fr" }}
         >
             <div className="">
                 {/* <PostTypeList selectionChanged={setPostType} /> */}
                 <button className={`
-                w-42 hidden md:flex aspect-square bg-white rounded-8 border justify-around items-center text-gray-900 hover:bg-gray-50 active:bg-gray-100
+                w-48 aspect-square bg-white rounded-12 border-2 border-gray-200 justify-around items-center text-gray-900 hover:bg-gray-50 active:bg-gray-100
                 `}
                     onClick={() => navigate(-1)}
                 >

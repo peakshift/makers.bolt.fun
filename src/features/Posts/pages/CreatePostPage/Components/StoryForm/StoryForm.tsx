@@ -127,7 +127,7 @@ export default function StoryForm() {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div
-                    className='bg-white border-2 border-gray-100 rounded-12 overflow-hidden'>
+                    className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
                     <div className="p-32">
                         <Controller
                             control={control}
