@@ -2,6 +2,7 @@ import React from 'react'
 import { FiArrowLeft } from 'react-icons/fi'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
+import ASSETS from 'src/assets'
 
 type Props = {
     isLoading: boolean
@@ -23,9 +24,13 @@ export default function HeaderImage(props: Props) {
 
     const { title, img, apps_count } = props;
 
+    const DEFAULT_IMG = ASSETS.Category_BG;
+
+
+
     return (
         <div className='h-[280px] rounded-20 overflow-hidden relative flex flex-col justify-center items-center gap-8'>
-            <img src={img} alt={`${title} cover`} className='absolute inset-0 w-full h-full object-cover z-[-1]' />
+            <img src={img.startsWith('https://via.placeholder.com/') ? DEFAULT_IMG : img} alt={`${title} cover`} className='absolute inset-0 w-full h-full object-cover z-[-1]' />
             <div className='absolute inset-0 w-full h-full bg-black bg-opacity-50   z-[-1]' />
             <Link
                 to='/'
