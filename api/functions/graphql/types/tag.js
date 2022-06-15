@@ -18,6 +18,9 @@ const officialTags = extendType({
             type: "Tag",
             resolve: () => {
                 return prisma.tag.findMany({
+                    orderBy: {
+                        title: 'asc'
+                    },
                     where: {
                         isOfficial: true
                     }
