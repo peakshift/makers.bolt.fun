@@ -90,15 +90,17 @@ export default function StoryForm() {
 
     const clickPreview = async () => {
         const isValid = await trigger();
-        const data = getValues()
 
         if (isValid) {
+            const data = getValues()
             dispatch(stageStory(data))
             navigate('/blog/preview-post/Story')
+        } else {
+            clickSubmit(); // I'm doing this so that the react-hook-form attaches onChange listener to inputs validation
         }
     }
 
-    const onSubmit: SubmitHandler<IFormInputs> = data => {
+    const clickSubmit = handleSubmit<IFormInputs>(data => {
         setLoading(true);
         createStory({
             variables: {
@@ -111,14 +113,15 @@ export default function StoryForm() {
                 },
             }
         })
-    }
+    })
+
 
     const isUpdating = story?.id;
 
     return (
         <FormProvider {...formMethods}>
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={clickSubmit}
             >
                 <div
                     className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>

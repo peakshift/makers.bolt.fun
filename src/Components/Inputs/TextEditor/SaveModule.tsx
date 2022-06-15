@@ -1,6 +1,6 @@
+import { useDebouncedCallback } from '@react-hookz/web';
 import { useHelpers, useRemirrorContext } from '@remirror/react';
 import { Control, useController } from 'react-hook-form';
-import { useDebouncedCallback } from '@react-hookz/web';
 
 interface Props {
     control?: Control,
@@ -17,6 +17,7 @@ export default function SaveModule(props: Props) {
     const { getMarkdown } = useHelpers();
 
     const changeCallback = useDebouncedCallback(ctx => {
+
         const { state } = ctx;
         const md = getMarkdown(state);
         onChange(md);
@@ -24,7 +25,6 @@ export default function SaveModule(props: Props) {
 
     useRemirrorContext(changeCallback)
 
-    // useEvent('focus', () => onBlur())
 
     return <></>
 }
