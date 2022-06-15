@@ -4,6 +4,7 @@ import Button from "src/Components/Button/Button";
 import { Author } from "src/features/Posts/types";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { trimText } from "src/utils/helperFunctions";
+import { createRoute } from "src/utils/routing";
 
 interface Props {
     author: Pick<Author,
@@ -17,7 +18,7 @@ export default function AuthorCard({ author }: Props) {
     return (
         <div className="bg-white p-16 border-2 border-gray-200 rounded-12">
             <div className='flex gap-8'>
-                <Link to={`/profile/${author.id}`}>
+                <Link to={createRoute({ type: 'profile', id: author.id, username: author.name })}>
                     <Avatar width={48} src={author.avatar} />
                 </Link>
                 <div className="overflow-hidden">

@@ -19,7 +19,8 @@ export default function SaveModule(props: Props) {
     const changeCallback = useDebouncedCallback(ctx => {
 
         const { state } = ctx;
-        const md = getMarkdown(state);
+        let md = getMarkdown(state);
+        md = md.replace(/\n(?=\n)/g, "\n\n<br/>\n");
         onChange(md);
     }, [], 500)
 

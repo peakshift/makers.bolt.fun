@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
 import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
 import { usePostDetailsQuery } from 'src/graphql'
+import { capitalize } from 'src/utils/helperFunctions'
 import { useAppSelector, } from 'src/utils/hooks'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import AuthorCard from './Components/AuthorCard/AuthorCard'
@@ -14,7 +15,9 @@ import styles from './styles.module.scss'
 
 export default function PostDetailsPage() {
 
-    const { type, id } = useParams()
+    const { type: _type, id } = useParams();
+    const type = capitalize(_type);
+
     const postDetailsQuery = usePostDetailsQuery({
         variables: {
             id: Number(id!),

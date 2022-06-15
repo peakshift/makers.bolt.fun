@@ -96,11 +96,24 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
     });
 
 
+    const initContent = `## hello   
+
+
+how are you doing man
+
+
+what's up with this face of yours
+                `.replace(/\n(?=\n)/g, "\n\n<br/>\n");
+
+
+    console.log(initContent);
+
+
     return (
         <div className={`remirror-theme ${styles.wrapper} bg-white`}>
             <Remirror
                 manager={manager}
-                initialContent={initialContent}
+                initialContent={initContent}
             >
                 <TextEditorComponents.SaveModule name={name} />
                 <Toolbar />

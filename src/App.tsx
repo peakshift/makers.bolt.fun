@@ -83,7 +83,7 @@ function App() {
         <Route path="/products/category/:id" element={<CategoryPage />} />
         <Route path="/products" element={<ExplorePage />} />
 
-        <Route path="/blog/post/:type/:id" element={<PostDetailsPage />} />
+        <Route path="/blog/post/:type/:id/*" element={<PostDetailsPage />} />
         <Route path="/blog/preview-post/:type" element={<PreviewPostPage />} />
         <Route path="/blog/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
         <Route path="/blog" element={<FeedPage />} />
@@ -92,7 +92,7 @@ function App() {
 
         <Route path="/donate" element={<DonatePage />} />
 
-        <Route path="/profile/:id" element={<ProfilePage />} />
+        <Route path="/profile/:id/*" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<LogoutPage />} />
 

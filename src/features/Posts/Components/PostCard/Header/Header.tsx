@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { trimText } from 'src/utils/helperFunctions';
 import { Link } from 'react-router-dom';
+import { createRoute } from 'src/utils/routing';
 
 interface Props {
     author: {
@@ -44,7 +45,7 @@ export default function Header({
 
     return (
         <div className='flex gap-8'>
-            <Link to={`/profile/${props.author.id}`}>
+            <Link to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
                 <Avatar width={avatarSize[size]} src={props.author.avatar} />
             </Link>
             <div className='overflow-hidden'>

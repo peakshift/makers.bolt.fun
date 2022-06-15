@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { useTrendingPostsQuery } from 'src/graphql'
 import { random } from 'src/utils/helperFunctions'
+import { createRoute } from 'src/utils/routing'
 
 export default function TrendingCard() {
 
@@ -24,7 +25,7 @@ export default function TrendingCard() {
                         )
                         :
                         trendingPosts.data?.getTrendingPosts.map(post => {
-                            return <Link key={post.id} to={`/blog/post/${post.__typename}/${post.id}`} className="border-b py-16 last-of-type:border-b-0">
+                            return <Link key={post.id} to={createRoute({ type: 'post', postType: post.__typename!, id: post.id, title: post.title })} className="border-b py-16 last-of-type:border-b-0">
                                 <li className="flex items-start gap-8">
                                     <Avatar width={24} src={post.author.avatar} />
                                     <p className="text-body5 font-medium">{post.title}</p>

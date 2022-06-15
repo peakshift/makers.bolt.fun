@@ -92,4 +92,14 @@ export function generateList(component: React.ReactElement, cnt: number) {
   return Array(cnt).fill(0).map((_, idx) => React.cloneElement(component, { key: idx }))
 }
 
+export function toSlug(title: string) {
+  return title.toLowerCase()
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-');
+}
+
+export function capitalize(s?: string) {
+  return s && s[0].toUpperCase() + s.slice(1);
+}
+
 export const withHttp = (url: string) => !/^https?:\/\//i.test(url) ? `http://${url}` : url;

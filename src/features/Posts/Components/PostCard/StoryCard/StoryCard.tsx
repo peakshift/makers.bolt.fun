@@ -6,6 +6,8 @@ import VoteButton from "src/Components/VoteButton/VoteButton"
 import { useVote } from "src/utils/hooks"
 import { Tag, Vote_Item_Type } from 'src/graphql';
 import Badge from "src/Components/Badge/Badge"
+import { toSlug } from "src/utils/helperFunctions"
+import { createRoute } from "src/utils/routing"
 
 export type StoryCardType = Pick<Story,
     | 'id'
@@ -36,7 +38,7 @@ export default function StoryCard({ story }: Props) {
             <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />
             <div className="p-24">
                 <Header author={story.author} date={story.createdAt} />
-                <Link to={`/blog/post/Story/${story.id}`}>
+                <Link to={createRoute({ type: 'story', id: story.id, title: story.title })}>
                     <h2 className="text-h5 font-bolder mt-16">{story.title}</h2>
                 </Link>
                 <p className="text-body4 text-gray-600 mt-8">{story.excerpt}...</p>

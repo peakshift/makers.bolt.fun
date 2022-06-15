@@ -14,6 +14,7 @@ import styles from './styles.module.css'
 import '@szhsin/react-menu/dist/index.css';
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { createRoute } from "src/utils/routing";
 
 
 
@@ -85,10 +86,10 @@ export default function NavMobile() {
               menuClassName='!p-8 !rounded-12'
               menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
               <MenuItem
-                href={`/profile/${curUser.id}`}
+                href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
                 onClick={(e) => {
                   e.syntheticEvent.preventDefault();
-                  navigate(`/profile/${curUser.id}`);
+                  navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
                 }}
                 className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
               >
