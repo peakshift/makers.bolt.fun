@@ -143,7 +143,16 @@ const createStory = extendType({
                 const htmlBody = marked.parse(body);
                 const excerpt = htmlBody.replace(/<[^>]+>/g, '').slice(0, 120);
 
-                if (id)
+                if (id) {
+                    await prisma.story.update({
+                        where: { id },
+                        data: {
+                            tags: {
+                                set: []
+                            },
+                        }
+                    });
+
                     return prisma.story.update({
                         where: { id },
                         data: {
@@ -167,6 +176,7 @@ const createStory = extendType({
                             },
                         }
                     })
+                }
 
 
                 return prisma.story.create({
