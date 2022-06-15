@@ -20,7 +20,7 @@ export default function SaveModule(props: Props) {
 
         const { state } = ctx;
         let md = getMarkdown(state);
-        md = md.replace(/\n(?=\n)/g, "\n\n<br/>\n");
+        // md = md.replace(/\n(?=\n)/g, "\n\n<br/>\n");
         onChange(md);
     }, [], 500)
 
