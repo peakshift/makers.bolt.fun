@@ -26,10 +26,10 @@ export default function VideoToolButton({ classes }: Props) {
 
 
     const onInsertVideo = useCallback(({ payload: { src } }: typeof INSERT_VIDEO_ACTION) => {
-        commands.addYouTubeVideo({
-            video: src,
+        commands.addYouTubeVideo({ video: src });
+        // commands.insertText(`<iframe class="remirror-iframe remirror-iframe-youtube" src="https://www.youtube-nocookie.com/embed/${src}?" data-embed-type="youtube" allowfullscreen="true" frameborder="0"></iframe>`, {
 
-        })
+        // })
     }, [commands])
 
     useReduxEffect(onInsertVideo, INSERT_VIDEO_ACTION.type)

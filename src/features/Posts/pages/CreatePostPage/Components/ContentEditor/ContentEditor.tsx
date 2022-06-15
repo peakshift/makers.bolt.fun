@@ -1,5 +1,6 @@
 import 'remirror/styles/all.css';
 import styles from './styles.module.scss'
+import TurndownService from 'turndown'
 
 import javascript from 'refractor/lang/javascript';
 import typescript from 'refractor/lang/typescript';
@@ -29,6 +30,9 @@ import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Toolbar from './Toolbar';
 
 
+const turndownService = new TurndownService()
+turndownService.keep(['iframe']);
+
 interface Props {
     placeholder?: string;
     initialContent?: string;
@@ -53,6 +57,9 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
                     rel: 'noopener noreferrer'
                 }
             }),
+            new MarkdownExtension({
+                copyAsMarkdown: true, htmlToMarkdown: (html) => turndownService.turndown(html)
+            }),
             new BoldExtension(),
             // new StrikeExtension(),
             new UnderlineExtension(),
@@ -71,7 +78,6 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
             new IframeExtension(),
             // new TrailingNodeExtension(),
             // new TableExtension(),
-            new MarkdownExtension({ copyAsMarkdown: true, }),
             new NodeFormattingExtension(),
             /**
              * `HardBreakExtension` allows us to create a newline inside paragraphs.

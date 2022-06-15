@@ -48,3 +48,9 @@
   border-radius: 12px;
   color: whitesmoke;
 }
+
+.body iframe {
+  width: min(100%, 640px);
+  aspect-ratio: 16/9;
+  margin: 36px auto;
+}

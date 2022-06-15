@@ -19,8 +19,6 @@ export default function SaveModule(props: Props) {
     const changeCallback = useDebouncedCallback(ctx => {
         const { state } = ctx;
         const md = getMarkdown(state);
-        console.log(md);
-
         onChange(md);
     }, [], 500)
 
