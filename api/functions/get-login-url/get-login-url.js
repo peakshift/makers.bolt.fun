@@ -13,9 +13,8 @@ const { JWT_SECRET } = require('../../utils/consts');
 const getLoginUrl = async (req, res) => {
     try {
         const data = await LnurlAuthService.generateAuthUrl();
-        const maxAge = 1000 * 60 * 3; //2 mins
 
-        const jwt = await new jose.SignJWT({ hash: data.secretHash })
+        const session_token = await new jose.SignJWT({ hash: data.secretHash })
             .setProtectedHeader({ alg: 'HS256' })
             .setIssuedAt()
             .setExpirationTime('5min')
@@ -23,13 +22,7 @@ const getLoginUrl = async (req, res) => {
 
         return res
             .status(200)
-            .cookie('login_session', jwt, {
-                maxAge,
-                secure: true,
-                httpOnly: true,
-                sameSite: "none",
-            })
-            .json(data);
+            .json({ ...data, session_token });
     } catch (error) {
         console.log(error);
         res.status(500).send("Unexpected error happened, please try again")

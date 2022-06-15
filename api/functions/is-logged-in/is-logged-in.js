@@ -9,7 +9,7 @@ const lnurlAuthService = require('../../auth/services/lnurlAuth.service');
 
 const isLoggedInHandler = async (req, res) => {
     try {
-        const login_session = req.cookies?.login_session;
+        const login_session = req.headers.session_token;
         if (login_session) {
             const { payload } = await jose.jwtVerify(login_session, Buffer.from(JWT_SECRET), {
                 algorithms: ['HS256'],
@@ -61,7 +61,7 @@ if (process.env.LOCAL) {
 }
 else {
     const router = express.Router();
-    router.get('/is-logged-in', isLoggedInHandler)
+    router.get('/is-logged-in', (isLoggedInHandler))
     app = createExpressApp(router)
 }
 

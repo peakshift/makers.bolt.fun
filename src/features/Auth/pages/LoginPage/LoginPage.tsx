@@ -23,7 +23,7 @@ const fetchLnurlAuth = async () => {
 const useLnurlQuery = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<any>(null);
-    const [data, setData] = useState("")
+    const [data, setData] = useState<{ lnurl: string, session_token: string }>({ lnurl: '', session_token: '' })
 
 
     useEffect(() => {
@@ -35,7 +35,10 @@ const useLnurlQuery = () => {
                 setError(true)
             else {
                 setLoading(false);
-                setData(res.encoded);
+                setData({
+                    lnurl: res.encoded,
+                    session_token: res.session_token
+                });
                 timeOut = setTimeout(doFetch, 1000 * 60 * 2)
             }
         }
@@ -47,7 +50,7 @@ const useLnurlQuery = () => {
     return {
         loadingLnurl: loading,
         error,
-        lnurlAuth: data
+        data
     }
 }
 
@@ -57,14 +60,14 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
 
-    const { loadingLnurl, lnurlAuth, error } = useLnurlQuery();
+    const { loadingLnurl, data: { lnurl, session_token }, error } = useLnurlQuery();
     const clipboard = useCopyToClipboard()
 
 
 
     useEffect(() => {
         setCopied(false);
-    }, [lnurlAuth])
+    }, [lnurl])
 
     const meQuery = useMeQuery({
         onCompleted: (data) => {
@@ -81,7 +84,7 @@ export default function LoginPage() {
 
     const copyToClipboard = () => {
         setCopied(true);
-        clipboard(lnurlAuth);
+        clipboard(lnurl);
     }
 
     const refetch = meQuery.refetch;
@@ -89,7 +92,10 @@ export default function LoginPage() {
         () => {
             const interval = setInterval(() => {
                 fetch(CONSTS.apiEndpoint + '/is-logged-in', {
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        session_token
+                    }
                 }).then(data => data.json())
                     .then(data => {
                         if (data.logged_in) {
@@ -101,20 +107,20 @@ export default function LoginPage() {
 
             return interval;
         }
-        , [refetch],
+        , [refetch, session_token],
     )
 
 
 
     useEffect(() => {
         let interval: NodeJS.Timer;
-        if (lnurlAuth)
+        if (lnurl)
             interval = startPolling();
 
         return () => {
             clearInterval(interval)
         }
-    }, [lnurlAuth, startPolling])
+    }, [lnurl, startPolling])
 
 
 
@@ -149,13 +155,13 @@ export default function LoginPage() {
             <QRCodeSVG
                 width={160}
                 height={160}
-                value={lnurlAuth}
+                value={lnurl}
             />
             <p className="text-gray-600 text-body4 text-center">
                 Scan this code or copy + paste it to your lightning wallet. Or click to login with your browser's wallet.
             </p>
             <div className="flex flex-wrap gap-16">
-                <a href={lnurlAuth}
+                <a href={lnurl}
                     className='grow block text-body4 text-center text-white font-bolder bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
                 >Click to connect <IoRocketOutline /></a>
                 <Button
