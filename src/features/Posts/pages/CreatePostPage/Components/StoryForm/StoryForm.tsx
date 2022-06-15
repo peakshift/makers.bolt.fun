@@ -158,7 +158,7 @@ export default function StoryForm() {
                             Tags
                         </p>
                         <TagsInput
-                            placeholder="Search from popular tags or add your own by clicking Enter."
+                            placeholder="Add up to 5 tags. Search popular ones or add your own"
                             classes={{ container: 'mt-8' }}
                         />
                         {errors.tags && <p className="input-error">

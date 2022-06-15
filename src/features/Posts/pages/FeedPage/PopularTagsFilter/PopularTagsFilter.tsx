@@ -35,7 +35,7 @@ export default function PopularTagsFilter({ value, onChange }: Props) {
                         {tagsQuery.loading ?
                             Array(5).fill(0).map((_, idx) => <li
                                 key={idx}
-                                className={`flex items-start rounded-8 font-bold`}
+                                className={`flex items-start rounded-8 font-bold p-4`}
 
                             >
                                 <span className='bg-gray-50 rounded-8 w-40 h-40 text-center py-8'> </span>
@@ -46,7 +46,7 @@ export default function PopularTagsFilter({ value, onChange }: Props) {
                             :
                             tagsQuery.data?.popularTags.map((tag) => <li
                                 key={tag.id}
-                                className={`flex items-start rounded-8 cursor-pointer font-bold 
+                                className={`flex items-start rounded-8 cursor-pointer font-bold p-4
                                  active:scale-95 transition-transform
                                 ${tag.id === selectedId ? 'bg-gray-200' : 'hover:bg-gray-100'}
                                 `}

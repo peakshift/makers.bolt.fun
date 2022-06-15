@@ -93,7 +93,8 @@ export default function TagsInput({
         onBlur();
     }
 
-    const isDisabled = value.length >= max;
+
+    const maxReached = value.length >= max;
 
     const tagsOptions = (officalTags.data?.officialTags ?? []).filter(t => !value.some((v: Tag) => v.title === t.title)).map(transformer.tagToOption);
 
@@ -103,8 +104,8 @@ export default function TagsInput({
                 isLoading={officalTags.loading}
                 options={tagsOptions}
                 isMulti
-                isDisabled={isDisabled}
-                placeholder={placeholder}
+                isDisabled={maxReached}
+                placeholder={maxReached ? `Max. ${max} tags reached. Remove a tag to add another.` : placeholder}
                 isClearable
 
 
