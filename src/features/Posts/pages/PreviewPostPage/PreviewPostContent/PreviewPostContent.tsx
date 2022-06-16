@@ -1,6 +1,6 @@
 import Header from "src/features/Posts/Components/PostCard/Header/Header"
 import { marked } from 'marked';
-import styles from '../../PostDetailsPage/Components/PageContent/styles.module.css'
+import styles from '../../PostDetailsPage/Components/PageContent/styles.module.scss'
 import Badge from "src/Components/Badge/Badge";
 import { Post } from "src/graphql";
 

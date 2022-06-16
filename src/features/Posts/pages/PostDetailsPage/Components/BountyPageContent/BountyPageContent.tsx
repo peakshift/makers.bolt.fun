@@ -1,7 +1,7 @@
 import Header from "src/features/Posts/Components/PostCard/Header/Header"
 import { Bounty, } from "src/features/Posts/types"
 import { marked } from 'marked';
-import styles from '../PageContent/styles.module.css'
+import styles from '../PageContent/styles.module.scss'
 import Badge from "src/Components/Badge/Badge";
 import { BiComment } from "react-icons/bi";
 import VotesCount from "src/Components/VotesCount/VotesCount";

@@ -1,31 +1,28 @@
 .body :where(h1, h2, h3, h4, h5, h6) {
   font-weight: 700;
+  margin-top: 36px;
+  margin-bottom: calc(min(16px, 0.5em));
 }
 
 .body h1 {
   font-size: 48px;
   line-height: 54px;
-  margin-bottom: min(0.5em);
 }
 .body h2 {
   font-size: 36px;
   line-height: 50px;
-  margin-bottom: min(0.5em);
 }
 .body h3 {
   font-size: 29px;
   line-height: 40px;
-  margin-bottom: min(0.5em);
 }
 .body h4 {
   font-size: 22px;
   line-height: 31px;
-  margin-bottom: min(0.5em);
 }
 .body h5 {
   font-size: 19px;
   line-height: 26px;
-  margin-bottom: min(0.5em);
 }
 
 .body p,
@@ -43,14 +40,21 @@
 }
 
 .body pre {
-  background-color: #2b2b2b;
+  background-color: #efeff3;
   padding: 16px;
   border-radius: 12px;
-  color: whitesmoke;
+  color: #272727;
+  margin-bottom: 24px;
+  font-family: monospace;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
 }
 
 .body iframe {
-  width: min(100%, 640px);
+  width: calc(min(100%, 640px));
   aspect-ratio: 16/9;
   margin: 36px auto;
 }
