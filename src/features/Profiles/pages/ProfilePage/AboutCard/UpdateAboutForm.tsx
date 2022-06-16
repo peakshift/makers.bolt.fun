@@ -4,6 +4,8 @@ import Button from "src/Components/Button/Button";
 import { useUpdateProfileAboutMutation } from "src/graphql";
 import { NotificationsService } from "src/services/notifications.service";
 import AboutCard from "./AboutCard"
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface Props {
   data: ComponentProps<typeof AboutCard>['user'],
@@ -12,10 +14,45 @@ interface Props {
 
 type IFormInputs = Props['data'];
 
+const schema: yup.SchemaOf<IFormInputs> = yup.object({
+  name: yup.string().trim().required().min(2),
+  avatar: yup.string().url().required(),
+  bio: yup.string().ensure(),
+  email: yup.string().email().ensure(),
+  github: yup.string().ensure(),
+  jobTitle: yup.string().ensure(),
+  lightning_address: yup
+    .string()
+    .test({
+      name: "is valid lightning_address",
+      test: async value => {
+        try {
+          if (value) {
+            const [name, domain] = value.split("@");
+            const lnurl = `https://${domain}/.well-known/lnurlp/${name}`;
+            await fetch(lnurl);
+          }
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+    })
+    .ensure()
+    .label("lightning address"),
+  linkedin: yup.string().ensure(),
+  location: yup.string().ensure(),
+  twitter: yup.string().ensure(),
+  website: yup.string().url().ensure(),
+
+}).required();
+
 export default function UpdateAboutForm({ data, onClose }: Props) {
 
   const { register, formState: { errors }, handleSubmit } = useForm<IFormInputs>({
-    defaultValues: data
+    defaultValues: data,
+    resolver: yupResolver(schema),
+    mode: 'onBlur',
   });
 
   const [mutate, mutationStatus] = useUpdateProfileAboutMutation({
