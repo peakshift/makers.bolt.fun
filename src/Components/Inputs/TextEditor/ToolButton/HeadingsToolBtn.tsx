@@ -46,7 +46,7 @@ export default function HeadingsToolButton({ classes }: Props) {
             <FiType className={classes.icon} />
         </MenuButton>
     } transition>
-        {Array(6).fill(0).map((_, idx) => <MenuItem
+        {Array(3).fill(0).map((_, idx) => <MenuItem
             key={idx}
             className={`
                 py-8 px-16 hover:bg-gray-200

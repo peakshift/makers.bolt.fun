@@ -1,0 +1,69 @@
+@mixin post-body {
+  :is(h1, h2, h3, h4, h5, h6) {
+    font-weight: 700;
+    margin-bottom: calc(min(16px, 0.5em));
+
+    &:not(:first-child) {
+      margin-top: 36px;
+    }
+  }
+
+  h1 {
+    font-size: 36px;
+    line-height: 50px;
+  }
+  h2 {
+    font-size: 32px;
+    line-height: 44px;
+  }
+  h3 {
+    font-size: 28px;
+    line-height: 40px;
+  }
+  h4 {
+    font-size: 22px;
+    line-height: 31px;
+  }
+  h5 {
+    font-size: 19px;
+    line-height: 26px;
+  }
+  h5 {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  p,
+  ul {
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 1.5em;
+  }
+
+  a {
+    color: rgb(107, 107, 249);
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  pre {
+    background-color: #efeff3;
+    padding: 16px;
+    border-radius: 12px;
+    color: #272727;
+    margin-bottom: 24px;
+    font-family: monospace;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+  }
+
+  iframe {
+    width: calc(min(100%, 640px));
+    aspect-ratio: 16/9;
+    margin: 36px auto;
+  }
+}

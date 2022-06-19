@@ -3,6 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import Slider from 'src/Components/Slider/Slider';
 import { Tag, usePopularTagsQuery } from 'src/graphql';
 import { MEDIA_QUERIES } from 'src/utils/theme';
+import { capitalize } from 'src/utils/helperFunctions';
 
 export type FilterTag = Pick<Tag, 'id' | 'title' | "icon">
 
@@ -55,7 +56,7 @@ export default function PopularTagsFilter({ value, onChange }: Props) {
                             >
                                 <span className={`${tag.id !== selectedId && 'bg-gray-50'} rounded-8 w-40 h-40 text-center py-8`}>{tag.icon}</span>
                                 <span className="self-center px-16">
-                                    {tag.title}
+                                    {capitalize(tag.title)}
                                 </span>
                             </li>)}
                     </ul>

@@ -12,6 +12,7 @@ import { Helmet } from "react-helmet";
 import Button from 'src/Components/Button/Button'
 import { FaDiscord } from 'react-icons/fa'
 import { FiArrowRight } from 'react-icons/fi'
+import { capitalize } from 'src/utils/helperFunctions'
 
 
 export default function FeedPage() {
@@ -54,7 +55,7 @@ export default function FeedPage() {
                     </p>}
                     <h1 className="text-h2 font-bolder">{
                         tagFilter ?
-                            <>{tagFilter.icon} {tagFilter.title}</>
+                            <>{tagFilter.icon} {capitalize(tagFilter.title)}</>
                             :
                             "Stories ✍🏼"
                     }</h1>

@@ -97,7 +97,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
 
 
     return (
-        <div className={`remirror-theme ${styles.wrapper} bg-white`}>
+        <div className={`remirror-theme ${styles.wrapper} post-body bg-white`}>
             <Remirror
                 manager={manager}
                 initialContent={initialContent}

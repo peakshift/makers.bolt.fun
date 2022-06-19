@@ -1,3 +1,5 @@
+@import "/src/styles/mixins/index.scss";
+
 .wrapper {
   :global {
     .ProseMirror {
@@ -5,6 +7,8 @@
       border-bottom-left-radius: inherit;
       border-bottom-right-radius: inherit;
       min-height: var(--rmr-space-7);
+
+      @include post-body;
 
       a {
         color: rgb(54, 139, 236);
