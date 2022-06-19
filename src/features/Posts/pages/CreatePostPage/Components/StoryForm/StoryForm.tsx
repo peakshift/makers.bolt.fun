@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { stageStory } from 'src/redux/features/staging.slice'
 import { Override } from 'src/utils/interfaces';
 import { NotificationsService } from "src/services/notifications.service";
+import { createRoute } from 'src/utils/routing';
 
 const FileSchema = yup.lazy((value: string | File[]) => {
 
@@ -78,7 +79,7 @@ export default function StoryForm() {
 
     const [createStory] = useCreateStoryMutation({
         onCompleted: (data) => {
-            navigate(`/blog/post/Story/${data.createStory?.id}`)
+            navigate(createRoute({ type: 'story', id: data.createStory?.id!, title: data.createStory?.title }))
             setLoading(false)
         },
 
