@@ -64,7 +64,7 @@ export default function VoteButton({
     const totalIncrementsCountRef = useRef(0)
     const currentIncrementsCountRef = useRef(0);
     const [increments, setIncrements] = useState<Array<{ id: string, value: number }>>([]);
-    const [btnBoundingRect, setBtnBoundingRect] = useState<DOMRect>()
+    const [btnPosition, setBtnPosition] = useState<{ top: number, left: number, width: number, height: number }>()
 
     const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen);
     const resetCounterOnRelease = resetCounterOnReleaseProp;
@@ -153,11 +153,26 @@ export default function VoteButton({
     }
 
     useMountEffect(() => {
-        setBtnBoundingRect(btnContainerRef.current.getBoundingClientRect())
+        const bodyRect = document.body.getBoundingClientRect();
+        const btnRect = btnContainerRef.current.getBoundingClientRect()
+        setBtnPosition({
+            top: btnRect.top - bodyRect.top,
+            left: btnRect.left - bodyRect.left,
+            width: btnRect.width,
+            height: btnRect.height
+        });
+
     })
 
     useResizeListener(() => {
-        setBtnBoundingRect(btnContainerRef.current.getBoundingClientRect())
+        const bodyRect = document.body.getBoundingClientRect();
+        const btnRect = btnContainerRef.current.getBoundingClientRect()
+        setBtnPosition({
+            top: btnRect.top - bodyRect.top,
+            left: btnRect.left - bodyRect.left,
+            width: btnRect.width,
+            height: btnRect.height
+        });
     }, { debounce: 300 })
 
     return (
@@ -220,16 +235,16 @@ export default function VoteButton({
             <Portal id='effects-container'>
                 <div
                     className='absolute pointer-events-none'
-                    style={btnBoundingRect && {
+                    style={btnPosition && {
                         position: 'absolute',
-                        top: btnBoundingRect.top + window.scrollY,
-                        left: btnBoundingRect.left + window.scrollX,
-                        width: btnBoundingRect.width,
-                        height: btnBoundingRect.height,
+                        top: btnPosition.top,
+                        left: btnPosition.left,
+                        width: btnPosition.width,
+                        height: btnPosition.height,
                         pointerEvents: 'none'
                     }}
-
                 >
+
                     {increments.map(increment => <span
                         key={increment.id}
                         className={styles.vote_counter}
