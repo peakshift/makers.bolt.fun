@@ -41,7 +41,7 @@ model Vote {
 model User {
   id     Int     @id @default(autoincrement())
   pubKey String? @unique
-  name   String? @unique
+  name   String?
   avatar String?
   role   String  @default("user")
 
