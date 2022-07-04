@@ -66,6 +66,9 @@ const getAllHackathons = extendType({
                                 }
                             }
                         })
+                    },
+                    orderBy: {
+                        start_date: "desc"
                     }
                 })
             }

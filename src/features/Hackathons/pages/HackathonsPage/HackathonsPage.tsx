@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet'
 
 export default function HackathonsPage() {
 
-    const [sortByFilter, setSortByFilter] = useState<string | null>('Upcoming')
+    const [sortByFilter, setSortByFilter] = useState<string | null>(null)
     const [tagFilter, setTagFilter] = useState<number | null>(null)
 
     const hackathonsQuery = useGetHackathonsQuery({
@@ -58,6 +58,7 @@ export default function HackathonsPage() {
                 </aside>
                 <main className="self-start">
                     <HackathonsList
+                        currentFilter={sortByFilter}
                         isLoading={hackathonsQuery.loading}
                         items={hackathonsQuery.data?.getAllHackathons} />
                 </main>

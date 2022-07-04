@@ -5,6 +5,10 @@ import { MEDIA_QUERIES } from 'src/utils/theme';
 
 const filters = [
     {
+        text: "All",
+        value: null
+    },
+    {
         text: "Upcoming",
         value: 'Upcoming'
     }, {
@@ -22,7 +26,7 @@ interface Props {
 
 export default function SortByFilter({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState<string | null>('Upcoming');
+    const [selected, setSelected] = useState<string | null>(null);
 
     const filterClicked = (_newValue: string | null) => {
         const newValue = selected !== _newValue ? _newValue : null;
