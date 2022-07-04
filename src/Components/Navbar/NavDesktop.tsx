@@ -53,15 +53,13 @@ export default function NavDesktop() {
                 </Link>
             </li>
             <li>
-                <button
-                    ref={communityRef}
-                    onMouseEnter={() => toggleCommunityMenu(true)}
-                    className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" /></button>
-                <ControlledMenu {...communitymenuProps}
-                    anchorRef={communityRef}
+                <Menu
                     offsetY={28}
-                    onMouseLeave={() => toggleCommunityMenu(false)}
-                    onClose={() => toggleCommunityMenu(false)}
+                    menuButton={
+                        <MenuButton
+                            className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" />
+                        </MenuButton>
+                    }
                     menuClassName='!rounded-12 !p-8 !border-gray-200'
                     menuStyle={{ border: '1px solid' }}
                 >
@@ -122,7 +120,7 @@ export default function NavDesktop() {
                             </p>
                         </div>
                     </MenuItem>
-                </ControlledMenu>
+                </Menu>
             </li>
             <li className="relative">
                 <a
