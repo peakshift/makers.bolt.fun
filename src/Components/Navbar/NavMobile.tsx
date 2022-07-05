@@ -16,7 +16,7 @@ import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 
-
+const NAV_HEIGHT = "67px"
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -118,7 +118,7 @@ export default function NavMobile() {
         </IconButton>
       </nav>
 
-      <div className="fixed left-0 pointer-events-none z-[2010] w-full min-h-[calc(100vh-76px)]">
+      <div className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]">
         {drawerOpen && (
           <div
             onClick={() => toggleDrawerOpen()}
