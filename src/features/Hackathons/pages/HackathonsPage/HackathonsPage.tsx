@@ -48,7 +48,7 @@ export default function HackathonsPage() {
                         filterChanged={setTopicsFilter}
                     /> */}
                         <Button
-                            href='https://airtable.com/some-registration-form'
+                            href='https://airtable.com/shrgXKynON8YWeyyE'
                             newTab
                             color='primary'
                             fullWidth
