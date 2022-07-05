@@ -40,40 +40,29 @@ export const navLinks = [
 export default function Navbar() {
 
   const dispatch = useAppDispatch();
-  // const { isWalletConnected, isMobileScreen } = useAppSelector((state) => ({
-  //   isWalletConnected: state.wallet.isConnected,
-  //   isMobileScreen: state.ui.isMobileScreen
-  // }));
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
 
 
   useEffect(() => {
     const nav = document.querySelector("nav");
-
-    let oldPadding = '';
     if (nav) {
       const navStyles = getComputedStyle(nav);
       if (navStyles.display !== "none") {
         dispatch(setNavHeight(nav.clientHeight));
-        oldPadding = document.body.style.paddingTop
-        document.body.style.paddingTop = `${nav.clientHeight}px`;
       }
-    }
-    return () => {
-      document.body.style.paddingTop = oldPadding
     }
 
   }, [dispatch])
 
 
   return (
-    <>
+    <div className="sticky top-0 left-0 w-full z-[2010]">
       {(isLargeScreen) ?
         <NavDesktop />
         :
         <NavMobile />
       }
-    </>
+    </div>
   );
 }

@@ -73,8 +73,8 @@ export default function NavMobile() {
 
 
   return (
-    <div className={`${styles.navMobile} w-screen z-[2010]`}>
-      <nav className={`bg-white fixed top-0 left-0  h-[67px] w-full p-16 px-32 flex justify-between items-center z-[2010]`}>
+    <div className={`${styles.navMobile}`}>
+      <nav className={`bg-white h-[67px] w-full p-16 px-32 flex justify-between items-center`}>
         <a href="https://bolt.fun/">
           <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
         </a>
@@ -118,7 +118,7 @@ export default function NavMobile() {
         </IconButton>
       </nav>
 
-      <div className="fixed  left-0 pointer-events-none z-[2010] w-full min-h-[calc(100vh-76px)]">
+      <div className="fixed left-0 pointer-events-none z-[2010] w-full min-h-[calc(100vh-76px)]">
         {drawerOpen && (
           <div
             onClick={() => toggleDrawerOpen()}

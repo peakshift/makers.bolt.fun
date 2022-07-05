@@ -7,6 +7,7 @@ import HackathonsList from '../../Components/HackathonsList/HackathonsList'
 import SortByFilter from '../../Components/SortByFilter/SortByFilter'
 import styles from './styles.module.scss'
 import { Helmet } from 'react-helmet'
+import { Fulgur } from 'src/Components/Ads/Fulgur'
 
 
 export default function HackathonsPage() {
@@ -54,6 +55,9 @@ export default function HackathonsPage() {
                         >
                             List Your Hackathon
                         </Button>
+                        <div className="hidden md:block">
+                            <Fulgur />
+                        </div>
                     </div>
                 </aside>
                 <main className="self-start">

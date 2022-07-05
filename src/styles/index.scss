@@ -4,6 +4,10 @@ $screen-xs-min: 320px;
 
 @import "./tw.scss", "./shared.scss", "./vendors.scss", "./scrollbar.scss";
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   overflow-x: hidden;
   background-color: #ffffff;
