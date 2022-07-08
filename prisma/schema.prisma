@@ -119,7 +119,7 @@ model Story {
   updatedAt   DateTime @updatedAt
   body        String
   excerpt     String
-  cover_image String
+  cover_image String?
   votes_count Int      @default(0)
 
 

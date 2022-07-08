@@ -13,7 +13,7 @@ interface Props {
         | 'author'
     > & {
         tags: Array<{ title: string }>
-        cover_image?: string | File
+        cover_image?: string | File | null
     }
 }
 

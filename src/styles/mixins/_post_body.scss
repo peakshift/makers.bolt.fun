@@ -66,4 +66,24 @@
     aspect-ratio: 16/9;
     margin: 36px auto;
   }
+
+  ul,
+  ol {
+    list-style: disc;
+    margin-inline-start: 32px;
+
+    p {
+      margin-bottom: 0;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+  }
+
+  ul {
+    list-style: disc;
+  }
+  ol {
+    list-style: decimal;
+  }
 }

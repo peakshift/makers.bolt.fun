@@ -30,7 +30,7 @@ declare global {
 export interface NexusGenInputs {
   StoryInputType: { // input type
     body: string; // String!
-    cover_image: string; // String!
+    cover_image?: string | null; // String
     id?: number | null; // Int
     tags: string[]; // [String!]!
     title: string; // String!
@@ -81,7 +81,7 @@ export interface NexusGenObjects {
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     body: string; // String!
-    cover_image: string; // String!
+    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
@@ -165,7 +165,7 @@ export interface NexusGenObjects {
   }
   Story: { // root type
     body: string; // String!
-    cover_image: string; // String!
+    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
@@ -236,7 +236,7 @@ export interface NexusGenFieldTypes {
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    cover_image: string; // String!
+    cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
@@ -364,7 +364,7 @@ export interface NexusGenFieldTypes {
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
-    cover_image: string; // String!
+    cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!

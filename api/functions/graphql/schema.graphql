@@ -22,7 +22,7 @@ type Bounty implements PostBase {
   applications: [BountyApplication!]!
   author: Author!
   body: String!
-  cover_image: String!
+  cover_image: String
   createdAt: Date!
   deadline: String!
   excerpt: String!
@@ -182,7 +182,7 @@ type Story implements PostBase {
   body: String!
   comments: [PostComment!]!
   comments_count: Int!
-  cover_image: String!
+  cover_image: String
   createdAt: Date!
   excerpt: String!
   id: Int!
@@ -194,7 +194,7 @@ type Story implements PostBase {
 
 input StoryInputType {
   body: String!
-  cover_image: String!
+  cover_image: String
   id: Int
   tags: [String!]!
   title: String!

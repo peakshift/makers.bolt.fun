@@ -1,7 +1,8 @@
 
 import { useController } from "react-hook-form";
 import Badge from "src/Components/Badge/Badge";
-import CreatableSelect from 'react-select/creatable';
+// import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select'
 import { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
 import { useOfficialTagsQuery } from "src/graphql";
 
@@ -100,7 +101,7 @@ export default function TagsInput({
 
     return (
         <div className={`${classes?.container}`}>
-            <CreatableSelect
+            <Select
                 isLoading={officalTags.loading}
                 options={tagsOptions}
                 isMulti

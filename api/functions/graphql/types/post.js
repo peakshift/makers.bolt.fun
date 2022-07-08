@@ -67,7 +67,7 @@ const Story = objectType({
         t.nonNull.string('type', {
             resolve: () => t.typeName
         });
-        t.nonNull.string('cover_image');
+        t.string('cover_image');
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
@@ -107,7 +107,7 @@ const StoryInputType = inputObjectType({
         t.int('id');
         t.nonNull.string('title');
         t.nonNull.string('body');
-        t.nonNull.string('cover_image');
+        t.string('cover_image');
         t.nonNull.list.nonNull.string('tags');
     }
 })
@@ -263,7 +263,7 @@ const Bounty = objectType({
         t.nonNull.string('type', {
             resolve: () => 'Bounty'
         });
-        t.nonNull.string('cover_image');
+        t.string('cover_image');
         t.nonNull.string('deadline');
         t.nonNull.int('reward_amount');
         t.nonNull.int('applicants_count');

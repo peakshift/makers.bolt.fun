@@ -35,8 +35,7 @@ const fileUrlToObject = async (url: string, fileName: string = 'filename') => {
 
 const INSERT_IMAGE_ACTION = createAction<{ src: string, alt?: string }>('COVER_IMAGE_INSERTED')({ src: '', alt: "" })
 
-
-export default function FilesInput({
+const FilesInput = React.forwardRef<any, Props>(({
     multiple,
     value,
     max = 3,
@@ -45,9 +44,8 @@ export default function FilesInput({
     allowedType = 'images',
     uploadText = 'Upload files',
     ...props
-}: Props) {
+}, ref) => {
 
-    const ref = useRef<HTMLInputElement>(null!)
 
     const dispatch = useAppDispatch();
 
@@ -132,4 +130,7 @@ export default function FilesInput({
             }
         </>
     )
-}
+})
+
+
+export default FilesInput;

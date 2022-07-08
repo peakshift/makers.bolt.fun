@@ -34,7 +34,7 @@ const schema = yup.object({
     title: yup.string().trim().required().min(10, 'the title is too short'),
     tags: yup.array().required().min(1, 'please pick at least one relevant tag'),
     body: yup.string().required().min(50, 'stories should have a minimum of 10 words'),
-    cover_image: yup.array().of(FileSchema as any).min(1, "You need to add a cover image")
+    cover_image: yup.array().of(FileSchema as any)
 
 }).required();
 
@@ -110,7 +110,7 @@ export default function StoryForm() {
                     title: data.title,
                     body: data.body,
                     tags: data.tags.map(t => t.title),
-                    cover_image: (data.cover_image[0] ?? '') as string,
+                    cover_image: (data.cover_image[0] ?? null) as string | null,
                 },
             }
         })
@@ -130,8 +130,9 @@ export default function StoryForm() {
                         <Controller
                             control={control}
                             name="cover_image"
-                            render={({ field: { onChange, value, onBlur } }) => (
+                            render={({ field: { onChange, value, onBlur, ref } }) => (
                                 <FilesInput
+                                    ref={ref}
                                     value={value}
                                     onBlur={onBlur}
                                     onChange={onChange}
@@ -162,7 +163,7 @@ export default function StoryForm() {
                             Tags
                         </p>
                         <TagsInput
-                            placeholder="Add up to 5 tags. Search popular ones or add your own"
+                            placeholder="Select up to 5 tags from the most popular ones"
                             classes={{ container: 'mt-8' }}
                         />
                         {errors.tags && <p className="input-error">
