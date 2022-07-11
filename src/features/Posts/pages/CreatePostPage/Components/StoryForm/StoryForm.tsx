@@ -149,7 +149,7 @@ export default function StoryForm() {
                                 autoFocus
                                 type='text'
                                 className="p-0 text-[42px] border-0 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-600"
-                                placeholder='Your Story Title...'
+                                placeholder='New story title here...'
                                 {...register("title")}
                             />
                         </div>
