@@ -173,6 +173,7 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Tag: { // root type
+    description?: string | null; // String
     icon?: string | null; // String
     id: number; // Int!
     isOfficial?: boolean | null; // Boolean
@@ -374,6 +375,7 @@ export interface NexusGenFieldTypes {
     votes_count: number; // Int!
   }
   Tag: { // field return type
+    description: string | null; // String
     icon: string | null; // String
     id: number; // Int!
     isOfficial: boolean | null; // Boolean
@@ -571,6 +573,7 @@ export interface NexusGenFieldTypeNames {
     votes_count: 'Int'
   }
   Tag: { // field return type name
+    description: 'String'
     icon: 'String'
     id: 'Int'
     isOfficial: 'Boolean'

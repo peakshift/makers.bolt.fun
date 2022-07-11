@@ -28,10 +28,10 @@ export default function AuthorCard({ author }: Props) {
             </div>
             <Button
                 fullWidth
-                href={`/profile/${author.id}`}
+                href={createRoute({ type: 'profile', id: author.id, username: author.name })}
                 color="primary"
                 className="mt-16">
-                Follow
+                Maker's Profile
             </Button>
         </div>
     )

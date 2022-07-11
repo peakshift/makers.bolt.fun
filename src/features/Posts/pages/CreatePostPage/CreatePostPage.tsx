@@ -20,7 +20,9 @@ export default function CreatePostPage() {
 
     return (<>
         <Helmet>
-            <title>Create Post</title>
+            {postType === 'story' && <title>Create Story</title>}
+            {postType === 'bounty' && <title>Create Bounty</title>}
+            {postType === 'question' && <title>Create Question</title>}
         </Helmet>
         <div
             className="page-container grid gap-24 grid-cols-1 lg:grid-cols-[1fr_min(100%,910px)_1fr]"
@@ -40,9 +42,9 @@ export default function CreatePostPage() {
                 width: "min(100%,910px)"
             }}>
                 {postType === 'story' && <>
-                    <h2 className="text-h2 font-bolder text-gray-800 mb-32">
+                    {/* <h2 className="text-h2 font-bolder text-gray-800 mb-32">
                         Write a Story
-                    </h2>
+                    </h2> */}
                     <StoryForm />
                 </>}
                 {postType === 'bounty' && <>

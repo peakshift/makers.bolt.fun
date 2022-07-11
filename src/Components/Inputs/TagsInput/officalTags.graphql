@@ -3,5 +3,6 @@ query OfficialTags {
     id
     title
     icon
+    description
   }
 }

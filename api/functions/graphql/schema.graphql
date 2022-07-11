@@ -201,6 +201,7 @@ input StoryInputType {
 }
 
 type Tag {
+  description: String
   icon: String
   id: Int!
   isOfficial: Boolean

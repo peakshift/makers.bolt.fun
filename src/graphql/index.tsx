@@ -340,6 +340,7 @@ export type StoryInputType = {
 
 export type Tag = {
   __typename?: 'Tag';
+  description: Maybe<Scalars['String']>;
   icon: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   isOfficial: Maybe<Scalars['Boolean']>;
@@ -401,7 +402,7 @@ export type Vote = {
 export type OfficialTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OfficialTagsQuery = { __typename?: 'Query', officialTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> };
+export type OfficialTagsQuery = { __typename?: 'Query', officialTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null, description: string | null }> };
 
 export type NavCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -557,6 +558,7 @@ export const OfficialTagsDocument = gql`
     id
     title
     icon
+    description
   }
 }
     `;

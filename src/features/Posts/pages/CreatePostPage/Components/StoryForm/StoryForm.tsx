@@ -143,15 +143,13 @@ export default function StoryForm() {
                         <p className='input-error'>{errors.cover_image?.message}</p>
 
 
-                        <p className="text-body5 mt-16">
-                            Title
-                        </p>
-                        <div className="input-wrapper mt-8 relative">
+
+                        <div className="mt-16 relative">
                             <input
                                 autoFocus
                                 type='text'
-                                className="input-text"
-                                placeholder='Your Story Title'
+                                className="p-0 text-[42px] border-0 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-600"
+                                placeholder='Your Story Title...'
                                 {...register("title")}
                             />
                         </div>
@@ -159,12 +157,9 @@ export default function StoryForm() {
                             {errors.title.message}
                         </p>}
 
-                        <p className="text-body5 mt-16">
-                            Tags
-                        </p>
                         <TagsInput
-                            placeholder="Select up to 5 tags from the most popular ones"
-                            classes={{ container: 'mt-8' }}
+                            placeholder="Add up to 5 popular tags..."
+                            classes={{ container: 'mt-16' }}
                         />
                         {errors.tags && <p className="input-error">
                             {errors.tags.message}

@@ -12,10 +12,11 @@ generator client {
 // -----------------
 
 model Tag {
-  id         Int     @id @default(autoincrement())
-  title      String  @unique
-  icon       String?
-  isOfficial Boolean @default(false)
+  id          Int     @id @default(autoincrement())
+  title       String  @unique
+  icon        String?
+  description String?
+  isOfficial  Boolean @default(false)
 
   project    Project[]
   stories    Story[]

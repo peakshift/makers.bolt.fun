@@ -37,7 +37,7 @@ export default function PreviewPostContent({ post }: Props) {
                         alt="" />}
                 <div className="flex flex-col gap-24">
                     <Header size="lg" showTimeAgo={false} author={post.author} date={post.createdAt} />
-                    <h1 className="text-h2 font-bolder">{post.title}</h1>
+                    <h1 className="text-[42px] font-bolder">{post.title}</h1>
                     {post.tags.length > 0 && <div className="flex gap-8">
                         {post.tags.map((tag, idx) => <Badge key={idx} size='sm'>
                             {tag.title}

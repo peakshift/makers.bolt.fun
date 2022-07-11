@@ -4,18 +4,17 @@ import Badge from "src/Components/Badge/Badge";
 // import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select'
 import { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
-import { useOfficialTagsQuery } from "src/graphql";
+import { OfficialTagsQuery, useOfficialTagsQuery } from "src/graphql";
+import React from "react";
 
 interface Option {
     readonly label: string;
     readonly value: string;
     readonly icon: string | null
+    readonly description: string | null
 }
 
-type Tag = {
-    title: string,
-    icon: string | null
-}
+type Tag = Omit<OfficialTagsQuery['officialTags'][number], 'id'>
 
 interface Props {
     classes?: {
@@ -29,23 +28,43 @@ interface Props {
 
 
 const transformer = {
-    tagToOption: (tag: Tag): Option => ({ label: tag.title, value: tag.title, icon: tag.icon }),
-    optionToTag: (o: Option): Tag => ({ title: o.value, icon: null })
+    tagToOption: (tag: Tag): Option => ({ label: tag.title, value: tag.title, icon: tag.icon, description: tag.description }),
+    optionToTag: (o: Option): Tag => ({ title: o.value, icon: o.icon, description: o.description, })
 }
 
 const OptionComponent = (props: OptionProps<Option>) => {
     return (
         <div>
-            <components.Option {...props} className='flex items-start'>
-                <span className={`rounded-8 w-40 h-40 text-center py-8`}>
+            <components.Option {...props} className='!flex items-center gap-16 !py-16'>
+                <div className={`rounded-8 w-40 h-40 text-center py-8 shrink-0 bg-gray-100`}>
                     {props.data.icon}
-                </span>
-                <span className="self-center px-16">
-                    {props.data.label}
-                </span>
+                </div>
+                <div>
+                    <p className="font-medium self-center">
+                        {props.data.label}
+                    </p>
+                    <p className="text-body5 text-gray-500">
+                        {props.data.description}
+                    </p>
+                </div>
             </components.Option>
 
         </div>
+    );
+};
+
+const { ValueContainer, Placeholder } = components;
+const CustomValueContainer = ({ children, ...props }: any) => {
+
+    return (
+        <ValueContainer {...props}>
+            {React.Children.map(children, child =>
+                child && child.type !== Placeholder ? child : null
+            )}
+            <Placeholder {...props} isFocused={props.isFocused}>
+                {props.selectProps.placeholder}
+            </Placeholder>
+        </ValueContainer>
     );
 };
 
@@ -53,8 +72,8 @@ const colourStyles: StylesConfig = {
 
     control: (styles, state) => ({
         ...styles,
-        padding: '1px 4px',
-        borderRadius: 8,
+        padding: '1px 0',
+        border: 'none'
     }),
     indicatorSeparator: (styles, state) => ({
         ...styles,
@@ -66,6 +85,12 @@ const colourStyles: StylesConfig = {
             boxShadow: 'none !important'
         },
     }),
+    multiValue: styles => ({
+        ...styles,
+        padding: '4px 12px',
+        borderRadius: 48,
+        fontWeight: 500
+    })
 }
 
 
@@ -84,7 +109,7 @@ export default function TagsInput({
 
 
     const handleChange = (newValue: OnChangeValue<Option, true>,) => {
-        onChange([...value, ...newValue.map(transformer.optionToTag)]);
+        onChange([...newValue.map(transformer.optionToTag)]);
         onBlur();
     }
 
@@ -95,9 +120,12 @@ export default function TagsInput({
     }
 
 
+
     const maxReached = value.length >= max;
 
-    const tagsOptions = (officalTags.data?.officialTags ?? []).filter(t => !value.some((v: Tag) => v.title === t.title)).map(transformer.tagToOption);
+    const currentPlaceholder = maxReached ? '' : value.length > 0 ? "Add Another..." : placeholder;
+
+    const tagsOptions = !maxReached ? (officalTags.data?.officialTags ?? []).filter(t => !value.some((v: Tag) => v.title === t.title)).map(transformer.tagToOption) : [];
 
     return (
         <div className={`${classes?.container}`}>
@@ -105,19 +133,23 @@ export default function TagsInput({
                 isLoading={officalTags.loading}
                 options={tagsOptions}
                 isMulti
-                isDisabled={maxReached}
-                placeholder={maxReached ? `Max. ${max} tags reached. Remove a tag to add another.` : placeholder}
+                isOptionDisabled={() => maxReached}
+                placeholder={currentPlaceholder}
                 isClearable
+                noOptionsMessage={() => {
+                    return maxReached
+                        ? "You've reached the max number of tags."
+                        : "No tags available";
+                }}
 
-
-                value={[]}
+                closeMenuOnSelect={false}
+                value={value.map(transformer.tagToOption)}
                 onChange={handleChange as any}
                 onBlur={onBlur}
                 components={{
                     Option: OptionComponent,
-                    MultiValue: () => <></>
+                    // ValueContainer: CustomValueContainer
                 }}
-
                 styles={colourStyles as any}
                 theme={(theme) => ({
                     ...theme,
@@ -128,9 +160,9 @@ export default function TagsInput({
                     },
                 })}
             />
-            <div className="flex mt-16 gap-8 flex-wrap">
+            {/* <div className="flex mt-16 gap-8 flex-wrap">
                 {(value as Tag[]).map((tag, idx) => <Badge color="gray" key={tag.title} onRemove={() => handleRemove(idx)} >{tag.title}</Badge>)}
-            </div>
+            </div> */}
         </div>
     )
 }
