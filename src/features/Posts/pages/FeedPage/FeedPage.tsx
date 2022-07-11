@@ -79,14 +79,13 @@ export default function FeedPage() {
                             top: `${navHeight + 16}px`,
                             maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         }}>
-                        {isLoggedIn &&
-                            <Button
-                                href='/blog/create-post'
-                                color='primary'
-                                fullWidth
-                            >
-                                Write a story
-                            </Button>}
+                        <Button
+                            href='/blog/create-post'
+                            color='primary'
+                            fullWidth
+                        >
+                            Write a story
+                        </Button>
                         <div className="my-24"></div>
                         <div className="my-24"></div>
                         <PopularTagsFilter

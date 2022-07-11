@@ -103,3 +103,9 @@ export function capitalize(s?: string) {
 }
 
 export const withHttp = (url: string) => !/^https?:\/\//i.test(url) ? `http://${url}` : url;
+
+export function getPropertyFromUnknown<Value = string>(obj: unknown, prop: string | number | symbol): Value | null {
+  if (typeof obj === 'object' && obj !== null && prop in obj)
+    return (obj as any)[prop as any] as Value;
+  return null
+}

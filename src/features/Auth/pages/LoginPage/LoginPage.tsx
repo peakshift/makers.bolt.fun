@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Helmet } from "react-helmet";
 import { Grid } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useMeQuery } from "src/graphql"
 import { CONSTS } from "src/utils";
 import { QRCodeSVG } from 'qrcode.react';
@@ -9,6 +9,7 @@ import { IoRocketOutline } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
+import { getPropertyFromUnknown, } from "src/utils/helperFunctions";
 
 
 
@@ -58,6 +59,7 @@ const useLnurlQuery = () => {
 export default function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const [copied, setCopied] = useState(false);
 
     const { loadingLnurl, data: { lnurl, session_token }, error } = useLnurlQuery();
@@ -75,7 +77,10 @@ export default function LoginPage() {
                 setIsLoggedIn(true);
                 meQuery.stopPolling();
                 setTimeout(() => {
-                    navigate('/')
+                    const cameFrom = getPropertyFromUnknown(location.state, 'from');
+                    const navigateTo = cameFrom ? cameFrom : '/'
+
+                    navigate(navigateTo)
                 }, 2000)
             }
 
