@@ -1,5 +1,5 @@
 import { FiBold, FiItalic, FiType, FiUnderline, FiAlignCenter, FiAlignLeft, FiAlignRight, FiCode } from 'react-icons/fi'
-import { FaListOl, FaListUl, FaUndo, FaRedo, FaImage, FaYoutube } from 'react-icons/fa'
+import { FaListOl, FaListUl, FaUndo, FaRedo, FaImage, FaYoutube, FaQuoteLeft } from 'react-icons/fa'
 import { BiCodeCurly } from 'react-icons/bi';
 
 
@@ -72,6 +72,12 @@ export const cmdToBtn = {
         activeCmd: null,
         tip: "Redo",
         Icon: FaRedo,
+    },
+    blockquote: {
+        cmd: 'toggleBlockquote',
+        activeCmd: 'blockquote',
+        tip: "Block Quote",
+        Icon: FaQuoteLeft,
     },
     code: {
         cmd: 'toggleCode',

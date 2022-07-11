@@ -8,6 +8,10 @@
     }
   }
 
+  :where(h1, h2, h3, h4, h5, h6, a, ul, ol, pre, a, p, iframe, ul, ol, blockquote) {
+    margin-bottom: 16px;
+  }
+
   h1 {
     font-size: 36px;
     line-height: 50px;
@@ -69,7 +73,6 @@
 
   ul,
   ol {
-    list-style: disc;
     margin-inline-start: 32px;
 
     p {
@@ -80,10 +83,22 @@
     }
   }
 
-  ul {
+  ul li {
     list-style: disc;
   }
-  ol {
+  ol li {
     list-style: decimal;
+  }
+
+  blockquote {
+    border-left: 3px solid #dee2e6;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    font-style: italic;
+
+    p {
+      color: #777;
+    }
   }
 }
