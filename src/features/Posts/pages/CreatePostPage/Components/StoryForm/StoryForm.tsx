@@ -48,6 +48,7 @@ interface IFormInputs {
     tags: NestedValue<{ title: string }[]>
     cover_image: NestedValue<File[]> | NestedValue<string[]>
     body: string
+    is_published: boolean | null
 }
 
 
@@ -83,6 +84,7 @@ export default function StoryForm() {
             cover_image: story?.cover_image ?? [],
             tags: story?.tags ?? [],
             body: story?.body ?? '',
+            is_published: story?.is_published ?? false,
         },
     });
     const { handleSubmit, control, register, formState: { errors, isValid, isSubmitted }, trigger, getValues, watch } = formMethods;
@@ -213,13 +215,14 @@ export default function StoryForm() {
                                 "Publish"
                             }
                         </Button>
-                        <Button
-                            color="gray"
-                            disabled={loading}
-                            onClick={clickSubmit(false)}
-                        >
-                            Save as Draft
-                        </Button>
+                        {!story?.is_published &&
+                            <Button
+                                color="gray"
+                                disabled={loading}
+                                onClick={clickSubmit(false)}
+                            >
+                                Save as Draft
+                            </Button>}
                     </div>
                 </form>
                 <div className="order-1 xl:sticky top-32 self-start flex flex-col gap-24">

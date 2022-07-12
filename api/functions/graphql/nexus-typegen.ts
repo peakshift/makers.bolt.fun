@@ -87,6 +87,7 @@ export interface NexusGenObjects {
     deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
+    is_published?: boolean | null; // Boolean
     reward_amount: number; // Int!
     title: string; // String!
     votes_count: number; // Int!
@@ -161,6 +162,7 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published?: boolean | null; // Boolean
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -170,6 +172,7 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published?: boolean | null; // Boolean
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -243,6 +246,7 @@ export interface NexusGenFieldTypes {
     deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     reward_amount: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
@@ -357,6 +361,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
@@ -371,6 +376,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
@@ -413,6 +419,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     title: string; // String!
     votes_count: number; // Int!
   }
@@ -442,6 +449,7 @@ export interface NexusGenFieldTypeNames {
     deadline: 'String'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     reward_amount: 'Int'
     tags: 'Tag'
     title: 'String'
@@ -556,6 +564,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     tags: 'Tag'
     title: 'String'
     type: 'String'
@@ -570,6 +579,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     tags: 'Tag'
     title: 'String'
     type: 'String'
@@ -612,6 +622,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     title: 'String'
     votes_count: 'Int'
   }

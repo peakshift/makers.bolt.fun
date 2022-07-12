@@ -57,6 +57,7 @@ const PostBase = interfaceType({
         t.nonNull.string('body');
         t.nonNull.string('excerpt');
         t.nonNull.int('votes_count');
+        t.boolean('is_published');
     },
 })
 

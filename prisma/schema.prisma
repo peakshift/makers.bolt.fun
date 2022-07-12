@@ -141,6 +141,7 @@ model Question {
   body        String
   excerpt     String
   votes_count Int      @default(0)
+  is_published Boolean  @default(true)
 
 
   tags Tag[]
