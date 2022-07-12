@@ -1,0 +1,16 @@
+query GetMyDrafts($type: POST_TYPE!) {
+  getMyDrafts(type: $type) {
+    ... on Story {
+      id
+      title
+    }
+    ... on Bounty {
+      id
+      title
+    }
+    ... on Question {
+      title
+      id
+    }
+  }
+}

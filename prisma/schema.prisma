@@ -114,14 +114,15 @@ model Award {
 // -----------------
 
 model Story {
-  id          Int      @id @default(autoincrement())
-  title       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  body        String
-  excerpt     String
-  cover_image String?
-  votes_count Int      @default(0)
+  id           Int      @id @default(autoincrement())
+  title        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  body         String
+  excerpt      String
+  cover_image  String?
+  votes_count  Int      @default(0)
+  is_published Boolean  @default(true)
 
 
   tags Tag[]

@@ -17,4 +17,8 @@ export class StorageService<T = any> {
 
         return JSON.parse(str) as T;
     }
+
+    clear() {
+        localStorage.removeItem(this.key)
+    }
 }

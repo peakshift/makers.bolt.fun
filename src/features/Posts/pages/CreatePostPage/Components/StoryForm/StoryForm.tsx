@@ -6,7 +6,7 @@ import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import * as yup from "yup";
 import ContentEditor from "../ContentEditor/ContentEditor";
-import { useCreateStoryMutation } from 'src/graphql'
+import { Post_Type, useCreateStoryMutation, useGetMyDraftsQuery } from 'src/graphql'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
 import { stageStory } from 'src/redux/features/staging.slice'
@@ -72,6 +72,7 @@ export default function StoryForm() {
     const navigate = useNavigate();
     const errorsContainerRef = useRef<HTMLDivElement>(null!);
 
+    const myDraftsQuery = useGetMyDraftsQuery({ variables: { type: Post_Type.Story } })
 
     const formMethods = useForm<IFormInputs>({
         resolver: yupResolver(schema) as Resolver<IFormInputs>,
@@ -119,11 +120,11 @@ export default function StoryForm() {
             storageService.set(data)
             setEditMode(false);
         } else {
-            clickSubmit(); // I'm doing this so that the react-hook-form attaches onChange listener to inputs validation
+            clickSubmit(false)(); // I'm doing this so that the react-hook-form attaches onChange listener to inputs validation
         }
     }
 
-    const clickSubmit = handleSubmit<IFormInputs>(data => {
+    const clickSubmit = (publish_now: boolean) => handleSubmit<IFormInputs>(data => {
         setLoading(true);
         createStory({
             variables: {
@@ -132,10 +133,12 @@ export default function StoryForm() {
                     title: data.title,
                     body: data.body,
                     tags: data.tags.map(t => t.title),
+                    is_published: publish_now,
                     cover_image: (data.cover_image[0] ?? null) as string | null,
                 },
             }
         })
+        storageService.clear();
     }, () => errorsContainerRef.current.scrollIntoView({ behavior: 'smooth', block: "center" }))
 
 
@@ -147,7 +150,7 @@ export default function StoryForm() {
             <div className="grid gap-24 grid-cols-1 xl:grid-cols-[1fr_min(326px,25%)]">
                 <form
                     className='order-2 xl:order-1'
-                    onSubmit={clickSubmit}
+                    onSubmit={clickSubmit(true)}
                 >
                     <div className="flex gap-16 mb-24">
                         <button type='button' className={`rounded-8 px-16 py-8 ${editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={() => setEditMode(true)}>Edit</button>
@@ -206,19 +209,20 @@ export default function StoryForm() {
                             disabled={loading}
                         >
                             {isUpdating ?
-                                loading ? "Updating..." : "Update" :
-                                loading ? "Publishing..." : "Publish"
+                                "Update" :
+                                "Publish"
                             }
                         </Button>
-                        {/* <Button
+                        <Button
                             color="gray"
-                        // onClick={clickPreview}
+                            disabled={loading}
+                            onClick={clickSubmit(false)}
                         >
-                            Save Draft
-                        </Button> */}
+                            Save as Draft
+                        </Button>
                     </div>
                 </form>
-                <div className="order-1 xl:sticky top-32 self-start">
+                <div className="order-1 xl:sticky top-32 self-start flex flex-col gap-24">
                     <div ref={errorsContainerRef}>
                         {(!isValid && isSubmitted) && <ul className='bg-red-50 p-8 pl-24 border-l-4 rounded-8 border-red-600 list-disc text-body4 text-medium'>
                             {errors.title && <li className="input-error text-body5 text-medium">
@@ -235,6 +239,13 @@ export default function StoryForm() {
                             </li>}
                         </ul>}
                     </div>
+                    {(!myDraftsQuery.loading && myDraftsQuery.data?.getMyDrafts && myDraftsQuery.data.getMyDrafts.length > 0) &&
+                        <div className="border-2 border-gray-200 rounded-16 p-16">
+                            <p className="text-body4 font-bold mb-16">Saved Drafts</p>
+                            <ul className=''>
+                                {myDraftsQuery.data.getMyDrafts.map(draft => <li key={draft.id} className='hover:underline' role={'button'}>{draft.title}</li>)}
+                            </ul>
+                        </div>}
                 </div>
             </div>
         </FormProvider >

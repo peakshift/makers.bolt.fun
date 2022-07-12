@@ -32,6 +32,7 @@ export interface NexusGenInputs {
     body: string; // String!
     cover_image?: string | null; // String
     id?: number | null; // Int
+    is_published?: boolean | null; // Boolean
     tags: string[]; // [String!]!
     title: string; // String!
   }
@@ -335,6 +336,7 @@ export interface NexusGenFieldTypes {
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
+    getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -533,6 +535,7 @@ export interface NexusGenFieldTypeNames {
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
+    getMyDrafts: 'Post'
     getPostById: 'Post'
     getProject: 'Project'
     getTrendingPosts: 'Post'
@@ -662,6 +665,9 @@ export interface NexusGenArgTypes {
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!
+    }
+    getMyDrafts: { // args
+      type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
     }
     getPostById: { // args
       id: number; // Int!

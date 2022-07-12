@@ -150,6 +150,7 @@ type Query {
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
+  getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
   getTrendingPosts: [Post!]!
@@ -196,6 +197,7 @@ input StoryInputType {
   body: String!
   cover_image: String
   id: Int
+  is_published: Boolean
   tags: [String!]!
   title: String!
 }
