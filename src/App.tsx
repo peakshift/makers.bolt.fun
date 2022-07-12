@@ -18,7 +18,6 @@ import { Loadable } from "./utils/routing";
 const FeedPage = Loadable(React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage")))
 const PostDetailsPage = Loadable(React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
 const CreatePostPage = Loadable(React.lazy(() => import("./features/Posts/pages/CreatePostPage/CreatePostPage")))
-const PreviewPostPage = Loadable(React.lazy(() => import("./features/Posts/pages/PreviewPostPage/PreviewPostPage")))
 
 const HottestPage = Loadable(React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage")))
 const CategoryPage = Loadable(React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage")))
@@ -84,7 +83,6 @@ function App() {
     </Helmet>
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path="/blog/preview-post/:type" element={<PreviewPostPage />} />
         <Route path="/blog/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
 
         <Route element={<NavbarLayout />}>

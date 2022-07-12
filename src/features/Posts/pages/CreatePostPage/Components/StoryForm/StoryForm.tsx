@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Controller, FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, FormProvider, NestedValue, Resolver, useForm } from "react-hook-form";
 import Button from "src/Components/Button/Button";
 import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
@@ -13,6 +13,9 @@ import { stageStory } from 'src/redux/features/staging.slice'
 import { Override } from 'src/utils/interfaces';
 import { NotificationsService } from "src/services/notifications.service";
 import { createRoute } from 'src/utils/routing';
+import PreviewPostCard from '../PreviewPostCard/PreviewPostCard'
+import { StorageService } from 'src/services';
+import { useThrottledCallback } from '@react-hookz/web';
 
 const FileSchema = yup.lazy((value: string | File[]) => {
 
@@ -54,16 +57,25 @@ export type CreateStoryType = Override<IFormInputs, {
     cover_image: File[] | string[]
 }>
 
+const storageService = new StorageService<CreateStoryType>('story-edit');
+
 export default function StoryForm() {
 
 
     const dispatch = useAppDispatch();
     const { story } = useAppSelector(state => ({
-        story: state.staging.story
+        story: state.staging.story || storageService.get()
     }))
+
+
+    const [editMode, setEditMode] = useState(true)
+    const navigate = useNavigate();
+    const errorsContainerRef = useRef<HTMLDivElement>(null!);
+
 
     const formMethods = useForm<IFormInputs>({
         resolver: yupResolver(schema) as Resolver<IFormInputs>,
+        shouldFocusError: false,
         defaultValues: {
             id: story?.id ?? null,
             title: story?.title ?? '',
@@ -72,11 +84,19 @@ export default function StoryForm() {
             body: story?.body ?? '',
         },
     });
-    const { handleSubmit, control, register, formState: { errors, }, trigger, getValues, } = formMethods;
-    const [loading, setLoading] = useState(false)
+    const { handleSubmit, control, register, formState: { errors, isValid, isSubmitted }, trigger, getValues, watch } = formMethods;
 
-    const navigate = useNavigate()
 
+    const presistPost = useThrottledCallback((value) => storageService.set(value), [], 1000)
+    useEffect(() => {
+        const subscription = watch((value) => presistPost(value));
+        return () => subscription.unsubscribe();
+    }, [presistPost, watch]);
+
+
+
+
+    const [loading, setLoading] = useState(false);
     const [createStory] = useCreateStoryMutation({
         onCompleted: (data) => {
             navigate(createRoute({ type: 'story', id: data.createStory?.id!, title: data.createStory?.title }))
@@ -89,13 +109,15 @@ export default function StoryForm() {
         }
     });
 
+
     const clickPreview = async () => {
         const isValid = await trigger();
 
         if (isValid) {
             const data = getValues()
             dispatch(stageStory(data))
-            navigate('/blog/preview-post/Story')
+            storageService.set(data)
+            setEditMode(false);
         } else {
             clickSubmit(); // I'm doing this so that the react-hook-form attaches onChange listener to inputs validation
         }
@@ -114,86 +136,107 @@ export default function StoryForm() {
                 },
             }
         })
-    })
+    }, () => errorsContainerRef.current.scrollIntoView({ behavior: 'smooth', block: "center" }))
 
 
     const isUpdating = story?.id;
 
+
     return (
         <FormProvider {...formMethods}>
-            <form
-                onSubmit={clickSubmit}
-            >
-                <div
-                    className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
-                    <div className="p-32">
-                        <Controller
-                            control={control}
-                            name="cover_image"
-                            render={({ field: { onChange, value, onBlur, ref } }) => (
-                                <FilesInput
-                                    ref={ref}
-                                    value={value}
-                                    onBlur={onBlur}
-                                    onChange={onChange}
-                                    uploadText='Add a cover image'
-                                />
-                            )}
-                        />
-                        <p className='input-error'>{errors.cover_image?.message}</p>
-
-
-
-                        <div className="mt-16 relative">
-                            <input
-                                autoFocus
-                                type='text'
-                                className="p-0 text-[42px] border-0 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-600"
-                                placeholder='New story title here...'
-                                {...register("title")}
-                            />
-                        </div>
-                        {errors.title && <p className="input-error">
-                            {errors.title.message}
-                        </p>}
-
-                        <TagsInput
-                            placeholder="Add up to 5 popular tags..."
-                            classes={{ container: 'mt-16' }}
-                        />
-                        {errors.tags && <p className="input-error">
-                            {errors.tags.message}
-                        </p>}
+            <div className="grid gap-24 grid-cols-1 xl:grid-cols-[1fr_min(326px,25%)]">
+                <form
+                    className='order-2 xl:order-1'
+                    onSubmit={clickSubmit}
+                >
+                    <div className="flex gap-16 mb-24">
+                        <button type='button' className={`rounded-8 px-16 py-8 ${editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={() => setEditMode(true)}>Edit</button>
+                        <button type='button' className={`rounded-8 px-16 py-8 ${!editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={clickPreview}>Preview</button>
                     </div>
-                    <ContentEditor
-                        initialContent={story?.body}
-                        placeholder="Write your story content here..."
-                        name="body"
-                    />
+                    {editMode && <>
+                        <div
+                            className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
+                            <div className="p-32">
+                                <Controller
+                                    control={control}
+                                    name="cover_image"
+                                    render={({ field: { onChange, value, onBlur, ref } }) => (
+                                        <FilesInput
+                                            ref={ref}
+                                            value={value}
+                                            onBlur={onBlur}
+                                            onChange={onChange}
+                                            uploadText='Add a cover image'
+                                        />
+                                    )}
+                                />
 
-                    {errors.body && <p className="input-error py-8 px-16">
-                        {errors.body.message}
-                    </p>}
+
+
+                                <div className="mt-16 relative">
+                                    <input
+                                        autoFocus
+                                        type='text'
+                                        className="p-0 text-[42px] border-0 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
+                                        placeholder='New story title here...'
+                                        {...register("title")}
+                                    />
+                                </div>
+
+                                <TagsInput
+                                    placeholder="Add up to 5 popular tags..."
+                                    classes={{ container: 'mt-16' }}
+                                />
+
+                            </div>
+                            <ContentEditor
+                                initialContent={story?.body}
+                                placeholder="Write your story content here..."
+                                name="body"
+                            />
+
+                        </div>
+
+                    </>}
+                    {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues().cover_image[0] }} />}
+                    <div className="flex gap-16 mt-32">
+                        <Button
+                            type='submit'
+                            color="primary"
+                            disabled={loading}
+                        >
+                            {isUpdating ?
+                                loading ? "Updating..." : "Update" :
+                                loading ? "Publishing..." : "Publish"
+                            }
+                        </Button>
+                        {/* <Button
+                            color="gray"
+                        // onClick={clickPreview}
+                        >
+                            Save Draft
+                        </Button> */}
+                    </div>
+                </form>
+                <div className="order-1 xl:sticky top-32 self-start">
+                    <div ref={errorsContainerRef}>
+                        {(!isValid && isSubmitted) && <ul className='bg-red-50 p-8 pl-24 border-l-4 rounded-8 border-red-600 list-disc text-body4 text-medium'>
+                            {errors.title && <li className="input-error text-body5 text-medium">
+                                {errors.title.message}
+                            </li>}
+                            {errors.cover_image && <li className="input-error text-body5 text-medium">
+                                {errors.cover_image.message}
+                            </li>}
+                            {errors.tags && <li className="input-error text-body5 text-medium">
+                                {errors.tags.message}
+                            </li>}
+                            {errors.body && <li className="input-error text-body5 text-medium">
+                                {errors.body.message}
+                            </li>}
+                        </ul>}
+                    </div>
                 </div>
-                <div className="flex gap-16 mt-32">
-                    <Button
-                        type='submit'
-                        color="primary"
-                        disabled={loading}
-                    >
-                        {isUpdating ?
-                            loading ? "Updating..." : "Update" :
-                            loading ? "Publishing..." : "Publish"
-                        }
-                    </Button>
-                    <Button
-                        color="gray"
-                        onClick={clickPreview}
-                    >
-                        Preview
-                    </Button>
-                </div>
-            </form>
+            </div>
         </FormProvider >
     )
 }

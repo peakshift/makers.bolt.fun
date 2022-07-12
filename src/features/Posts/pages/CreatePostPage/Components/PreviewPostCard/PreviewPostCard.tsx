@@ -1,23 +1,25 @@
-import Header from "src/features/Posts/Components/PostCard/Header/Header"
 import { marked } from 'marked';
-import styles from '../../PostDetailsPage/Components/PageContent/styles.module.scss'
+import styles from 'src/features/Posts/pages/PostDetailsPage/Components/PageContent/styles.module.scss'
 import Badge from "src/Components/Badge/Badge";
 import { Post } from "src/graphql";
+
+function isPost(type?: string): type is 'story' {
+    return type === 'story'
+    // || type === 'question' || type === 'bounty'
+}
 
 
 interface Props {
     post: Pick<Post,
         | 'title'
-        | 'createdAt'
         | 'body'
-        | 'author'
     > & {
         tags: Array<{ title: string }>
         cover_image?: string | File | null
     }
 }
 
-export default function PreviewPostContent({ post }: Props) {
+export default function PreviewPostContent({ post, }: Props) {
 
     let coverImg: string;
     if (!post.cover_image)
@@ -36,7 +38,6 @@ export default function PreviewPostContent({ post }: Props) {
                         className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
                         alt="" />}
                 <div className="flex flex-col gap-24">
-                    <Header size="lg" showTimeAgo={false} author={post.author} date={post.createdAt} />
                     <h1 className="text-[42px] font-bolder">{post.title}</h1>
                     {post.tags.length > 0 && <div className="flex gap-8">
                         {post.tags.map((tag, idx) => <Badge key={idx} size='sm'>

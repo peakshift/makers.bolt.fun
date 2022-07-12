@@ -2,11 +2,9 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
-import { usePreload } from "src/utils/hooks";
 import BountyForm from "./Components/BountyForm/BountyForm";
 import QuestionForm from "./Components/QuestionForm/QuestionForm";
 import StoryForm from "./Components/StoryForm/StoryForm";
-import PostTypeList from "./PostTypeList";
 
 interface Props {
 
@@ -18,7 +16,6 @@ export default function CreatePostPage() {
 
     const [postType, setPostType] = useState<'story' | 'bounty' | 'question'>((type as any) ?? 'story');
 
-    usePreload('PreviewPostPage');
 
     const navigate = useNavigate();
 
@@ -29,7 +26,7 @@ export default function CreatePostPage() {
             {postType === 'question' && <title>Create Question</title>}
         </Helmet>
         <div
-            className="page-container grid gap-24 grid-cols-1 lg:grid-cols-[1fr_min(100%,910px)_1fr]"
+            className="page-container grid gap-24 grid-cols-1 lg:grid-cols-[1fr_4fr]"
         // style={{ gridTemplateColumns: "326px 1fr" }}
         >
             <div className="">
@@ -42,9 +39,7 @@ export default function CreatePostPage() {
                     <FiArrowLeft className={"text-body3"} />
                 </button>
             </div>
-            <div style={{
-                width: "min(100%,910px)"
-            }}>
+            <div  >
                 {postType === 'story' && <>
                     {/* <h2 className="text-h2 font-bolder text-gray-800 mb-32">
                         Write a Story
