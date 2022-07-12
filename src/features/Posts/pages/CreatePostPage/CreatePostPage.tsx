@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
+import { usePreload } from "src/utils/hooks";
 import BountyForm from "./Components/BountyForm/BountyForm";
 import QuestionForm from "./Components/QuestionForm/QuestionForm";
 import StoryForm from "./Components/StoryForm/StoryForm";
@@ -16,6 +17,9 @@ export default function CreatePostPage() {
     const { type } = useParams()
 
     const [postType, setPostType] = useState<'story' | 'bounty' | 'question'>((type as any) ?? 'story');
+
+    usePreload('PreviewPostPage');
+
     const navigate = useNavigate();
 
     return (<>
