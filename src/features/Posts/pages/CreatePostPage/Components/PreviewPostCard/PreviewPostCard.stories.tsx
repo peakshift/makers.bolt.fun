@@ -4,7 +4,7 @@ import { MOCK_DATA } from 'src/mocks/data';
 import PreviewPostCard from './PreviewPostCard';
 
 export default {
-    title: 'Posts/Post Details Page/Components/Story Page Content',
+    title: 'Posts/Post Details Page/Components/Preview Post Card',
     component: PreviewPostCard,
     argTypes: {
         backgroundColor: { control: 'color' },
