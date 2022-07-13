@@ -1,6 +1,5 @@
 
 import { useController } from "react-hook-form";
-import Badge from "src/Components/Badge/Badge";
 // import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select'
 import { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
@@ -73,12 +72,23 @@ const colourStyles: StylesConfig = {
     control: (styles, state) => ({
         ...styles,
         padding: '1px 0',
-        border: 'none'
+        border: 'none',
+        boxShadow: 'none',
+
+        ":hover": {
+            cursor: "pointer"
+        }
+
     }),
-    indicatorSeparator: (styles, state) => ({
+    multiValueRemove: (styles) => ({
         ...styles,
-        display: "none"
+        ":hover": {
+            background: 'none'
+        }
     }),
+    indicatorsContainer: () => ({ display: 'none' }),
+    clearIndicator: () => ({ display: 'none' }),
+    indicatorSeparator: () => ({ display: "none" }),
     input: (styles, state) => ({
         ...styles,
         " input": {
@@ -135,13 +145,11 @@ export default function TagsInput({
                 isMulti
                 isOptionDisabled={() => maxReached}
                 placeholder={currentPlaceholder}
-                isClearable
                 noOptionsMessage={() => {
                     return maxReached
                         ? "You've reached the max number of tags."
                         : "No tags available";
                 }}
-
                 closeMenuOnSelect={false}
                 value={value.map(transformer.tagToOption)}
                 onChange={handleChange as any}
