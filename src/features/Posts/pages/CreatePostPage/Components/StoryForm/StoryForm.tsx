@@ -62,6 +62,7 @@ export default function StoryForm(props: Props) {
                 navigate(createRoute({ type: 'story', id: data.createStory?.id!, title: data.createStory?.title }))
             else
                 reset()
+            props.onSuccess?.(!!data.createStory?.is_published);
             setLoading(false)
         },
         onError: (error) => {
@@ -140,12 +141,7 @@ export default function StoryForm(props: Props) {
                     </div>
                     <ContentEditor
                         key={postId}
-                        initialContent={() => {
-                            console.log('GET');
-                            console.log(getValues().body);
-
-                            return getValues().body
-                        }}
+                        initialContent={() => getValues().body}
                         placeholder="Write your story content here..."
                         name="body"
                     />
