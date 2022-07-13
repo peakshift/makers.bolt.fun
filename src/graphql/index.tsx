@@ -50,6 +50,7 @@ export type Bounty = PostBase & {
   tags: Array<Tag>;
   title: Scalars['String'];
   type: Scalars['String'];
+  updatedAt: Scalars['Date'];
   votes_count: Scalars['Int'];
 };
 
@@ -177,6 +178,7 @@ export type PostBase = {
   id: Scalars['Int'];
   is_published: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
+  updatedAt: Scalars['Date'];
   votes_count: Scalars['Int'];
 };
 
@@ -320,6 +322,7 @@ export type Question = PostBase & {
   tags: Array<Tag>;
   title: Scalars['String'];
   type: Scalars['String'];
+  updatedAt: Scalars['Date'];
   votes_count: Scalars['Int'];
 };
 
@@ -337,6 +340,7 @@ export type Story = PostBase & {
   tags: Array<Tag>;
   title: Scalars['String'];
   type: Scalars['String'];
+  updatedAt: Scalars['Date'];
   votes_count: Scalars['Int'];
 };
 
@@ -465,12 +469,19 @@ export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } }> };
 
+export type GetMyDraftsQueryVariables = Exact<{
+  type: Post_Type;
+}>;
+
+
+export type GetMyDraftsQuery = { __typename?: 'Query', getMyDrafts: Array<{ __typename?: 'Bounty', id: number, title: string, updatedAt: any } | { __typename?: 'Question', id: number, title: string, updatedAt: any } | { __typename?: 'Story', id: number, title: string, updatedAt: any }> };
+
 export type CreateStoryMutationVariables = Exact<{
   data: InputMaybe<StoryInputType>;
 }>;
 
 
-export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | null };
+export type CreateStoryMutation = { __typename?: 'Mutation', createStory: { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, is_published: boolean | null, type: string, cover_image: string | null, comments_count: number, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | null };
 
 export type DeleteStoryMutationVariables = Exact<{
   deleteStoryId: Scalars['Int'];
@@ -478,13 +489,6 @@ export type DeleteStoryMutationVariables = Exact<{
 
 
 export type DeleteStoryMutation = { __typename?: 'Mutation', deleteStory: { __typename?: 'Story', id: number } | null };
-
-export type GetMyDraftsQueryVariables = Exact<{
-  type: Post_Type;
-}>;
-
-
-export type GetMyDraftsQuery = { __typename?: 'Query', getMyDrafts: Array<{ __typename?: 'Bounty', id: number, title: string } | { __typename?: 'Question', title: string, id: number } | { __typename?: 'Story', id: number, title: string }> };
 
 export type PopularTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -936,6 +940,55 @@ export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
+export const GetMyDraftsDocument = gql`
+    query GetMyDrafts($type: POST_TYPE!) {
+  getMyDrafts(type: $type) {
+    ... on Story {
+      id
+      title
+      updatedAt
+    }
+    ... on Bounty {
+      id
+      title
+      updatedAt
+    }
+    ... on Question {
+      id
+      title
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyDraftsQuery__
+ *
+ * To run a query within a React component, call `useGetMyDraftsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyDraftsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyDraftsQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useGetMyDraftsQuery(baseOptions: Apollo.QueryHookOptions<GetMyDraftsQuery, GetMyDraftsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
+      }
+export function useGetMyDraftsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyDraftsQuery, GetMyDraftsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
+        }
+export type GetMyDraftsQueryHookResult = ReturnType<typeof useGetMyDraftsQuery>;
+export type GetMyDraftsLazyQueryHookResult = ReturnType<typeof useGetMyDraftsLazyQuery>;
+export type GetMyDraftsQueryResult = Apollo.QueryResult<GetMyDraftsQuery, GetMyDraftsQueryVariables>;
 export const CreateStoryDocument = gql`
     mutation createStory($data: StoryInputType) {
   createStory(data: $data) {
@@ -948,6 +1001,7 @@ export const CreateStoryDocument = gql`
       title
     }
     votes_count
+    is_published
     type
     cover_image
     comments_count
@@ -1013,52 +1067,6 @@ export function useDeleteStoryMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteStoryMutationHookResult = ReturnType<typeof useDeleteStoryMutation>;
 export type DeleteStoryMutationResult = Apollo.MutationResult<DeleteStoryMutation>;
 export type DeleteStoryMutationOptions = Apollo.BaseMutationOptions<DeleteStoryMutation, DeleteStoryMutationVariables>;
-export const GetMyDraftsDocument = gql`
-    query GetMyDrafts($type: POST_TYPE!) {
-  getMyDrafts(type: $type) {
-    ... on Story {
-      id
-      title
-    }
-    ... on Bounty {
-      id
-      title
-    }
-    ... on Question {
-      title
-      id
-    }
-  }
-}
-    `;
-
-/**
- * __useGetMyDraftsQuery__
- *
- * To run a query within a React component, call `useGetMyDraftsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMyDraftsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMyDraftsQuery({
- *   variables: {
- *      type: // value for 'type'
- *   },
- * });
- */
-export function useGetMyDraftsQuery(baseOptions: Apollo.QueryHookOptions<GetMyDraftsQuery, GetMyDraftsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
-      }
-export function useGetMyDraftsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyDraftsQuery, GetMyDraftsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
-        }
-export type GetMyDraftsQueryHookResult = ReturnType<typeof useGetMyDraftsQuery>;
-export type GetMyDraftsLazyQueryHookResult = ReturnType<typeof useGetMyDraftsLazyQuery>;
-export type GetMyDraftsQueryResult = Apollo.QueryResult<GetMyDraftsQuery, GetMyDraftsQueryVariables>;
 export const PopularTagsDocument = gql`
     query PopularTags {
   popularTags {

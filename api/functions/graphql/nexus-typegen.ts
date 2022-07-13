@@ -90,6 +90,7 @@ export interface NexusGenObjects {
     is_published?: boolean | null; // Boolean
     reward_amount: number; // Int!
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   BountyApplication: { // root type
@@ -164,6 +165,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     is_published?: boolean | null; // Boolean
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Story: { // root type
@@ -174,6 +176,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     is_published?: boolean | null; // Boolean
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Tag: { // root type
@@ -251,6 +254,7 @@ export interface NexusGenFieldTypes {
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   BountyApplication: { // field return type
@@ -365,6 +369,7 @@ export interface NexusGenFieldTypes {
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Story: { // field return type
@@ -380,6 +385,7 @@ export interface NexusGenFieldTypes {
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Tag: { // field return type
@@ -421,6 +427,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     is_published: boolean | null; // Boolean
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
 }
@@ -454,6 +461,7 @@ export interface NexusGenFieldTypeNames {
     tags: 'Tag'
     title: 'String'
     type: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
   BountyApplication: { // field return type name
@@ -568,6 +576,7 @@ export interface NexusGenFieldTypeNames {
     tags: 'Tag'
     title: 'String'
     type: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
   Story: { // field return type name
@@ -583,6 +592,7 @@ export interface NexusGenFieldTypeNames {
     tags: 'Tag'
     title: 'String'
     type: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
   Tag: { // field return type name
@@ -624,6 +634,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     is_published: 'Boolean'
     title: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
 }

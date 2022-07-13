@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import React, { ComponentProps, ComponentType, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { isNullOrUndefined } from "remirror";
@@ -108,4 +109,16 @@ export function getPropertyFromUnknown<Value = string>(obj: unknown, prop: strin
   if (typeof obj === 'object' && obj !== null && prop in obj)
     return (obj as any)[prop as any] as Value;
   return null
+}
+
+export function getDateDifference(date: string) {
+  const now = dayjs();
+  const mins = now.diff(date, 'minute');
+  if (mins < 60) return mins + 'm';
+  const hrs = now.diff(date, 'hour');
+  if (hrs < 24) return hrs + 'h';
+  const days = now.diff(date, 'day');
+  if (days < 30) return days + 'd';
+  const months = now.diff(date, 'month');
+  return months + 'mo'
 }

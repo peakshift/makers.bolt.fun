@@ -32,6 +32,7 @@ type Bounty implements PostBase {
   tags: [Tag!]!
   title: String!
   type: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
@@ -116,6 +117,7 @@ interface PostBase {
   id: Int!
   is_published: Boolean
   title: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
@@ -178,6 +180,7 @@ type Question implements PostBase {
   tags: [Tag!]!
   title: String!
   type: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
@@ -194,6 +197,7 @@ type Story implements PostBase {
   tags: [Tag!]!
   title: String!
   type: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 

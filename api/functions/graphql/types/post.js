@@ -54,6 +54,7 @@ const PostBase = interfaceType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.date('createdAt');
+        t.nonNull.date('updatedAt');
         t.nonNull.string('body');
         t.nonNull.string('excerpt');
         t.nonNull.int('votes_count');

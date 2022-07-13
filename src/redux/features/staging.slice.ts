@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CreateStoryType } from "src/features/Posts/pages/CreatePostPage/Components/StoryForm/StoryForm";
+import { CreateStoryType } from "src/features/Posts/pages/CreatePostPage/CreateStoryPage/CreateStoryPage";
 
 interface StoreState {
     story: CreateStoryType | null

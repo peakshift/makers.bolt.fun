@@ -3,14 +3,17 @@ query GetMyDrafts($type: POST_TYPE!) {
     ... on Story {
       id
       title
+      updatedAt
     }
     ... on Bounty {
       id
       title
+      updatedAt
     }
     ... on Question {
-      title
       id
+      title
+      updatedAt
     }
   }
 }
