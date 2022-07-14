@@ -53,13 +53,13 @@ export default function PostActions({ post, isPreview }: Props) {
             </ul> */}
             <ul className="bg-white rounded-12 p-16 border-2 border-gray-200 flex justify-around md:flex-col gap-32 mt-32">
                 <VoteButton votes={post.votes_count} onVote={vote} direction='vertical' fillType="upDown" />
-                {actions.map((action, idx) => <li
+                {/* {actions.map((action, idx) => <li
                     key={idx}
                     className={`py-8 px-20 text-body5 flex flex-col justify-center items-center cursor-pointer rounded-8 
                 ${'text-gray-500 hover:bg-gray-50 active:bg-gray-100'}`}>
                     <action.icon className={"text-body4 mb-8"}></action.icon>
                     <span>{action.value}</span>
-                </li>)}
+                </li>)} */}
             </ul>
         </div>
     )
