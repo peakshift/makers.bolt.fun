@@ -22,15 +22,17 @@ type Bounty implements PostBase {
   applications: [BountyApplication!]!
   author: Author!
   body: String!
-  cover_image: String!
+  cover_image: String
   createdAt: Date!
   deadline: String!
   excerpt: String!
   id: Int!
+  is_published: Boolean
   reward_amount: Int!
   tags: [Tag!]!
   title: String!
   type: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
@@ -113,7 +115,9 @@ interface PostBase {
   createdAt: Date!
   excerpt: String!
   id: Int!
+  is_published: Boolean
   title: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
@@ -150,6 +154,7 @@ type Query {
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
+  getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
   getTrendingPosts: [Post!]!
@@ -171,9 +176,11 @@ type Question implements PostBase {
   createdAt: Date!
   excerpt: String!
   id: Int!
+  is_published: Boolean
   tags: [Tag!]!
   title: String!
   type: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
@@ -182,25 +189,29 @@ type Story implements PostBase {
   body: String!
   comments: [PostComment!]!
   comments_count: Int!
-  cover_image: String!
+  cover_image: String
   createdAt: Date!
   excerpt: String!
   id: Int!
+  is_published: Boolean
   tags: [Tag!]!
   title: String!
   type: String!
+  updatedAt: Date!
   votes_count: Int!
 }
 
 input StoryInputType {
   body: String!
-  cover_image: String!
+  cover_image: String
   id: Int
+  is_published: Boolean
   tags: [String!]!
   title: String!
 }
 
 type Tag {
+  description: String
   icon: String
   id: Int!
   isOfficial: Boolean

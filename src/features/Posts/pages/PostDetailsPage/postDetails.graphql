@@ -18,6 +18,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       votes_count
       type
       cover_image
+      is_published
       comments_count
       comments {
         id

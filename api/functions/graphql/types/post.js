@@ -54,9 +54,11 @@ const PostBase = interfaceType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.date('createdAt');
+        t.nonNull.date('updatedAt');
         t.nonNull.string('body');
         t.nonNull.string('excerpt');
         t.nonNull.int('votes_count');
+        t.boolean('is_published');
     },
 })
 
@@ -67,7 +69,7 @@ const Story = objectType({
         t.nonNull.string('type', {
             resolve: () => t.typeName
         });
-        t.nonNull.string('cover_image');
+        t.string('cover_image');
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
@@ -107,8 +109,9 @@ const StoryInputType = inputObjectType({
         t.int('id');
         t.nonNull.string('title');
         t.nonNull.string('body');
-        t.nonNull.string('cover_image');
+        t.string('cover_image');
         t.nonNull.list.nonNull.string('tags');
+        t.boolean('is_published')
     }
 })
 const createStory = extendType({
@@ -118,21 +121,24 @@ const createStory = extendType({
             type: 'Story',
             args: { data: StoryInputType },
             async resolve(_root, args, ctx) {
-                const { id, title, body, cover_image, tags } = args.data;
+                const { id, title, body, cover_image, tags, is_published } = args.data;
                 const user = await getUserByPubKey(ctx.userPubKey);
 
                 // Do some validation
                 if (!user)
                     throw new ApolloError("Not Authenticated");
 
+                let was_published = false;
 
                 if (id) {
                     const oldPost = await prisma.story.findFirst({
                         where: { id },
                         select: {
-                            user_id: true
+                            user_id: true,
+                            is_published: true
                         }
                     })
+                    was_published = oldPost.is_published;
                     if (user.id !== oldPost.user_id)
                         throw new ApolloError("Not post author")
                 }
@@ -160,6 +166,7 @@ const createStory = extendType({
                             body,
                             cover_image,
                             excerpt,
+                            is_published: was_published || is_published,
                             tags: {
                                 connectOrCreate:
                                     tags.map(tag => {
@@ -185,6 +192,7 @@ const createStory = extendType({
                         body,
                         cover_image,
                         excerpt,
+                        is_published,
                         tags: {
                             connectOrCreate:
                                 tags.map(tag => {
@@ -263,7 +271,7 @@ const Bounty = objectType({
         t.nonNull.string('type', {
             resolve: () => 'Bounty'
         });
-        t.nonNull.string('cover_image');
+        t.string('cover_image');
         t.nonNull.string('deadline');
         t.nonNull.int('reward_amount');
         t.nonNull.int('applicants_count');
@@ -371,7 +379,8 @@ const getFeed = extendType({
                                     id: tag
                                 }
                             },
-                        })
+                        }),
+                        is_published: true,
                     },
                     skip,
                     take,
@@ -396,11 +405,43 @@ const getTrendingPosts = extendType({
                     where: {
                         createdAt: {
                             gte: lastWeekDate
-                        }
+                        },
+                        is_published: true,
                     },
                     orderBy: { votes_count: 'desc' },
                     take: 5,
                 }).then(asStoryType)
+            }
+        })
+    }
+})
+
+
+const getMyDrafts = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getMyDrafts', {
+            type: "Post",
+            args: {
+                type: arg({
+                    type: nonNull('POST_TYPE')
+                })
+            },
+            async resolve(parent, { type }, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+                // Do some validation
+                if (!user)
+                    throw new ApolloError("Not Authenticated");
+
+                if (type === 'Story')
+                    return prisma.story.findMany({
+                        where: {
+                            is_published: false,
+                            user_id: user.id
+                        },
+                        orderBy: { createdAt: 'desc' },
+                    }).then(asStoryType)
+                return []
             }
         })
     }
@@ -453,6 +494,7 @@ module.exports = {
     getFeed,
     getPostById,
     getTrendingPosts,
+    getMyDrafts,
 
     // Mutations
     createStory,

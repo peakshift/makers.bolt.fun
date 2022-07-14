@@ -7,6 +7,7 @@ const Tag = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.string('icon');
+        t.string('description');
         t.boolean('isOfficial');
     }
 });

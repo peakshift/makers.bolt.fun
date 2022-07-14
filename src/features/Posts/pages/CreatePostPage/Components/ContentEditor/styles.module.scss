@@ -8,8 +8,6 @@
       border-bottom-right-radius: inherit;
       min-height: var(--rmr-space-7);
 
-      @include post-body;
-
       a {
         color: rgb(54, 139, 236);
 
@@ -18,6 +16,14 @@
           cursor: pointer;
         }
       }
+
+      li {
+        & > label {
+          display: none;
+        }
+      }
+
+      @include post-body;
     }
     .remirror-editor-wrapper {
       height: 60vh;

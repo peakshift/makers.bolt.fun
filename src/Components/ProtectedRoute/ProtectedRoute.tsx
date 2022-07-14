@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { Navigate, } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "src/utils/hooks";
 
 interface Props {
@@ -17,10 +17,14 @@ export default function ProtectedRoute({
 
     const user = useAppSelector(state => state.user.me);
 
+    const location = useLocation();
+
+
+
     if (user === undefined) return <></>
 
     if (user === null)
-        return <Navigate to={notAuthorizedRedirectPath} replace />;
+        return <Navigate to={notAuthorizedRedirectPath} replace state={{ from: location.pathname }} />;
 
 
     if (!isAllowed) {

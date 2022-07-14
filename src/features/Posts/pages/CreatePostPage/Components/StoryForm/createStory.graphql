@@ -9,6 +9,7 @@ mutation createStory($data: StoryInputType) {
       title
     }
     votes_count
+    is_published
     type
     cover_image
     comments_count

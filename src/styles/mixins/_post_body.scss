@@ -8,6 +8,10 @@
     }
   }
 
+  :where(h1, h2, h3, h4, h5, h6, a, ul, ol, pre, a, p, iframe, ul, ol, blockquote) {
+    margin-bottom: 16px;
+  }
+
   h1 {
     font-size: 36px;
     line-height: 50px;
@@ -65,5 +69,36 @@
     width: calc(min(100%, 640px));
     aspect-ratio: 16/9;
     margin: 36px auto;
+  }
+
+  ul,
+  ol {
+    margin-inline-start: 32px;
+
+    p {
+      margin-bottom: 0;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+  }
+
+  ul li {
+    list-style: disc;
+  }
+  ol li {
+    list-style: decimal;
+  }
+
+  blockquote {
+    border-left: 3px solid #dee2e6;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    font-style: italic;
+
+    p {
+      color: #777;
+    }
   }
 }

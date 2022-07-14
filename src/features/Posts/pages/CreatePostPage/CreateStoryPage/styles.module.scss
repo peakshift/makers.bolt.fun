@@ -1,0 +1,36 @@
+@import "/src/styles/mixins/index.scss";
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+
+  & > * {
+    min-width: 0;
+  }
+
+  grid-template-areas:
+    "errors"
+    "form"
+    "drafts";
+
+  :global {
+    #errors {
+      grid-area: errors;
+    }
+    #form {
+      grid-area: form;
+    }
+    #drafts {
+      grid-area: drafts;
+    }
+  }
+
+  @include gt-xl {
+    grid-template-columns: 1fr calc(min(326px, 25%));
+    grid-template-areas:
+      "form errors"
+      "form drafts"
+      "form .";
+  }
+}

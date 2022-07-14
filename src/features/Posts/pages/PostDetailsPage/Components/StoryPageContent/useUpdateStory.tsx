@@ -28,18 +28,18 @@ export const useUpdateStory = (story: Story) => {
     const handleEdit = () => {
         dispatch(stageStory({
             ...story,
-            cover_image: [story.cover_image]
+            cover_image: story.cover_image ? [story.cover_image] : []
         }))
 
         navigate("/blog/create-post?type=story")
     };
 
-    const onInsertImage = useCallback(({ payload: { confirmed } }: typeof CONFIRM_DELETE_STORY) => {
+    const onConfirmDelete = useCallback(({ payload: { confirmed } }: typeof CONFIRM_DELETE_STORY) => {
         if (confirmed)
             deleteMutation()
     }, [deleteMutation])
 
-    useReduxEffect(onInsertImage, CONFIRM_DELETE_STORY.type);
+    useReduxEffect(onConfirmDelete, CONFIRM_DELETE_STORY.type);
 
     const handleDelete = () => {
         dispatch(openModal({

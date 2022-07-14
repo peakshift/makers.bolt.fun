@@ -30,9 +30,10 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
           if (value) {
             const [name, domain] = value.split("@");
             const lnurl = `https://${domain}/.well-known/lnurlp/${name}`;
-            await fetch(lnurl);
+            const res = await fetch(lnurl);
+            if (res.status === 200) return true;
           }
-          return true;
+          return false;
         } catch (error) {
           return false;
         }
@@ -141,7 +142,7 @@ export default function UpdateAboutForm({ data, onClose }: Props) {
 
           type='text'
           className="input-text"
-          placeholder="UK, London"
+          placeholder="Back-end Developer"
           {...register("jobTitle")}
         />
       </div>

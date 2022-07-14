@@ -21,8 +21,6 @@ import { createRoute } from "src/utils/routing";
 
 export default function NavDesktop() {
     const [searchOpen, setSearchOpen] = useState(false)
-    const communityRef = useRef(null);
-    const [communitymenuProps, toggleCommunityMenu] = useMenuState({ transition: true });
 
 
 

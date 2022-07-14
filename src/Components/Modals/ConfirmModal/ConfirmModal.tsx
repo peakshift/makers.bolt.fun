@@ -11,7 +11,7 @@ interface Props extends ModalCard {
     message?: string,
     actionName?: string,
     color?: 'red' | 'yellow' | 'blue'
-    callbackAction: PayloadAction<{ confirmed?: boolean }>
+    callbackAction: PayloadAction<{ confirmed?: boolean, id?: string | number }>
 }
 
 
@@ -39,8 +39,9 @@ export default function ConfirmModal({
     const dispatch = useAppDispatch();
 
     const handleConfirm = () => {
+
         const action = Object.assign({}, callbackAction);
-        action.payload = { confirmed: true }
+        action.payload = { confirmed: true, id: callbackAction.payload.id }
         dispatch(action)
         onClose?.();
     }

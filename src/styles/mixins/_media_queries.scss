@@ -91,3 +91,9 @@ $screen-xl-max: 50000px;
     @content;
   }
 }
+
+@mixin gt-xl {
+  @media screen and (min-width: #{$screen-xl-min}) {
+    @content;
+  }
+}

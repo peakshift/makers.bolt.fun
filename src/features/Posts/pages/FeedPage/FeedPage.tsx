@@ -2,7 +2,7 @@
 import { useUpdateEffect } from '@react-hookz/web'
 import { useState } from 'react'
 import { useFeedQuery } from 'src/graphql'
-import { useAppSelector, useInfiniteQuery } from 'src/utils/hooks'
+import { useAppSelector, useInfiniteQuery, usePreload } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import PopularTagsFilter, { FilterTag } from './PopularTagsFilter/PopularTagsFilter'
@@ -31,6 +31,8 @@ export default function FeedPage() {
     })
     const { fetchMore, isFetchingMore, variablesChanged } = useInfiniteQuery(feedQuery, 'getFeed')
     useUpdateEffect(variablesChanged, [sortByFilter, tagFilter]);
+
+    usePreload('PostPage');
 
     const { navHeight, isLoggedIn } = useAppSelector((state) => ({
         navHeight: state.ui.navHeight,
@@ -79,14 +81,13 @@ export default function FeedPage() {
                             top: `${navHeight + 16}px`,
                             maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
                         }}>
-                        {isLoggedIn &&
-                            <Button
-                                href='/blog/create-post'
-                                color='primary'
-                                fullWidth
-                            >
-                                Write a story
-                            </Button>}
+                        <Button
+                            href='/blog/create-post'
+                            color='primary'
+                            fullWidth
+                        >
+                            Write a story
+                        </Button>
                         <div className="my-24"></div>
                         <div className="my-24"></div>
                         <PopularTagsFilter

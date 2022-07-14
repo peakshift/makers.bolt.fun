@@ -30,8 +30,9 @@ declare global {
 export interface NexusGenInputs {
   StoryInputType: { // input type
     body: string; // String!
-    cover_image: string; // String!
+    cover_image?: string | null; // String
     id?: number | null; // Int
+    is_published?: boolean | null; // Boolean
     tags: string[]; // [String!]!
     title: string; // String!
   }
@@ -81,13 +82,15 @@ export interface NexusGenObjects {
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     body: string; // String!
-    cover_image: string; // String!
+    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
+    is_published?: boolean | null; // Boolean
     reward_amount: number; // Int!
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   BountyApplication: { // root type
@@ -160,19 +163,24 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published?: boolean | null; // Boolean
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Story: { // root type
     body: string; // String!
-    cover_image: string; // String!
+    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published?: boolean | null; // Boolean
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Tag: { // root type
+    description?: string | null; // String
     icon?: string | null; // String
     id: number; // Int!
     isOfficial?: boolean | null; // Boolean
@@ -236,15 +244,17 @@ export interface NexusGenFieldTypes {
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    cover_image: string; // String!
+    cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     reward_amount: number; // Int!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   BountyApplication: { // field return type
@@ -334,6 +344,7 @@ export interface NexusGenFieldTypes {
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
+    getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -354,9 +365,11 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Story: { // field return type
@@ -364,16 +377,19 @@ export interface NexusGenFieldTypes {
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
-    cover_image: string; // String!
+    cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
   Tag: { // field return type
+    description: string | null; // String
     icon: string | null; // String
     id: number; // Int!
     isOfficial: boolean | null; // Boolean
@@ -409,7 +425,9 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
+    is_published: boolean | null; // Boolean
     title: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
   }
 }
@@ -438,10 +456,12 @@ export interface NexusGenFieldTypeNames {
     deadline: 'String'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     reward_amount: 'Int'
     tags: 'Tag'
     title: 'String'
     type: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
   BountyApplication: { // field return type name
@@ -531,6 +551,7 @@ export interface NexusGenFieldTypeNames {
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
+    getMyDrafts: 'Post'
     getPostById: 'Post'
     getProject: 'Project'
     getTrendingPosts: 'Post'
@@ -551,9 +572,11 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     tags: 'Tag'
     title: 'String'
     type: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
   Story: { // field return type name
@@ -565,12 +588,15 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     tags: 'Tag'
     title: 'String'
     type: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
   Tag: { // field return type name
+    description: 'String'
     icon: 'String'
     id: 'Int'
     isOfficial: 'Boolean'
@@ -606,7 +632,9 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
+    is_published: 'Boolean'
     title: 'String'
+    updatedAt: 'Date'
     votes_count: 'Int'
   }
 }
@@ -659,6 +687,9 @@ export interface NexusGenArgTypes {
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!
+    }
+    getMyDrafts: { // args
+      type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
     }
     getPostById: { // args
       id: number; // Int!

@@ -25,7 +25,7 @@ import {
 } from 'remirror/extensions';
 import { ExtensionPriority, InvalidContentHandler } from 'remirror';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Toolbar from './Toolbar';
 
@@ -35,7 +35,7 @@ turndownService.keep(['iframe']);
 
 interface Props {
     placeholder?: string;
-    initialContent?: string;
+    initialContent?: () => string;
     name?: string;
 }
 
@@ -100,7 +100,7 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
         <div className={`remirror-theme ${styles.wrapper} post-body bg-white`}>
             <Remirror
                 manager={manager}
-                initialContent={initialContent}
+                initialContent={initialContent?.()}
             >
                 <TextEditorComponents.SaveModule name={name} />
                 <Toolbar />
