@@ -95,6 +95,21 @@ export let posts = {
             comments: generatePostComments(3),
 
         },
+        {
+            id: 6,
+            title: 'The End Is Nigh',
+            body: postBody,
+            cover_image: getCoverImage(),
+            comments_count: 3,
+            createdAt: getDate(),
+            votes_count: 120,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            type: "Story",
+            tags: randomItems(3, ...tags),
+            author: getAuthor(),
+            comments: generatePostComments(3),
+
+        },
     ] as Story[],
     bounties: [
         {
@@ -113,13 +128,46 @@ export let posts = {
             reward_amount: 200_000,
             applications: getApplications(2),
 
-        }
+        },
+        {
+            type: "Bounty",
+            id: 51,
+            title: 'Wanted, Dead OR Alive!!',
+            body: postBody,
+            cover_image: getCoverImage(),
+            applicants_count: 31,
+            createdAt: getDate(),
+            votes_count: 120,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            tags: randomItems(3, ...tags),
+            author: getAuthor(),
+            deadline: "25 May",
+            reward_amount: 200_000,
+            applications: getApplications(2),
+
+        },
     ] as Bounty[],
     questions: [
         {
             type: "Question",
             id: 33,
             title: 'Digital Editor, Mars Review of Books',
+            body: postBody,
+            answers_count: 3,
+            createdAt: getDate(),
+            votes_count: 70,
+            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
+            tags: [
+                { id: 1, title: "lnurl" },
+                { id: 2, title: "webln" },
+            ],
+            author: getAuthor(),
+            comments: generatePostComments(3)
+        },
+        {
+            type: "Question",
+            id: 33,
+            title: 'What is a man but miserable pile of secrets?',
             body: postBody,
             answers_count: 3,
             createdAt: getDate(),

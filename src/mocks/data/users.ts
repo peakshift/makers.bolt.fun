@@ -1,4 +1,5 @@
 import { User } from "src/graphql";
+import { posts } from "./posts";
 
 export const user: User = {
     id: 123,
@@ -14,5 +15,6 @@ export const user: User = {
     location: "Germany, Berlin",
     role: "user",
     twitter: "john-doe",
-    website: "https://mtg-dev.tech"
+    website: "https://mtg-dev.tech",
+    stories: posts.stories
 }

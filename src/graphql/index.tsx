@@ -390,6 +390,7 @@ export type User = {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   role: Maybe<Scalars['String']>;
+  stories: Array<Story>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
 };
@@ -518,7 +519,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', title: string, icon: string | null, id: number }> }> } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<UpdateProfileInput>;
@@ -1360,6 +1361,16 @@ export const ProfileDocument = gql`
     linkedin
     bio
     location
+    stories {
+      id
+      title
+      createdAt
+      tags {
+        title
+        icon
+        id
+      }
+    }
   }
 }
     `;

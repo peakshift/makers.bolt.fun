@@ -111,14 +111,20 @@ export function getPropertyFromUnknown<Value = string>(obj: unknown, prop: strin
   return null
 }
 
-export function getDateDifference(date: string) {
+export function getDateDifference(date: string, { dense }: { dense?: boolean } = {}) {
   const now = dayjs();
   const mins = now.diff(date, 'minute');
-  if (mins < 60) return mins + 'm';
+  if (mins < 60)
+    return mins + (dense ? 'm' : " minutes");
+
   const hrs = now.diff(date, 'hour');
-  if (hrs < 24) return hrs + 'h';
+  if (hrs < 24)
+    return hrs + (dense ? 'h' : " hours");
+
   const days = now.diff(date, 'day');
-  if (days < 30) return days + 'd';
+  if (days < 30)
+    return days + (dense ? 'd' : " days");
+
   const months = now.diff(date, 'month');
-  return months + 'mo'
+  return months + (dense ? 'mo' : " months")
 }

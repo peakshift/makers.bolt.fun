@@ -408,6 +408,7 @@ export interface NexusGenFieldTypes {
     location: string | null; // String
     name: string; // String!
     role: string | null; // String
+    stories: NexusGenRootTypes['Story'][]; // [Story!]!
     twitter: string | null; // String
     website: string | null; // String
   }
@@ -615,6 +616,7 @@ export interface NexusGenFieldTypeNames {
     location: 'String'
     name: 'String'
     role: 'String'
+    stories: 'Story'
     twitter: 'String'
     website: 'String'
   }

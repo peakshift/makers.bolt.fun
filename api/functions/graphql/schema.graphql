@@ -245,6 +245,7 @@ type User {
   location: String
   name: String!
   role: String
+  stories: [Story!]!
   twitter: String
   website: String
 }

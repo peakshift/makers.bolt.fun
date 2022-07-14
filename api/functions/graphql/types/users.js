@@ -23,6 +23,13 @@ const User = objectType({
         t.string('linkedin')
         t.string('bio')
         t.string('location')
+
+        t.nonNull.list.nonNull.field('stories', {
+            type: "Story",
+            resolve: (parent) => {
+                return prisma.story.findMany({ where: { user_id: parent.id, is_published: true }, orderBy: { createdAt: "desc" } });
+            }
+        });
     }
 })
 

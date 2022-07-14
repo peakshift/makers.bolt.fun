@@ -114,143 +114,7 @@ const StoryInputType = inputObjectType({
         t.boolean('is_published')
     }
 })
-const createStory = extendType({
-    type: 'Mutation',
-    definition(t) {
-        t.field('createStory', {
-            type: 'Story',
-            args: { data: StoryInputType },
-            async resolve(_root, args, ctx) {
-                const { id, title, body, cover_image, tags, is_published } = args.data;
-                const user = await getUserByPubKey(ctx.userPubKey);
 
-                // Do some validation
-                if (!user)
-                    throw new ApolloError("Not Authenticated");
-
-                let was_published = false;
-
-                if (id) {
-                    const oldPost = await prisma.story.findFirst({
-                        where: { id },
-                        select: {
-                            user_id: true,
-                            is_published: true
-                        }
-                    })
-                    was_published = oldPost.is_published;
-                    if (user.id !== oldPost.user_id)
-                        throw new ApolloError("Not post author")
-                }
-                // TODO: validate post data
-
-
-                // Preprocess & insert
-                const htmlBody = marked.parse(body);
-                const excerpt = htmlBody.replace(/<[^>]+>/g, '').slice(0, 120);
-
-                if (id) {
-                    await prisma.story.update({
-                        where: { id },
-                        data: {
-                            tags: {
-                                set: []
-                            },
-                        }
-                    });
-
-                    return prisma.story.update({
-                        where: { id },
-                        data: {
-                            title,
-                            body,
-                            cover_image,
-                            excerpt,
-                            is_published: was_published || is_published,
-                            tags: {
-                                connectOrCreate:
-                                    tags.map(tag => {
-                                        tag = tag.toLowerCase().trim();
-                                        return {
-                                            where: {
-                                                title: tag,
-                                            },
-                                            create: {
-                                                title: tag
-                                            }
-                                        }
-                                    })
-                            },
-                        }
-                    })
-                }
-
-
-                return prisma.story.create({
-                    data: {
-                        title,
-                        body,
-                        cover_image,
-                        excerpt,
-                        is_published,
-                        tags: {
-                            connectOrCreate:
-                                tags.map(tag => {
-                                    tag = tag.toLowerCase().trim();
-                                    return {
-                                        where: {
-                                            title: tag,
-                                        },
-                                        create: {
-                                            title: tag
-                                        }
-                                    }
-                                })
-                        },
-                        user: {
-                            connect: {
-                                id: user.id,
-                            }
-                        }
-                    }
-                })
-            }
-        })
-    },
-})
-
-const deleteStory = extendType({
-    type: 'Mutation',
-    definition(t) {
-        t.field('deleteStory', {
-            type: 'Story',
-            args: { id: nonNull(intArg()) },
-            async resolve(_root, args, ctx) {
-                const { id } = args;
-                const user = await getUserByPubKey(ctx.userPubKey);
-                // Do some validation
-                if (!user)
-                    throw new ApolloError("Not Authenticated");
-
-
-                const oldPost = await prisma.story.findFirst({
-                    where: { id },
-                    select: {
-                        user_id: true
-                    }
-                })
-                if (user.id !== oldPost.user_id)
-                    throw new ApolloError("Not post author")
-
-                return prisma.story.delete({
-                    where: {
-                        id
-                    }
-                })
-            }
-        })
-    },
-})
 
 const BountyApplication = objectType({
     name: 'BountyApplication',
@@ -417,6 +281,7 @@ const getTrendingPosts = extendType({
 })
 
 
+
 const getMyDrafts = extendType({
     type: "Query",
     definition(t) {
@@ -473,6 +338,144 @@ const getPostById = extendType({
             }
         })
     }
+})
+
+const createStory = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('createStory', {
+            type: 'Story',
+            args: { data: StoryInputType },
+            async resolve(_root, args, ctx) {
+                const { id, title, body, cover_image, tags, is_published } = args.data;
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                // Do some validation
+                if (!user)
+                    throw new ApolloError("Not Authenticated");
+
+                let was_published = false;
+
+                if (id) {
+                    const oldPost = await prisma.story.findFirst({
+                        where: { id },
+                        select: {
+                            user_id: true,
+                            is_published: true
+                        }
+                    })
+                    was_published = oldPost.is_published;
+                    if (user.id !== oldPost.user_id)
+                        throw new ApolloError("Not post author")
+                }
+                // TODO: validate post data
+
+
+                // Preprocess & insert
+                const htmlBody = marked.parse(body);
+                const excerpt = htmlBody.replace(/<[^>]+>/g, '').slice(0, 120);
+
+                if (id) {
+                    await prisma.story.update({
+                        where: { id },
+                        data: {
+                            tags: {
+                                set: []
+                            },
+                        }
+                    });
+
+                    return prisma.story.update({
+                        where: { id },
+                        data: {
+                            title,
+                            body,
+                            cover_image,
+                            excerpt,
+                            is_published: was_published || is_published,
+                            tags: {
+                                connectOrCreate:
+                                    tags.map(tag => {
+                                        tag = tag.toLowerCase().trim();
+                                        return {
+                                            where: {
+                                                title: tag,
+                                            },
+                                            create: {
+                                                title: tag
+                                            }
+                                        }
+                                    })
+                            },
+                        }
+                    })
+                }
+
+
+                return prisma.story.create({
+                    data: {
+                        title,
+                        body,
+                        cover_image,
+                        excerpt,
+                        is_published,
+                        tags: {
+                            connectOrCreate:
+                                tags.map(tag => {
+                                    tag = tag.toLowerCase().trim();
+                                    return {
+                                        where: {
+                                            title: tag,
+                                        },
+                                        create: {
+                                            title: tag
+                                        }
+                                    }
+                                })
+                        },
+                        user: {
+                            connect: {
+                                id: user.id,
+                            }
+                        }
+                    }
+                })
+            }
+        })
+    },
+})
+
+const deleteStory = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('deleteStory', {
+            type: 'Story',
+            args: { id: nonNull(intArg()) },
+            async resolve(_root, args, ctx) {
+                const { id } = args;
+                const user = await getUserByPubKey(ctx.userPubKey);
+                // Do some validation
+                if (!user)
+                    throw new ApolloError("Not Authenticated");
+
+
+                const oldPost = await prisma.story.findFirst({
+                    where: { id },
+                    select: {
+                        user_id: true
+                    }
+                })
+                if (user.id !== oldPost.user_id)
+                    throw new ApolloError("Not post author")
+
+                return prisma.story.delete({
+                    where: {
+                        id
+                    }
+                })
+            }
+        })
+    },
 })
 
 

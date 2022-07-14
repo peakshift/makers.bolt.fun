@@ -14,5 +14,15 @@ query profile($profileId: Int!) {
     linkedin
     bio
     location
+    stories {
+      id
+      title
+      createdAt
+      tags {
+        id
+        title
+        icon
+      }
+    }
   }
 }
