@@ -63,6 +63,13 @@ function App() {
     setTimeout(() => {
       Wallet_Service.init();
     }, 2000)
+
+    const loadingAppPanel = document.querySelector('.loading-app');
+    loadingAppPanel?.classList.add('removed');
+    setTimeout(() => {
+      loadingAppPanel?.remove()
+    }, 800)
+
   }, []);
 
 

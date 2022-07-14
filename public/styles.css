@@ -1,0 +1,36 @@
+.loading-app {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.loading-app.removed {
+  transition: opacity 0.8s ease-out;
+  opacity: 0;
+}
+
+.loading-app img {
+  width: min(80%, 250px);
+  animation: fadeInOut 3s ease-in-out infinite alternate;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+    /* transform: rotate(0deg); */
+  }
+
+  80% {
+    opacity: 1;
+    /* transform: rotate(0deg); */
+  }
+
+  100% {
+    opacity: 0;
+    /* transform: rotate(360deg); */
+  }
+}
