@@ -14,7 +14,7 @@ const THEME = {
 
 // Inject variables in css
 function injectStyles() {
-    let root = document.documentElement;
+    // let root = document.documentElement;
     // for (const [screen, value] of Object.entries(screens)) {
     //     console.log(`--screen-${screen}`, value + 'px');
     //     root.style.setProperty(`--screen-${screen}`, value + 'px')

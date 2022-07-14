@@ -28,7 +28,7 @@ const FileSchema = yup.lazy((value: string | File[]) => {
 })
 
 const schema = yup.object({
-    title: yup.string().trim().required().min(10, 'Story title must be 2+ words'),
+    title: yup.string().trim().required().min(10, 'Story title must be 2+ words').transform(v => v.replace(/(\r\n|\n|\r)/gm, "")),
     tags: yup.array().required().min(1, 'Add at least one tag'),
     body: yup.string().required().min(50, 'Post must contain at least 10+ words'),
     cover_image: yup.array().of(FileSchema as any)

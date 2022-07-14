@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Controller, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
 import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
@@ -34,6 +34,7 @@ export default function StoryForm(props: Props) {
 
     const [editMode, setEditMode] = useState(true)
     const [loading, setLoading] = useState(false);
+    const titleInputRef = useRef<HTMLTextAreaElement | null>(null)
 
 
     const presistPost = useThrottledCallback((value) => storageService.set(value), [], 1000)
@@ -41,6 +42,12 @@ export default function StoryForm(props: Props) {
         const subscription = watch(({ id, is_published, ...values }) => presistPost(values));
         return () => subscription.unsubscribe();
     }, [presistPost, watch]);
+
+    useEffect(() => {
+        if (editMode)
+            titleInputRef.current?.setAttribute("style", "height:" + (titleInputRef.current.scrollHeight) + "px;overflow-y:hidden;");
+    }, [editMode])
+
 
 
     const clickPreview = async () => {
@@ -93,6 +100,7 @@ export default function StoryForm(props: Props) {
 
 
     const postId = watch('id') ?? -1;
+    const { ref: registerTitleRef, ...titleRegisteration } = register('title');
 
 
     return (
@@ -124,12 +132,21 @@ export default function StoryForm(props: Props) {
 
 
                         <div className="mt-16 relative">
-                            <input
+                            <textarea
                                 autoFocus
-                                type='text'
-                                className="p-0 text-[42px] border-0 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
+                                className="p-0 text-[42px] leading-[58px] border-0 max-w-full
+                                focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
                                 placeholder='New story title here...'
-                                {...register("title")}
+                                {...titleRegisteration}
+                                ref={e => {
+                                    registerTitleRef(e);
+                                    titleInputRef.current = e;
+                                }}
+                                onInput={() => {
+                                    if (!titleInputRef.current) return;
+                                    titleInputRef.current.style.height = "auto";
+                                    titleInputRef.current.style.height = (titleInputRef.current.scrollHeight) + "px";
+                                }}
                             />
                         </div>
 

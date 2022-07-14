@@ -49,9 +49,9 @@ export default function StoryPageContent({ story }: Props) {
                             Delete
                         </MenuItem>
                     </Menu>}
-                    <h1 className="text-[42px] font-bolder">{story.title}</h1>
+                    <h1 className="text-[42px] leading-[58px] font-bolder">{story.title}</h1>
                     <Header size="lg" showTimeAgo={false} author={story.author} date={story.createdAt} />
-                    {story.tags.length > 0 && <div className="flex gap-8">
+                    {story.tags.length > 0 && <div className="flex flex-wrap gap-8">
                         {story.tags.map(tag => <Badge key={tag.id} size='sm'>
                             {tag.title}
                         </Badge>)}

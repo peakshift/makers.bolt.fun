@@ -38,8 +38,8 @@ export default function PreviewPostContent({ post, }: Props) {
                         className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
                         alt="" />}
                 <div className="flex flex-col gap-24">
-                    <h1 className="text-[42px] font-bolder">{post.title}</h1>
-                    {post.tags.length > 0 && <div className="flex gap-8">
+                    <h1 className="text-[42px] leading-[58px] font-bolder">{post.title}</h1>
+                    {post.tags.length > 0 && <div className="flex flex-wrap gap-8">
                         {post.tags.map((tag, idx) => <Badge key={idx} size='sm'>
                             {tag.title}
                         </Badge>)}
