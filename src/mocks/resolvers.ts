@@ -78,3 +78,7 @@ export function me() {
 export function profile() {
     return MOCK_DATA['user']
 }
+
+export function getMyDrafts(): Query['getMyDrafts'] {
+    return MOCK_DATA['posts'].stories;
+}

@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getCategory, getFeed, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getCategory, getFeed, getMyDrafts, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -28,6 +28,7 @@ import {
     DonationsStatsQuery,
     MeQuery,
     ProfileQuery,
+    GetMyDraftsQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -208,6 +209,16 @@ export const handlers = [
         return res(
             ctx.data({
                 profile: profile()
+            })
+        )
+    }),
+
+    graphql.query<GetMyDraftsQuery>('GetMyDrafts', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getMyDrafts: getMyDrafts()
             })
         )
     }),

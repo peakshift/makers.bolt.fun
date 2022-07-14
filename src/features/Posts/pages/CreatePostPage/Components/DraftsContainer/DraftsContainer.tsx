@@ -94,7 +94,7 @@ export default function DraftsContainer({ type, onDraftLoad }: Props) {
 
         <>
             {(!myDraftsQuery.loading && myDraftsQuery.data?.getMyDrafts && myDraftsQuery.data.getMyDrafts.length > 0) &&
-                <div className="border-2 border-gray-200 rounded-16 p-16">
+                <div className="bg-white border-2 border-gray-200 rounded-16 p-16">
                     <p className="text-body2 font-bolder mb-16">Saved Drafts</p>
                     <ul className=''>
                         {myDraftsQuery.data.getMyDrafts.map(draft =>
@@ -107,7 +107,7 @@ export default function DraftsContainer({ type, onDraftLoad }: Props) {
                                     {draft.title}
                                 </p>
                                 <div className="flex gap-4 text-body5">
-                                    <p className="text-gray-400">Last edited {getDateDifference(draft.updatedAt)} ago</p>
+                                    <p className="text-gray-400">Last edited {getDateDifference(draft.updatedAt, { dense: true })} ago</p>
                                     <Button size='sm' color='none' className='text-blue-500 !p-0' onClick={() => deleteDraft(draft.id)}>Delete draft</Button>
                                 </div>
                             </li>)}
