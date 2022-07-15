@@ -45,7 +45,7 @@ export default function StoryForm(props: Props) {
 
     useEffect(() => {
         if (editMode)
-            titleInputRef.current?.setAttribute("style", "height:" + (titleInputRef.current.scrollHeight) + "px;overflow-y:hidden;");
+            setTimeout(() => titleInputRef.current?.setAttribute("style", "height:" + (titleInputRef.current.scrollHeight) + "px;overflow-y:hidden;"), 0)
     }, [editMode])
 
 
@@ -133,8 +133,9 @@ export default function StoryForm(props: Props) {
 
                         <div className="mt-16 relative">
                             <textarea
+                                rows={1}
                                 autoFocus
-                                className="p-0 text-[42px] leading-[58px] border-0 max-w-full
+                                className="p-0 text-[42px] leading-[58px] border-0 w-full max-w-full resize-none
                                 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
                                 placeholder='New story title here...'
                                 {...titleRegisteration}

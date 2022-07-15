@@ -106,6 +106,38 @@
   );
 }
 
+.loading {
+  pointer-events: none;
+  position: absolute;
+  border-radius: inherit;
+
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f6f6;
+  font-size: 14px;
+  color: #dc2626;
+  z-index: 10;
+}
+
+.success {
+  pointer-events: none;
+  position: absolute;
+  border-radius: inherit;
+
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f6f6;
+  font-weight: 600;
+  font-size: 14px;
+  color: #dc2626;
+  outline: 1px solid #ef4444;
+  z-index: 11;
+}
+
 @keyframes fly_value {
   0% {
     transform: translate(-50%, 0) scale(0.5);

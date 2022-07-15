@@ -7,6 +7,8 @@ import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
 import { useDebouncedCallback, useMountEffect, useThrottledCallback } from '@react-hookz/web'
 import { UnionToObjectKeys } from 'src/utils/types/utils'
 import { Portal } from '../Portal/Portal'
+import { ThreeDots } from 'react-loader-spinner'
+import { AnimatePresence, motion } from 'framer-motion'
 
 
 
@@ -22,7 +24,11 @@ interface Particle {
 
 type Props = {
     votes: number,
-    onVote?: (amount: number, config: Partial<{ onSetteled: () => void }>) => void,
+    onVote?: (amount: number, config: Partial<{
+        onSetteled: () => void;
+        onError: () => void;
+        onSuccess: () => void;
+    }>) => void,
     fillType?: 'leftRight' | 'upDown' | "background" | 'radial',
     direction?: 'horizontal' | 'vertical'
     disableCounter?: boolean
@@ -44,6 +50,8 @@ const btnPadding: UnionToObjectKeys<Props, 'direction', any> = {
     } as UnionToObjectKeys<Props, 'size'>
 }
 
+type BtnState = 'ready' | 'voting' | 'loading' | "success" | "fail";
+
 export default function VoteButton({
     votes,
     onVote = () => { },
@@ -64,17 +72,26 @@ export default function VoteButton({
     const totalIncrementsCountRef = useRef(0)
     const currentIncrementsCountRef = useRef(0);
     const [increments, setIncrements] = useState<Array<{ id: string, value: number }>>([]);
-    const [btnPosition, setBtnPosition] = useState<{ top: number, left: number, width: number, height: number }>()
+    const [btnPosition, setBtnPosition] = useState<{ top: number, left: number, width: number, height: number }>();
+    const [btnState, setBtnState] = useState<BtnState>('ready');
 
     const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen);
     const resetCounterOnRelease = resetCounterOnReleaseProp;
 
     const doVote = useDebouncedCallback(() => {
+        setBtnState('loading');
         const amount = voteCntRef.current;
-        onVote(amount, { onSetteled: () => setVoteCnt(v => v - amount) });
+        onVote(amount, {
+            onSuccess: () => setBtnState("success"),
+            onError: () => setBtnState('fail'),
+            onSetteled: () => {
+                setVoteCnt(v => v - amount);
+                setTimeout(() => setBtnState("ready"), 2000);
+            }
+        });
         voteCntRef.current = 0;
 
-    }, [], 2000)
+    }, [], 1500)
 
     const clickIncrement = () => {
         if (!disableShake)
@@ -132,13 +149,14 @@ export default function VoteButton({
     const { onPressDown, onPressUp, isHolding } = usePressHolder(onHold, 100);
 
     const handlePressDown = () => {
-        setWasActive(true);
+        if (btnState !== 'ready' && btnState !== 'voting') return;
+
+        setBtnState('voting');
         onPressDown();
     }
 
     const handlePressUp = (event?: any) => {
-        if (!wasActive) return;
-        setWasActive(false);
+        if (btnState !== 'voting') return;
 
         if (event?.preventDefault) event.preventDefault();
 
@@ -230,6 +248,26 @@ export default function VoteButton({
 
                     /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
                 </div>
+                <AnimatePresence>
+                    {btnState === 'loading' &&
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className={styles.loading}>
+                            <ThreeDots width={20} color="#dc2626" />
+                        </motion.div>
+                    }
+                    {btnState === 'success' &&
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className={styles.success}>
+                            Thanks!!
+                        </motion.div>
+                    }
+                </AnimatePresence>
             </div>
 
             <Portal id='effects-container'>
