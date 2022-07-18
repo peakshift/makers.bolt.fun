@@ -100,6 +100,11 @@ const colourStyles: StylesConfig = {
         padding: '4px 12px',
         borderRadius: 48,
         fontWeight: 500
+    }),
+    valueContainer: (styles) => ({
+        ...styles,
+        paddingLeft: 0,
+        paddingRight: 0,
     })
 }
 

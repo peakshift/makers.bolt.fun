@@ -3,16 +3,20 @@ import { Nullable } from 'remirror';
 
 const filters = [
     {
+        text: "Recent",
+        value: 'recent'
+    },
+    {
         text: "Popular",
         value: 'popular'
-    }, {
-        text: "Newest",
-        value: 'newest'
-    }, {
+    },
+    {
         text: "Following",
         value: 'following'
     },
-]
+] as const;
+
+type FilterValues = typeof filters[number]['value'];
 
 interface Props {
     filterChanged?: (newFilter: string | null) => void
@@ -20,9 +24,9 @@ interface Props {
 
 export default function SortBy({ filterChanged }: Props) {
 
-    const [selected, setSelected] = useState<Nullable<string>>(null);
+    const [selected, setSelected] = useState<Nullable<FilterValues>>('recent');
 
-    const filterClicked = (_newValue: string | null) => {
+    const filterClicked = (_newValue: FilterValues) => {
         const newValue = selected !== _newValue ? _newValue : null;
         setSelected(newValue);
         filterChanged?.(newValue);
