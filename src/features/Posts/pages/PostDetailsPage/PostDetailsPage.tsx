@@ -6,6 +6,7 @@ import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
 import { usePostDetailsQuery } from 'src/graphql'
 import { capitalize } from 'src/utils/helperFunctions'
 import { useAppSelector, } from 'src/utils/hooks'
+import { CommentsSection } from '../../Components/Comments'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import AuthorCard from './Components/AuthorCard/AuthorCard'
 import PageContent from './Components/PageContent/PageContent'
@@ -70,6 +71,9 @@ export default function PostDetailsPage() {
                         <TrendingCard />
                     </div>
                 </aside>
+                <div id="comments">
+                    <CommentsSection comments={[]} />
+                </div>
             </div>
         </>
     )
