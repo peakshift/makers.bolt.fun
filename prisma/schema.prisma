@@ -56,7 +56,8 @@ model User {
   linkedin          String?
   bio               String?
   location          String?
-
+  nostr_prv_key     String?
+  nostr_pub_key     String?
 
   join_date DateTime @default(now())
 
@@ -134,13 +135,13 @@ model Story {
 }
 
 model Question {
-  id          Int      @id @default(autoincrement())
-  title       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  body        String
-  excerpt     String
-  votes_count Int      @default(0)
+  id           Int      @id @default(autoincrement())
+  title        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  body         String
+  excerpt      String
+  votes_count  Int      @default(0)
   is_published Boolean  @default(true)
 
 

@@ -48,3 +48,9 @@ functions:
       - http:
           path: is-logged-in
           method: get
+  sign-event:
+    handler: api/functions/sign-event/sign-event.handler
+    events:
+      - http:
+          path: sign-event
+          method: post

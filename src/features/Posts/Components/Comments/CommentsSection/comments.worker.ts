@@ -2,7 +2,8 @@ import dayjs from 'dayjs'
 
 import { relayPool } from 'nostr-tools'
 import { Nullable } from 'remirror';
-import { mapPubkeysToUsers, signEventByServer } from './comment.server';
+import { CONSTS } from 'src/utils';
+import { mapPubkeysToUsers, } from './comment.server';
 
 
 const pool = relayPool()
@@ -50,6 +51,14 @@ export function sub(filter: any) {
     };
 }
 
+const getSignedEvents = async (event: any) => {
+    const res = await fetch(CONSTS.apiEndpoint + '/sign-event', {
+        credentials: 'include'
+    })
+    const data = await res.json()
+    return data.event;
+}
+
 export async function post(data: string, filter: any) {
 
 
@@ -60,7 +69,7 @@ export async function post(data: string, filter: any) {
         content: data
     };
 
-    event = await signEventByServer(event);
+    event = await getSignedEvents(event);
     const publishTimeout = setTimeout(() => {
         alert(
             `failed to publish event ${event.id?.slice(0, 5)}… to any relay.`
