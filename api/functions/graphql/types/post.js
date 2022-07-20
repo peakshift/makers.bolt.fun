@@ -72,7 +72,7 @@ const Story = objectType({
         t.string('cover_image');
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
-            resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
+            resolve: (parent) => []
         });
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
