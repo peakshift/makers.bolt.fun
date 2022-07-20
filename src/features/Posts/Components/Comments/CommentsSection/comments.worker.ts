@@ -77,8 +77,11 @@ const getSignedEvents = async (event: any) => {
     const res = await fetch(CONSTS.apiEndpoint + '/sign-event', {
         method: "post",
         body: JSON.stringify({ event }),
-        credentials: 'include'
-    })
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
     const data = await res.json()
     return data.event;
 }
@@ -110,8 +113,6 @@ export async function post(data: string, filter: string) {
             tags: [['r', filter]],
             content: data
         }) as NostrEvent;
-        console.log(event);
-        return;
     } catch (error) {
         alert("Couldn't sign the object successfully...")
         return;
@@ -197,7 +198,7 @@ export async function constructTree() {
     // (nothing for now -:-)
 
     // Turn the top roots replies into a sorted array
-    const sortedTree = Object.values(eventsTree).sort((a, b) => a.created_at - b.created_at)
+    const sortedTree = Object.values(eventsTree).sort((a, b) => b.created_at - a.created_at)
     // Publish the new tree.
     return sortedTree;
 

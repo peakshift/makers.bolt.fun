@@ -87,7 +87,7 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
 
     const submitComment = () => {
         onSubmit?.(valueRef.current);
-        // manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+        manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
     }
 
 

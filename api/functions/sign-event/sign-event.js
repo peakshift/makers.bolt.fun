@@ -9,7 +9,6 @@ const { prisma } = require('../../prisma');
 
 
 const signEvent = async (req, res) => {
-    console.log(req.body);
     try {
         const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
         const user = await getUserByPubKey(userPubKey);
@@ -40,12 +39,10 @@ const signEvent = async (req, res) => {
             pubkey,
             content,
             tags,
-            created_at: Date.now(),
+            created_at: Math.round(Date.now() / 1000),
         }
 
         event.sig = await signNostrEvent(event, prvkey);
-
-        console.log(event);
 
         return res
             .status(200)
