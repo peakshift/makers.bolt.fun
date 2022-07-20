@@ -7,17 +7,17 @@ import { CommentWithReplies } from "../types";
 
 interface Props {
     comment: CommentWithReplies
+    isRoot?: boolean;
     onClickedReply?: () => void
 }
 
-export default function Comment({ comment, onClickedReply }: Props) {
+export default function Comment({ comment, isRoot, onClickedReply }: Props) {
 
     const [replyOpen, setReplyOpen] = useState(false)
-    const isRootComment = !comment.parentId;
 
 
     const clickReply = () => {
-        if (isRootComment)
+        if (isRoot)
             setReplyOpen(true);
         else
             onClickedReply?.()

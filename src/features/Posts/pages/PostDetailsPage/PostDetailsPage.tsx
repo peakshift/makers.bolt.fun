@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { useParams } from 'react-router-dom'
 import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
 import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
-import { usePostDetailsQuery } from 'src/graphql'
+import { Post_Type, usePostDetailsQuery } from 'src/graphql'
 import { capitalize } from 'src/utils/helperFunctions'
 import { useAppSelector, } from 'src/utils/hooks'
 import { CommentsSection } from '../../Components/Comments'
@@ -72,7 +72,7 @@ export default function PostDetailsPage() {
                     </div>
                 </aside>
                 <div id="comments">
-                    <CommentsSection comments={[]} />
+                    <CommentsSection id={post.id} type={type as Post_Type} />
                 </div>
             </div>
         </>

@@ -53,4 +53,7 @@ functions:
     events:
       - http:
           path: sign-event
+          method: get
+      - http:
+          path: sign-event
           method: post

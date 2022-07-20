@@ -2,12 +2,12 @@
 import { Author } from "src/features/Posts/types";
 
 export interface Comment {
-    id: number
-    author: Author
-    createdAt: string
-    body: string
-    votes_count: number
-    parentId: number | null
+    id: string | number,
+    pubkey: string;
+    author?: Pick<Author, 'id' | 'name' | 'avatar'>;
+    body: any;
+    created_at: number;
+    replies: Comment[]
 }
 
 export interface CommentWithReplies extends Comment {

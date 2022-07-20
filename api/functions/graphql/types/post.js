@@ -70,29 +70,29 @@ const Story = objectType({
             resolve: () => t.typeName
         });
         t.string('cover_image');
-        t.nonNull.list.nonNull.field('comments', {
-            type: "PostComment",
-            resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
-        });
+        // t.nonNull.list.nonNull.field('comments', {
+        //     type: "PostComment",
+        //     resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
+        // });
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).tags()
         });
-        t.nonNull.int('comments_count', {
-            resolve: async (parent) => {
-                const post = await prisma.story.findUnique({
-                    where: { id: parent.id },
-                    include: {
-                        _count: {
-                            select: {
-                                comments: true
-                            }
-                        }
-                    }
-                })
-                return post._count.comments;
-            }
-        });
+        // t.nonNull.int('comments_count', {
+        //     resolve: async (parent) => {
+        //         const post = await prisma.story.findUnique({
+        //             where: { id: parent.id },
+        //             include: {
+        //                 _count: {
+        //                     select: {
+        //                         comments: true
+        //                     }
+        //                 }
+        //             }
+        //         })
+        //         return post._count.comments;
+        //     }
+        // });
         t.nonNull.field('author', {
             type: "Author",
             resolve: (parent) =>
@@ -170,13 +170,13 @@ const Question = objectType({
             resolve: (parent) => prisma.question.findUnique({ where: { id: parent.id } }).tags()
         });
 
-        t.nonNull.int('answers_count');
-        t.nonNull.list.nonNull.field('comments', {
-            type: "PostComment",
-            resolve: (parent) => {
-                return prisma.question.findUnique({ where: { id: parent.id } }).comments();
-            }
-        });
+        // t.nonNull.int('answers_count');
+        // t.nonNull.list.nonNull.field('comments', {
+        //     type: "PostComment",
+        //     resolve: (parent) => {
+        //         return prisma.question.findUnique({ where: { id: parent.id } }).comments();
+        //     }
+        // });
 
         t.nonNull.field('author', {
             type: "Author",
@@ -191,7 +191,7 @@ const PostComment = objectType({
     name: 'PostComment',
     definition(t) {
         t.nonNull.int('id');
-        t.nonNull.date('createdAt');
+        t.nonNull.date('created_at');
         t.nonNull.string('body');
         t.nonNull.field('author', {
             type: "Author"

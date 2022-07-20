@@ -12,12 +12,12 @@ interface Props {
 export default function CommentCard({ comment, onReply }: Props) {
     return (
         <div className="border rounded-12 p-24">
-            <Header author={comment.author} date={comment.createdAt} />
+            <Header author={comment.author} date={new Date(comment.created_at).toISOString()} />
             <p className="text-body4 mt-16">
                 {comment.body}
             </p>
             <div className="flex gap-24 mt-16 items-center">
-                <VotesCount count={comment.votes_count} />
+                <VotesCount count={0} />
                 <button
                     className="text-gray-600 font-medium hover:bg-gray-100 py-8 px-12 rounded-8"
                     onClick={onReply}

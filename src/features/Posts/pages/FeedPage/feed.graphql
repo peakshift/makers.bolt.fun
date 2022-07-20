@@ -18,7 +18,7 @@ query Feed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
       votes_count
       type
       cover_image
-      comments_count
+      # comments_count
     }
     ... on Bounty {
       id
@@ -59,18 +59,18 @@ query Feed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
       }
       votes_count
       type
-      answers_count
-      comments {
-        id
-        createdAt
-        body
-        author {
-          id
-          name
-          avatar
-          join_date
-        }
-      }
+      # answers_count
+      # comments {
+      #   id
+      #   created_at
+      #   body
+      #   author {
+      #     id
+      #     name
+      #     avatar
+      #     join_date
+      #   }
+      # }
     }
   }
 }

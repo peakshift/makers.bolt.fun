@@ -18,9 +18,10 @@ export const Default = Template.bind({});
 Default.args = {
     comment: {
         ...MOCK_DATA.generatePostComments(1)[0],
+        created_at: Date.now(),
         replies: [
-            { ...MOCK_DATA.generatePostComments(1)[0], replies: [] },
-            { ...MOCK_DATA.generatePostComments(1)[0], replies: [] }
+            { ...MOCK_DATA.generatePostComments(1)[0], replies: [], created_at: Date.now() },
+            { ...MOCK_DATA.generatePostComments(1)[0], replies: [], created_at: Date.now() }
         ]
     }
 }

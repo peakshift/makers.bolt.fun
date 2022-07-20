@@ -11,16 +11,16 @@ interface NostrEvent {
 
 
 declare module 'nostr-tools' {
-    declare function generatePrivateKey(): void
+    declare function generatePrivateKey(): string
     declare function relayConnect(): void
     declare function relayPool(): any
     declare function signEvent(event: NostrEvent, key: sting): string
     declare function validateEvent(): void
     declare function verifySignature(event: NostrEvent): bool
-    declare function serializeEvent(): void
+    declare function serializeEvent(): string
     declare function getEventHash(event: NostrEvent): string
-    declare function getPublicKey(event: NostrEvent): boolean
-    declare function getBlankEvent(): void
+    declare function getPublicKey(prvKey: string): string
+    declare function getBlankEvent(): NostrEvent
     declare function matchFilter(): void
     declare function matchFilters(): void
 }

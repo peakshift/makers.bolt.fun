@@ -139,7 +139,7 @@ export interface NexusGenObjects {
   PostComment: { // root type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    createdAt: NexusGenScalars['Date']; // Date!
+    created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId?: number | null; // Int
     votes_count: number; // Int!
@@ -158,7 +158,6 @@ export interface NexusGenObjects {
   }
   Query: {};
   Question: { // root type
-    answers_count: number; // Int!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
@@ -316,7 +315,7 @@ export interface NexusGenFieldTypes {
   PostComment: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    createdAt: NexusGenScalars['Date']; // Date!
+    created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId: number | null; // Int
     votes_count: number; // Int!
@@ -358,10 +357,8 @@ export interface NexusGenFieldTypes {
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
   Question: { // field return type
-    answers_count: number; // Int!
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
@@ -375,8 +372,6 @@ export interface NexusGenFieldTypes {
   Story: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
-    comments_count: number; // Int!
     cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
@@ -524,7 +519,7 @@ export interface NexusGenFieldTypeNames {
   PostComment: { // field return type name
     author: 'Author'
     body: 'String'
-    createdAt: 'Date'
+    created_at: 'Date'
     id: 'Int'
     parentId: 'Int'
     votes_count: 'Int'
@@ -566,10 +561,8 @@ export interface NexusGenFieldTypeNames {
     searchProjects: 'Project'
   }
   Question: { // field return type name
-    answers_count: 'Int'
     author: 'Author'
     body: 'String'
-    comments: 'PostComment'
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
@@ -583,8 +576,6 @@ export interface NexusGenFieldTypeNames {
   Story: { // field return type name
     author: 'Author'
     body: 'String'
-    comments: 'PostComment'
-    comments_count: 'Int'
     cover_image: 'String'
     createdAt: 'Date'
     excerpt: 'String'

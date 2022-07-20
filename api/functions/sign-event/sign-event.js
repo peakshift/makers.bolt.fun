@@ -4,11 +4,12 @@ const { createExpressApp } = require('../../modules');
 const express = require('express');
 const extractKeyFromCookie = require('../../utils/extractKeyFromCookie');
 const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
-const { generatePrivateKey, getPublicKey, signEvent: signNostrEvent } = require('nostr-tools');
+const { generatePrivateKey, getPublicKey, signEvent: signNostrEvent } = require('../../utils/nostr-tools');
 const { prisma } = require('../../prisma');
 
 
 const signEvent = async (req, res) => {
+    console.log(req.body);
     try {
         const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
         const user = await getUserByPubKey(userPubKey);
@@ -33,16 +34,18 @@ const signEvent = async (req, res) => {
             })
         }
 
-        const { content, tags } = req.body
+        const { content, tags, kind = 1 } = req.body.event
         const event = {
-            kind: 1,
+            kind,
             pubkey,
             content,
             tags,
             created_at: Date.now(),
         }
 
-        event.sig = await signNostrEvent(event, prvkey)
+        event.sig = await signNostrEvent(event, prvkey);
+
+        console.log(event);
 
         return res
             .status(200)
@@ -59,11 +62,11 @@ let app;
 
 if (process.env.LOCAL) {
     app = createExpressApp()
-    app.get('/sign-event', signEvent);
+    app.post('/sign-event', signEvent);
 }
 else {
     const router = express.Router();
-    router.get('/sign-event', signEvent)
+    router.post('/sign-event', signEvent)
     app = createExpressApp(router)
 }
 

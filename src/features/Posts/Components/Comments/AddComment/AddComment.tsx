@@ -26,10 +26,11 @@ interface Props {
     placeholder?: string;
     name?: string;
     autoFocus?: boolean
+    onSubmit?: (comment: string) => void;
 }
 
 
-export default function AddComment({ initialContent, placeholder, name, autoFocus }: Props) {
+export default function AddComment({ initialContent, placeholder, name, autoFocus, onSubmit }: Props) {
 
     const containerRef = useRef<HTMLDivElement>(null)
     const linkExtension = useMemo(() => {
@@ -85,8 +86,8 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
 
 
     const submitComment = () => {
-        console.log(valueRef.current);
-        manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+        onSubmit?.(valueRef.current);
+        // manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
     }
 
 
@@ -96,8 +97,8 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
                 manager={manager}
                 state={state}
                 onChange={e => {
-                    const html = e.helpers.getHTML(e.state)
-                    valueRef.current = html;
+                    const md = e.helpers.getMarkdown(e.state)
+                    valueRef.current = md;
                     onChange(e);
                 }}
                 autoFocus={autoFocus}

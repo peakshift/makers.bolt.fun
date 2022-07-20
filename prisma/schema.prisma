@@ -156,7 +156,7 @@ model Question {
 model PostComment {
   id          Int      @id @default(autoincrement())
   body        String
-  createdAt   DateTime @default(now())
+  created_at  DateTime @default(now())
   votes_count Int      @default(0)
 
   replies           PostComment[] @relation("PostComment_Replies")

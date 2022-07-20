@@ -18,7 +18,6 @@ export type StoryCardType = Pick<Story,
     | 'author'
     | 'excerpt'
     | 'votes_count'
-    | 'comments_count'
 > & {
     tags: Array<Pick<Tag, 'id' | "title">>
 };
@@ -51,9 +50,9 @@ export default function StoryCard({ story }: Props) {
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">
                     <VoteButton votes={story.votes_count} dense onVote={vote} />
-                    <div className="text-gray-600">
+                    {/* <div className="text-gray-600">
                         <BiComment /> <span className="align-middle text-body5">{story.comments_count} Comments</span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

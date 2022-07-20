@@ -1,12 +1,20 @@
 
 const express = require('express');
-var cors = require('cors');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser')
+
 
 const createExpressApp = (router) => {
 
     const app = express();
     const routerBasePath = process.env.LOCAL ? `/dev` : `/.netlify/functions`
+
+    // parse application/x-www-form-urlencoded
+    app.use(bodyParser.urlencoded({ extended: false }))
+
+    // parse application/json
+    app.use(bodyParser.json())
 
     app.use(cookieParser());
     app.use(cors({

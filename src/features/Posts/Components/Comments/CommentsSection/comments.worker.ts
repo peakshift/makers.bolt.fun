@@ -1,12 +1,27 @@
 import dayjs from 'dayjs'
 
-import { relayPool } from 'nostr-tools'
+import { generatePrivateKey, getPublicKey, relayPool } from 'nostr-tools'
 import { Nullable } from 'remirror';
 import { CONSTS } from 'src/utils';
+import { Comment } from '../types';
 import { mapPubkeysToUsers, } from './comment.server';
 
 
-const pool = relayPool()
+type Author = {
+    id: number;
+    name: string;
+    avatar: string;
+}
+
+
+
+
+
+const pool = relayPool();
+const globalKeys = {
+    prvkey: '',
+    pubkey: ''
+}
 
 export function now(prefix: string) {
     const hell = window.localStorage.getItem('test');
@@ -16,31 +31,38 @@ export function now(prefix: string) {
 
 export function connect() {
     const RELAYS = [
-        'wss://rsslay.fiatjaf.com',
-        'wss://nostr-pub.wellorder.net',
-        'wss://expensive-relay.fiatjaf.com',
-        'wss://nostr.bitcoiner.social',
-        'wss://relayer.fiatjaf.com',
-        'wss://nostr.rocks'
+        'wss://nostr.drss.io',
+        'wss://nostr-relay.freeberty.net',
+        'wss://nostr.unknown.place',
+        'wss://nostr-relay.untethr.me',
+        'wss://relay.damus.io'
     ];
     RELAYS.forEach(url => {
         pool.addRelay(url, { read: true, write: true })
+    })
+    pool.onNotice((notice: string, relay: any) => {
+        console.log(`${relay.url} says: ${notice}`)
     })
 };
 
 const events: Record<string, Required<NostrEvent>> = {};
 
-export function sub(filter: any) {
+export function sub(filter: string, cb: (data: Comment[]) => void) {
+
     let sub = pool.sub({
-        filter,
-        cb: (event: Required<NostrEvent>) => {
+        filter: {
+            "#r": [filter]
+        },
+        cb: async (event: Required<NostrEvent>) => {
             //Got a new event
+            console.log(event);
 
             if (!event.id) return;
 
             if (event.id in events) return
             events[event.id] = event
-            eventsUpdated();
+            const newComments = await constructTree();
+            cb(newComments)
 
         }
     });
@@ -53,28 +75,55 @@ export function sub(filter: any) {
 
 const getSignedEvents = async (event: any) => {
     const res = await fetch(CONSTS.apiEndpoint + '/sign-event', {
+        method: "post",
+        body: JSON.stringify({ event }),
         credentials: 'include'
     })
     const data = await res.json()
     return data.event;
 }
 
-export async function post(data: string, filter: any) {
+function setKeys() {
+    if (globalKeys.prvkey) return;
+
+    let privateKey = localStorage.getItem('nostrkey')
+    if (!privateKey) {
+        privateKey = generatePrivateKey()
+        localStorage.setItem('nostrkey', privateKey)
+    }
+    pool.setPrivateKey(privateKey)
+    const pubkey = getPublicKey(privateKey)
+    globalKeys.prvkey = privateKey
+    globalKeys.pubkey = pubkey;
+
+}
+
+export async function post(data: string, filter: string) {
+
+    // setKeys();
+    let event: NostrEvent;
+    try {
+        event = await getSignedEvents({
+            // pubkey: globalKeys.pubkey,
+            // created_at: Math.round(Date.now() / 1000),
+            kind: 1,
+            tags: [['r', filter]],
+            content: data
+        }) as NostrEvent;
+        console.log(event);
+        return;
+    } catch (error) {
+        alert("Couldn't sign the object successfully...")
+        return;
+    }
 
 
-    let event: NostrEvent = {
-        created_at: Math.round(Date.now() / 1000),
-        kind: 1,
-        tags: filter,
-        content: data
-    };
 
-    event = await getSignedEvents(event);
     const publishTimeout = setTimeout(() => {
         alert(
-            `failed to publish event ${event.id?.slice(0, 5)}… to any relay.`
-        )
-    }, 4000)
+            `failed to publish comment to any relay.`
+        );
+    }, 5000)
 
     pool.publish(event, (status: number, relay: string) => {
         switch (status) {
@@ -102,27 +151,14 @@ function extractParentId(event: NostrEvent): Nullable<string> {
     return null;
 }
 
-export async function eventsUpdated() {
+export async function constructTree() {
     // This function is responsible for transforming the object shaped events into a tree of comments
     // ----------------------------------------------------------------------------------------------
 
     // Sort them chronologically from oldest to newest
     let sortedEvenets = Object.values(events).sort((a, b) => a.created_at - b.created_at);
 
-    type Author = {
-        id: number;
-        name: string;
-        avatar: string;
-    }
 
-    type Comment = {
-        id: string,
-        pubkey: string;
-        author?: Author;
-        content: any;
-        created_at: number;
-        replies: Comment[]
-    }
 
     // Extract the pubkeys used
     const pubkeysSet = new Set();
@@ -138,13 +174,19 @@ export async function eventsUpdated() {
         const parentId = extractParentId(e);
         if (parentId) {
             eventsTree[parentId]?.replies.push({
-                ...e,
+                id: e.id,
+                body: e.content,
+                created_at: e.created_at,
+                pubkey: e.pubkey,
                 author: pubkeyToUser[e.pubkey],
                 replies: [],
             });
         } else {
             eventsTree[e.id] = ({
-                ...e,
+                id: e.id,
+                body: e.content,
+                created_at: e.created_at,
+                pubkey: e.pubkey,
                 author: pubkeyToUser[e.pubkey],
                 replies: [],
             });
