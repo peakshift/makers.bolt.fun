@@ -257,7 +257,7 @@ export default function VoteButton({
                     /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
                 </div>
                 <AnimatePresence>
-                    {btnState === 'loading' &&
+                    {(btnState === 'loading' || btnState === 'fail') &&
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
