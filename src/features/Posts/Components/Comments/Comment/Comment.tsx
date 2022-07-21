@@ -10,10 +10,11 @@ interface Props {
     comment: CommentWithReplies
     isRoot?: boolean;
     canReply: boolean;
-    onClickedReply?: () => void
+    onClickedReply?: () => void;
+    onReply?: (text: string) => void
 }
 
-export default function Comment({ comment, canReply, isRoot, onClickedReply }: Props) {
+export default function Comment({ comment, canReply, isRoot, onClickedReply, onReply }: Props) {
 
     const [replyOpen, setReplyOpen] = useState(false)
     const user = useAppSelector(s => s.user.me)
@@ -37,7 +38,12 @@ export default function Comment({ comment, canReply, isRoot, onClickedReply }: P
                         onClickedReply={clickReply}
                         canReply={false}
                     />)}
-                    {replyOpen && <AddComment avatar={user?.avatar!} autoFocus placeholder="Leave a reply..." />}
+                    {replyOpen && <AddComment
+                        avatar={user?.avatar!}
+                        autoFocus
+                        placeholder="Leave a reply..."
+                        onSubmit={(text) => onReply?.(text)}
+                    />}
                 </div>
             </div>}
         </div>

@@ -15,15 +15,15 @@ type Author = {
 
 const pool = relayPool();
 
+const RELAYS = [
+    'wss://nostr.drss.io',
+    'wss://nostr-relay.freeberty.net',
+    'wss://nostr.unknown.place',
+    'wss://nostr-relay.untethr.me',
+    'wss://relay.damus.io'
+];
 
 export function connect() {
-    const RELAYS = [
-        'wss://nostr.drss.io',
-        'wss://nostr-relay.freeberty.net',
-        'wss://nostr.unknown.place',
-        'wss://nostr-relay.untethr.me',
-        'wss://relay.damus.io'
-    ];
     RELAYS.forEach(url => {
         pool.addRelay(url, { read: true, write: true })
     })
@@ -89,17 +89,25 @@ async function mapPubkeysToUsers(pubkeys: string[]) {
 }
 
 
-export async function post(data: string, filter: string) {
+export async function post({ content, filter, parentId }: {
+    content: string,
+    filter: string,
+    parentId?: string
+}) {
 
-    // setKeys();
+    const tags = [];
+    tags.push(['r', filter]);
+    if (parentId)
+        tags.push(['e', `${parentId} ${RELAYS[0]} reply`])
+
     let event: NostrEvent;
     try {
         event = await getSignedEvents({
             // pubkey: globalKeys.pubkey,
             // created_at: Math.round(Date.now() / 1000),
             kind: 1,
-            tags: [['r', filter]],
-            content: data
+            tags,
+            content,
         }) as NostrEvent;
     } catch (error) {
         alert("Couldn't sign the object successfully...")
@@ -131,12 +139,13 @@ export async function post(data: string, filter: string) {
 }
 
 function extractParentId(event: NostrEvent): Nullable<string> {
-    event.tags.forEach(([identifier, value]) => {
-        if (identifier === '#e') {
-            const [eventId, _, marker] = value.split(' ');
+
+    for (const [identifier, value] of event.tags) {
+        if (identifier === 'e') {
+            const [eventId, , marker] = value.split(' ');
             if (marker === 'reply') return eventId;
         }
-    })
+    }
     return null;
 }
 
@@ -161,6 +170,7 @@ export async function constructTree() {
     // If event is a reply, connect it to parent
     sortedEvenets.forEach(e => {
         const parentId = extractParentId(e);
+
         if (parentId) {
             eventsTree[parentId]?.replies.push({
                 id: e.id,

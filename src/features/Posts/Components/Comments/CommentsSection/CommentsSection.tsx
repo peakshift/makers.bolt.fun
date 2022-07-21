@@ -36,8 +36,8 @@ export default function CommentsSection({ type, id }: Props) {
     }
   }, [filter]);
 
-  const handleNewComment = (newComment: string) => {
-    CommentsWorker.post(newComment, filter);
+  const handleNewComment = (content: string, parentId?: string) => {
+    CommentsWorker.post({ content, filter, parentId });
   }
 
 
@@ -47,7 +47,7 @@ export default function CommentsSection({ type, id }: Props) {
       {!!user && <div className="mt-24">
         <AddComment
           placeholder='Leave a comment...'
-          onSubmit={handleNewComment}
+          onSubmit={content => handleNewComment(content)}
           avatar={user.avatar}
         />
       </div>}
@@ -58,6 +58,7 @@ export default function CommentsSection({ type, id }: Props) {
             comment={comment}
             isRoot
             canReply={!!user}
+            onReply={content => handleNewComment(content, comment.id.toString())}
           />)}
       </div>
     </div>
