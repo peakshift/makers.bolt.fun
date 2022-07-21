@@ -17,6 +17,7 @@ import '@szhsin/react-menu/dist/index.css';
 import { FiChevronDown, FiLogIn } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
+import Button from "../Button/Button";
 
 
 export default function NavDesktop() {
@@ -191,9 +192,10 @@ export default function NavDesktop() {
                     </Menu>
 
                     :
-                    <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
+                    <Button color="primary" href="/login">
                         Connect ⚡
-                    </Link>)
+                    </Button>
+                )
             }
             <div className="relative h-36">
                 <motion.div
