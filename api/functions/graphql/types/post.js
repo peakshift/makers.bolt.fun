@@ -373,7 +373,13 @@ const createStory = extendType({
 
                 // Preprocess & insert
                 const htmlBody = marked.parse(body);
-                const excerpt = htmlBody.replace(/<[^>]+>/g, '').slice(0, 120);
+                const excerpt = htmlBody
+                    .replace(/<[^>]+>/g, '')
+                    .slice(0, 120)
+                    .replace(/&amp;/g, "&")
+                    .replace(/&#39;/g, "'")
+                    .replace(/&quot;/g, '"')
+                    ;
 
                 if (id) {
                     await prisma.story.update({

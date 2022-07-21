@@ -75,9 +75,9 @@ export default function NavMobile() {
   return (
     <div className={`${styles.navMobile}`}>
       <nav className={`bg-white h-[67px] w-full p-16 px-32 flex justify-between items-center`}>
-        <a href="https://bolt.fun/">
+        <Link to="/">
           <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
-        </a>
+        </Link>
 
         <div className="ml-auto"></div>
         {curUser !== undefined &&
@@ -109,7 +109,7 @@ export default function NavMobile() {
 
             :
             <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
-              Login
+              Connect ⚡
             </Link>)
         }
         <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>

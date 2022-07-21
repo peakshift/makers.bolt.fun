@@ -40,11 +40,11 @@ export default function NavDesktop() {
 
     return (
         <nav className="bg-white flex py-16 px-32 items-center w-full min-w-full">
-            <a href="https://bolt.fun/">
+            <Link to="/">
                 <h2 className="text-h5 font-bold mr-40 lg:mr-64">
                     <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
                 </h2>
-            </a>
+            </Link>
             <ul className="flex gap-32 xl:gap-64">
                 <li className="relative">
                     <Link to={'/products'} className='text-body4 font-bold hover:text-primary-600'>
@@ -192,7 +192,7 @@ export default function NavDesktop() {
 
                     :
                     <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
-                        Login <FiLogIn />
+                        Connect ⚡
                     </Link>)
             }
             <div className="relative h-36">
