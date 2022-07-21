@@ -3,6 +3,7 @@
 $screen-xs-min: 320px;
 
 @import "./tw.scss", "./shared.scss", "./vendors.scss", "./scrollbar.scss";
+@import "/src/styles/mixins/index.scss";
 
 html {
   scrollbar-gutter: stable;
@@ -14,7 +15,12 @@ body {
 }
 
 .page-container {
-  width: calc(min(100% - 32px, 1440px));
+  --padding: 16px;
+
+  @include gt-sm {
+    --padding: 24px;
+  }
+  width: calc(min(100%, 1440px) - 2 * var(--padding));
   margin: 0 auto;
   padding: 32px 0;
 }
