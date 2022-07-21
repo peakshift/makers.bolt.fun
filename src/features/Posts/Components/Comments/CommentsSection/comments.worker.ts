@@ -1,33 +1,20 @@
-import dayjs from 'dayjs'
-
-import { generatePrivateKey, getPublicKey, relayPool } from 'nostr-tools'
+import debounce from 'lodash.debounce';
+import { relayPool } from 'nostr-tools'
 import { Nullable } from 'remirror';
 import { CONSTS } from 'src/utils';
 import { Comment } from '../types';
-import { mapPubkeysToUsers, } from './comment.server';
 
 
 type Author = {
     id: number;
     name: string;
     avatar: string;
+    lightning_address?: string
 }
-
-
-
 
 
 const pool = relayPool();
-const globalKeys = {
-    prvkey: '',
-    pubkey: ''
-}
 
-export function now(prefix: string) {
-    const hell = window.localStorage.getItem('test');
-    if (!hell) window.localStorage.setItem('test', 'test');
-    return hell + prefix + dayjs()
-};
 
 export function connect() {
     const RELAYS = [
@@ -45,35 +32,37 @@ export function connect() {
     })
 };
 
-const events: Record<string, Required<NostrEvent>> = {};
+let events: Record<string, Required<NostrEvent>> = {};
 
 export function sub(filter: string, cb: (data: Comment[]) => void) {
+
+    const reconstructTree = debounce(async () => {
+        const newComments = await constructTree();
+        cb(newComments)
+    }, 1000)
 
     let sub = pool.sub({
         filter: {
             "#r": [filter]
         },
         cb: async (event: Required<NostrEvent>) => {
-            //Got a new event
-            console.log(event);
-
+            //Got a new event 
             if (!event.id) return;
 
             if (event.id in events) return
             events[event.id] = event
-            const newComments = await constructTree();
-            cb(newComments)
 
+            reconstructTree()
         }
     });
 
     return () => {
         sub.unsub();
-
+        events = {};
     };
 }
 
-const getSignedEvents = async (event: any) => {
+async function getSignedEvents(event: any) {
     const res = await fetch(CONSTS.apiEndpoint + '/sign-event', {
         method: "post",
         body: JSON.stringify({ event }),
@@ -86,20 +75,19 @@ const getSignedEvents = async (event: any) => {
     return data.event;
 }
 
-function setKeys() {
-    if (globalKeys.prvkey) return;
-
-    let privateKey = localStorage.getItem('nostrkey')
-    if (!privateKey) {
-        privateKey = generatePrivateKey()
-        localStorage.setItem('nostrkey', privateKey)
-    }
-    pool.setPrivateKey(privateKey)
-    const pubkey = getPublicKey(privateKey)
-    globalKeys.prvkey = privateKey
-    globalKeys.pubkey = pubkey;
-
+async function mapPubkeysToUsers(pubkeys: string[]) {
+    const res = await fetch(CONSTS.apiEndpoint + '/pubkeys-to-users', {
+        method: "post",
+        body: JSON.stringify({ pubkeys }),
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
+    const data = await res.json()
+    return data.pubkeysToUsers as Record<string, Author>;
 }
+
 
 export async function post(data: string, filter: string) {
 
@@ -162,7 +150,7 @@ export async function constructTree() {
 
 
     // Extract the pubkeys used
-    const pubkeysSet = new Set();
+    const pubkeysSet = new Set<string>();
     sortedEvenets.forEach(e => pubkeysSet.add(e.pubkey));
 
 

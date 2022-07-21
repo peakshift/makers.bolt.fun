@@ -53,7 +53,10 @@ functions:
     events:
       - http:
           path: sign-event
-          method: get
+          method: post
+  pubkeys-to-users:
+    handler: api/functions/pubkeys-to-users/pubkeys-to-users.handler
+    events:
       - http:
-          path: sign-event
+          path: pubkeys-to-users
           method: post

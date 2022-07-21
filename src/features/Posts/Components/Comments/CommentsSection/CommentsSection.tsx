@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import CommentRoot from '../Comment/Comment'
 import AddComment from '../AddComment/AddComment'
-import { } from '../helpers'
 import { Comment, } from '../types'
 import { createWorkerFactory, useWorker } from '@shopify/react-web-worker'
+import { useAppSelector } from "src/utils/hooks";
 
 import * as CommentsWorker from './comments.worker'
 import { Post_Type } from 'src/graphql'
@@ -22,7 +22,7 @@ export default function CommentsSection({ type, id }: Props) {
   // const commentsTree = useMemo(() => convertCommentsToTree(comments), [comments])
 
   const [commentsTree, setCommentsTree] = useState<Comment[]>([])
-
+  const user = useAppSelector(state => state.user.me)
   const filter = useMemo(() => `boltfun ${type}_comment ${id}` + (process.env.NODE_ENV === 'development' ? 'dev' : ""), [id, type])
 
   useEffect(() => {
@@ -44,11 +44,21 @@ export default function CommentsSection({ type, id }: Props) {
   return (
     <div className="border border-gray-200 rounded-10 p-32 bg-white">
       <h6 className="text-body2 font-bolder">Discussion</h6>
-      <div className="mt-24">
-        <AddComment placeholder='Leave a comment...' onSubmit={handleNewComment} />
-      </div>
+      {!!user && <div className="mt-24">
+        <AddComment
+          placeholder='Leave a comment...'
+          onSubmit={handleNewComment}
+          avatar={user.avatar}
+        />
+      </div>}
       <div className='flex flex-col gap-16 mt-32'>
-        {commentsTree.map(comment => <CommentRoot key={comment.id} comment={comment} />)}
+        {commentsTree.map(comment =>
+          <CommentRoot
+            key={comment.id}
+            comment={comment}
+            isRoot
+            canReply={!!user}
+          />)}
       </div>
     </div>
   )

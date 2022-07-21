@@ -7,10 +7,11 @@ import { Comment } from "../types";
 
 interface Props {
     comment: Comment
+    canReply?: boolean;
     onReply?: () => void
 }
 
-export default function CommentCard({ comment, onReply }: Props) {
+export default function CommentCard({ comment, canReply, onReply }: Props) {
     return (
         <div className="border rounded-12 p-24">
             <Header author={comment.author} date={new Date(comment.created_at).toISOString()} />
@@ -19,12 +20,12 @@ export default function CommentCard({ comment, onReply }: Props) {
             </p>
             <div className="flex gap-24 mt-16 items-center">
                 <VotesCount count={0} />
-                <button
+                {canReply && <button
                     className="text-gray-600 font-medium hover:bg-gray-100 py-8 px-12 rounded-8"
                     onClick={onReply}
                 >
                     <BiComment /> <span className="align-middle text-body5">Reply</span>
-                </button>
+                </button>}
             </div>
         </div>
     )
