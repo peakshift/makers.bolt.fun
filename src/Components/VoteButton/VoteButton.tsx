@@ -33,6 +33,7 @@ type Props = {
     direction?: 'horizontal' | 'vertical'
     disableCounter?: boolean
     disableShake?: boolean
+    hideVotesCoun?: boolean
     dense?: boolean
     size?: 'sm' | 'md'
     resetCounterOnRelease?: boolean
@@ -59,6 +60,7 @@ export default function VoteButton({
     direction = 'horizontal',
     disableCounter = false,
     disableShake = false,
+    hideVotesCoun = false,
     dense = false,
     resetCounterOnRelease: resetCounterOnReleaseProp = false,
     ...props }: Props) {
@@ -221,7 +223,7 @@ export default function VoteButton({
                  ${direction === 'vertical' ?
                         dense ? "py-4 px-12" : "py-8 px-20"
                         :
-                        dense ? "py-4 px-8" : "p-8"}
+                        dense ? "py-4 px-8" : "p-8 min-w-[80px]"}
                 ${voteCntRef.current > 0 && "outline"} active:outline outline-1 outline-red-500 
                 ${btnShakeClass} 
                 `}
@@ -246,7 +248,7 @@ export default function VoteButton({
                     <MdLocalFireDepartment
                         className={`text-body2 ${incrementsCount ? "text-red-600" : "text-gray-400"}`}
 
-                    /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
+                    />{!hideVotesCoun && <span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>}
                 </div>
                 <AnimatePresence>
                     {btnState === 'loading' &&

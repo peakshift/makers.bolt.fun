@@ -52,7 +52,6 @@ async function getPaymetRequestForItem(lightning_address, amount_in_sat) {
     return axios
         .get(lnurlCallbackUrl, { params: { amount } })
         .then((prResponse) => {
-            console.log(prResponse.data);
             return prResponse.data.pr;
         });
 }

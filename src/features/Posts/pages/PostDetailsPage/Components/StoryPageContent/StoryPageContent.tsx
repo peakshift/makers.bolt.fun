@@ -8,6 +8,7 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useAppSelector } from "src/utils/hooks";
 import { useUpdateStory } from './useUpdateStory'
 import { FaPen } from "react-icons/fa";
+import DOMPurify from 'dompurify';
 
 
 interface Props {
@@ -66,7 +67,10 @@ export default function StoryPageContent({ story }: Props) {
                     </div> */}
                 </div>
 
-                <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(story.body) }}>
+                <div
+                    className={`mt-42 ${styles.body}`}
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(story.body)) }}
+                >
                 </div>
             </div>
             {/* <div id="comments" className="mt-10 comments_col">
