@@ -175,7 +175,7 @@ export async function constructTree() {
             eventsTree[parentId]?.replies.push({
                 id: e.id,
                 body: e.content,
-                created_at: e.created_at,
+                created_at: e.created_at * 1000,
                 pubkey: e.pubkey,
                 author: pubkeyToUser[e.pubkey],
                 replies: [],
@@ -184,7 +184,7 @@ export async function constructTree() {
             eventsTree[e.id] = ({
                 id: e.id,
                 body: e.content,
-                created_at: e.created_at,
+                created_at: e.created_at * 1000,
                 pubkey: e.pubkey,
                 author: pubkeyToUser[e.pubkey],
                 replies: [],
