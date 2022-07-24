@@ -39,6 +39,8 @@ const Author = objectType({
         t.nonNull.string('name');
         t.nonNull.string('avatar');
         t.nonNull.date('join_date');
+
+        t.string('lightning_address');
     }
 })
 

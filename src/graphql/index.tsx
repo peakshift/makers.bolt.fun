@@ -22,6 +22,7 @@ export type Author = {
   avatar: Scalars['String'];
   id: Scalars['Int'];
   join_date: Scalars['Date'];
+  lightning_address: Maybe<Scalars['String']>;
   name: Scalars['String'];
 };
 

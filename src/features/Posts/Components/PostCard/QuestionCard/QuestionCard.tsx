@@ -4,16 +4,14 @@ import Header from "../Header/Header"
 import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import { Link } from "react-router-dom"
-import { trimText } from "src/utils/helperFunctions"
 import VoteButton from "src/Components/VoteButton/VoteButton"
-import { Tag } from "src/graphql"
+import { Author, Tag } from "src/graphql"
 
 export type QuestionCardType = Pick<Question,
     | 'id'
     | 'type'
     | 'title'
     | 'createdAt'
-    | 'author'
     | 'excerpt'
     | 'votes_count'
 > & {
@@ -24,6 +22,7 @@ export type QuestionCardType = Pick<Question,
     //     | 'createdAt'
     // >>
     tags: Array<Pick<Tag, 'id' | "title">>
+    author: Pick<Author, 'id' | 'name' | 'avatar' | 'join_date'>
 };
 interface Props {
     question: QuestionCardType

@@ -4,13 +4,7 @@ import { Nullable } from 'remirror';
 import { CONSTS } from 'src/utils';
 import { Comment } from '../types';
 
-
-type Author = {
-    id: number;
-    name: string;
-    avatar: string;
-    lightning_address?: string
-}
+type Author = NonNullable<Comment['author']>
 
 
 const pool = relayPool();

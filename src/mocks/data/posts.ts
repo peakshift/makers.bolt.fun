@@ -12,7 +12,8 @@ const getAuthor = () => ({
     id: 12,
     name: "John Doe",
     avatar: getAvatarImage(),
-    join_date: getDate()
+    join_date: getDate(),
+    lightning_address: null,
 })
 
 export const generatePostComments = (cnt: number = 1) => {

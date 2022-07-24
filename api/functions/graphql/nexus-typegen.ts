@@ -70,6 +70,7 @@ export interface NexusGenObjects {
     avatar: string; // String!
     id: number; // Int!
     join_date: NexusGenScalars['Date']; // Date!
+    lightning_address?: string | null; // String
     name: string; // String!
   }
   Award: { // root type
@@ -229,6 +230,7 @@ export interface NexusGenFieldTypes {
     avatar: string; // String!
     id: number; // Int!
     join_date: NexusGenScalars['Date']; // Date!
+    lightning_address: string | null; // String
     name: string; // String!
   }
   Award: { // field return type
@@ -433,6 +435,7 @@ export interface NexusGenFieldTypeNames {
     avatar: 'String'
     id: 'Int'
     join_date: 'Date'
+    lightning_address: 'String'
     name: 'String'
   }
   Award: { // field return type name
