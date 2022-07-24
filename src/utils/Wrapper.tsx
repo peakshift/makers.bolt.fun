@@ -12,6 +12,7 @@ import ReactTooltip from 'react-tooltip';
 import 'react-multi-carousel/lib/styles.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import THEME from './theme';
+import ErrorBoundary from 'src/Components/ErrorBoundary/ErrorBoundary';
 THEME.injectStyles();
 
 let basename = '/';
@@ -42,13 +43,15 @@ export default function Wrapper(props: any) {
 
     return (
         <>
-            <ApolloProvider client={apolloClient}>
-                <Provider store={store}>
-                    <BrowserRouter basename={basename}>
-                        {props.children}
-                    </BrowserRouter>
-                </Provider>
-            </ApolloProvider>
+            <ErrorBoundary place='app'>
+                <ApolloProvider client={apolloClient}>
+                    <Provider store={store}>
+                        <BrowserRouter basename={basename}>
+                            {props.children}
+                        </BrowserRouter>
+                    </Provider>
+                </ApolloProvider>
+            </ErrorBoundary>
             <ReactTooltip
                 effect='solid'
                 delayShow={1000}
