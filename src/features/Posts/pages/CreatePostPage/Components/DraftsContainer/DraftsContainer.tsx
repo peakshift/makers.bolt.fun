@@ -109,7 +109,7 @@ export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
                                 </p>
                                 <div className="flex gap-4 text-body5">
                                     <p className="text-gray-400">Last edited {getDateDifference(draft.updatedAt, { dense: true })} ago</p>
-                                    <Button size='sm' color='none' className='text-blue-500 !p-0' onClick={() => deleteDraft(draft.id)}>Delete draft</Button>
+                                    <Button size='sm' color='none' className='text-red-500 !p-0' onClick={() => deleteDraft(draft.id)}>Delete draft</Button>
                                 </div>
                             </li>)}
                     </ul>
