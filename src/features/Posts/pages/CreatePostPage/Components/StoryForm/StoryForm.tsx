@@ -65,12 +65,13 @@ export default function StoryForm(props: Props) {
 
     const [createStory] = useCreateStoryMutation({
         onCompleted: (data) => {
+            reset()
+            storageService.clear();
+            setLoading(false)
+            dispatch(stageStory(null))
             if (data.createStory?.is_published)
                 navigate(createRoute({ type: 'story', id: data.createStory?.id!, title: data.createStory?.title }))
-            else
-                reset()
             props.onSuccess?.(!!data.createStory?.is_published);
-            setLoading(false)
         },
         onError: (error) => {
             NotificationsService.error('Unexpected error happened, please try again', { error })
@@ -93,7 +94,6 @@ export default function StoryForm(props: Props) {
                 },
             }
         })
-        storageService.clear();
     }, props.onValidationError);
 
 
