@@ -116,7 +116,7 @@ export default function StoryForm(props: Props) {
                 {editMode && <>
                     <div
                         className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
-                        <div className="p-16 md:p-32">
+                        <div className="p-16 md:p-24 lg:p-32">
                             <Controller
                                 control={control}
                                 name="cover_image"
