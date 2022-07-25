@@ -18,9 +18,7 @@ export default function AuthorCard({ author }: Props) {
     return (
         <div className="bg-white p-16 border-2 border-gray-200 rounded-12">
             <div className='flex gap-8'>
-                <Link to={createRoute({ type: 'profile', id: author.id, username: author.name })}>
-                    <Avatar width={48} src={author.avatar} />
-                </Link>
+                <Avatar width={48} src={author.avatar} />
                 <div className="overflow-hidden">
                     <p className={`'text-body4' text-black font-medium overflow-hidden text-ellipsis whitespace-nowrap`}>{trimText(author.name, 333)}</p>
                     <p className={`text-body6 text-gray-600`}>Joined on {dayjs(author.join_date).format('MMMM DD, YYYY')}</p>

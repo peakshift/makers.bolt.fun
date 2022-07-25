@@ -94,10 +94,14 @@ export function generateList(component: React.ReactElement, cnt: number) {
   return Array(cnt).fill(0).map((_, idx) => React.cloneElement(component, { key: idx }))
 }
 
-export function toSlug(title: string) {
-  return title.toLowerCase()
-    .replace(/[^\w ]+/g, '')
-    .replace(/ +/g, '-');
+export function toSlug(str: string) {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  ;
 }
 
 export function capitalize(s?: string) {

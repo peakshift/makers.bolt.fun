@@ -13,13 +13,14 @@ import { useReduxEffect } from 'src/utils/hooks/useReduxEffect';
 import { IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
 
 interface Props {
+    id?: string;
     type: Post_Type,
     onDraftLoad?: () => void,
 }
 
 const CONFIRM_DELETE_STORY = createAction<{ confirmed?: boolean, id: number }>('DELETE_STORY_CONFIRMED')({ id: -1 })
 
-export default function DraftsContainer({ type, onDraftLoad }: Props) {
+export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
 
 
     const myDraftsQuery = useGetMyDraftsQuery({ variables: { type } });
@@ -92,7 +93,7 @@ export default function DraftsContainer({ type, onDraftLoad }: Props) {
 
     return (
 
-        <>
+        <div id={id}>
             {(!myDraftsQuery.loading && myDraftsQuery.data?.getMyDrafts && myDraftsQuery.data.getMyDrafts.length > 0) &&
                 <div className="bg-white border-2 border-gray-200 rounded-16 p-16">
                     <p className="text-body2 font-bolder mb-16">Saved Drafts</p>
@@ -108,12 +109,12 @@ export default function DraftsContainer({ type, onDraftLoad }: Props) {
                                 </p>
                                 <div className="flex gap-4 text-body5">
                                     <p className="text-gray-400">Last edited {getDateDifference(draft.updatedAt, { dense: true })} ago</p>
-                                    <Button size='sm' color='none' className='text-blue-500 !p-0' onClick={() => deleteDraft(draft.id)}>Delete draft</Button>
+                                    <Button size='sm' color='none' className='text-red-500 !p-0' onClick={() => deleteDraft(draft.id)}>Delete draft</Button>
                                 </div>
                             </li>)}
                     </ul>
                 </div>}
             {loading && <LoadingPage />}
-        </>
+        </div>
     )
 }

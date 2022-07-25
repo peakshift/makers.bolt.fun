@@ -17,7 +17,7 @@ import { capitalize } from 'src/utils/helperFunctions'
 
 export default function FeedPage() {
 
-    const [sortByFilter, setSortByFilter] = useState<string | null>(null)
+    const [sortByFilter, setSortByFilter] = useState<string | null>('recent')
     const [tagFilter, setTagFilter] = useState<FilterTag | null>(null)
 
 

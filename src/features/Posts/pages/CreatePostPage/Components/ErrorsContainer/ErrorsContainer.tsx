@@ -2,12 +2,18 @@ import React, { forwardRef } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
 
-const ErrorsContainer = forwardRef<HTMLDivElement>((props, ref) => {
+interface Props {
+    id?: string;
+}
+
+const ErrorsContainer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
     const { formState: { isValid, isSubmitted, errors } } = useFormContext<IStoryFormInputs>();
 
+    const hasErrors = Object.values(errors).length > 0
+
     return (
-        <div ref={ref}>
+        hasErrors ? <div id={props.id} ref={ref}>
             {(!isValid && isSubmitted) && <ul className='bg-red-50 p-8 pl-24 border-l-4 rounded-8 border-red-600 list-disc text-body4 text-medium'>
                 {errors.title && <li className="input-error text-body5 text-medium">
                     {errors.title.message}
@@ -23,6 +29,8 @@ const ErrorsContainer = forwardRef<HTMLDivElement>((props, ref) => {
                 </li>}
             </ul>}
         </div>
+            :
+            null
     )
 })
 

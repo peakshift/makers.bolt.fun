@@ -75,13 +75,13 @@ export default function NavMobile() {
   return (
     <div className={`${styles.navMobile}`}>
       <nav className={`bg-white h-[67px] w-full p-16 px-32 flex justify-between items-center`}>
-        <a href="https://bolt.fun/">
+        <Link to="/">
           <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
-        </a>
+        </Link>
 
         <div className="ml-auto"></div>
         {curUser !== undefined &&
-          (curUser ?
+          (curUser &&
             <Menu
               menuClassName='!p-8 !rounded-12'
               menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
@@ -107,10 +107,7 @@ export default function NavMobile() {
               </MenuItem>
             </Menu>
 
-            :
-            <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
-              Login
-            </Link>)
+          )
         }
         <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
           {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
@@ -133,19 +130,27 @@ export default function NavMobile() {
         >
           <div className="flex flex-col gap-16 py-16">
             <Search onResultClick={() => toggleDrawerOpen(false)} />
-            <a
-              href="https://airtable.com/shr2VkxarNsIFilDz"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Button
-                color="primary"
-                fullWidth
-                className="!py-16 px-40 rounded-12 "
-              >
-                Get your product listed
-              </Button>
-            </a>
+            {
+              curUser ?
+                <Button
+                  color="gray"
+                  fullWidth
+                  className="!py-16 px-40 rounded-12 "
+                  href='/logout'
+                  onClick={() => toggleDrawerOpen()}
+                >
+                  Logout
+                </Button> :
+                <Button
+                  color="primary"
+                  fullWidth
+                  className="!py-16 px-40 rounded-12 "
+                  href='/login'
+                  onClick={() => toggleDrawerOpen()}
+                >
+                  Connect your lightning wallet ⚡️
+                </Button>
+            }
           </div>
           <ul className="px-32 flex flex-col py-16 gap-32 border-t">
 

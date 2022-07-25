@@ -26,7 +26,7 @@
       @include post-body;
     }
     .remirror-editor-wrapper {
-      height: 60vh;
+      height: calc(min(60vh, 640px));
       overflow-y: scroll;
 
       &::-webkit-scrollbar {

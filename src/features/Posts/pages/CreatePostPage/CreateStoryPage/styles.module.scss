@@ -1,9 +1,12 @@
 @import "/src/styles/mixins/index.scss";
 
 .grid {
+  --gap: 32px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+
+  column-gap: var(--gap);
+  row-gap: var(--gap);
 
   & > * {
     min-width: 0;
@@ -11,15 +14,19 @@
 
   grid-template-areas:
     "errors"
+    "preview-switch"
     "form"
     "drafts";
 
   :global {
-    #errors {
-      grid-area: errors;
+    #preview-switch {
+      grid-area: preview-switch;
     }
     #form {
       grid-area: form;
+    }
+    #errors {
+      grid-area: errors;
     }
     #drafts {
       grid-area: drafts;
@@ -27,10 +34,22 @@
   }
 
   @include gt-xl {
+    row-gap: unset;
+    grid-template-rows: repeat(3, auto) 1fr;
     grid-template-columns: 1fr calc(min(326px, 25%));
     grid-template-areas:
+      "preview-switch preview-switch"
       "form errors"
       "form drafts"
       "form .";
+
+    :global {
+      #preview-switch {
+        margin-bottom: var(--gap);
+      }
+      #errors {
+        margin-bottom: var(--gap);
+      }
+    }
   }
 }

@@ -17,6 +17,7 @@ import '@szhsin/react-menu/dist/index.css';
 import { FiChevronDown, FiLogIn } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
+import Button from "../Button/Button";
 
 
 export default function NavDesktop() {
@@ -40,11 +41,11 @@ export default function NavDesktop() {
 
     return (
         <nav className="bg-white flex py-16 px-32 items-center w-full min-w-full">
-            <a href="https://bolt.fun/">
+            <Link to="/">
                 <h2 className="text-h5 font-bold mr-40 lg:mr-64">
                     <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
                 </h2>
-            </a>
+            </Link>
             <ul className="flex gap-32 xl:gap-64">
                 <li className="relative">
                     <Link to={'/products'} className='text-body4 font-bold hover:text-primary-600'>
@@ -191,9 +192,10 @@ export default function NavDesktop() {
                     </Menu>
 
                     :
-                    <Link to='/login' className="font-bold hover:text-primary-800 hover:underline">
-                        Login <FiLogIn />
-                    </Link>)
+                    <Button color="primary" href="/login">
+                        Connect ⚡
+                    </Button>
+                )
             }
             <div className="relative h-36">
                 <motion.div

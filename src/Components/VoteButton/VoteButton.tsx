@@ -1,7 +1,7 @@
 import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder, useResizeListener } from 'src/utils/hooks'
-import { ComponentProps, useRef, useState } from 'react'
+import { ComponentProps, SyntheticEvent, useRef, useState } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
 import { useDebouncedCallback, useMountEffect, useThrottledCallback } from '@react-hookz/web'
@@ -59,17 +59,16 @@ export default function VoteButton({
     fillType = 'leftRight',
     direction = 'horizontal',
     disableCounter = false,
-    disableShake = false,
+    disableShake = true,
     hideVotesCoun = false,
     dense = false,
-    resetCounterOnRelease: resetCounterOnReleaseProp = false,
+    resetCounterOnRelease = true,
     ...props }: Props) {
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
     const btnContainerRef = useRef<HTMLDivElement>(null!!)
     const [btnShakeClass, setBtnShakeClass] = useState('')
     const [sparks, setSparks] = useState<Particle[]>([]);
-    const [wasActive, setWasActive] = useState(false);
     const [incrementsCount, setIncrementsCount] = useState(0);
     const totalIncrementsCountRef = useRef(0)
     const currentIncrementsCountRef = useRef(0);
@@ -77,23 +76,52 @@ export default function VoteButton({
     const [btnPosition, setBtnPosition] = useState<{ top: number, left: number, width: number, height: number }>();
     const [btnState, setBtnState] = useState<BtnState>('ready');
 
-    const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen);
-    const resetCounterOnRelease = resetCounterOnReleaseProp;
 
     const doVote = useDebouncedCallback(() => {
         setBtnState('loading');
         const amount = voteCntRef.current;
         onVote(amount, {
-            onSuccess: () => setBtnState("success"),
+            onSuccess: () => {
+                setBtnState("success");
+                spawnSparks(10);
+            },
             onError: () => setBtnState('fail'),
             onSetteled: () => {
                 setVoteCnt(v => v - amount);
-                setTimeout(() => setBtnState("ready"), 2000);
+                setTimeout(() => {
+                    setBtnState("ready")
+                    if (resetCounterOnRelease) {
+                        setIncrementsCount(0);
+                        totalIncrementsCountRef.current = 0;
+                        currentIncrementsCountRef.current = 0;
+                    }
+                    voteCntRef.current = 0;
+                }, 2000);
             }
         });
-        voteCntRef.current = 0;
 
-    }, [], 1500)
+    }, [], 1500);
+
+    const spawnSparks = (cnt = 5) => {
+        const newSparks = Array(cnt).fill(0).map((_, idx) => ({
+            id: (Math.random() + 1).toString(),
+            offsetX: random(-10, 99),
+            offsetY: random(10, 90),
+            animation: randomItem(styles.fly_spark_1, styles.fly_spark_1),
+            animationSpeed: randomItem(1, 1.5, 2),
+            color: `hsl(0deg 86% ${random(50, 63)}%)`,
+            scale: random(1, 1.5)
+        }))
+
+        // if on mobile screen, reduce number of sparks particles to 60%
+        setSparks(oldSparks => [...oldSparks, ...newSparks])
+        setTimeout(() => {
+            setSparks(s => {
+                return s.filter(spark => !newSparks.some(newSpark => newSpark.id === spark.id))
+            })
+
+        }, 2 * 1000)
+    }
 
     const clickIncrement = () => {
         if (!disableShake)
@@ -122,33 +150,17 @@ export default function VoteButton({
             return newValue;
         })
 
-        if (totalIncrementsCountRef.current && totalIncrementsCountRef.current % 5 === 0) {
-            const newSparks = Array(5).fill(0).map((_, idx) => ({
-                id: (Math.random() + 1).toString(),
-                offsetX: random(-10, 99),
-                offsetY: random(40, 90),
-                animation: randomItem(styles.fly_spark_1, styles.fly_spark_1),
-                animationSpeed: randomItem(1, 1.5, 2),
-                color: `hsl(0deg 86% ${random(50, 63)}%)`,
-                scale: random(1, 1.5)
-            }))
+        // Each time the button make 5 increments, spawn some flames
+        if (totalIncrementsCountRef.current && totalIncrementsCountRef.current % 5 === 0)
+            spawnSparks(5);
 
-            // if on mobile screen, reduce number of sparks particles to 60%
-            setSparks(oldSparks => [...oldSparks, ...newSparks])
-            setTimeout(() => {
-                setSparks(s => {
-                    return s.filter(spark => !newSparks.some(newSpark => newSpark.id === spark.id))
-                })
-
-            }, 2 * 1000)
-        }
 
         doVote();
     }
 
     const onHold = useThrottledCallback(clickIncrement, [], 150)
 
-    const { onPressDown, onPressUp, isHolding } = usePressHolder(onHold, 100);
+    const { onPressDown, onPressUp } = usePressHolder(onHold, 200);
 
     const handlePressDown = () => {
         if (btnState !== 'ready' && btnState !== 'voting') return;
@@ -157,19 +169,13 @@ export default function VoteButton({
         onPressDown();
     }
 
-    const handlePressUp = (event?: any) => {
+    const handlePressUp = (event?: SyntheticEvent) => {
         if (btnState !== 'voting') return;
 
         if (event?.preventDefault) event.preventDefault();
 
         onPressUp();
         onHold();
-        if (resetCounterOnRelease)
-            if (!isHolding) {
-                currentIncrementsCountRef.current = 0;
-            } else
-                setTimeout(() =>
-                    currentIncrementsCountRef.current = 0, 150)
     }
 
     useMountEffect(() => {
@@ -199,7 +205,7 @@ export default function VoteButton({
         <button
             onMouseDown={handlePressDown}
             onMouseUp={handlePressUp}
-            onMouseLeave={handlePressUp}
+            onMouseLeave={() => onPressUp()}
             onTouchStart={handlePressDown}
             onTouchEnd={handlePressUp}
 
@@ -251,7 +257,7 @@ export default function VoteButton({
                     />{!hideVotesCoun && <span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>}
                 </div>
                 <AnimatePresence>
-                    {btnState === 'loading' &&
+                    {(btnState === 'loading' || btnState === 'fail') &&
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -266,7 +272,7 @@ export default function VoteButton({
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             className={styles.success}>
-                            Thanks!!
+                            +{numberFormatter(voteCntRef.current)}
                         </motion.div>
                     }
                 </AnimatePresence>

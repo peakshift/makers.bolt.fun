@@ -32,7 +32,7 @@ export default function PreviewPostContent({ post, }: Props) {
 
     return (
         <>
-            <div id="content" className="bg-white p-32 border rounded-16">
+            <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16">
                 {coverImg &&
                     <img src={coverImg}
                         className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'

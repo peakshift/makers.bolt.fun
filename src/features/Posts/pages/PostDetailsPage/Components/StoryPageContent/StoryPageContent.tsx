@@ -26,7 +26,7 @@ export default function StoryPageContent({ story }: Props) {
 
     return (
         <>
-            <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16 relative">
+            <div id="content" className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative">
 
 
                 {story.cover_image &&

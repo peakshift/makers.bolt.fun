@@ -72,10 +72,10 @@ const Story = objectType({
             resolve: () => t.typeName
         });
         t.string('cover_image');
-        // t.nonNull.list.nonNull.field('comments', {
-        //     type: "PostComment",
-        //     resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).comments()
-        // });
+        t.nonNull.list.nonNull.field('comments', {
+            type: "PostComment",
+            resolve: (parent) => []
+        });
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).tags()
@@ -375,7 +375,13 @@ const createStory = extendType({
 
                 // Preprocess & insert
                 const htmlBody = marked.parse(body);
-                const excerpt = htmlBody.replace(/<[^>]+>/g, '').slice(0, 120);
+                const excerpt = htmlBody
+                    .replace(/<[^>]+>/g, '')
+                    .slice(0, 120)
+                    .replace(/&amp;/g, "&")
+                    .replace(/&#39;/g, "'")
+                    .replace(/&quot;/g, '"')
+                    ;
 
                 if (id) {
                     await prisma.story.update({
