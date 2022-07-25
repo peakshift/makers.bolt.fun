@@ -35,7 +35,7 @@
 
   @include gt-xl {
     row-gap: unset;
-
+    grid-template-rows: repeat(3, auto) 1fr;
     grid-template-columns: 1fr calc(min(326px, 25%));
     grid-template-areas:
       "preview-switch preview-switch"
