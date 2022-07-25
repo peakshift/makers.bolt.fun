@@ -104,90 +104,93 @@ export default function StoryForm(props: Props) {
 
 
     return (
-        <form
-            onSubmit={clickSubmit(true)}
-        >
-            <div className="flex gap-16 mb-24">
+        <>
+            <div id='preview-switch' className="flex gap-16">
                 <button type='button' className={`rounded-8 px-16 py-8 ${editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={() => setEditMode(true)}>Edit</button>
                 <button type='button' className={`rounded-8 px-16 py-8 ${!editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={clickPreview}>Preview</button>
             </div>
-            {editMode && <>
-                <div
-                    className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
-                    <div className="p-32">
-                        <Controller
-                            control={control}
-                            name="cover_image"
-                            render={({ field: { onChange, value, onBlur, ref } }) => (
-                                <FilesInput
-                                    ref={ref}
-                                    value={value}
-                                    onBlur={onBlur}
-                                    onChange={onChange}
-                                    uploadText='Add a cover image'
-                                />
-                            )}
-                        />
-
-
-
-                        <div className="mt-16 relative">
-                            <textarea
-                                rows={1}
-                                autoFocus
-                                className="p-0 text-[42px] leading-[58px] border-0 w-full max-w-full resize-none
-                                focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
-                                placeholder='New story title here...'
-                                {...titleRegisteration}
-                                ref={e => {
-                                    registerTitleRef(e);
-                                    titleInputRef.current = e;
-                                }}
-                                onInput={() => {
-                                    if (!titleInputRef.current) return;
-                                    titleInputRef.current.style.height = "auto";
-                                    titleInputRef.current.style.height = (titleInputRef.current.scrollHeight) + "px";
-                                }}
+            <form
+                id='form'
+                onSubmit={clickSubmit(true)}
+            >
+                {editMode && <>
+                    <div
+                        className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
+                        <div className="p-16 md:p-32">
+                            <Controller
+                                control={control}
+                                name="cover_image"
+                                render={({ field: { onChange, value, onBlur, ref } }) => (
+                                    <FilesInput
+                                        ref={ref}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        onChange={onChange}
+                                        uploadText='Add a cover image'
+                                    />
+                                )}
                             />
-                        </div>
 
-                        <TagsInput
-                            placeholder="Add up to 5 popular tags..."
-                            classes={{ container: 'mt-16' }}
+
+
+                            <div className="mt-16 relative">
+                                <textarea
+                                    rows={1}
+                                    autoFocus
+                                    className="p-0 text-[42px] leading-[58px] border-0 w-full max-w-full resize-none
+                                focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
+                                    placeholder='New story title here...'
+                                    {...titleRegisteration}
+                                    ref={e => {
+                                        registerTitleRef(e);
+                                        titleInputRef.current = e;
+                                    }}
+                                    onInput={() => {
+                                        if (!titleInputRef.current) return;
+                                        titleInputRef.current.style.height = "auto";
+                                        titleInputRef.current.style.height = (titleInputRef.current.scrollHeight) + "px";
+                                    }}
+                                />
+                            </div>
+
+                            <TagsInput
+                                placeholder="Add up to 5 popular tags..."
+                                classes={{ container: 'mt-16' }}
+                            />
+
+                        </div>
+                        <ContentEditor
+                            key={postId}
+                            initialContent={() => getValues().body}
+                            placeholder="Write your story content here..."
+                            name="body"
                         />
 
                     </div>
-                    <ContentEditor
-                        key={postId}
-                        initialContent={() => getValues().body}
-                        placeholder="Write your story content here..."
-                        name="body"
-                    />
 
-                </div>
-
-            </>}
-            {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues().cover_image[0] }} />}
-            <div className="flex gap-16 mt-32">
-                <Button
-                    type='submit'
-                    color="primary"
-                    disabled={loading}
-                >
-                    {props.isUpdating ?
-                        "Update" :
-                        "Publish"
-                    }
-                </Button>
-                {!props.isPublished &&
+                </>}
+                {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues().cover_image[0] }} />}
+                <div className="flex gap-16 mt-32">
                     <Button
-                        color="gray"
+                        type='submit'
+                        color="primary"
                         disabled={loading}
-                        onClick={clickSubmit(false)}
                     >
-                        Save as Draft
-                    </Button>}
-            </div>
-        </form>
+                        {props.isUpdating ?
+                            "Update" :
+                            "Publish"
+                        }
+                    </Button>
+                    {!props.isPublished &&
+                        <Button
+                            color="gray"
+                            disabled={loading}
+                            onClick={clickSubmit(false)}
+                        >
+                            Save as Draft
+                        </Button>}
+                </div>
+            </form>
+        </>
     )
 }

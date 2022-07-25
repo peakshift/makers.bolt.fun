@@ -87,22 +87,18 @@ export default function CreateStoryPage() {
         <FormProvider {...formMethods}>
             <div className={styles.grid}>
 
-                <div id="form">
-                    <StoryForm
-                        key={formKey}
-                        isPublished={!!story?.is_published}
-                        isUpdating={!!story?.id}
-                        onSuccess={() => resetForm()}
-                        onValidationError={() => errorsContainerRef.current.scrollIntoView({ behavior: 'smooth', block: "center" })}
-                    />
-                </div>
+                <StoryForm
+                    key={formKey}
+                    isPublished={!!story?.is_published}
+                    isUpdating={!!story?.id}
+                    onSuccess={() => resetForm()}
+                    onValidationError={() => errorsContainerRef.current.scrollIntoView({ behavior: 'smooth', block: "center" })}
+                />
 
-                <div id="errors">
-                    <ErrorsContainer ref={errorsContainerRef} />
-                </div>
-                <div id="drafts">
-                    <DraftsContainer type={Post_Type.Story} onDraftLoad={resetForm} />
-                </div>
+                <ErrorsContainer id='errors' ref={errorsContainerRef} />
+
+                <DraftsContainer id='drafts' type={Post_Type.Story} onDraftLoad={resetForm} />
+
             </div>
         </FormProvider>
     )
