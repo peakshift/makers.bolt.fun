@@ -36,13 +36,18 @@ export default function CommentsSection({ type, id }: Props) {
     }
   }, [filter]);
 
-  const handleNewComment = (content: string, parentId?: string) => {
-    CommentsWorker.post({ content, filter, parentId });
+  const handleNewComment = async (content: string, parentId?: string) => {
+    try {
+      await CommentsWorker.post({ content, filter, parentId });
+      return true;
+    } catch (error) {
+      return false
+    }
   }
 
 
   return (
-    <div className="border border-gray-200 rounded-10 p-32 bg-white">
+    <div className="border-2 border-gray-200 rounded-12 md:rounded-16 p-32 bg-white">
       <h6 className="text-body2 font-bolder">Discussion</h6>
       {!!user && <div className="mt-24">
         <AddComment

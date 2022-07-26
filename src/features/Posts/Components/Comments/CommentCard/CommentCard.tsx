@@ -32,7 +32,7 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
     }
 
     return (
-        <div className="border rounded-12 p-24">
+        <div className="border-2 border-gray-200 rounded-12 md:rounded-16 p-24">
             <Header author={comment.author} date={new Date(comment.created_at).toISOString()} />
             <div
                 className="text-body4 mt-16 whitespace-pre-line"

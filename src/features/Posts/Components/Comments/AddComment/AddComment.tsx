@@ -14,7 +14,7 @@ import {
     PlaceholderExtension,
 } from 'remirror/extensions';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Toolbar from './Toolbar';
 import Button from 'src/Components/Button/Button';
@@ -26,7 +26,7 @@ interface Props {
     placeholder?: string;
     avatar: string;
     autoFocus?: boolean
-    onSubmit?: (comment: string) => void;
+    onSubmit?: (comment: string) => Promise<boolean>;
 }
 
 
@@ -41,7 +41,7 @@ export default function AddComment({ initialContent, placeholder, avatar, autoFo
         });
         return extension;
     }, []);
-
+    const [isLoading, setIsLoading] = useState(false)
     const valueRef = useRef<string>("");
 
 
@@ -85,14 +85,18 @@ export default function AddComment({ initialContent, placeholder, avatar, autoFo
     }, [autoFocus])
 
 
-    const submitComment = () => {
-        onSubmit?.(valueRef.current);
-        manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+    const submitComment = async () => {
+        setIsLoading(true);
+        const isSuccess = await onSubmit?.(valueRef.current);
+        if (isSuccess)
+            manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+        setIsLoading(false);
+
     }
 
 
     return (
-        <div className={`remirror-theme ${styles.wrapper} p-24 border rounded-12`} ref={containerRef}>
+        <div className={`remirror-theme ${styles.wrapper} p-24 border-2 border-gray-200 rounded-12 md:rounded-16`} ref={containerRef}>
             <Remirror
                 manager={manager}
                 state={state}
@@ -112,7 +116,14 @@ export default function AddComment({ initialContent, placeholder, avatar, autoFo
                 </div>
                 <div className="flex flex-wrap gap-16 mt-16">
                     <Toolbar />
-                    <Button onClick={submitComment} color='primary' className='ml-auto'>Submit</Button>
+                    <Button
+                        onClick={submitComment}
+                        color='primary'
+                        className='ml-auto'
+                        isLoading={isLoading}
+                    >
+                        Submit
+                    </Button>
                 </div>
             </Remirror>
         </div>

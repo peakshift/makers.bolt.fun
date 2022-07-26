@@ -35,6 +35,7 @@ export function sub(filter: string, cb: (data: Comment[]) => void) {
         cb(newComments)
     }, 1000)
 
+
     let sub = pool.sub({
         filter: {
             "#r": [filter]
@@ -43,10 +44,16 @@ export function sub(filter: string, cb: (data: Comment[]) => void) {
             //Got a new event 
             if (!event.id) return;
 
-            if (event.id in events) return
-            events[event.id] = event
+            if (event.id in events) return;
 
+            events[event.id] = event
             reconstructTree()
+
+            document.dispatchEvent(
+                new CustomEvent('nostr-event', {
+                    detail: event
+                })
+            )
         }
     });
 
@@ -110,25 +117,35 @@ export async function post({ content, filter, parentId }: {
 
 
 
-    const publishTimeout = setTimeout(() => {
-        alert(
-            `failed to publish comment to any relay.`
-        );
-    }, 5000)
 
-    pool.publish(event, (status: number, relay: string) => {
-        switch (status) {
-            case -1:
-                console.log(`failed to send ${JSON.stringify(event)} to ${relay}`)
-                // enable()
-                // onError()
-                break
-            case 1:
-                clearTimeout(publishTimeout)
-                console.log(`event ${event.id?.slice(0, 5)}… published to ${relay}.`)
-                // onSuccess()
-                break
+    return new Promise<void>((resolve, reject) => {
+
+        pool.publish(event, (status: number, relay: string) => {
+            switch (status) {
+                case -1:
+                    console.log(`failed to send ${JSON.stringify(event)} to ${relay}`)
+                    break
+                case 1:
+                    clearTimeout(publishTimeout)
+                    console.log(`event ${event.id?.slice(0, 5)}… published to ${relay}.`)
+                    break
+            }
+        });
+
+        const onEventFetched = (e: CustomEvent<NostrEvent>) => {
+            if (e.detail.id === event.id) {
+                document.removeEventListener<any>('nostr-event', onEventFetched);
+                resolve();
+            }
         }
+        document.addEventListener<any>('nostr-event', onEventFetched);
+
+        const publishTimeout = setTimeout(() => {
+            document.removeEventListener<any>('nostr-event', onEventFetched);
+            reject("Failed to publish to any relay...");
+        }, 5000)
+
+
     })
 }
 

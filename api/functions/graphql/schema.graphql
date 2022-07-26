@@ -186,6 +186,7 @@ type Question implements PostBase {
 type Story implements PostBase {
   author: Author!
   body: String!
+  comments: [PostComment!]!
   cover_image: String
   createdAt: Date!
   excerpt: String!

@@ -1,5 +1,8 @@
 
+import { useToggle } from "@react-hookz/web";
 import { useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import Button from "src/Components/Button/Button";
 import { useAppSelector } from "src/utils/hooks";
 import AddComment from "../AddComment/AddComment";
 import CommentCard from "../CommentCard/CommentCard";
@@ -16,7 +19,8 @@ interface Props {
 
 export default function Comment({ comment, canReply, isRoot, onClickedReply, onReply }: Props) {
 
-    const [replyOpen, setReplyOpen] = useState(false)
+    const [replyOpen, setReplyOpen] = useState(false);
+    const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(true)
     const user = useAppSelector(s => s.user.me)
 
     const clickReply = () => {
@@ -26,13 +30,31 @@ export default function Comment({ comment, canReply, isRoot, onClickedReply, onR
             onClickedReply?.()
     }
 
+    const handleReply = async (text: string) => {
+        try {
+            await onReply?.(text);
+            setReplyOpen(false);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     return (
         <div >
             <CommentCard canReply={canReply} comment={comment} onReply={clickReply} />
             {(comment.replies.length > 0 || replyOpen) && <div className="flex mt-16 gap-8 md:gap-20 pl-8">
-                <div className="border-l border-b border-gray-200 w-16 md:w-24 h-40 rounded-bl-8 flex-shrink-0"></div>
+                <div className="border-l-2 border-b-2 border-gray-200 w-16 md:w-24 h-40 rounded-bl-8 flex-shrink-0"></div>
                 <div className="flex flex-col w-full gap-16">
-                    {comment.replies.map(reply => <Comment
+                    {comment.replies.length > 0 &&
+                        <Button color="none" className="self-start mt-12 !px-0" onClick={() => toggleRepliesCollapsed()}>
+                            {repliesCollapsed ?
+                                <span className="text-gray-600"><span className="align-middle">Show {comment.replies.length} replies</span> <FaChevronDown className="ml-12" /></span>
+                                :
+                                <span className="text-gray-600"><span className="align-middle">Hide replies</span> <FaChevronUp className="ml-12" /> </span>
+                            }
+                        </Button>}
+                    {!repliesCollapsed && comment.replies.map(reply => <Comment
                         key={reply.id}
                         comment={reply}
                         onClickedReply={clickReply}
@@ -42,7 +64,7 @@ export default function Comment({ comment, canReply, isRoot, onClickedReply, onR
                         avatar={user?.avatar!}
                         autoFocus
                         placeholder="Leave a reply..."
-                        onSubmit={(text) => onReply?.(text)}
+                        onSubmit={handleReply}
                     />}
                 </div>
             </div>}
