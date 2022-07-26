@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useLayoutEffect, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useLayoutEffect, useEffect, useRef, } from "react";
 import { ProjectCard } from "src/utils/interfaces";
 import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
@@ -8,7 +8,6 @@ import { useResizeListener } from 'src/utils/hooks'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import './style.css';
 import { Link } from "react-router-dom";
-import { openProject } from "src/redux/features/project.slice";
 import ProjectCardMini from "src/features/Projects/Components/ProjectCardMini/ProjectCardMini";
 
 interface Props {
@@ -21,16 +20,12 @@ const responsive = {
     all: {
         breakpoint: { max: 5000, min: 0 },
         items: calcNumItems(),
-        slidesToSlide: Math.floor(calcNumItems())
+        slidesToSlide: Math.round(calcNumItems())
     }
 }
 
-// const calcNumItems = () => {
-//     const items = (((window.innerWidth - 32 - 296) / (296 + 20)));
-//     return items;
-// }
 
-function calcNumItems(width = window.innerWidth) {
+function calcNumItems(width = Math.min(window.innerWidth - 32, 1440)) {
     const items = ((width / (296 + 20)));
     return items;
 }
@@ -40,11 +35,25 @@ function calcNumItems(width = window.innerWidth) {
 export default function ProjectsRow({ title, link, projects }: Props) {
 
     const dispatch = useAppDispatch()
+
     let drag = useRef(false);
     const rowRef = useRef<HTMLDivElement>(null!);
 
+    const recalcItemsCnt = useCallback(
+        () => {
+            if (rowRef.current) {
+                const count = calcNumItems(rowRef.current.clientWidth);
+                responsive.all.items = count;
+                responsive.all.slidesToSlide = Math.round(count)
+            }
+        },
+        [],
+    );
+    useLayoutEffect(recalcItemsCnt, [recalcItemsCnt]);
+    useResizeListener(recalcItemsCnt)
 
     useEffect(() => {
+
         const mousedownListener = () => drag.current = false
         const mousemoveListener = () => drag.current = true
 
@@ -55,34 +64,21 @@ export default function ProjectsRow({ title, link, projects }: Props) {
             document.removeEventListener('mousedown', mousedownListener);
             document.removeEventListener('mousemove', mousemoveListener);
         }
-    }, [])
+    }, []);
+
+
+
+    if (projects.length === 0)
+        return <></>
 
 
 
     const handleClick = (projectId: number) => {
-
         if (!drag.current) {
             dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
         }
     }
 
-    const recalcItemsCnt = useCallback(
-        () => {
-            if (rowRef.current) {
-                responsive.all.items = calcNumItems(rowRef.current.clientWidth)
-                responsive.all.slidesToSlide = Math.floor(responsive.all.items);
-            }
-        },
-        [],
-    );
-
-    useLayoutEffect(recalcItemsCnt, [recalcItemsCnt]);
-
-
-    useResizeListener(recalcItemsCnt)
-
-    if (projects.length === 0)
-        return <></>
 
 
     return (
