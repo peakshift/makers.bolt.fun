@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useLayoutEffect, useEffect, useRef, useState } from "react";
 import { ProjectCard } from "src/utils/interfaces";
 import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
@@ -30,8 +30,8 @@ const responsive = {
 //     return items;
 // }
 
-function calcNumItems() {
-    const items = (((window.innerWidth - 2 * 32) / (296 + 20)));
+function calcNumItems(width = window.innerWidth) {
+    const items = ((width / (296 + 20)));
     return items;
 }
 
@@ -39,11 +39,9 @@ function calcNumItems() {
 
 export default function ProjectsRow({ title, link, projects }: Props) {
 
-    const [carouselItmsCnt, setCarouselItmsCnt] = useState(calcNumItems);
     const dispatch = useAppDispatch()
     let drag = useRef(false);
-
-    responsive.all.items = carouselItmsCnt
+    const rowRef = useRef<HTMLDivElement>(null!);
 
 
     useEffect(() => {
@@ -62,7 +60,6 @@ export default function ProjectsRow({ title, link, projects }: Props) {
 
 
     const handleClick = (projectId: number) => {
-        console.log(projectId);
 
         if (!drag.current) {
             dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
@@ -71,10 +68,15 @@ export default function ProjectsRow({ title, link, projects }: Props) {
 
     const recalcItemsCnt = useCallback(
         () => {
-            setCarouselItmsCnt(calcNumItems());
+            if (rowRef.current) {
+                responsive.all.items = calcNumItems(rowRef.current.clientWidth)
+                responsive.all.slidesToSlide = Math.floor(responsive.all.items);
+            }
         },
         [],
-    )
+    );
+
+    useLayoutEffect(recalcItemsCnt, [recalcItemsCnt]);
 
 
     useResizeListener(recalcItemsCnt)
@@ -91,7 +93,7 @@ export default function ProjectsRow({ title, link, projects }: Props) {
                     <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer transform scale-y-110 scale-x-125 origin-left' />
                 </Link>}
             </h3>
-            <div className="">
+            <div ref={rowRef} className="">
                 <Carousel
                     showDots={false}
                     autoPlay={false}
