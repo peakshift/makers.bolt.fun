@@ -17,7 +17,7 @@ export default function TrendingCard() {
             <ul className='flex flex-col'>
                 {
                     trendingPosts.loading ?
-                        Array(4).fill(0).map((_, idx) => <li key={idx} className="flex items-start gap-8">
+                        Array(4).fill(0).map((_, idx) => <li key={idx} className="flex items-start gap-8 border-b py-16 last-of-type:border-b-0">
                             <Skeleton circle width={24} height={24} />
                             <p className="text-body5 font-medium flex-grow"><Skeleton width={'80%'} />
                                 <Skeleton width={`${random(30, 65)}%`} /></p>
