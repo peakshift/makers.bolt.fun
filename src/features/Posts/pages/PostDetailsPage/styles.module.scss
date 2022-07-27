@@ -39,7 +39,7 @@
   }
 
   @include gt-lg {
-    grid-template-columns: auto 1fr calc(min(30%, 326px));
+    grid-template-columns: 116px 1fr calc(min(30%, 326px));
     grid-template-areas:
       "actions content author"
       ". comments ."
