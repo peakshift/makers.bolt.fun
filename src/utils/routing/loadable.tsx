@@ -1,8 +1,8 @@
+import { Suspense } from "react";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
-import LoadablePage from "./Page";
 
 export const Loadable = (Component: any, Loading = LoadingPage) => (props: any) => (
-    <LoadablePage>
+    <Suspense fallback={<Loading />}>
         <Component {...props} />
-    </LoadablePage>
+    </Suspense>
 );
