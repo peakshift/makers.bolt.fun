@@ -4,8 +4,6 @@ import { Nullable } from 'remirror';
 import { CONSTS } from 'src/utils';
 import { Comment } from '../types';
 
-type Author = NonNullable<Comment['author']>
-
 
 const pool = relayPool();
 
@@ -57,8 +55,8 @@ export function sub(filter: string, cb: (data: Comment[]) => void) {
     };
 }
 
-async function getSignedEvents(event: any) {
-    const res = await fetch(CONSTS.apiEndpoint + '/sign-event', {
+async function signEvent(event: any) {
+    const res = await fetch(CONSTS.apiEndpoint + '/nostr-sign-event', {
         method: "post",
         body: JSON.stringify({ event }),
         credentials: 'include',
@@ -70,18 +68,50 @@ async function getSignedEvents(event: any) {
     return data.event;
 }
 
-async function mapPubkeysToUsers(pubkeys: string[]) {
-    const res = await fetch(CONSTS.apiEndpoint + '/pubkeys-to-users', {
+async function confirmPublishingEvent(event: any) {
+    const res = await fetch(CONSTS.apiEndpoint + '/nostr-confirm-event', {
         method: "post",
-        body: JSON.stringify({ pubkeys }),
+        body: JSON.stringify({ event }),
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
     });
     const data = await res.json()
-    return data.pubkeysToUsers as Record<string, Author>;
+    return data.event;
 }
+
+
+async function getCommentsExtraData(ids: string[]) {
+    const res = await fetch(CONSTS.apiEndpoint + '/nostr-events-extra-data', {
+        method: "post",
+        body: JSON.stringify({ ids }),
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
+
+    type EventExtraData = {
+        id: number
+        nostr_id: string
+        votes_count: number
+        user: {
+            id: number,
+            avatar: string,
+            name: string,
+        }
+    }
+
+    const data = await res.json() as EventExtraData[];
+
+    const map = new Map<string, EventExtraData>()
+    data.forEach(item => {
+        map.set(item.nostr_id, item)
+    });
+    return map;
+}
+
 
 
 export async function post({ content, filter, parentId }: {
@@ -97,7 +127,7 @@ export async function post({ content, filter, parentId }: {
 
     let event: NostrEvent;
     try {
-        event = await getSignedEvents({
+        event = await signEvent({
             // pubkey: globalKeys.pubkey,
             // created_at: Math.round(Date.now() / 1000),
             kind: 1,
@@ -129,6 +159,7 @@ export async function post({ content, filter, parentId }: {
         const onEventFetched = (e: CustomEvent<NostrEvent>) => {
             if (e.detail.id === event.id) {
                 document.removeEventListener<any>('nostr-event', onEventFetched);
+                confirmPublishingEvent(event)
                 resolve();
             }
         }
@@ -162,37 +193,44 @@ export async function constructTree() {
     let sortedEvenets = Object.values(events).sort((a, b) => a.created_at - b.created_at);
 
 
-
     // Extract the pubkeys used
     const pubkeysSet = new Set<string>();
     sortedEvenets.forEach(e => pubkeysSet.add(e.pubkey));
 
-
-    // Make a request to api to get the pubkeys' users' data
-    const pubkeyToUser = await mapPubkeysToUsers(Array.from(pubkeysSet.values())) as Record<string, Author>;
+    // Make a request to api to get comments extra data
+    const commentsExtraData = await getCommentsExtraData(Object.keys(events));
 
     let eventsTree: Record<string, Comment> = {}
     // If event is a reply, connect it to parent
     sortedEvenets.forEach(e => {
         const parentId = extractParentId(e);
+        const extraData = commentsExtraData.get(e.id);
+
+        // if no extra data is here then that means this event wasn't done from our platform
+        if (!extraData) return;
 
         if (parentId) {
             eventsTree[parentId]?.replies.push({
-                id: e.id,
+                id: extraData.id,
+                nostr_id: e.id,
                 body: e.content,
                 created_at: e.created_at * 1000,
                 pubkey: e.pubkey,
-                author: pubkeyToUser[e.pubkey],
+                author: extraData.user,
                 replies: [],
+                votes_count: extraData.votes_count
             });
         } else {
             eventsTree[e.id] = ({
-                id: e.id,
+                id: extraData.id,
+                nostr_id: e.id,
                 body: e.content,
                 created_at: e.created_at * 1000,
                 pubkey: e.pubkey,
-                author: pubkeyToUser[e.pubkey],
+                author: extraData.user,
                 replies: [],
+                votes_count: extraData.votes_count
+
             });
         }
     })

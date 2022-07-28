@@ -23,7 +23,7 @@ export default function CommentsSection({ type, id }: Props) {
 
   const [commentsTree, setCommentsTree] = useState<Comment[]>([])
   const user = useAppSelector(state => state.user.me)
-  const filter = useMemo(() => `boltfun ${type}_comment ${id}` + (process.env.NODE_ENV === 'development' ? 'dev' : ""), [id, type])
+  const filter = useMemo(() => `boltfun ${type}_comment ${id}` + (process.env.NODE_ENV === 'development' ? ' dev' : ""), [id, type])
 
   useEffect(() => {
     CommentsWorker.connect();

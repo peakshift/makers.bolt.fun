@@ -46,7 +46,6 @@ model User {
   avatar String?
   role   String  @default("user")
 
-
   email             String?
   jobTitle          String?
   lightning_address String?
@@ -125,7 +124,6 @@ model Story {
   votes_count  Int      @default(0)
   is_published Boolean  @default(true)
 
-
   tags Tag[]
 
   user    User? @relation(fields: [user_id], references: [id])
@@ -144,7 +142,6 @@ model Question {
   votes_count  Int      @default(0)
   is_published Boolean  @default(true)
 
-
   tags Tag[]
 
   user    User? @relation(fields: [user_id], references: [id])
@@ -155,6 +152,7 @@ model Question {
 
 model PostComment {
   id          Int      @id @default(autoincrement())
+  nostr_id    String?
   body        String
   created_at  DateTime @default(now())
   votes_count Int      @default(0)
@@ -166,10 +164,8 @@ model PostComment {
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
 
-
   story    Story? @relation("StoryComment", fields: [story_id], references: [id])
   story_id Int?
-
 
   question    Question? @relation("QuestionComment", fields: [question_id], references: [id])
   question_id Int?

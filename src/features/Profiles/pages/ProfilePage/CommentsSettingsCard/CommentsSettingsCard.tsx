@@ -50,7 +50,7 @@ export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isO
             </p>
             <div className="mt-8 py-12 relative">
                 <p className="text-body4 text-gray-400 font-bold">
-                    Coming Soon 🚧
+                    🚧 Coming Soon 🚧
                 </p>
             </div>
             <p className="text-body4 font-bold mt-24">

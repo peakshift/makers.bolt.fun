@@ -24,6 +24,7 @@ export const generatePostComments = (cnt: number = 1) => {
         const parentId = Math.random() < .4 ? null : rootCommentsIds.length ? randomItem(...rootCommentsIds) : null;
         const comment = {
             id: i + 1,
+            nostr_id: '123123123123123123',
             body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",
             created_at: Date.now(),
             author: getAuthor(),

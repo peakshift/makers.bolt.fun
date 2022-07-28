@@ -48,12 +48,28 @@ functions:
       - http:
           path: is-logged-in
           method: get
-  sign-event:
-    handler: api/functions/sign-event/sign-event.handler
+
+  nostr-sign-event:
+    handler: api/functions/nostr-sign-event/nostr-sign-event.handler
     events:
       - http:
-          path: sign-event
+          path: nostr-sign-event
           method: post
+
+  nostr-confirm-event:
+    handler: api/functions/nostr-confirm-event/nostr-confirm-event.handler
+    events:
+      - http:
+          path: nostr-confirm-event
+          method: post
+
+  nostr-events-extra-data:
+    handler: api/functions/nostr-events-extra-data/nostr-events-extra-data.handler
+    events:
+      - http:
+          path: nostr-events-extra-data
+          method: post
+
   pubkeys-to-users:
     handler: api/functions/pubkeys-to-users/pubkeys-to-users.handler
     events:

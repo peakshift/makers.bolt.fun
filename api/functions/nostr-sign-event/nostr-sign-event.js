@@ -59,11 +59,11 @@ let app;
 
 if (process.env.LOCAL) {
     app = createExpressApp()
-    app.post('/sign-event', signEvent);
+    app.post('/nostr-sign-event', signEvent);
 }
 else {
     const router = express.Router();
-    router.post('/sign-event', signEvent)
+    router.post('/nostr-sign-event', signEvent)
     app = createExpressApp(router)
 }
 

@@ -4,10 +4,8 @@ import VoteButton from "src/Components/VoteButton/VoteButton";
 import Header from "src/features/Posts/Components/PostCard/Header/Header";
 import { Comment } from "../types";
 import DOMPurify from 'dompurify';
-import { ComponentProps } from "react";
-import { lightningAddressToPR } from "src/utils/helperFunctions";
-import { CONSTS } from "src/utils";
-import { Wallet_Service } from "src/services";
+import { Vote_Item_Type } from "src/graphql";
+import { useVote } from "src/utils/hooks";
 
 
 interface Props {
@@ -18,18 +16,23 @@ interface Props {
 
 export default function CommentCard({ comment, canReply, onReply }: Props) {
 
-    const onVote: ComponentProps<typeof VoteButton>['onVote'] = async (amount, config) => {
-        try {
-            const pr = await lightningAddressToPR(comment.author?.lightning_address ?? CONSTS.defaultLightningAddress, amount);
-            const webln = await Wallet_Service.getWebln()
-            const paymentResponse = await webln.sendPayment(pr);
-            config.onSuccess?.()
-        } catch (error) {
-            config.onError?.()
-        } finally {
-            config.onSetteled?.();
-        }
-    }
+    // const onVote: ComponentProps<typeof VoteButton>['onVote'] = async (amount, config) => {
+    //     try {
+    //         const pr = await lightningAddressToPR(comment.author?.lightning_address ?? CONSTS.defaultLightningAddress, amount);
+    //         const webln = await Wallet_Service.getWebln()
+    //         const paymentResponse = await webln.sendPayment(pr);
+    //         config.onSuccess?.()
+    //     } catch (error) {
+    //         config.onError?.()
+    //     } finally {
+    //         config.onSetteled?.();
+    //     }
+    // }
+
+    const { vote } = useVote({
+        itemId: comment.id,
+        itemType: Vote_Item_Type.PostComment
+    });
 
     return (
         <div className="border-2 border-gray-200 rounded-12 md:rounded-16 p-24">
@@ -41,7 +44,10 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
 
             </div>
             <div className="flex gap-24 mt-16 items-center">
-                <VoteButton votes={0} hideVotesCoun onVote={onVote} />
+                <VoteButton
+                    votes={comment.votes_count}
+                    onVote={vote}
+                />
                 {canReply && <button
                     className="text-gray-600 font-medium hover:bg-gray-100 py-8 px-12 rounded-8"
                     onClick={onReply}
