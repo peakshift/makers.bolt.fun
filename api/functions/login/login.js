@@ -7,6 +7,7 @@ const { createExpressApp } = require('../../modules');
 const express = require('express');
 const jose = require('jose');
 const { JWT_SECRET } = require('../../utils/consts');
+const { generatePrivateKey, getPublicKey } = require('../../utils/nostr-tools');
 
 
 
@@ -28,11 +29,17 @@ const loginHandler = async (req, res) => {
         //Create user if not already existing
         const user = await prisma.user.findFirst({ where: { pubKey: key } })
         if (user === null) {
+
+            const nostr_prv_key = generatePrivateKey();
+            const nostr_pub_key = getPublicKey(nostr_prv_key);
+
             await prisma.user.create({
                 data: {
                     pubKey: key,
                     name: key,
-                    avatar: `https://avatars.dicebear.com/api/bottts/${key}.svg`
+                    avatar: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
+                    nostr_prv_key,
+                    nostr_pub_key,
                 }
             })
         }

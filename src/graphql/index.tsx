@@ -329,6 +329,7 @@ export type Story = PostBase & {
   __typename?: 'Story';
   author: Author;
   body: Scalars['String'];
+  comments: Array<PostComment>;
   cover_image: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
   excerpt: Scalars['String'];
@@ -386,6 +387,8 @@ export type User = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_prv_key: Maybe<Scalars['String']>;
+  nostr_pub_key: Maybe<Scalars['String']>;
   role: Maybe<Scalars['String']>;
   stories: Array<Story>;
   twitter: Maybe<Scalars['String']>;
@@ -516,7 +519,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, nostr_prv_key: string | null, nostr_pub_key: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<UpdateProfileInput>;
@@ -1328,6 +1331,8 @@ export const ProfileDocument = gql`
         icon
       }
     }
+    nostr_prv_key
+    nostr_pub_key
   }
 }
     `;

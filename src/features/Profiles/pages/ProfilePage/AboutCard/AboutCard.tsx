@@ -3,7 +3,6 @@ import { User } from "src/graphql"
 import { trimText, withHttp } from "src/utils/helperFunctions"
 import { FiGithub, FiGlobe, FiLinkedin, FiTwitter } from 'react-icons/fi'
 import Button from "src/Components/Button/Button";
-import { useState } from "react";
 import { useToggle } from "@react-hookz/web";
 import UpdateAboutForm from "./UpdateAboutForm";
 

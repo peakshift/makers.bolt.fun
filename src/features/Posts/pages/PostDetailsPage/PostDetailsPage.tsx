@@ -16,7 +16,6 @@ import styles from './styles.module.scss'
 
 
 export default function PostDetailsPage() {
-
     const { type: _type, id } = useParams();
     const type = capitalize(_type);
 

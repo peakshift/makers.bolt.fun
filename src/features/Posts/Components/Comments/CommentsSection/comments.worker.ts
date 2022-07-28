@@ -9,16 +9,10 @@ type Author = NonNullable<Comment['author']>
 
 const pool = relayPool();
 
-const RELAYS = [
-    'wss://nostr.drss.io',
-    'wss://nostr-relay.freeberty.net',
-    'wss://nostr.unknown.place',
-    'wss://nostr-relay.untethr.me',
-    'wss://relay.damus.io'
-];
+
 
 export function connect() {
-    RELAYS.forEach(url => {
+    CONSTS.DEFAULT_RELAYS.forEach(url => {
         pool.addRelay(url, { read: true, write: true })
     })
     pool.onNotice((notice: string, relay: any) => {
@@ -99,7 +93,7 @@ export async function post({ content, filter, parentId }: {
     const tags = [];
     tags.push(['r', filter]);
     if (parentId)
-        tags.push(['e', `${parentId} ${RELAYS[0]} reply`])
+        tags.push(['e', `${parentId} ${CONSTS.DEFAULT_RELAYS[0]} reply`])
 
     let event: NostrEvent;
     try {

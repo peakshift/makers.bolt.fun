@@ -198,6 +198,8 @@ export interface NexusGenObjects {
     linkedin?: string | null; // String
     location?: string | null; // String
     name: string; // String!
+    nostr_prv_key?: string | null; // String
+    nostr_pub_key?: string | null; // String
     role?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
@@ -405,6 +407,8 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_prv_key: string | null; // String
+    nostr_pub_key: string | null; // String
     role: string | null; // String
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     twitter: string | null; // String
@@ -611,6 +615,8 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_prv_key: 'String'
+    nostr_pub_key: 'String'
     role: 'String'
     stories: 'Story'
     twitter: 'String'

@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { generatePrivateKey, getPublicKey } = require("../../api/utils/nostr-tools");
 const { categories, projects } = require("./data");
 
 
@@ -13,6 +14,29 @@ async function purge() {
     await prisma.category.deleteMany();
 }
 
+
+async function generateNostrKeys() {
+    const allUsers = await prisma.user.findMany({
+        where: {
+            nostr_prv_key: null
+        }
+    })
+    for (const user of allUsers) {
+
+        const prvkey = generatePrivateKey();
+        const pubkey = getPublicKey(prvkey);
+
+        await prisma.user.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                nostr_prv_key: prvkey,
+                nostr_pub_key: pubkey
+            }
+        })
+    }
+}
 
 
 

@@ -242,6 +242,8 @@ type User {
   linkedin: String
   location: String
   name: String!
+  nostr_prv_key: String
+  nostr_pub_key: String
   role: String
   stories: [Story!]!
   twitter: String

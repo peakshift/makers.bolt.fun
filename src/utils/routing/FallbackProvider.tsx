@@ -20,10 +20,12 @@ export const FallbackProvider: React.FC<React.PropsWithChildren<FabllbackProvide
     const [fallback, setFallback] = React.useState<FallbackType>(null);
 
     const updateFallback = React.useCallback((fallback: FallbackType) => {
-        setFallback(() => <>
-            <LoadingPage />
-            {fallback}
-        </>);
+        setFallback(() =>
+            <>
+                <LoadingPage />
+                {fallback}
+            </>
+        );
     }, []);
 
     const renderChildren = React.useMemo(() => {
