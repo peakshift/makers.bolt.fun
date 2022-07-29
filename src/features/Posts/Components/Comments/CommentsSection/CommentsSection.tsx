@@ -7,6 +7,7 @@ import { useAppSelector } from "src/utils/hooks";
 
 import * as CommentsWorker from './comments.worker'
 import { Post_Type } from 'src/graphql'
+import useComments from './useComments'
 
 // const createWorker = createWorkerFactory(() => import('./comments.worker'));
 
@@ -21,24 +22,25 @@ export default function CommentsSection({ type, id }: Props) {
   // const worker = useWorker(createWorker);
   // const commentsTree = useMemo(() => convertCommentsToTree(comments), [comments])
 
-  const [commentsTree, setCommentsTree] = useState<Comment[]>([])
+  // const [commentsTree, setCommentsTree] = useState<Comment[]>([])
   const user = useAppSelector(state => state.user.me)
-  const filter = useMemo(() => `boltfun ${type}_comment ${id}` + (process.env.NODE_ENV === 'development' ? ' dev' : ""), [id, type])
+  // const filter = useMemo(() => `boltfun ${type}_comment ${id}` + (process.env.NODE_ENV === 'development' ? ' dev' : ""), [id, type])
 
-  useEffect(() => {
-    CommentsWorker.connect();
-    const unsub = CommentsWorker.sub(filter, (newComments) => {
-      setCommentsTree(newComments)
-    })
+  // useEffect(() => {
+  //   CommentsWorker.connect();
+  //   const unsub = CommentsWorker.sub(filter, (newComments) => {
+  //     setCommentsTree(newComments)
+  //   })
 
-    return () => {
-      unsub();
-    }
-  }, [filter]);
+  //   return () => {
+  //     unsub();
+  //   }
+  // }, [filter]);
+  const { commentsTree, postComment } = useComments({ type, id })
 
   const handleNewComment = async (content: string, parentId?: string) => {
     try {
-      await CommentsWorker.post({ content, filter, parentId });
+      await postComment({ content, parentId });
       return true;
     } catch (error) {
       return false
@@ -63,7 +65,7 @@ export default function CommentsSection({ type, id }: Props) {
             comment={comment}
             isRoot
             canReply={!!user}
-            onReply={content => handleNewComment(content, comment.id.toString())}
+            onReply={content => handleNewComment(content, comment.nostr_id.toString())}
           />)}
       </div>
     </div>

@@ -13,7 +13,7 @@ export default function PageContentSkeleton() {
             </h1>
             <HeaderSkeleton />
             <div className="flex flex-wrap gap-8">
-                {Array(3).fill(0).map(i => <Badge key={i} size='sm'>
+                {Array(3).fill(0).map((_, idx) => <Badge key={idx} size='sm'>
                     <div className="opacity-0">hidden</div>
                 </Badge>)}
             </div>

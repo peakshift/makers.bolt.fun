@@ -27,11 +27,13 @@ const signEvent = async (req, res) => {
             return res.status(400).send("Signature not valid")
 
 
+
         // Extract type & id
         const rTag = event.tags.find(tag => tag[0] === 'r');
         const [host, type, refId] = rTag[1].split(' ');
 
-        if (host !== 'boltfun') res.status(400).send("This event wasn't signed by bolt.fun");
+        if (host !== 'boltfun') return res.status(400).send("This event wasn't signed by bolt.fun");
+
 
         if (type === 'Story_comment') {
 
@@ -48,6 +50,7 @@ const signEvent = async (req, res) => {
                     }))?.id;
             }
 
+
             // Insert comment in database
             await prisma.postComment.create({
                 data: {
@@ -59,10 +62,14 @@ const signEvent = async (req, res) => {
                 },
 
             })
+
+
         }
+
 
         return res
             .status(200)
+            .end()
     } catch (error) {
         console.log(error);
         res.status(500).send("Unexpected error happened, please try again")
