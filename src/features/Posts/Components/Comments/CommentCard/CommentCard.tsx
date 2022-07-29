@@ -6,6 +6,7 @@ import { Comment } from "../types";
 import DOMPurify from 'dompurify';
 import { Vote_Item_Type } from "src/graphql";
 import { useVote } from "src/utils/hooks";
+import { useState } from "react";
 
 
 interface Props {
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export default function CommentCard({ comment, canReply, onReply }: Props) {
+
+    const [votesCount, setVotesCount] = useState(comment.votes_count);
 
     // const onVote: ComponentProps<typeof VoteButton>['onVote'] = async (amount, config) => {
     //     try {
@@ -27,11 +30,11 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
     //     } finally {
     //         config.onSetteled?.();
     //     }
-    // }
+    // } 
 
     const { vote } = useVote({
         itemId: comment.id,
-        itemType: Vote_Item_Type.PostComment
+        itemType: Vote_Item_Type.PostComment,
     });
 
     return (
@@ -45,8 +48,9 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
             </div>
             <div className="flex gap-24 mt-16 items-center">
                 <VoteButton
-                    votes={comment.votes_count}
+                    votes={votesCount}
                     onVote={vote}
+                    onSuccess={(amount) => setVotesCount(s => s + amount)}
                 />
                 {canReply && <button
                     className="text-gray-600 font-medium hover:bg-gray-100 py-8 px-12 rounded-8"

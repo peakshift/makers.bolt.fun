@@ -107,7 +107,7 @@ const useComments = (config: {
 
 
         })
-    }, [filter])
+    }, [filter]);
 
 
     return { commentsTree, postComment }

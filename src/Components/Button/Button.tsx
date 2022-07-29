@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { Link } from 'react-router-dom'
-// import Loading from '../Loading/Loading';
+import { FallingLines, LineWave, TailSpin } from 'react-loader-spinner';
 
 type Props = {
     color?: 'primary' | 'red' | 'white' | 'gray' | "black" | 'none',
@@ -13,6 +13,7 @@ type Props = {
     fullWidth?: boolean;
     onClick?: () => void;
     className?: string
+    loadingText?: string
     isLoading?: boolean;
     disableOnLoading?: boolean;
     disabled?: boolean;
@@ -25,6 +26,15 @@ const btnStylesFill: UnionToObjectKeys<Props, 'color'> = {
     white: 'border border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50',
     black: 'text-white bg-black hover:bg-gray-900',
     red: "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white",
+}
+
+const loadingColor: UnionToObjectKeys<Props, 'color'> = {
+    none: "#101828",
+    primary: "#ffffff",
+    gray: '#101828',
+    white: '#101828',
+    black: '#ffffff',
+    red: "#ffffff",
 }
 
 const btnStylesOutline: UnionToObjectKeys<Props, 'color'> = {
@@ -58,8 +68,6 @@ const btnPadding: UnionToObjectKeys<Props, 'size'> = {
 
 const Button = React.forwardRef<any, Props>(({ color = 'white',
     variant = 'fill',
-    isLoading,
-    disableOnLoading = true,
     size = 'md',
     fullWidth,
     disabled,
@@ -67,11 +75,14 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
     newTab,
     className,
     onClick,
+    loadingText,
+    isLoading,
+    disableOnLoading = true,
     children,
     ...props }, ref) => {
 
     let classes = `
-    inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center
+    inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center relative
     ${baseBtnStyles[variant]}
     ${btnPadding[size]}
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}
@@ -96,8 +107,14 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
         disabled={disabled}
         {...props}
     >
-        {/* {isLoading ? <Loading color={loadingColor[color]} /> : children} */}
         {children}
+        {isLoading && <div className="text-body5 absolute inset-1 bg-inherit flex flex-col justify-center items-center">
+            {loadingText ?? <TailSpin
+                width="24"
+                color={loadingColor[color]}
+                height="24"
+            />}
+        </div>}
     </button>;
 
     if (href && newTab) return <a href={href} target='_blank' rel="noopener noreferrer">

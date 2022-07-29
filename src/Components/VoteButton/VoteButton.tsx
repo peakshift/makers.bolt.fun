@@ -1,6 +1,6 @@
 import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
-import { useAppSelector, usePressHolder, useResizeListener } from 'src/utils/hooks'
+import { useAppSelector, usePressHolder, useResizeListener, useVote } from 'src/utils/hooks'
 import { ComponentProps, SyntheticEvent, useRef, useState } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
@@ -22,13 +22,12 @@ interface Particle {
     scale: number
 }
 
+type VoteFunction = ReturnType<typeof useVote>['vote']
+
 type Props = {
     votes: number,
-    onVote?: (amount: number, config: Partial<{
-        onSetteled: () => void;
-        onError: () => void;
-        onSuccess: () => void;
-    }>) => void,
+    onVote?: VoteFunction,
+    onSuccess?: (amount: number) => void
     fillType?: 'leftRight' | 'upDown' | "background" | 'radial',
     direction?: 'horizontal' | 'vertical'
     disableCounter?: boolean
@@ -81,9 +80,10 @@ export default function VoteButton({
         setBtnState('loading');
         const amount = voteCntRef.current;
         onVote(amount, {
-            onSuccess: () => {
+            onSuccess: (amount) => {
                 setBtnState("success");
                 spawnSparks(10);
+                props.onSuccess?.(amount);
             },
             onError: () => setBtnState('fail'),
             onSetteled: () => {
