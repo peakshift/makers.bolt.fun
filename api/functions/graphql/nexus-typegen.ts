@@ -377,6 +377,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
+    comments_count: number; // Int!
     cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
@@ -585,6 +586,7 @@ export interface NexusGenFieldTypeNames {
     author: 'Author'
     body: 'String'
     comments: 'PostComment'
+    comments_count: 'Int'
     cover_image: 'String'
     createdAt: 'Date'
     excerpt: 'String'

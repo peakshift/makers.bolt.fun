@@ -16,6 +16,7 @@ const useComments = (config: {
     const commentsEventsTemp = useRef<Record<string, Required<NostrEvent>>>({})
     const [commentsEvents, setCommentsEvents] = useDebouncedState<Record<string, Required<NostrEvent>>>({}, 1000)
     const pendingResolvers = useRef<Record<string, () => void>>({});
+    const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ status: "Connecting", connectedRelaysCount: 0 })
     const filter = useMemo(() => `boltfun ${config.type}_comment ${config.id}` + (process.env.NODE_ENV === 'development' ? ' dev' : ""), [config.id, config.type])
 
     const [commentsTree, setCommentsTree] = useState<Comment[]>([])
@@ -55,7 +56,21 @@ const useComments = (config: {
                 }
             });
         })();
-    }, [commentsEvents])
+    }, [commentsEvents]);
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const newStatus = getConnectionStatus();
+            if (newStatus.connectedRelaysCount !== connectionStatus.connectedRelaysCount || newStatus.status !== connectionStatus.status)
+                setConnectionStatus(newStatus);
+        }, 5000)
+
+        return () => {
+            clearInterval(interval)
+        }
+    }, [connectionStatus.connectedRelaysCount, connectionStatus.status])
+
 
     const postComment = useCallback(async ({ content, parentId }: {
         content: string,
@@ -110,7 +125,7 @@ const useComments = (config: {
     }, [filter]);
 
 
-    return { commentsTree, postComment }
+    return { commentsTree, postComment, connectionStatus }
 }
 
 export default useComments;
@@ -249,4 +264,30 @@ async function buildTree(events: Record<string, Required<NostrEvent>>) {
     const sortedTree = Object.values(eventsTree).sort((a, b) => b.created_at - a.created_at)
 
     return sortedTree;
+}
+
+type ConnectionStatus = {
+    status: 'Connected' | "Connecting" | "Not Connected",
+    connectedRelaysCount: number
+}
+
+function getConnectionStatus(): ConnectionStatus {
+    let openedCnt = 0, reconnectingCnt = 0;
+
+    for (const relayUrl in pool.relays) {
+        const relayStatus = pool.relays[relayUrl].relay.status;
+        if (relayStatus === 1) openedCnt += 1;
+        if (relayStatus === 0) reconnectingCnt += 1;
+    }
+
+    const finalStatus = openedCnt > 0 ?
+        "Connected" :
+        reconnectingCnt > 0 ?
+            "Connecting" :
+            "Not Connected";
+
+    return {
+        status: finalStatus,
+        connectedRelaysCount: openedCnt
+    }
 }

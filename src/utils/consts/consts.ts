@@ -1,10 +1,7 @@
 
 const DEFAULT_RELAYS = [
     'wss://nostr.drss.io',
-    'wss://nostr-relay.freeberty.net',
-    'wss://nostr.unknown.place',
-    'wss://nostr-relay.untethr.me',
-    'wss://relay.damus.io'
+    'wss://relay.damus.io',
 ];
 
 const CONSTS = {

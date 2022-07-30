@@ -187,6 +187,7 @@ type Story implements PostBase {
   author: Author!
   body: String!
   comments: [PostComment!]!
+  comments_count: Int!
   cover_image: String
   createdAt: Date!
   excerpt: String!

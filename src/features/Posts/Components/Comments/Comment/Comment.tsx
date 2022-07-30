@@ -33,6 +33,7 @@ export default function Comment({ comment, canReply, isRoot, onClickedReply, onR
     const handleReply = async (text: string) => {
         try {
             await onReply?.(text);
+            toggleRepliesCollapsed(false);
             setReplyOpen(false);
             return true;
         } catch (error) {
@@ -58,7 +59,7 @@ export default function Comment({ comment, canReply, isRoot, onClickedReply, onR
                         key={reply.id}
                         comment={reply}
                         onClickedReply={clickReply}
-                        canReply={false}
+                        canReply={!!isRoot}
                     />)}
                     {replyOpen && <AddComment
                         avatar={user?.avatar!}

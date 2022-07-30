@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { Link } from 'react-router-dom'
-import { FallingLines, LineWave, TailSpin } from 'react-loader-spinner';
+import { TailSpin } from 'react-loader-spinner';
 
 type Props = {
     color?: 'primary' | 'red' | 'white' | 'gray' | "black" | 'none',
@@ -107,8 +107,10 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
         disabled={disabled}
         {...props}
     >
-        {children}
-        {isLoading && <div className="text-body5 absolute inset-1 bg-inherit flex flex-col justify-center items-center">
+        <span className={isLoading ? "opacity-0" : ""}>
+            {children}
+        </span>
+        {isLoading && <div className="text-body5 absolute inset-0 rounded-lg bg-inherit flex flex-col justify-center items-center">
             {loadingText ?? <TailSpin
                 width="24"
                 color={loadingColor[color]}

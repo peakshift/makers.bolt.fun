@@ -80,21 +80,21 @@ const Story = objectType({
             type: "Tag",
             resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).tags()
         });
-        // t.nonNull.int('comments_count', {
-        //     resolve: async (parent) => {
-        //         const post = await prisma.story.findUnique({
-        //             where: { id: parent.id },
-        //             include: {
-        //                 _count: {
-        //                     select: {
-        //                         comments: true
-        //                     }
-        //                 }
-        //             }
-        //         })
-        //         return post._count.comments;
-        //     }
-        // });
+        t.nonNull.int('comments_count', {
+            resolve: async (parent) => {
+                const post = await prisma.story.findUnique({
+                    where: { id: parent.id },
+                    include: {
+                        _count: {
+                            select: {
+                                comments: true
+                            }
+                        }
+                    }
+                })
+                return post._count.comments;
+            }
+        });
         t.nonNull.field('author', {
             type: "Author",
             resolve: (parent) =>
