@@ -19,19 +19,6 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
 
     const [votesCount, setVotesCount] = useState(comment.votes_count);
 
-    // const onVote: ComponentProps<typeof VoteButton>['onVote'] = async (amount, config) => {
-    //     try {
-    //         const pr = await lightningAddressToPR(comment.author?.lightning_address ?? CONSTS.defaultLightningAddress, amount);
-    //         const webln = await Wallet_Service.getWebln()
-    //         const paymentResponse = await webln.sendPayment(pr);
-    //         config.onSuccess?.()
-    //     } catch (error) {
-    //         config.onError?.()
-    //     } finally {
-    //         config.onSetteled?.();
-    //     }
-    // } 
-
     const { vote } = useVote({
         itemId: comment.id,
         itemType: Vote_Item_Type.PostComment,

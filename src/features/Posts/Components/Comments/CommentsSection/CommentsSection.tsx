@@ -61,17 +61,20 @@ export default function CommentsSection({ type, id }: Props) {
 
   return (
     <div className="border-2 border-gray-200 rounded-12 md:rounded-16 p-32 bg-white">
+
       <div className="flex flex-wrap justify-between">
         <h6 className="text-body2 font-bolder">Discussion</h6>
         {connectionStatus.status === 'Connected' && <div className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; Connected to {connectionStatus.connectedRelaysCount} relays 📡</div>}
         {connectionStatus.status === 'Connecting' && <div className="bg-amber-50 text-amber-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; Connecting to relays ⌛</div>}
         {connectionStatus.status === 'Not Connected' && <div className="bg-red-50 text-red-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; Not connected 📡</div>}
       </div>
-      {showTooltip && <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-12">
+
+      {showTooltip && <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-8 md:gap-12">
         <span>💬</span>
         <p className="text-body4 font-medium">Learn about <Link to={createRoute({ type: "story", title: "What is Nostr", id: 999 })} className='underline'>how your data is stored</Link> with Nostr comments and relays</p>
         <IconButton className='shrink-0 self-start' onClick={closeTooltip}><AiOutlineClose className='text-gray-600' /></IconButton>
       </div>}
+
       {!!user && <div className="mt-24">
         <AddComment
           placeholder='Leave a comment...'
@@ -79,6 +82,7 @@ export default function CommentsSection({ type, id }: Props) {
           avatar={user.avatar}
         />
       </div>}
+
       <div className='flex flex-col gap-16 mt-32'>
         {commentsTree.map(comment =>
           <CommentRoot

@@ -62,6 +62,7 @@ export default function VoteButton({
     hideVotesCoun = false,
     dense = false,
     resetCounterOnRelease = true,
+    onSuccess,
     ...props }: Props) {
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
@@ -83,7 +84,7 @@ export default function VoteButton({
             onSuccess: (amount) => {
                 setBtnState("success");
                 spawnSparks(10);
-                props.onSuccess?.(amount);
+                onSuccess?.(amount);
             },
             onError: () => setBtnState('fail'),
             onSetteled: () => {
