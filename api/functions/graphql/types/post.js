@@ -39,6 +39,8 @@ const Author = objectType({
         t.nonNull.string('name');
         t.nonNull.string('avatar');
         t.nonNull.date('join_date');
+
+        t.string('lightning_address');
     }
 })
 
@@ -170,13 +172,13 @@ const Question = objectType({
             resolve: (parent) => prisma.question.findUnique({ where: { id: parent.id } }).tags()
         });
 
-        t.nonNull.int('answers_count');
-        t.nonNull.list.nonNull.field('comments', {
-            type: "PostComment",
-            resolve: (parent) => {
-                return prisma.question.findUnique({ where: { id: parent.id } }).comments();
-            }
-        });
+        // t.nonNull.int('answers_count');
+        // t.nonNull.list.nonNull.field('comments', {
+        //     type: "PostComment",
+        //     resolve: (parent) => {
+        //         return prisma.question.findUnique({ where: { id: parent.id } }).comments();
+        //     }
+        // });
 
         t.nonNull.field('author', {
             type: "Author",
@@ -191,7 +193,7 @@ const PostComment = objectType({
     name: 'PostComment',
     definition(t) {
         t.nonNull.int('id');
-        t.nonNull.date('createdAt');
+        t.nonNull.date('created_at');
         t.nonNull.string('body');
         t.nonNull.field('author', {
             type: "Author"

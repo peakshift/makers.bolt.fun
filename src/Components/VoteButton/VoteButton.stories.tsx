@@ -17,8 +17,8 @@ const Template: ComponentStory<typeof VoteButton> = (args) => <VoteButton {...ar
 
 const onVoteHandler: ComponentProps<typeof VoteButton>['onVote'] = (a, c) => {
     setTimeout(() => {
-        c.onSuccess?.();
-        c.onSetteled?.();
+        c?.onSuccess?.(10);
+        c?.onSetteled?.();
     }, 2000)
 }
 

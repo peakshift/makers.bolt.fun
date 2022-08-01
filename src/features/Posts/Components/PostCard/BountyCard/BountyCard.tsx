@@ -1,4 +1,3 @@
-import VotesCount from "src/Components/VotesCount/VotesCount"
 import { Bounty } from "src/features/Posts/types"
 import Header from "../Header/Header"
 import { FiUsers } from "react-icons/fi"
@@ -6,7 +5,7 @@ import Badge from "src/Components/Badge/Badge"
 import Button from "src/Components/Button/Button"
 import { Link } from "react-router-dom"
 import VoteButton from "src/Components/VoteButton/VoteButton"
-import { Tag } from "src/graphql"
+import { Author, Tag } from "src/graphql"
 
 export type BountyCardType = Pick<Bounty,
     | 'id'
@@ -14,13 +13,13 @@ export type BountyCardType = Pick<Bounty,
     | 'title'
     | 'cover_image'
     | 'createdAt'
-    | 'author'
     | 'excerpt'
     | 'votes_count'
     | "reward_amount"
     | "applicants_count"
 > & {
     tags: Array<Pick<Tag, 'id' | "title">>
+    author: Pick<Author, 'id' | 'name' | 'avatar' | 'join_date'>
 };
 interface Props {
     bounty: BountyCardType

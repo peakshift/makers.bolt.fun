@@ -9,17 +9,6 @@ export type User = {
 
 export type Author = ApiTypes.Author
 
-export type PostBase1 = {
-    id: number
-    title: string
-    createdAt: string
-    author: Author
-    excerpt: string
-    tags: Tag[]
-    votes_count: number
-    type: string
-    body: string
-}
 
 export type PostBase = ApiTypes.PostBase
 

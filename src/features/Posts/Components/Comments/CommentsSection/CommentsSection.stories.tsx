@@ -16,7 +16,6 @@ const Template: ComponentStory<typeof CommentsSection> = (args) => <div classNam
 
 export const Default = Template.bind({});
 Default.args = {
-    comments: MOCK_DATA.generatePostComments(15)
 }
 
 

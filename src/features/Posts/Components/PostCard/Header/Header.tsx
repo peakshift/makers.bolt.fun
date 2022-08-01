@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
 
 interface Props {
-    author: {
+    author?: {
         id: number,
         name: string,
         avatar: string
@@ -45,11 +45,15 @@ export default function Header({
 
     return (
         <div className='flex gap-8'>
-            <Link to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
-                <Avatar width={avatarSize[size]} src={props.author.avatar} />
-            </Link>
+            {props.author ?
+                <Link to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
+                    <Avatar width={avatarSize[size]} src={props.author.avatar} />
+                </Link>
+                :
+                <></>
+            }
             <div className='overflow-hidden'>
-                <p className={`${nameSize[size]} text-black font-medium overflow-hidden text-ellipsis`}>{trimText(props.author.name, 30)}</p>
+                <p className={`${nameSize[size]} text-black font-medium overflow-hidden text-ellipsis`}>{props.author ? trimText(props.author.name, 30) : "Anonymouse"}</p>
                 <p className={`text-body6 text-gray-600`}>{dateToShow()}</p>
             </div>
             {/* {showTimeAgo && <p className={`${nameSize[size]} text-gray-500 ml-auto `}>

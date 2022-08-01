@@ -23,6 +23,8 @@ const User = objectType({
         t.string('linkedin')
         t.string('bio')
         t.string('location')
+        t.string('nostr_prv_key')
+        t.string('nostr_pub_key')
 
         t.nonNull.list.nonNull.field('stories', {
             type: "Story",
@@ -55,10 +57,15 @@ const profile = extendType({
             args: {
                 id: nonNull(intArg())
             },
-            async resolve(parent, { id }) {
-                return prisma.user.findFirst({
-                    where: { id }
-                })
+            async resolve(parent, { id }, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+                const isSelf = user?.id === id;
+                const profile = await prisma.user.findFirst({
+                    where: { id },
+                });
+                if (!isSelf)
+                    profile.nostr_prv_key = null;
+                return profile;
             }
         })
     }

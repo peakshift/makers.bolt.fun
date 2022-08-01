@@ -165,9 +165,7 @@ export default function StoryForm(props: Props) {
                             placeholder="Write your story content here..."
                             name="body"
                         />
-
                     </div>
-
                 </>}
                 {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues().cover_image[0] }} />}
                 <div className="flex gap-16 mt-32">

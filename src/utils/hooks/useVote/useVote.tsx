@@ -15,23 +15,32 @@ export enum PaymentStatus {
     NETWORK_ERROR
 }
 
+interface Params {
+    itemType?: Vote_Item_Type,
+    itemId?: number,
+    onSuccess?: (amount: number) => void,
+    onError?: (error: any) => void,
+    onSetteled?: () => void
+}
 
 
 
-export const useVote = ({ itemId, itemType }: {
-    itemType: Vote_Item_Type,
-    itemId: number
-}) => {
+export const useVote = (params: Params) => {
 
     const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(PaymentStatus.DEFAULT);
     const [voteMutaion] = useVoteMutation();
     const [confirmVote] = useConfirmVoteMutation();
 
-    const vote = useCallback((amount: number, config?: Partial<{
-        onSuccess: () => void,
-        onError: (error: any) => void,
-        onSetteled: () => void
-    }>) => {
+    const vote = useCallback((amount: number, innerParams?: Params) => {
+
+        const itemId = innerParams?.itemId ?? params.itemId;
+        const itemType = innerParams?.itemType ?? params.itemType;
+        const onSuccess = innerParams?.onSuccess ?? params.onSuccess;
+        const onError = innerParams?.onError ?? params.onError;
+        const onSetteled = innerParams?.onSetteled ?? params.onSetteled;
+
+        if (!itemId || !itemType) return;
+
         setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS)
         voteMutaion({
             variables: {
@@ -54,8 +63,8 @@ export const useVote = ({ itemId, itemType }: {
                         },
                         onCompleted: () => {
                             setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
-                            config?.onSuccess?.();
-                            config?.onSetteled?.()
+                            onSuccess?.(votingData.vote.amount_in_sat);
+                            onSetteled?.()
                         },
                         update(cache, { data }) {
                             try {
@@ -79,21 +88,21 @@ export const useVote = ({ itemId, itemType }: {
                                     },
                                 })
                             } catch (error) {
-                                config?.onError?.(error)
+                                onError?.(error)
                             }
                         },
 
                         onError: (error) => {
                             setPaymentStatus(PaymentStatus.NETWORK_ERROR);
-                            config?.onError?.(error);
-                            config?.onSetteled?.();
+                            onError?.(error);
+                            onSetteled?.();
                             alert("A network error happened while confirming the payment...")
                         }
                     })
                 } catch (error) {
                     setPaymentStatus(PaymentStatus.CANCELED);
-                    config?.onError?.(error);
-                    config?.onSetteled?.();
+                    onError?.(error);
+                    onSetteled?.();
                     alert("Payment rejected by user")
 
                 }
@@ -102,12 +111,12 @@ export const useVote = ({ itemId, itemType }: {
             onError: (error) => {
                 console.log(error);
                 setPaymentStatus(PaymentStatus.NETWORK_ERROR);
-                config?.onError?.(error);
-                config?.onSetteled?.();
+                onError?.(error);
+                onSetteled?.();
                 alert("A network error happened...")
             }
         })
-    }, [confirmVote, itemId, itemType, voteMutaion]);
+    }, [confirmVote, voteMutaion, params.itemId, params.itemType, params.onError, params.onSetteled, params.onSuccess]);
 
 
     const isLoading = paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.PAYMENT_CONFIRMED && paymentStatus !== PaymentStatus.NOT_PAID && paymentStatus !== PaymentStatus.NETWORK_ERROR

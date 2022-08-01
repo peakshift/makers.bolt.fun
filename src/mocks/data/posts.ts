@@ -12,10 +12,11 @@ const getAuthor = () => ({
     id: 12,
     name: "John Doe",
     avatar: getAvatarImage(),
-    join_date: getDate()
+    join_date: getDate(),
+    lightning_address: null,
 })
 
-export const generatePostComments = (cnt: number = 1): Story['comments'] => {
+export const generatePostComments = (cnt: number = 1) => {
 
     let comments = [];
     const rootCommentsIds: any[] = []
@@ -23,11 +24,14 @@ export const generatePostComments = (cnt: number = 1): Story['comments'] => {
         const parentId = Math.random() < .4 ? null : rootCommentsIds.length ? randomItem(...rootCommentsIds) : null;
         const comment = {
             id: i + 1,
+            nostr_id: '123123123123123123',
             body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",
-            createdAt: getDate(),
+            created_at: Date.now(),
             author: getAuthor(),
             votes_count: 123,
-            parentId
+            parentId,
+            pubkey: '123',
+            replies: [],
         }
         comments.push(comment);
         if (!parentId)
@@ -85,14 +89,17 @@ export let posts = {
             title: 'Digital Editor, Mars Review of Books',
             body: postBody,
             cover_image: getCoverImage(),
-            comments_count: 3,
+            // comments_count: 3,
             createdAt: getDate(),
+            updatedAt: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             type: "Story",
             tags: randomItems(3, ...tags),
             author: getAuthor(),
-            comments: generatePostComments(3),
+            // comments: generatePostComments(3),
+            is_published: true,
+
 
         },
         {
@@ -100,15 +107,16 @@ export let posts = {
             title: 'The End Is Nigh',
             body: postBody,
             cover_image: getCoverImage(),
-            comments_count: 3,
+            // comments_count: 3,
             createdAt: getDate(),
+            updatedAt: getDate(),
             votes_count: 120,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             type: "Story",
             tags: randomItems(3, ...tags),
             author: getAuthor(),
-            comments: generatePostComments(3),
-
+            // comments: generatePostComments(3),
+            is_published: true,
         },
     ] as Story[],
     bounties: [
@@ -153,32 +161,36 @@ export let posts = {
             id: 33,
             title: 'Digital Editor, Mars Review of Books',
             body: postBody,
-            answers_count: 3,
+            // answers_count: 3,
             createdAt: getDate(),
+            updatedAt: getDate(),
             votes_count: 70,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
+                { id: 1, title: "lnurl", description: '', isOfficial: false, icon: '' },
+                { id: 2, title: "webln", description: '', isOfficial: false, icon: '' },
             ],
             author: getAuthor(),
-            comments: generatePostComments(3)
+            // comments: generatePostComments(3),
+            is_published: true,
         },
         {
             type: "Question",
             id: 33,
             title: 'What is a man but miserable pile of secrets?',
             body: postBody,
-            answers_count: 3,
+            // answers_count: 3,
             createdAt: getDate(),
+            updatedAt: getDate(),
             votes_count: 70,
             excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
             tags: [
-                { id: 1, title: "lnurl" },
-                { id: 2, title: "webln" },
+                { id: 1, title: "lnurl", description: '', isOfficial: false, icon: '' },
+                { id: 2, title: "webln", description: '', isOfficial: false, icon: '' },
             ],
             author: getAuthor(),
-            comments: generatePostComments(3)
+            // comments: generatePostComments(3),
+            is_published: true,
         },
     ] as Question[]
 }

@@ -36,7 +36,7 @@ export function createRoute(options: RouteOptions) {
 
 
     if (options.type === 'post')
-        return `/blog/post/${options.postType}/${options.id}`
+        return `/blog/post/${options.postType.toLowerCase()}/${options.id}`
             + (options.title ? `/${toSlug(options.title)}` : "");
 
     if (options.type === 'story')

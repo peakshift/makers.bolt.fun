@@ -74,45 +74,47 @@ export default function NavMobile() {
 
   return (
     <div className={`${styles.navMobile}`}>
-      <nav className={`bg-white h-[67px] w-full p-16 px-32 flex justify-between items-center`}>
-        <Link to="/">
-          <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
-        </Link>
+      <nav className={`bg-white h-[67px] w-full py-16`}>
+        <div className="page-container flex justify-between items-center !p-0">
+          <Link to="/">
+            <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
+          </Link>
 
-        <div className="ml-auto"></div>
-        {curUser !== undefined &&
-          (curUser &&
-            <Menu
-              menuClassName='!p-8 !rounded-12'
-              menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
-              <MenuItem
-                href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
-                onClick={(e) => {
-                  e.syntheticEvent.preventDefault();
-                  navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
-                }}
-                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-              >
-                Profile
-              </MenuItem>
-              <MenuItem
-                href="/logout"
-                onClick={(e) => {
-                  e.syntheticEvent.preventDefault();
-                  navigate("/logout");
-                }}
-                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-              >
-                Logout
-              </MenuItem>
-            </Menu>
+          <div className="ml-auto"></div>
+          {curUser !== undefined &&
+            (curUser &&
+              <Menu
+                menuClassName='!p-8 !rounded-12'
+                menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
+                <MenuItem
+                  href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
+                  }}
+                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem
+                  href="/logout"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/logout");
+                  }}
+                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
 
-          )
-        }
-        <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
-          {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
-            : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
-        </IconButton>
+            )
+          }
+          <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
+            {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
+              : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
+          </IconButton>
+        </div>
       </nav>
 
       <div className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]">

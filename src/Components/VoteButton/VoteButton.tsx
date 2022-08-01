@@ -1,6 +1,6 @@
 import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
-import { useAppSelector, usePressHolder, useResizeListener } from 'src/utils/hooks'
+import { useAppSelector, usePressHolder, useResizeListener, useVote } from 'src/utils/hooks'
 import { ComponentProps, SyntheticEvent, useRef, useState } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
@@ -22,17 +22,17 @@ interface Particle {
     scale: number
 }
 
+type VoteFunction = ReturnType<typeof useVote>['vote']
+
 type Props = {
     votes: number,
-    onVote?: (amount: number, config: Partial<{
-        onSetteled: () => void;
-        onError: () => void;
-        onSuccess: () => void;
-    }>) => void,
+    onVote?: VoteFunction,
+    onSuccess?: (amount: number) => void
     fillType?: 'leftRight' | 'upDown' | "background" | 'radial',
     direction?: 'horizontal' | 'vertical'
     disableCounter?: boolean
     disableShake?: boolean
+    hideVotesCoun?: boolean
     dense?: boolean
     size?: 'sm' | 'md'
     resetCounterOnRelease?: boolean
@@ -59,15 +59,16 @@ export default function VoteButton({
     direction = 'horizontal',
     disableCounter = false,
     disableShake = true,
+    hideVotesCoun = false,
     dense = false,
     resetCounterOnRelease = true,
+    onSuccess,
     ...props }: Props) {
     const [voteCnt, setVoteCnt] = useState(0)
     const voteCntRef = useRef(0);
     const btnContainerRef = useRef<HTMLDivElement>(null!!)
     const [btnShakeClass, setBtnShakeClass] = useState('')
     const [sparks, setSparks] = useState<Particle[]>([]);
-    const [wasActive, setWasActive] = useState(false);
     const [incrementsCount, setIncrementsCount] = useState(0);
     const totalIncrementsCountRef = useRef(0)
     const currentIncrementsCountRef = useRef(0);
@@ -75,15 +76,15 @@ export default function VoteButton({
     const [btnPosition, setBtnPosition] = useState<{ top: number, left: number, width: number, height: number }>();
     const [btnState, setBtnState] = useState<BtnState>('ready');
 
-    const isMobileScreen = useAppSelector(s => s.ui.isMobileScreen);
 
     const doVote = useDebouncedCallback(() => {
         setBtnState('loading');
         const amount = voteCntRef.current;
         onVote(amount, {
-            onSuccess: () => {
+            onSuccess: (amount) => {
                 setBtnState("success");
                 spawnSparks(10);
+                onSuccess?.(amount);
             },
             onError: () => setBtnState('fail'),
             onSetteled: () => {
@@ -229,7 +230,7 @@ export default function VoteButton({
                  ${direction === 'vertical' ?
                         dense ? "py-4 px-12" : "py-8 px-20"
                         :
-                        dense ? "py-4 px-8" : "p-8"}
+                        dense ? "py-4 px-8" : "p-8 min-w-[80px]"}
                 ${voteCntRef.current > 0 && "outline"} active:outline outline-1 outline-red-500 
                 ${btnShakeClass} 
                 `}
@@ -254,7 +255,7 @@ export default function VoteButton({
                     <MdLocalFireDepartment
                         className={`text-body2 ${incrementsCount ? "text-red-600" : "text-gray-400"}`}
 
-                    /><span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>
+                    />{!hideVotesCoun && <span className="align-middle w-[4ch]"> {numberFormatter(votes + voteCnt)}</span>}
                 </div>
                 <AnimatePresence>
                     {(btnState === 'loading' || btnState === 'fail') &&

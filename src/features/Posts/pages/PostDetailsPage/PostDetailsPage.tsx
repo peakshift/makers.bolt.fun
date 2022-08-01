@@ -2,9 +2,10 @@
 import { Helmet } from 'react-helmet'
 import { useParams } from 'react-router-dom'
 import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
-import { usePostDetailsQuery } from 'src/graphql'
+import { Post_Type, usePostDetailsQuery } from 'src/graphql'
 import { capitalize } from 'src/utils/helperFunctions'
 import { useAppSelector, } from 'src/utils/hooks'
+import { CommentsSection } from '../../Components/Comments'
 import ScrollToTop from 'src/utils/routing/scrollToTop'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import AuthorCard from './Components/AuthorCard/AuthorCard'
@@ -15,7 +16,6 @@ import styles from './styles.module.scss'
 
 
 export default function PostDetailsPage() {
-
     const { type: _type, id } = useParams();
     const type = capitalize(_type);
 
@@ -72,6 +72,9 @@ export default function PostDetailsPage() {
                         <TrendingCard />
                     </div>
                 </aside>
+                <div id="comments">
+                    <CommentsSection id={post.id} type={type as Post_Type} />
+                </div>
             </div>
         </>
     )

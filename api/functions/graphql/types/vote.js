@@ -61,7 +61,7 @@ const getModalOfType = (type) => {
             return prisma.question;
         case "Project":
             return prisma.project;
-        case "Comment":
+        case "PostComment":
             return prisma.postComment;
         default:
             return null;

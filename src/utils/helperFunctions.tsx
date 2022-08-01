@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React, { ComponentProps, ComponentType, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { isNullOrUndefined } from "remirror";
+import axios from 'axios'
 
 export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -131,4 +132,36 @@ export function getDateDifference(date: string, { dense }: { dense?: boolean } =
 
   const months = now.diff(date, 'month');
   return months + (dense ? 'mo' : " months")
+}
+
+
+export async function lightningAddressToPR(address: string, amount_in_sat: number) {
+
+  // parse lightning address and return a url that can be
+  // used in a request
+  function lightningAddressToLnurl(lightning_address: string) {
+    const [name, domain] = lightning_address.split("@");
+    return `https://${domain}/.well-known/lnurlp/${name}`;
+  }
+
+  // when pressing tip or selecting an amount.
+  // this is used for caching so the frontend doesnt
+  // have to make an additional http request to get
+  // the callback url for future visits
+  async function getLnurlCallbackUrl(lightning_address: string) {
+    return axios.get(lightningAddressToLnurl(lightning_address)).then(
+      (response) => {
+        return response.data.callback;
+      }
+    );
+  }
+
+
+  const amount = amount_in_sat * 1000; // msats
+  let lnurlCallbackUrl = await getLnurlCallbackUrl(address);
+  return axios
+    .get(lnurlCallbackUrl, { params: { amount } })
+    .then((prResponse) => {
+      return prResponse.data.pr as string;
+    });
 }

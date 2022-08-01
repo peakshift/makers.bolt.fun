@@ -46,7 +46,6 @@ model User {
   avatar String?
   role   String  @default("user")
 
-
   email             String?
   jobTitle          String?
   lightning_address String?
@@ -56,7 +55,8 @@ model User {
   linkedin          String?
   bio               String?
   location          String?
-
+  nostr_prv_key     String?
+  nostr_pub_key     String?
 
   join_date DateTime @default(now())
 
@@ -124,7 +124,6 @@ model Story {
   votes_count  Int      @default(0)
   is_published Boolean  @default(true)
 
-
   tags Tag[]
 
   user    User? @relation(fields: [user_id], references: [id])
@@ -134,15 +133,14 @@ model Story {
 }
 
 model Question {
-  id          Int      @id @default(autoincrement())
-  title       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  body        String
-  excerpt     String
-  votes_count Int      @default(0)
+  id           Int      @id @default(autoincrement())
+  title        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  body         String
+  excerpt      String
+  votes_count  Int      @default(0)
   is_published Boolean  @default(true)
-
 
   tags Tag[]
 
@@ -154,8 +152,9 @@ model Question {
 
 model PostComment {
   id          Int      @id @default(autoincrement())
+  nostr_id    String?
   body        String
-  createdAt   DateTime @default(now())
+  created_at  DateTime @default(now())
   votes_count Int      @default(0)
 
   replies           PostComment[] @relation("PostComment_Replies")
@@ -165,10 +164,8 @@ model PostComment {
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
 
-
   story    Story? @relation("StoryComment", fields: [story_id], references: [id])
   story_id Int?
-
 
   question    Question? @relation("QuestionComment", fields: [question_id], references: [id])
   question_id Int?

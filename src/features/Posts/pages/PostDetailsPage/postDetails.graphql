@@ -19,19 +19,19 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       type
       cover_image
       is_published
-      comments_count
-      comments {
-        id
-        createdAt
-        body
-        votes_count
-        parentId
-        author {
-          id
-          name
-          avatar
-        }
-      }
+      # comments_count
+      # comments {
+      #   id
+      #   created_at
+      #   body
+      #   votes_count
+      #   parentId
+      #   author {
+      #     id
+      #     name
+      #     avatar
+      #   }
+      # }
     }
     ... on Bounty {
       id
@@ -82,19 +82,19 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       }
       votes_count
       type
-      answers_count
-      comments {
-        id
-        createdAt
-        body
-        votes_count
-        parentId
-        author {
-          id
-          name
-          avatar
-        }
-      }
+      # answers_count
+      # comments {
+      #   id
+      #   created_at
+      #   body
+      #   votes_count
+      #   parentId
+      #   author {
+      #     id
+      #     name
+      #     avatar
+      #   }
+      # }
     }
   }
 }

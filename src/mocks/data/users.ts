@@ -16,5 +16,7 @@ export const user: User = {
     role: "user",
     twitter: "john-doe",
     website: "https://mtg-dev.tech",
-    stories: posts.stories
+    stories: posts.stories,
+    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
 }

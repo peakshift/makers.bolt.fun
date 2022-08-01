@@ -8,6 +8,7 @@ const getUserByPubKey = (pubKey) => {
     })
 }
 
+
 module.exports = {
     getUserByPubKey,
 }

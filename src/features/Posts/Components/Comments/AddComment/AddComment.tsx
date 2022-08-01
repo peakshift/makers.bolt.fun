@@ -14,7 +14,7 @@ import {
     PlaceholderExtension,
 } from 'remirror/extensions';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Toolbar from './Toolbar';
 import Button from 'src/Components/Button/Button';
@@ -24,12 +24,13 @@ import { InvalidContentHandler } from 'remirror';
 interface Props {
     initialContent?: string;
     placeholder?: string;
-    name?: string;
+    avatar: string;
     autoFocus?: boolean
+    onSubmit?: (comment: string) => Promise<boolean>;
 }
 
 
-export default function AddComment({ initialContent, placeholder, name, autoFocus }: Props) {
+export default function AddComment({ initialContent, placeholder, avatar, autoFocus, onSubmit }: Props) {
 
     const containerRef = useRef<HTMLDivElement>(null)
     const linkExtension = useMemo(() => {
@@ -40,7 +41,7 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
         });
         return extension;
     }, []);
-
+    const [isLoading, setIsLoading] = useState(false)
     const valueRef = useRef<string>("");
 
 
@@ -84,26 +85,30 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
     }, [autoFocus])
 
 
-    const submitComment = () => {
-        console.log(valueRef.current);
-        manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+    const submitComment = async () => {
+        setIsLoading(true);
+        const isSuccess = await onSubmit?.(valueRef.current);
+        if (isSuccess)
+            manager.view.updateState(manager.createState({ content: manager.createEmptyDoc() }))
+        setIsLoading(false);
+
     }
 
 
     return (
-        <div className={`remirror-theme ${styles.wrapper} p-24 border rounded-12`} ref={containerRef}>
+        <div className={`remirror-theme ${styles.wrapper} p-24 border-2 border-gray-200 rounded-12 md:rounded-16`} ref={containerRef}>
             <Remirror
                 manager={manager}
                 state={state}
                 onChange={e => {
-                    const html = e.helpers.getHTML(e.state)
-                    valueRef.current = html;
+                    const md = e.helpers.getMarkdown(e.state)
+                    valueRef.current = md;
                     onChange(e);
                 }}
                 autoFocus={autoFocus}
             >
                 <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
-                    <div className="hidden sm:block mt-16 shrink-0"><Avatar width={48} src='https://i.pravatar.cc/150?img=1' /></div>
+                    <div className="hidden sm:block mt-24 shrink-0"><Avatar width={40} src={avatar} /></div>
                     <div className="flex-grow">
                         <EditorComponent
                         />
@@ -111,7 +116,14 @@ export default function AddComment({ initialContent, placeholder, name, autoFocu
                 </div>
                 <div className="flex flex-wrap gap-16 mt-16">
                     <Toolbar />
-                    <Button onClick={submitComment} color='primary' className='ml-auto'>Submit</Button>
+                    <Button
+                        onClick={submitComment}
+                        color='primary'
+                        className='ml-auto'
+                        isLoading={isLoading}
+                    >
+                        Submit
+                    </Button>
                 </div>
             </Remirror>
         </div>

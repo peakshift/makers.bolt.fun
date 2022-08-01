@@ -6,6 +6,7 @@ type Author {
   avatar: String!
   id: Int!
   join_date: Date!
+  lightning_address: String
   name: String!
 }
 
@@ -124,7 +125,7 @@ interface PostBase {
 type PostComment {
   author: Author!
   body: String!
-  createdAt: Date!
+  created_at: Date!
   id: Int!
   parentId: Int
   votes_count: Int!
@@ -169,10 +170,8 @@ type Query {
 }
 
 type Question implements PostBase {
-  answers_count: Int!
   author: Author!
   body: String!
-  comments: [PostComment!]!
   createdAt: Date!
   excerpt: String!
   id: Int!
@@ -244,6 +243,8 @@ type User {
   linkedin: String
   location: String
   name: String!
+  nostr_prv_key: String
+  nostr_pub_key: String
   role: String
   stories: [Story!]!
   twitter: String

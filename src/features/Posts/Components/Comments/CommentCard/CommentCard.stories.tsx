@@ -16,9 +16,8 @@ const Template: ComponentStory<typeof CommentCard> = (args) => <div className="m
 
 export const Default = Template.bind({});
 Default.args = {
-    comment: {
-        ...MOCK_DATA.posts.stories[0].comments[0],
-    }
+    comment: MOCK_DATA.generatePostComments(1)[0]
+
 }
 
 

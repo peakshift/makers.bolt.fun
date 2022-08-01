@@ -4,27 +4,25 @@ import Header from "../Header/Header"
 import { FiUsers } from "react-icons/fi"
 import Badge from "src/Components/Badge/Badge"
 import { Link } from "react-router-dom"
-import { trimText } from "src/utils/helperFunctions"
 import VoteButton from "src/Components/VoteButton/VoteButton"
-import { Tag } from "src/graphql"
+import { Author, Tag } from "src/graphql"
 
 export type QuestionCardType = Pick<Question,
     | 'id'
     | 'type'
     | 'title'
     | 'createdAt'
-    | 'author'
     | 'excerpt'
     | 'votes_count'
-    | "answers_count"
 > & {
-    comments: Array<Pick<Question['comments'][number],
-        | 'id'
-        | 'author'
-        | 'body'
-        | 'createdAt'
-    >>
+    // comments: Array<Pick<Question['comments'][number],
+    //     | 'id'
+    //     | 'author'
+    //     | 'body'
+    //     | 'createdAt'
+    // >>
     tags: Array<Pick<Tag, 'id' | "title">>
+    author: Pick<Author, 'id' | 'name' | 'avatar' | 'join_date'>
 };
 interface Props {
     question: QuestionCardType
@@ -54,24 +52,24 @@ export default function QuestionCard({ question }: Props) {
                 <hr className="my-16 bg-gray-200" />
                 <div className="flex gap-24 items-center">
                     <VoteButton votes={question.votes_count} dense />
-                    <div className="text-gray-600">
+                    {/* <div className="text-gray-600">
                         <FiUsers /> <span className="align-middle text-body5">{question.answers_count} Answers</span>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex p-16 mt-16 flex-col gap-10 bg-gray-50">
                     <div className="flex flex-col gap-10">
-                        {question.comments.slice(0, 2).map(comment => <div key={comment.id} className="border-b last-of-type:border-b-0 pb-8 " >
+                        {/* {question.comments.slice(0, 2).map(comment => <div key={comment.id} className="border-b last-of-type:border-b-0 pb-8 " >
                             <Header author={comment.author} size='sm' date={comment.createdAt} />
                             <p className="text-body5 text-gray-600 mt-8">{trimText(comment.body, 80)}</p>
-                        </div>)}
+                        </div>)} */}
                     </div>
 
-                    <div className="flex">
+                    {/* <div className="flex">
                         <Link to={`/blog/post/Question/${question.id}`} className="text-black font-medium p-8 hover:bg-gray-100 rounded">
                             See all {question.answers_count} comments
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

@@ -70,6 +70,7 @@ export interface NexusGenObjects {
     avatar: string; // String!
     id: number; // Int!
     join_date: NexusGenScalars['Date']; // Date!
+    lightning_address?: string | null; // String
     name: string; // String!
   }
   Award: { // root type
@@ -139,7 +140,7 @@ export interface NexusGenObjects {
   PostComment: { // root type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    createdAt: NexusGenScalars['Date']; // Date!
+    created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId?: number | null; // Int
     votes_count: number; // Int!
@@ -158,7 +159,6 @@ export interface NexusGenObjects {
   }
   Query: {};
   Question: { // root type
-    answers_count: number; // Int!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
@@ -198,6 +198,8 @@ export interface NexusGenObjects {
     linkedin?: string | null; // String
     location?: string | null; // String
     name: string; // String!
+    nostr_prv_key?: string | null; // String
+    nostr_pub_key?: string | null; // String
     role?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
@@ -230,6 +232,7 @@ export interface NexusGenFieldTypes {
     avatar: string; // String!
     id: number; // Int!
     join_date: NexusGenScalars['Date']; // Date!
+    lightning_address: string | null; // String
     name: string; // String!
   }
   Award: { // field return type
@@ -316,7 +319,7 @@ export interface NexusGenFieldTypes {
   PostComment: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    createdAt: NexusGenScalars['Date']; // Date!
+    created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     parentId: number | null; // Int
     votes_count: number; // Int!
@@ -358,10 +361,8 @@ export interface NexusGenFieldTypes {
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
   Question: { // field return type
-    answers_count: number; // Int!
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
-    comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
@@ -407,6 +408,8 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_prv_key: string | null; // String
+    nostr_pub_key: string | null; // String
     role: string | null; // String
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     twitter: string | null; // String
@@ -438,6 +441,7 @@ export interface NexusGenFieldTypeNames {
     avatar: 'String'
     id: 'Int'
     join_date: 'Date'
+    lightning_address: 'String'
     name: 'String'
   }
   Award: { // field return type name
@@ -524,7 +528,7 @@ export interface NexusGenFieldTypeNames {
   PostComment: { // field return type name
     author: 'Author'
     body: 'String'
-    createdAt: 'Date'
+    created_at: 'Date'
     id: 'Int'
     parentId: 'Int'
     votes_count: 'Int'
@@ -566,10 +570,8 @@ export interface NexusGenFieldTypeNames {
     searchProjects: 'Project'
   }
   Question: { // field return type name
-    answers_count: 'Int'
     author: 'Author'
     body: 'String'
-    comments: 'PostComment'
     createdAt: 'Date'
     excerpt: 'String'
     id: 'Int'
@@ -615,6 +617,8 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_prv_key: 'String'
+    nostr_pub_key: 'String'
     role: 'String'
     stories: 'Story'
     twitter: 'String'

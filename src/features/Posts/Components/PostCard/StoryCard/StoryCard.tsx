@@ -1,13 +1,13 @@
 import { Story } from "src/features/Posts/types"
 import Header from "../Header/Header"
-import { BiComment } from 'react-icons/bi'
 import { Link } from "react-router-dom"
 import VoteButton from "src/Components/VoteButton/VoteButton"
 import { useVote } from "src/utils/hooks"
-import { Tag, Vote_Item_Type } from 'src/graphql';
+import { Author, Tag, Vote_Item_Type } from 'src/graphql';
 import Badge from "src/Components/Badge/Badge"
-import { toSlug } from "src/utils/helperFunctions"
 import { createRoute } from "src/utils/routing"
+import { BiComment } from "react-icons/bi"
+
 
 export type StoryCardType = Pick<Story,
     | 'id'
@@ -15,12 +15,12 @@ export type StoryCardType = Pick<Story,
     | 'title'
     | 'cover_image'
     | 'createdAt'
-    | 'author'
     | 'excerpt'
     | 'votes_count'
     | 'comments_count'
 > & {
-    tags: Array<Pick<Tag, 'id' | "title">>
+    tags: Array<Pick<Tag, 'id' | "title">>,
+    author: Pick<Author, 'id' | 'name' | 'avatar' | 'join_date'>
 };
 
 interface Props {
