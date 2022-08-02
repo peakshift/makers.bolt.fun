@@ -71,7 +71,7 @@ export default function CommentsSection({ type, id }: Props) {
 
       {showTooltip && <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-8 md:gap-12">
         <span>💬</span>
-        <p className="text-body4 font-medium">Learn about <Link to={createRoute({ type: "story", title: "What is Nostr", id: 999 })} className='underline'>how your data is stored</Link> with Nostr comments and relays</p>
+        <p className="text-body4 font-medium">Learn about <Link to={createRoute({ type: "story", title: "Comments Powered By Nostr", id: 54 })} className='underline'>how your data is stored</Link> with Nostr comments and relays</p>
         <IconButton className='shrink-0 self-start' onClick={closeTooltip}><AiOutlineClose className='text-gray-600' /></IconButton>
       </div>}
 
