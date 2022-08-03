@@ -93,9 +93,9 @@ function App() {
         <Route path="/blog/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
 
         <Route element={<NavbarLayout />}>
-          <Route path="/products/hottest" element={<HottestPage />} />
-          <Route path="/products/category/:id" element={<CategoryPage />} />
-          <Route path="/products" element={<ExplorePage />} />
+          <Route path="/apps/hottest" element={<HottestPage />} />
+          <Route path="/apps/category/:id" element={<CategoryPage />} />
+          <Route path="/apps" element={<ExplorePage />} />
 
           <Route path="/blog/post/:type/:id/*" element={<PostDetailsPage />} />
           <Route path="/blog" element={<FeedPage />} />
@@ -108,7 +108,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/logout" element={<LogoutPage />} />
 
-          <Route path="/" element={<Navigate to="/products" />} />
+          <Route path="/" element={<Navigate to="/apps" />} />
         </Route>
 
       </Routes>
