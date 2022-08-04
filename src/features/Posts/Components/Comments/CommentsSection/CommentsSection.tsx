@@ -1,17 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import CommentRoot from '../Comment/Comment'
 import AddComment from '../AddComment/AddComment'
-import { Comment, } from '../types'
-import { createWorkerFactory, useWorker } from '@shopify/react-web-worker'
 import { useAppSelector } from "src/utils/hooks";
 
-import * as CommentsWorker from './comments.worker'
 import { Post_Type } from 'src/graphql'
 import useComments from './useComments'
 import IconButton from 'src/Components/IconButton/IconButton'
 import { AiOutlineClose } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
-import { createRoute } from 'src/utils/routing'
+import { Link, useLocation } from 'react-router-dom'
+import { createRoute, PAGES_ROUTES } from 'src/utils/routing'
 import Preferences from 'src/services/preferences.service'
 
 // const createWorker = createWorkerFactory(() => import('./comments.worker'));
@@ -24,24 +21,11 @@ interface Props {
 
 
 export default function CommentsSection({ type, id }: Props) {
-  // const worker = useWorker(createWorker);
-  // const commentsTree = useMemo(() => convertCommentsToTree(comments), [comments])
 
-  // const [commentsTree, setCommentsTree] = useState<Comment[]>([])
   const user = useAppSelector(state => state.user.me);
-  const [showTooltip, setShowTooltip] = useState(Preferences.get('showNostrCommentsTooltip'))
-  // const filter = useMemo(() => `boltfun ${type}_comment ${id}` + (process.env.NODE_ENV === 'development' ? ' dev' : ""), [id, type])
+  const [showTooltip, setShowTooltip] = useState(Preferences.get('showNostrCommentsTooltip'));
+  const location = useLocation()
 
-  // useEffect(() => {
-  //   CommentsWorker.connect();
-  //   const unsub = CommentsWorker.sub(filter, (newComments) => {
-  //     setCommentsTree(newComments)
-  //   })
-
-  //   return () => {
-  //     unsub();
-  //   }
-  // }, [filter]);
   const { commentsTree, postComment, connectionStatus } = useComments({ type, id })
 
   const handleNewComment = async (content: string, parentId?: string) => {
@@ -75,12 +59,23 @@ export default function CommentsSection({ type, id }: Props) {
         <IconButton className='shrink-0 self-start' onClick={closeTooltip}><AiOutlineClose className='text-gray-600' /></IconButton>
       </div>}
 
-      {!!user && <div className="mt-24">
-        <AddComment
-          placeholder='Leave a comment...'
-          onSubmit={content => handleNewComment(content)}
-          avatar={user.avatar}
-        />
+      {<div className="mt-24 relative">
+        <div className={!user ? "blur-[2px]" : ""}>
+          <AddComment
+            placeholder='Leave a comment...'
+            onSubmit={content => handleNewComment(content)}
+            avatar={user?.avatar ?? 'https://avatars.dicebear.com/api/bottts/Default.svg'}
+          />
+        </div>
+        {!user && <div className="absolute inset-0 bg-gray-400 bg-opacity-50 rounded-12 flex flex-col justify-center items-center">
+          <Link
+            className='bg-white rounded-12 px-24 py-12'
+            to={PAGES_ROUTES.auth.login}
+            state={{
+              from: location.pathname
+            }}
+          >Connect with ⚡ to comment</Link>
+        </div>}
       </div>}
 
       <div className='flex flex-col gap-16 mt-32'>

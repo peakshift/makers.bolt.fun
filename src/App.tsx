@@ -10,7 +10,7 @@ import { setUser } from "./redux/features/user.slice";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
-import { Loadable } from "./utils/routing";
+import { Loadable, PAGES_ROUTES } from "./utils/routing";
 
 
 
@@ -90,25 +90,25 @@ function App() {
     </Helmet>
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path="/blog/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+        <Route path={PAGES_ROUTES.blog.createPost} element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
 
         <Route element={<NavbarLayout />}>
-          <Route path="/apps/hottest" element={<HottestPage />} />
-          <Route path="/apps/category/:id" element={<CategoryPage />} />
-          <Route path="/apps" element={<ExplorePage />} />
+          <Route path={PAGES_ROUTES.apps.hottest} element={<HottestPage />} />
+          <Route path={PAGES_ROUTES.apps.byCategoryId} element={<CategoryPage />} />
+          <Route path={PAGES_ROUTES.apps.default} element={<ExplorePage />} />
 
-          <Route path="/blog/post/:type/:id/*" element={<PostDetailsPage />} />
-          <Route path="/blog" element={<FeedPage />} />
+          <Route path={PAGES_ROUTES.blog.postById} element={<PostDetailsPage />} />
+          <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
 
-          <Route path="/hackathons" element={<HackathonsPage />} />
+          <Route path={PAGES_ROUTES.hackathons.default} element={<HackathonsPage />} />
 
-          <Route path="/donate" element={<DonatePage />} />
+          <Route path={PAGES_ROUTES.donate.default} element={<DonatePage />} />
 
-          <Route path="/profile/:id/*" element={<ProfilePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/logout" element={<LogoutPage />} />
+          <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
+          <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
+          <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
-          <Route path="/" element={<Navigate to="/apps" />} />
+          <Route path="/" element={<Navigate to={PAGES_ROUTES.apps.default} />} />
         </Route>
 
       </Routes>
