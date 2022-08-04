@@ -33,7 +33,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
             const res = await fetch(lnurl);
             if (res.status === 200) return true;
           }
-          return false;
+          return true;
         } catch (error) {
           return false;
         }
@@ -227,6 +227,7 @@ export default function UpdateAboutForm({ data, onClose }: Props) {
       <p className="text-body5 mt-16 font-medium">
         Lightning address
       </p>
+
       <div className="input-wrapper mt-8 relative">
         <input
 
@@ -239,6 +240,9 @@ export default function UpdateAboutForm({ data, onClose }: Props) {
       {errors.lightning_address && <p className="input-error">
         {errors.lightning_address.message}
       </p>}
+      <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
+        Your lightning address is used to send the votes you get on your posts, comments, apps...etc, directly to you.
+      </p>
       <div className="mt-24 flex gap-16 justify-end">
         <Button
           color='gray'

@@ -166,7 +166,7 @@ async function signEvent(event: any) {
 }
 
 async function confirmPublishingEvent(event: any) {
-    const res = await fetch(CONSTS.apiEndpoint + '/nostr-confirm-event', {
+    await fetch(CONSTS.apiEndpoint + '/nostr-confirm-event', {
         method: "post",
         body: JSON.stringify({ event }),
         credentials: 'include',
@@ -174,8 +174,8 @@ async function confirmPublishingEvent(event: any) {
             'Content-Type': 'application/json'
         },
     });
-    const data = await res.json()
-    return data.event;
+
+
 }
 
 
