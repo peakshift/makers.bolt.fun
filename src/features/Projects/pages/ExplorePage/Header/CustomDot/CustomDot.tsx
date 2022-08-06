@@ -1,8 +1,6 @@
 
-const CustomDot = ({ onClick, ...rest }: any) => {
-  const {
-    active,
-  } = rest;
+const CustomDot = ({ onClick, active, ...rest }: any) => {
+
   // onMove means if dragging or swiping in progress.
   // active is provided by this lib for checking if the item is active or not.
   return (

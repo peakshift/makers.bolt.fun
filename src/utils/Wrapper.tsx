@@ -9,7 +9,6 @@ import { setIsMobileScreen } from 'src/redux/features/ui.slice';
 import { isMobileScreen } from './helperFunctions';
 import ReactTooltip from 'react-tooltip';
 
-import 'react-multi-carousel/lib/styles.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import THEME from './theme';
 import ErrorBoundary from 'src/Components/ErrorBoundary/ErrorBoundary';
