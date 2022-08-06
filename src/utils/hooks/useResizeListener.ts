@@ -1,5 +1,5 @@
 import { useDebouncedCallback } from "@react-hookz/web";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 export const useResizeListener = (
   listener: () => void,
