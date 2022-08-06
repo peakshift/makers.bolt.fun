@@ -1,5 +1,5 @@
 import { useDebouncedCallback } from "@react-hookz/web";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 export const useResizeListener = (
   listener: () => void,
@@ -7,7 +7,7 @@ export const useResizeListener = (
 ) => {
   options.debounce = options.debounce ?? 250;
 
-  const func = useDebouncedCallback(listener, [], options.debounce)
+  const func = useDebouncedCallback(listener, [listener], options.debounce)
   useEffect(() => {
     window.addEventListener("resize", func);
 

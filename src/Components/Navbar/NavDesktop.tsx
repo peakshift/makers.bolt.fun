@@ -179,6 +179,16 @@ export default function NavDesktop() {
                                 👾 Profile
                             </MenuItem>
                             <MenuItem
+                                href="/edit-profile"
+                                onClick={(e) => {
+                                    e.syntheticEvent.preventDefault();
+                                    navigate("/edit-profile");
+                                }}
+                                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                            >
+                                ⚙️ Settings
+                            </MenuItem>
+                            <MenuItem
                                 href="/logout"
                                 onClick={(e) => {
                                     e.syntheticEvent.preventDefault();

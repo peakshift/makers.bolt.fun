@@ -29,6 +29,7 @@ const DonatePage = Loadable(React.lazy(() => import("./features/Donations/pages/
 const LoginPage = Loadable(React.lazy(() => import("./features/Auth/pages/LoginPage/LoginPage")))
 const LogoutPage = Loadable(React.lazy(() => import("./features/Auth/pages/LogoutPage/LogoutPage")))
 const ProfilePage = Loadable(React.lazy(() => import("./features/Profiles/pages/ProfilePage/ProfilePage")))
+const EditProfilePage = Loadable(React.lazy(() => import("./features/Profiles/pages/EditProfilePage/EditProfilePage")))
 
 
 
@@ -104,7 +105,9 @@ function App() {
 
           <Route path={PAGES_ROUTES.donate.default} element={<DonatePage />} />
 
+          <Route path={PAGES_ROUTES.profile.editProfile} element={<EditProfilePage />} />
           <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
+
           <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
           <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 

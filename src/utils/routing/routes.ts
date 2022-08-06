@@ -78,6 +78,7 @@ export const PAGES_ROUTES = {
         default: "/donate"
     },
     profile: {
+        editProfile: "/edit-profile/*",
         byId: "/profile/:id/*",
     },
     auth: {
