@@ -1,7 +1,7 @@
 import { QueryResult } from "@apollo/client";
 import { useCallback, useState } from "react";
 
-export const useInfiniteQuery = (query: QueryResult, dataField: string) => {
+export const useInfiniteQuery = (query: QueryResult<any, any>, dataField: string) => {
     const [fetchingMore, setFetchingMore] = useState(false)
     const [reachedLastPage, setReachedLastPage] = useState(false)
 
