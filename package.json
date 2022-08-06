@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.5.10",
+    "@apollo/client": "^3.6.9",
     "@hookform/resolvers": "^2.8.8",
     "@noble/secp256k1": "^1.6.3",
     "@prisma/client": "^3.12.0",

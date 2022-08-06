@@ -38,7 +38,8 @@ export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isO
                         <input
                             type={'password'}
                             className="input-text"
-                            value={nostr_prv_key}
+                            defaultValue={nostr_prv_key}
+                            readOnly
                         />
 
                         <CopyToClipboard text={nostr_prv_key} />
@@ -50,10 +51,10 @@ export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isO
                     </p>
                     <div className="input-wrapper mt-8 relative">
                         <input
-
                             type='text'
                             className="input-text"
-                            value={nostr_pub_key!}
+                            defaultValue={nostr_pub_key!}
+                            readOnly
                         />
                         <CopyToClipboard text={nostr_pub_key ?? ''} />
                     </div>

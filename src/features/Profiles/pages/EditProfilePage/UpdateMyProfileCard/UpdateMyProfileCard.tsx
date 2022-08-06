@@ -77,6 +77,7 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
 
 
 
+
     const onSubmit: SubmitHandler<IFormInputs> = data => {
         mutate({
             variables: {
