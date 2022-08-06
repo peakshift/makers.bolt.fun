@@ -1,10 +1,8 @@
-import { useMediaQuery } from "@react-hookz/web";
+
 import Assets from "src/assets";
 import Button from "src/Components/Button/Button";
-import THEME from "src/utils/theme";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import CustomDot from "./CustomDot/CustomDot";
-import styles from './styles.module.css'
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from "react";
 
@@ -31,21 +29,10 @@ const headerLinks = [
   },
 ];
 
-const responsive = {
-  desktop: {
-    breakpoint: { max: 5000, min: THEME.screens.md },
-    items: 2
-  },
-  mobile: {
-    breakpoint: { max: 768, min: 0 },
-    items: 1
-  }
-}
 
 
 export default function Header() {
 
-  const isDesktop = useMediaQuery(MEDIA_QUERIES.isMedium);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     breakpoints: {
