@@ -26,9 +26,10 @@ export default function ProjectsSection() {
             <ProjectsRow title="Recently added"
                 projects={data.newProjects} />
 
-            <ProjectsRow title={shockTheWebCategory?.title}
-                link={`/apps/category/${shockTheWebCategory?.id}`}
-                projects={shockTheWebCategory?.project!} />
+            {shockTheWebCategory &&
+                <ProjectsRow title={shockTheWebCategory.title}
+                    link={`/apps/category/${shockTheWebCategory.id}`}
+                    projects={shockTheWebCategory.project!} />}
             {restCategories.map(({ id, title, project, }) => {
                 if (project)
                     return <ProjectsRow

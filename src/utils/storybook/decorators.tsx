@@ -13,7 +13,6 @@ import THEME from '../theme';
 // Add the global stuff first (index.ts)
 // -------------------------------------------
 import "src/styles/index.scss";
-import "react-multi-carousel/lib/styles.css";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
