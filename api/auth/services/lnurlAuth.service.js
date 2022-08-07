@@ -64,7 +64,6 @@ async function generateAuthUrl() {
     const hash = createHash(secret);
     await addHash(hash)
     const url = `${hostname}?tag=login&k1=${secret}`
-    console.log(url);
     return {
         url,
         encoded: lnurl.encode(url).toUpperCase(),
