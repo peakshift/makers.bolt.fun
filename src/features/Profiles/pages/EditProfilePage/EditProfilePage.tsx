@@ -8,12 +8,17 @@ import CommentsSettingsCard from "../ProfilePage/CommentsSettingsCard/CommentsSe
 import UpdateMyProfileCard from "./UpdateMyProfileCard/UpdateMyProfileCard";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
+import AccountCard from "./AccountCard/AccountCard";
 
 
 const links = [
     {
         text: "👾 My Profile",
         path: 'my-profile',
+    },
+    {
+        text: "🙍‍♂️ Account",
+        path: 'account',
     },
     {
         text: "⚙️ Preferences",
@@ -92,6 +97,7 @@ export default function EditProfilePage() {
                     <Routes>
                         <Route index element={<Navigate to='my-profile' />} />
                         <Route path='my-profile' element={<UpdateMyProfileCard data={profileQuery.data.profile} />} />
+                        <Route path='account' element={<AccountCard />} />
                         <Route path='preferences' element={<CommentsSettingsCard nostr_prv_key={profileQuery.data.profile.nostr_prv_key} nostr_pub_key={profileQuery.data.profile.nostr_pub_key} isOwner={true} />
                         } />
                     </Routes>

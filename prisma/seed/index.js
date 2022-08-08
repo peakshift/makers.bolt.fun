@@ -58,6 +58,8 @@ async function main() {
 
     // await createHackathons();
 
+    await fillUserKeysTable()
+
 }
 
 async function createCategories() {
@@ -150,6 +152,22 @@ async function createHackathons() {
     }
 }
 
+async function fillUserKeysTable() {
+    console.log('Filling Users Keys Table');
+    const allUsers = await prisma.user.findMany({
+        select: {
+            id: true,
+            pubKey: true,
+        }
+    })
+
+    await prisma.userKey.createMany({
+        data: allUsers.filter(u => !!u.pubKey).map(u => ({
+            key: u.pubKey,
+            user_id: u.id
+        }))
+    })
+}
 
 
 
