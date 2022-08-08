@@ -38,16 +38,13 @@ const loginHandler = async (req, res) => {
             if (existingKeys.length >= 3)
                 return res.status(400).json({ status: 'ERROR', reason: "Can only link up to 3 wallets" })
 
-            if (existingKeys.includes(key))
-                return res.status(400).json({ status: 'ERROR', reason: "Wallet already linked" })
-
-
-            await prisma.userKey.create({
-                data: {
-                    key,
-                    user_id,
-                }
-            });
+            if (!existingKeys.includes(key))
+                await prisma.userKey.create({
+                    data: {
+                        key,
+                        user_id,
+                    }
+                });
 
             return res
                 .status(200)
@@ -106,7 +103,6 @@ const loginHandler = async (req, res) => {
         return res.status(200).json({ status: "OK" })
 
     } catch (error) {
-        console.log(error);
         return res.status(400).json({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
     }
 }
