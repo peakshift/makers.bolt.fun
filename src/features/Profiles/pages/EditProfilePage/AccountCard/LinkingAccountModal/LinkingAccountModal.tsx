@@ -11,7 +11,7 @@ import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 
 
 const fetchLnurlAuth = async () => {
-    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url', {
+    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url?action=link', {
         credentials: 'include'
     })
     const data = await res.json()

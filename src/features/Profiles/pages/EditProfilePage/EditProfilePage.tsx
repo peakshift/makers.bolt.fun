@@ -16,10 +16,10 @@ const links = [
         text: "👾 My Profile",
         path: 'my-profile',
     },
-    {
-        text: "🙍‍♂️ Account",
-        path: 'account',
-    },
+    // {
+    //     text: "🙍‍♂️ Account",
+    //     path: 'account',
+    // },
     {
         text: "⚙️ Preferences",
         path: 'preferences',
