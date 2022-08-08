@@ -15,7 +15,6 @@ const isLoggedInHandler = async (req, res) => {
                 algorithms: ['HS256'],
             });
             const hash = payload.hash;
-            console.log(hash);
             const authToken = await lnurlAuthService.getAuthTokenByHash(hash);
             if (!authToken)
                 throw new Error("Not logged in yet")

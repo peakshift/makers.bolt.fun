@@ -22,8 +22,6 @@ const loginHandler = async (req, res) => {
     try {
         await LnurlAuthService.verifySig(sig, k1, key)
     } catch (error) {
-        console.log(sig, k1, key);
-        console.log(error);
         return res.status(400).json({ status: 'ERROR', reason: 'Invalid Signature' })
 
     }
@@ -108,7 +106,6 @@ const loginHandler = async (req, res) => {
         return res.status(200).json({ status: "OK" })
 
     } catch (error) {
-        console.log(error);
         return res.status(400).json({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
     }
 }
