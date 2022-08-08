@@ -3,9 +3,11 @@ const { prisma } = require('../../prisma')
 
 const getUserByPubKey = (pubKey) => {
     if (!pubKey) return null;
-    return prisma.user.findFirst({
-        where: { pubKey }
-    })
+    return prisma.userKey.findUnique({
+        where: {
+            key: pubKey
+        },
+    }).user()
 }
 
 
