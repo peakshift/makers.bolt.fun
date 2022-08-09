@@ -1,6 +1,7 @@
 import { requestProvider, MissingProviderError, WebLNProvider } from 'webln';
 import { store } from '../redux/store'
 import { connectWallet as connectWalletStore } from '../redux/features/wallet.slice'
+import { openModal } from 'src/redux/features/modals.slice';
 
 
 class _Wallet_Service {
@@ -10,20 +11,19 @@ class _Wallet_Service {
 
     async getWebln() {
         if (!this.isConnected) await this.connectWallet();
-        return this.webln as WebLNProvider;
+        return this.webln;
     }
 
     init() {
-        const connectedPreviously = localStorage.getItem('wallet-connected')
-        if (connectedPreviously)
-            this.connectWallet();
+        // const connectedPreviously = localStorage.getItem('wallet-connected')
+        // if (connectedPreviously)
+        //     this.connectWallet();
     }
 
     async connectWallet() {
         try {
             const webln = await requestProvider();
             store.dispatch(connectWalletStore())
-            localStorage.setItem('wallet-connected', 'yes')
             this.webln = webln;
             this.isConnected = false;
         }
@@ -35,11 +35,13 @@ class _Wallet_Service {
                 message = "Check out https://getalby.com to get a web enabled lightning wallet";
             }
 
+            console.log(message);
 
 
-            localStorage.removeItem('wallet-connected')
             // Show the error (though you should probably use something better than alert!)
-            alert(message);
+            store.dispatch(openModal({
+                Modal: "NoWeblnModal"
+            }))
         }
     }
 
