@@ -17,56 +17,65 @@ export const useDonate = () => {
         onError: (error: any) => void,
         onSetteled: () => void
     }>) => {
-        setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS)
-        donateMutation({
-            variables: {
-                amountInSat: amount
-            },
-            onCompleted: async (donationData) => {
-                try {
-                    setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
-                    const webln = await Wallet_Service.getWebln()
-                    const paymentResponse = await webln.sendPayment(donationData.donate.payment_request);
-                    setPaymentStatus(PaymentStatus.PAID);
-
-                    //Confirm Voting payment
-                    confirmDonation({
-                        variables: {
-                            paymentRequest: donationData.donate.payment_request,
-                            preimage: paymentResponse.preimage
-                        },
-                        onCompleted: () => {
-                            setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
-                            config?.onSuccess?.();
-                            config?.onSetteled?.()
-                        },
-                        onError: (error) => {
-                            console.log(error)
-                            setPaymentStatus(PaymentStatus.NETWORK_ERROR);
-                            config?.onError?.(error);
-                            config?.onSetteled?.();
-                            alert("A network error happened while confirming the payment...")
-                        },
-                        refetchQueries: [
-                            'DonationsStats'
-                        ]
-                    })
-                } catch (error) {
-                    setPaymentStatus(PaymentStatus.CANCELED);
-                    config?.onError?.(error);
-                    config?.onSetteled?.();
-                    alert("Payment rejected by user")
+        Wallet_Service.getWebln()
+            .then(webln => {
+                if (!webln) {
+                    config?.onError?.(new Error('No WebLN Detetcted'))
+                    config?.onSetteled?.()
+                    return
                 }
 
-            },
-            onError: (error) => {
-                console.log(error);
-                setPaymentStatus(PaymentStatus.NETWORK_ERROR);
-                config?.onError?.(error);
-                config?.onSetteled?.();
-                alert("A network error happened...")
-            }
-        })
+                setPaymentStatus(PaymentStatus.FETCHING_PAYMENT_DETAILS)
+                donateMutation({
+                    variables: {
+                        amountInSat: amount
+                    },
+                    onCompleted: async (donationData) => {
+                        try {
+                            setPaymentStatus(PaymentStatus.AWAITING_PAYMENT);
+                            const paymentResponse = await webln.sendPayment(donationData.donate.payment_request);
+                            setPaymentStatus(PaymentStatus.PAID);
+
+                            //Confirm Voting payment
+                            confirmDonation({
+                                variables: {
+                                    paymentRequest: donationData.donate.payment_request,
+                                    preimage: paymentResponse.preimage
+                                },
+                                onCompleted: () => {
+                                    setPaymentStatus(PaymentStatus.PAYMENT_CONFIRMED);
+                                    config?.onSuccess?.();
+                                    config?.onSetteled?.()
+                                },
+                                onError: (error) => {
+                                    console.log(error)
+                                    setPaymentStatus(PaymentStatus.NETWORK_ERROR);
+                                    config?.onError?.(error);
+                                    config?.onSetteled?.();
+                                    alert("A network error happened while confirming the payment...")
+                                },
+                                refetchQueries: [
+                                    'DonationsStats'
+                                ]
+                            })
+                        } catch (error) {
+                            setPaymentStatus(PaymentStatus.CANCELED);
+                            config?.onError?.(error);
+                            config?.onSetteled?.();
+                            alert("Payment rejected by user")
+                        }
+
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                        setPaymentStatus(PaymentStatus.NETWORK_ERROR);
+                        config?.onError?.(error);
+                        config?.onSetteled?.();
+                        alert("A network error happened...")
+                    }
+                })
+            })
+
     }, [confirmDonation, donateMutation]);
 
     const isLoading = paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.PAYMENT_CONFIRMED && paymentStatus !== PaymentStatus.NOT_PAID && paymentStatus !== PaymentStatus.NETWORK_ERROR && paymentStatus !== PaymentStatus.CANCELED

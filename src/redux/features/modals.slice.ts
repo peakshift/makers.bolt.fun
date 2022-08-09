@@ -12,6 +12,7 @@ import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage
 
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
+import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
 
 export enum Direction {
   START,
@@ -34,6 +35,7 @@ export const ALL_MODALS = {
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
   ConfirmModal,
+  NoWeblnModal,
   LinkingAccountModal,
 
   // Text Editor Modals

@@ -56,11 +56,13 @@ export default function PostDetailsPage() {
                 <aside id='author' className='no-scrollbar min-w-0'>
                     <div className="flex flex-col gap-24 overflow-y-auto sticky-side-element">
                         <AuthorCard author={post.author} />
-                        <TrendingCard />
+                        <div className="hidden md:block"><TrendingCard /></div>
                     </div>
                 </aside>
                 <div id="comments">
                     <CommentsSection id={post.id} type={type as Post_Type} />
+
+                    <div className="md:hidden mt-24"><TrendingCard /></div>
                 </div>
             </div>
         </>
