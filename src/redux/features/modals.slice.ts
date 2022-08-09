@@ -4,6 +4,7 @@ import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/Proj
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
 import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageModal'
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
+import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
@@ -38,6 +39,7 @@ export const ALL_MODALS = {
   // Text Editor Modals
   InsertImageModal,
   InsertVideoModal,
+  InsertLinkModal,
 }
 
 type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>
