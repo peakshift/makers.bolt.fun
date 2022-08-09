@@ -46,6 +46,11 @@ const loginHandler = async (req, res) => {
                     }
                 });
 
+            // Remove old linking for this key if existing
+            await prisma.userKey.delete({
+                where: { key }
+            })
+
             return res
                 .status(200)
                 .json({ status: "OK" })
