@@ -44,7 +44,7 @@ export default function CommentsSection({ type, id }: Props) {
 
 
   return (
-    <div className="border-2 border-gray-200 rounded-12 md:rounded-16 p-32 bg-white">
+    <div className="md:border-2 border-gray-200 rounded-12 md:rounded-16 md:p-32 bg-white">
 
       <div className="flex flex-wrap justify-between">
         <h6 className="text-body2 font-bolder">Discussion</h6>
