@@ -1,6 +1,6 @@
 
 const { prisma } = require('../../../prisma');
-const { objectType, extendType, intArg, nonNull, inputObjectType } = require("nexus");
+const { objectType, extendType, intArg, nonNull, inputObjectType, list } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 
@@ -117,14 +117,123 @@ const updateProfile = extendType({
 })
 
 
+const UserKey = objectType({
+    name: 'UserKey',
+    definition(t) {
+        t.nonNull.string('key');
+        t.nonNull.string('name');
+    }
+})
+
+const myWalletsKeys = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('myWalletsKeys', {
+            type: "UserKey",
+
+            async resolve(_, __, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                if (!user)
+                    throw new Error("You have to login");
+
+                return prisma.userKey.findMany({
+                    where: {
+                        user_id: user.id,
+                    }
+                })
+            }
+        })
+    }
+})
+
+const UserKeyInputType = inputObjectType({
+    name: 'UserKeyInputType',
+    definition(t) {
+        t.nonNull.string('key');
+        t.nonNull.string('name');
+    }
+})
+
+
+
+const updateUserWalletKeys = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.list.nonNull.field('updateUserWalletKeys', {
+            type: 'UserKey',
+            args: { data: list(nonNull(UserKeyInputType)) },
+            async resolve(_root, args, ctx) {
+
+
+
+                const user = await getUserByPubKey(ctx.userPubKey);
+                if (!user)
+                    throw new Error("You have to login");
+
+
+
+                // Check if all the sent keys belong to the user
+                const userKeys = (await prisma.userKey.findMany({
+                    where: {
+                        AND: {
+                            user_id: {
+                                equals: user.id,
+                            },
+                            key: {
+                                in: args.data.map(i => i.key)
+                            }
+                        },
+                    },
+                    select: {
+                        key: true
+                    }
+                })).map(i => i.key);
+
+                const newKeys = [];
+                for (let i = 0; i < args.data.length; i++) {
+                    const item = args.data[i];
+                    if (userKeys.includes(item.key))
+                        newKeys.push(item);
+                }
+
+
+                if (newKeys.length === 0)
+                    throw new Error("You can't delete all your keys")
+
+                await prisma.userKey.deleteMany({
+                    where: {
+                        user_id: user.id
+                    }
+                })
+
+                await prisma.userKey.createMany({
+                    data: newKeys.map(i => ({
+                        user_id: user.id,
+                        key: i.key,
+                        name: i.name,
+                    }))
+                })
+
+                return newKeys;
+
+            }
+        })
+    }
+})
+
+
 
 module.exports = {
     // Types
     User,
     UpdateProfileInput,
+    UserKey,
     // Queries
     me,
     profile,
+    myWalletsKeys,
     // Mutations
     updateProfile,
+    updateUserWalletKeys,
 }

@@ -49,6 +49,10 @@ export interface NexusGenInputs {
     twitter?: string | null; // String
     website?: string | null; // String
   }
+  UserKeyInputType: { // input type
+    key: string; // String!
+    name: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -204,6 +208,10 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     website?: string | null; // String
   }
+  UserKey: { // root type
+    key: string; // String!
+    name: string; // String!
+  }
   Vote: { // root type
     amount_in_sat: number; // Int!
     id: number; // Int!
@@ -314,6 +322,7 @@ export interface NexusGenFieldTypes {
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     updateProfile: NexusGenRootTypes['User'] | null; // User
+    updateUserWalletKeys: NexusGenRootTypes['UserKey'][]; // [UserKey!]!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
   PostComment: { // field return type
@@ -353,6 +362,7 @@ export interface NexusGenFieldTypes {
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     me: NexusGenRootTypes['User'] | null; // User
+    myWalletsKeys: NexusGenRootTypes['UserKey'][]; // [UserKey!]!
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     officialTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -414,6 +424,10 @@ export interface NexusGenFieldTypes {
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     twitter: string | null; // String
     website: string | null; // String
+  }
+  UserKey: { // field return type
+    key: string; // String!
+    name: string; // String!
   }
   Vote: { // field return type
     amount_in_sat: number; // Int!
@@ -523,6 +537,7 @@ export interface NexusGenFieldTypeNames {
     deleteStory: 'Story'
     donate: 'Donation'
     updateProfile: 'User'
+    updateUserWalletKeys: 'UserKey'
     vote: 'Vote'
   }
   PostComment: { // field return type name
@@ -562,6 +577,7 @@ export interface NexusGenFieldTypeNames {
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
     me: 'User'
+    myWalletsKeys: 'UserKey'
     newProjects: 'Project'
     officialTags: 'Tag'
     popularTags: 'Tag'
@@ -624,6 +640,10 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     website: 'String'
   }
+  UserKey: { // field return type name
+    key: 'String'
+    name: 'String'
+  }
   Vote: { // field return type name
     amount_in_sat: 'Int'
     id: 'Int'
@@ -666,6 +686,9 @@ export interface NexusGenArgTypes {
     }
     updateProfile: { // args
       data?: NexusGenInputs['UpdateProfileInput'] | null; // UpdateProfileInput
+    }
+    updateUserWalletKeys: { // args
+      data?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]
     }
     vote: { // args
       amount_in_sat: number; // Int!

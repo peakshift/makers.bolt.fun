@@ -100,6 +100,7 @@ type Mutation {
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   updateProfile(data: UpdateProfileInput): User
+  updateUserWalletKeys(data: [UserKeyInputType!]): [UserKey!]!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
 
@@ -161,6 +162,7 @@ type Query {
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: User
+  myWalletsKeys: [UserKey!]!
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
   officialTags: [Tag!]!
   popularTags: [Tag!]!
@@ -249,6 +251,16 @@ type User {
   stories: [Story!]!
   twitter: String
   website: String
+}
+
+type UserKey {
+  key: String!
+  name: String!
+}
+
+input UserKeyInputType {
+  key: String!
+  name: String!
 }
 
 enum VOTE_ITEM_TYPE {

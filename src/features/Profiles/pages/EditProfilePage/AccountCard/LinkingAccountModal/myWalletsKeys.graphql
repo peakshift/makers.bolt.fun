@@ -1,0 +1,13 @@
+query MyWalletsKeys {
+  myWalletsKeys {
+    key
+    name
+  }
+}
+
+mutation UpdateUserWalletsKeys($data: [UserKeyInputType!]) {
+  updateUserWalletKeys(data: $data) {
+    key
+    name
+  }
+}

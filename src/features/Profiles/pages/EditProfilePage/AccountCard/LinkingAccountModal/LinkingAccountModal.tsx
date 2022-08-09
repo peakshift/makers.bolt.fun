@@ -7,6 +7,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
+import { useApolloClient } from '@apollo/client';
 
 
 
@@ -57,7 +58,8 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
     const [copied, setCopied] = useState(false);
 
     const { loadingLnurl, data: { lnurl }, error } = useLnurlQuery();
-    const clipboard = useCopyToClipboard()
+    const clipboard = useCopyToClipboard();
+    const apolloClient = useApolloClient();
 
 
 
@@ -69,6 +71,13 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
     const copyToClipboard = () => {
         setCopied(true);
         clipboard(lnurl);
+    }
+
+    const done = () => {
+        apolloClient.refetchQueries({
+            include: ['MyWalletsKeys']
+        })
+        onClose?.()
     }
 
 
@@ -114,7 +123,7 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
                     >{copied ? "Copied" : "Copy"} <FiCopy /></Button>
                     <Button
                         color='primary'
-                        onClick={onClose}
+                        onClick={done}
                         fullWidth
                         className='mt-16'
                     >

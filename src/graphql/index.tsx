@@ -122,6 +122,7 @@ export type Mutation = {
   deleteStory: Maybe<Story>;
   donate: Donation;
   updateProfile: Maybe<User>;
+  updateUserWalletKeys: Array<UserKey>;
   vote: Vote;
 };
 
@@ -155,6 +156,11 @@ export type MutationDonateArgs = {
 
 export type MutationUpdateProfileArgs = {
   data: InputMaybe<UpdateProfileInput>;
+};
+
+
+export type MutationUpdateUserWalletKeysArgs = {
+  data: InputMaybe<Array<UserKeyInputType>>;
 };
 
 
@@ -225,6 +231,7 @@ export type Query = {
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
   me: Maybe<User>;
+  myWalletsKeys: Array<UserKey>;
   newProjects: Array<Project>;
   officialTags: Array<Tag>;
   popularTags: Array<Tag>;
@@ -396,6 +403,17 @@ export type User = {
   website: Maybe<Scalars['String']>;
 };
 
+export type UserKey = {
+  __typename?: 'UserKey';
+  key: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type UserKeyInputType = {
+  key: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export enum Vote_Item_Type {
   Bounty = 'Bounty',
   PostComment = 'PostComment',
@@ -515,12 +533,17 @@ export type PostDetailsQueryVariables = Exact<{
 
 export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
-export type ProfileQueryVariables = Exact<{
-  profileId: Scalars['Int'];
+export type MyWalletsKeysQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyWalletsKeysQuery = { __typename?: 'Query', myWalletsKeys: Array<{ __typename?: 'UserKey', key: string, name: string }> };
+
+export type UpdateUserWalletsKeysMutationVariables = Exact<{
+  data: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, nostr_prv_key: string | null, nostr_pub_key: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
+export type UpdateUserWalletsKeysMutation = { __typename?: 'Mutation', updateUserWalletKeys: Array<{ __typename?: 'UserKey', key: string, name: string }> };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<UpdateProfileInput>;
@@ -528,6 +551,13 @@ export type UpdateProfileAboutMutationVariables = Exact<{
 
 
 export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, website: string | null, role: string | null, email: string | null, lightning_address: string | null, jobTitle: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+
+export type ProfileQueryVariables = Exact<{
+  profileId: Scalars['Int'];
+}>;
+
+
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, nostr_prv_key: string | null, nostr_pub_key: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1306,6 +1336,121 @@ export function usePostDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type PostDetailsQueryHookResult = ReturnType<typeof usePostDetailsQuery>;
 export type PostDetailsLazyQueryHookResult = ReturnType<typeof usePostDetailsLazyQuery>;
 export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDetailsQueryVariables>;
+export const MyWalletsKeysDocument = gql`
+    query MyWalletsKeys {
+  myWalletsKeys {
+    key
+    name
+  }
+}
+    `;
+
+/**
+ * __useMyWalletsKeysQuery__
+ *
+ * To run a query within a React component, call `useMyWalletsKeysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyWalletsKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyWalletsKeysQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyWalletsKeysQuery(baseOptions?: Apollo.QueryHookOptions<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>(MyWalletsKeysDocument, options);
+      }
+export function useMyWalletsKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>(MyWalletsKeysDocument, options);
+        }
+export type MyWalletsKeysQueryHookResult = ReturnType<typeof useMyWalletsKeysQuery>;
+export type MyWalletsKeysLazyQueryHookResult = ReturnType<typeof useMyWalletsKeysLazyQuery>;
+export type MyWalletsKeysQueryResult = Apollo.QueryResult<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>;
+export const UpdateUserWalletsKeysDocument = gql`
+    mutation UpdateUserWalletsKeys($data: [UserKeyInputType!]) {
+  updateUserWalletKeys(data: $data) {
+    key
+    name
+  }
+}
+    `;
+export type UpdateUserWalletsKeysMutationFn = Apollo.MutationFunction<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>;
+
+/**
+ * __useUpdateUserWalletsKeysMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserWalletsKeysMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserWalletsKeysMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserWalletsKeysMutation, { data, loading, error }] = useUpdateUserWalletsKeysMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateUserWalletsKeysMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>(UpdateUserWalletsKeysDocument, options);
+      }
+export type UpdateUserWalletsKeysMutationHookResult = ReturnType<typeof useUpdateUserWalletsKeysMutation>;
+export type UpdateUserWalletsKeysMutationResult = Apollo.MutationResult<UpdateUserWalletsKeysMutation>;
+export type UpdateUserWalletsKeysMutationOptions = Apollo.BaseMutationOptions<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>;
+export const UpdateProfileAboutDocument = gql`
+    mutation updateProfileAbout($data: UpdateProfileInput) {
+  updateProfile(data: $data) {
+    id
+    name
+    avatar
+    join_date
+    website
+    role
+    email
+    lightning_address
+    jobTitle
+    twitter
+    github
+    linkedin
+    bio
+    location
+  }
+}
+    `;
+export type UpdateProfileAboutMutationFn = Apollo.MutationFunction<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
+
+/**
+ * __useUpdateProfileAboutMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileAboutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileAboutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProfileAboutMutation, { data, loading, error }] = useUpdateProfileAboutMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>(UpdateProfileAboutDocument, options);
+      }
+export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
+export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
+export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
 export const ProfileDocument = gql`
     query profile($profileId: Int!) {
   profile(id: $profileId) {
@@ -1366,52 +1511,6 @@ export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pr
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
-export const UpdateProfileAboutDocument = gql`
-    mutation updateProfileAbout($data: UpdateProfileInput) {
-  updateProfile(data: $data) {
-    id
-    name
-    avatar
-    join_date
-    website
-    role
-    email
-    lightning_address
-    jobTitle
-    twitter
-    github
-    linkedin
-    bio
-    location
-  }
-}
-    `;
-export type UpdateProfileAboutMutationFn = Apollo.MutationFunction<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
-
-/**
- * __useUpdateProfileAboutMutation__
- *
- * To run a mutation, you first call `useUpdateProfileAboutMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateProfileAboutMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateProfileAboutMutation, { data, loading, error }] = useUpdateProfileAboutMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>(UpdateProfileAboutDocument, options);
-      }
-export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
-export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
-export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
 export const CategoryPageDocument = gql`
     query CategoryPage($categoryId: Int!) {
   projectsByCategory(category_id: $categoryId) {

@@ -68,7 +68,8 @@ model User {
 }
 
 model UserKey {
-  key String @id
+  key  String @id
+  name String @default("New Key Name")
 
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
