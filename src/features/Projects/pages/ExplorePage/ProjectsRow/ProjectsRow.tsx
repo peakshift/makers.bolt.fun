@@ -26,7 +26,11 @@ export default function ProjectsRow({ title, link, projects }: Props) {
 
     const [slidesToScroll, setSlidesToScroll] = useState(1)
     const rowRef = useRef<HTMLDivElement>(null)
-    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({ align: 'start', slidesToScroll })
+    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({
+        align: 'start',
+        slidesToScroll,
+        containScroll: "trimSnaps",
+    })
     const dispatch = useAppDispatch()
 
 
