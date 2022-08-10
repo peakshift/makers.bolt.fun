@@ -62,7 +62,7 @@ export default function NoWeblnModal({ onClose, direction, ...props }: ModalCard
             className="modal-card max-w-[343px] p-24 rounded-xl relative"
         >
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
-            <h2 className='text-h5 font-bold'>No WebLB Detected</h2>
+            <h2 className='text-h5 font-bold'>No WebLN Detected</h2>
             {content}
         </motion.div>
     )
