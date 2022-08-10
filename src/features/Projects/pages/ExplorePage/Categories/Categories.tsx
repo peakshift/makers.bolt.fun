@@ -19,7 +19,10 @@ const colors = [
 
 export default function Categories() {
 
-    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({ align: 'start', slidesToScroll: 2 })
+    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({
+        align: 'start', slidesToScroll: 2,
+        containScroll: "trimSnaps",
+    })
     const { data, loading } = useAllCategoriesQuery();
     const navigate = useNavigate();
 
@@ -52,10 +55,10 @@ export default function Categories() {
                     )}
                 </div>
             </div>
-            <button className={`absolute inset-y-0 w-42 left-0 opacity-0 ${canScrollPrev && 'group-hover:opacity-100'} transition-opacity rounded-l-12 bg-gradient-to-r from-gray-700 text-white`} onClick={() => scrollSlides(-1)}>
+            <button className={`absolute text-body6 w-[28px] aspect-square flex justify-center items-center left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full bg-white text-gray-400 opacity-0 ${canScrollPrev && 'group-hover:opacity-100'} active:scale-90 transition-opacity border border-gray-200 shadow-md`} onClick={() => scrollSlides(-1)}>
                 <FaChevronLeft />
             </button>
-            <button className={`absolute inset-y-0 w-42 right-0 opacity-0 ${canScrollNext && 'group-hover:opacity-100'} transition-opacity rounded-r-12 bg-gradient-to-l from-gray-700 text-white`} onClick={() => scrollSlides(1)}>
+            <button className={`absolute text-body6 w-[28px] aspect-square flex justify-center items-center right-0 translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full bg-white text-gray-400  opacity-0 ${canScrollNext && 'group-hover:opacity-100'} active:scale-90 transition-opacity border border-gray-200 shadow-md`} onClick={() => scrollSlides(1)}>
                 <FaChevronRight />
             </button>
         </div>
