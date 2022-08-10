@@ -93,7 +93,7 @@ export default function EditProfilePage() {
                         </div>
                     }
                 </aside>
-                <main className="md:col-span-2">
+                <main className="md:col-span-3">
                     <Routes>
                         <Route index element={<Navigate to='my-profile' />} />
                         <Route path='my-profile' element={<UpdateMyProfileCard data={profileQuery.data.profile} />} />

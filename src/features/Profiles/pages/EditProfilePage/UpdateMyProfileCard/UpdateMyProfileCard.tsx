@@ -5,8 +5,8 @@ import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-
-
+import { usePrompt } from "src/utils/hooks";
+import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 
 interface Props {
     data: Pick<User,
@@ -63,7 +63,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 export default function UpdateMyProfileCard({ data, onClose }: Props) {
 
-    const { register, formState: { errors }, handleSubmit } = useForm<IFormInputs>({
+    const { register, formState: { errors, isDirty, }, handleSubmit, reset } = useForm<IFormInputs>({
         defaultValues: data,
         resolver: yupResolver(schema),
         mode: 'onBlur',
@@ -76,6 +76,8 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
     });
 
 
+
+    usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
 
 
     const onSubmit: SubmitHandler<IFormInputs> = data => {
@@ -94,6 +96,9 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
                     twitter: data.twitter,
                     website: data.website,
                 }
+            },
+            onCompleted: () => {
+                reset(data);
             }
         }).catch(() => {
             NotificationsService.error('A network error happened');
@@ -102,186 +107,179 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
     };
 
     return (
-        <div className="rounded-16 bg-white border-2 border-gray-200">
-            <div className="bg-gray-600 relative h-[160px] rounded-t-16">
-                <div className="absolute left-24 bottom-0 translate-y-1/2">
-                    <Avatar src={data.avatar} width={120} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
+            <div className="col-span-2 rounded-16 bg-white border-2 border-gray-200">
+                <div className="bg-gray-600 relative h-[160px] rounded-t-16">
+                    <div className="absolute left-24 bottom-0 translate-y-1/2">
+                        <Avatar src={data.avatar} width={120} />
+                    </div>
+                </div>
+                <div className="p-16 md:p-24 mt-64">
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <p className="text-body5 font-medium">
+                            Name
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+                                autoFocus
+                                type='text'
+                                className="input-text"
+                                placeholder='John Doe'
+                                {...register("name")}
+                            />
+                        </div>
+                        {errors.name && <p className="input-error">
+                            {errors.name.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Avatar
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder='https://images.com/my-avatar.jpg'
+                                {...register("avatar")}
+                            />
+                        </div>
+                        {errors.avatar && <p className="input-error">
+                            {errors.avatar.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Bio
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <textarea
+
+                                rows={3}
+                                className="input-text !p-20"
+                                placeholder='Tell others a little bit about yourself'
+                                {...register("bio")}
+                            />
+                        </div>
+                        {errors.bio && <p className="input-error">
+                            {errors.bio.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Job Title
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="Back-end Developer"
+                                {...register("jobTitle")}
+                            />
+                        </div>
+                        {errors.jobTitle && <p className="input-error">
+                            {errors.jobTitle.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Location
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="UK, London"
+                                {...register("location")}
+                            />
+                        </div>
+                        {errors.location && <p className="input-error">
+                            {errors.location.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Website
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="www.website.io"
+                                {...register("website")}
+                            />
+                        </div>
+                        {errors.website && <p className="input-error">
+                            {errors.website.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Twitter
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="@johndoe"
+                                {...register("twitter")}
+                            />
+                        </div>
+                        {errors.twitter && <p className="input-error">
+                            {errors.twitter.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Github
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="johndoe"
+                                {...register("github")}
+                            />
+                        </div>
+                        {errors.github && <p className="input-error">
+                            {errors.github.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Linkedin
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="www.linkedin.com/in/john-doe"
+                                {...register("linkedin")}
+                            />
+                        </div>
+                        {errors.linkedin && <p className="input-error">
+                            {errors.linkedin.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Lightning address
+                        </p>
+
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="johndoe@lnd.com"
+                                {...register("lightning_address")}
+                            />
+                        </div>
+                        {errors.lightning_address && <p className="input-error">
+                            {errors.lightning_address.message}
+                        </p>}
+                        <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
+                            Your lightning address is used to send the votes you get on your posts, comments, apps...etc, directly to you.
+                        </p>
+                    </form>
                 </div>
             </div>
-            <div className="p-16 md:p-24 mt-64">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <p className="text-body5 font-medium">
-                        Name
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-                            autoFocus
-                            type='text'
-                            className="input-text"
-                            placeholder='John Doe'
-                            {...register("name")}
-                        />
-                    </div>
-                    {errors.name && <p className="input-error">
-                        {errors.name.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Avatar
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder='https://images.com/my-avatar.jpg'
-                            {...register("avatar")}
-                        />
-                    </div>
-                    {errors.avatar && <p className="input-error">
-                        {errors.avatar.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Bio
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <textarea
-
-                            rows={3}
-                            className="input-text !p-20"
-                            placeholder='Tell others a little bit about yourself'
-                            {...register("bio")}
-                        />
-                    </div>
-                    {errors.bio && <p className="input-error">
-                        {errors.bio.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Job Title
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="Back-end Developer"
-                            {...register("jobTitle")}
-                        />
-                    </div>
-                    {errors.jobTitle && <p className="input-error">
-                        {errors.jobTitle.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Location
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="UK, London"
-                            {...register("location")}
-                        />
-                    </div>
-                    {errors.location && <p className="input-error">
-                        {errors.location.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Website
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="www.website.io"
-                            {...register("website")}
-                        />
-                    </div>
-                    {errors.website && <p className="input-error">
-                        {errors.website.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Twitter
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="@johndoe"
-                            {...register("twitter")}
-                        />
-                    </div>
-                    {errors.twitter && <p className="input-error">
-                        {errors.twitter.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Github
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="johndoe"
-                            {...register("github")}
-                        />
-                    </div>
-                    {errors.github && <p className="input-error">
-                        {errors.github.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Linkedin
-                    </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="www.linkedin.com/in/john-doe"
-                            {...register("linkedin")}
-                        />
-                    </div>
-                    {errors.linkedin && <p className="input-error">
-                        {errors.linkedin.message}
-                    </p>}
-                    <p className="text-body5 mt-16 font-medium">
-                        Lightning address
-                    </p>
-
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder="johndoe@lnd.com"
-                            {...register("lightning_address")}
-                        />
-                    </div>
-                    {errors.lightning_address && <p className="input-error">
-                        {errors.lightning_address.message}
-                    </p>}
-                    <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
-                        Your lightning address is used to send the votes you get on your posts, comments, apps...etc, directly to you.
-                    </p>
-                    <div className="mt-24 flex gap-16 justify-end">
-                        <Button
-                            color='gray'
-                            disabled={mutationStatus.loading}
-                            onClick={onClose}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type='submit'
-                            color='primary'
-                            isLoading={mutationStatus.loading}
-                            disabled={mutationStatus.loading}
-                        >
-                            Save changes
-                        </Button>
-                    </div>
-                </form>
+            <div className="self-start sticky-side-element">
+                <SaveChangesCard
+                    isLoading={mutationStatus.loading}
+                    isDirty={isDirty}
+                    onSubmit={handleSubmit(onSubmit)}
+                    onCancel={() => reset()}
+                />
             </div>
         </div>
     )
