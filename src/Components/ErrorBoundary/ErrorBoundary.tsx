@@ -26,14 +26,16 @@ class ErrorBoundary extends Component<Props, State> {
 
     public render() {
         if (this.state.hasError) {
-            return <ErrorMessage message={
-                <p className="text-body3">
-                    Sorry, something went wrong...😵
-                    <br />
-                    Try refreshing the page.
-                </p>
+            return <div className="page-container">
+                <ErrorMessage message={
+                    <p className="text-body3">
+                        Sorry, something went wrong...😵
+                        <br />
+                        Try refreshing the page.
+                    </p>
 
-            } type="unknown"></ErrorMessage>;
+                } type="unknown"></ErrorMessage>
+            </div>;
         }
 
         return this.props.children;
