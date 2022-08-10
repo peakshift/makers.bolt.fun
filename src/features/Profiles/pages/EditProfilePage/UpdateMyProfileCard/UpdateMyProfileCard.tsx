@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { usePrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
+import { toast } from "react-toastify";
 
 interface Props {
     data: Pick<User,
@@ -69,11 +70,7 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
         mode: 'onBlur',
     });
 
-    const [mutate, mutationStatus] = useUpdateProfileAboutMutation({
-        onCompleted: () => {
-            onClose?.()
-        }
-    });
+    const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
 
 
 
@@ -81,6 +78,9 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
 
 
     const onSubmit: SubmitHandler<IFormInputs> = data => {
+
+        const toastId = toast.loading("Saving changes...", NotificationsService.defaultOptions)
+
         mutate({
             variables: {
                 data: {
@@ -99,11 +99,13 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
             },
             onCompleted: () => {
                 reset(data);
+                toast.update(toastId, { render: "Saved changes successfully", type: "success", ...NotificationsService.defaultOptions, isLoading: false });
             }
-        }).catch(() => {
-            NotificationsService.error('A network error happened');
-            mutationStatus.reset()
         })
+            .catch(() => {
+                toast.update(toastId, { render: "A network error happened", type: "error", ...NotificationsService.defaultOptions, isLoading: false });
+                mutationStatus.reset()
+            })
     };
 
     return (
