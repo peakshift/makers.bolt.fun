@@ -90,44 +90,47 @@ export default function NavMobile() {
           </div>
 
           <div className="flex-1 flex justify-end">
-            {curUser !== undefined &&
-              (curUser &&
-                <Menu
-                  menuClassName='!p-8 !rounded-12'
-                  menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
-                  <MenuItem
-                    href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
-                    }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                  >
-                    👾 Profile
-                  </MenuItem>
-                  <MenuItem
-                    href="/edit-profile"
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate("/edit-profile");
-                    }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                  >
-                    ⚙️ Settings
-                  </MenuItem>
-                  <MenuItem
-                    href="/logout"
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate("/logout");
-                    }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                  >
-                    👋 Logout
-                  </MenuItem>
-                </Menu>
+            {curUser ?
 
-              )
+              <Menu
+                menuClassName='!p-8 !rounded-12'
+                menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
+                <MenuItem
+                  href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
+                  }}
+                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                  👾 Profile
+                </MenuItem>
+                <MenuItem
+                  href="/edit-profile"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/edit-profile");
+                  }}
+                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                  ⚙️ Settings
+                </MenuItem>
+                <MenuItem
+                  href="/logout"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/logout");
+                  }}
+                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                  👋 Logout
+                </MenuItem>
+              </Menu>
+              :
+              <Button size="sm" color="none" className="!text-body5 whitespace-nowrap" href="/login">
+                Connect ⚡
+              </Button>
+
             }</div>
 
         </div>
@@ -149,25 +152,16 @@ export default function NavMobile() {
           <div className="flex flex-col gap-16 py-16">
             <Search onResultClick={() => toggleDrawerOpen(false)} />
             {
-              curUser ?
-                <Button
-                  color="gray"
-                  fullWidth
-                  className="!py-16 px-40 rounded-12 "
-                  href='/logout'
-                  onClick={() => toggleDrawerOpen()}
-                >
-                  Logout
-                </Button> :
-                <Button
-                  color="primary"
-                  fullWidth
-                  className="!py-16 px-40 rounded-12 "
-                  href='/login'
-                  onClick={() => toggleDrawerOpen()}
-                >
-                  Connect your lightning wallet ⚡️
-                </Button>
+              !curUser &&
+              <Button
+                color="primary"
+                fullWidth
+                className="!py-16 px-40 rounded-12 "
+                href='/login'
+                onClick={() => toggleDrawerOpen()}
+              >
+                Connect your lightning wallet ⚡️
+              </Button>
             }
           </div>
           <ul className="px-32 flex flex-col py-16 gap-32 border-t">
@@ -268,6 +262,14 @@ export default function NavMobile() {
                 onClick={() => toggleDrawerOpen(false)}
                 className='text-body4 font-bold hover:text-primary-600'>
                 Donate
+              </Link>
+            </li>
+            <li className="relative">
+              <Link
+                to={'/logout'}
+                onClick={() => toggleDrawerOpen(false)}
+                className='text-body4 font-bold hover:text-primary-600'>
+                Logout 👋
               </Link>
             </li>
           </ul>
