@@ -201,7 +201,7 @@ export default function NavDesktop() {
                         </Menu>
 
                         :
-                        <Button color="primary" href="/login">
+                        <Button size="sm" color="white" href="/login">
                             Connect ⚡
                         </Button>
                     )

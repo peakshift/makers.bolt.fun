@@ -2,7 +2,7 @@
 import { gql } from '@apollo/client';
 import { useCallback, useState } from 'react';
 import { useConfirmVoteMutation, useVoteMutation, Vote_Item_Type } from 'src/graphql';
-import { Wallet_Service } from 'src/services';
+import { NotificationsService, Wallet_Service } from 'src/services';
 
 export enum PaymentStatus {
     DEFAULT,
@@ -105,14 +105,14 @@ export const useVote = (params: Params) => {
                                     setPaymentStatus(PaymentStatus.NETWORK_ERROR);
                                     onError?.(error);
                                     onSetteled?.();
-                                    alert("A network error happened while confirming the payment...")
+                                    NotificationsService.error("A network error happened while confirming the payment...")
                                 }
                             })
                         } catch (error) {
                             setPaymentStatus(PaymentStatus.CANCELED);
                             onError?.(error);
                             onSetteled?.();
-                            alert("Payment rejected by user")
+                            NotificationsService.error("Payment rejected by user")
 
                         }
 
@@ -122,7 +122,7 @@ export const useVote = (params: Params) => {
                         setPaymentStatus(PaymentStatus.NETWORK_ERROR);
                         onError?.(error);
                         onSetteled?.();
-                        alert("A network error happened...")
+                        NotificationsService.error("A network error happened...")
                     }
                 })
             })

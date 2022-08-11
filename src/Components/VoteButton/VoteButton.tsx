@@ -55,7 +55,7 @@ type BtnState = 'ready' | 'voting' | 'loading' | "success" | "fail";
 export default function VoteButton({
     votes,
     onVote = () => { },
-    fillType = 'leftRight',
+    fillType = 'background',
     direction = 'horizontal',
     disableCounter = false,
     disableShake = true,

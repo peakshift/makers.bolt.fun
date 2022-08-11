@@ -151,20 +151,8 @@ export default function NavMobile() {
         >
           <div className="flex flex-col gap-16 py-16">
             <Search onResultClick={() => toggleDrawerOpen(false)} />
-            {
-              !curUser &&
-              <Button
-                color="primary"
-                fullWidth
-                className="!py-16 px-40 rounded-12 "
-                href='/login'
-                onClick={() => toggleDrawerOpen()}
-              >
-                Connect your lightning wallet ⚡️
-              </Button>
-            }
           </div>
-          <ul className="px-32 flex flex-col py-16 gap-32 border-t">
+          <ul className="flex flex-col py-16 gap-32 border-t">
 
             <li className="relative">
               <Link
@@ -198,8 +186,8 @@ export default function NavMobile() {
                     onClick={() => toggleDrawerOpen(false)}
                     className='font-medium flex gap-16 !rounded-12 '
                   >
-                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2">✍🏼</span>
+                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <span className="text-body2 shrink-0">✍🏼</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -214,8 +202,8 @@ export default function NavMobile() {
 
                     className='font-medium flex gap-16 !rounded-12 opacity-60'
                   >
-                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2">💬</span>
+                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <span className="text-body2 shrink-0">💬</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -231,8 +219,8 @@ export default function NavMobile() {
                     onClick={() => toggleDrawerOpen(false)}
                     className='font-medium flex gap-16 !rounded-12'
                   >
-                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2">🏆</span>
+                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <span className="text-body2 shrink-0">🏆</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -264,14 +252,15 @@ export default function NavMobile() {
                 Donate
               </Link>
             </li>
-            <li className="relative">
-              <Link
-                to={'/logout'}
-                onClick={() => toggleDrawerOpen(false)}
-                className='text-body4 font-bold hover:text-primary-600'>
-                Logout 👋
-              </Link>
-            </li>
+            {curUser &&
+              <li className="relative">
+                <Link
+                  to={'/logout'}
+                  onClick={() => toggleDrawerOpen(false)}
+                  className='text-body4 font-bold hover:text-primary-600'>
+                  Logout 👋
+                </Link>
+              </li>}
           </ul>
           <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t pt-32 mt-auto">
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">

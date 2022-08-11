@@ -26,6 +26,12 @@ export default function SaveChangesCard(props: Props) {
     if (!profileQuery.data?.profile)
         return <></>
 
+
+    const clickCancel = () => {
+        if (window.confirm('You might lose some unsaved changes. Are you sure you want to continue?'))
+            props.onCancel?.()
+    }
+
     return (
         <div className="md:p-24 rounded-16 bg-white md:border-2 border-gray-200 flex flex-col gap-24">
             <div className='hidden md:flex gap-8'>
@@ -45,14 +51,13 @@ export default function SaveChangesCard(props: Props) {
                 <Button
                     color="primary"
                     onClick={props.onSubmit}
-                    isLoading={props.isLoading}
                     disabled={!props.isDirty || props.isLoading}
                 >
                     Save Changes
                 </Button>
                 <Button
                     color="gray"
-                    onClick={props.onCancel}
+                    onClick={clickCancel}
                     disabled={!props.isDirty || props.isLoading}
                 >
                     Cancel
