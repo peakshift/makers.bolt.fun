@@ -48,7 +48,7 @@ export default function Categories() {
                     {data?.allCategories.map((category, idx) =>
                         <button
                             key={category.id}
-                            onClick={() => isClickAllowed() && navigate(`/apps/category/${category.id}`)}
+                            onClick={() => isClickAllowed() && navigate(`/projects/category/${category.id}`)}
                             className='min-w-max block p-16 rounded-16 hover:bg-gray-100 active:bg-gray-200 active:scale-90 transition-transform'
                             style={{ backgroundColor: colors[idx % colors.length] }}
                         >{category.icon} {category.title}</button>

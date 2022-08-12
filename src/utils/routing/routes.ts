@@ -61,10 +61,10 @@ export function createRoute(options: RouteOptions) {
 }
 
 export const PAGES_ROUTES = {
-    apps: {
-        default: "/apps",
-        hottest: "/apps/hottest",
-        byCategoryId: "/apps/category/:id"
+    projects: {
+        default: "/projects",
+        hottest: "/projects/hottest",
+        byCategoryId: "/projects/category/:id"
     },
     blog: {
         feed: "/blog",

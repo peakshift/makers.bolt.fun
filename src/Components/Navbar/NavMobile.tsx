@@ -156,10 +156,10 @@ export default function NavMobile() {
 
             <li className="relative">
               <Link
-                to={'/apps'}
+                to={'/projects'}
                 onClick={() => toggleDrawerOpen(false)}
                 className='text-body4 font-bold hover:text-primary-600'>
-                Apps
+                Projects
               </Link>
             </li>
             <li>
@@ -264,28 +264,28 @@ export default function NavMobile() {
           </ul>
           <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t pt-32 mt-auto">
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">About Us</a>
+              <a href="/#">About Us</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Support</a>
+              <a href="/#">Support</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Press</a>
+              <a href="/#">Press</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Contacts</a>
+              <a href="/#">Contacts</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Careers</a>
+              <a href="/#">Careers</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Sitemap</a>
+              <a href="/#">Sitemap</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Legal</a>
+              <a href="/#">Legal</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Cookies Settings</a>
+              <a href="/#">Cookies Settings</a>
             </li>
 
           </ul>
