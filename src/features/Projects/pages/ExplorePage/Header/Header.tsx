@@ -11,7 +11,7 @@ const headerLinks = [
     title: <p className="text-body1 font-bolder text-white">Explore a fun directory of lightning web apps</p>,
     img: Assets.Images_ExploreHeader1,
     link: {
-      content: "Submit app",
+      content: "Submit project",
       url: "https://form.jotform.com/220301236112030",
     },
   },

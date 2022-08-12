@@ -35,7 +35,9 @@ export default function SaveChangesCard(props: Props) {
     return (
         <div className="md:p-24 rounded-16 bg-white md:border-2 border-gray-200 flex flex-col gap-24">
             <div className='hidden md:flex gap-8'>
-                <Link to={createRoute({ type: 'profile', id: profileQuery.data.profile.id, username: profileQuery.data.profile.name })}>
+                <Link
+                    className='shrink-0'
+                    to={createRoute({ type: 'profile', id: profileQuery.data.profile.id, username: profileQuery.data.profile.name })}>
                     <Avatar width={48} src={profileQuery.data.profile.avatar!} />
                 </Link>
                 <div className='overflow-hidden'>
