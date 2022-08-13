@@ -10,6 +10,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { Link, useLocation } from 'react-router-dom'
 import { createRoute, PAGES_ROUTES } from 'src/utils/routing'
 import Preferences from 'src/services/preferences.service'
+import Card from 'src/Components/Card/Card';
 
 // const createWorker = createWorkerFactory(() => import('./comments.worker'));
 
@@ -44,8 +45,7 @@ export default function CommentsSection({ type, id }: Props) {
 
 
   return (
-    <div className="md:border-2 border-gray-200 rounded-12 md:rounded-16 md:p-32 bg-white">
-
+    <Card onlyMd>
       <div className="flex flex-wrap justify-between">
         <h6 className="text-body2 font-bolder">Discussion</h6>
         {connectionStatus.status === 'Connected' && <div className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connected to {connectionStatus.connectedRelaysCount} relays</span> 📡</div>}
@@ -88,6 +88,6 @@ export default function CommentsSection({ type, id }: Props) {
             onReply={content => handleNewComment(content, comment.nostr_id.toString())}
           />)}
       </div>
-    </div>
+    </Card>
   )
 }

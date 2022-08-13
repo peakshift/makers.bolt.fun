@@ -9,6 +9,7 @@ import { useAppSelector } from "src/utils/hooks";
 import { useUpdateStory } from './useUpdateStory'
 import { FaPen } from "react-icons/fa";
 import DOMPurify from 'dompurify';
+import Card from "src/Components/Card/Card";
 
 
 interface Props {
@@ -26,9 +27,8 @@ export default function StoryPageContent({ story }: Props) {
 
     return (
         <>
-            <div id="content" className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative">
-
-
+            <div id="content" className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"> </div>
+            <Card id="content" onlyMd className="relative">
                 {story.cover_image &&
                     <img src={story.cover_image}
                         className='w-full object-cover rounded-12 md:rounded-16 mb-16'
@@ -72,7 +72,8 @@ export default function StoryPageContent({ story }: Props) {
                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(story.body)) }}
                 >
                 </div>
-            </div>
+
+            </Card>
             {/* <div id="comments" className="mt-10 comments_col">
                 <CommentsSection comments={story.comments} />
             </div> */}

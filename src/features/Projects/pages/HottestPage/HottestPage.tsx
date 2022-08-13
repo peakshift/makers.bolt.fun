@@ -24,7 +24,7 @@ export default function HottestPage() {
                 <title>{`Hottest Lightning Products`}</title>
                 <meta property="og:title" content={`Hottest Lightning Products`} />
             </Helmet>
-            <div className='px-32'>
+            <div className='page-container'>
                 <HeaderImage
                     isLoading={loading}
                     title={"Hottest Projects"}

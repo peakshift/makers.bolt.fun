@@ -4,6 +4,7 @@ import Slider from 'src/Components/Slider/Slider';
 import { Tag, usePopularTagsQuery } from 'src/graphql';
 import { MEDIA_QUERIES } from 'src/utils/theme';
 import { capitalize } from 'src/utils/helperFunctions';
+import Card from 'src/Components/Card/Card';
 
 export type FilterTag = Pick<Tag, 'id' | 'title' | "icon">
 
@@ -30,7 +31,8 @@ export default function PopularTagsFilter({ value, onChange }: Props) {
     return (
         <div className='overflow-hidden'>
             {isMdScreen ?
-                <div className='bg-white border-2 border-gray-200 rounded-12 p-16'>
+                <Card>
+
                     <p className="text-body2 font-bolder text-black mb-16">Popular Tags</p>
                     <ul className=' flex flex-col gap-16'>
                         {tagsQuery.loading ?
@@ -60,7 +62,8 @@ export default function PopularTagsFilter({ value, onChange }: Props) {
                                 </span>
                             </li>)}
                     </ul>
-                </div>
+
+                </Card>
                 :
                 <>
                     {

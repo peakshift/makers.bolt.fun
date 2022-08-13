@@ -1,5 +1,6 @@
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
+import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { useTrendingPostsQuery } from 'src/graphql'
 import { random } from 'src/utils/helperFunctions'
@@ -12,7 +13,7 @@ export default function TrendingCard() {
 
 
     return (
-        <div className="bg-white rounded-12 md:border-2 border-gray-200 md:p-16">
+        <Card onlyMd>
             <h3 className="text-body2 font-bolder mb-16">Trending on BOLT.FUN</h3>
             <ul className='flex flex-col'>
                 {
@@ -34,6 +35,6 @@ export default function TrendingCard() {
                         }
                         )}
             </ul>
-        </div>
+        </Card>
     )
 }

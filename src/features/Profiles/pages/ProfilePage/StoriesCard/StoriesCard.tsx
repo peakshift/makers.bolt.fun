@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Badge from 'src/Components/Badge/Badge'
 import Button from 'src/Components/Button/Button'
+import Card from 'src/Components/Card/Card'
 import { Story } from 'src/features/Posts/types'
 import { getDateDifference } from 'src/utils/helperFunctions'
 import { Tag } from 'src/utils/interfaces'
@@ -24,7 +25,7 @@ interface Props {
 
 export default function StoriesCard({ stories, isOwner }: Props) {
     return (
-        <div className="rounded-16 bg-white border-2 border-gray-200 p-24">
+        <Card>
             <p className="text-body2 font-bold">Stories ({stories.length})</p>
             {stories.length > 0 &&
                 <ul className="">
@@ -64,6 +65,6 @@ export default function StoriesCard({ stories, isOwner }: Props) {
                     </Button>}
                 </div>
             }
-        </div>
+        </Card>
     )
 }
