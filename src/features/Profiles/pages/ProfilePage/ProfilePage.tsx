@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet'
 import { useAppSelector } from 'src/utils/hooks';
 import styles from './styles.module.scss'
 import StoriesCard from "./StoriesCard/StoriesCard"
-import CommentsSettingsCard from "./CommentsSettingsCard/CommentsSettingsCard"
 
 export default function ProfilePage() {
 

@@ -4,11 +4,12 @@ import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import Slider from "src/Components/Slider/Slider";
 import { useProfileQuery } from "src/graphql";
 import { useAppSelector, useMediaQuery } from "src/utils/hooks";
-import CommentsSettingsCard from "../ProfilePage/CommentsSettingsCard/CommentsSettingsCard";
-import UpdateMyProfileCard from "./UpdateMyProfileCard/UpdateMyProfileCard";
+import UpdateMyProfileTab from "./UpdateMyProfileTab/UpdateMyProfileTab";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
 import AccountCard from "./AccountCard/AccountCard";
+import PreferencesTab from "./PreferencesTab/PreferencesTab";
+import Card from "src/Components/Card/Card";
 
 
 const links = [
@@ -56,7 +57,7 @@ export default function EditProfilePage() {
             <div className="page-container grid grid-cols-1 md:grid-cols-4 gap-24">
                 <aside>
                     {isMediumScreen ?
-                        <div className='bg-white border-2 border-gray-200 rounded-12 p-16 sticky-side-element' >
+                        <Card className="sticky-side-element">
                             <p className="text-body2 font-bolder text-black mb-16">Edit maker profile</p>
                             <ul className=' flex flex-col gap-8'>
                                 {links.map((link, idx) =>
@@ -72,7 +73,7 @@ export default function EditProfilePage() {
                                         </NavLink>
                                     </li>)}
                             </ul>
-                        </div>
+                        </Card>
                         :
                         <div className="border-b-2 border-gray-200">
                             <Slider>
@@ -96,9 +97,9 @@ export default function EditProfilePage() {
                 <main className="md:col-span-3">
                     <Routes>
                         <Route index element={<Navigate to='my-profile' />} />
-                        <Route path='my-profile' element={<UpdateMyProfileCard data={profileQuery.data.profile} />} />
+                        <Route path='my-profile' element={<UpdateMyProfileTab data={profileQuery.data.profile} />} />
                         <Route path='account' element={<AccountCard />} />
-                        <Route path='preferences' element={<CommentsSettingsCard nostr_prv_key={profileQuery.data.profile.nostr_prv_key} nostr_pub_key={profileQuery.data.profile.nostr_pub_key} isOwner={true} />
+                        <Route path='preferences' element={<PreferencesTab nostr_prv_key={profileQuery.data.profile.nostr_prv_key} nostr_pub_key={profileQuery.data.profile.nostr_pub_key} isOwner={true} />
                         } />
                     </Routes>
                 </main>

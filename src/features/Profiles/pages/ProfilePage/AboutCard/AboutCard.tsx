@@ -3,7 +3,7 @@ import { User } from "src/graphql"
 import { trimText, withHttp } from "src/utils/helperFunctions"
 import { FiGithub, FiGlobe, FiLinkedin, FiTwitter } from 'react-icons/fi'
 import Button from "src/Components/Button/Button";
-import { PAGES_ROUTES } from "src/utils/routing";
+import Card from "src/Components/Card/Card";
 
 interface Props {
     isOwner?: boolean;
@@ -53,7 +53,8 @@ export default function AboutCard({ user, isOwner }: Props) {
 
 
     return (
-        <div className="rounded-16 bg-white border-2 border-gray-200">
+        <Card defaultPadding={false}>
+
             <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                 <div className="absolute left-24 bottom-0 translate-y-1/2">
                     <Avatar src={user.avatar} width={120} />
@@ -64,8 +65,8 @@ export default function AboutCard({ user, isOwner }: Props) {
             </div>
             <div className="p-24 pt-0">
                 <div className="flex flex-col gap-16">
-                    <h1 className="text-h2 font-bolder">
-                        {trimText(user.name, 20)}
+                    <h1 className="text-h2 font-bolder break-words">
+                        {user.name}
                     </h1>
 
                     {links.some(link => link.hasValue) && <div className="flex flex-wrap gap-16">
@@ -99,6 +100,7 @@ export default function AboutCard({ user, isOwner }: Props) {
                     </p>}
                 </div>
             </div>
-        </div>
+
+        </Card>
     )
 }

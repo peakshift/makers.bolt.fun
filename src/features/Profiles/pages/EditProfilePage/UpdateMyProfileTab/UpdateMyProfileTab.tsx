@@ -8,6 +8,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { usePrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
+import Card from "src/Components/Card/Card";
 
 interface Props {
     data: Pick<User,
@@ -62,7 +63,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 }).required();
 
-export default function UpdateMyProfileCard({ data, onClose }: Props) {
+export default function UpdateMyProfileTab({ data, onClose }: Props) {
 
     const { register, formState: { errors, isDirty, }, handleSubmit, reset } = useForm<IFormInputs>({
         defaultValues: data,
@@ -110,7 +111,7 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
-            <div className="col-span-2 rounded-16 bg-white border-2 border-gray-200">
+            <Card className="md:col-span-2">
                 <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
                         <Avatar src={data.avatar} width={120} />
@@ -274,7 +275,7 @@ export default function UpdateMyProfileCard({ data, onClose }: Props) {
                         </p>
                     </form>
                 </div>
-            </div>
+            </Card>
             <div className="self-start sticky-side-element">
                 <SaveChangesCard
                     isLoading={mutationStatus.loading}

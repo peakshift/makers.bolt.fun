@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from 'src/Components/Button/Button'
+import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { useProfileQuery } from 'src/graphql'
 import { trimText } from 'src/utils/helperFunctions'
@@ -33,7 +34,7 @@ export default function SaveChangesCard(props: Props) {
     }
 
     return (
-        <div className="md:p-24 rounded-16 bg-white md:border-2 border-gray-200 flex flex-col gap-24">
+        <Card onlyMd className='flex flex-col gap-24'>
             <div className='hidden md:flex gap-8'>
                 <Link
                     className='shrink-0'
@@ -49,7 +50,7 @@ export default function SaveChangesCard(props: Props) {
             </p>} */}
             </div>
             <p className="hidden md:block text-body5">{trimText(profileQuery.data.profile.bio, 120)}</p>
-            <div className="flex md:flex-col gap-16 justify-end">
+            <div className="flex flex-col gap-16">
                 <Button
                     color="primary"
                     onClick={props.onSubmit}
@@ -65,6 +66,6 @@ export default function SaveChangesCard(props: Props) {
                     Cancel
                 </Button>
             </div>
-        </div>
+        </Card>
     )
 }
