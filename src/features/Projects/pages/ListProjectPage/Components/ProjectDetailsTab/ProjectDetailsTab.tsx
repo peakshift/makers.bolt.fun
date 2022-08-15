@@ -11,7 +11,7 @@ import Card from "src/Components/Card/Card";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import { FiCamera, FiGithub, FiTwitter } from "react-icons/fi";
 import CategoriesInput from "../CategoriesInput/CategoriesInput";
-import CapablitiesInput from "../CapablitiesInput/CapablitiesInput";
+import CapabilitiesInput from "../CapabilitiesInput/CapabilitiesInput";
 
 
 interface IProjectDetails {
@@ -267,7 +267,7 @@ export default function ProjectDetailsTab({ data, onClose }: Props) {
                             control={control}
                             name="capabilities"
                             render={({ field: { onChange, value } }) => (
-                                <CapablitiesInput
+                                <CapabilitiesInput
                                     value={value}
                                     onChange={onChange}
                                 />

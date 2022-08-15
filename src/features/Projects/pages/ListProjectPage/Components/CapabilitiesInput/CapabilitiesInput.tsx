@@ -8,7 +8,7 @@ interface Props {
     onChange?: (v: string[]) => void;
 }
 
-export default function CapablitiesInput(props: Props) {
+export default function CapabilitiesInput(props: Props) {
 
 
     const handleClick = (clickedValue: string) => {

@@ -16,7 +16,7 @@ import "src/styles/index.scss";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
-import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
+import { FormProvider, useForm, UseFormProps, Controller } from 'react-hook-form';
 import ModalsContainer from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 
 
@@ -121,6 +121,7 @@ export function WrapForm<T = any>(options?: Partial<UseFormProps<T>>): Decorator
     }
     return Func
 }
+
 
 
 export const WithModals: DecoratorFn = (Component) => <>
