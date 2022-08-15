@@ -1,6 +1,6 @@
 
 const { prisma } = require('../../../prisma');
-const { objectType, extendType, intArg, nonNull, inputObjectType } = require("nexus");
+const { objectType, extendType, intArg, nonNull, inputObjectType, stringArg } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 
@@ -71,6 +71,29 @@ const profile = extendType({
     }
 })
 
+const searchUsers = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('searchUsers', {
+            type: "User",
+            args: {
+                value: nonNull(stringArg())
+            },
+            async resolve(_, { value }) {
+                return prisma.user.findMany({
+                    where: {
+                        name: {
+                            contains: value,
+                            mode: "insensitive"
+                        }
+                    },
+                })
+            }
+        })
+    }
+})
+
+
 const UpdateProfileInput = inputObjectType({
     name: 'UpdateProfileInput',
     definition(t) {
@@ -125,6 +148,7 @@ module.exports = {
     // Queries
     me,
     profile,
+    searchUsers,
     // Mutations
     updateProfile,
 }

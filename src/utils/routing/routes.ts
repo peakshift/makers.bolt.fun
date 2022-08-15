@@ -64,7 +64,8 @@ export const PAGES_ROUTES = {
     projects: {
         default: "/projects",
         hottest: "/projects/hottest",
-        byCategoryId: "/projects/category/:id"
+        byCategoryId: "/projects/category/:id",
+        listProject: "/projects/list-project/*"
     },
     blog: {
         feed: "/blog",

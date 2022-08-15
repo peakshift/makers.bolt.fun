@@ -53,6 +53,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
+  TEAM_MEMBER_ROLE: "Admin" | "Maker"
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 
@@ -359,6 +360,7 @@ export interface NexusGenFieldTypes {
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    searchUsers: NexusGenRootTypes['User'][]; // [User!]!
   }
   Question: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -568,6 +570,7 @@ export interface NexusGenFieldTypeNames {
     profile: 'User'
     projectsByCategory: 'Project'
     searchProjects: 'Project'
+    searchUsers: 'User'
   }
   Question: { // field return type name
     author: 'Author'
@@ -724,6 +727,9 @@ export interface NexusGenArgTypes {
       search: string; // String!
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    searchUsers: { // args
+      value: string; // String!
     }
   }
 }

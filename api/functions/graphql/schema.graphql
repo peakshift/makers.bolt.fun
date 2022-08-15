@@ -167,6 +167,7 @@ type Query {
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
+  searchUsers(value: String!): [User!]!
 }
 
 type Question implements PostBase {
@@ -207,6 +208,11 @@ input StoryInputType {
   is_published: Boolean
   tags: [String!]!
   title: String!
+}
+
+enum TEAM_MEMBER_ROLE {
+  Admin
+  Maker
 }
 
 type Tag {

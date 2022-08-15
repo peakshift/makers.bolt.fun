@@ -4,6 +4,7 @@ const {
     stringArg,
     extendType,
     nonNull,
+    enumType,
 } = require('nexus')
 const { prisma } = require('../../../prisma');
 
@@ -46,6 +47,12 @@ const Project = objectType({
         })
     }
 })
+
+const TEAM_MEMBER_ROLE = enumType({
+    name: 'TEAM_MEMBER_ROLE',
+    members: ['Admin', 'Maker'],
+});
+
 
 
 const Award = objectType({
@@ -243,6 +250,7 @@ module.exports = {
     // Types
     Project,
     Award,
+    TEAM_MEMBER_ROLE,
     // Queries
     getProject,
     allProjects,

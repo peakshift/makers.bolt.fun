@@ -79,6 +79,10 @@ export function profile() {
     return MOCK_DATA['user']
 }
 
+export function searchUsers(value: string) {
+    return MOCK_DATA['users'].filter(u => u.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+}
+
 export function getMyDrafts(): Query['getMyDrafts'] {
     return MOCK_DATA['posts'].stories;
 }

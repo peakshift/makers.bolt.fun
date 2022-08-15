@@ -11,6 +11,7 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
 import { Loadable, PAGES_ROUTES } from "./utils/routing";
+import ListProjectPage from "./features/Projects/pages/ListProjectPage/ListProjectPage";
 
 
 
@@ -97,6 +98,7 @@ function App() {
           <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
           <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />
           <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
+          <Route path={PAGES_ROUTES.projects.listProject} element={<ListProjectPage />} />
 
           <Route path={PAGES_ROUTES.blog.postById} element={<PostDetailsPage />} />
           <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
