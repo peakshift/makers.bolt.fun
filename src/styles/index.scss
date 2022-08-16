@@ -3,7 +3,7 @@
 $screen-xs-min: 320px;
 
 @import "./tw.scss", "./shared.scss", "./vendors.scss", "./scrollbar.scss",
-  "./ui_state.scss";
+  "./ui_state.scss", "./portals.scss";
 @import "/src/styles/mixins/index.scss";
 
 html {

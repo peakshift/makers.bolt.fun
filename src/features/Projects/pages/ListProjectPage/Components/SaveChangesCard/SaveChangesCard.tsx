@@ -7,6 +7,8 @@ import { IListProjectForm } from "../FormContainer/FormContainer";
 import { useMemo, useState } from 'react'
 import { tabs } from '../../ListProjectPage'
 import { NotificationsService } from 'src/services'
+import { useAppDispatch } from 'src/utils/hooks';
+import { openModal } from 'src/redux/features/modals.slice';
 
 interface Props {
     currentTab: keyof typeof tabs
@@ -16,6 +18,7 @@ export default function SaveChangesCard(props: Props) {
 
     const { handleSubmit, formState: { errors, isDirty, }, reset, getValues, watch } = useFormContext<IListProjectForm>();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
     const isUpdating = useMemo(() => !!getValues('id'), [getValues]);
@@ -29,7 +32,21 @@ export default function SaveChangesCard(props: Props) {
     }
 
     const clickSubmit = handleSubmit<IListProjectForm>(data => {
-        NotificationsService.success("Product listed successfully")
+
+        if (isUpdating)
+            NotificationsService.success("Saved changes successfully")
+        else {
+            dispatch(openModal({
+                Modal: "ProjectListedModal", props: {
+                    project: {
+                        id: data.id!,
+                        name: data.name,
+                        img: data.thumbnail_image || "https://picsum.photos/id/870/150/150.jpg",
+                        tagline: data.tagline,
+                    }
+                }
+            }))
+        }
         console.log(data);
     }, () => {
         NotificationsService.error("Please fill all the required fields");

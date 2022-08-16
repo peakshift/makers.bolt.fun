@@ -15,6 +15,10 @@ type RouteOptions =
         username?: string,
     }
     | {
+        type: "edit-story",
+        id?: number,
+    }
+    | {
         type: "bounty",
         id: string | number,
         title?: string,
@@ -46,6 +50,10 @@ export function createRoute(options: RouteOptions) {
     if (options.type === "story")
         return `/blog/post/story/${options.id}`
             + (options.title ? `/${toSlug(options.title)}` : "");
+
+
+    if (options.type === "edit-story")
+        return `/blog/create-post` + (options.id ? `?id=${options.id}` : '')
 
     if (options.type === "bounty")
         return `/blog/post/bounty/${options.id}`

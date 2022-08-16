@@ -1,3 +1,10 @@
 :root {
   --navHeight: 0;
+
+  // Z Indexes
+  --baseZ: 10;
+  --navZ: var(--baseZ) + 1;
+  --popupZ: var(--navZ) + 1;
+  --modalZ: var(--popupZ) + 1;
+  --particlesZ: var(--modalZ) + 1;
 }
