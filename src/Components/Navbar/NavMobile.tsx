@@ -93,6 +93,8 @@ export default function NavMobile() {
             {curUser ?
 
               <Menu
+                align="end"
+                offsetY={4}
                 menuClassName='!p-8 !rounded-12'
                 menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
                 <MenuItem
