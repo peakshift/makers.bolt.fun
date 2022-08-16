@@ -111,7 +111,7 @@ export default function UpdateMyProfileTab({ data, onClose }: Props) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
-            <Card className="md:col-span-2">
+            <Card className="md:col-span-2" defaultPadding={false}>
                 <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
                         <Avatar src={data.avatar} width={120} />
