@@ -14,7 +14,7 @@ import styles from './styles.module.scss'
 import { lazy, Suspense } from 'react'
 import { RotatingLines } from 'react-loader-spinner'
 
-const CommentsSection = lazy(() => import("src/features/Posts/Components/Comments"))
+const CommentsSection = lazy(() => import( /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"))
 
 export default function PostDetailsPage() {
     const { type: _type, id } = useParams();
