@@ -25,12 +25,11 @@ export default function SaveChangesCard(props: Props) {
 
     const clickCancel = () => {
         if (window.confirm('You might lose some unsaved changes. Are you sure you want to continue?'))
-            // props.onCancel?.() 
-            alert("Canceled")
+            reset();
     }
 
     const clickSubmit = handleSubmit<IListProjectForm>(data => {
-        NotificationsService.success("Submitted successfully")
+        NotificationsService.success("Product listed successfully")
         console.log(data);
     }, () => {
         NotificationsService.error("Please fill all the required fields");
@@ -82,7 +81,7 @@ export default function SaveChangesCard(props: Props) {
             <div className='hidden md:flex gap-8'>
                 {img ?
                     <Avatar width={48} src={img} /> :
-                    <div className="bg-gray-100 rounded-full w-48 h-48 shrink-0"></div>
+                    <div className="bg-gray-50 border border-gray-200 rounded-full w-48 h-48 shrink-0"></div>
                 }
                 <div className='overflow-hidden'>
                     <p className={`text-body4 text-black font-medium overflow-hidden text-ellipsis`}>{name || "Product preview"}</p>
