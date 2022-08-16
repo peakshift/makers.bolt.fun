@@ -25,7 +25,8 @@ export class NotificationsService {
         toast.success(msg, {
             onClose: options?.onComplete,
             autoClose: options?.autoClose ?? 2500,
-            icon: "✅"
+            icon: "✅",
+            ...options,
         })
     }
 
@@ -33,6 +34,15 @@ export class NotificationsService {
         toast.info(msg, {
             onClose: options?.onComplete,
             autoClose: options?.autoClose ?? 2500,
+            ...options,
+        })
+    }
+
+    static warn(msg: string, options?: AlertOptions) {
+        toast.warn(msg, {
+            onClose: options?.onComplete,
+            autoClose: options?.autoClose ?? 2500,
+            ...options,
         })
     }
 
@@ -41,6 +51,7 @@ export class NotificationsService {
         toast.error(msg, {
             onClose: options?.onComplete,
             autoClose: options?.autoClose ?? 2500,
+            ...options,
         })
     }
 

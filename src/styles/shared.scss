@@ -19,3 +19,8 @@ button[disabled] {
   top: calc(var(--navHeight) + 16px);
   max-height: calc(100vh - var(--navHeight) - 16px);
 }
+
+.sticky-top-element {
+  position: sticky;
+  top: calc(var(--navHeight));
+}

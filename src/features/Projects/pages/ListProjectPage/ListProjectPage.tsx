@@ -1,4 +1,4 @@
-import { Navigate, NavLink, Route, Routes, useParams } from "react-router-dom";
+import { Navigate, NavLink, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Slider from "src/Components/Slider/Slider";
 import { useAppSelector, useMediaQuery } from "src/utils/hooks";
 import { Helmet } from 'react-helmet'
@@ -7,32 +7,46 @@ import Card from "src/Components/Card/Card";
 import ProjectDetailsTab from "./Components/ProjectDetailsTab/ProjectDetailsTab";
 import TeamTab from "./Components/TeamTab/TeamTab";
 import ExtrasTab from "./Components/ExtrasTab/ExtrasTab";
+import FormContainer from "./Components/FormContainer/FormContainer";
+import { useMemo } from "react";
+import SaveChangesCard from "./Components/SaveChangesCard/SaveChangesCard";
 
 
-const links = [
-    {
+export const tabs = {
+    'project-details': {
         text: "🚀️  Project details",
         path: 'project-details',
     },
-    {
+    'team': {
         text: "⚡️  Team",
         path: 'team',
     },
-    {
+    'extras': {
         text: "💎  Extras",
         path: 'extras',
     }
-]
+} as const;
 
+const links = [tabs['project-details'], tabs['team'], tabs['extras']];
 
+type TabsKeys = keyof typeof tabs;
+
+const getCurrentTab = (locattion: string) => {
+    for (const key in tabs) {
+        const tab = tabs[key as TabsKeys];
+        if (locattion.includes(tab.path))
+            return key as TabsKeys;
+    }
+    return null;
+}
 
 export default function ListProjectPage() {
 
-    const { id } = useParams()
-
-    const isUpdating = !!id;
-
     const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
+
+    const location = useLocation();
+    const currentTab = useMemo(() => getCurrentTab(location.pathname), [location.pathname])
+
 
 
 
@@ -50,8 +64,8 @@ export default function ListProjectPage() {
                 <meta property="og:title" content='List a project' />
             </Helmet>
             <div className="page-container grid grid-cols-1 md:grid-cols-4 gap-24">
-                <aside>
-                    {isMediumScreen ?
+                {isMediumScreen ?
+                    <aside >
                         <Card className="sticky-side-element">
                             <p className="text-body2 font-bolder text-black mb-16">List a project</p>
                             <ul className=' flex flex-col gap-8'>
@@ -69,33 +83,44 @@ export default function ListProjectPage() {
                                     </li>)}
                             </ul>
                         </Card>
-                        :
-                        <div className="border-b-2 border-gray-200">
-                            <Slider>
-                                {links.map((link, idx) =>
-                                    <NavLink
-                                        to={link.path}
-                                        key={idx}
-                                        className={`flex items-start cursor-pointer font-bold py-12
+                    </aside>
+                    :
+                    <aside
+                        className="border-b-2 border-gray-200 bg-white z-10 w-full sticky-top-element"
+                    >
+                        <Slider>
+                            {links.map((link, idx) =>
+                                <NavLink
+                                    to={link.path}
+                                    key={idx}
+                                    className={`flex items-start cursor-pointer font-bold py-12
                                                 active:scale-95 transition-transform`}
-                                        style={({ isActive }) => ({
-                                            boxShadow: isActive ? '0px 2px var(--primary)' : 'none'
-                                        })}
-                                    >
-                                        {link.text}
-                                    </NavLink>
-                                )}
-                            </Slider>
-                        </div>
-                    }
-                </aside>
+                                    style={({ isActive }) => ({
+                                        boxShadow: isActive ? '0px 2px var(--primary)' : 'none'
+                                    })}
+                                >
+                                    {link.text}
+                                </NavLink>
+                            )}
+                        </Slider>
+                    </aside>
+                }
                 <main className="md:col-span-3">
-                    <Routes>
-                        <Route index element={<Navigate to={links[0].path} />} />
-                        <Route path={links[0].path} element={<ProjectDetailsTab />} />
-                        <Route path={links[1].path} element={<TeamTab />} />
-                        <Route path={links[2].path} element={<ExtrasTab />} />
-                    </Routes>
+                    <FormContainer>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
+                            <div className="md:col-span-2">
+                                <Routes>
+                                    <Route index element={<Navigate to={tabs['project-details'].path} />} />
+                                    <Route path={tabs['project-details'].path} element={<ProjectDetailsTab />} />
+                                    <Route path={tabs['team'].path} element={<TeamTab />} />
+                                    <Route path={tabs['extras'].path} element={<ExtrasTab />} />
+                                </Routes>
+                            </div>
+                            <div className="self-start sticky-side-element">
+                                {currentTab && <SaveChangesCard currentTab={currentTab} />}
+                            </div>
+                        </div>
+                    </FormContainer>
                 </main>
             </div>
         </>

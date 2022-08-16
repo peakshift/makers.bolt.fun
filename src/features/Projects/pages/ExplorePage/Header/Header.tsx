@@ -5,6 +5,7 @@ import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import CustomDot from "./CustomDot/CustomDot";
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from "react";
+import { createRoute } from "src/utils/routing";
 
 const headerLinks = [
   {
@@ -12,7 +13,8 @@ const headerLinks = [
     img: Assets.Images_ExploreHeader1,
     link: {
       content: "Submit project",
-      url: "https://form.jotform.com/220301236112030",
+      url: createRoute({ type: "edit-project" }),
+      newTab: false,
     },
   },
   {
@@ -25,6 +27,7 @@ const headerLinks = [
     link: {
       content: "Register Now",
       url: "https://bolt.fun/hackathons/shock-the-web-2/",
+      newTab: true,
     },
   },
 ];
@@ -72,7 +75,7 @@ export default function Header() {
               {headerLinks[0].title}
             </div>
 
-            <Button href={headerLinks[0].link.url} newTab color="white" className="mt-24">
+            <Button href={headerLinks[0].link.url} newTab={headerLinks[0].link.newTab} color="white" className="mt-24">
               {headerLinks[0].link.content}
             </Button>
           </div>
@@ -86,7 +89,7 @@ export default function Header() {
             <div className="max-w-[90%]">
               {headerLinks[1].title}
             </div>
-            <Button color="white" href={headerLinks[1].link.url} newTab className="mt-24">
+            <Button color="white" href={headerLinks[1].link.url} newTab={headerLinks[1].link.newTab} className="mt-24">
               {headerLinks[1].link.content}
             </Button>
           </div>

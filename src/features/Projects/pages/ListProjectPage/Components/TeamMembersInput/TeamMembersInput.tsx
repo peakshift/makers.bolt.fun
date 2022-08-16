@@ -1,14 +1,13 @@
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 import { NestedValue } from 'react-hook-form'
-import { FaChevronDown, FaRegTrashAlt, FaTimes } from 'react-icons/fa';
-import IconButton from 'src/Components/IconButton/IconButton';
+import { FaChevronDown, FaRegTrashAlt, } from 'react-icons/fa';
 import UsersInput from 'src/Components/Inputs/UsersInput/UsersInput'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import { Team_Member_Role } from 'src/graphql';
-import { ITeamForm } from '../TeamTab/TeamTab'
+import { IListProjectForm } from '../FormContainer/FormContainer';
 
-type Value = ITeamForm['members'] extends NestedValue<infer U> ? U : never;
+type Value = IListProjectForm['members'] extends NestedValue<infer U> ? U : never;
 
 type Props = {
     value: Value,
