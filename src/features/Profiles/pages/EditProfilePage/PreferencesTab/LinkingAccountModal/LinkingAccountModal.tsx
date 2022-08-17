@@ -75,7 +75,7 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
 
     const done = () => {
         apolloClient.refetchQueries({
-            include: ['MyWalletsKeys']
+            include: ['MyProfilePreferences']
         })
         onClose?.()
     }
