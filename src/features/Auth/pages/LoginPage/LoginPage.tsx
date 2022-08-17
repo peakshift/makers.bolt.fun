@@ -157,11 +157,13 @@ export default function LoginPage() {
             <p className="text-body1 font-bolder text-center">
                 Login with lightning ⚡
             </p>
-            <QRCodeSVG
-                width={160}
-                height={160}
-                value={lnurl}
-            />
+            <a href={`lightning:${lnurl}`}>
+                <QRCodeSVG
+                    width={160}
+                    height={160}
+                    value={lnurl}
+                />
+            </a>
             <p className="text-gray-600 text-body4 text-center">
                 Scan this code or copy + paste it to your lightning wallet. Or click to login with your browser's wallet.
             </p>

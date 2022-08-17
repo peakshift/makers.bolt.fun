@@ -99,11 +99,13 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
     else
         content =
             <div className='flex flex-col gap-24 items-center mt-32'>
-                <QRCodeSVG
-                    width={160}
-                    height={160}
-                    value={lnurl}
-                />
+                <a href={`lightning:${lnurl}`}>
+                    <QRCodeSVG
+                        width={160}
+                        height={160}
+                        value={lnurl}
+                    />
+                </a>
                 <p className="text-gray-600 text-body4 text-center">
                     Scan this QR code with your other lightning wallet & you will be able to use it to login to this account.
                     <br />
