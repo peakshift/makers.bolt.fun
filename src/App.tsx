@@ -16,21 +16,21 @@ import ListProjectPage from "./features/Projects/pages/ListProjectPage/ListProje
 
 
 // Pages
-const FeedPage = Loadable(React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage")))
-const PostDetailsPage = Loadable(React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
-const CreatePostPage = Loadable(React.lazy(() => import("./features/Posts/pages/CreatePostPage/CreatePostPage")))
+const FeedPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "feed_page" */ "./features/Posts/pages/FeedPage/FeedPage")))
+const PostDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "post_details_page" */ "./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
+const CreatePostPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "create_post_page" */ "./features/Posts/pages/CreatePostPage/CreatePostPage")))
 
-const HottestPage = Loadable(React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage")))
-const CategoryPage = Loadable(React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage")))
-const ExplorePage = Loadable(React.lazy(() => import("src/features/Projects/pages/ExplorePage")))
+const HottestPage = Loadable(React.lazy(() => import( /* webpackChunkName: "hottest_page" */ "src/features/Projects/pages/HottestPage/HottestPage")))
+const CategoryPage = Loadable(React.lazy(() => import( /* webpackChunkName: "category_page" */ "src/features/Projects/pages/CategoryPage/CategoryPage")))
+const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage")))
 
-const HackathonsPage = Loadable(React.lazy(() => import("./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
+const HackathonsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
 
-const DonatePage = Loadable(React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage")))
-const LoginPage = Loadable(React.lazy(() => import("./features/Auth/pages/LoginPage/LoginPage")))
-const LogoutPage = Loadable(React.lazy(() => import("./features/Auth/pages/LogoutPage/LogoutPage")))
-const ProfilePage = Loadable(React.lazy(() => import("./features/Profiles/pages/ProfilePage/ProfilePage")))
-const EditProfilePage = Loadable(React.lazy(() => import("./features/Profiles/pages/EditProfilePage/EditProfilePage")))
+const DonatePage = Loadable(React.lazy(() => import( /* webpackChunkName: "donate_page" */ "./features/Donations/pages/DonatePage/DonatePage")))
+const LoginPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "login_page" */ "./features/Auth/pages/LoginPage/LoginPage")))
+const LogoutPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "logout_page" */ "./features/Auth/pages/LogoutPage/LogoutPage")))
+const ProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "profile_page" */ "./features/Profiles/pages/ProfilePage/ProfilePage")))
+const EditProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "edit_profile_page" */ "./features/Profiles/pages/EditProfilePage/EditProfilePage")))
 
 
 

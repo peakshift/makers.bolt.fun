@@ -5,9 +5,10 @@ import styles from '../PageContent/styles.module.scss'
 import Badge from "src/Components/Badge/Badge";
 import { BiComment } from "react-icons/bi";
 import { RiFlashlightLine } from "react-icons/ri";
-import { CommentsSection } from "src/features/Posts/Components/Comments";
 import { numberFormatter } from "src/utils/helperFunctions";
+import { lazy } from "react";
 
+const CommentsSection = lazy(() => import("src/features/Posts/Components/Comments"))
 
 interface Props {
     question: Question

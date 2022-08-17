@@ -166,6 +166,8 @@ export default function NavDesktop() {
                 {curUser !== undefined &&
                     (curUser ?
                         <Menu
+                            align="end"
+                            offsetY={4}
                             menuClassName='!p-8 !rounded-12'
                             menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
                             <MenuItem

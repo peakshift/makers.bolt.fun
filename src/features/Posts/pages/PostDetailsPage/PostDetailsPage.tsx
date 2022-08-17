@@ -4,15 +4,17 @@ import { useParams } from 'react-router-dom'
 import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
 import { Post_Type, usePostDetailsQuery } from 'src/graphql'
 import { capitalize } from 'src/utils/helperFunctions'
-import { CommentsSection } from '../../Components/Comments'
 import ScrollToTop from 'src/utils/routing/scrollToTop'
-import TrendingCard from '../../Components/TrendingCard/TrendingCard'
+import TrendingCard from 'src/features/Posts/Components/TrendingCard/TrendingCard'
 import AuthorCard from './Components/AuthorCard/AuthorCard'
 import PageContent from './Components/PageContent/PageContent'
 import PostActions from './Components/PostActions/PostActions'
 import PostDetailsPageSkeleton from './PostDetailsPage.skeleton'
 import styles from './styles.module.scss'
+import { lazy, Suspense } from 'react'
+import { RotatingLines } from 'react-loader-spinner'
 
+const CommentsSection = lazy(() => import( /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"))
 
 export default function PostDetailsPage() {
     const { type: _type, id } = useParams();
@@ -60,8 +62,11 @@ export default function PostDetailsPage() {
                     </div>
                 </aside>
                 <div id="comments">
-                    <CommentsSection id={post.id} type={type as Post_Type} />
-
+                    <Suspense fallback={
+                        <div className="flex justify-center py-32"><RotatingLines strokeColor='#ddd' width="64" /></div>
+                    }>
+                        <CommentsSection id={post.id} type={type as Post_Type} />
+                    </Suspense>
                     <div className="md:hidden mt-24"><TrendingCard /></div>
                 </div>
             </div>
