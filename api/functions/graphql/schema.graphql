@@ -18,6 +18,24 @@ type Award {
   url: String!
 }
 
+interface BaseUser {
+  avatar: String!
+  bio: String
+  email: String
+  github: String
+  id: Int!
+  jobTitle: String
+  join_date: Date!
+  lightning_address: String
+  linkedin: String
+  location: String
+  name: String!
+  role: String
+  stories: [Story!]!
+  twitter: String
+  website: String
+}
+
 type Bounty implements PostBase {
   applicants_count: Int!
   applications: [BountyApplication!]!
@@ -99,9 +117,30 @@ type Mutation {
   createStory(data: StoryInputType): Story
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
-  updateProfile(data: UpdateProfileInput): User
-  updateUserWalletKeys(data: [UserKeyInputType!]): [UserKey!]!
+  updateProfileDetails(data: ProfileDetailsInput): MyProfile
+  updateUserPreferences(userKeys: [UserKeyInputType!]): [MyProfile!]!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
+}
+
+type MyProfile implements BaseUser {
+  avatar: String!
+  bio: String
+  email: String
+  github: String
+  id: Int!
+  jobTitle: String
+  join_date: Date!
+  lightning_address: String
+  linkedin: String
+  location: String
+  name: String!
+  nostr_prv_key: String
+  nostr_pub_key: String
+  role: String
+  stories: [Story!]!
+  twitter: String
+  walletsKeys: [WalletKey!]!
+  website: String
 }
 
 enum POST_TYPE {
@@ -130,6 +169,20 @@ type PostComment {
   id: Int!
   parentId: Int
   votes_count: Int!
+}
+
+input ProfileDetailsInput {
+  avatar: String
+  bio: String
+  email: String
+  github: String
+  jobTitle: String
+  lightning_address: String
+  linkedin: String
+  location: String
+  name: String
+  twitter: String
+  website: String
 }
 
 type Project {
@@ -161,8 +214,7 @@ type Query {
   getProject(id: Int!): Project!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
-  me: User
-  myWalletsKeys: [UserKey!]!
+  me: MyProfile
   newProjects(skip: Int = 0, take: Int = 50): [Project!]!
   officialTags: [Tag!]!
   popularTags: [Tag!]!
@@ -219,21 +271,7 @@ type Tag {
   title: String!
 }
 
-input UpdateProfileInput {
-  avatar: String
-  bio: String
-  email: String
-  github: String
-  jobTitle: String
-  lightning_address: String
-  linkedin: String
-  location: String
-  name: String
-  twitter: String
-  website: String
-}
-
-type User {
+type User implements BaseUser {
   avatar: String!
   bio: String
   email: String
@@ -245,17 +283,10 @@ type User {
   linkedin: String
   location: String
   name: String!
-  nostr_prv_key: String
-  nostr_pub_key: String
   role: String
   stories: [Story!]!
   twitter: String
   website: String
-}
-
-type UserKey {
-  key: String!
-  name: String!
 }
 
 input UserKeyInputType {
@@ -280,4 +311,9 @@ type Vote {
   paid: Boolean!
   payment_hash: String!
   payment_request: String!
+}
+
+type WalletKey {
+  key: String!
+  name: String!
 }

@@ -35,6 +35,24 @@ export type Award = {
   url: Scalars['String'];
 };
 
+export type BaseUser = {
+  avatar: Scalars['String'];
+  bio: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  jobTitle: Maybe<Scalars['String']>;
+  join_date: Scalars['Date'];
+  lightning_address: Maybe<Scalars['String']>;
+  linkedin: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  role: Maybe<Scalars['String']>;
+  stories: Array<Story>;
+  twitter: Maybe<Scalars['String']>;
+  website: Maybe<Scalars['String']>;
+};
+
 export type Bounty = PostBase & {
   __typename?: 'Bounty';
   applicants_count: Scalars['Int'];
@@ -121,8 +139,8 @@ export type Mutation = {
   createStory: Maybe<Story>;
   deleteStory: Maybe<Story>;
   donate: Donation;
-  updateProfile: Maybe<User>;
-  updateUserWalletKeys: Array<UserKey>;
+  updateProfileDetails: Maybe<MyProfile>;
+  updateUserPreferences: Array<MyProfile>;
   vote: Vote;
 };
 
@@ -154,13 +172,13 @@ export type MutationDonateArgs = {
 };
 
 
-export type MutationUpdateProfileArgs = {
-  data: InputMaybe<UpdateProfileInput>;
+export type MutationUpdateProfileDetailsArgs = {
+  data: InputMaybe<ProfileDetailsInput>;
 };
 
 
-export type MutationUpdateUserWalletKeysArgs = {
-  data: InputMaybe<Array<UserKeyInputType>>;
+export type MutationUpdateUserPreferencesArgs = {
+  userKeys: InputMaybe<Array<UserKeyInputType>>;
 };
 
 
@@ -168,6 +186,28 @@ export type MutationVoteArgs = {
   amount_in_sat: Scalars['Int'];
   item_id: Scalars['Int'];
   item_type: Vote_Item_Type;
+};
+
+export type MyProfile = BaseUser & {
+  __typename?: 'MyProfile';
+  avatar: Scalars['String'];
+  bio: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  jobTitle: Maybe<Scalars['String']>;
+  join_date: Scalars['Date'];
+  lightning_address: Maybe<Scalars['String']>;
+  linkedin: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  nostr_prv_key: Maybe<Scalars['String']>;
+  nostr_pub_key: Maybe<Scalars['String']>;
+  role: Maybe<Scalars['String']>;
+  stories: Array<Story>;
+  twitter: Maybe<Scalars['String']>;
+  walletsKeys: Array<WalletKey>;
+  website: Maybe<Scalars['String']>;
 };
 
 export enum Post_Type {
@@ -197,6 +237,20 @@ export type PostComment = {
   id: Scalars['Int'];
   parentId: Maybe<Scalars['Int']>;
   votes_count: Scalars['Int'];
+};
+
+export type ProfileDetailsInput = {
+  avatar: InputMaybe<Scalars['String']>;
+  bio: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  github: InputMaybe<Scalars['String']>;
+  jobTitle: InputMaybe<Scalars['String']>;
+  lightning_address: InputMaybe<Scalars['String']>;
+  linkedin: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
 };
 
 export type Project = {
@@ -230,8 +284,7 @@ export type Query = {
   getProject: Project;
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
-  me: Maybe<User>;
-  myWalletsKeys: Array<UserKey>;
+  me: Maybe<MyProfile>;
   newProjects: Array<Project>;
   officialTags: Array<Tag>;
   popularTags: Array<Tag>;
@@ -368,21 +421,7 @@ export type Tag = {
   title: Scalars['String'];
 };
 
-export type UpdateProfileInput = {
-  avatar: InputMaybe<Scalars['String']>;
-  bio: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['String']>;
-  github: InputMaybe<Scalars['String']>;
-  jobTitle: InputMaybe<Scalars['String']>;
-  lightning_address: InputMaybe<Scalars['String']>;
-  linkedin: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
-  website: InputMaybe<Scalars['String']>;
-};
-
-export type User = {
+export type User = BaseUser & {
   __typename?: 'User';
   avatar: Scalars['String'];
   bio: Maybe<Scalars['String']>;
@@ -395,18 +434,10 @@ export type User = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  nostr_prv_key: Maybe<Scalars['String']>;
-  nostr_pub_key: Maybe<Scalars['String']>;
   role: Maybe<Scalars['String']>;
   stories: Array<Story>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
-};
-
-export type UserKey = {
-  __typename?: 'UserKey';
-  key: Scalars['String'];
-  name: Scalars['String'];
 };
 
 export type UserKeyInputType = {
@@ -434,6 +465,12 @@ export type Vote = {
   payment_request: Scalars['String'];
 };
 
+export type WalletKey = {
+  __typename?: 'WalletKey';
+  key: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type OfficialTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -454,7 +491,7 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -533,31 +570,36 @@ export type PostDetailsQueryVariables = Exact<{
 
 export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
-export type MyWalletsKeysQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyWalletsKeysQuery = { __typename?: 'Query', myWalletsKeys: Array<{ __typename?: 'UserKey', key: string, name: string }> };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } | null };
 
-export type UpdateUserWalletsKeysMutationVariables = Exact<{
-  data: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
+export type UpdateUserPreferencesMutationVariables = Exact<{
+  userKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type UpdateUserWalletsKeysMutation = { __typename?: 'Mutation', updateUserWalletKeys: Array<{ __typename?: 'UserKey', key: string, name: string }> };
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: Array<{ __typename?: 'MyProfile', nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> }> };
+
+export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
-  data: InputMaybe<UpdateProfileInput>;
+  data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, website: string | null, role: string | null, email: string | null, lightning_address: string | null, jobTitle: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
 
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, nostr_prv_key: string | null, nostr_pub_key: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -728,6 +770,8 @@ export const MeDocument = gql`
     name
     avatar
     join_date
+    jobTitle
+    bio
   }
 }
     `;
@@ -1336,87 +1380,142 @@ export function usePostDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type PostDetailsQueryHookResult = ReturnType<typeof usePostDetailsQuery>;
 export type PostDetailsLazyQueryHookResult = ReturnType<typeof usePostDetailsLazyQuery>;
 export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDetailsQueryVariables>;
-export const MyWalletsKeysDocument = gql`
-    query MyWalletsKeys {
-  myWalletsKeys {
-    key
-    name
+export const MyProfilePreferencesDocument = gql`
+    query MyProfilePreferences {
+  me {
+    walletsKeys {
+      key
+      name
+    }
+    nostr_prv_key
+    nostr_pub_key
   }
 }
     `;
 
 /**
- * __useMyWalletsKeysQuery__
+ * __useMyProfilePreferencesQuery__
  *
- * To run a query within a React component, call `useMyWalletsKeysQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyWalletsKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMyProfilePreferencesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfilePreferencesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMyWalletsKeysQuery({
+ * const { data, loading, error } = useMyProfilePreferencesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMyWalletsKeysQuery(baseOptions?: Apollo.QueryHookOptions<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>) {
+export function useMyProfilePreferencesQuery(baseOptions?: Apollo.QueryHookOptions<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>(MyWalletsKeysDocument, options);
+        return Apollo.useQuery<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>(MyProfilePreferencesDocument, options);
       }
-export function useMyWalletsKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>) {
+export function useMyProfilePreferencesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>(MyWalletsKeysDocument, options);
+          return Apollo.useLazyQuery<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>(MyProfilePreferencesDocument, options);
         }
-export type MyWalletsKeysQueryHookResult = ReturnType<typeof useMyWalletsKeysQuery>;
-export type MyWalletsKeysLazyQueryHookResult = ReturnType<typeof useMyWalletsKeysLazyQuery>;
-export type MyWalletsKeysQueryResult = Apollo.QueryResult<MyWalletsKeysQuery, MyWalletsKeysQueryVariables>;
-export const UpdateUserWalletsKeysDocument = gql`
-    mutation UpdateUserWalletsKeys($data: [UserKeyInputType!]) {
-  updateUserWalletKeys(data: $data) {
-    key
-    name
+export type MyProfilePreferencesQueryHookResult = ReturnType<typeof useMyProfilePreferencesQuery>;
+export type MyProfilePreferencesLazyQueryHookResult = ReturnType<typeof useMyProfilePreferencesLazyQuery>;
+export type MyProfilePreferencesQueryResult = Apollo.QueryResult<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>;
+export const UpdateUserPreferencesDocument = gql`
+    mutation UpdateUserPreferences($userKeys: [UserKeyInputType!]) {
+  updateUserPreferences(userKeys: $userKeys) {
+    walletsKeys {
+      key
+      name
+    }
+    nostr_pub_key
+    nostr_prv_key
   }
 }
     `;
-export type UpdateUserWalletsKeysMutationFn = Apollo.MutationFunction<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>;
+export type UpdateUserPreferencesMutationFn = Apollo.MutationFunction<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
 
 /**
- * __useUpdateUserWalletsKeysMutation__
+ * __useUpdateUserPreferencesMutation__
  *
- * To run a mutation, you first call `useUpdateUserWalletsKeysMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserWalletsKeysMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateUserPreferencesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserPreferencesMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateUserWalletsKeysMutation, { data, loading, error }] = useUpdateUserWalletsKeysMutation({
+ * const [updateUserPreferencesMutation, { data, loading, error }] = useUpdateUserPreferencesMutation({
  *   variables: {
- *      data: // value for 'data'
+ *      userKeys: // value for 'userKeys'
  *   },
  * });
  */
-export function useUpdateUserWalletsKeysMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>) {
+export function useUpdateUserPreferencesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>(UpdateUserWalletsKeysDocument, options);
+        return Apollo.useMutation<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>(UpdateUserPreferencesDocument, options);
       }
-export type UpdateUserWalletsKeysMutationHookResult = ReturnType<typeof useUpdateUserWalletsKeysMutation>;
-export type UpdateUserWalletsKeysMutationResult = Apollo.MutationResult<UpdateUserWalletsKeysMutation>;
-export type UpdateUserWalletsKeysMutationOptions = Apollo.BaseMutationOptions<UpdateUserWalletsKeysMutation, UpdateUserWalletsKeysMutationVariables>;
-export const UpdateProfileAboutDocument = gql`
-    mutation updateProfileAbout($data: UpdateProfileInput) {
-  updateProfile(data: $data) {
+export type UpdateUserPreferencesMutationHookResult = ReturnType<typeof useUpdateUserPreferencesMutation>;
+export type UpdateUserPreferencesMutationResult = Apollo.MutationResult<UpdateUserPreferencesMutation>;
+export type UpdateUserPreferencesMutationOptions = Apollo.BaseMutationOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
+export const MyProfileAboutDocument = gql`
+    query MyProfileAbout {
+  me {
     id
     name
     avatar
     join_date
-    website
     role
     email
-    lightning_address
     jobTitle
+    lightning_address
+    website
+    twitter
+    github
+    linkedin
+    bio
+    location
+  }
+}
+    `;
+
+/**
+ * __useMyProfileAboutQuery__
+ *
+ * To run a query within a React component, call `useMyProfileAboutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileAboutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileAboutQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfileAboutQuery(baseOptions?: Apollo.QueryHookOptions<MyProfileAboutQuery, MyProfileAboutQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyProfileAboutQuery, MyProfileAboutQueryVariables>(MyProfileAboutDocument, options);
+      }
+export function useMyProfileAboutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfileAboutQuery, MyProfileAboutQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyProfileAboutQuery, MyProfileAboutQueryVariables>(MyProfileAboutDocument, options);
+        }
+export type MyProfileAboutQueryHookResult = ReturnType<typeof useMyProfileAboutQuery>;
+export type MyProfileAboutLazyQueryHookResult = ReturnType<typeof useMyProfileAboutLazyQuery>;
+export type MyProfileAboutQueryResult = Apollo.QueryResult<MyProfileAboutQuery, MyProfileAboutQueryVariables>;
+export const UpdateProfileAboutDocument = gql`
+    mutation updateProfileAbout($data: ProfileDetailsInput) {
+  updateProfileDetails(data: $data) {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    jobTitle
+    lightning_address
+    website
     twitter
     github
     linkedin
@@ -1478,8 +1577,6 @@ export const ProfileDocument = gql`
         icon
       }
     }
-    nostr_prv_key
-    nostr_pub_key
   }
 }
     `;

@@ -1,13 +1,14 @@
 
 const { prisma } = require('../../../prisma');
-const { objectType, extendType, intArg, nonNull, inputObjectType, list } = require("nexus");
+const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 
 
 
-const User = objectType({
-    name: 'User',
+
+const BaseUser = interfaceType({
+    name: 'BaseUser',
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('name');
@@ -23,13 +24,40 @@ const User = objectType({
         t.string('linkedin')
         t.string('bio')
         t.string('location')
-        t.string('nostr_prv_key')
-        t.string('nostr_pub_key')
+
 
         t.nonNull.list.nonNull.field('stories', {
             type: "Story",
             resolve: (parent) => {
                 return prisma.story.findMany({ where: { user_id: parent.id, is_published: true }, orderBy: { createdAt: "desc" } });
+            }
+        });
+
+
+    },
+    resolveType() {
+        return null
+    },
+})
+
+const User = objectType({
+    name: 'User',
+    definition(t) {
+        t.implements('BaseUser')
+    }
+})
+
+const MyProfile = objectType({
+    name: 'MyProfile',
+    definition(t) {
+        t.implements('BaseUser')
+        t.string('nostr_prv_key')
+        t.string('nostr_pub_key')
+
+        t.nonNull.list.nonNull.field('walletsKeys', {
+            type: "WalletKey",
+            resolve: (parent) => {
+                return prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
             }
         });
     }
@@ -40,7 +68,7 @@ const me = extendType({
     type: "Query",
     definition(t) {
         t.field('me', {
-            type: "User",
+            type: "MyProfile",
             async resolve(parent, args, context) {
                 const user = await getUserByPubKey(context.userPubKey)
                 return user
@@ -58,21 +86,14 @@ const profile = extendType({
                 id: nonNull(intArg())
             },
             async resolve(parent, { id }, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
-                const isSelf = user?.id === id;
-                const profile = await prisma.user.findFirst({
-                    where: { id },
-                });
-                if (!isSelf)
-                    profile.nostr_prv_key = null;
-                return profile;
+                return prisma.user.findUnique({ where: { id } })
             }
         })
     }
 })
 
-const UpdateProfileInput = inputObjectType({
-    name: 'UpdateProfileInput',
+const ProfileDetailsInput = inputObjectType({
+    name: 'ProfileDetailsInput',
     definition(t) {
         t.string('name');
         t.string('avatar');
@@ -88,12 +109,12 @@ const UpdateProfileInput = inputObjectType({
     }
 })
 
-const updateProfile = extendType({
+const updateProfileDetails = extendType({
     type: 'Mutation',
     definition(t) {
-        t.field('updateProfile', {
-            type: 'User',
-            args: { data: UpdateProfileInput },
+        t.field('updateProfileDetails', {
+            type: 'MyProfile',
+            args: { data: ProfileDetailsInput },
             async resolve(_root, args, ctx) {
                 const user = await getUserByPubKey(ctx.userPubKey);
 
@@ -117,35 +138,15 @@ const updateProfile = extendType({
 })
 
 
-const UserKey = objectType({
-    name: 'UserKey',
+const WalletKey = objectType({
+    name: 'WalletKey',
     definition(t) {
         t.nonNull.string('key');
         t.nonNull.string('name');
     }
 })
 
-const myWalletsKeys = extendType({
-    type: "Query",
-    definition(t) {
-        t.nonNull.list.nonNull.field('myWalletsKeys', {
-            type: "UserKey",
 
-            async resolve(_, __, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
-
-                if (!user)
-                    throw new Error("You have to login");
-
-                return prisma.userKey.findMany({
-                    where: {
-                        user_id: user.id,
-                    }
-                })
-            }
-        })
-    }
-})
 
 const UserKeyInputType = inputObjectType({
     name: 'UserKeyInputType',
@@ -157,21 +158,21 @@ const UserKeyInputType = inputObjectType({
 
 
 
-const updateUserWalletKeys = extendType({
+const updateUserPreferences = extendType({
     type: 'Mutation',
     definition(t) {
-        t.nonNull.list.nonNull.field('updateUserWalletKeys', {
-            type: 'UserKey',
-            args: { data: list(nonNull(UserKeyInputType)) },
+        t.nonNull.list.nonNull.field('updateUserPreferences', {
+            type: 'MyProfile',
+            args: { userKeys: list(nonNull(UserKeyInputType)) },
             async resolve(_root, args, ctx) {
-
-
 
                 const user = await getUserByPubKey(ctx.userPubKey);
                 if (!user)
                     throw new Error("You have to login");
 
 
+                //Update the userkeys
+                //--------------------
 
                 // Check if all the sent keys belong to the user
                 const userKeys = (await prisma.userKey.findMany({
@@ -215,8 +216,7 @@ const updateUserWalletKeys = extendType({
                     }))
                 })
 
-                return newKeys;
-
+                return prisma.user.findUnique({ where: { id: user.id } });
             }
         })
     }
@@ -224,16 +224,17 @@ const updateUserWalletKeys = extendType({
 
 
 
+
 module.exports = {
     // Types
+    BaseUser,
     User,
-    UpdateProfileInput,
-    UserKey,
+    MyProfile,
+    WalletKey,
     // Queries
     me,
     profile,
-    myWalletsKeys,
     // Mutations
-    updateProfile,
-    updateUserWalletKeys,
+    updateProfileDetails,
+    updateUserPreferences,
 }

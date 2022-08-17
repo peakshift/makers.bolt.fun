@@ -1,5 +1,5 @@
 import { MOCK_DATA } from "./data";
-import { Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
+import { MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
 import { Chance } from "chance";
 import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
@@ -72,7 +72,7 @@ export function getAllHackathons() {
 }
 
 export function me() {
-    return MOCK_DATA['user']
+    return MOCK_DATA['user'] as MyProfile
 }
 
 export function profile() {

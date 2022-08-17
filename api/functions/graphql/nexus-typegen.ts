@@ -28,15 +28,7 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  StoryInputType: { // input type
-    body: string; // String!
-    cover_image?: string | null; // String
-    id?: number | null; // Int
-    is_published?: boolean | null; // Boolean
-    tags: string[]; // [String!]!
-    title: string; // String!
-  }
-  UpdateProfileInput: { // input type
+  ProfileDetailsInput: { // input type
     avatar?: string | null; // String
     bio?: string | null; // String
     email?: string | null; // String
@@ -48,6 +40,14 @@ export interface NexusGenInputs {
     name?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
+  }
+  StoryInputType: { // input type
+    body: string; // String!
+    cover_image?: string | null; // String
+    id?: number | null; // Int
+    is_published?: boolean | null; // Boolean
+    tags: string[]; // [String!]!
+    title: string; // String!
   }
   UserKeyInputType: { // input type
     key: string; // String!
@@ -141,6 +141,24 @@ export interface NexusGenObjects {
     minSendable?: number | null; // Int
   }
   Mutation: {};
+  MyProfile: { // root type
+    avatar: string; // String!
+    bio?: string | null; // String
+    email?: string | null; // String
+    github?: string | null; // String
+    id: number; // Int!
+    jobTitle?: string | null; // String
+    join_date: NexusGenScalars['Date']; // Date!
+    lightning_address?: string | null; // String
+    linkedin?: string | null; // String
+    location?: string | null; // String
+    name: string; // String!
+    nostr_prv_key?: string | null; // String
+    nostr_pub_key?: string | null; // String
+    role?: string | null; // String
+    twitter?: string | null; // String
+    website?: string | null; // String
+  }
   PostComment: { // root type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
@@ -202,15 +220,9 @@ export interface NexusGenObjects {
     linkedin?: string | null; // String
     location?: string | null; // String
     name: string; // String!
-    nostr_prv_key?: string | null; // String
-    nostr_pub_key?: string | null; // String
     role?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
-  }
-  UserKey: { // root type
-    key: string; // String!
-    name: string; // String!
   }
   Vote: { // root type
     amount_in_sat: number; // Int!
@@ -221,9 +233,14 @@ export interface NexusGenObjects {
     payment_hash: string; // String!
     payment_request: string; // String!
   }
+  WalletKey: { // root type
+    key: string; // String!
+    name: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
+  BaseUser: NexusGenRootTypes['MyProfile'] | NexusGenRootTypes['User'];
   PostBase: NexusGenRootTypes['Bounty'] | NexusGenRootTypes['Question'] | NexusGenRootTypes['Story'];
 }
 
@@ -321,9 +338,29 @@ export interface NexusGenFieldTypes {
     createStory: NexusGenRootTypes['Story'] | null; // Story
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
-    updateProfile: NexusGenRootTypes['User'] | null; // User
-    updateUserWalletKeys: NexusGenRootTypes['UserKey'][]; // [UserKey!]!
+    updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    updateUserPreferences: NexusGenRootTypes['MyProfile'][]; // [MyProfile!]!
     vote: NexusGenRootTypes['Vote']; // Vote!
+  }
+  MyProfile: { // field return type
+    avatar: string; // String!
+    bio: string | null; // String
+    email: string | null; // String
+    github: string | null; // String
+    id: number; // Int!
+    jobTitle: string | null; // String
+    join_date: NexusGenScalars['Date']; // Date!
+    lightning_address: string | null; // String
+    linkedin: string | null; // String
+    location: string | null; // String
+    name: string; // String!
+    nostr_prv_key: string | null; // String
+    nostr_pub_key: string | null; // String
+    role: string | null; // String
+    stories: NexusGenRootTypes['Story'][]; // [Story!]!
+    twitter: string | null; // String
+    walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
+    website: string | null; // String
   }
   PostComment: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -361,8 +398,7 @@ export interface NexusGenFieldTypes {
     getProject: NexusGenRootTypes['Project']; // Project!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
-    me: NexusGenRootTypes['User'] | null; // User
-    myWalletsKeys: NexusGenRootTypes['UserKey'][]; // [UserKey!]!
+    me: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     officialTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -418,16 +454,10 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
-    nostr_prv_key: string | null; // String
-    nostr_pub_key: string | null; // String
     role: string | null; // String
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     twitter: string | null; // String
     website: string | null; // String
-  }
-  UserKey: { // field return type
-    key: string; // String!
-    name: string; // String!
   }
   Vote: { // field return type
     amount_in_sat: number; // Int!
@@ -437,6 +467,27 @@ export interface NexusGenFieldTypes {
     paid: boolean; // Boolean!
     payment_hash: string; // String!
     payment_request: string; // String!
+  }
+  WalletKey: { // field return type
+    key: string; // String!
+    name: string; // String!
+  }
+  BaseUser: { // field return type
+    avatar: string; // String!
+    bio: string | null; // String
+    email: string | null; // String
+    github: string | null; // String
+    id: number; // Int!
+    jobTitle: string | null; // String
+    join_date: NexusGenScalars['Date']; // Date!
+    lightning_address: string | null; // String
+    linkedin: string | null; // String
+    location: string | null; // String
+    name: string; // String!
+    role: string | null; // String
+    stories: NexusGenRootTypes['Story'][]; // [Story!]!
+    twitter: string | null; // String
+    website: string | null; // String
   }
   PostBase: { // field return type
     body: string; // String!
@@ -536,9 +587,29 @@ export interface NexusGenFieldTypeNames {
     createStory: 'Story'
     deleteStory: 'Story'
     donate: 'Donation'
-    updateProfile: 'User'
-    updateUserWalletKeys: 'UserKey'
+    updateProfileDetails: 'MyProfile'
+    updateUserPreferences: 'MyProfile'
     vote: 'Vote'
+  }
+  MyProfile: { // field return type name
+    avatar: 'String'
+    bio: 'String'
+    email: 'String'
+    github: 'String'
+    id: 'Int'
+    jobTitle: 'String'
+    join_date: 'Date'
+    lightning_address: 'String'
+    linkedin: 'String'
+    location: 'String'
+    name: 'String'
+    nostr_prv_key: 'String'
+    nostr_pub_key: 'String'
+    role: 'String'
+    stories: 'Story'
+    twitter: 'String'
+    walletsKeys: 'WalletKey'
+    website: 'String'
   }
   PostComment: { // field return type name
     author: 'Author'
@@ -576,8 +647,7 @@ export interface NexusGenFieldTypeNames {
     getProject: 'Project'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
-    me: 'User'
-    myWalletsKeys: 'UserKey'
+    me: 'MyProfile'
     newProjects: 'Project'
     officialTags: 'Tag'
     popularTags: 'Tag'
@@ -633,16 +703,10 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
-    nostr_prv_key: 'String'
-    nostr_pub_key: 'String'
     role: 'String'
     stories: 'Story'
     twitter: 'String'
     website: 'String'
-  }
-  UserKey: { // field return type name
-    key: 'String'
-    name: 'String'
   }
   Vote: { // field return type name
     amount_in_sat: 'Int'
@@ -652,6 +716,27 @@ export interface NexusGenFieldTypeNames {
     paid: 'Boolean'
     payment_hash: 'String'
     payment_request: 'String'
+  }
+  WalletKey: { // field return type name
+    key: 'String'
+    name: 'String'
+  }
+  BaseUser: { // field return type name
+    avatar: 'String'
+    bio: 'String'
+    email: 'String'
+    github: 'String'
+    id: 'Int'
+    jobTitle: 'String'
+    join_date: 'Date'
+    lightning_address: 'String'
+    linkedin: 'String'
+    location: 'String'
+    name: 'String'
+    role: 'String'
+    stories: 'Story'
+    twitter: 'String'
+    website: 'String'
   }
   PostBase: { // field return type name
     body: 'String'
@@ -684,11 +769,11 @@ export interface NexusGenArgTypes {
     donate: { // args
       amount_in_sat: number; // Int!
     }
-    updateProfile: { // args
-      data?: NexusGenInputs['UpdateProfileInput'] | null; // UpdateProfileInput
+    updateProfileDetails: { // args
+      data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput
     }
-    updateUserWalletKeys: { // args
-      data?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]
+    updateUserPreferences: { // args
+      userKeys?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]
     }
     vote: { // args
       amount_in_sat: number; // Int!
@@ -753,13 +838,16 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractTypeMembers {
   Post: "Bounty" | "Question" | "Story"
+  BaseUser: "MyProfile" | "User"
   PostBase: "Bounty" | "Question" | "Story"
 }
 
 export interface NexusGenTypeInterfaces {
   Bounty: "PostBase"
+  MyProfile: "BaseUser"
   Question: "PostBase"
   Story: "PostBase"
+  User: "BaseUser"
 }
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
@@ -776,7 +864,7 @@ export type NexusGenUnionNames = keyof NexusGenUnions;
 
 export type NexusGenObjectsUsingAbstractStrategyIsTypeOf = never;
 
-export type NexusGenAbstractsUsingStrategyResolveType = "Post" | "PostBase";
+export type NexusGenAbstractsUsingStrategyResolveType = "BaseUser" | "Post" | "PostBase";
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {

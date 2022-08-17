@@ -1,7 +1,7 @@
-import { User } from "src/graphql";
+import { MyProfile, User } from "src/graphql";
 import { posts } from "./posts";
 
-export const user: User = {
+export const user: User & MyProfile = {
     id: 123,
     email: "mtg0987654321@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
@@ -19,4 +19,8 @@ export const user: User = {
     stories: posts.stories,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+    walletsKeys: [{
+        key: "1645h234j2421zxvertw",
+        name: "My alby wallet key"
+    }]
 }

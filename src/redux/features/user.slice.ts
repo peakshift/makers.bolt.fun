@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { MyProfile } from "src/graphql";
 
 interface StoreState {
-    me: {
-        id: number;
-        name: string;
-        avatar: string;
-        join_date: string;
-    }
+    me: Pick<MyProfile,
+        | 'id'
+        | "name"
+        | "avatar"
+        | "bio"
+        | "jobTitle"
+        | 'join_date'>
     | undefined // fetching user data if exist
     | null // user not logged in
 
