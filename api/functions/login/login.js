@@ -32,9 +32,10 @@ const loginHandler = async (req, res) => {
                 algorithms: ['HS256'],
             })
             const user_id = payload.user_id;
-
+            console.log(user_id);
             const existingKeys = await prisma.userKey.findMany({ where: { user_id }, select: { key: true } });
-
+            console.log(existingKeys);
+            console.log(key);
             if (existingKeys.length >= 3)
                 return res.status(400).json({ status: 'ERROR', reason: "Can only link up to 3 wallets" })
 
@@ -59,6 +60,7 @@ const loginHandler = async (req, res) => {
                 .json({ status: "OK" })
 
         } catch (error) {
+            console.log(error);
             return res.status(400).json({ status: 'ERROR', reason: 'Invalid User Token' })
         }
     }
