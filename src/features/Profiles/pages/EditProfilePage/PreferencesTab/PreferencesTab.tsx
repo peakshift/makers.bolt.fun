@@ -10,6 +10,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import SaveChangesCard from '../SaveChangesCard/SaveChangesCard';
 import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
+import { NetworkStatus } from '@apollo/client';
 
 
 interface Props {
@@ -38,11 +39,13 @@ export default function PreferencesTab() {
     const query = useMyProfilePreferencesQuery({
         onCompleted: data => {
             if (data.me) reset(data.me)
-        }
+        },
+        notifyOnNetworkStatusChange: true,
     });
+
     const [mutate, mutationStatus] = useUpdateUserPreferencesMutation();
 
-    if (query.loading)
+    if (query.networkStatus === NetworkStatus.loading)
         return <LoadingPage />
 
     if (!query.data?.me)
