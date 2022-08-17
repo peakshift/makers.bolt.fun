@@ -1,9 +1,8 @@
 import LinkedAccountsCard from './LinkedAccountsCard/LinkedAccountsCard';
 import CommentsSettingsCard from './CommentsSettingsCard/CommentsSettingsCard';
 import { UpdateUserPreferencesMutationVariables, useMyProfilePreferencesQuery, useUpdateUserPreferencesMutation } from 'src/graphql';
-import LoadingPage from 'src/Components/LoadingPage/LoadingPage';
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
-
+import PreferencesTabSkeleton from './PreferencesTab.Skeleton'
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -12,6 +11,7 @@ import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
 import { NetworkStatus } from '@apollo/client';
 import { usePrompt } from 'src/utils/hooks';
+import { useEffect } from 'react';
 
 
 interface Props {
@@ -45,11 +45,16 @@ export default function PreferencesTab() {
     });
     const [mutate, mutationStatus] = useUpdateUserPreferencesMutation();
 
-    usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
+    useEffect(() => {
+        console.log("MOUNTED");
+
+    }, [])
+
+    // usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
 
 
-    if (query.networkStatus === NetworkStatus.loading)
-        return <LoadingPage />
+    if (query.loading)
+        return <PreferencesTabSkeleton />
 
     if (!query.data?.me)
         return <NotFoundPage />

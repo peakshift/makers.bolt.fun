@@ -1,5 +1,6 @@
 query MyProfilePreferences {
   me {
+    id
     walletsKeys {
       key
       name
@@ -11,6 +12,7 @@ query MyProfilePreferences {
 
 mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
   updateUserPreferences(userKeys: $walletsKeys) {
+    id
     walletsKeys {
       key
       name

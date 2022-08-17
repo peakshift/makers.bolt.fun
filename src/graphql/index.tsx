@@ -573,14 +573,14 @@ export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } | null };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'MyProfile', nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } };
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'MyProfile', id: number, nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1383,6 +1383,7 @@ export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDe
 export const MyProfilePreferencesDocument = gql`
     query MyProfilePreferences {
   me {
+    id
     walletsKeys {
       key
       name
@@ -1422,6 +1423,7 @@ export type MyProfilePreferencesQueryResult = Apollo.QueryResult<MyProfilePrefer
 export const UpdateUserPreferencesDocument = gql`
     mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
   updateUserPreferences(userKeys: $walletsKeys) {
+    id
     walletsKeys {
       key
       name

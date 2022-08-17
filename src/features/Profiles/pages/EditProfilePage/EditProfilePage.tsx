@@ -29,6 +29,12 @@ export default function EditProfilePage() {
     const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium);
 
 
+    const user = useAppSelector(state => state.user.me)
+
+
+    if (!user)
+        return <LoadingPage />
+
     return (
         <>
             <Helmet>

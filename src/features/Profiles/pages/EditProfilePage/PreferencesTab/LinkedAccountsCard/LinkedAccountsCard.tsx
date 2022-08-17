@@ -17,59 +17,10 @@ interface Props {
 
 
 
-// function reducer(state: State, action: Action): State {
-//     switch (action.type) {
-//         case 'set':
-//             return {
-//                 hasNewChanges: false,
-//                 keys: [...action.payload],
-//                 oldKeys: [...action.payload],
-//             }
-//         case 'delete':
-//             if (state.keys.length === 1)
-//                 return state;
-//             return {
-//                 hasNewChanges: true,
-//                 oldKeys: state.oldKeys,
-//                 keys: [...state.keys.slice(0, action.payload.idx), ...state.keys.slice(action.payload.idx + 1)]
-//             };
-//         case 'update':
-//             return {
-//                 hasNewChanges: true,
-//                 oldKeys: state.oldKeys,
-//                 keys: state.keys.map((item, idx) => {
-//                     if (idx === action.payload.idx)
-//                         return {
-//                             ...item,
-//                             name: action.payload.value
-//                         }
-//                     return item;
-//                 }),
-
-//             }
-//         case 'cancel':
-//             return {
-//                 hasNewChanges: false,
-//                 keys: [...state.oldKeys],
-//                 oldKeys: state.oldKeys,
-//             }
-//     }
-// }
-
 export default function LinkedAccountsCard({ value, onChange }: Props) {
 
     const dispatch = useAppDispatch();
     const inputsRefs = useRef<Nullable<HTMLInputElement>[]>([]);
-    // const [keysState, keysDispatch] = useReducer(reducer, { keys: [], oldKeys: [], hasNewChanges: false, });
-
-    // const [updateKeys, updatingKeysStatus] = useUpdateUserWalletsKeysMutation({
-    //     onCompleted: data => {
-    //         keysDispatch({
-    //             type: "set",
-    //             payload: data.updateUserWalletKeys
-    //         })
-    //     }
-    // })
 
     const connectNewWallet = () => {
         dispatch(openModal({ Modal: "LinkingAccountModal" }))

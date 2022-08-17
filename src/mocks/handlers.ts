@@ -29,6 +29,8 @@ import {
     MeQuery,
     ProfileQuery,
     GetMyDraftsQuery,
+    MyProfileAboutQuery,
+    MyProfilePreferencesQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -195,6 +197,7 @@ export const handlers = [
 
     graphql.query<MeQuery>('Me', async (req, res, ctx) => {
         await delay()
+        console.log("ME");
 
         return res(
             ctx.data({
@@ -202,6 +205,27 @@ export const handlers = [
             })
         )
     }),
+
+
+    graphql.query<MyProfileAboutQuery>('MyProfileAbout', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: me(),
+            })
+        )
+    }),
+
+    graphql.query<MyProfilePreferencesQuery>('MyProfilePreferences', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: me(),
+            })
+        )
+    }),
+
+
 
     graphql.query<ProfileQuery>('profile', async (req, res, ctx) => {
         await delay()

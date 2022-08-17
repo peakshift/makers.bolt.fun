@@ -12,6 +12,7 @@ import Card from "src/Components/Card/Card";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import { setUser } from "src/redux/features/user.slice";
+import UpdateProfileAboutTabSkeleton from "./UpdateMyProfileTab.Skeleton";
 
 interface Props {
 }
@@ -75,7 +76,7 @@ export default function UpdateMyProfileTab() {
 
 
     if (profileQuery.loading)
-        return <LoadingPage />
+        return <UpdateProfileAboutTabSkeleton />
 
     if (!profileQuery.data?.me)
         return <NotFoundPage />
