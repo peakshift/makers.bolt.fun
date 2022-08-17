@@ -11,6 +11,7 @@ import SaveChangesCard from '../SaveChangesCard/SaveChangesCard';
 import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
 import { NetworkStatus } from '@apollo/client';
+import { usePrompt } from 'src/utils/hooks';
 
 
 interface Props {
@@ -28,7 +29,7 @@ const schema: yup.SchemaOf<IProfilePreferencesForm> = yup.object({
 
 export default function PreferencesTab() {
 
-    const { register, formState: { errors, isDirty, }, handleSubmit, reset, control } = useForm<IProfilePreferencesForm>({
+    const { formState: { isDirty, }, handleSubmit, reset, control } = useForm<IProfilePreferencesForm>({
         defaultValues: {
             walletsKeys: []
         },
@@ -42,8 +43,10 @@ export default function PreferencesTab() {
         },
         notifyOnNetworkStatusChange: true,
     });
-
     const [mutate, mutationStatus] = useUpdateUserPreferencesMutation();
+
+    usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
+
 
     if (query.networkStatus === NetworkStatus.loading)
         return <LoadingPage />
