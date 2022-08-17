@@ -84,6 +84,7 @@ const loginHandler = async (req, res) => {
             await prisma.userKey.create({
                 data: {
                     key,
+                    name: "My original wallet key",
                     user_id: createdUser.id,
                 }
             });
