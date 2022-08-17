@@ -8,6 +8,7 @@ import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { useApolloClient } from '@apollo/client';
+import { IoClose } from 'react-icons/io5';
 
 
 
@@ -84,30 +85,27 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
     let content = <></>
 
     if (error)
-        content = <div className="flex flex-col gap-24 items-center">
-            <p className="text-body3 text-red-500 font-bold">Something wrong happened...</p>
-            <a href='/login' className="text body4 text-gray-500 hover:underline">Refresh the page</a>
+        content = <div className="flex flex-col gap-24 items-center my-32">
+            <p className="text-body3 text-red-500 font-bold">Ooops...😵</p>
+            <p className="text-body4 text-gray-600 text-center">An error happened while fetching the link, please check your internet connection and try again.</p>
         </div>
 
     else if (loadingLnurl)
-        content = <div className="flex flex-col gap-24 items-center">
-            <Grid color="var(--primary)" width="150" />
-            <p className="text-body3 font-bold">Fetching Lnurl-Auth...</p>
+        content = <div className="flex flex-col gap-24 items-center my-32">
+            <Grid color="var(--primary)" width="80" />
+            <p className="text-body4 text-gray-600 font-bold">Fetching Lnurl-Auth Link...</p>
         </div>
 
     else
         content =
-            <>
-                <p className="text-body1 font-bolder text-center">
-                    Link your account ⚡
-                </p>
+            <div className='flex flex-col gap-24 items-center mt-32'>
                 <QRCodeSVG
                     width={160}
                     height={160}
                     value={lnurl}
                 />
                 <p className="text-gray-600 text-body4 text-center">
-                    Scan this code or copy + paste it to your other lightning wallet to be able to login later with it to this account.
+                    Scan this QR code with your other lightning wallet & you will be able to use it to login to this account.
                     <br />
                     When done, click the button below to close this modal.
                 </p>
@@ -125,12 +123,11 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
                         color='primary'
                         onClick={done}
                         fullWidth
-                        className='mt-16'
                     >
                         Done?
                     </Button>
                 </div>
-            </>
+            </div>
 
 
 
@@ -141,8 +138,10 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card w-full max-w-[326px] bg-white border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-16 items-center"
+            className="modal-card max-w-[364px] p-24 rounded-xl relative"
         >
+            <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <h2 className='text-h5 font-bold text-center'>Link new ⚡ wallet</h2>
             {content}
         </motion.div>
     )
