@@ -140,7 +140,7 @@ export type Mutation = {
   deleteStory: Maybe<Story>;
   donate: Donation;
   updateProfileDetails: Maybe<MyProfile>;
-  updateUserPreferences: Array<MyProfile>;
+  updateUserPreferences: MyProfile;
   vote: Vote;
 };
 
@@ -576,11 +576,11 @@ export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }
 export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
-  userKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
+  walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: Array<{ __typename?: 'MyProfile', nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> }> };
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'MyProfile', nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1420,8 +1420,8 @@ export type MyProfilePreferencesQueryHookResult = ReturnType<typeof useMyProfile
 export type MyProfilePreferencesLazyQueryHookResult = ReturnType<typeof useMyProfilePreferencesLazyQuery>;
 export type MyProfilePreferencesQueryResult = Apollo.QueryResult<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>;
 export const UpdateUserPreferencesDocument = gql`
-    mutation UpdateUserPreferences($userKeys: [UserKeyInputType!]) {
-  updateUserPreferences(userKeys: $userKeys) {
+    mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
+  updateUserPreferences(userKeys: $walletsKeys) {
     walletsKeys {
       key
       name
@@ -1446,7 +1446,7 @@ export type UpdateUserPreferencesMutationFn = Apollo.MutationFunction<UpdateUser
  * @example
  * const [updateUserPreferencesMutation, { data, loading, error }] = useUpdateUserPreferencesMutation({
  *   variables: {
- *      userKeys: // value for 'userKeys'
+ *      walletsKeys: // value for 'walletsKeys'
  *   },
  * });
  */

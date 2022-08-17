@@ -161,7 +161,7 @@ const UserKeyInputType = inputObjectType({
 const updateUserPreferences = extendType({
     type: 'Mutation',
     definition(t) {
-        t.nonNull.list.nonNull.field('updateUserPreferences', {
+        t.nonNull.field('updateUserPreferences', {
             type: 'MyProfile',
             args: { userKeys: list(nonNull(UserKeyInputType)) },
             async resolve(_root, args, ctx) {
@@ -182,7 +182,7 @@ const updateUserPreferences = extendType({
                                 equals: user.id,
                             },
                             key: {
-                                in: args.data.map(i => i.key)
+                                in: args.userKeys.map(i => i.key)
                             }
                         },
                     },
@@ -192,15 +192,15 @@ const updateUserPreferences = extendType({
                 })).map(i => i.key);
 
                 const newKeys = [];
-                for (let i = 0; i < args.data.length; i++) {
-                    const item = args.data[i];
+                for (let i = 0; i < args.userKeys.length; i++) {
+                    const item = args.userKeys[i];
                     if (userKeys.includes(item.key))
                         newKeys.push(item);
                 }
 
 
                 if (newKeys.length === 0)
-                    throw new Error("You can't delete all your keys")
+                    throw new Error("You can't delete all your wallets keys")
 
                 await prisma.userKey.deleteMany({
                     where: {

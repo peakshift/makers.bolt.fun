@@ -9,8 +9,8 @@ query MyProfilePreferences {
   }
 }
 
-mutation UpdateUserPreferences($userKeys: [UserKeyInputType!]) {
-  updateUserPreferences(userKeys: $userKeys) {
+mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
+  updateUserPreferences(userKeys: $walletsKeys) {
     walletsKeys {
       key
       name

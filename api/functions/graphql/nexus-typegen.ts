@@ -339,7 +339,7 @@ export interface NexusGenFieldTypes {
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
-    updateUserPreferences: NexusGenRootTypes['MyProfile'][]; // [MyProfile!]!
+    updateUserPreferences: NexusGenRootTypes['MyProfile']; // MyProfile!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
   MyProfile: { // field return type

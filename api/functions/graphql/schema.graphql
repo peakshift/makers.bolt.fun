@@ -118,7 +118,7 @@ type Mutation {
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
-  updateUserPreferences(userKeys: [UserKeyInputType!]): [MyProfile!]!
+  updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
 
