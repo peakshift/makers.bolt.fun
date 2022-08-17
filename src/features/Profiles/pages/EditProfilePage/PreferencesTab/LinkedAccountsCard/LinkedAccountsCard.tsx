@@ -93,7 +93,7 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
 
     return (
         <Card>
-            <p className="text-body2 font-bold">🔐 Linked Accounts</p>
+            <p className="text-body2 font-bold">🔐 Linked Wallets</p>
             <p className="text-body4 text-gray-600 mt-8">
                 These are the wallets that you can login to this account from. You can add a new wallet below.
             </p>
