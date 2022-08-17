@@ -32,7 +32,6 @@ const loginHandler = async (req, res) => {
                 algorithms: ['HS256'],
             })
             const user_id = payload.user_id;
-
             const existingKeys = await prisma.userKey.findMany({ where: { user_id }, select: { key: true } });
 
             if (existingKeys.length >= 3)
@@ -47,7 +46,7 @@ const loginHandler = async (req, res) => {
                 });
 
             // Remove old linking for this key if existing
-            await prisma.userKey.delete({
+            await prisma.userKey.deleteMany({
                 where: { key }
             })
 
