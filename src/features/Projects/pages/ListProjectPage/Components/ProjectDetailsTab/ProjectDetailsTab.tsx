@@ -149,7 +149,7 @@ export default function ProjectDetailsTab(props: Props) {
             </Card>
 
             <Card>
-                <h2 className="text-body2 font-bolder">🌶️ Category</h2>
+                <h2 className="text-body2 font-bolder">🌶️ Category<sup className="text-red-500">*</sup></h2>
                 <p className="text-body4 font-light text-gray-600 mt-8">Select one of the categories below.</p>
                 <div className="mt-24">
                     <Controller
