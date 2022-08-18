@@ -1,6 +1,6 @@
 import { Navigate, NavLink, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Slider from "src/Components/Slider/Slider";
-import { useAppSelector, useMediaQuery } from "src/utils/hooks";
+import { useAppSelector, useCarousel, useMediaQuery, usePrompt } from "src/utils/hooks";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
 import Card from "src/Components/Card/Card";
@@ -46,9 +46,13 @@ export default function ListProjectPage() {
 
     const location = useLocation();
     const currentTab = useMemo(() => getCurrentTab(location.pathname), [location.pathname])
+    const { viewportRef, } = useCarousel({
+        align: 'start', slidesToScroll: 2,
+        containScroll: "trimSnaps",
+    })
 
 
-
+    usePrompt('You may have some unsaved changes. You still want to leave?', true)
 
 
     // if (!userId || profileQuery.loading)
@@ -72,6 +76,7 @@ export default function ListProjectPage() {
                                 {links.map((link, idx) =>
                                     <li key={idx}>
                                         <NavLink
+                                            replace
                                             to={link.path}
                                             className={({ isActive }) => `flex items-start rounded-8 cursor-pointer font-bold p-12
                                  active:scale-95 transition-transform
@@ -86,23 +91,35 @@ export default function ListProjectPage() {
                     </aside>
                     :
                     <aside
-                        className="border-b-2 border-gray-200 bg-white z-10 w-full sticky-top-element"
+                        className=" bg-white z-10 w-full sticky-top-element"
                     >
-                        <Slider>
-                            {links.map((link, idx) =>
-                                <NavLink
-                                    to={link.path}
-                                    key={idx}
-                                    className={`flex items-start cursor-pointer font-bold py-12
+                        <div className="relative group overflow-hidden">
+                            <div className="border-b-2 border-gray-200" ref={viewportRef}>
+                                <div className="select-none w-full flex gap-16">
+                                    {links.map((link, idx) =>
+                                        <NavLink
+                                            replace
+                                            to={link.path}
+                                            key={idx}
+                                            className={`flex min-w-max  items-start cursor-pointer font-bold py-12 px-8
                                                 active:scale-95 transition-transform`}
-                                    style={({ isActive }) => ({
-                                        boxShadow: isActive ? '0px 2px var(--primary)' : 'none'
-                                    })}
-                                >
-                                    {link.text}
-                                </NavLink>
-                            )}
-                        </Slider>
+                                            style={({ isActive }) => {
+                                                console.log(isActive);
+                                                return {
+                                                    ...(isActive && {
+                                                        borderBottom: '2px solid var(--primary)',
+                                                        marginBottom: -2
+                                                    }),
+                                                }
+
+                                            }}
+                                        >
+                                            {link.text}
+                                        </NavLink>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </aside>
                 }
                 <main className="md:col-span-3">

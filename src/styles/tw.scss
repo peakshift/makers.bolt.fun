@@ -16,11 +16,11 @@
   }
 
   .input-wrapper {
-    @apply relative w-full border border-gray-300 rounded-lg flex focus-within:outline-primary-400 focus-within:border-primary-300 focus-within:ring focus-within:ring-primary-200 focus-within:ring-opacity-50;
+    @apply relative w-full border border-gray-300 rounded-12 flex focus-within:outline-primary-400 focus-within:border-primary-300 focus-within:ring focus-within:ring-primary-200 focus-within:ring-opacity-50;
   }
 
   .input-text {
-    @apply flex-grow border-none focus:border-0 focus:ring-0 bg-transparent min-w-0 text-gray-900;
+    @apply flex-grow border-none focus:border-0 focus:ring-0 bg-transparent min-w-0 text-gray-900 px-16 py-12;
   }
 
   .input-checkbox {

@@ -10,7 +10,7 @@ interface Props { }
 
 export default function ProjectDetailsTab(props: Props) {
 
-    const { register, formState: { errors, }, control } = useFormContext<IListProjectForm>();
+    const { register, formState: { errors, }, control, getValues } = useFormContext<IListProjectForm>();
 
 
     // usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
@@ -20,7 +20,7 @@ export default function ProjectDetailsTab(props: Props) {
     return (
         <div className="md:col-span-2 flex flex-col gap-24">
             <Card className="" defaultPadding={false}>
-                <div className="bg-gray-600 relative h-[160px] rounded-t-16">
+                <div className="bg-gray-600 relative h-[160px] rounded-t-12 md:rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
                         {/* <Avatar src={data.avatar} width={120} /> */}
                         <div
@@ -68,12 +68,13 @@ export default function ProjectDetailsTab(props: Props) {
                     </p>
                     <div className="input-wrapper mt-8 relative">
                         <input
-
+                            maxLength={32}
                             type='text'
                             className="input-text"
-                            placeholder='Your product’s one liner goes here...'
+                            placeholder='Your product’s one liner'
                             {...register("tagline")}
                         />
+                        <span className="h-full shrink-0 px-12 text-gray-400 text-body6 font-medium self-center">{getValues('tagline').length} / 32</span>
                     </div>
                     {errors.tagline && <p className="input-error">
                         {errors.tagline.message}
@@ -85,7 +86,7 @@ export default function ProjectDetailsTab(props: Props) {
                         <textarea
 
                             rows={3}
-                            className="input-text !p-20"
+                            className="input-text !px-16 !py-12"
                             placeholder='Provide a short description your product...'
                             {...register("description")}
                         />
@@ -103,7 +104,7 @@ export default function ProjectDetailsTab(props: Props) {
 
                     <div>
                         <div className="input-wrapper mt-8 relative">
-                            <FiTwitter className="text-blue-400 h-full flex-shrink-0 w-42 pl-12 py-12 self-center" />
+                            <FiTwitter className="text-blue-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
                             <input
                                 type='text'
                                 className="input-text"
@@ -118,7 +119,7 @@ export default function ProjectDetailsTab(props: Props) {
 
                     <div>
                         <div className="input-wrapper mt-8 relative">
-                            <FaDiscord className="text-violet-500 h-full flex-shrink-0 w-42 pl-12 py-12 self-center" />
+                            <FaDiscord className="text-violet-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
                             <input
                                 type='text'
                                 className="input-text"
@@ -133,7 +134,7 @@ export default function ProjectDetailsTab(props: Props) {
 
                     <div>
                         <div className="input-wrapper mt-8 relative">
-                            <FiGithub className="text-gray-700 h-full flex-shrink-0 w-42 pl-12 py-12 self-center" />
+                            <FiGithub className="text-gray-700 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
                             <input
                                 type='text'
                                 className="input-text"

@@ -59,13 +59,23 @@ const colourStyles: StylesConfig = {
 
     control: (styles, state) => ({
         ...styles,
-        padding: '8px 16px',
+        padding: '5px 16px',
         borderRadius: 12,
         // border: 'none',
         // boxShadow: 'none',
 
         ":hover": {
             cursor: "pointer"
+        },
+        ":focus-within": {
+            '--tw-border-opacity': '1',
+            borderColor: 'rgb(179 160 255 / var(--tw-border-opacity))',
+            outlineColor: '#9E88FF',
+            '--tw-ring-offset-shadow': 'var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color)',
+            '--tw-ring-shadow': 'var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color)',
+            boxShadow: 'var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)',
+            '--tw-ring-color': 'rgb(179 160 255 / var(--tw-ring-opacity))',
+            '--tw-ring-opacity': '0.5'
         }
 
     }),

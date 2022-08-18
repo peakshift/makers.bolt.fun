@@ -52,18 +52,18 @@ export default function TeamMembersInput({ value, onChange = () => { } }: Props)
                     {value.map(user => {
                         return <div
                             key={user.id}
-                            className="border-b py-16 last-of-type:border-b-0 flex flex-wrap gap-16 items-center">
+                            className="border-b py-16 last-of-type:border-b-0 flex gap-16 items-center">
 
                             <Avatar width={40} src={user.avatar} />
-                            <div className='grow'>
-                                <p className="font-medium self-center">
+                            <div className='grow overflow-hidden'>
+                                <p className="font-medium self-center overflow-hidden text-ellipsis whitespace-nowrap">
                                     {user.name}
                                 </p>
-                                <p className="text-body5 text-gray-500">
+                                <p className="text-body5 text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">
                                     {user.jobTitle}
                                 </p>
                             </div>
-                            <div className="ml-auto flex gap-16">
+                            <div className="ml-auto flex gap-12 md:gap-16 shrink-0">
                                 <Menu
                                     offsetY={12}
                                     align='end'

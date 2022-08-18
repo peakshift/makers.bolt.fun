@@ -94,17 +94,18 @@ export default function SaveChangesCard(props: Props) {
 
 
     return (
-        <Card onlyMd className='flex flex-col gap-24'>
-            <div className='hidden md:flex gap-8'>
+        <Card className='flex flex-col gap-24'>
+            <div className='flex gap-8 items-center'>
                 {img ?
                     <Avatar width={48} src={img} /> :
                     <div className="bg-gray-50 border border-gray-200 rounded-full w-48 h-48 shrink-0"></div>
                 }
                 <div className='overflow-hidden'>
                     <p className={`text-body4 text-black font-medium overflow-hidden text-ellipsis`}>{name || "Product preview"}</p>
-                    {<p className={`text-body6 text-gray-600`}>{tagline || "Provide some more details."}</p>}
+                    {<p className={`text-body6 text-gray-600 text-ellipsis overflow-hidden whitespace-nowrap`}>{tagline || "Provide some more details."}</p>}
                 </div>
             </div>
+            <div className="border-b border-gray-200"></div>
             {/* <p className="hidden md:block text-body5">{trimText(profileQuery.data.profile.bio, 120)}</p> */}
             <div className="flex flex-col gap-16">
                 {ctaBtn}

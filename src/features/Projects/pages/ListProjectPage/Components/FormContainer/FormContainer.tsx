@@ -2,8 +2,9 @@ import { FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "rea
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Team_Member_Role } from "src/graphql";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { usePrompt } from "src/utils/hooks";
 
 
 interface Props {
@@ -67,6 +68,16 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
     const methods = useForm<IListProjectForm>({
         defaultValues: {
             id: !!params.get('id') ? Number(params.get('id')) : undefined,
+            name: "",
+            website: "",
+            tagline: "",
+            description: "",
+            thumbnail_image: "",
+            cover_image: "",
+            twitter: "",
+            discord: "",
+            github: "",
+            category_id: undefined,
             capabilities: [],
             screenshots: [],
             members: [],
@@ -78,7 +89,9 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
     });
 
 
+
     const onSubmit: SubmitHandler<IListProjectForm> = data => console.log(data);
+
 
 
     return (
