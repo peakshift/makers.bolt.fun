@@ -52,14 +52,6 @@ export default function ListProjectPage() {
     })
 
 
-    usePrompt('You may have some unsaved changes. You still want to leave?', true)
-
-
-    // if (!userId || profileQuery.loading)
-    //     return <LoadingPage />
-
-    // if (!profileQuery.data?.profile)
-    //     return <NotFoundPage />
 
     return (
         <>
