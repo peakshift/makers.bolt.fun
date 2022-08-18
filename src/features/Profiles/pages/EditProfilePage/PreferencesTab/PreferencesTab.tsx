@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
 import { NetworkStatus } from '@apollo/client';
 import { usePrompt } from 'src/utils/hooks';
-import { useEffect } from 'react';
 
 
 interface Props {
@@ -45,15 +44,11 @@ export default function PreferencesTab() {
     });
     const [mutate, mutationStatus] = useUpdateUserPreferencesMutation();
 
-    useEffect(() => {
-        console.log("MOUNTED");
 
-    }, [])
-
-    // usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
+    usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
 
 
-    if (query.loading)
+    if (query.networkStatus === NetworkStatus.loading)
         return <PreferencesTabSkeleton />
 
     if (!query.data?.me)

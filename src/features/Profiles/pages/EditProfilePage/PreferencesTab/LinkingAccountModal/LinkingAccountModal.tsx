@@ -98,12 +98,19 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
 
     else
         content =
-            <div className='flex flex-col gap-24 items-center mt-32'>
-                <a href={`lightning:${lnurl}`}>
+            <div className='flex flex-col gap-24 items-center mt-32 '>
+                <a href={`lightning:${lnurl}`} className='border-4 border-primary-500 rounded-12 p-8'>
                     <QRCodeSVG
                         width={160}
                         height={160}
                         value={lnurl}
+                        bgColor='transparent'
+                        imageSettings={{
+                            src: '/assets/icons/nut.svg',
+                            width: 24,
+                            height: 24,
+                            excavate: true
+                        }}
                     />
                 </a>
                 <p className="text-gray-600 text-body4 text-center">
