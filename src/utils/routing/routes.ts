@@ -80,7 +80,7 @@ export const PAGES_ROUTES = {
         default: "/projects",
         hottest: "/projects/hottest",
         byCategoryId: "/projects/category/:id",
-        listProject: "/projects/list-project/*"
+        listProject: "/projects/list-project"
     },
     blog: {
         feed: "/blog",

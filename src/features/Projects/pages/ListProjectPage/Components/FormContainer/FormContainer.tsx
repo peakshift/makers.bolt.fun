@@ -89,6 +89,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
     });
 
 
+    usePrompt('You may have some unsaved changes. You still want to leave?', methods.formState.isDirty)
 
     const onSubmit: SubmitHandler<IListProjectForm> = data => console.log(data);
 
