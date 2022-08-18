@@ -94,12 +94,12 @@ export default function PreferencesTab() {
                 <CommentsSettingsCard nostr_prv_key={query.data.me.nostr_prv_key} nostr_pub_key={query.data.me.nostr_pub_key} />
             </div>
             <div className="self-start sticky-side-element">
-                <SaveChangesCard
+                {/* <SaveChangesCard
                     isLoading={mutationStatus.loading}
                     isDirty={isDirty}
                     onSubmit={handleSubmit(onSubmit)}
                     onCancel={() => reset()}
-                />
+                /> */}
             </div>
         </div>
     )
