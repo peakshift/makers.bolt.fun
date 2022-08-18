@@ -3,16 +3,14 @@ import { useAppDispatch } from 'src/utils/hooks';
 import { openModal } from 'src/redux/features/modals.slice';
 import Card from 'src/Components/Card/Card';
 import { MyProfile } from 'src/graphql';
-import Skeleton from 'react-loading-skeleton';
-import { useReducer, useRef } from 'react';
-import { Nullable } from 'remirror';
+import WalletKey from './WalletKey';
 
 
-type Value = MyProfile['walletsKeys']
+export type WalletKeyType = MyProfile['walletsKeys'][number]
 
 interface Props {
-    value: Value,
-    onChange: (newValue: Value) => void
+    value: WalletKeyType[],
+    onChange: (newValue: WalletKeyType[]) => void
 }
 
 
@@ -20,7 +18,6 @@ interface Props {
 export default function LinkedAccountsCard({ value, onChange }: Props) {
 
     const dispatch = useAppDispatch();
-    const inputsRefs = useRef<Nullable<HTMLInputElement>[]>([]);
 
     const connectNewWallet = () => {
         dispatch(openModal({ Modal: "LinkingAccountModal" }))
@@ -46,27 +43,18 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
         <Card>
             <p className="text-body2 font-bold">🔐 Linked Wallets</p>
             <p className="text-body4 text-gray-600 mt-8">
-                These are the wallets that you can login to this account from. You can add a new wallet below.
+                These are the wallets that you can login to this account from. You can add up to 3 wallets.
             </p>
             <div className='mt-24 flex flex-col gap-16'>
                 <ul className="mt-8 relative flex flex-col gap-8">
                     {value.map((item, idx) =>
-                        <li key={item.key} className="flex flex-wrap gap-16 justify-between items-center text-body4 border-b py-12 px-16 border border-gray-200 rounded-16 focus-within:ring-1 ring-primary-200">
-                            <input
-                                ref={el => inputsRefs.current[idx] = el}
-                                type="text"
-                                value={item.name}
-                                onChange={e => {
-                                    updateKeyName(idx, e.target.value)
-                                }}
-                                className='p-0 border-0 focus:border-0 focus:outline-none grow
-                                                focus:ring-0 placeholder:!text-gray-400' />
-
-                            <div className='flex gap-8 ml-auto'>
-                                <Button size='sm' color='none' className='text-blue-400 !p-0' onClick={() => inputsRefs.current[idx]?.focus()}>Rename</Button>
-                                {value.length > 1 && <Button size='sm' color='none' className='text-red-500 !p-0' onClick={() => deleteKey(idx)}>Delete key</Button>}
-                            </div>
-                        </li>
+                        <WalletKey
+                            key={idx}
+                            walletKey={item}
+                            canDelete={value.length > 1}
+                            onRename={v => updateKeyName(idx, v)}
+                            onDelete={() => deleteKey(idx)}
+                        />
                     )}
                 </ul>
                 {/* <div className="flex justify-end gap-8">
@@ -88,12 +76,11 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
                         Save Changes
                     </Button>
                 </div> */}
-                {value.length < 3 &&
-                    <Button color='white' className='mt-16' onClick={connectNewWallet}>
-                        Connect new wallet ⚡
-                    </Button>}
-
             </div>
+            {value.length < 3 &&
+                <Button color='none' size='sm' className='mt-16 text-gray-600 hover:bg-gray-50' onClick={connectNewWallet}>
+                    + Add another wallet
+                </Button>}
         </Card>
     )
 }

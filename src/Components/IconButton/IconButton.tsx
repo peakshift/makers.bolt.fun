@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom'
 import { UnionToObjectKeys } from 'src/utils/types/utils'
 
@@ -6,7 +6,6 @@ interface Props {
     onClick?: () => void;
     onKeyDown?: (v: any) => void
     href?: string;
-    children: JSX.Element
     className?: string
     size?: "sm" | 'md' | 'lg'
     variant?: 'blank' | 'fill'
@@ -26,7 +25,7 @@ const baseBtnStyles: UnionToObjectKeys<Props, 'variant'> = {
     blank: "bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 active:scale-95 !border-0"
 }
 
-const IconButton = React.forwardRef<any, Props>(({
+const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(({
     href,
     size = "md",
     className = "",

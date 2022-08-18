@@ -99,29 +99,24 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
     else
         content =
             <div className='flex flex-col gap-24 items-center mt-32 '>
-                <a href={`lightning:${lnurl}`} className='border-4 border-primary-500 rounded-12 p-8'>
+                <a href={`lightning:${lnurl}`} >
                     <QRCodeSVG
-                        width={160}
-                        height={160}
+                        width={240}
+                        height={240}
                         value={lnurl}
                         bgColor='transparent'
                         imageSettings={{
-                            src: '/assets/icons/nut.svg',
-                            width: 24,
-                            height: 24,
+                            src: '/assets/images/nut_3d.png',
+                            width: 32,
+                            height: 32,
                             excavate: true
                         }}
                     />
                 </a>
                 <p className="text-gray-600 text-body4 text-center">
-                    Scan this QR code with your other lightning wallet & you will be able to use it to login to this account.
-                    <br />
-                    When done, click the button below to close this modal.
+                    Scan this code or copy + paste it to your lightning wallet to connect another account to your maker profile. You can also click the QR code to open your WebLN wallet. When done, click the button below to close this modal.
                 </p>
                 <div className="flex flex-col w-full gap-16">
-                    {/* <a href={lnurl}
-                        className='grow block text-body4 text-center text-white font-bolder bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
-                    >Click to connect <IoRocketOutline /></a> */}
                     <Button
                         color='gray'
                         className='grow'
@@ -133,7 +128,7 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
                         onClick={done}
                         fullWidth
                     >
-                        Done?
+                        Done
                     </Button>
                 </div>
             </div>
@@ -147,10 +142,10 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card max-w-[364px] p-24 rounded-xl relative"
+            className="modal-card max-w-[442px] p-24 rounded-xl relative"
         >
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
-            <h2 className='text-h5 font-bold text-center'>Link new ⚡ wallet</h2>
+            <h2 className='text-h5 font-bold text-center'>Connect another ⚡️ wallet</h2>
             {content}
         </motion.div>
     )

@@ -33,7 +33,6 @@ export default function PreferencesTab() {
             walletsKeys: []
         },
         resolver: yupResolver(schema),
-        mode: 'onBlur',
     });
 
     const query = useMyProfilePreferencesQuery({
@@ -86,7 +85,10 @@ export default function PreferencesTab() {
                     control={control}
                     name="walletsKeys"
                     render={({ field: { onChange, value } }) => (
-                        <LinkedAccountsCard value={value as any} onChange={onChange} />
+                        <LinkedAccountsCard value={value as any} onChange={v => {
+                            onChange(v);
+                            handleSubmit(onSubmit)();
+                        }} />
                     )}
                 />
                 <CommentsSettingsCard nostr_prv_key={query.data.me.nostr_prv_key} nostr_pub_key={query.data.me.nostr_pub_key} />
