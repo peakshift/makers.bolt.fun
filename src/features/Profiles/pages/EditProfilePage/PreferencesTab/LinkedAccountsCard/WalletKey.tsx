@@ -47,16 +47,12 @@ export default function WalletKey({ walletKey, canDelete, onRename, onDelete }: 
 
     const handleDelete = () => {
         dispatch(openModal({
-            Modal: "ConfirmModal",
+            Modal: "RemoveWalletKeyModal",
             props: {
                 callbackAction: {
                     type: CONFIRM_DELETE_WALLET.type,
-                    payload: {}
-                },
-                actionName: "Remove",
-                title: "Remove key",
-                message: "Are you sure you want to remove this key from your account? Once deleted, you won’t be able to recover it.",
-                color: "red"
+                    payload: { confirmed: false }
+                }
             }
         }))
     }
