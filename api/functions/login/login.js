@@ -65,25 +65,43 @@ const loginHandler = async (req, res) => {
         const user = await getUserByPubKey(key)
         if (user === null) {
 
-            const nostr_prv_key = generatePrivateKey();
-            const nostr_pub_key = getPublicKey(nostr_prv_key);
+            // Check if user had a previous account using this wallet
 
-            const createdUser = await prisma.user.create({
-                data: {
-                    pubKey: key,
-                    name: key,
-                    avatar: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
-                    nostr_prv_key,
-                    nostr_pub_key,
-                },
-            })
-            await prisma.userKey.create({
-                data: {
-                    key,
-                    name: "My original wallet key",
-                    user_id: createdUser.id,
+            const oldAccount = await prisma.user.findFirst({
+                where: {
+                    pubKey: key
                 }
             });
+
+            if (oldAccount) {
+                await prisma.userKey.create({
+                    data: {
+                        key,
+                        name: "My original wallet key",
+                        user_id: oldAccount.id,
+                    }
+                });
+            } else {
+                const nostr_prv_key = generatePrivateKey();
+                const nostr_pub_key = getPublicKey(nostr_prv_key);
+
+                const createdUser = await prisma.user.create({
+                    data: {
+                        pubKey: key,
+                        name: key,
+                        avatar: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
+                        nostr_prv_key,
+                        nostr_pub_key,
+                    },
+                })
+                await prisma.userKey.create({
+                    data: {
+                        key,
+                        name: "My original wallet key",
+                        user_id: createdUser.id,
+                    }
+                });
+            }
 
         }
 
