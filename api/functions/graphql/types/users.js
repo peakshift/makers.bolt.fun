@@ -56,9 +56,9 @@ const MyProfile = objectType({
 
         t.nonNull.list.nonNull.field('walletsKeys', {
             type: "WalletKey",
-            resolve: async (parent) => {
-                const keys = await prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
-                return keys.map(k => ({ ...k, key: k.key.slice(0, 10) + '...' }))
+            resolve: (parent) => {
+                return prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
+
             }
         });
     }
