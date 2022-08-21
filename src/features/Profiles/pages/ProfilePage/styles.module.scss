@@ -5,12 +5,21 @@
   grid-template-areas: "main";
 
   > aside:first-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     grid-area: aside1;
   }
   > main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     grid-area: main;
   }
   > aside:last-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     grid-area: aside2;
   }
 

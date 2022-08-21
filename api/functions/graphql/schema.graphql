@@ -31,7 +31,11 @@ interface BaseUser {
   location: String
   name: String!
   role: String
+  roles: [UserRole!]!
+  similar_makers: [User!]!
+  skills: [UserSkill!]!
   stories: [Story!]!
+  tournaments: [Tournament!]!
   twitter: String
   website: String
 }
@@ -137,7 +141,11 @@ type MyProfile implements BaseUser {
   nostr_prv_key: String
   nostr_pub_key: String
   role: String
+  roles: [UserRole!]!
+  similar_makers: [User!]!
+  skills: [UserSkill!]!
   stories: [Story!]!
+  tournaments: [Tournament!]!
   twitter: String
   walletsKeys: [WalletKey!]!
   website: String
@@ -221,6 +229,7 @@ type Query {
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
+  similarMakers(id: Int!): [User!]!
 }
 
 type Question implements PostBase {
@@ -235,6 +244,14 @@ type Question implements PostBase {
   type: String!
   updatedAt: Date!
   votes_count: Int!
+}
+
+enum RoleLevelEnum {
+  Advanced
+  Beginner
+  Hobbyist
+  Intermediate
+  Pro
 }
 
 type Story implements PostBase {
@@ -271,6 +288,18 @@ type Tag {
   title: String!
 }
 
+type Tournament {
+  cover_image: String!
+  description: String!
+  end_date: Date!
+  id: Int!
+  start_date: Date!
+  tags: [Tag!]!
+  thumbnail_image: String!
+  title: String!
+  website: String!
+}
+
 type User implements BaseUser {
   avatar: String!
   bio: String
@@ -284,7 +313,11 @@ type User implements BaseUser {
   location: String
   name: String!
   role: String
+  roles: [UserRole!]!
+  similar_makers: [User!]!
+  skills: [UserSkill!]!
   stories: [Story!]!
+  tournaments: [Tournament!]!
   twitter: String
   website: String
 }
@@ -292,6 +325,18 @@ type User implements BaseUser {
 input UserKeyInputType {
   key: String!
   name: String!
+}
+
+type UserRole {
+  icon: String!
+  id: Int!
+  level: RoleLevelEnum!
+  title: String!
+}
+
+type UserSkill {
+  id: Int!
+  title: String!
 }
 
 enum VOTE_ITEM_TYPE {

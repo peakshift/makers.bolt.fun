@@ -48,7 +48,11 @@ export type BaseUser = {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   role: Maybe<Scalars['String']>;
+  roles: Array<UserRole>;
+  similar_makers: Array<User>;
+  skills: Array<UserSkill>;
   stories: Array<Story>;
+  tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
 };
@@ -204,7 +208,11 @@ export type MyProfile = BaseUser & {
   nostr_prv_key: Maybe<Scalars['String']>;
   nostr_pub_key: Maybe<Scalars['String']>;
   role: Maybe<Scalars['String']>;
+  roles: Array<UserRole>;
+  similar_makers: Array<User>;
+  skills: Array<UserSkill>;
   stories: Array<Story>;
+  tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   walletsKeys: Array<WalletKey>;
   website: Maybe<Scalars['String']>;
@@ -291,6 +299,7 @@ export type Query = {
   profile: Maybe<User>;
   projectsByCategory: Array<Project>;
   searchProjects: Array<Project>;
+  similarMakers: Array<User>;
 };
 
 
@@ -370,6 +379,11 @@ export type QuerySearchProjectsArgs = {
   take?: InputMaybe<Scalars['Int']>;
 };
 
+
+export type QuerySimilarMakersArgs = {
+  id: Scalars['Int'];
+};
+
 export type Question = PostBase & {
   __typename?: 'Question';
   author: Author;
@@ -384,6 +398,14 @@ export type Question = PostBase & {
   updatedAt: Scalars['Date'];
   votes_count: Scalars['Int'];
 };
+
+export enum RoleLevelEnum {
+  Advanced = 'Advanced',
+  Beginner = 'Beginner',
+  Hobbyist = 'Hobbyist',
+  Intermediate = 'Intermediate',
+  Pro = 'Pro'
+}
 
 export type Story = PostBase & {
   __typename?: 'Story';
@@ -421,6 +443,19 @@ export type Tag = {
   title: Scalars['String'];
 };
 
+export type Tournament = {
+  __typename?: 'Tournament';
+  cover_image: Scalars['String'];
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  id: Scalars['Int'];
+  start_date: Scalars['Date'];
+  tags: Array<Tag>;
+  thumbnail_image: Scalars['String'];
+  title: Scalars['String'];
+  website: Scalars['String'];
+};
+
 export type User = BaseUser & {
   __typename?: 'User';
   avatar: Scalars['String'];
@@ -435,7 +470,11 @@ export type User = BaseUser & {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   role: Maybe<Scalars['String']>;
+  roles: Array<UserRole>;
+  similar_makers: Array<User>;
+  skills: Array<UserSkill>;
   stories: Array<Story>;
+  tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
 };
@@ -443,6 +482,20 @@ export type User = BaseUser & {
 export type UserKeyInputType = {
   key: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type UserRole = {
+  __typename?: 'UserRole';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  level: RoleLevelEnum;
+  title: Scalars['String'];
+};
+
+export type UserSkill = {
+  __typename?: 'UserSkill';
+  id: Scalars['Int'];
+  title: Scalars['String'];
 };
 
 export enum Vote_Item_Type {
@@ -599,7 +652,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, skills: Array<{ __typename?: 'UserSkill', id: number, title: string }>, roles: Array<{ __typename?: 'UserRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1578,6 +1631,29 @@ export const ProfileDocument = gql`
         title
         icon
       }
+    }
+    skills {
+      id
+      title
+    }
+    roles {
+      id
+      title
+      icon
+      level
+    }
+    tournaments {
+      id
+      title
+      thumbnail_image
+      start_date
+      end_date
+    }
+    similar_makers {
+      id
+      name
+      avatar
+      jobTitle
     }
   }
 }

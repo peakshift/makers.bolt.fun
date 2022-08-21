@@ -24,5 +24,28 @@ query profile($profileId: Int!) {
         icon
       }
     }
+    skills {
+      id
+      title
+    }
+    roles {
+      id
+      title
+      icon
+      level
+    }
+    tournaments {
+      id
+      title
+      thumbnail_image
+      start_date
+      end_date
+    }
+    similar_makers {
+      id
+      name
+      avatar
+      jobTitle
+    }
   }
 }

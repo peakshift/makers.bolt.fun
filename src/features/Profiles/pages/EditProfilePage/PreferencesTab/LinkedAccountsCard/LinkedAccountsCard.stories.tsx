@@ -1,8 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MOCK_DATA } from 'src/mocks/data';
 import AccountCard from './LinkedAccountsCard';
 
 export default {
-    title: 'Profiles/Profile Page/Account Card',
+    title: 'Profiles/Edit Profile Page/Linked Wallets Card',
     component: AccountCard,
     argTypes: {
         backgroundColor: { control: 'color' },
@@ -15,5 +16,6 @@ const Template: ComponentStory<typeof AccountCard> = (args) => <AccountCard {...
 
 export const Default = Template.bind({});
 Default.args = {
-
+    value: MOCK_DATA['user'].walletsKeys,
+    onChange: () => { }
 }

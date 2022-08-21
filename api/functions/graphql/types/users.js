@@ -1,8 +1,9 @@
 
 const { prisma } = require('../../../prisma');
-const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list } = require("nexus");
+const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
+const { Tournament } = require('./tournaments');
 
 
 
@@ -24,6 +25,39 @@ const BaseUser = interfaceType({
         t.string('linkedin')
         t.string('bio')
         t.string('location')
+        t.nonNull.list.nonNull.field('roles', {
+            type: UserRole,
+            resolve: (parent) => {
+                return []
+            }
+        })
+        t.nonNull.list.nonNull.field('skills', {
+            type: UserSkill,
+            resolve: (parent) => {
+                return []
+            }
+        })
+        t.nonNull.list.nonNull.field('tournaments', {
+            type: Tournament,
+            resolve: (parent) => {
+                return []
+            }
+        })
+        t.nonNull.list.nonNull.field('similar_makers', {
+            type: "User",
+            resolve(parent,) {
+                return prisma.user.findMany({
+                    where: {
+                        AND: {
+                            id: {
+                                not: parent.id
+                            }
+                        }
+                    },
+                    take: 3,
+                })
+            }
+        })
 
 
         t.nonNull.list.nonNull.field('stories', {
@@ -38,6 +72,35 @@ const BaseUser = interfaceType({
     resolveType() {
         return null
     },
+})
+
+const RoleLevelEnum = enumType({
+    name: 'RoleLevelEnum',
+    members: {
+        Beginner: 0,
+        Hobbyist: 1,
+        Intermediate: 2,
+        Advanced: 3,
+        Pro: 4,
+    },
+});
+
+const UserRole = objectType({
+    name: 'UserRole',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+        t.nonNull.field('level', { type: RoleLevelEnum })
+    }
+})
+
+const UserSkill = objectType({
+    name: 'UserSkill',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+    }
 })
 
 const User = objectType({
@@ -88,6 +151,30 @@ const profile = extendType({
             },
             async resolve(parent, { id }, ctx) {
                 return prisma.user.findUnique({ where: { id } })
+            }
+        })
+    }
+})
+
+const similarMakers = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('similarMakers', {
+            type: "User",
+            args: {
+                id: nonNull(intArg())
+            },
+            async resolve(parent, { id }, ctx) {
+                return prisma.user.findMany({
+                    where: {
+                        AND: {
+                            id: {
+                                not: id
+                            }
+                        }
+                    },
+                    take: 3,
+                })
             }
         })
     }
@@ -228,6 +315,7 @@ const updateUserPreferences = extendType({
 
 module.exports = {
     // Types
+
     BaseUser,
     User,
     MyProfile,
@@ -235,6 +323,7 @@ module.exports = {
     // Queries
     me,
     profile,
+    similarMakers,
     // Mutations
     updateProfileDetails,
     updateUserPreferences,
