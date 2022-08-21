@@ -81,6 +81,7 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
                 <Button color='none' size='sm' className='mt-16 text-gray-600 hover:bg-gray-50' onClick={connectNewWallet}>
                     + Add another wallet
                 </Button>}
+            <p className="text-body5 text-gray-400 mt-24"><span className="font-bold">Note</span>: if you link a wallet that was used to create another account previously, you won't be able to login to that account until you remove it from here.</p>
         </Card>
     )
 }

@@ -19,8 +19,14 @@ export const user: User & MyProfile = {
     stories: posts.stories,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
-    walletsKeys: [{
-        key: "1645h234j2421zxvertw",
-        name: "My alby wallet key"
-    }]
+    walletsKeys: [
+        {
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key"
+        },
+        {
+            key: "6643534534534534543",
+            name: "My Phoenix wallet key"
+        },
+    ]
 }
