@@ -25,7 +25,7 @@ const schema: yup.SchemaOf<IRolesSkillsForm> = yup.object({
     roles: yup.array().of(
         yup.object().shape({
             id: yup.number().required(),
-            role: yup.string().required(),
+            level: yup.string().required(),
         }).required()
     ).required(),
     skills: yup.array().of(
@@ -70,7 +70,10 @@ export default function PreferencesTab() {
         const toastId = toast.loading("Saving changes...", NotificationsService.defaultOptions)
         mutate({
             variables: {
-                data
+                data: {
+                    roles: data.roles.map(v => ({ id: v.id, level: v.level })),
+                    skills: data.skills.map(v => ({ id: v.id })),
+                }
             },
             onCompleted: ({ updateProfileRoles }) => {
                 if (updateProfileRoles) {
@@ -113,7 +116,7 @@ export default function PreferencesTab() {
                 <SaveChangesCard
                     isLoading={mutationStatus.loading}
                     isDirty={isDirty}
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit(onSubmit, e => console.log(e))}
                     onCancel={() => reset()}
                 />
             </div>

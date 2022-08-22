@@ -59,7 +59,7 @@ export default function UpdateRolesCard(props: Props) {
                     {props.value.map(role => {
                         const { title, icon } = props.allRoles.find(r => r.id === role.id)!;
 
-                        return <>
+                        return <React.Fragment key={role.id}>
                             <p className="shrink-0 text-body4 whitespace-nowrap">{icon} {title}</p>
                             <div className="flex flex-wrap gap-8 grow text-body5 mb-8 last-of-type:mb-0">
                                 {[RoleLevelEnum.Beginner, RoleLevelEnum.Hobbyist, RoleLevelEnum.Intermediate, RoleLevelEnum.Advanced, RoleLevelEnum.Pro].map(r =>
@@ -71,7 +71,7 @@ export default function UpdateRolesCard(props: Props) {
                                         onClick={() => setLevel(role.id, r)}
                                     >{r}</button>
                                 )}</div>
-                        </>
+                        </React.Fragment >
                     })}
                 </ul>
             </div>}

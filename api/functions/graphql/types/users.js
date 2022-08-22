@@ -27,14 +27,29 @@ const BaseUser = interfaceType({
         t.string('location')
         t.nonNull.list.nonNull.field('roles', {
             type: MakerRole,
-            resolve: (parent) => {
-                return []
+            resolve: async (parent) => {
+                const data = await prisma.user.findUnique({
+                    where: {
+                        id: parent.id
+                    },
+                    select: {
+                        roles: {
+                            select: {
+                                role: true,
+                                level: true
+                            }
+                        },
+                    }
+                })
+                return data.roles.map(data => {
+                    return ({ ...data.role, level: data.level })
+                })
             }
         })
         t.nonNull.list.nonNull.field('skills', {
             type: MakerSkill,
             resolve: (parent) => {
-                return []
+                return prisma.user.findUnique({ where: { id: parent.id } }).skills();
             }
         })
         t.nonNull.list.nonNull.field('tournaments', {
@@ -112,7 +127,7 @@ const getAllMakersRoles = extendType({
         t.nonNull.list.nonNull.field('getAllMakersRoles', {
             type: GenericMakerRole,
             async resolve(parent, args, context) {
-                return []
+                return prisma.workRole.findMany();
             }
         })
     }
@@ -133,7 +148,7 @@ const getAllMakersSkills = extendType({
         t.nonNull.list.nonNull.field('getAllMakersSkills', {
             type: MakerSkill,
             async resolve(parent, args, context) {
-                return []
+                return prisma.skill.findMany();
             }
         })
     }
@@ -389,16 +404,38 @@ const updateProfileRoles = extendType({
                 // Do some validation
                 if (!user)
                     throw new Error("You have to login");
-                // TODO: validate new data
 
+                await prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    data: {
+                        skills: {
+                            set: [],
+                        },
+                        roles: {
+                            deleteMany: {}
+                        },
+                    },
+                }
+                )
 
-                // Preprocess & insert
 
                 return prisma.user.update({
                     where: {
                         id: user.id,
                     },
-                    // data: removeNulls(args.data)
+                    data: {
+                        skills: {
+                            connect: args.data.skills,
+                        },
+                        roles: {
+                            create: args.data.roles.map(r => {
+                                console.log(({ roleId: r.id, level: r.level }));
+                                return ({ roleId: r.id, level: r.level })
+                            })
+                        }
+                    }
                 })
             }
         })
