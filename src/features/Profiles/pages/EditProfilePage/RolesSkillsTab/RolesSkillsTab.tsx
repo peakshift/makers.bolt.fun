@@ -11,6 +11,7 @@ import { usePrompt } from 'src/utils/hooks';
 import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, useUpdateUserRolesSkillsMutation } from 'src/graphql'
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import UpdateRolesCard from "./UpdateRolesCard/UpdateRolesCard";
+import UpdateSkillsCard from "./UpdateSkillsCard/UpdateSkillsCard";
 
 
 interface Props {
@@ -93,6 +94,16 @@ export default function PreferencesTab() {
                     render={({ field: { onChange, value } }) => (
                         <UpdateRolesCard
                             allRoles={query.data?.getAllMakersRoles!}
+                            value={value}
+                            onChange={onChange} />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name="skills"
+                    render={({ field: { onChange, value } }) => (
+                        <UpdateSkillsCard
+                            allSkills={query.data?.getAllMakersSkills!}
                             value={value}
                             onChange={onChange} />
                     )}

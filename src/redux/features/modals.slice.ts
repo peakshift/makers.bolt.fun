@@ -8,8 +8,8 @@ import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModa
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
-import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingAccountModal";
 import { RemoveWalletKeyModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveWalletKeyModal";
+import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingAccountModal";
 
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";

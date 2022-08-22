@@ -1,8 +1,8 @@
-import React from 'react'
-import { Control, useFieldArray } from 'react-hook-form'
+import React, { useMemo } from 'react'
+import { GrClose } from 'react-icons/gr'
 import Card from 'src/Components/Card/Card'
-import { GenericMakerRole, MakerRole, MakerSkill, RoleLevelEnum } from 'src/graphql'
-import { IRolesSkillsForm } from '../RolesSkillsTab'
+import { MakerSkill } from 'src/graphql'
+import SkillsInput from './SkillsInput'
 
 type Value = Pick<MakerSkill, 'id'>
 
@@ -14,22 +14,21 @@ interface Props {
 
 export default function UpdateSkillsCard(props: Props) {
 
-    const add = (idx: number) => {
-        props.onChange([...props.value.slice(-2), { ...props.allSkills[idx] }])
+    const add = (newValue: Value) => {
+        props.onChange([...props.value, newValue])
     }
 
-    const remove = (idx: number) => {
-        props.onChange(props.value.filter(v => v.id !== props.allSkills[idx].id))
-    }
+    const idToValue = useMemo(() => {
+        const map = new Map<number, Props['allSkills'][number]>();
+        for (let i = 0; i < props.allSkills.length; i++) {
+            const element = props.allSkills[i];
+            map.set(element.id, element);
+        }
+        return map;
+    }, [props.allSkills])
 
-    const setLevel = (roleId: number, level: RoleLevelEnum) => {
-        props.onChange(props.value.map(v => {
-            if (v.id !== roleId) return v;
-            return {
-                ...v,
-                level
-            }
-        }))
+    const remove = (id: number) => {
+        props.onChange(props.value.filter(v => v.id !== id))
     }
 
 
@@ -37,23 +36,14 @@ export default function UpdateSkillsCard(props: Props) {
         <Card>
             <p className="text-body2 font-bold">🌈  Skills</p>
             <p className="text-body4 text-gray-600 mt-8">Add some of your skills and let other makers know what you’re good at.</p>
-            {/* <ul className=' flex flex-wrap gap-8 mt-24'>
-                {props.allSkills.map((role, idx) => {
-                    const isActive = props.value.some(v => v.id === role.id);
-
-                    return <button
-                        key={role.id}
-                        className={`
-                    px-12 py-8 border rounded-10 text-body5 font-medium
-                    active:scale-95 transition-transform
-                    ${!isActive ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
-                    `}
-                        onClick={() => isActive ? remove(idx) : add(idx)}
-                    >{role.icon} {role.title}
-                    </button>
-                })}
-            </ul> */}
-
+            <div className="mt-16">
+                <SkillsInput options={props.allSkills.filter(skill => !props.value.some(v => v.id === skill.id))} onSelect={add} />
+            </div>
+            {props.value.length > 0 && <ul className=' flex flex-wrap gap-x-8 gap-y-20 mt-16'>
+                {props.value.map((skill) => <li key={skill.id} className="px-16 py-8 bg-gray-100 rounded-48 text-body5 font-medium">
+                    {idToValue.get(skill.id)?.title} <button className='ml-8' onClick={() => remove(skill.id)}><GrClose /></button>
+                </li>)}
+            </ul>}
         </Card>
     )
 }
