@@ -48,9 +48,9 @@ export type BaseUser = {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   role: Maybe<Scalars['String']>;
-  roles: Array<UserRole>;
+  roles: Array<MakerRole>;
   similar_makers: Array<User>;
-  skills: Array<UserSkill>;
+  skills: Array<MakerSkill>;
   stories: Array<Story>;
   tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
@@ -115,6 +115,13 @@ export type DonationsStats = {
   touranments: Scalars['String'];
 };
 
+export type GenericMakerRole = {
+  __typename?: 'GenericMakerRole';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type Hackathon = {
   __typename?: 'Hackathon';
   cover_image: Scalars['String'];
@@ -136,6 +143,29 @@ export type LnurlDetails = {
   minSendable: Maybe<Scalars['Int']>;
 };
 
+export type MakerRole = {
+  __typename?: 'MakerRole';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  level: RoleLevelEnum;
+  title: Scalars['String'];
+};
+
+export type MakerRoleInput = {
+  id: Scalars['Int'];
+  level: RoleLevelEnum;
+};
+
+export type MakerSkill = {
+  __typename?: 'MakerSkill';
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
+export type MakerSkillInput = {
+  id: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   confirmDonation: Donation;
@@ -144,6 +174,7 @@ export type Mutation = {
   deleteStory: Maybe<Story>;
   donate: Donation;
   updateProfileDetails: Maybe<MyProfile>;
+  updateProfileRoles: Maybe<MyProfile>;
   updateUserPreferences: MyProfile;
   vote: Vote;
 };
@@ -181,6 +212,11 @@ export type MutationUpdateProfileDetailsArgs = {
 };
 
 
+export type MutationUpdateProfileRolesArgs = {
+  data: InputMaybe<ProfileRolesInput>;
+};
+
+
 export type MutationUpdateUserPreferencesArgs = {
   userKeys: InputMaybe<Array<UserKeyInputType>>;
 };
@@ -208,9 +244,9 @@ export type MyProfile = BaseUser & {
   nostr_prv_key: Maybe<Scalars['String']>;
   nostr_pub_key: Maybe<Scalars['String']>;
   role: Maybe<Scalars['String']>;
-  roles: Array<UserRole>;
+  roles: Array<MakerRole>;
   similar_makers: Array<User>;
-  skills: Array<UserSkill>;
+  skills: Array<MakerSkill>;
   stories: Array<Story>;
   tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
@@ -261,6 +297,11 @@ export type ProfileDetailsInput = {
   website: InputMaybe<Scalars['String']>;
 };
 
+export type ProfileRolesInput = {
+  roles: Array<MakerRoleInput>;
+  skills: Array<MakerSkillInput>;
+};
+
 export type Project = {
   __typename?: 'Project';
   awards: Array<Award>;
@@ -283,6 +324,8 @@ export type Query = {
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   getAllHackathons: Array<Hackathon>;
+  getAllMakersRoles: Array<GenericMakerRole>;
+  getAllMakersSkills: Array<MakerSkill>;
   getCategory: Category;
   getDonationsStats: DonationsStats;
   getFeed: Array<Post>;
@@ -470,9 +513,9 @@ export type User = BaseUser & {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   role: Maybe<Scalars['String']>;
-  roles: Array<UserRole>;
+  roles: Array<MakerRole>;
   similar_makers: Array<User>;
-  skills: Array<UserSkill>;
+  skills: Array<MakerSkill>;
   stories: Array<Story>;
   tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
@@ -482,20 +525,6 @@ export type User = BaseUser & {
 export type UserKeyInputType = {
   key: Scalars['String'];
   name: Scalars['String'];
-};
-
-export type UserRole = {
-  __typename?: 'UserRole';
-  icon: Scalars['String'];
-  id: Scalars['Int'];
-  level: RoleLevelEnum;
-  title: Scalars['String'];
-};
-
-export type UserSkill = {
-  __typename?: 'UserSkill';
-  id: Scalars['Int'];
-  title: Scalars['String'];
 };
 
 export enum Vote_Item_Type {
@@ -635,6 +664,18 @@ export type UpdateUserPreferencesMutationVariables = Exact<{
 
 export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'MyProfile', id: number, nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } };
 
+export type MyProfileRolesSkillsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProfileRolesSkillsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null, getAllMakersRoles: Array<{ __typename?: 'GenericMakerRole', id: number, title: string, icon: string }>, getAllMakersSkills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> };
+
+export type UpdateUserRolesSkillsMutationVariables = Exact<{
+  data: InputMaybe<ProfileRolesInput>;
+}>;
+
+
+export type UpdateUserRolesSkillsMutation = { __typename?: 'Mutation', updateProfileRoles: { __typename?: 'MyProfile', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -652,7 +693,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, skills: Array<{ __typename?: 'UserSkill', id: number, title: string }>, roles: Array<{ __typename?: 'UserRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1512,6 +1553,102 @@ export function useUpdateUserPreferencesMutation(baseOptions?: Apollo.MutationHo
 export type UpdateUserPreferencesMutationHookResult = ReturnType<typeof useUpdateUserPreferencesMutation>;
 export type UpdateUserPreferencesMutationResult = Apollo.MutationResult<UpdateUserPreferencesMutation>;
 export type UpdateUserPreferencesMutationOptions = Apollo.BaseMutationOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
+export const MyProfileRolesSkillsDocument = gql`
+    query MyProfileRolesSkills {
+  me {
+    id
+    skills {
+      id
+      title
+    }
+    roles {
+      id
+      title
+      icon
+      level
+    }
+  }
+  getAllMakersRoles {
+    id
+    title
+    icon
+  }
+  getAllMakersSkills {
+    id
+    title
+  }
+}
+    `;
+
+/**
+ * __useMyProfileRolesSkillsQuery__
+ *
+ * To run a query within a React component, call `useMyProfileRolesSkillsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileRolesSkillsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileRolesSkillsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfileRolesSkillsQuery(baseOptions?: Apollo.QueryHookOptions<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>(MyProfileRolesSkillsDocument, options);
+      }
+export function useMyProfileRolesSkillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>(MyProfileRolesSkillsDocument, options);
+        }
+export type MyProfileRolesSkillsQueryHookResult = ReturnType<typeof useMyProfileRolesSkillsQuery>;
+export type MyProfileRolesSkillsLazyQueryHookResult = ReturnType<typeof useMyProfileRolesSkillsLazyQuery>;
+export type MyProfileRolesSkillsQueryResult = Apollo.QueryResult<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>;
+export const UpdateUserRolesSkillsDocument = gql`
+    mutation UpdateUserRolesSkills($data: ProfileRolesInput) {
+  updateProfileRoles(data: $data) {
+    id
+    skills {
+      id
+      title
+    }
+    roles {
+      id
+      title
+      icon
+      level
+    }
+  }
+}
+    `;
+export type UpdateUserRolesSkillsMutationFn = Apollo.MutationFunction<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>;
+
+/**
+ * __useUpdateUserRolesSkillsMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserRolesSkillsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserRolesSkillsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserRolesSkillsMutation, { data, loading, error }] = useUpdateUserRolesSkillsMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateUserRolesSkillsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>(UpdateUserRolesSkillsDocument, options);
+      }
+export type UpdateUserRolesSkillsMutationHookResult = ReturnType<typeof useUpdateUserRolesSkillsMutation>;
+export type UpdateUserRolesSkillsMutationResult = Apollo.MutationResult<UpdateUserRolesSkillsMutation>;
+export type UpdateUserRolesSkillsMutationOptions = Apollo.BaseMutationOptions<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>;
 export const MyProfileAboutDocument = gql`
     query MyProfileAbout {
   me {

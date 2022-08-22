@@ -26,13 +26,13 @@ const BaseUser = interfaceType({
         t.string('bio')
         t.string('location')
         t.nonNull.list.nonNull.field('roles', {
-            type: UserRole,
+            type: MakerRole,
             resolve: (parent) => {
                 return []
             }
         })
         t.nonNull.list.nonNull.field('skills', {
-            type: UserSkill,
+            type: MakerSkill,
             resolve: (parent) => {
                 return []
             }
@@ -74,6 +74,8 @@ const BaseUser = interfaceType({
     },
 })
 
+
+
 const RoleLevelEnum = enumType({
     name: 'RoleLevelEnum',
     members: {
@@ -85,8 +87,17 @@ const RoleLevelEnum = enumType({
     },
 });
 
-const UserRole = objectType({
-    name: 'UserRole',
+const GenericMakerRole = objectType({
+    name: 'GenericMakerRole',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+    }
+})
+
+const MakerRole = objectType({
+    name: 'MakerRole',
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
@@ -95,13 +106,39 @@ const UserRole = objectType({
     }
 })
 
-const UserSkill = objectType({
-    name: 'UserSkill',
+const getAllMakersRoles = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getAllMakersRoles', {
+            type: GenericMakerRole,
+            async resolve(parent, args, context) {
+                return []
+            }
+        })
+    }
+})
+
+
+const MakerSkill = objectType({
+    name: 'MakerSkill',
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
     }
 })
+
+const getAllMakersSkills = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getAllMakersSkills', {
+            type: MakerSkill,
+            async resolve(parent, args, context) {
+                return []
+            }
+        })
+    }
+})
+
 
 const User = objectType({
     name: 'User',
@@ -312,6 +349,65 @@ const updateUserPreferences = extendType({
 
 
 
+const MakerRoleInput = inputObjectType({
+    name: "MakerRoleInput",
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.field('level', { type: RoleLevelEnum })
+    }
+})
+
+const MakerSkillInput = inputObjectType({
+    name: "MakerSkillInput",
+    definition(t) {
+        t.nonNull.int('id');
+    }
+})
+
+
+const ProfileRolesInput = inputObjectType({
+    name: 'ProfileRolesInput',
+    definition(t) {
+        t.nonNull.list.nonNull.field('roles', {
+            type: MakerRoleInput,
+        })
+        t.nonNull.list.nonNull.field('skills', {
+            type: MakerSkillInput,
+        })
+    }
+})
+
+const updateProfileRoles = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('updateProfileRoles', {
+            type: 'MyProfile',
+            args: { data: ProfileRolesInput },
+            async resolve(_root, args, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                // Do some validation
+                if (!user)
+                    throw new Error("You have to login");
+                // TODO: validate new data
+
+
+                // Preprocess & insert
+
+                return prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    // data: removeNulls(args.data)
+                })
+            }
+        })
+    },
+})
+
+
+
+
 
 module.exports = {
     // Types
@@ -324,7 +420,10 @@ module.exports = {
     me,
     profile,
     similarMakers,
+    getAllMakersRoles,
+    getAllMakersSkills,
     // Mutations
     updateProfileDetails,
     updateUserPreferences,
+    updateProfileRoles,
 }

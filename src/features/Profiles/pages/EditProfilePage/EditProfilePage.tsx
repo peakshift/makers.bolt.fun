@@ -2,19 +2,23 @@ import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import Slider from "src/Components/Slider/Slider";
-import { useProfileQuery } from "src/graphql";
 import { useAppSelector, useMediaQuery } from "src/utils/hooks";
 import UpdateMyProfileTab from "./UpdateMyProfileTab/UpdateMyProfileTab";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
 import PreferencesTab from "./PreferencesTab/PreferencesTab";
+import RolesSkillsTab from "./RolesSkillsTab/RolesSkillsTab";
 import Card from "src/Components/Card/Card";
 
 
 const links = [
     {
-        text: "👾 My Profile",
+        text: "🤠  Basic information",
         path: 'my-profile',
+    },
+    {
+        text: "🎛️  Roles & Skills",
+        path: 'roles-skills',
     },
     {
         text: "⚙️  Settings & Preferences",
@@ -85,6 +89,7 @@ export default function EditProfilePage() {
                     <Routes>
                         <Route index element={<Navigate to='my-profile' />} />
                         <Route path='my-profile' element={<UpdateMyProfileTab />} />
+                        <Route path='roles-skills' element={<RolesSkillsTab />} />
                         <Route path='preferences' element={<PreferencesTab />
                         } />
                     </Routes>

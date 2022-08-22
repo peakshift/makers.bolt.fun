@@ -1,9 +1,101 @@
 import { Chance } from "chance";
-import { MyProfile, RoleLevelEnum, User } from "src/graphql";
+import { GenericMakerRole, MakerSkill, MyProfile, RoleLevelEnum, User } from "src/graphql";
+import { randomItem, randomItems } from "src/utils/helperFunctions";
 import { posts } from "./posts";
 import { getCoverImage, getAvatarImage } from "./utils";
 
 const chance = new Chance();
+export const allMakersRoles: GenericMakerRole[] = [
+    {
+        id: 1,
+        title: "Frontend Dev",
+        icon: "💄"
+    },
+    {
+        id: 2,
+        title: "Backend Dev",
+        icon: "💻️"
+    }, {
+        id: 3,
+        title: "UI/UX Designer",
+        icon: "🌈️️"
+    },
+    {
+        id: 4,
+        title: "Community Manager",
+        icon: "🎉️️"
+    },
+    {
+        id: 5,
+        title: "Founder",
+        icon: "🦄️"
+    },
+    {
+        id: 6,
+        title: "Marketer",
+        icon: "🚨️"
+    },
+    {
+        id: 7,
+        title: "Content Creator",
+        icon: "🎥️"
+    },
+    {
+        id: 8,
+        title: "Researcher",
+        icon: "🔬"
+    },
+    {
+        id: 9,
+        title: "Data engineer",
+        icon: "💿️"
+    },
+    {
+        id: 10,
+        title: "Growth hacker",
+        icon: "📉️"
+    },
+    {
+        id: 11,
+        title: "Technical Writer",
+        icon: "✍️️"
+    },
+]
+
+export const allMakersSkills: MakerSkill[] = [
+    {
+        id: 1,
+        title: "Figma"
+    },
+    {
+        id: 2,
+        title: "Prototyping"
+    }, {
+        id: 3,
+        title: "Writing"
+    }, {
+        id: 4,
+        title: "CSS"
+    }, {
+        id: 5,
+        title: "React.js"
+    }, {
+        id: 6,
+        title: "Wordpress"
+    }, {
+        id: 7,
+        title: "Principle app"
+    }, {
+        id: 8,
+        title: "UX design"
+    }, {
+        id: 9,
+        title: "User research"
+    }, {
+        id: 10,
+        title: "User testing"
+    },
+]
 
 export const user: User & MyProfile = {
     id: 123,
@@ -32,56 +124,8 @@ export const user: User & MyProfile = {
             key: "66345134234235",
             name: "My Phoenix wallet key"
         },],
-    roles: [
-        {
-            id: 12,
-            title: "Developer",
-            icon: "💻️",
-            level: RoleLevelEnum.Pro,
-        },
-        {
-            id: 14,
-            title: "Founder",
-            icon: "🦄️",
-            level: RoleLevelEnum.Intermediate,
-        },
-        {
-            id: 51,
-            title: "Community Manager",
-            icon: "🎉️",
-            level: RoleLevelEnum.Hobbyist,
-        },
-    ],
-    skills: [
-        {
-            id: 1,
-            title: chance.word(),
-        },
-        {
-            id: 2,
-            title: chance.word(),
-        },
-        {
-            id: 3,
-            title: chance.word(),
-        },
-        {
-            id: 4,
-            title: chance.word(),
-        },
-        {
-            id: 5,
-            title: chance.word(),
-        },
-        {
-            id: 6,
-            title: chance.word(),
-        },
-        {
-            id: 7,
-            title: chance.word(),
-        },
-    ],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
     tournaments: [
         {
             id: 1,
@@ -127,3 +171,5 @@ export const user: User & MyProfile = {
         },
     ] as User[]
 }
+
+

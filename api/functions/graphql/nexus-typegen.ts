@@ -28,6 +28,13 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  MakerRoleInput: { // input type
+    id: number; // Int!
+    level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
+  }
+  MakerSkillInput: { // input type
+    id: number; // Int!
+  }
   ProfileDetailsInput: { // input type
     avatar?: string | null; // String
     bio?: string | null; // String
@@ -40,6 +47,10 @@ export interface NexusGenInputs {
     name?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
+  }
+  ProfileRolesInput: { // input type
+    roles: NexusGenInputs['MakerRoleInput'][]; // [MakerRoleInput!]!
+    skills: NexusGenInputs['MakerSkillInput'][]; // [MakerSkillInput!]!
   }
   StoryInputType: { // input type
     body: string; // String!
@@ -125,6 +136,11 @@ export interface NexusGenObjects {
     prizes: string; // String!
     touranments: string; // String!
   }
+  GenericMakerRole: { // root type
+    icon: string; // String!
+    id: number; // Int!
+    title: string; // String!
+  }
   Hackathon: { // root type
     cover_image: string; // String!
     description: string; // String!
@@ -140,6 +156,16 @@ export interface NexusGenObjects {
     maxSendable?: number | null; // Int
     metadata?: string | null; // String
     minSendable?: number | null; // Int
+  }
+  MakerRole: { // root type
+    icon: string; // String!
+    id: number; // Int!
+    level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
+    title: string; // String!
+  }
+  MakerSkill: { // root type
+    id: number; // Int!
+    title: string; // String!
   }
   Mutation: {};
   MyProfile: { // root type
@@ -235,16 +261,6 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     website?: string | null; // String
   }
-  UserRole: { // root type
-    icon: string; // String!
-    id: number; // Int!
-    level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
-    title: string; // String!
-  }
-  UserSkill: { // root type
-    id: number; // Int!
-    title: string; // String!
-  }
   Vote: { // root type
     amount_in_sat: number; // Int!
     id: number; // Int!
@@ -336,6 +352,11 @@ export interface NexusGenFieldTypes {
     prizes: string; // String!
     touranments: string; // String!
   }
+  GenericMakerRole: { // field return type
+    icon: string; // String!
+    id: number; // Int!
+    title: string; // String!
+  }
   Hackathon: { // field return type
     cover_image: string; // String!
     description: string; // String!
@@ -353,6 +374,16 @@ export interface NexusGenFieldTypes {
     metadata: string | null; // String
     minSendable: number | null; // Int
   }
+  MakerRole: { // field return type
+    icon: string; // String!
+    id: number; // Int!
+    level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
+    title: string; // String!
+  }
+  MakerSkill: { // field return type
+    id: number; // Int!
+    title: string; // String!
+  }
   Mutation: { // field return type
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
@@ -360,6 +391,7 @@ export interface NexusGenFieldTypes {
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateUserPreferences: NexusGenRootTypes['MyProfile']; // MyProfile!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
@@ -378,9 +410,9 @@ export interface NexusGenFieldTypes {
     nostr_prv_key: string | null; // String
     nostr_pub_key: string | null; // String
     role: string | null; // String
-    roles: NexusGenRootTypes['UserRole'][]; // [UserRole!]!
+    roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     similar_makers: NexusGenRootTypes['User'][]; // [User!]!
-    skills: NexusGenRootTypes['UserSkill'][]; // [UserSkill!]!
+    skills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String
@@ -414,6 +446,8 @@ export interface NexusGenFieldTypes {
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
+    getAllMakersRoles: NexusGenRootTypes['GenericMakerRole'][]; // [GenericMakerRole!]!
+    getAllMakersSkills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
     getCategory: NexusGenRootTypes['Category']; // Category!
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -492,23 +526,13 @@ export interface NexusGenFieldTypes {
     location: string | null; // String
     name: string; // String!
     role: string | null; // String
-    roles: NexusGenRootTypes['UserRole'][]; // [UserRole!]!
+    roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     similar_makers: NexusGenRootTypes['User'][]; // [User!]!
-    skills: NexusGenRootTypes['UserSkill'][]; // [UserSkill!]!
+    skills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String
     website: string | null; // String
-  }
-  UserRole: { // field return type
-    icon: string; // String!
-    id: number; // Int!
-    level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
-    title: string; // String!
-  }
-  UserSkill: { // field return type
-    id: number; // Int!
-    title: string; // String!
   }
   Vote: { // field return type
     amount_in_sat: number; // Int!
@@ -536,9 +560,9 @@ export interface NexusGenFieldTypes {
     location: string | null; // String
     name: string; // String!
     role: string | null; // String
-    roles: NexusGenRootTypes['UserRole'][]; // [UserRole!]!
+    roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     similar_makers: NexusGenRootTypes['User'][]; // [User!]!
-    skills: NexusGenRootTypes['UserSkill'][]; // [UserSkill!]!
+    skills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
     tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String
@@ -619,6 +643,11 @@ export interface NexusGenFieldTypeNames {
     prizes: 'String'
     touranments: 'String'
   }
+  GenericMakerRole: { // field return type name
+    icon: 'String'
+    id: 'Int'
+    title: 'String'
+  }
   Hackathon: { // field return type name
     cover_image: 'String'
     description: 'String'
@@ -636,6 +665,16 @@ export interface NexusGenFieldTypeNames {
     metadata: 'String'
     minSendable: 'Int'
   }
+  MakerRole: { // field return type name
+    icon: 'String'
+    id: 'Int'
+    level: 'RoleLevelEnum'
+    title: 'String'
+  }
+  MakerSkill: { // field return type name
+    id: 'Int'
+    title: 'String'
+  }
   Mutation: { // field return type name
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
@@ -643,6 +682,7 @@ export interface NexusGenFieldTypeNames {
     deleteStory: 'Story'
     donate: 'Donation'
     updateProfileDetails: 'MyProfile'
+    updateProfileRoles: 'MyProfile'
     updateUserPreferences: 'MyProfile'
     vote: 'Vote'
   }
@@ -661,9 +701,9 @@ export interface NexusGenFieldTypeNames {
     nostr_prv_key: 'String'
     nostr_pub_key: 'String'
     role: 'String'
-    roles: 'UserRole'
+    roles: 'MakerRole'
     similar_makers: 'User'
-    skills: 'UserSkill'
+    skills: 'MakerSkill'
     stories: 'Story'
     tournaments: 'Tournament'
     twitter: 'String'
@@ -697,6 +737,8 @@ export interface NexusGenFieldTypeNames {
     allCategories: 'Category'
     allProjects: 'Project'
     getAllHackathons: 'Hackathon'
+    getAllMakersRoles: 'GenericMakerRole'
+    getAllMakersSkills: 'MakerSkill'
     getCategory: 'Category'
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
@@ -775,23 +817,13 @@ export interface NexusGenFieldTypeNames {
     location: 'String'
     name: 'String'
     role: 'String'
-    roles: 'UserRole'
+    roles: 'MakerRole'
     similar_makers: 'User'
-    skills: 'UserSkill'
+    skills: 'MakerSkill'
     stories: 'Story'
     tournaments: 'Tournament'
     twitter: 'String'
     website: 'String'
-  }
-  UserRole: { // field return type name
-    icon: 'String'
-    id: 'Int'
-    level: 'RoleLevelEnum'
-    title: 'String'
-  }
-  UserSkill: { // field return type name
-    id: 'Int'
-    title: 'String'
   }
   Vote: { // field return type name
     amount_in_sat: 'Int'
@@ -819,9 +851,9 @@ export interface NexusGenFieldTypeNames {
     location: 'String'
     name: 'String'
     role: 'String'
-    roles: 'UserRole'
+    roles: 'MakerRole'
     similar_makers: 'User'
-    skills: 'UserSkill'
+    skills: 'MakerSkill'
     stories: 'Story'
     tournaments: 'Tournament'
     twitter: 'String'
@@ -860,6 +892,9 @@ export interface NexusGenArgTypes {
     }
     updateProfileDetails: { // args
       data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput
+    }
+    updateProfileRoles: { // args
+      data?: NexusGenInputs['ProfileRolesInput'] | null; // ProfileRolesInput
     }
     updateUserPreferences: { // args
       userKeys?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]

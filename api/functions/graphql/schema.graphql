@@ -31,9 +31,9 @@ interface BaseUser {
   location: String
   name: String!
   role: String
-  roles: [UserRole!]!
+  roles: [MakerRole!]!
   similar_makers: [User!]!
-  skills: [UserSkill!]!
+  skills: [MakerSkill!]!
   stories: [Story!]!
   tournaments: [Tournament!]!
   twitter: String
@@ -96,6 +96,12 @@ type DonationsStats {
   touranments: String!
 }
 
+type GenericMakerRole {
+  icon: String!
+  id: Int!
+  title: String!
+}
+
 type Hackathon {
   cover_image: String!
   description: String!
@@ -115,6 +121,27 @@ type LnurlDetails {
   minSendable: Int
 }
 
+type MakerRole {
+  icon: String!
+  id: Int!
+  level: RoleLevelEnum!
+  title: String!
+}
+
+input MakerRoleInput {
+  id: Int!
+  level: RoleLevelEnum!
+}
+
+type MakerSkill {
+  id: Int!
+  title: String!
+}
+
+input MakerSkillInput {
+  id: Int!
+}
+
 type Mutation {
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
@@ -122,6 +149,7 @@ type Mutation {
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
+  updateProfileRoles(data: ProfileRolesInput): MyProfile
   updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
@@ -141,9 +169,9 @@ type MyProfile implements BaseUser {
   nostr_prv_key: String
   nostr_pub_key: String
   role: String
-  roles: [UserRole!]!
+  roles: [MakerRole!]!
   similar_makers: [User!]!
-  skills: [UserSkill!]!
+  skills: [MakerSkill!]!
   stories: [Story!]!
   tournaments: [Tournament!]!
   twitter: String
@@ -193,6 +221,11 @@ input ProfileDetailsInput {
   website: String
 }
 
+input ProfileRolesInput {
+  roles: [MakerRoleInput!]!
+  skills: [MakerSkillInput!]!
+}
+
 type Project {
   awards: [Award!]!
   category: Category!
@@ -213,6 +246,8 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
+  getAllMakersRoles: [GenericMakerRole!]!
+  getAllMakersSkills: [MakerSkill!]!
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
@@ -313,9 +348,9 @@ type User implements BaseUser {
   location: String
   name: String!
   role: String
-  roles: [UserRole!]!
+  roles: [MakerRole!]!
   similar_makers: [User!]!
-  skills: [UserSkill!]!
+  skills: [MakerSkill!]!
   stories: [Story!]!
   tournaments: [Tournament!]!
   twitter: String
@@ -325,18 +360,6 @@ type User implements BaseUser {
 input UserKeyInputType {
   key: String!
   name: String!
-}
-
-type UserRole {
-  icon: String!
-  id: Int!
-  level: RoleLevelEnum!
-  title: String!
-}
-
-type UserSkill {
-  id: Int!
-  title: String!
 }
 
 enum VOTE_ITEM_TYPE {
