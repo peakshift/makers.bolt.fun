@@ -11,7 +11,6 @@ import RolesCard from "./RolesCard/RolesCard"
 import SkillsCard from "./SkillsCard/SkillsCard"
 import TournamentsCard from "./TournamentsCard/TournamentsCard"
 import { MEDIA_QUERIES } from "src/utils/theme"
-import TrendingCard from "src/features/Posts/Components/TrendingCard/TrendingCard"
 import SimilarMakersCard from "./SimilarMakersCard/SimilarMakersCard"
 
 export default function ProfilePage() {
@@ -69,8 +68,8 @@ export default function ProfilePage() {
                     <>
                         <main>
                             <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
-                            <RolesCard roles={profileQuery.data.profile.roles} />
-                            <SkillsCard skills={profileQuery.data.profile.skills} />
+                            <RolesCard roles={profileQuery.data.profile.roles} isOwner={isOwner} />
+                            <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
                         </main>
                     </>
