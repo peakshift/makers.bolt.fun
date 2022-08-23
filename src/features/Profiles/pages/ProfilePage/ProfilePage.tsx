@@ -25,6 +25,7 @@ export default function ProfilePage() {
     const { isOwner } = useAppSelector(state => ({
         isOwner: Boolean(state.user.me?.id && state.user.me?.id === profileQuery.data?.profile?.id),
     }))
+
     const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
 
@@ -51,9 +52,9 @@ export default function ProfilePage() {
                     <>
                         <aside>
 
-                            <RolesCard roles={profileQuery.data.profile.roles} />
-                            <SkillsCard skills={profileQuery.data.profile.skills} />
-                            <TournamentsCard tournaments={profileQuery.data.profile.tournaments} />
+                            <RolesCard roles={profileQuery.data.profile.roles} isOwner={isOwner} />
+                            <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
+                            <TournamentsCard tournaments={profileQuery.data.profile.tournaments} isOwner={isOwner} />
                         </aside>
                         <main>
 

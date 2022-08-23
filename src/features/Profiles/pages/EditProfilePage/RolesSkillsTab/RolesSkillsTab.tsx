@@ -6,13 +6,14 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import SaveChangesCard from '../SaveChangesCard/SaveChangesCard';
 import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
-import { NetworkStatus } from '@apollo/client';
+import { gql, NetworkStatus, useApolloClient } from '@apollo/client';
 import { usePrompt } from 'src/utils/hooks';
 import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, useUpdateUserRolesSkillsMutation } from 'src/graphql'
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import UpdateRolesCard from "./UpdateRolesCard/UpdateRolesCard";
 import UpdateSkillsCard from "./UpdateSkillsCard/UpdateSkillsCard";
 import RolesSkillsTabSkeleton from "./RolesSkillsTab.Skeleton";
+import { useEffect } from "react";
 
 
 interface Props {
@@ -53,6 +54,23 @@ export default function PreferencesTab() {
         notifyOnNetworkStatusChange: true,
     });
     const [mutate, mutationStatus] = useUpdateUserRolesSkillsMutation();
+
+    const apolloClient = useApolloClient();
+
+    useEffect(() => {
+        console.log(apolloClient.readFragment({
+            id: "User:1",
+            fragment: gql`
+        fragment MyUser on User{
+            id
+            name
+            skills
+        }
+        `
+        }))
+
+    }, [apolloClient])
+
 
 
     usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
