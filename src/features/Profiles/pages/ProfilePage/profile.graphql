@@ -1,19 +1,5 @@
 query profile($profileId: Int!) {
   profile(id: $profileId) {
-    id
-    name
-    avatar
-    join_date
-    role
-    email
-    jobTitle
-    lightning_address
-    website
-    twitter
-    github
-    linkedin
-    bio
-    location
     stories {
       id
       title
@@ -23,16 +9,6 @@ query profile($profileId: Int!) {
         title
         icon
       }
-    }
-    skills {
-      id
-      title
-    }
-    roles {
-      id
-      title
-      icon
-      level
     }
     tournaments {
       id
@@ -47,5 +23,7 @@ query profile($profileId: Int!) {
       avatar
       jobTitle
     }
+    ...UserBasicInfo
+    ...UserRolesSkills
   }
 }

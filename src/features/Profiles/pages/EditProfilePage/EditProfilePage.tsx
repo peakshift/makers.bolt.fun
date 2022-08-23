@@ -3,18 +3,18 @@ import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import Slider from "src/Components/Slider/Slider";
 import { useAppSelector, useMediaQuery } from "src/utils/hooks";
-import UpdateMyProfileTab from "./UpdateMyProfileTab/UpdateMyProfileTab";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
 import PreferencesTab from "./PreferencesTab/PreferencesTab";
 import RolesSkillsTab from "./RolesSkillsTab/RolesSkillsTab";
 import Card from "src/Components/Card/Card";
+import BasicProfileInfoTab from "./BasicProfileInfoTab/BasicProfileInfoTab";
 
 
 const links = [
     {
         text: "🤠  Basic information",
-        path: 'my-profile',
+        path: 'basic-info',
     },
     {
         text: "🎛️  Roles & Skills",
@@ -87,8 +87,8 @@ export default function EditProfilePage() {
                 </aside>
                 <main className="md:col-span-3">
                     <Routes>
-                        <Route index element={<Navigate to='my-profile' />} />
-                        <Route path='my-profile' element={<UpdateMyProfileTab />} />
+                        <Route index element={<Navigate to='basic-info' />} />
+                        <Route path='basic-info' element={<BasicProfileInfoTab />} />
                         <Route path='roles-skills' element={<RolesSkillsTab />} />
                         <Route path='preferences' element={<PreferencesTab />
                         } />

@@ -31,33 +31,13 @@ export default function ProfilePage() {
     const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
 
-    const apolloClient = useApolloClient();
-
-    const profileFetched = !!profileQuery.data?.profile
-
-    useEffect(() => {
-        if (profileFetched)
-            console.log(apolloClient.readFragment({
-                id: `User:${id}`,
-                fragment: gql`
-        fragment MyUser on User{
-            id
-            name
-            roles{
-                id
-                title
-            }
-        }
-        `
-            }))
-
-    }, [apolloClient, profileFetched])
 
     if (profileQuery.loading)
         return <LoadingPage />
 
     if (!profileQuery.data?.profile)
         return <NotFoundPage />
+
 
     return (
         <>

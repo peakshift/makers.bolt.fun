@@ -1,16 +1,20 @@
+fragment UserRolesSkills on BaseUser {
+  skills {
+    id
+    title
+  }
+  roles {
+    id
+    title
+    icon
+    level
+  }
+}
+
 query MyProfileRolesSkills {
   me {
     id
-    skills {
-      id
-      title
-    }
-    roles {
-      id
-      title
-      icon
-      level
-    }
+    ...UserRolesSkills
   }
   getAllMakersRoles {
     id

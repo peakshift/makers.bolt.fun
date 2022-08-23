@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
 import { gql, NetworkStatus, useApolloClient } from '@apollo/client';
 import { usePrompt } from 'src/utils/hooks';
-import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, useUpdateUserRolesSkillsMutation } from 'src/graphql'
+import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, useUpdateUserRolesSkillsMutation, UserRolesSkillsFragmentDoc } from 'src/graphql'
 import UpdateRolesCard from "./UpdateRolesCard/UpdateRolesCard";
 import UpdateSkillsCard from "./UpdateSkillsCard/UpdateSkillsCard";
 import RolesSkillsTabSkeleton from "./RolesSkillsTab.Skeleton";
@@ -54,19 +54,14 @@ export default function PreferencesTab() {
 
     const apolloClient = useApolloClient()
     const [mutate, mutationStatus] = useUpdateUserRolesSkillsMutation({
-        onCompleted: data => {
+        onCompleted: ({ updateProfileRoles: data }) => {
             apolloClient.writeFragment({
-                id: `User:${data.updateProfileRoles?.id}`,
+                id: `User:${data?.id}`,
                 data: {
-                    roles: data.updateProfileRoles?.roles,
-                    skills: data.updateProfileRoles?.skills
+                    roles: data?.roles,
+                    skills: data?.skills
                 },
-                fragment: gql`
-                fragment user on User{
-                    roles
-                    skills
-                }
-                `
+                fragment: UserRolesSkillsFragmentDoc,
             })
         }
     });

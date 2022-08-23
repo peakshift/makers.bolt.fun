@@ -1,0 +1,28 @@
+fragment UserBasicInfo on BaseUser {
+  id
+  name
+  avatar
+  join_date
+  role
+  email
+  jobTitle
+  lightning_address
+  website
+  twitter
+  github
+  linkedin
+  bio
+  location
+}
+
+query MyProfileAbout {
+  me {
+    ...UserBasicInfo
+  }
+}
+
+mutation updateProfileAbout($data: ProfileDetailsInput) {
+  updateProfileDetails(data: $data) {
+    ...UserBasicInfo
+  }
+}
