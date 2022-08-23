@@ -229,7 +229,7 @@ export const handlers = [
         await delay()
         return res(
             ctx.data({
-                me: { ...me(), roles: [], skills: [] },
+                me: { ...me() },
                 getAllMakersRoles: getAllMakersRoles(),
                 getAllMakersSkills: getAllMakersSkills(),
             })

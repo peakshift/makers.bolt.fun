@@ -12,6 +12,7 @@ import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, u
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import UpdateRolesCard from "./UpdateRolesCard/UpdateRolesCard";
 import UpdateSkillsCard from "./UpdateSkillsCard/UpdateSkillsCard";
+import RolesSkillsTabSkeleton from "./RolesSkillsTab.Skeleton";
 
 
 interface Props {
@@ -58,7 +59,7 @@ export default function PreferencesTab() {
 
 
     if (query.networkStatus === NetworkStatus.loading)
-        return <LoadingPage />
+        return <RolesSkillsTabSkeleton />
 
     if (!query.data || !query.data?.me)
         return <NotFoundPage />
