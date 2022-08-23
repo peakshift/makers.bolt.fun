@@ -153,19 +153,28 @@ export default function LoginPage() {
         </div>
 
     else
-        content = <div className="max-w-[326px] border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-16 items-center" >
-            <p className="text-body1 font-bolder text-center">
-                Login with lightning ⚡
-            </p>
-            <QRCodeSVG
-                width={160}
-                height={160}
-                value={lnurl}
-            />
+        content = <div className="max-w-[364px] border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-24 items-center" >
+
+            <h2 className='text-h5 font-bold text-center'>Login with lightning ⚡</h2>
+            <a href={`lightning:${lnurl}`} >
+                <QRCodeSVG
+                    width={240}
+                    height={240}
+                    value={lnurl}
+                    bgColor='transparent'
+                    imageSettings={{
+                        src: '/assets/images/nut_3d.png',
+                        width: 32,
+                        height: 32,
+                        excavate: true,
+
+                    }}
+                />
+            </a>
             <p className="text-gray-600 text-body4 text-center">
                 Scan this code or copy + paste it to your lightning wallet. Or click to login with your browser's wallet.
             </p>
-            <div className="flex flex-wrap gap-16">
+            <div className="w-full flex flex-col items-stretch gap-16">
                 <a href={lnurl}
                     className='grow block text-body4 text-center text-white font-bolder bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
                 >Click to connect <IoRocketOutline /></a>

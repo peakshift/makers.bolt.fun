@@ -1,33 +1,23 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import Button from "src/Components/Button/Button";
-import { User, useUpdateProfileAboutMutation } from "src/graphql";
+import { User, useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables } from "src/graphql";
 import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { usePrompt } from "src/utils/hooks";
+import { useAppDispatch, usePrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
 import Card from "src/Components/Card/Card";
+import LoadingPage from "src/Components/LoadingPage/LoadingPage";
+import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
+import { setUser } from "src/redux/features/user.slice";
+import UpdateProfileAboutTabSkeleton from "./UpdateMyProfileTab.Skeleton";
 
 interface Props {
-    data: Pick<User,
-        | 'name'
-        | 'email'
-        | 'lightning_address'
-        | 'jobTitle'
-        | 'avatar'
-        | 'website'
-        | 'github'
-        | 'twitter'
-        | 'linkedin'
-        | 'location'
-        | 'bio'
-    >,
-    onClose?: () => void;
 }
 
-type IFormInputs = Props['data'];
+type IFormInputs = NonNullable<UpdateProfileAboutMutationVariables['data']>;
 
 const schema: yup.SchemaOf<IFormInputs> = yup.object({
     name: yup.string().trim().required().min(2),
@@ -63,19 +53,33 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 }).required();
 
-export default function UpdateMyProfileTab({ data, onClose }: Props) {
+export default function UpdateMyProfileTab() {
 
     const { register, formState: { errors, isDirty, }, handleSubmit, reset } = useForm<IFormInputs>({
-        defaultValues: data,
+        defaultValues: {},
         resolver: yupResolver(schema),
         mode: 'onBlur',
     });
 
+
+    const profileQuery = useMyProfileAboutQuery({
+        onCompleted: data => {
+            if (data.me)
+                reset(data.me)
+        }
+    })
     const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
 
-
-
+    const dispatch = useAppDispatch()
     usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
+
+
+
+    if (profileQuery.loading)
+        return <UpdateProfileAboutTabSkeleton />
+
+    if (!profileQuery.data?.me)
+        return <NotFoundPage />
 
 
     const onSubmit: SubmitHandler<IFormInputs> = data => {
@@ -98,9 +102,12 @@ export default function UpdateMyProfileTab({ data, onClose }: Props) {
                     website: data.website,
                 }
             },
-            onCompleted: () => {
-                reset(data);
-                toast.update(toastId, { render: "Saved changes successfully", type: "success", ...NotificationsService.defaultOptions, isLoading: false });
+            onCompleted: ({ updateProfileDetails: data }) => {
+                if (data) {
+                    dispatch(setUser(data))
+                    reset(data);
+                    toast.update(toastId, { render: "Saved changes successfully", type: "success", ...NotificationsService.defaultOptions, isLoading: false });
+                }
             }
         })
             .catch(() => {
@@ -114,7 +121,7 @@ export default function UpdateMyProfileTab({ data, onClose }: Props) {
             <Card className="md:col-span-2" defaultPadding={false}>
                 <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
-                        <Avatar src={data.avatar} width={120} />
+                        <Avatar src={profileQuery.data.me.avatar} width={120} />
                     </div>
                 </div>
                 <div className="p-16 md:p-24 mt-64">

@@ -25,7 +25,7 @@ const btnStylesFill: UnionToObjectKeys<Props, 'color'> = {
     gray: 'bg-gray-100 hover:bg-gray-200 text-gray-900 active:bg-gray-300',
     white: 'border border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50',
     black: 'text-white bg-black hover:bg-gray-900',
-    red: "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white",
+    red: "bg-red-500 hover:bg-red-600 active:bg-red-700 text-white",
 }
 
 const loadingColor: UnionToObjectKeys<Props, 'color'> = {
