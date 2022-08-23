@@ -7,7 +7,6 @@ import { useAppSelector, useMediaQuery } from "src/utils/hooks";
 import UpdateMyProfileTab from "./UpdateMyProfileTab/UpdateMyProfileTab";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
-import AccountCard from "./AccountCard/AccountCard";
 import PreferencesTab from "./PreferencesTab/PreferencesTab";
 import Card from "src/Components/Card/Card";
 
@@ -17,12 +16,8 @@ const links = [
         text: "👾 My Profile",
         path: 'my-profile',
     },
-    // {
-    //     text: "🙍‍♂️ Account",
-    //     path: 'account',
-    // },
     {
-        text: "⚙️ Preferences",
+        text: "⚙️  Settings & Preferences",
         path: 'preferences',
     }
 ]
@@ -30,23 +25,15 @@ const links = [
 
 
 export default function EditProfilePage() {
-    const userId = useAppSelector(state => state.user.me?.id)
-    const profileQuery = useProfileQuery({
-        variables: {
-            profileId: userId!,
-        },
-        skip: !userId,
-    })
-    const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
+
+    const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium);
 
 
+    const user = useAppSelector(state => state.user.me)
 
 
-    if (!userId || profileQuery.loading)
+    if (!user)
         return <LoadingPage />
-
-    if (!profileQuery.data?.profile)
-        return <NotFoundPage />
 
     return (
         <>
@@ -97,9 +84,8 @@ export default function EditProfilePage() {
                 <main className="md:col-span-3">
                     <Routes>
                         <Route index element={<Navigate to='my-profile' />} />
-                        <Route path='my-profile' element={<UpdateMyProfileTab data={profileQuery.data.profile} />} />
-                        <Route path='account' element={<AccountCard />} />
-                        <Route path='preferences' element={<PreferencesTab nostr_prv_key={profileQuery.data.profile.nostr_prv_key} nostr_pub_key={profileQuery.data.profile.nostr_pub_key} isOwner={true} />
+                        <Route path='my-profile' element={<UpdateMyProfileTab />} />
+                        <Route path='preferences' element={<PreferencesTab />
                         } />
                     </Routes>
                 </main>

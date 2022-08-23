@@ -1,0 +1,37 @@
+query MyProfileAbout {
+  me {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    jobTitle
+    lightning_address
+    website
+    twitter
+    github
+    linkedin
+    bio
+    location
+  }
+}
+
+mutation updateProfileAbout($data: ProfileDetailsInput) {
+  updateProfileDetails(data: $data) {
+    id
+    name
+    avatar
+    join_date
+    role
+    email
+    jobTitle
+    lightning_address
+    website
+    twitter
+    github
+    linkedin
+    bio
+    location
+  }
+}

@@ -37,14 +37,10 @@ const loginHandler = async (req, res) => {
             if (existingKeys.length >= 3)
                 return res.status(400).json({ status: 'ERROR', reason: "Can only link up to 3 wallets" })
 
-            if (existingKeys.includes(key))
-                return res.status(400).json({ status: 'ERROR', reason: "Wallet already linked" });
-
             // Remove old linking for this key if existing
             await prisma.userKey.deleteMany({
                 where: { key }
             })
-
 
             await prisma.userKey.create({
                 data: {
@@ -52,6 +48,7 @@ const loginHandler = async (req, res) => {
                     user_id,
                 }
             });
+
 
             return res
                 .status(200)

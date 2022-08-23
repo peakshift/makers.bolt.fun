@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AccountCard from './AccountCard';
+import AccountCard from './LinkedAccountsCard';
 
 export default {
     title: 'Profiles/Profile Page/Account Card',

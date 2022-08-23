@@ -1,0 +1,23 @@
+query MyProfilePreferences {
+  me {
+    id
+    walletsKeys {
+      key
+      name
+    }
+    nostr_prv_key
+    nostr_pub_key
+  }
+}
+
+mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
+  updateUserPreferences(userKeys: $walletsKeys) {
+    id
+    walletsKeys {
+      key
+      name
+    }
+    nostr_pub_key
+    nostr_prv_key
+  }
+}
