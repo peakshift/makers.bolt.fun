@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
 interface Props {
-    message?: string,
+    message?: string | JSX.Element,
     type?: 'unknown' | 'fetching'
 }
 
@@ -22,9 +22,9 @@ export default function ErrorMessage({
 
     return (
         <div className="bg-red-50 border border-red-500 rounded-12 text-gray-900 px-20 py-36 flex flex-col items-center ">
-            <p >
+            <div >
                 {messageToShow}
-            </p>
+            </div>
             <a href='/' className='text-primary-500 mt-36 underline' >Back to home page</a>
         </div>
     )

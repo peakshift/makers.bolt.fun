@@ -15,7 +15,7 @@ export default function ExplorePage() {
 
                 <Header />
 
-                <div className="my-32 overflow-hidden">
+                <div className="my-32">
                     <Categories />
                 </div>
                 <div className="w-full overflow-hidden">

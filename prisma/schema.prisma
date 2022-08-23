@@ -64,6 +64,15 @@ model User {
   questions      Question[]
   posts_comments PostComment[]
   donations      Donation[]
+  userKeys       UserKey[]
+}
+
+model UserKey {
+  key  String @id
+  name String @default("My new wallet key")
+
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
 }
 
 // -----------------

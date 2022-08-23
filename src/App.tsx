@@ -10,25 +10,26 @@ import { setUser } from "./redux/features/user.slice";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
-import { Loadable } from "./utils/routing";
+import { Loadable, PAGES_ROUTES } from "./utils/routing";
 
 
 
 // Pages
-const FeedPage = Loadable(React.lazy(() => import("./features/Posts/pages/FeedPage/FeedPage")))
-const PostDetailsPage = Loadable(React.lazy(() => import("./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
-const CreatePostPage = Loadable(React.lazy(() => import("./features/Posts/pages/CreatePostPage/CreatePostPage")))
+const FeedPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "feed_page" */ "./features/Posts/pages/FeedPage/FeedPage")))
+const PostDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "post_details_page" */ "./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
+const CreatePostPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "create_post_page" */ "./features/Posts/pages/CreatePostPage/CreatePostPage")))
 
-const HottestPage = Loadable(React.lazy(() => import("src/features/Projects/pages/HottestPage/HottestPage")))
-const CategoryPage = Loadable(React.lazy(() => import("src/features/Projects/pages/CategoryPage/CategoryPage")))
-const ExplorePage = Loadable(React.lazy(() => import("src/features/Projects/pages/ExplorePage")))
+const HottestPage = Loadable(React.lazy(() => import( /* webpackChunkName: "hottest_page" */ "src/features/Projects/pages/HottestPage/HottestPage")))
+const CategoryPage = Loadable(React.lazy(() => import( /* webpackChunkName: "category_page" */ "src/features/Projects/pages/CategoryPage/CategoryPage")))
+const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage")))
 
-const HackathonsPage = Loadable(React.lazy(() => import("./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
+const HackathonsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
 
-const DonatePage = Loadable(React.lazy(() => import("./features/Donations/pages/DonatePage/DonatePage")))
-const LoginPage = Loadable(React.lazy(() => import("./features/Auth/pages/LoginPage/LoginPage")))
-const LogoutPage = Loadable(React.lazy(() => import("./features/Auth/pages/LogoutPage/LogoutPage")))
-const ProfilePage = Loadable(React.lazy(() => import("./features/Profiles/pages/ProfilePage/ProfilePage")))
+const DonatePage = Loadable(React.lazy(() => import( /* webpackChunkName: "donate_page" */ "./features/Donations/pages/DonatePage/DonatePage")))
+const LoginPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "login_page" */ "./features/Auth/pages/LoginPage/LoginPage")))
+const LogoutPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "logout_page" */ "./features/Auth/pages/LogoutPage/LogoutPage")))
+const ProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "profile_page" */ "./features/Profiles/pages/ProfilePage/ProfilePage")))
+const EditProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "edit_profile_page" */ "./features/Profiles/pages/EditProfilePage/EditProfilePage")))
 
 
 
@@ -90,25 +91,27 @@ function App() {
     </Helmet>
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path="/blog/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+        <Route path={PAGES_ROUTES.blog.createPost} element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
 
         <Route element={<NavbarLayout />}>
-          <Route path="/products/hottest" element={<HottestPage />} />
-          <Route path="/products/category/:id" element={<CategoryPage />} />
-          <Route path="/products" element={<ExplorePage />} />
+          <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
+          <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />
+          <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
 
-          <Route path="/blog/post/:type/:id/*" element={<PostDetailsPage />} />
-          <Route path="/blog" element={<FeedPage />} />
+          <Route path={PAGES_ROUTES.blog.postById} element={<PostDetailsPage />} />
+          <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
 
-          <Route path="/hackathons" element={<HackathonsPage />} />
+          <Route path={PAGES_ROUTES.hackathons.default} element={<HackathonsPage />} />
 
-          <Route path="/donate" element={<DonatePage />} />
+          <Route path={PAGES_ROUTES.donate.default} element={<DonatePage />} />
 
-          <Route path="/profile/:id/*" element={<ProfilePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/logout" element={<LogoutPage />} />
+          <Route path={PAGES_ROUTES.profile.editProfile} element={<EditProfilePage />} />
+          <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
 
-          <Route path="/" element={<Navigate to="/products" />} />
+          <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
+          <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
+
+          <Route path="/" element={<Navigate to={PAGES_ROUTES.projects.default} />} />
         </Route>
 
       </Routes>

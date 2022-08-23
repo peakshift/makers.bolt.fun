@@ -17,9 +17,10 @@ export default function Toolbar() {
                 {/* <TextEditorComponents.ToolButton cmd='leftAlign' />
                 <TextEditorComponents.ToolButton cmd='centerAlign' />
             <TextEditorComponents.ToolButton cmd='rightAlign' /> */}
-                <TextEditorComponents.ToolButton cmd='blockquote' />
+                <TextEditorComponents.ToolButton cmd='link' />
                 <TextEditorComponents.ToolButton cmd='code' />
                 <TextEditorComponents.ToolButton cmd='codeBlock' />
+                <TextEditorComponents.ToolButton cmd='blockquote' />
                 <TextEditorComponents.ToolButton cmd='bulletList' />
                 <TextEditorComponents.ToolButton cmd='orderedList' />
                 <TextEditorComponents.ToolButton cmd='img' />

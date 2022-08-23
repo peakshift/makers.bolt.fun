@@ -2,7 +2,7 @@
 import { useUpdateEffect } from '@react-hookz/web'
 import { useState } from 'react'
 import { useFeedQuery } from 'src/graphql'
-import { useAppSelector, useInfiniteQuery, usePreload } from 'src/utils/hooks'
+import { useInfiniteQuery, usePreload } from 'src/utils/hooks'
 import PostsList from '../../Components/PostsList/PostsList'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
 import PopularTagsFilter, { FilterTag } from './PopularTagsFilter/PopularTagsFilter'
@@ -34,10 +34,6 @@ export default function FeedPage() {
 
     usePreload('PostPage');
 
-    const { navHeight, isLoggedIn } = useAppSelector((state) => ({
-        navHeight: state.ui.navHeight,
-        isLoggedIn: Boolean(state.user.me),
-    }));
 
 
     return (
@@ -76,11 +72,7 @@ export default function FeedPage() {
                     />
                 </div>
                 <aside id='categories' className='no-scrollbar'>
-                    <div className="sticky md:overflow-y-scroll"
-                        style={{
-                            top: `${navHeight + 16}px`,
-                            maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                        }}>
+                    <div className="pb-16 md:overflow-y-scroll sticky-side-element">
                         <Button
                             href='/blog/create-post'
                             color='primary'
@@ -98,12 +90,7 @@ export default function FeedPage() {
                     </div>
                 </aside>
                 <aside id='side' className='no-scrollbar'>
-                    <div className="sticky flex flex-col gap-24"
-                        style={{
-                            top: `${navHeight + 16}px`,
-                            maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                            overflowY: "scroll",
-                        }}>
+                    <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element" >
                         <TrendingCard />
                         <div className='min-h-[300px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden'
                             style={{

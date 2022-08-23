@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface Props {
     place?: string
@@ -25,7 +26,16 @@ class ErrorBoundary extends Component<Props, State> {
 
     public render() {
         if (this.state.hasError) {
-            return <h1>Sorry.. there was an error</h1>;
+            return <div className="page-container">
+                <ErrorMessage message={
+                    <p className="text-body3">
+                        Sorry, something went wrong...😵
+                        <br />
+                        Try refreshing the page.
+                    </p>
+
+                } type="unknown"></ErrorMessage>
+            </div>;
         }
 
         return this.props.children;

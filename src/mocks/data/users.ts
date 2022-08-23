@@ -6,7 +6,7 @@ export const user: User = {
     email: "mtg0987654321@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
-    name: "Mtg",
+    name: "123123124asdfsadfsa8d7fsadfasdf",
     github: "MTG2000",
     jobTitle: "Front-end Web Developer",
     join_date: new Date(2021).toISOString(),

@@ -5,14 +5,35 @@ const { createExpressApp } = require('../../modules');
 const express = require('express');
 const jose = require('jose');
 const { JWT_SECRET } = require('../../utils/consts');
+const extractKeyFromCookie = require('../../utils/extractKeyFromCookie');
+const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
 
 
 
 
 
 const getLoginUrl = async (req, res) => {
+
+    const { action } = req.query;
+
     try {
-        const data = await LnurlAuthService.generateAuthUrl();
+
+        let user_token = null;
+        if (action === 'link') {
+            const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
+            const user = await getUserByPubKey(userPubKey);
+
+            if (!user)
+                return res.status(400).json({ status: 'ERROR', reason: 'Only authenticated user can request a linking URL' });
+
+            user_token = await new jose.SignJWT({ user_id: user.id })
+                .setProtectedHeader({ alg: 'HS256' })
+                .setIssuedAt()
+                .setExpirationTime('5min')
+                .sign(Buffer.from(JWT_SECRET, 'utf-8'))
+        }
+
+        const data = await LnurlAuthService.generateAuthUrl({ user_token });
 
         const session_token = await new jose.SignJWT({ hash: data.secretHash })
             .setProtectedHeader({ alg: 'HS256' })
@@ -24,7 +45,6 @@ const getLoginUrl = async (req, res) => {
             .status(200)
             .json({ ...data, session_token });
     } catch (error) {
-        console.log(error);
         res.status(500).send("Unexpected error happened, please try again")
     }
 

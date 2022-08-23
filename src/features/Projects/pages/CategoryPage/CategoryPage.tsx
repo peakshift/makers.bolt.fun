@@ -36,7 +36,7 @@ export default function CategoryPage() {
                 <title>{`${data?.getCategory.title!} Lightning Products`}</title>
                 <meta property="og:title" content={`${data?.getCategory.title!} Lightning Products`} />
             </Helmet>
-            <div className='px-32'>
+            <div className='page-container'>
                 <HeaderImage
                     isLoading={loading}
                     title={data?.getCategory.title!}
