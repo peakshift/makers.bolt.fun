@@ -175,7 +175,7 @@ export default function LoginPage() {
                 Scan this code or copy + paste it to your lightning wallet. Or click to login with your browser's wallet.
             </p>
             <div className="w-full flex flex-col items-stretch gap-16">
-                <a href={lnurl}
+                <a href={`lightning:${lnurl}`}
                     className='grow block text-body4 text-center text-white font-bolder bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
                 >Click to connect <IoRocketOutline /></a>
                 <Button
