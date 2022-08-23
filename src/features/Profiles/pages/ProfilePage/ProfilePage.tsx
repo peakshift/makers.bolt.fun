@@ -12,6 +12,8 @@ import SkillsCard from "./SkillsCard/SkillsCard"
 import TournamentsCard from "./TournamentsCard/TournamentsCard"
 import { MEDIA_QUERIES } from "src/utils/theme"
 import SimilarMakersCard from "./SimilarMakersCard/SimilarMakersCard"
+import { useEffect } from "react"
+import { gql, useApolloClient } from "@apollo/client"
 
 export default function ProfilePage() {
 
@@ -28,6 +30,28 @@ export default function ProfilePage() {
 
     const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
+
+    const apolloClient = useApolloClient();
+
+    const profileFetched = !!profileQuery.data?.profile
+
+    useEffect(() => {
+        if (profileFetched)
+            console.log(apolloClient.readFragment({
+                id: `User:${id}`,
+                fragment: gql`
+        fragment MyUser on User{
+            id
+            name
+            roles{
+                id
+                title
+            }
+        }
+        `
+            }))
+
+    }, [apolloClient, profileFetched])
 
     if (profileQuery.loading)
         return <LoadingPage />

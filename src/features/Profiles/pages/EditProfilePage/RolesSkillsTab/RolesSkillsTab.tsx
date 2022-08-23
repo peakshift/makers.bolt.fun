@@ -9,11 +9,9 @@ import { NotificationsService } from 'src/services';
 import { gql, NetworkStatus, useApolloClient } from '@apollo/client';
 import { usePrompt } from 'src/utils/hooks';
 import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, useUpdateUserRolesSkillsMutation } from 'src/graphql'
-import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import UpdateRolesCard from "./UpdateRolesCard/UpdateRolesCard";
 import UpdateSkillsCard from "./UpdateSkillsCard/UpdateSkillsCard";
 import RolesSkillsTabSkeleton from "./RolesSkillsTab.Skeleton";
-import { useEffect } from "react";
 
 
 interface Props {
@@ -53,23 +51,26 @@ export default function PreferencesTab() {
         },
         notifyOnNetworkStatusChange: true,
     });
-    const [mutate, mutationStatus] = useUpdateUserRolesSkillsMutation();
 
-    const apolloClient = useApolloClient();
-
-    useEffect(() => {
-        console.log(apolloClient.readFragment({
-            id: "User:1",
-            fragment: gql`
-        fragment MyUser on User{
-            id
-            name
-            skills
+    const apolloClient = useApolloClient()
+    const [mutate, mutationStatus] = useUpdateUserRolesSkillsMutation({
+        onCompleted: data => {
+            apolloClient.writeFragment({
+                id: `User:${data.updateProfileRoles?.id}`,
+                data: {
+                    roles: data.updateProfileRoles?.roles,
+                    skills: data.updateProfileRoles?.skills
+                },
+                fragment: gql`
+                fragment user on User{
+                    roles
+                    skills
+                }
+                `
+            })
         }
-        `
-        }))
+    });
 
-    }, [apolloClient])
 
 
 

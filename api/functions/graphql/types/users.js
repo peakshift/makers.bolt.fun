@@ -430,10 +430,7 @@ const updateProfileRoles = extendType({
                             connect: args.data.skills,
                         },
                         roles: {
-                            create: args.data.roles.map(r => {
-                                console.log(({ roleId: r.id, level: r.level }));
-                                return ({ roleId: r.id, level: r.level })
-                            })
+                            create: args.data.roles.map(r => ({ roleId: r.id, level: r.level }))
                         }
                     }
                 })
