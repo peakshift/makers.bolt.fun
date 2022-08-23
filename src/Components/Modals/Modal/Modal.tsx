@@ -22,7 +22,7 @@ export default function Modal({ onClose, children, ...props }: Props) {
     return <ReactModal
         isOpen={props.isOpen}
         onRequestClose={onClose}
-        overlayClassName='fixed w-full inset-0 overflow-x-hidden z-[2020]'
+        overlayClassName='fixed w-full inset-0 overflow-x-hidden z-[2020] no-scrollbar'
         className=' '
         closeTimeoutMS={1000}
         onAfterClose={() => dispatch(removeClosedModal(props.id))}

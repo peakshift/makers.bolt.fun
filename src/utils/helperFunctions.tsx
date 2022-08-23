@@ -61,7 +61,8 @@ export function lazyModal<T extends ComponentType<any>>
   return { LazyComponent, preload };
 }
 
-export function trimText(text: string, length: number) {
+export function trimText(text: string | undefined | null, length: number) {
+  if (!text) return '';
   return text.slice(0, length) + (text.length > length ? "..." : "")
 }
 

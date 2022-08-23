@@ -1,27 +1,16 @@
-import { ReactNode, useCallback, useLayoutEffect, useEffect, useRef, } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState, } from "react";
 import { ProjectCard } from "src/utils/interfaces";
-import Carousel from 'react-multi-carousel';
 import { MdDoubleArrow, } from 'react-icons/md';
-import { useAppDispatch } from "src/utils/hooks";
+import { useAppDispatch, useCarousel, useResizeListener } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
-import { useResizeListener } from 'src/utils/hooks'
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import './style.css';
 import { Link } from "react-router-dom";
 import ProjectCardMini from "src/features/Projects/Components/ProjectCardMini/ProjectCardMini";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface Props {
     title: string | ReactNode,
     link?: string;
     projects: ProjectCard[]
-}
-
-const responsive = {
-    all: {
-        breakpoint: { max: 5000, min: 0 },
-        items: calcNumItems(),
-        slidesToSlide: Math.round(calcNumItems())
-    }
 }
 
 
@@ -32,40 +21,26 @@ function calcNumItems(width = Math.min(window.innerWidth - 32, 1440)) {
 
 
 
+
 export default function ProjectsRow({ title, link, projects }: Props) {
 
+    const [slidesToScroll, setSlidesToScroll] = useState(1)
+    const rowRef = useRef<HTMLDivElement>(null)
+    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({
+        align: 'start',
+        slidesToScroll,
+        containScroll: "trimSnaps",
+    })
     const dispatch = useAppDispatch()
 
-    let drag = useRef(false);
-    const rowRef = useRef<HTMLDivElement>(null!);
 
-    const recalcItemsCnt = useCallback(
-        () => {
-            if (rowRef.current) {
-                const count = calcNumItems(rowRef.current.clientWidth);
-                responsive.all.items = count;
-                responsive.all.slidesToSlide = Math.round(count)
-            }
-        },
-        [],
-    );
-    useLayoutEffect(recalcItemsCnt, [recalcItemsCnt]);
-    useResizeListener(recalcItemsCnt)
+    const recalcSlidesToScroll = useCallback(() => {
+        if (rowRef.current)
+            setSlidesToScroll(Math.floor(calcNumItems(rowRef.current.clientWidth)))
+    }, [])
 
-    useEffect(() => {
-
-        const mousedownListener = () => drag.current = false
-        const mousemoveListener = () => drag.current = true
-
-        document.addEventListener('mousedown', mousedownListener);
-        document.addEventListener('mousemove', mousemoveListener);
-
-        return () => {
-            document.removeEventListener('mousedown', mousedownListener);
-            document.removeEventListener('mousemove', mousemoveListener);
-        }
-    }, []);
-
+    useEffect(recalcSlidesToScroll, [recalcSlidesToScroll])
+    useResizeListener(recalcSlidesToScroll);
 
 
     if (projects.length === 0)
@@ -73,8 +48,9 @@ export default function ProjectsRow({ title, link, projects }: Props) {
 
 
 
+
     const handleClick = (projectId: number) => {
-        if (!drag.current) {
+        if (isClickAllowed()) {
             dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
         }
     }
@@ -89,35 +65,35 @@ export default function ProjectsRow({ title, link, projects }: Props) {
                     <MdDoubleArrow className='text-gray-200 ml-8 hover:cursor-pointer transform scale-y-110 scale-x-125 origin-left' />
                 </Link>}
             </h3>
-            <div ref={rowRef} className="">
-                <Carousel
-                    showDots={false}
-                    autoPlay={false}
-                    // arrows={false}
-                    responsive={responsive}
-                    // centerMode
-                    itemClass='pb-[1px]'
-                    containerClass='group'
-                    customLeftArrow={
-                        <button className='carousel-btns opacity-0 group-hover:opacity-100 transition-opacity  w-64 h-full absolute top-0 left-0 rounded-l-12 bg-gradient-to-r from-gray-700 text-white' >
-                            <IoIosArrowBack className='scale-150' />
-                        </button>
-                    }
-                    customRightArrow={
-                        <button className='carousel-btns opacity-0 group-hover:opacity-100 transition-opacity  w-64 h-full absolute top-0 right-0 rounded-r-12 bg-gradient-to-l from-gray-700 text-white' >
-                            <IoIosArrowForward className='scale-150' />
-                        </button>
-                    }
+            <div className="relative group" ref={rowRef}>
+                <div className="overflow-hidden" ref={viewportRef}>
+                    <div className="w-full flex gap-16">
+                        {projects.map((project, idx) =>
+                            <div key={project.id} className='flex-[0_0_100%] max-w-[296px]' >
+                                <ProjectCardMini project={project} onClick={handleClick} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <button
+                    className={`absolute inset-y-0 w-64 left-0 opacity-0  transition-opacity 
+                                rounded-l-12 bg-gradient-to-r from-gray-700 text-white
+                                ${canScrollPrev ? "group-hover:opacity-100" : ""}
+                                `}
+                    onClick={() => scrollSlides(-1)}
                 >
-                    {projects.map((project, idx) =>
-                        <div key={project.id} className='max-w-[296px]' >
-                            <ProjectCardMini project={project} onClick={handleClick} />
-                        </div>
-                    )}
-                </Carousel>
+                    <FaChevronLeft />
+                </button>
+                <button
+                    className={`absolute inset-y-0 w-64 right-0 opacity-0  transition-opacity 
+                                rounded-r-12 bg-gradient-to-l from-gray-700 text-white
+                                ${canScrollNext ? "group-hover:opacity-100" : ""}
+                                `}
+                    onClick={() => scrollSlides(1)}
+                >
+                    <FaChevronRight />
+                </button>
             </div>
-
-
-        </div>
+        </div >
     )
 }

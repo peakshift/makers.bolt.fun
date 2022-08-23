@@ -7,6 +7,7 @@ import { Author, Tag, Vote_Item_Type } from 'src/graphql';
 import Badge from "src/Components/Badge/Badge"
 import { createRoute } from "src/utils/routing"
 import { BiComment } from "react-icons/bi"
+import Card from "src/Components/Card/Card"
 
 
 export type StoryCardType = Pick<Story,
@@ -34,7 +35,7 @@ export default function StoryCard({ story }: Props) {
     });
 
     return (
-        <div className="bg-white rounded-12 overflow-hidden border-2 border-gray-200">
+        <Card className="overflow-hidden" defaultPadding={false}>
             {story.cover_image && <img src={story.cover_image} className='h-[200px] w-full object-cover' alt="" />}
             <div className="p-24">
                 <Header author={story.author} date={story.createdAt} />
@@ -56,6 +57,7 @@ export default function StoryCard({ story }: Props) {
                     </div>
                 </div>
             </div>
-        </div>
+
+        </Card>
     )
 }

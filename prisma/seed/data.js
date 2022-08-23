@@ -1,3 +1,4 @@
+const { randomItem, randomItems, random, getCoverImage } = require("./helpers")
 
 const categories = [
     {
@@ -46,6 +47,68 @@ const categories = [
     }
 ]
 
+const tags = [
+    {
+        id: 1,
+        title: 'Bitcoin',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: "🅱",
+        isOfficial: true,
+    },
+    {
+        id: 2,
+        title: 'Lightning',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: "⚡",
+        isOfficial: true,
+    },
+    {
+        id: 3,
+        title: 'Webln',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: "🔗",
+        isOfficial: true,
+    },
+    {
+        id: 4,
+        title: 'Gaming',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: "🎮",
+        isOfficial: true,
+    },
+    {
+
+        id: 5,
+        title: 'Design',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: '🎨',
+        isOfficial: true,
+    },
+    {
+
+        id: 6,
+        title: 'Launch',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: '🚀',
+        isOfficial: true,
+    },
+    {
+
+        id: 7,
+        title: 'Brainstory',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: '🧠',
+        isOfficial: true,
+    },
+    {
+
+        id: 8,
+        title: 'Development',
+        description: 'Lorem ipsum dolor sit amort consectetur, adipisicing elit. Possimus officia sit numquam nobis iure atque ab sunt nihil voluptatibus',
+        icon: '💻',
+        isOfficial: true,
+    }
+]
 
 const projects = [
     {
@@ -56,9 +119,8 @@ const projects = [
         "website": "https://geyser.fund/",
         "lightning_address": "divineorgan67@walletofsatoshi.com",
         "votes_count": 232,
-        "category": {
-            "id": 1
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 16,
@@ -68,9 +130,8 @@ const projects = [
         "website": "https://getalby.com/",
         "lightning_address": "hello@getalby.com",
         "votes_count": 215,
-        "category": {
-            "id": 9
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 20,
@@ -80,9 +141,8 @@ const projects = [
         "website": "https://lightning.video/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 175,
-        "category": {
-            "id": 7
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 1,
@@ -92,9 +152,8 @@ const projects = [
         "website": "https://kollider.xyz/",
         "lightning_address": "johns@getalby.com",
         "votes_count": 120,
-        "category": {
-            "id": 1
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 12,
@@ -104,9 +163,8 @@ const projects = [
         "website": "https://www.bitrefill.com/buy",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 25,
-        "category": {
-            "id": 8
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 7,
@@ -116,9 +174,8 @@ const projects = [
         "website": "https://www.wavlake.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 25,
-        "category": {
-            "id": 7
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 3,
@@ -128,9 +185,8 @@ const projects = [
         "website": "https://sparkshot.io/",
         "lightning_address": "johns@getalby.com",
         "votes_count": 11,
-        "category": {
-            "id": 3
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 17,
@@ -140,9 +196,8 @@ const projects = [
         "website": "https://lightning.gifts/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 10,
-        "category": {
-            "id": 8
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 4,
@@ -152,9 +207,8 @@ const projects = [
         "website": "https://amboss.space/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 6
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 5,
@@ -164,9 +218,8 @@ const projects = [
         "website": "https://www.lnblackjack.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 4
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 19,
@@ -176,9 +229,8 @@ const projects = [
         "website": "https://yalls.org/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 2
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 13,
@@ -188,9 +240,8 @@ const projects = [
         "website": "https://lightningnetworkstores.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 8
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 9,
@@ -200,9 +251,8 @@ const projects = [
         "website": "https://lightning-poker.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 4
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 6,
@@ -212,9 +262,8 @@ const projects = [
         "website": "https://lngames.net/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 4
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 21,
@@ -224,9 +273,8 @@ const projects = [
         "website": "https://www.starbackr.com/",
         "lightning_address": "moritz@geralby.com",
         "votes_count": 0,
-        "category": {
-            "id": 7
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 8,
@@ -236,9 +284,8 @@ const projects = [
         "website": "https://loft.trade/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 1
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 10,
@@ -248,9 +295,8 @@ const projects = [
         "website": "https://lightning-roulette.com/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 4
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 14,
@@ -260,9 +306,8 @@ const projects = [
         "website": "https://kriptode.com/satsforlikes/index.html",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 9
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 18,
@@ -272,9 +317,8 @@ const projects = [
         "website": "https://scarce.city/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 3
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 15,
@@ -284,9 +328,8 @@ const projects = [
         "website": "https://lnshort.it/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 9
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 11,
@@ -296,9 +339,8 @@ const projects = [
         "website": "https://stacker.news/",
         "lightning_address": "moritz@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 7
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     },
     {
         "id": 2,
@@ -308,14 +350,78 @@ const projects = [
         "website": "https://lnmarkets.com/",
         "lightning_address": "johns@getalby.com",
         "votes_count": 0,
-        "category": {
-            "id": 1
-        }
+        "category_id": randomItem(categories).id,
+        tags: randomItems(random(2, 3), tags)
     }
+]
+
+const hackathons = [
+    {
+        title: 'Fulmo Hackday',
+        start_date: new Date(2022, 2, 22),
+        end_date: new Date(2022, 2, 28),
+        location: "Instanbul, Turkey",
+        cover_image: getCoverImage(),
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
+        tags: randomItems(3, tags),
+        website: "https://bolt.fun/hackathons/shock-the-web"
+    },
+    {
+        title: 'Lightning Leagues',
+        start_date: new Date(2022, 2, 22),
+        end_date: new Date(2022, 2, 28),
+        location: "Instanbul, Turkey",
+        cover_image: getCoverImage(),
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
+        tags: randomItems(3, tags),
+        website: "https://bolt.fun/hackathons/shock-the-web"
+    },
+    {
+        title: 'Surfing on Lightning',
+        start_date: new Date(2022, 2, 22),
+        end_date: new Date(2022, 2, 28),
+        location: "Instanbul, Turkey",
+        cover_image: getCoverImage(),
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
+        tags: randomItems(3, tags),
+        website: "https://bolt.fun/hackathons/shock-the-web"
+    },
+    {
+        title: 'Lightning Startups',
+        start_date: new Date(2022, 2, 22),
+        end_date: new Date(2022, 2, 28),
+        location: "Instanbul, Turkey",
+        cover_image: getCoverImage(),
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
+        tags: randomItems(3, tags),
+        website: "https://bolt.fun/hackathons/shock-the-web"
+    },
+    {
+        title: 'Design-a-thon',
+        start_date: new Date(2022, 2, 22),
+        end_date: new Date(2022, 2, 28),
+        location: "Instanbul, Turkey",
+        cover_image: getCoverImage(),
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
+        tags: randomItems(3, tags),
+        website: "https://bolt.fun/hackathons/shock-the-web"
+    },
+    {
+        title: 'Lightning Olympics',
+        start_date: new Date(2022, 2, 22),
+        end_date: new Date(2022, 2, 28),
+        location: "Instanbul, Turkey",
+        cover_image: getCoverImage(),
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam quam felis ut interdum commodo, scelerisque.",
+        tags: randomItems(3, tags),
+        website: "https://bolt.fun/hackathons/shock-the-web"
+    },
 ]
 
 
 module.exports = {
     categories,
-    projects
+    projects,
+    tags,
+    hackathons,
 }

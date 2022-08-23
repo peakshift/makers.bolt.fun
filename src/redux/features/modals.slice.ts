@@ -4,12 +4,15 @@ import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/Proj
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
 import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageModal'
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
+import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
+import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage/AccountCard/LinkingAccountModal";
 
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
+import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
 
 export enum Direction {
   START,
@@ -32,10 +35,13 @@ export const ALL_MODALS = {
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
   ConfirmModal,
+  NoWeblnModal,
+  LinkingAccountModal,
 
   // Text Editor Modals
   InsertImageModal,
   InsertVideoModal,
+  InsertLinkModal,
 }
 
 type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>

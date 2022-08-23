@@ -5,16 +5,14 @@ import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
     Menu,
     MenuItem,
     MenuButton,
-    useMenuState,
-    ControlledMenu,
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
-import { FiChevronDown, FiLogIn } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
@@ -41,7 +39,7 @@ export default function NavDesktop() {
 
     return (
         <nav className="bg-white py-16 flex items-center w-full min-w-full">
-            <div className="page-container flex items-center !p-0">
+            <div className="content-container flex items-center">
                 <Link to="/">
                     <h2 className="text-h5 font-bold mr-40 lg:mr-64">
                         <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
@@ -49,8 +47,8 @@ export default function NavDesktop() {
                 </Link>
                 <ul className="flex gap-32 xl:gap-64">
                     <li className="relative">
-                        <Link to={'/products'} className='text-body4 font-bold hover:text-primary-600'>
-                            Products
+                        <Link to={'/projects'} className='text-body4 font-bold hover:text-primary-600'>
+                            Projects
                         </Link>
                     </li>
                     <li>
@@ -161,13 +159,15 @@ export default function NavDesktop() {
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         } */}
 
-                    {currentSection === 'products' && <IconButton className='mr-16 self-center' onClick={openSearch}>
+                    {currentSection === 'apps' && <IconButton className='mr-16 self-center' onClick={openSearch}>
                         <BsSearch className='scale-125 text-gray-400' />
                     </IconButton>}
                 </motion.div>
                 {curUser !== undefined &&
                     (curUser ?
                         <Menu
+                            align="end"
+                            offsetY={4}
                             menuClassName='!p-8 !rounded-12'
                             menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
                             <MenuItem
@@ -178,7 +178,17 @@ export default function NavDesktop() {
                                 }}
                                 className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                             >
-                                Profile
+                                👾 Profile
+                            </MenuItem>
+                            <MenuItem
+                                href="/edit-profile"
+                                onClick={(e) => {
+                                    e.syntheticEvent.preventDefault();
+                                    navigate("/edit-profile");
+                                }}
+                                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                            >
+                                ⚙️ Settings
                             </MenuItem>
                             <MenuItem
                                 href="/logout"
@@ -188,12 +198,12 @@ export default function NavDesktop() {
                                 }}
                                 className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                             >
-                                Logout
+                                👋 Logout
                             </MenuItem>
                         </Menu>
 
                         :
-                        <Button color="primary" href="/login">
+                        <Button size="sm" color="white" href="/login">
                             Connect ⚡
                         </Button>
                     )

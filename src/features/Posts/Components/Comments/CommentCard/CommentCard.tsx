@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify';
 import { Vote_Item_Type } from "src/graphql";
 import { useVote } from "src/utils/hooks";
 import { useState } from "react";
+import Card from "src/Components/Card/Card";
 
 
 interface Props {
@@ -25,13 +26,12 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
     });
 
     return (
-        <div className="border-2 border-gray-200 rounded-12 md:rounded-16 p-24">
+        <Card>
             <Header author={comment.author} date={new Date(comment.created_at).toISOString()} />
             <div
                 className="text-body4 mt-16 whitespace-pre-line"
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(comment.body)) }}
             >
-
             </div>
             <div className="flex gap-24 mt-16 items-center">
                 <VoteButton
@@ -46,6 +46,6 @@ export default function CommentCard({ comment, canReply, onReply }: Props) {
                     <BiComment /> <span className="align-middle text-body5">Reply</span>
                 </button>}
             </div>
-        </div>
+        </Card>
     )
 }

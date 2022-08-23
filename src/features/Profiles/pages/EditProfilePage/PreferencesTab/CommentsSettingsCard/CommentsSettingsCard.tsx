@@ -6,22 +6,23 @@ import CopyToClipboard from 'src/Components/CopyToClipboard/CopyToClipboard';
 import IconButton from 'src/Components/IconButton/IconButton';
 import { CONSTS } from 'src/utils';
 import { motion } from "framer-motion";
+import Card from 'src/Components/Card/Card';
 
 
 interface Props {
-    isOwner?: boolean;
     nostr_pub_key: Nullable<string>;
     nostr_prv_key: Nullable<string>;
 
 }
 
-export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isOwner }: Props) {
+export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key }: Props) {
 
     const [relaysDropdownOpen, toggleRelaysDropdownOpen] = useToggle(false)
 
 
     return (
-        <div className="rounded-16 bg-white border-2 border-gray-200 p-24">
+        <Card>
+
             <p className="text-body2 font-bold">💬 Nostr comments <span className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48 ml-8">Experimental</span></p>
             <p className="mt-8 text-body4 text-gray-600">
                 Our commenting system is experimental and uses Nostr to store and relay your messages and replies to our own relay, as well as relays ran by other people in the community.
@@ -38,7 +39,8 @@ export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isO
                         <input
                             type={'password'}
                             className="input-text"
-                            value={nostr_prv_key}
+                            defaultValue={nostr_prv_key}
+                            readOnly
                         />
 
                         <CopyToClipboard text={nostr_prv_key} />
@@ -50,10 +52,10 @@ export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isO
                     </p>
                     <div className="input-wrapper mt-8 relative">
                         <input
-
                             type='text'
                             className="input-text"
-                            value={nostr_pub_key!}
+                            defaultValue={nostr_pub_key!}
+                            readOnly
                         />
                         <CopyToClipboard text={nostr_pub_key ?? ''} />
                     </div>
@@ -94,6 +96,7 @@ export default function CommentsSettingsCard({ nostr_prv_key, nostr_pub_key, isO
             <Button color='gray' fullWidth disabled className='mt-24'>
                 Connect your Nostr ID (coming soon)
             </Button>
-        </div>
+
+        </Card>
     )
 }

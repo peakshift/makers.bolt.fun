@@ -16,8 +16,6 @@ import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 
-const NAV_HEIGHT = "67px"
-
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
   menuShow: { rotate: 0, opacity: 1 },
@@ -75,15 +73,28 @@ export default function NavMobile() {
   return (
     <div className={`${styles.navMobile}`}>
       <nav className={`bg-white h-[67px] w-full py-16`}>
-        <div className="page-container flex justify-between items-center !p-0">
-          <Link to="/">
-            <img className='h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
-          </Link>
+        <div className="content-container flex justify-between items-center">
 
-          <div className="ml-auto"></div>
-          {curUser !== undefined &&
-            (curUser &&
+          <div className="flex-1 flex content-start">
+            <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
+              {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
+                : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
+            </IconButton>
+
+          </div>
+
+          <div className="flex-[2] flex justify-center">
+            <Link to="/">
+              <img className='max-h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
+            </Link>
+          </div>
+
+          <div className="flex-1 flex justify-end">
+            {curUser ?
+
               <Menu
+                align="end"
+                offsetY={4}
                 menuClassName='!p-8 !rounded-12'
                 menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
                 <MenuItem
@@ -94,7 +105,17 @@ export default function NavMobile() {
                   }}
                   className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                 >
-                  Profile
+                  👾 Profile
+                </MenuItem>
+                <MenuItem
+                  href="/edit-profile"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/edit-profile");
+                  }}
+                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                >
+                  ⚙️ Settings
                 </MenuItem>
                 <MenuItem
                   href="/logout"
@@ -104,16 +125,16 @@ export default function NavMobile() {
                   }}
                   className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                 >
-                  Logout
+                  👋 Logout
                 </MenuItem>
               </Menu>
+              :
+              <Button size="sm" color="none" className="!text-body5 whitespace-nowrap" href="/login">
+                Connect ⚡
+              </Button>
 
-            )
-          }
-          <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
-            {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
-              : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
-          </IconButton>
+            }</div>
+
         </div>
       </nav>
 
@@ -132,36 +153,15 @@ export default function NavMobile() {
         >
           <div className="flex flex-col gap-16 py-16">
             <Search onResultClick={() => toggleDrawerOpen(false)} />
-            {
-              curUser ?
-                <Button
-                  color="gray"
-                  fullWidth
-                  className="!py-16 px-40 rounded-12 "
-                  href='/logout'
-                  onClick={() => toggleDrawerOpen()}
-                >
-                  Logout
-                </Button> :
-                <Button
-                  color="primary"
-                  fullWidth
-                  className="!py-16 px-40 rounded-12 "
-                  href='/login'
-                  onClick={() => toggleDrawerOpen()}
-                >
-                  Connect your lightning wallet ⚡️
-                </Button>
-            }
           </div>
-          <ul className="px-32 flex flex-col py-16 gap-32 border-t">
+          <ul className="flex flex-col py-16 gap-32 border-t">
 
             <li className="relative">
               <Link
-                to={'/products'}
+                to={'/projects'}
                 onClick={() => toggleDrawerOpen(false)}
                 className='text-body4 font-bold hover:text-primary-600'>
-                Products
+                Projects
               </Link>
             </li>
             <li>
@@ -188,8 +188,8 @@ export default function NavMobile() {
                     onClick={() => toggleDrawerOpen(false)}
                     className='font-medium flex gap-16 !rounded-12 '
                   >
-                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2">✍🏼</span>
+                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <span className="text-body2 shrink-0">✍🏼</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -204,8 +204,8 @@ export default function NavMobile() {
 
                     className='font-medium flex gap-16 !rounded-12 opacity-60'
                   >
-                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2">💬</span>
+                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <span className="text-body2 shrink-0">💬</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -221,8 +221,8 @@ export default function NavMobile() {
                     onClick={() => toggleDrawerOpen(false)}
                     className='font-medium flex gap-16 !rounded-12'
                   >
-                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2">🏆</span>
+                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <span className="text-body2 shrink-0">🏆</span>
                     </div>
                     <div>
                       <p className="text-body4 text-black font-medium">
@@ -254,31 +254,40 @@ export default function NavMobile() {
                 Donate
               </Link>
             </li>
+            {curUser &&
+              <li className="relative">
+                <Link
+                  to={'/logout'}
+                  onClick={() => toggleDrawerOpen(false)}
+                  className='text-body4 font-bold hover:text-primary-600'>
+                  Logout 👋
+                </Link>
+              </li>}
           </ul>
           <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t pt-32 mt-auto">
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">About Us</a>
+              <a href="/#">About Us</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Support</a>
+              <a href="/#">Support</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Press</a>
+              <a href="/#">Press</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Contacts</a>
+              <a href="/#">Contacts</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Careers</a>
+              <a href="/#">Careers</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Sitemap</a>
+              <a href="/#">Sitemap</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Legal</a>
+              <a href="/#">Legal</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/">Cookies Settings</a>
+              <a href="/#">Cookies Settings</a>
             </li>
 
           </ul>

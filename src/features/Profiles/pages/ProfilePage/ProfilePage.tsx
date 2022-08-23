@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet'
 import { useAppSelector } from 'src/utils/hooks';
 import styles from './styles.module.scss'
 import StoriesCard from "./StoriesCard/StoriesCard"
-import CommentsSettingsCard from "./CommentsSettingsCard/CommentsSettingsCard"
 
 export default function ProfilePage() {
 
@@ -44,10 +43,6 @@ export default function ProfilePage() {
                 <main className="flex flex-col gap-24">
                     <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
                     <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
-                    {
-                        isOwner &&
-                        <CommentsSettingsCard nostr_prv_key={profileQuery.data.profile.nostr_prv_key} nostr_pub_key={profileQuery.data.profile.nostr_pub_key} isOwner={isOwner} />
-                    }
                 </main>
                 <aside></aside>
             </div>

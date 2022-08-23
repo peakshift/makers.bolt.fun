@@ -10,3 +10,6 @@ export * from './useWindowSize'
 export * from './useMediaQuery'
 export * from './useCurrentSection'
 export * from './usePreload'
+export * from './useCarousel'
+export * from './usePrompt'
+

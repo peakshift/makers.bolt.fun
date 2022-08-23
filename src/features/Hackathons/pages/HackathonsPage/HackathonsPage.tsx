@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Button from 'src/Components/Button/Button'
 import { useGetHackathonsQuery } from 'src/graphql'
-import { useAppSelector } from 'src/utils/hooks'
 import HackathonsList from '../../Components/HackathonsList/HackathonsList'
 import SortByFilter from '../../Components/SortByFilter/SortByFilter'
 import styles from './styles.module.scss'
@@ -21,9 +20,6 @@ export default function HackathonsPage() {
             tag: Number(tagFilter)
         },
     })
-    const { navHeight } = useAppSelector((state) => ({
-        navHeight: state.ui.navHeight
-    }));
 
     return (
         <>
@@ -35,11 +31,7 @@ export default function HackathonsPage() {
                 className={`page-container  pt-16 w-full ${styles.grid}`}
             >
                 <aside className='no-scrollbar'>
-                    <div className="sticky flex flex-col gap-24 md:overflow-y-scroll"
-                        style={{
-                            top: `${navHeight + 16}px`,
-                            maxHeight: `calc(100vh - ${navHeight}px - 16px)`,
-                        }}>
+                    <div className="flex flex-col gap-24 md:overflow-y-scroll sticky-side-element">
                         <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
                         <SortByFilter
                             filterChanged={setSortByFilter}

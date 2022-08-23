@@ -8,11 +8,13 @@ import { useCallback, useLayoutEffect } from 'react';
 import { setIsMobileScreen } from 'src/redux/features/ui.slice';
 import { isMobileScreen } from './helperFunctions';
 import ReactTooltip from 'react-tooltip';
+import { ToastContainer } from 'react-toastify';
 
-import 'react-multi-carousel/lib/styles.css';
+import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import THEME from './theme';
 import ErrorBoundary from 'src/Components/ErrorBoundary/ErrorBoundary';
+import { NotificationsService } from 'src/services';
 THEME.injectStyles();
 
 let basename = '/';
@@ -55,6 +57,11 @@ export default function Wrapper(props: any) {
             <ReactTooltip
                 effect='solid'
                 delayShow={1000}
+            />
+            <ToastContainer
+                {...NotificationsService.defaultOptions}
+                newestOnTop={false}
+                limit={2}
             />
         </>
     )

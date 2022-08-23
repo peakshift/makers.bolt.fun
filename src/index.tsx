@@ -6,10 +6,12 @@ import App from './App';
 
 
 if (process.env.REACT_APP_ENABLE_MOCKS) {
-  const { worker } = require('./mocks/browser')
-  worker.start({
-    onUnhandledRequest: 'bypass'
-  })
+  import(/* webpackChunkName: "mocks_server" */ './mocks/browser')
+    .then(({ worker }) => {
+      worker.start({
+        onUnhandledRequest: 'bypass'
+      })
+    })
 }
 
 

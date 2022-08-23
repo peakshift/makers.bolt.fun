@@ -2,7 +2,8 @@
 
 $screen-xs-min: 320px;
 
-@import "./tw.scss", "./shared.scss", "./vendors.scss", "./scrollbar.scss";
+@import "./tw.scss", "./shared.scss", "./vendors.scss", "./scrollbar.scss",
+  "./ui_state.scss";
 @import "/src/styles/mixins/index.scss";
 
 html {
@@ -14,23 +15,31 @@ body {
   background-color: #ffffff;
 }
 
+.content-container,
 .page-container {
   --padding: 16px;
 
   @include gt-sm {
     --padding: 24px;
   }
-  width: calc(min(100%, 1440px) - 2 * var(--padding));
+
+  @include gt-md {
+    --padding: 32px;
+  }
+  width: calc(min(100% - 2 * var(--padding), 1440px));
   margin: 0 auto;
+}
+
+.page-container {
   padding: 32px 0;
 }
 
-@media screen and (min-width: 780px) {
-  .page-container {
-    width: calc(min(100% - 64px, 1440px));
-    margin: 0 auto;
-  }
-}
+// @media screen and (min-width: 780px) {
+//   .page-container {
+//     width: calc(min(100% - 64px, 1440px));
+//     margin: 0 auto;
+//   }
+// }
 
 svg {
   display: inline-block;

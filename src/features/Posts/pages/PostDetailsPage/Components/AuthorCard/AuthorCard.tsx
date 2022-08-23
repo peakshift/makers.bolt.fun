@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import Button from "src/Components/Button/Button";
+import Card from "src/Components/Card/Card";
 import { Author } from "src/features/Posts/types";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { trimText } from "src/utils/helperFunctions";
@@ -16,7 +17,7 @@ interface Props {
 
 export default function AuthorCard({ author }: Props) {
     return (
-        <div className="bg-white p-16 border-2 border-gray-200 rounded-12">
+        <Card>
             <div className='flex gap-8'>
                 <Avatar width={48} src={author.avatar} />
                 <div className="overflow-hidden">
@@ -31,6 +32,6 @@ export default function AuthorCard({ author }: Props) {
                 className="mt-16">
                 Maker's Profile
             </Button>
-        </div>
+        </Card>
     )
 }
