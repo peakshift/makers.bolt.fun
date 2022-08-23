@@ -55,6 +55,7 @@ const loginHandler = async (req, res) => {
                 .json({ status: "OK" })
 
         } catch (error) {
+            console.log(error);
             return res.status(400).json({ status: 'ERROR', reason: 'Invalid User Token' })
         }
     }
@@ -126,6 +127,7 @@ const loginHandler = async (req, res) => {
         return res.status(200).json({ status: "OK" })
 
     } catch (error) {
+        console.log(error);
         return res.status(400).json({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
     }
 }
