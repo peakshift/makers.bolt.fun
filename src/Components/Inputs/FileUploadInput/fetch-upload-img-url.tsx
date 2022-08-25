@@ -13,7 +13,7 @@ export async function fetchUploadUrl(options?: Partial<{ filename: string }>) {
             method: 'POST',
             data: bodyFormData,
             headers: {
-                "Authorization": "Bearer Xx2-CdsTliYkq6Ayz-1GX4CZubdQVxMwOSDbajP0",
+                "Authorization": "Bearer XXX",
             }
         })
         return res.data.result.uploadURL as string;
