@@ -18,6 +18,8 @@ import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import ModalsContainer from 'src/Components/Modals/ModalsContainer/ModalsContainer';
+import { ToastContainer } from 'react-toastify';
+import { NotificationsService } from 'src/services';
 
 
 // Enable the Mocks Service Worker
@@ -62,6 +64,11 @@ export const WrapperDecorator: DecoratorFn = (Story, options) => {
             <ReactTooltip
                 effect='solid'
                 delayShow={1000}
+            />
+            <ToastContainer
+                {...NotificationsService.defaultOptions}
+                newestOnTop={false}
+                limit={2}
             />
         </>
     );
