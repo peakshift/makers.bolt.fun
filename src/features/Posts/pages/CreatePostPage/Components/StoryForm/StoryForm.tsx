@@ -14,6 +14,7 @@ import PreviewPostCard from '../PreviewPostCard/PreviewPostCard'
 import { StorageService } from 'src/services';
 import { useThrottledCallback } from '@react-hookz/web';
 import { CreateStoryType, IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
+import { LayoutGroup, motion } from 'framer-motion';
 
 interface Props {
     isUpdating?: boolean;
@@ -105,10 +106,17 @@ export default function StoryForm(props: Props) {
 
     return (
         <>
-            <div id='preview-switch' className="flex gap-16">
-                <button type='button' className={`rounded-8 px-16 py-8 ${editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={() => setEditMode(true)}>Edit</button>
-                <button type='button' className={`rounded-8 px-16 py-8 ${!editMode ? 'bg-primary-100 text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={clickPreview}>Preview</button>
-            </div>
+            <LayoutGroup id='edit-story-mode'>
+                <div id='preview-switch' className="flex gap-16 isolate">
+                    <button type='button' className={`relative px-16 py-8 ${editMode ? 'text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={() => setEditMode(true)}>
+                        {editMode && <motion.div layoutId='bg' className="bg-primary-100 rounded-8 absolute inset-0 z-0"></motion.div>}
+                        <span className='relative z-10'>Edit</span>
+                    </button>
+                    <button type='button' className={`relative px-16 py-8 ${!editMode ? 'text-primary-700' : "text-gray-500"} active:scale-95 transition-transform`} onClick={clickPreview}>
+                        {!editMode && <motion.div layoutId='bg' className="bg-primary-100 rounded-8 absolute inset-0 z-0"></motion.div>}
+                        <span className='relative z-10'>Preview</span></button>
+                </div>
+            </LayoutGroup>
             <form
                 id='form'
                 onSubmit={clickSubmit(true)}
