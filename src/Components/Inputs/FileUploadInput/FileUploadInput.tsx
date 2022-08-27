@@ -1,4 +1,4 @@
-import Uploady, { useUploady, useRequestPreSend, UPLOADER_EVENTS } from "@rpldy/uploady";
+import Uploady, { useUploady, useRequestPreSend, UPLOADER_EVENTS, } from "@rpldy/uploady";
 import { asUploadButton } from "@rpldy/upload-button";
 import Button from "src/Components/Button/Button";
 import { fetchUploadUrl } from "./fetch-upload-img-url";
@@ -66,7 +66,6 @@ const UploadBtn = asUploadButton((props: any) => {
 const DropZone = forwardRef<any, any>((props, ref) => {
     const { onClick, ...buttonProps } = props;
 
-
     useRequestPreSend(async (data) => {
 
         const filename = data.items?.[0].file.name ?? ''
@@ -95,10 +94,10 @@ const DropZone = forwardRef<any, any>((props, ref) => {
         ref={ref}
         onDragOverClassName={styles.active}
         extraProps={{ onClick: onZoneClick }}
-        className={`${styles.zone} border-2 w-full min-h-[200px] rounded-16 flex flex-col justify-center items-center text text-body3`}
+        className={`${styles.zone} border-2 w-full min-h-[200px] max-w-[600px] rounded-16 flex flex-col justify-center items-center text text-body3 border-dashed`}
     >
         <div className={`${styles.idle_content} text-gray-600`}>
-            Drop your files here or <button className="font-bold underline">click to browse</button>
+            Drop your <span className="font-bold uppercase">IMAGES</span> here or <button className="font-bold text-blue-400 underline">Click to browse</button>
         </div>
 
         <motion.div

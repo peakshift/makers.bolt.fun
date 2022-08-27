@@ -39,9 +39,6 @@ export default function ScreenshotsInput(props: Props) {
 
     const [uploadingCount, setUploadingCount] = useState(0)
 
-    if (!Array.isArray(uploadedFiles))
-        throw new Error("screenshots field should be an array");
-
 
     const canUploadMore = uploadingCount + uploadedFiles.length < MAX_UPLOAD_COUNT;
     const placeholdersCount = (MAX_UPLOAD_COUNT - (uploadingCount + uploadedFiles.length + 1));

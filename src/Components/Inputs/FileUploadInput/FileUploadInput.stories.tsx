@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import FileUploadInput from './FileUploadInput';
 
 export default {
-    title: 'Shared/Inputs/File Upload Input',
+    title: 'Shared/Inputs/Files Inputs/Basic',
     component: FileUploadInput,
 
 } as ComponentMeta<typeof FileUploadInput>;
