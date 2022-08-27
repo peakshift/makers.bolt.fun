@@ -16,7 +16,7 @@ import "src/styles/index.scss";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
-import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
+import { Controller, FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import ModalsContainer from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { ToastContainer } from 'react-toastify';
 import { NotificationsService } from 'src/services';
@@ -128,11 +128,32 @@ export function WrapForm<T = any>(options?: Partial<UseFormProps<T> & { logValue
         }
 
         return <FormProvider {...methods} >
-            <Story />
+            <Story onChang />
         </FormProvider>
     }
     return Func
 }
+
+export function WrapFormController<T = any>(options: Partial<UseFormProps<T> & { logValues: boolean }> & { name: string }): DecoratorFn {
+    const Func: DecoratorFn = (Story) => {
+
+        const methods = useForm<T>(options);
+
+        if (options?.logValues) {
+            console.log(methods.watch(options.name as any))
+        }
+
+        return <Controller
+            control={methods.control}
+            name={options.name as any}
+            render={({ field: { value, onChange, onBlur } }) =>
+                <Story controller={{ value, onChange, onBlur }} />
+            }
+        />
+    }
+    return Func
+}
+
 
 
 export const WithModals: DecoratorFn = (Component) => <>

@@ -12,10 +12,6 @@ import ScreenshotThumbnail from "./ScreenshotThumbnail";
 import { FiCamera } from "react-icons/fi";
 import { Control, Path, useController } from "react-hook-form";
 
-interface Props<TForm> {
-    control?: Control<TForm>,
-    name?: Path<TForm> | string
-}
 
 
 const mockSenderEnhancer = getMockSenderEnhancer({
@@ -24,14 +20,21 @@ const mockSenderEnhancer = getMockSenderEnhancer({
 
 const MAX_UPLOAD_COUNT = 4 as const;
 
+export interface ScreenshotType {
+    id: string,
+    name: string,
+    url: string;
+}
+
+interface Props {
+    value: ScreenshotType[],
+    onChange: (new_value: ScreenshotType[]) => void
+}
 
 
-export default function ScreenshotsInput<TForm>(props: Props<TForm>) {
+export default function ScreenshotsInput(props: Props) {
 
-    const { field: { value: uploadedFiles, onChange } } = useController({
-        control: props.control,
-        name: props.name ?? 'screenshots' as any,
-    })
+    const { value: uploadedFiles, onChange } = props;
 
 
     const [uploadingCount, setUploadingCount] = useState(0)
@@ -69,7 +72,7 @@ export default function ScreenshotsInput<TForm>(props: Props<TForm>) {
                         ]
                     }
                     if (id) {
-                        onChange([...uploadedFiles, { id, name: filename, url: variants[1] }])
+                        onChange([...uploadedFiles, { id, name: filename, url: variants[1] }].slice(-MAX_UPLOAD_COUNT))
                     }
                 }
             }}
