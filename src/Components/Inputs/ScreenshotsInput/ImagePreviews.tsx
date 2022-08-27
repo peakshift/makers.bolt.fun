@@ -44,7 +44,7 @@ function CustomImagePreview({ id, url }: PreviewComponentProps) {
         setItemState(STATES.ERROR);
     }, id);
 
-    if (itemState === STATES.DONE)
+    if (itemState === STATES.DONE || itemState === STATES.CANCELLED)
         return null
 
     return <ScreenShotsThumbnail
