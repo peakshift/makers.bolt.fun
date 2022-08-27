@@ -4,7 +4,7 @@ import ScreenshotsInput, { ScreenshotType } from './ScreenshotsInput';
 import { WrapForm, WrapFormController } from 'src/utils/storybook/decorators';
 
 export default {
-    title: 'Shared/Inputs/Screenshots Input',
+    title: 'Shared/Inputs/Files Inputs/Screenshots',
     component: ScreenshotsInput,
     decorators: [
         WrapFormController<{ screenshots: Array<ScreenshotType> }>({
