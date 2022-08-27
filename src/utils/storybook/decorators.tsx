@@ -119,9 +119,14 @@ export const centerDecorator: DecoratorFn = (Story) => {
     </div>
 }
 
-export function WrapForm<T = any>(options?: Partial<UseFormProps<T>>): DecoratorFn {
+export function WrapForm<T = any>(options?: Partial<UseFormProps<T> & { logValues: boolean }>): DecoratorFn {
     const Func: DecoratorFn = (Story) => {
         const methods = useForm<T>(options);
+
+        if (options?.logValues) {
+            console.log(methods.watch())
+        }
+
         return <FormProvider {...methods} >
             <Story />
         </FormProvider>
