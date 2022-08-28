@@ -6,6 +6,7 @@ import { forwardRef, ReactElement, useCallback, useState } from "react";
 import styles from './styles.module.scss'
 import { getMockSenderEnhancer } from "@rpldy/mock-sender";
 import { NotificationsService } from "src/services";
+import { useIsDraggingOnElement } from 'src/utils/hooks';
 
 
 
@@ -24,7 +25,8 @@ export interface ImageType {
 type RenderPropArgs = {
     isUploading?: boolean;
     img: ImageType | null,
-    onAbort: () => void
+    onAbort: () => void,
+    isDraggingOnWindow?: boolean
 }
 
 interface Props {
@@ -101,7 +103,7 @@ export default function SingleImageUploadInput(props: Props) {
 const DropZone = forwardRef<any, any>((props, ref) => {
     const { onClick, children, renderProps, ...buttonProps } = props;
 
-
+    const isDraggingOnWindow = useIsDraggingOnElement()
 
     useRequestPreSend(async (data) => {
 
@@ -130,7 +132,7 @@ const DropZone = forwardRef<any, any>((props, ref) => {
         {...buttonProps}
         ref={ref}
         type='button'
-        onDragOverClassName={styles.active}
+        onDragOverClassName={'drag-active'}
         extraProps={{ onClick: onZoneClick }}
         className={renderProps.wrapperClass}
     >
@@ -138,7 +140,7 @@ const DropZone = forwardRef<any, any>((props, ref) => {
         {renderProps.render({
             img: renderProps.img,
             isUploading: renderProps.isUploading,
-
+            isDraggingOnWindow,
         })}
     </UploadDropZone>
 })

@@ -124,7 +124,6 @@ export default function StoryForm(props: Props) {
                                     render={({ field: { onChange, value, onBlur, ref } }) => <CoverImageInput
                                         value={value ? { url: value } : null}
                                         onChange={e => {
-                                            console.log(e);
                                             onChange(e ? e.url : null)
                                         }}
                                     // uploadText='Add a cover image'

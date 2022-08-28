@@ -1,9 +1,12 @@
-import React, { ComponentProps } from 'react'
+import { motion } from 'framer-motion';
+import React, { ComponentProps, useRef } from 'react'
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { CgArrowsExchangeV } from 'react-icons/cg';
 import { FiCamera } from 'react-icons/fi';
 import { IoMdClose } from 'react-icons/io';
 import { RotatingLines } from 'react-loader-spinner';
 import { Nullable } from 'remirror';
+import { useIsDraggingOnElement } from 'src/utils/hooks';
 import SingleImageUploadInput from '../SingleImageUploadInput/SingleImageUploadInput'
 
 type Value = ComponentProps<typeof SingleImageUploadInput>['value']
@@ -16,18 +19,23 @@ interface Props {
 }
 
 export default function AvatarInput(props: Props) {
+
+    const dropAreaRef = useRef<HTMLDivElement>(null!)
+    const isDragging = useIsDraggingOnElement({ ref: dropAreaRef });
+
     return (
         <div
             style={{
                 width: props.width ?? 120,
             }}
+            ref={dropAreaRef}
             className='aspect-square rounded-full outline outline-2 outline-gray-200 overflow-hidden cursor-pointer '
         >
             <SingleImageUploadInput
                 value={props.value}
                 onChange={props.onChange}
                 wrapperClass='rounded-full bg-white h-full'
-                render={({ img, isUploading }) =>
+                render={({ img, isUploading, isDraggingOnWindow }) =>
                     <div className="w-full h-full rounded-full relative group">
                         {!img &&
                             <div className='w-full h-full rounded-full bg-white hover:bg-gray-100 flex flex-col justify-center items-center'>
@@ -61,6 +69,32 @@ export default function AvatarInput(props: Props) {
                                     width="48"
                                     visible={true}
                                 />
+                            </div>
+                        }
+                        {isDraggingOnWindow &&
+                            <div
+                                className={
+                                    `absolute inset-0 ${isDragging ? 'bg-primary-600' : 'bg-primary-400'}  bg-opacity-80 flex flex-col justify-center items-center text-white font-bold transition-transform`
+                                }
+                            >
+
+                                <motion.div
+                                    initial={{ y: 0 }}
+                                    animate={
+                                        isDragging ? {
+                                            y: 5,
+                                            transition: {
+                                                duration: .4,
+                                                repeat: Infinity,
+                                                repeatType: 'mirror',
+                                            }
+                                        } : {
+                                            y: 0
+                                        }}
+                                    className='text-center text-body4'
+                                >
+                                    <AiOutlineCloudUpload className="scale-150 text-body2" />
+                                </motion.div>
                             </div>
                         }
                     </div>}
