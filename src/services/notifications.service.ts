@@ -32,7 +32,7 @@ export class NotificationsService {
     static info(msg: string, options?: AlertOptions) {
         toast.info(msg, {
             onClose: options?.onComplete,
-            autoClose: options?.autoClose ?? 2500,
+            autoClose: options?.autoClose ?? 4000,
         })
     }
 
@@ -40,7 +40,7 @@ export class NotificationsService {
         if (options?.error && DEBUG) console.log(options?.error)
         toast.error(msg, {
             onClose: options?.onComplete,
-            autoClose: options?.autoClose ?? 2500,
+            autoClose: options?.autoClose ?? 4000,
         })
     }
 

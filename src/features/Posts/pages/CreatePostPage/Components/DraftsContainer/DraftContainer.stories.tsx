@@ -14,7 +14,6 @@ export default {
     decorators: [WithModals, WrapForm<IStoryFormInputs>({
         defaultValues: {
             tags: [],
-            cover_image: [],
         }
     })]
 } as ComponentMeta<typeof DraftsContainer>;

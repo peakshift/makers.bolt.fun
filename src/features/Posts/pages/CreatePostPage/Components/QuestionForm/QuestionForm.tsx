@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import Button from "src/Components/Button/Button";
-import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import * as yup from "yup";
 import ContentEditor from "../ContentEditor/ContentEditor";
@@ -60,7 +59,7 @@ export default function QuestionForm() {
                 <div
                     className='bg-white shadow-lg rounded-8 overflow-hidden'>
                     <div className="p-32">
-                        <Controller
+                        {/* <Controller
                             control={control}
                             name="cover_image"
                             render={({ field: { onChange, value, onBlur } }) => (
@@ -71,7 +70,7 @@ export default function QuestionForm() {
                                     uploadText='Add a cover image'
                                 />
                             )}
-                        />
+                        /> */}
                         <p className='input-error'>{errors.cover_image?.message}</p>
 
 

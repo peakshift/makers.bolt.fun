@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
 import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
-import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageModal'
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
 import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
 
@@ -15,6 +14,7 @@ import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
+import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
 
 export enum Direction {
   START,

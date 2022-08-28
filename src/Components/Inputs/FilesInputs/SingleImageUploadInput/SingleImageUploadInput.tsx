@@ -5,17 +5,19 @@ import UploadDropZone from "@rpldy/upload-drop-zone";
 import { forwardRef, ReactElement, useCallback, useState } from "react";
 import styles from './styles.module.scss'
 import { getMockSenderEnhancer } from "@rpldy/mock-sender";
+import { NotificationsService } from "src/services";
 
 
 
 const mockSenderEnhancer = getMockSenderEnhancer({
     delay: 1500,
+
 });
 
 
 export interface ImageType {
-    id: string,
-    name: string,
+    id?: string,
+    name?: string,
     url: string;
 }
 
@@ -26,14 +28,14 @@ type RenderPropArgs = {
 }
 
 interface Props {
-    value: ImageType,
+    value: ImageType | null | undefined,
     onChange: (new_value: ImageType | null) => void;
     wrapperClass?: string;
     render: (args: RenderPropArgs) => ReactElement;
 }
 
 
-export default function ScreenshotsInput(props: Props) {
+export default function SingleImageUploadInput(props: Props) {
 
     const { value, onChange, render } = props;
 
@@ -43,6 +45,7 @@ export default function ScreenshotsInput(props: Props) {
 
     return (
         <Uploady
+            accept="image/*"
             inputFieldName='file'
             grouped={false}
             enhancer={mockSenderEnhancer}
@@ -55,6 +58,9 @@ export default function ScreenshotsInput(props: Props) {
                         url: URL.createObjectURL(item.file),
                         name: item.file.name,
                     })
+                },
+                [UPLOADER_EVENTS.ITEM_ERROR]: (item) => {
+                    NotificationsService.error("An error happened while uploading. Please try again.")
                 },
                 [UPLOADER_EVENTS.ITEM_FINALIZE]: () => setCurrentlyUploadingItem(null),
                 [UPLOADER_EVENTS.ITEM_FINISH]: (item) => {
@@ -80,7 +86,7 @@ export default function ScreenshotsInput(props: Props) {
                 extraProps={{
                     renderProps: {
                         isUploading: !!currentlyUploadingItem,
-                        img: currentlyUploadingItem || value || null,
+                        img: currentlyUploadingItem ?? value ?? null,
                         render,
                         wrapperClass: props.wrapperClass
                     }
@@ -123,6 +129,7 @@ const DropZone = forwardRef<any, any>((props, ref) => {
     return <UploadDropZone
         {...buttonProps}
         ref={ref}
+        type='button'
         onDragOverClassName={styles.active}
         extraProps={{ onClick: onZoneClick }}
         className={renderProps.wrapperClass}

@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import Button from "src/Components/Button/Button";
 import { User, useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables } from "src/graphql";
 import { NotificationsService } from "src/services/notifications.service";
@@ -13,6 +13,7 @@ import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import { setUser } from "src/redux/features/user.slice";
 import UpdateProfileAboutTabSkeleton from "./UpdateMyProfileTab.Skeleton";
+import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 
 interface Props {
 }
@@ -21,7 +22,7 @@ type IFormInputs = NonNullable<UpdateProfileAboutMutationVariables['data']>;
 
 const schema: yup.SchemaOf<IFormInputs> = yup.object({
     name: yup.string().trim().required().min(2),
-    avatar: yup.string().url().required(),
+    avatar: yup.string().trim().url().required(),
     bio: yup.string().ensure(),
     email: yup.string().email().ensure(),
     github: yup.string().ensure(),
@@ -55,8 +56,10 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 export default function UpdateMyProfileTab() {
 
-    const { register, formState: { errors, isDirty, }, handleSubmit, reset } = useForm<IFormInputs>({
-        defaultValues: {},
+    const { register, formState: { errors, isDirty, }, handleSubmit, reset, control } = useForm<IFormInputs>({
+        defaultValues: {
+
+        },
         resolver: yupResolver(schema),
         mode: 'onBlur',
     });
@@ -121,7 +124,14 @@ export default function UpdateMyProfileTab() {
             <Card className="md:col-span-2" defaultPadding={false}>
                 <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
-                        <Avatar src={profileQuery.data.me.avatar} width={120} />
+                        {/* <Avatar src={profileQuery.data.me.avatar} width={120} /> */}
+                        <Controller
+                            control={control}
+                            name="avatar"
+                            render={({ field: { onChange, value } }) => (
+                                <AvatarInput value={value ? { url: value } : null} onChange={e => onChange(e?.url)} width={120} />
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="p-16 md:p-24 mt-64">
@@ -142,28 +152,13 @@ export default function UpdateMyProfileTab() {
                             {errors.name.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Avatar
-                        </p>
-                        <div className="input-wrapper mt-8 relative">
-                            <input
-
-                                type='text'
-                                className="input-text"
-                                placeholder='https://images.com/my-avatar.jpg'
-                                {...register("avatar")}
-                            />
-                        </div>
-                        {errors.avatar && <p className="input-error">
-                            {errors.avatar.message}
-                        </p>}
-                        <p className="text-body5 mt-16 font-medium">
                             Bio
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <textarea
 
-                                rows={3}
-                                className="input-text !p-20"
+                                rows={4}
+                                className="input-text"
                                 placeholder='Tell others a little bit about yourself'
                                 {...register("bio")}
                             />

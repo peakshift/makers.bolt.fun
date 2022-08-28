@@ -45,7 +45,7 @@ export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
                         setValue('title', data.getPostById.title);
                         setValue('tags', data.getPostById.tags);
                         setValue('body', data.getPostById.body);
-                        setValue('cover_image', data.getPostById.cover_image ? [data.getPostById.cover_image] : []);
+                        setValue('cover_image', data.getPostById.cover_image);
                         setValue('is_published', data.getPostById.is_published);
                     }
 

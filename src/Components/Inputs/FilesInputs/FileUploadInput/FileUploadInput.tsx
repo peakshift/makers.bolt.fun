@@ -1,7 +1,7 @@
 import Uploady, { useUploady, useRequestPreSend, UPLOADER_EVENTS, } from "@rpldy/uploady";
 import { asUploadButton } from "@rpldy/upload-button";
 import Button from "src/Components/Button/Button";
-import { fetchUploadUrl } from "./fetch-upload-img-url";
+import { fetchUploadUrl } from "../fetch-upload-img-url";
 import ImagePreviews from "./ImagePreviews";
 import { FaImage } from "react-icons/fa";
 import UploadDropZone from "@rpldy/upload-drop-zone";
