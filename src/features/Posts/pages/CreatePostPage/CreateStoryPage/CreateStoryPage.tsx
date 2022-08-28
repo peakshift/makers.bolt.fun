@@ -30,8 +30,8 @@ const FileSchema = yup.lazy((value: string | File[]) => {
 const schema = yup.object({
     title: yup.string().trim().required().min(10, 'Story title must be 2+ words').transform(v => v.replace(/(\r\n|\n|\r)/gm, "")),
     tags: yup.array().required().min(1, 'Add at least one tag'),
-    body: yup.string().required().min(50, 'Post must contain at least 10+ words'),
-    cover_image: yup.array().of(FileSchema as any)
+    body: yup.string().required("Write some content in the post").min(50, 'Post must contain at least 10+ words'),
+    cover_image: yup.string().trim().nullable(true),
 
 }).required();
 
@@ -40,7 +40,7 @@ export interface IStoryFormInputs {
     id: number | null
     title: string
     tags: NestedValue<{ title: string }[]>
-    cover_image: NestedValue<File[]> | NestedValue<string[]>
+    cover_image: string | null
     body: string
     is_published: boolean | null
 }
@@ -49,7 +49,6 @@ export interface IStoryFormInputs {
 
 export type CreateStoryType = Override<IStoryFormInputs, {
     tags: { title: string }[]
-    cover_image: File[] | string[]
 }>
 
 const storageService = new StorageService<CreateStoryType>('story-edit');
@@ -68,7 +67,7 @@ export default function CreateStoryPage() {
         defaultValues: {
             id: story?.id ?? null,
             title: story?.title ?? '',
-            cover_image: story?.cover_image ?? [],
+            cover_image: story?.cover_image,
             tags: story?.tags ?? [],
             body: story?.body ?? '',
             is_published: story?.is_published ?? false,

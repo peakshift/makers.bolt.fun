@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Controller, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
-import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import ContentEditor from "../ContentEditor/ContentEditor";
 import { useCreateStoryMutation } from 'src/graphql'
@@ -14,6 +13,7 @@ import PreviewPostCard from '../PreviewPostCard/PreviewPostCard'
 import { StorageService } from 'src/services';
 import { useThrottledCallback } from '@react-hookz/web';
 import { CreateStoryType, IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
+import CoverImageInput from 'src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput';
 
 interface Props {
     isUpdating?: boolean;
@@ -90,7 +90,7 @@ export default function StoryForm(props: Props) {
                     body: data.body,
                     tags: data.tags.map(t => t.title),
                     is_published: publish_now,
-                    cover_image: (data.cover_image[0] ?? null) as string | null,
+                    cover_image: data.cover_image
                 },
             }
         })
@@ -117,19 +117,22 @@ export default function StoryForm(props: Props) {
                     <div
                         className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
                         <div className="p-16 md:p-24 lg:p-32">
-                            <Controller
-                                control={control}
-                                name="cover_image"
-                                render={({ field: { onChange, value, onBlur, ref } }) => (
-                                    <FilesInput
-                                        ref={ref}
-                                        value={value}
-                                        onBlur={onBlur}
-                                        onChange={onChange}
-                                        uploadText='Add a cover image'
+                            <div className="w-full h-[120px] md:h-[240px] rounded-12 mb-16 overflow-hidden">
+                                <Controller
+                                    control={control}
+                                    name="cover_image"
+                                    render={({ field: { onChange, value, onBlur, ref } }) => <CoverImageInput
+                                        value={value ? { url: value } : null}
+                                        onChange={e => {
+                                            console.log(e);
+                                            onChange(e ? e.url : null)
+                                        }}
+                                    // uploadText='Add a cover image'
                                     />
-                                )}
-                            />
+
+                                    }
+                                />
+                            </div>
 
 
 
@@ -167,7 +170,7 @@ export default function StoryForm(props: Props) {
                         />
                     </div>
                 </>}
-                {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues().cover_image[0] }} />}
+                {!editMode && <PreviewPostCard post={{ ...getValues() }} />}
                 <div className="flex gap-16 mt-32">
                     <Button
                         type='submit'
