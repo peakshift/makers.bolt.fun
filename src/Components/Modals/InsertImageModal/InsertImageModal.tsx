@@ -1,13 +1,14 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { motion } from 'framer-motion'
 import { IoClose } from 'react-icons/io5'
 import Button from 'src/Components/Button/Button'
-import { useAppDispatch } from 'src/utils/hooks'
+import { useAppDispatch, useIsDraggingOnElement } from 'src/utils/hooks'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { RotatingLines } from 'react-loader-spinner'
 import { FaExchangeAlt, FaImage } from 'react-icons/fa'
 import SingleImageUploadInput, { ImageType } from 'src/Components/Inputs/FilesInputs/SingleImageUploadInput/SingleImageUploadInput'
+import { AiOutlineCloudUpload } from 'react-icons/ai'
 
 interface Props extends ModalCard {
     callbackAction: PayloadAction<{ src: string, alt?: string }>
@@ -18,6 +19,9 @@ export default function InsertImageModal({ onClose, direction, callbackAction, .
     const [uploadedImage, setUploadedImage] = useState<ImageType | null>(null)
     const [altInput, setAltInput] = useState("")
     const dispatch = useAppDispatch();
+
+    const dropAreaRef = useRef<HTMLDivElement>(null!)
+    const isDragging = useIsDraggingOnElement({ ref: dropAreaRef });
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
@@ -85,7 +89,7 @@ export default function InsertImageModal({ onClose, direction, callbackAction, .
                     value={uploadedImage}
                     onChange={setUploadedImage}
                     wrapperClass='h-full mt-32'
-                    render={({ img, isUploading }) => <div className="w-full group aspect-video bg-gray-100 cursor-pointer rounded-16 border-2 border-gray200 overflow-hidden relative flex flex-col justify-center items-center">
+                    render={({ img, isUploading, isDraggingOnWindow }) => <div ref={dropAreaRef} className="w-full group aspect-video bg-gray-100 cursor-pointer rounded-16 border-2 border-gray200 overflow-hidden relative flex flex-col justify-center items-center">
                         {img && <>
                             <img src={img.url} className='w-full h-full object-cover rounded-16' alt="" />
                             {!isUploading &&
@@ -111,6 +115,34 @@ export default function InsertImageModal({ onClose, direction, callbackAction, .
                                     width="48"
                                     visible={true}
                                 />
+                            </div>
+                        }
+                        {isDraggingOnWindow &&
+                            <div
+                                className={
+                                    `absolute inset-0 ${isDragging ? 'bg-primary-600' : 'bg-primary-400'} bg-opacity-80 flex flex-col justify-center items-center text-white font-bold transition-transform`
+                                }
+                            >
+
+                                <motion.div
+                                    initial={{ y: 0 }}
+                                    animate={
+                                        isDragging ? {
+                                            y: 5,
+                                            transition: {
+                                                duration: .4,
+                                                repeat: Infinity,
+                                                repeatType: 'mirror',
+                                            }
+                                        } : {
+                                            y: 0
+                                        }}
+                                    className='text-center text-body1'
+                                >
+                                    <AiOutlineCloudUpload className="scale-150 text-h1 mb-16" />
+                                    <br />
+                                    Drop here to upload
+                                </motion.div>
                             </div>
                         }
                     </div>}
