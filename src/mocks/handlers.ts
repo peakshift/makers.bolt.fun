@@ -197,7 +197,6 @@ export const handlers = [
 
     graphql.query<MeQuery>('Me', async (req, res, ctx) => {
         await delay()
-        console.log("ME");
 
         return res(
             ctx.data({

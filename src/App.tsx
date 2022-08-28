@@ -74,7 +74,6 @@ function App() {
   }, []);
 
 
-
   return <div id="app" className='w-full'>
     <Helmet>
       <title >makers.bolt.fun</title>
