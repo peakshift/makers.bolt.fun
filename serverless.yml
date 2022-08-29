@@ -76,3 +76,10 @@ functions:
       - http:
           path: pubkeys-to-users
           method: post
+
+  upload-image-url:
+    handler: api/functions/upload-image-url/upload-image-url.handler
+    events:
+      - http:
+          path: upload-image-url
+          method: post
