@@ -3,7 +3,7 @@ const { createExpressApp } = require('../../modules')
 const express = require('express')
 const extractKeyFromCookie = require('../../utils/extractKeyFromCookie')
 const { getUserByPubKey } = require('../../auth/utils/helperFuncs')
-const { getDirectUploadUrl } = require('../services/imageUpload.service')
+const { getDirectUploadUrl } = require('../../services/imageUpload.service')
 const { prisma } = require('../../prisma')
 
 const postUploadImageUrl = async (req, res) => {

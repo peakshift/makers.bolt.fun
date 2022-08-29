@@ -1,4 +1,4 @@
-const { CONSTS } = require('../../utils')
+const { CONSTS } = require('../utils')
 const axios = require('axios')
 const FormData = require('form-data')
 
@@ -24,7 +24,7 @@ async function getDirectUploadUrl() {
     const result = await axios.post(url, formData, config)
 
     if (!result.data.success) {
-        throw new Error(result.data, { cause: error })
+        throw new Error(result.data, { cause: result.data.errors })
     }
 
     return result.data.result
