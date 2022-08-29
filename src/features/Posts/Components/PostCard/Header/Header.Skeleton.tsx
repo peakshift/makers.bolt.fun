@@ -1,5 +1,4 @@
-import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
-import dayjs from 'dayjs'
+
 import Skeleton from 'react-loading-skeleton';
 
 interface Props {
