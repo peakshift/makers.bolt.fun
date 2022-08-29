@@ -31,7 +31,8 @@ export default function StoryPageContent({ story }: Props) {
             <Card id="content" onlyMd className="relative">
                 {story.cover_image &&
                     <img src={story.cover_image}
-                        className='w-full object-cover rounded-12 md:rounded-16 mb-16'
+                        className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
+                        // className='w-full object-cover rounded-12 md:rounded-16 mb-16'
                         alt="" />}
                 <div className="flex flex-col gap-24 relative">
                     {curUser?.id === story.author.id && <Menu

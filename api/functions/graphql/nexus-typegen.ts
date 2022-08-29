@@ -35,8 +35,13 @@ export interface NexusGenInputs {
   MakerSkillInput: { // input type
     id: number; // Int!
   }
+  ImageInput: { // input type
+    id?: string | null; // String
+    name?: string | null; // String
+    url: string; // String!
+  }
   ProfileDetailsInput: { // input type
-    avatar?: string | null; // String
+    avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
     bio?: string | null; // String
     email?: string | null; // String
     github?: string | null; // String
@@ -54,7 +59,7 @@ export interface NexusGenInputs {
   }
   StoryInputType: { // input type
     body: string; // String!
-    cover_image?: string | null; // String
+    cover_image?: NexusGenInputs['ImageInput'] | null; // ImageInput
     id?: number | null; // Int
     is_published?: boolean | null; // Boolean
     tags: string[]; // [String!]!

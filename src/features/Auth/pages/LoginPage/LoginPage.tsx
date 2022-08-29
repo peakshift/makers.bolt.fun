@@ -10,16 +10,9 @@ import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText, } from "src/utils/helperFunctions";
+import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 
 
-
-const fetchLnurlAuth = async () => {
-    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url', {
-        credentials: 'include'
-    })
-    const data = await res.json()
-    return data;
-}
 
 const useLnurlQuery = () => {
     const [loading, setLoading] = useState(true)
@@ -95,19 +88,12 @@ export default function LoginPage() {
     const refetch = meQuery.refetch;
     const startPolling = useCallback(
         () => {
-            const interval = setInterval(() => {
-                fetch(CONSTS.apiEndpoint + '/is-logged-in', {
-                    credentials: 'include',
-                    headers: {
-                        session_token
-                    }
-                }).then(data => data.json())
-                    .then(data => {
-                        if (data.logged_in) {
-                            clearInterval(interval)
-                            refetch();
-                        }
-                    })
+            const interval = setInterval(async () => {
+                const isLoggedIn = await fetchIsLoggedIn(session_token);
+                if (isLoggedIn) {
+                    clearInterval(interval)
+                    refetch();
+                }
             }, 2000);
 
             return interval;

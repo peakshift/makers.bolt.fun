@@ -15,6 +15,7 @@ const { prisma } = require('../../../prisma');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { ApolloError } = require('apollo-server-lambda');
 const { marked } = require('marked');
+const { ImageInput } = require('./misc');
 
 
 const POST_TYPE = enumType({
@@ -111,7 +112,9 @@ const StoryInputType = inputObjectType({
         t.int('id');
         t.nonNull.string('title');
         t.nonNull.string('body');
-        t.string('cover_image');
+        t.field('cover_image', {
+            type: ImageInput
+        })
         t.nonNull.list.nonNull.string('tags');
         t.boolean('is_published')
     }
@@ -383,6 +386,14 @@ const createStory = extendType({
                     .replace(/&quot;/g, '"')
                     ;
 
+
+                // ----------------
+                // Check the uploaded cover image & the images in the body,  
+                // remove the old one from the hosting service, then replace it with these ones
+                // ----------------
+
+
+
                 if (id) {
                     await prisma.story.update({
                         where: { id },
@@ -398,7 +409,7 @@ const createStory = extendType({
                         data: {
                             title,
                             body,
-                            cover_image,
+                            cover_image: cover_image.url,
                             excerpt,
                             is_published: was_published || is_published,
                             tags: {
@@ -424,7 +435,7 @@ const createStory = extendType({
                     data: {
                         title,
                         body,
-                        cover_image,
+                        cover_image: cover_image.url,
                         excerpt,
                         is_published,
                         tags: {

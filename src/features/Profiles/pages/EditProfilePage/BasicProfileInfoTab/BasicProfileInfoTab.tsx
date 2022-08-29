@@ -3,7 +3,6 @@ import { useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAbo
 import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { useAppDispatch, usePrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
@@ -13,15 +12,17 @@ import { setUser } from "src/redux/features/user.slice";
 import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
 import { useApolloClient } from "@apollo/client";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
+import { imageSchema } from "src/utils/validation";
 
 interface Props {
 }
 
 type IFormInputs = NonNullable<UpdateProfileAboutMutationVariables['data']>;
 
+
 const schema: yup.SchemaOf<IFormInputs> = yup.object({
     name: yup.string().trim().required().min(2),
-    avatar: yup.string().trim().url().required(),
+    avatar: imageSchema.required(),
     bio: yup.string().ensure(),
     email: yup.string().email().ensure(),
     github: yup.string().ensure(),
@@ -67,7 +68,7 @@ export default function BasicProfileInfoTab() {
     const profileQuery = useMyProfileAboutQuery({
         onCompleted: data => {
             if (data.me)
-                reset(data.me)
+                reset({ ...data.me, avatar: { url: data.me.avatar } })
         }
     })
     const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
@@ -124,17 +125,19 @@ export default function BasicProfileInfoTab() {
             })
     };
 
+
+
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
             <Card className="md:col-span-2" defaultPadding={false}>
                 <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
-                        {/* <Avatar src={profileQuery.data.me.avatar} width={120} /> */}
                         <Controller
                             control={control}
                             name="avatar"
                             render={({ field: { onChange, value } }) => (
-                                <AvatarInput value={value ? { url: value } : null} onChange={e => onChange(e?.url)} width={120} />
+                                <AvatarInput value={value} onChange={onChange} width={120} />
                             )}
                         />
                     </div>

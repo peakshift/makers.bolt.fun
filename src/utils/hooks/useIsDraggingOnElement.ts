@@ -28,7 +28,6 @@ export const useIsDraggingOnElement = (options?: Partial<{
 }>) => {
     const listenersRef = useRef<any[]>([]);
     const [isDragging, setIsDragging] = useState(false);
-    const [isElementMounted, setIsElementMounted] = useState(false)
 
 
     useEffect(() => {

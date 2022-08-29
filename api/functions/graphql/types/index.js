@@ -1,4 +1,5 @@
 const scalars = require('./_scalars')
+const misc = require('./misc')
 const category = require('./category')
 const project = require('./project')
 const vote = require('./vote')
@@ -9,6 +10,7 @@ const donation = require('./donation')
 const tag = require('./tag')
 
 module.exports = {
+    ...misc,
     ...tag,
     ...scalars,
     ...category,

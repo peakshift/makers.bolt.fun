@@ -3,6 +3,7 @@ const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
+const { ImageInput } = require('./misc');
 const { Tournament } = require('./tournaments');
 
 
@@ -243,7 +244,9 @@ const ProfileDetailsInput = inputObjectType({
     name: 'ProfileDetailsInput',
     definition(t) {
         t.string('name');
-        t.string('avatar');
+        t.field('avatar', {
+            type: ImageInput
+        })
         t.string('email')
         t.string('jobTitle')
         t.string('lightning_address')
@@ -270,14 +273,20 @@ const updateProfileDetails = extendType({
                     throw new Error("You have to login");
                 // TODO: validate new data
 
+                // ----------------
+                // Check if the user uploaded a new image, and if so, 
+                // remove the old one from the hosting service, then replace it with this one
+                // ----------------
 
                 // Preprocess & insert
-
                 return prisma.user.update({
                     where: {
                         id: user.id,
                     },
-                    data: removeNulls(args.data)
+                    data: removeNulls({
+                        ...args.data,
+                        avatar: args.data.avatar?.url,
+                    })
                 })
             }
         })
