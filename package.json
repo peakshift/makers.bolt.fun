@@ -90,10 +90,10 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "client:prod-server": "env-cmd -f ./envs/client/.dev.prod-server.env react-scripts start",
-    "client:preview-server": "env-cmd -f ./envs/client/.dev.preview-server.env react-scripts start",
-    "client:mocks": "env-cmd -f ./envs/client/.dev.mock-server.env react-scripts start",
-    "client:dev-server": "env-cmd -f ./envs/client/.dev.server.env react-scripts start",
+    "client:prod-server": "env-cmd -f ./envs/client/.prod-server.env react-scripts start",
+    "client:preview-server": "env-cmd -f ./envs/client/preview-server.env react-scripts start",
+    "client:mocks": "env-cmd -f ./envs/client/.mock-server.env react-scripts start",
+    "client:dev-server": "env-cmd -f ./envs/client/local-server.env react-scripts start",
     "server:dev": "env-cmd -f ./envs/server/local.env  serverless offline",
     "server:preview": "env-cmd -f ./envs/server/preview.env  serverless offline",
     "server:prod": "env-cmd -f ./envs/server/prod.env  serverless offline",

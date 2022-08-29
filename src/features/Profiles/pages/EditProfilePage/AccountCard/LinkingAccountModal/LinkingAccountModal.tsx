@@ -86,17 +86,24 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             <p className="text-body3 font-bold">Fetching Lnurl-Auth...</p>
         </div>
 
-    else
+    else {
         content =
-            <>
-                <p className="text-body1 font-bolder text-center">
-                    Link your account ⚡
-                </p>
-                <QRCodeSVG
-                    width={160}
-                    height={160}
-                    value={lnurl}
-                />
+            <div className='flex flex-col gap-24 items-center mt-32 '>
+                <a href={`lightning:${lnurl}`} >
+                    <QRCodeSVG
+                        width={280}
+                        height={280}
+                        level='H'
+                        value={`lightning:${lnurl}`}
+                        bgColor='transparent'
+                        imageSettings={{
+                            src: '/assets/images/nut_3d.png',
+                            width: 28,
+                            height: 28,
+                            excavate: true
+                        }}
+                    />
+                </a>
                 <p className="text-gray-600 text-body4 text-center">
                     Scan this code or copy + paste it to your other lightning wallet to be able to login later with it to this account.
                     <br />
@@ -121,8 +128,8 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
                         Done?
                     </Button>
                 </div>
-            </>
-
+            </div>
+    }
 
 
     return (
@@ -132,8 +139,10 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card w-full max-w-[326px] bg-white border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-16 items-center"
+            className="modal-card max-w-[442px] p-24 rounded-xl relative"
         >
+            <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <h2 className='text-h5 font-bold text-center'>Connect another ⚡️ wallet</h2>
             {content}
         </motion.div>
     )
