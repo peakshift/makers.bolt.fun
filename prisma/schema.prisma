@@ -248,3 +248,13 @@ model GeneratedK1 {
   sid       String?
   createdAt DateTime @default(now())
 }
+
+// -----------------
+// Hosted Image
+// -----------------
+model HostedImage {
+  id        String   @id
+  filename  String
+  createdAt DateTime @default(now())
+  is_used   Boolean  @default(false)
+}

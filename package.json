@@ -41,6 +41,7 @@
     "env-cmd": "^10.1.0",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "form-data": "^4.0.0",
     "framer-motion": "^6.3.0",
     "fslightbox-react": "^1.6.2-2",
     "graphql": "^16.3.0",
@@ -179,6 +180,7 @@
     "netlify-cli": "^10.0.0",
     "postcss": "^8.4.12",
     "readable-stream": "^4.1.0",
+    "serverless": "^3.22.0",
     "serverless-offline": "^8.7.0",
     "tailwindcss": "^3.0.24",
     "webpack": "^5.72.0"
