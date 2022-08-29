@@ -96,19 +96,20 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             <p className="text-body4 text-gray-600 font-bold">Fetching Lnurl-Auth Link...</p>
         </div>
 
-    else
+    else {
         content =
             <div className='flex flex-col gap-24 items-center mt-32 '>
                 <a href={`lightning:${lnurl}`} >
                     <QRCodeSVG
-                        width={240}
-                        height={240}
-                        value={lnurl}
+                        width={280}
+                        height={280}
+                        level='H'
+                        value={`lightning:${lnurl}`}
                         bgColor='transparent'
                         imageSettings={{
                             src: '/assets/images/nut_3d.png',
-                            width: 32,
-                            height: 32,
+                            width: 28,
+                            height: 28,
                             excavate: true
                         }}
                     />
@@ -132,7 +133,7 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
                     </Button>
                 </div>
             </div>
-
+    }
 
 
     return (
@@ -144,6 +145,8 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             exit='exit'
             className="modal-card max-w-[442px] p-24 rounded-xl relative"
         >
+            <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <h2 className='text-h5 font-bold text-center'>Connect another ⚡️ wallet</h2>
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
             <h2 className='text-h5 font-bold text-center'>Connect another ⚡️ wallet</h2>
             {content}
