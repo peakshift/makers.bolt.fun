@@ -3,6 +3,8 @@ import { Controller, FormProvider, NestedValue, Resolver, SubmitHandler, useForm
 import Button from "src/Components/Button/Button";
 import DatePicker from "src/Components/Inputs/DatePicker/DatePicker";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
+import { Tag } from "src/graphql";
+import { imageSchema } from "src/utils/validation";
 import * as yup from "yup";
 import ContentEditor from "../ContentEditor/ContentEditor";
 
@@ -30,29 +32,14 @@ const schema = yup.object({
         .string()
         .required()
         .min(50, 'you have to write at least 10 words'),
-    cover_image: yup
-        .lazy((value: string | File[]) => {
-            switch (typeof value) {
-                case 'object':
-                    return yup
-                        .array()
-                        .test("fileSize", "File Size is too large", (files) => (files as File[]).every(file => file.size <= 5242880))
-                        .test("fileType", "Unsupported File Format, only png/jpg/jpeg images are allowed",
-                            (files) => (files as File[]).every((file: File) =>
-                                ["image/jpeg", "image/png", "image/jpg"].includes(file.type)))
-                case 'string':
-                    return yup.string().url();
-                default:
-                    return yup.mixed()
-            }
-        })
+    cover_image: imageSchema,
 }).required();
 
 interface IFormInputs {
     title: string
     deadline: Date
     bounty_amount: number
-    tags: NestedValue<object[]>
+    tags: NestedValue<Tag[]>
     cover_image: NestedValue<File[]> | string
     body: string
 }
@@ -154,10 +141,20 @@ export default function BountyForm() {
                         <p className="text-body5 mt-16">
                             Tags
                         </p>
-                        <TagsInput
-                            placeholder="Enter your tag and click enter. You can add multiple tags to your post"
-                            classes={{ container: 'mt-8' }}
+                        <Controller
+                            control={control}
+                            name="tags"
+                            render={({ field: { onChange, value, onBlur } }) => (
+                                <TagsInput
+                                    placeholder="Add up to 5 popular tags..."
+                                    classes={{ container: 'mt-16' }}
+                                    value={value}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                />
+                            )}
                         />
+
                         {errors.tags && <p className="input-error">
                             {errors.tags.message}
                         </p>}

@@ -124,6 +124,12 @@ export type Hackathon = {
   website: Scalars['String'];
 };
 
+export type ImageInput = {
+  id: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  url: Scalars['String'];
+};
+
 export type LnurlDetails = {
   __typename?: 'LnurlDetails';
   commentAllowed: Maybe<Scalars['Int']>;
@@ -240,7 +246,7 @@ export type PostComment = {
 };
 
 export type ProfileDetailsInput = {
-  avatar: InputMaybe<Scalars['String']>;
+  avatar: InputMaybe<ImageInput>;
   bio: InputMaybe<Scalars['String']>;
   email: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
@@ -405,7 +411,7 @@ export type Story = PostBase & {
 
 export type StoryInputType = {
   body: Scalars['String'];
-  cover_image: InputMaybe<Scalars['String']>;
+  cover_image: InputMaybe<ImageInput>;
   id: InputMaybe<Scalars['Int']>;
   is_published: InputMaybe<Scalars['Boolean']>;
   tags: Array<Scalars['String']>;

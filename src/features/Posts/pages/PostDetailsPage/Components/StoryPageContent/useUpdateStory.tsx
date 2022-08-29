@@ -28,7 +28,7 @@ export const useUpdateStory = (story: Story) => {
     const handleEdit = () => {
         dispatch(stageStory({
             ...story,
-            cover_image: story.cover_image
+            cover_image: story.cover_image ? { id: null, name: null, url: story.cover_image } : null,
         }))
 
         navigate("/blog/create-post?type=story")

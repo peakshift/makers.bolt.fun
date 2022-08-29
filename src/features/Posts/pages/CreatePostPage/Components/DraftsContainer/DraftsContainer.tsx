@@ -10,7 +10,7 @@ import { NotificationsService } from 'src/services';
 import { getDateDifference } from 'src/utils/helperFunctions';
 import { useAppDispatch } from 'src/utils/hooks';
 import { useReduxEffect } from 'src/utils/hooks/useReduxEffect';
-import { IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
+import { CreateStoryType, IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
 
 interface Props {
     id?: string;
@@ -28,7 +28,7 @@ export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
     const [deleteStory] = useDeleteStoryMutation({
         refetchQueries: ['GetMyDrafts']
     })
-    const { setValue } = useFormContext<IStoryFormInputs>()
+    const { setValue } = useFormContext<CreateStoryType>()
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false)
@@ -45,7 +45,7 @@ export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
                         setValue('title', data.getPostById.title);
                         setValue('tags', data.getPostById.tags);
                         setValue('body', data.getPostById.body);
-                        setValue('cover_image', data.getPostById.cover_image);
+                        setValue('cover_image', data.getPostById.cover_image ? { url: data.getPostById.cover_image, id: null, name: null } : null);
                         setValue('is_published', data.getPostById.is_published);
                     }
 

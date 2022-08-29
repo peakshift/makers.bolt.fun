@@ -7,6 +7,7 @@ import styles from './styles.module.scss'
 import { getMockSenderEnhancer } from "@rpldy/mock-sender";
 import { NotificationsService } from "src/services";
 import { useIsDraggingOnElement } from 'src/utils/hooks';
+import { fetchUploadImageUrl } from "src/api/uploading";
 
 
 
@@ -17,8 +18,8 @@ const mockSenderEnhancer = getMockSenderEnhancer({
 
 
 export interface ImageType {
-    id?: string,
-    name?: string,
+    id?: string | null,
+    name?: string | null,
     url: string;
 }
 
@@ -50,7 +51,6 @@ export default function SingleImageUploadInput(props: Props) {
             accept="image/*"
             inputFieldName='file'
             grouped={false}
-            enhancer={mockSenderEnhancer}
             listeners={{
                 [UPLOADER_EVENTS.ITEM_START]: (item) => {
                     onChange(null)
@@ -67,19 +67,11 @@ export default function SingleImageUploadInput(props: Props) {
                 [UPLOADER_EVENTS.ITEM_FINALIZE]: () => setCurrentlyUploadingItem(null),
                 [UPLOADER_EVENTS.ITEM_FINISH]: (item) => {
 
-                    // Just for mocking purposes
-                    const dataUrl = URL.createObjectURL(item.file);
+                    const { id, filename, variants } = item?.uploadResponse?.data?.result;
+                    const url = (variants as string[]).find(v => v.includes('public'));
 
-                    const { id, filename, variants } = item?.uploadResponse?.data?.result ?? {
-                        id: Math.random().toString(),
-                        filename: item.file.name,
-                        variants: [
-                            "",
-                            dataUrl
-                        ]
-                    }
-                    if (id) {
-                        onChange({ id, name: filename, url: variants[1] })
+                    if (id && url) {
+                        onChange({ id, name: filename, url, })
                     }
                 }
             }}
@@ -109,12 +101,13 @@ const DropZone = forwardRef<any, any>((props, ref) => {
 
         const filename = data.items?.[0].file.name ?? ''
 
-        // const url = await fetchUploadUrl({ filename });
+        const res = await fetchUploadImageUrl({ filename });
+
         return {
             options: {
                 destination: {
-                    url: "URL"
-                }
+                    url: res.uploadURL
+                },
             }
         }
     })
