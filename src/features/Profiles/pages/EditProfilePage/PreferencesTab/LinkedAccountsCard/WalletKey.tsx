@@ -11,20 +11,18 @@ import { openModal } from "src/redux/features/modals.slice";
 
 interface Props {
     walletKey: WalletKeyType,
-    canDelete: boolean;
     onRename: (newName: string) => void
     onDelete: () => void
 }
 
 
 
-export default function WalletKey({ walletKey, canDelete, onRename, onDelete }: Props) {
+export default function WalletKey({ walletKey, onRename, onDelete }: Props) {
 
     const ref = useRef<HTMLInputElement>(null!);
     const [name, setName] = useState(walletKey.name);
     const [editMode, toggleEditMode] = useToggle(false);
     const dispatch = useAppDispatch();
-
 
     const CONFIRM_DELETE_WALLET = useMemo(() => createAction<{ confirmed?: boolean }>(`CONFIRM_DELETE_WALLET_${walletKey.key.slice(0, 10)}`)({}), [walletKey.key])
 
@@ -80,11 +78,17 @@ export default function WalletKey({ walletKey, canDelete, onRename, onDelete }: 
                         onClick={saveNameChanges}
                     >Save</Button>}
             </div>
-            {canDelete && <IconButton
-                size='sm'
-                className='text-red-500 shrink-0'
-                onClick={() => handleDelete()}
-            ><FiTrash2 /> </IconButton>}
+            <div className="min-w-[60px] flex justify-center">
+                {!walletKey.is_current ?
+                    <IconButton
+                        size='sm'
+                        className='text-red-500 shrink-0 mx-auto'
+                        onClick={() => handleDelete()}
+                    ><FiTrash2 /> </IconButton>
+                    :
+                    <span className="text-body5 text-gray-400">(Current)</span>
+                }
+            </div>
         </li>
     )
 }
