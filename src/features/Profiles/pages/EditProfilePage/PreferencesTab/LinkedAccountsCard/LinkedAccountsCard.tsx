@@ -51,31 +51,11 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
                         <WalletKey
                             key={idx}
                             walletKey={item}
-                            canDelete={value.length > 1}
                             onRename={v => updateKeyName(idx, v)}
                             onDelete={() => deleteKey(idx)}
                         />
                     )}
                 </ul>
-                {/* <div className="flex justify-end gap-8">
-                    <Button
-                        color='gray'
-                        className=''
-                        disabled={!keysState.hasNewChanges || updatingKeysStatus.loading}
-                        onClick={cancelChanges}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        color='black'
-                        className=''
-                        disabled={!keysState.hasNewChanges}
-                        isLoading={updatingKeysStatus.loading}
-                        onClick={saveChanges}
-                    >
-                        Save Changes
-                    </Button>
-                </div> */}
             </div>
             {value.length < 3 &&
                 <Button color='none' size='sm' className='mt-16 text-gray-600 hover:bg-gray-50' onClick={connectNewWallet}>

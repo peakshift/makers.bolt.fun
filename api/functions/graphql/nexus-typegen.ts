@@ -234,6 +234,7 @@ export interface NexusGenObjects {
     payment_request: string; // String!
   }
   WalletKey: { // root type
+    is_current: boolean; // Boolean!
     key: string; // String!
     name: string; // String!
   }
@@ -469,6 +470,7 @@ export interface NexusGenFieldTypes {
     payment_request: string; // String!
   }
   WalletKey: { // field return type
+    is_current: boolean; // Boolean!
     key: string; // String!
     name: string; // String!
   }
@@ -718,6 +720,7 @@ export interface NexusGenFieldTypeNames {
     payment_request: 'String'
   }
   WalletKey: { // field return type name
+    is_current: 'Boolean'
     key: 'String'
     name: 'String'
   }

@@ -16,12 +16,15 @@ export default function PreferencesTabSkeleton() {
                     <div className='mt-24 flex flex-col gap-16'>
                         <ul className="mt-8 relative flex flex-col gap-8">
                             {Array(3).fill(0).map((_, idx) =>
-                                <li key={idx} className="flex flex-wrap gap-16 justify-between items-center text-body4 border-b py-12 px-16 border border-gray-200 rounded-16 focus-within:ring-1 ring-primary-200">
-                                    <div className='p-0 border-0 focus:border-0 focus:outline-none grow
+                                <div key={idx} className='flex gap-16'>
+                                    <li className="grow flex flex-wrap gap-16 justify-between items-center text-body4 border-b py-12 px-16 border border-gray-200 rounded-16 focus-within:ring-1 ring-primary-200">
+                                        <div className='p-0 border-0 focus:border-0 focus:outline-none grow
                                                 focus:ring-0 placeholder:!text-gray-400' >
-                                        <Skeleton width='20ch'></Skeleton>
-                                    </div>
-                                </li>
+                                            <Skeleton width='20ch'></Skeleton>
+                                        </div>
+                                    </li>
+                                    <div className="min-w-[60px]"></div>
+                                </div>
                             )}
                         </ul>
 
