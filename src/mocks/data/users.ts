@@ -22,11 +22,13 @@ export const user: User & MyProfile = {
     walletsKeys: [
         {
             key: "1645h234j2421zxvertw",
-            name: "My Alby wallet key"
+            name: "My Alby wallet key",
+            is_current: true
         },
         {
             key: "6643534534534534543",
-            name: "My Phoenix wallet key"
+            name: "My Phoenix wallet key",
+            is_current: false
         },
     ]
 }

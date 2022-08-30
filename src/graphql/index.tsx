@@ -467,6 +467,7 @@ export type Vote = {
 
 export type WalletKey = {
   __typename?: 'WalletKey';
+  is_current: Scalars['Boolean'];
   key: Scalars['String'];
   name: Scalars['String'];
 };
@@ -573,7 +574,7 @@ export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } | null };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, is_current: boolean }> } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
@@ -1387,6 +1388,7 @@ export const MyProfilePreferencesDocument = gql`
     walletsKeys {
       key
       name
+      is_current
     }
     nostr_prv_key
     nostr_pub_key
