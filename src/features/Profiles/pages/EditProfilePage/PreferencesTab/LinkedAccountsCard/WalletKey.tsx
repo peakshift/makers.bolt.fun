@@ -8,6 +8,8 @@ import { useReduxEffect } from 'src/utils/hooks/useReduxEffect';
 import { WalletKeyType } from './LinkedAccountsCard'
 import { useAppDispatch } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
+import 'react-popper-tooltip/dist/styles.css';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 interface Props {
     walletKey: WalletKeyType,
@@ -24,6 +26,15 @@ export default function WalletKey({ walletKey, onRename, onDelete }: Props) {
     const [editMode, toggleEditMode] = useToggle(false);
     const dispatch = useAppDispatch();
 
+
+
+    const {
+        getArrowProps,
+        getTooltipProps,
+        setTooltipRef,
+        setTriggerRef,
+        visible,
+    } = usePopperTooltip();
 
     const CONFIRM_DELETE_WALLET = useMemo(() => createAction<{ confirmed?: boolean }>(`CONFIRM_DELETE_WALLET_${walletKey.key.slice(0, 10)}`)({}), [walletKey.key])
 
@@ -86,9 +97,21 @@ export default function WalletKey({ walletKey, onRename, onDelete }: Props) {
                         className='text-red-500 shrink-0 mx-auto'
                         onClick={() => handleDelete()}
                     ><FiTrash2 /> </IconButton>
-                    :
-                    <span className="text-body5 text-gray-400">(Current)</span>
+                    : <>
+                        <span ref={setTriggerRef} className="text-body5 text-gray-400">(Current)</span>
+                        {visible && (
+                            <div
+                                ref={setTooltipRef}
+                                {...getTooltipProps({ className: 'tooltip-container' })}
+                            >
+                                <div {...getArrowProps({ className: 'tooltip-arrow' })} />
+                                Tooltip
+                            </div>
+                        )}
+                    </>
+
                 }
+
             </div>
         </li>
     )
