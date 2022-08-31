@@ -277,11 +277,14 @@ type Tournament {
   description: String!
   end_date: Date!
   events: [TournamentEvent!]!
+  events_count: Int!
   faqs: [TournamentFAQ!]!
   id: Int!
   judges: [TournamentJudge!]!
   location: String!
+  makers_count: Int!
   prizes: [TournamentPrize!]!
+  projects_count: Int!
   start_date: Date!
   thumbnail_image: String!
   title: String!

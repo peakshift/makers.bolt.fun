@@ -81,6 +81,9 @@ export const PAGES_ROUTES = {
         editProfile: "/edit-profile/*",
         byId: "/profile/:id/*",
     },
+    tournament: {
+        byId: "/tournaments/:id/*",
+    },
     auth: {
         login: "/login",
         logout: "/logout",

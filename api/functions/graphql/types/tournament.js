@@ -62,6 +62,11 @@ const Tournament = objectType({
         t.nonNull.date('end_date');
         t.nonNull.string('location');
         t.nonNull.string('website');
+
+        t.nonNull.int('events_count');
+        t.nonNull.int('makers_count');
+        t.nonNull.int('projects_count');
+
         t.nonNull.list.nonNull.field('prizes', { type: TournamentPrize, });
         t.nonNull.list.nonNull.field('judges', { type: TournamentJudge, });
         t.nonNull.list.nonNull.field('faqs', { type: TournamentFAQ, });

@@ -9,6 +9,11 @@ query GetTournamentById($id: Int!) {
     end_date
     location
     website
+
+    events_count
+    makers_count
+    projects_count
+
     prizes {
       title
       amount

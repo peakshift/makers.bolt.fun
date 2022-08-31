@@ -433,11 +433,14 @@ export type Tournament = {
   description: Scalars['String'];
   end_date: Scalars['Date'];
   events: Array<TournamentEvent>;
+  events_count: Scalars['Int'];
   faqs: Array<TournamentFaq>;
   id: Scalars['Int'];
   judges: Array<TournamentJudge>;
   location: Scalars['String'];
+  makers_count: Scalars['Int'];
   prizes: Array<TournamentPrize>;
+  projects_count: Scalars['Int'];
   start_date: Scalars['Date'];
   thumbnail_image: Scalars['String'];
   title: Scalars['String'];
@@ -691,7 +694,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, jobTitle: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, date: any, location: string, website: string, type: string, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, jobTitle: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, date: any, location: string, website: string, type: string, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> } };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -1933,6 +1936,9 @@ export const GetTournamentByIdDocument = gql`
     end_date
     location
     website
+    events_count
+    makers_count
+    projects_count
     prizes {
       title
       amount

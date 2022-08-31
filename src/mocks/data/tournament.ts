@@ -10,8 +10,8 @@ export const tournaments: Tournament[] = [{
     thumbnail_image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/37fb9cd6-e4f1-43f9-c3fe-7c3e119d5600/public",
     location: "Online",
     website: "#",
-    description: `
-Lorem ipsum dolor sit **amet**, consectetur adipiscing elit. Semper turpis est, ac eget nullam. In leo at pharetra morbi ornare eget. Ultrices posuere senectus purus nulla vitae volutpat id id suspendisse. Urna mattis nulla diam semper erat. Mattis gravida ultrices aliquam odio. Praesent viverra egestas sed elementum nisl imperdiet a, non. 
+    description:
+        `Lorem ipsum dolor sit **amet**, consectetur adipiscing elit. Semper turpis est, ac eget nullam. In leo at pharetra morbi ornare eget. Ultrices posuere senectus purus nulla vitae volutpat id id suspendisse. Urna mattis nulla diam semper erat. Mattis gravida ultrices aliquam odio. Praesent viverra egestas sed elementum nisl imperdiet a, non. 
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac eget nullam. In leo at pharetra morbi ornare eget. Ultrices posuere senectus purus nulla vitae volutpat id id suspendisse. Urna mattis nulla diam semper erat. Mattis gravida ultrices aliquam odio. Praesent viverra egestas sed elementum nisl imperdiet a, non. 
 
@@ -37,6 +37,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         amount: "$ 1k",
         image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/fa7b7cdd-7c06-4ebe-1a2d-94af9d2dae00/public",
     }],
+    events_count: 28,
+    makers_count: 668,
+    projects_count: 21,
     events: [],
     faqs: [],
     judges: [],

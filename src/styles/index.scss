@@ -26,7 +26,7 @@ body {
   @include gt-md {
     --padding: 32px;
   }
-  width: calc(min(100% - 2 * var(--padding), 1440px));
+  width: calc(min(100% - 2 * var(--padding), var(--maxPageWidth, 1440px)));
   margin: 0 auto;
 }
 
