@@ -55,19 +55,19 @@ export default function UpdateRolesCard(props: Props) {
             </div>
 
             {props.value.length > 0 && <div className="pt-24 mt-24 border-t border-gray-200">
-                <ul className="grid grid-cols-1 lg:grid-cols-[auto_1fr] items-center gap-16">
+                <ul className="grid grid-cols-1 2xl:grid-cols-[auto_1fr] items-center gap-16">
                     {props.value.map(role => {
                         const { title, icon } = props.allRoles.find(r => r.id === role.id)!;
 
                         return <React.Fragment key={role.id}>
-                            <p className="shrink-0 text-body4 whitespace-nowrap">{icon} {title}</p>
+                            <p className="shrink-0 font-medium text-body4 whitespace-nowrap">{icon} {title}</p>
                             <div className="flex flex-wrap gap-8 grow text-body5 mb-8 last-of-type:mb-0">
                                 {[RoleLevelEnum.Beginner, RoleLevelEnum.Hobbyist, RoleLevelEnum.Intermediate, RoleLevelEnum.Advanced, RoleLevelEnum.Pro].map(r =>
                                     <button
                                         key={r}
                                         className={` 
                                 px-12 py-4 bg-gray-100 border rounded-8 flex-1
-                                active:scale-95 transition-transform
+                                active:scale-95 transition-transform  font-medium
                                 ${r !== role.level ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
                                 `}
                                         onClick={() => setLevel(role.id, r)}

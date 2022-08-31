@@ -1,6 +1,6 @@
 import Card from 'src/Components/Card/Card'
 import Button from 'src/Components/Button/Button'
-import { RoleLevelEnum, User } from 'src/graphql';
+import { User } from 'src/graphql';
 
 
 
@@ -19,7 +19,7 @@ export default function SkillsCard({ skills, isOwner }: Props) {
                     {isOwner && <Button color='primary' className='mt-16' size='sm' href='/edit-profile/roles-skills'>Add skills</Button>}
                 </>}
                 <ul className=' flex flex-wrap gap-x-8 gap-y-20'>
-                    {skills.map((skill) => <li key={skill.id} className="px-12 py-4 bg-gray-100 rounded-48 font-medium">{skill.title}</li>)}
+                    {skills.map((skill) => <li key={skill.id} className="text-body5 border border-gray-200 px-12 py-4 bg-gray-100 rounded-48 font-medium">{skill.title}</li>)}
                 </ul>
             </div>
         </Card>

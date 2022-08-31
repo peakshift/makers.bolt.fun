@@ -39,9 +39,9 @@ export default function RolesCard({ roles, isOwner }: Props) {
                                 key={role.id}
                                 className={`flex gap-16 items-center rounded-8 cursor-pointer font-bold p-4active:scale-95 transition-transform`}
                             >
-                                <span className={`bg-gray-50 rounded-8 w-48 h-48 text-center py-8`}>{role.icon}</span>
+                                <span className={`bg-gray-50 rounded-8 w-40 h-40 text-center py-8`}>{role.icon}</span>
                                 <div className='grow'>
-                                    <p className="font-medium text-gray-800">
+                                    <p className="font-medium text-body5 text-gray-800">
                                         {role.title}
                                     </p>
                                     <div className="flex gap-4 mt-16">
