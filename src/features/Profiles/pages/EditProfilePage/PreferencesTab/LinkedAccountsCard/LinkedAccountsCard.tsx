@@ -38,6 +38,7 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
         onChange([...value.slice(0, idx), ...value.slice(idx + 1)])
     }
 
+    const hasMultiWallets = value.length > 1;
 
     return (
         <Card>
@@ -50,6 +51,7 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
                     {value.map((item, idx) =>
                         <WalletKey
                             key={idx}
+                            hasMultiWallets={hasMultiWallets}
                             walletKey={item}
                             onRename={v => updateKeyName(idx, v)}
                             onDelete={() => deleteKey(idx)}

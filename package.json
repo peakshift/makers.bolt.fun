@@ -97,7 +97,7 @@
     "server:preview": "env-cmd -f ./envs/server/preview.env  serverless offline",
     "client:prod-server": "env-cmd -f ./envs/client/prod-server.env react-scripts start",
     "server:prod": "env-cmd -f ./envs/server/prod.env  serverless offline",
-    "client:mocks": "env-cmd -f ./envs/client/.mock-server.env react-scripts start",
+    "client:mocks": "env-cmd -f ./envs/client/mock-server.env react-scripts start",
     "generate-graphql": "graphql-codegen",
     "storybook": "env-cmd -f ./envs/client/.dev.preview-server.env start-storybook -p 6006 -s public",
     "storybook:mocks": "env-cmd -f ./envs/client/.dev.mock-server.env start-storybook -p 6006 -s public",

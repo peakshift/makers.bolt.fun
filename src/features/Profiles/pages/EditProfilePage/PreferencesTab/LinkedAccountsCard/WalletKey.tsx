@@ -1,7 +1,7 @@
 import { useToggle } from '@react-hookz/web';
 import { createAction } from '@reduxjs/toolkit';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { FiTrash2 } from 'react-icons/fi';
+import { FiTrash2, FiLock } from 'react-icons/fi';
 import Button from 'src/Components/Button/Button';
 import IconButton from 'src/Components/IconButton/IconButton';
 import { useReduxEffect } from 'src/utils/hooks/useReduxEffect';
@@ -13,13 +13,14 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 interface Props {
     walletKey: WalletKeyType,
+    hasMultiWallets?: boolean;
     onRename: (newName: string) => void
     onDelete: () => void
 }
 
 
 
-export default function WalletKey({ walletKey, onRename, onDelete }: Props) {
+export default function WalletKey({ walletKey, hasMultiWallets, onRename, onDelete }: Props) {
 
     const ref = useRef<HTMLInputElement>(null!);
     const [name, setName] = useState(walletKey.name);
@@ -90,7 +91,7 @@ export default function WalletKey({ walletKey, onRename, onDelete }: Props) {
                         onClick={saveNameChanges}
                     >Save</Button>}
             </div>
-            <div className="min-w-[60px] flex justify-center">
+            {hasMultiWallets && <div className="min-w-[60px] flex justify-center">
                 {!walletKey.is_current ?
                     <IconButton
                         size='sm'
@@ -98,21 +99,23 @@ export default function WalletKey({ walletKey, onRename, onDelete }: Props) {
                         onClick={() => handleDelete()}
                     ><FiTrash2 /> </IconButton>
                     : <>
-                        <span ref={setTriggerRef} className="text-body5 text-gray-400">(Current)</span>
+                        <span ref={setTriggerRef} >
+                            <FiLock className="text-body4 text-gray-400" />
+                        </span>
                         {visible && (
                             <div
                                 ref={setTooltipRef}
-                                {...getTooltipProps({ className: 'tooltip-container' })}
+                                {...getTooltipProps({ className: 'tooltip-container !bg-gray-900 !text-white text-body5 !rounded-12 !p-12' })}
                             >
                                 <div {...getArrowProps({ className: 'tooltip-arrow' })} />
-                                Tooltip
+                                You're now logged-in with this wallet. <br /> To remove it, login to your account with a different wallet.
                             </div>
                         )}
                     </>
 
                 }
 
-            </div>
+            </div>}
         </li>
     )
 }
