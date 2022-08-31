@@ -208,6 +208,46 @@ export interface NexusGenObjects {
     isOfficial?: boolean | null; // Boolean
     title: string; // String!
   }
+  Tournament: { // root type
+    cover_image: string; // String!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    events: NexusGenRootTypes['TournamentEvent'][]; // [TournamentEvent!]!
+    faqs: NexusGenRootTypes['TournamentFAQ'][]; // [TournamentFAQ!]!
+    id: number; // Int!
+    judges: NexusGenRootTypes['TournamentJudge'][]; // [TournamentJudge!]!
+    location: string; // String!
+    prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
+    start_date: NexusGenScalars['Date']; // Date!
+    thumbnail_image: string; // String!
+    title: string; // String!
+    website: string; // String!
+  }
+  TournamentEvent: { // root type
+    date: NexusGenScalars['Date']; // Date!
+    description: string; // String!
+    id: number; // Int!
+    image: string; // String!
+    links: string[]; // [String!]!
+    location: string; // String!
+    title: string; // String!
+    type: string; // String!
+    website: string; // String!
+  }
+  TournamentFAQ: { // root type
+    answer: string; // String!
+    question: string; // String!
+  }
+  TournamentJudge: { // root type
+    avatar: string; // String!
+    jobTitle: string; // String!
+    name: string; // String!
+  }
+  TournamentPrize: { // root type
+    amount: string; // String!
+    image: string; // String!
+    title: string; // String!
+  }
   User: { // root type
     avatar: string; // String!
     bio?: string | null; // String
@@ -396,6 +436,7 @@ export interface NexusGenFieldTypes {
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
+    getTournamentById: NexusGenRootTypes['Tournament']; // Tournament!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     me: NexusGenRootTypes['MyProfile'] | null; // MyProfile
@@ -440,6 +481,46 @@ export interface NexusGenFieldTypes {
     icon: string | null; // String
     id: number; // Int!
     isOfficial: boolean | null; // Boolean
+    title: string; // String!
+  }
+  Tournament: { // field return type
+    cover_image: string; // String!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    events: NexusGenRootTypes['TournamentEvent'][]; // [TournamentEvent!]!
+    faqs: NexusGenRootTypes['TournamentFAQ'][]; // [TournamentFAQ!]!
+    id: number; // Int!
+    judges: NexusGenRootTypes['TournamentJudge'][]; // [TournamentJudge!]!
+    location: string; // String!
+    prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
+    start_date: NexusGenScalars['Date']; // Date!
+    thumbnail_image: string; // String!
+    title: string; // String!
+    website: string; // String!
+  }
+  TournamentEvent: { // field return type
+    date: NexusGenScalars['Date']; // Date!
+    description: string; // String!
+    id: number; // Int!
+    image: string; // String!
+    links: string[]; // [String!]!
+    location: string; // String!
+    title: string; // String!
+    type: string; // String!
+    website: string; // String!
+  }
+  TournamentFAQ: { // field return type
+    answer: string; // String!
+    question: string; // String!
+  }
+  TournamentJudge: { // field return type
+    avatar: string; // String!
+    jobTitle: string; // String!
+    name: string; // String!
+  }
+  TournamentPrize: { // field return type
+    amount: string; // String!
+    image: string; // String!
     title: string; // String!
   }
   User: { // field return type
@@ -645,6 +726,7 @@ export interface NexusGenFieldTypeNames {
     getMyDrafts: 'Post'
     getPostById: 'Post'
     getProject: 'Project'
+    getTournamentById: 'Tournament'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
     me: 'MyProfile'
@@ -689,6 +771,46 @@ export interface NexusGenFieldTypeNames {
     icon: 'String'
     id: 'Int'
     isOfficial: 'Boolean'
+    title: 'String'
+  }
+  Tournament: { // field return type name
+    cover_image: 'String'
+    description: 'String'
+    end_date: 'Date'
+    events: 'TournamentEvent'
+    faqs: 'TournamentFAQ'
+    id: 'Int'
+    judges: 'TournamentJudge'
+    location: 'String'
+    prizes: 'TournamentPrize'
+    start_date: 'Date'
+    thumbnail_image: 'String'
+    title: 'String'
+    website: 'String'
+  }
+  TournamentEvent: { // field return type name
+    date: 'Date'
+    description: 'String'
+    id: 'Int'
+    image: 'String'
+    links: 'String'
+    location: 'String'
+    title: 'String'
+    type: 'String'
+    website: 'String'
+  }
+  TournamentFAQ: { // field return type name
+    answer: 'String'
+    question: 'String'
+  }
+  TournamentJudge: { // field return type name
+    avatar: 'String'
+    jobTitle: 'String'
+    name: 'String'
+  }
+  TournamentPrize: { // field return type name
+    amount: 'String'
+    image: 'String'
     title: 'String'
   }
   User: { // field return type name
@@ -810,6 +932,9 @@ export interface NexusGenArgTypes {
       type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
     }
     getProject: { // args
+      id: number; // Int!
+    }
+    getTournamentById: { // args
       id: number; // Int!
     }
     hottestProjects: { // args

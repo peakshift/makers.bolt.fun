@@ -282,6 +282,7 @@ export type Query = {
   getMyDrafts: Array<Post>;
   getPostById: Post;
   getProject: Project;
+  getTournamentById: Tournament;
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
   me: Maybe<MyProfile>;
@@ -336,6 +337,11 @@ export type QueryGetPostByIdArgs = {
 
 
 export type QueryGetProjectArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryGetTournamentByIdArgs = {
   id: Scalars['Int'];
 };
 
@@ -418,6 +424,56 @@ export type Tag = {
   icon: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   isOfficial: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
+};
+
+export type Tournament = {
+  __typename?: 'Tournament';
+  cover_image: Scalars['String'];
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  events: Array<TournamentEvent>;
+  faqs: Array<TournamentFaq>;
+  id: Scalars['Int'];
+  judges: Array<TournamentJudge>;
+  location: Scalars['String'];
+  prizes: Array<TournamentPrize>;
+  start_date: Scalars['Date'];
+  thumbnail_image: Scalars['String'];
+  title: Scalars['String'];
+  website: Scalars['String'];
+};
+
+export type TournamentEvent = {
+  __typename?: 'TournamentEvent';
+  date: Scalars['Date'];
+  description: Scalars['String'];
+  id: Scalars['Int'];
+  image: Scalars['String'];
+  links: Array<Scalars['String']>;
+  location: Scalars['String'];
+  title: Scalars['String'];
+  type: Scalars['String'];
+  website: Scalars['String'];
+};
+
+export type TournamentFaq = {
+  __typename?: 'TournamentFAQ';
+  answer: Scalars['String'];
+  question: Scalars['String'];
+};
+
+export type TournamentJudge = {
+  __typename?: 'TournamentJudge';
+  avatar: Scalars['String'];
+  jobTitle: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type TournamentPrize = {
+  __typename?: 'TournamentPrize';
+  amount: Scalars['String'];
+  image: Scalars['String'];
   title: Scalars['String'];
 };
 
@@ -629,6 +685,13 @@ export type ProjectDetailsQueryVariables = Exact<{
 
 
 export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string }, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
+
+export type GetTournamentByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, jobTitle: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, date: any, location: string, website: string, type: string, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> } };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -1858,6 +1921,74 @@ export function useProjectDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type ProjectDetailsQueryHookResult = ReturnType<typeof useProjectDetailsQuery>;
 export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDetailsLazyQuery>;
 export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
+export const GetTournamentByIdDocument = gql`
+    query GetTournamentById($id: Int!) {
+  getTournamentById(id: $id) {
+    id
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    prizes {
+      title
+      amount
+      image
+    }
+    judges {
+      name
+      jobTitle
+      avatar
+    }
+    events {
+      id
+      title
+      image
+      description
+      date
+      location
+      website
+      type
+      links
+    }
+    faqs {
+      question
+      answer
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTournamentByIdQuery__
+ *
+ * To run a query within a React component, call `useGetTournamentByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTournamentByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTournamentByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetTournamentByIdQuery(baseOptions: Apollo.QueryHookOptions<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>(GetTournamentByIdDocument, options);
+      }
+export function useGetTournamentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>(GetTournamentByIdDocument, options);
+        }
+export type GetTournamentByIdQueryHookResult = ReturnType<typeof useGetTournamentByIdQuery>;
+export type GetTournamentByIdLazyQueryHookResult = ReturnType<typeof useGetTournamentByIdLazyQuery>;
+export type GetTournamentByIdQueryResult = Apollo.QueryResult<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>;
 export const VoteDocument = gql`
     mutation Vote($itemType: VOTE_ITEM_TYPE!, $itemId: Int!, $amountInSat: Int!) {
   vote(item_type: $itemType, item_id: $itemId, amount_in_sat: $amountInSat) {

@@ -87,3 +87,7 @@ export function profile() {
 export function getMyDrafts(): Query['getMyDrafts'] {
     return MOCK_DATA['posts'].stories;
 }
+
+export function getTournamentById(id: number) {
+    return MOCK_DATA['tournaments'][0]
+}

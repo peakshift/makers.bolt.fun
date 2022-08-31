@@ -1,0 +1,38 @@
+query GetTournamentById($id: Int!) {
+  getTournamentById(id: $id) {
+    id
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    prizes {
+      title
+      amount
+      image
+    }
+    judges {
+      name
+      jobTitle
+      avatar
+    }
+    events {
+      id
+      title
+      image
+      description
+      date
+      location
+      website
+      type
+      links
+    }
+    faqs {
+      question
+      answer
+    }
+  }
+} #

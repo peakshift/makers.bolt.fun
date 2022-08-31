@@ -212,6 +212,7 @@ type Query {
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
+  getTournamentById(id: Int!): Tournament!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: MyProfile
@@ -268,6 +269,51 @@ type Tag {
   icon: String
   id: Int!
   isOfficial: Boolean
+  title: String!
+}
+
+type Tournament {
+  cover_image: String!
+  description: String!
+  end_date: Date!
+  events: [TournamentEvent!]!
+  faqs: [TournamentFAQ!]!
+  id: Int!
+  judges: [TournamentJudge!]!
+  location: String!
+  prizes: [TournamentPrize!]!
+  start_date: Date!
+  thumbnail_image: String!
+  title: String!
+  website: String!
+}
+
+type TournamentEvent {
+  date: Date!
+  description: String!
+  id: Int!
+  image: String!
+  links: [String!]!
+  location: String!
+  title: String!
+  type: String!
+  website: String!
+}
+
+type TournamentFAQ {
+  answer: String!
+  question: String!
+}
+
+type TournamentJudge {
+  avatar: String!
+  jobTitle: String!
+  name: String!
+}
+
+type TournamentPrize {
+  amount: String!
+  image: String!
   title: String!
 }
 
