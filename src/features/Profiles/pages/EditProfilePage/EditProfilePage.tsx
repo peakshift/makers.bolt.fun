@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
 import PreferencesTab from "./PreferencesTab/PreferencesTab";
 import Card from "src/Components/Card/Card";
+import { LayoutGroup, motion } from "framer-motion";
 
 
 const links = [
@@ -43,43 +44,49 @@ export default function EditProfilePage() {
             </Helmet>
             <div className="page-container grid grid-cols-1 md:grid-cols-4 gap-24">
                 <aside>
-                    {isMediumScreen ?
-                        <Card className="sticky-side-element">
-                            <p className="text-body2 font-bolder text-black mb-16">Edit maker profile</p>
-                            <ul className=' flex flex-col gap-8'>
-                                {links.map((link, idx) =>
-                                    <li key={idx}>
+                    <LayoutGroup id="edit-profile-nav">
+                        {isMediumScreen ?
+                            <Card className="sticky-side-element  isolate">
+                                <p className="text-body2 font-bolder text-black mb-16">Edit maker profile</p>
+                                <ul className=' flex flex-col gap-8'>
+                                    {links.map((link, idx) =>
+                                        <li key={idx}>
+                                            <NavLink
+                                                to={link.path}
+                                                className={({ isActive }) => `
+                                                flex items-start cursor-pointer font-bold p-12 relative rounded-8`}
+                                                children={({ isActive }) => (
+                                                    <>
+                                                        {isActive && <motion.div className="bg-gray-100 absolute inset-0 rounded-8 z-0" layoutId="bg"></motion.div>}
+                                                        <span className="relative z-10">{link.text}</span>
+                                                    </>
+                                                )}
+                                            />
+                                        </li>)}
+                                </ul>
+                            </Card>
+                            :
+                            <div className="border-b-2 border-gray-200">
+                                <Slider>
+                                    {links.map((link, idx) =>
                                         <NavLink
                                             to={link.path}
-                                            className={({ isActive }) => `flex items-start rounded-8 cursor-pointer font-bold p-12
-                                 active:scale-95 transition-transform
-                                ${isActive ? 'bg-gray-100' : 'hover:bg-gray-50'}
-                                `}
-                                        >
-                                            {link.text}
-                                        </NavLink>
-                                    </li>)}
-                            </ul>
-                        </Card>
-                        :
-                        <div className="border-b-2 border-gray-200">
-                            <Slider>
-                                {links.map((link, idx) =>
-                                    <NavLink
-                                        to={link.path}
-                                        key={idx}
-                                        className={`flex items-start cursor-pointer font-bold py-12
-                                                active:scale-95 transition-transform`}
-                                        style={({ isActive }) => ({
-                                            boxShadow: isActive ? '0px 2px var(--primary)' : 'none'
-                                        })}
-                                    >
-                                        {link.text}
-                                    </NavLink>
-                                )}
-                            </Slider>
-                        </div>
-                    }
+                                            key={idx}
+                                            className={`flex items-start cursor-pointer font-bold py-12
+                                                active:scale-95 transition-transform relative`}
+
+                                            children={({ isActive }) => (
+                                                <>
+                                                    {isActive && <motion.div className="absolute h-[2px] bottom-0 inset-x-0 bg-primary-500" layoutId="underline"></motion.div>}
+                                                    <span className="relative z-10">{link.text}</span>
+                                                </>
+                                            )}
+                                        />
+                                    )}
+                                </Slider>
+                            </div>
+                        }
+                    </LayoutGroup>
                 </aside>
                 <main className="md:col-span-3">
                     <Routes>
