@@ -40,13 +40,13 @@ export default function EventCard({ event }: Props) {
     return (
         <div
             role='button'
-            className="rounded-16 bg-white overflow-hidden border-2 flex flex-col"
+            className="rounded-16 bg-white overflow-hidden border-2 flex flex-col group"
             onClick={openEventModal}
         >
             <img className="w-full h-[160px] object-cover" src={event.image} alt="" />
             <div className="p-16 grow flex flex-col">
                 <div className="flex flex-col gap-8">
-                    <h3 className="text-body2 font-bold text-gray-900">
+                    <h3 className="text-body2 font-bold text-gray-900 group-hover:underline">
                         {event.title}
                     </h3>
                     <p className="text-body4 font-medium text-gray-900">
