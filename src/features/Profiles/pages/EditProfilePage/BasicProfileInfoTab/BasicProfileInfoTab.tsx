@@ -1,6 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-import Button from "src/Components/Button/Button";
-import { User, useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables } from "src/graphql";
+import { useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables, UserBasicInfoFragmentDoc } from "src/graphql";
 import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,10 +8,10 @@ import { useAppDispatch, usePrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
 import Card from "src/Components/Card/Card";
-import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import { setUser } from "src/redux/features/user.slice";
-import UpdateProfileAboutTabSkeleton from "./UpdateMyProfileTab.Skeleton";
+import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
+import { useApolloClient } from "@apollo/client";
 
 interface Props {
 }
@@ -53,7 +52,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 }).required();
 
-export default function UpdateMyProfileTab() {
+export default function BasicProfileInfoTab() {
 
     const { register, formState: { errors, isDirty, }, handleSubmit, reset } = useForm<IFormInputs>({
         defaultValues: {},
@@ -61,7 +60,7 @@ export default function UpdateMyProfileTab() {
         mode: 'onBlur',
     });
 
-
+    const apolloClient = useApolloClient()
     const profileQuery = useMyProfileAboutQuery({
         onCompleted: data => {
             if (data.me)
@@ -69,6 +68,7 @@ export default function UpdateMyProfileTab() {
         }
     })
     const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
+
 
     const dispatch = useAppDispatch()
     usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
@@ -106,6 +106,11 @@ export default function UpdateMyProfileTab() {
                 if (data) {
                     dispatch(setUser(data))
                     reset(data);
+                    apolloClient.writeFragment({
+                        id: `User:${data?.id}`,
+                        data,
+                        fragment: UserBasicInfoFragmentDoc,
+                    })
                     toast.update(toastId, { render: "Saved changes successfully", type: "success", ...NotificationsService.defaultOptions, isLoading: false });
                 }
             }
