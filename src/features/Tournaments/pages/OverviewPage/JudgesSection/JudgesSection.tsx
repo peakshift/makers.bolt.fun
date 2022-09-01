@@ -16,7 +16,7 @@ export default function JudgesSection({ judges }: Props) {
     return (
         <div>
             <h2 className='text-body1 font-bolder text-gray-900 mb-16'>Judges</h2>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-24">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-8 md:gap-24">
                 {judges.map((judge, idx) => <div
                     key={idx}
                     className="p-16 rounded-16 flex flex-col justify-center items-center gap-16 md:gap-24"

@@ -11,7 +11,9 @@ export default function PrizesSection({ prizes }: Props) {
     <div>
       <h2 className='text-body1 font-bolder text-gray-900 mb-16'>Prizes</h2>
       <div className={styles.grid}>
-        {prizes.map(prize => <div className='bg-gray-50 rounded-16 py-24 px-32'>
+        {prizes.map((prize, idx) => <div
+          key={idx}
+          className='bg-gray-50 rounded-16 py-24 px-32'>
           <img src={prize.image} className=' max-w-[64px]' alt="" />
           <div>
             <h3 className="text-h2">{prize.title}</h3>

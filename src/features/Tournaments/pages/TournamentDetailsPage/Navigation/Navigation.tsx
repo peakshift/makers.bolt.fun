@@ -42,7 +42,7 @@ export default function Navigation({ data }: Props) {
     ], [data.events_count, data.makers_count, data.projects_count])
 
     return (
-        <div className="w-full bg-white py-16 border-b-2 border-gray-200 sticky-top-element">
+        <div className="w-full bg-white py-16 border-b-2 border-gray-200 sticky-top-element z-10">
             <div className="relative group content-container">
                 <div className="overflow-hidden" ref={viewportRef}>
                     <div className="select-none w-full flex gap-16">

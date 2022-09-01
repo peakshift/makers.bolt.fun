@@ -22,7 +22,7 @@ interface Props {
 
 export default function OverviewPage({ data }: Props) {
     return (
-        <Card className='flex flex-col gap-42'>
+        <Card onlyMd className='flex flex-col gap-42'>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-24 items-start">
                 <div className='md:col-span-2'>
                     <h2 className='text-body1 font-bolder text-gray-900'>Tournament details</h2>
