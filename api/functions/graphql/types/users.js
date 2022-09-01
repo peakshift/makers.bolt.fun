@@ -3,7 +3,7 @@ const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
-const { Tournament } = require('./tournaments');
+const { Tournament } = require('./tournament');
 
 
 

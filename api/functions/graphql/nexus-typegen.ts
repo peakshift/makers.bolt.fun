@@ -24,7 +24,7 @@ declare global {
 
 
 declare global {
-  interface NexusGen extends NexusGenTypes { }
+  interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
