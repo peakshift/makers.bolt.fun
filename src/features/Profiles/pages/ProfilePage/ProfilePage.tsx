@@ -12,8 +12,6 @@ import SkillsCard from "./SkillsCard/SkillsCard"
 import TournamentsCard from "./TournamentsCard/TournamentsCard"
 import { MEDIA_QUERIES } from "src/utils/theme"
 import SimilarMakersCard from "./SimilarMakersCard/SimilarMakersCard"
-import { useEffect } from "react"
-import { gql, useApolloClient } from "@apollo/client"
 
 export default function ProfilePage() {
 
@@ -65,7 +63,7 @@ export default function ProfilePage() {
                             <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
                         </main>
-                        <aside>
+                        <aside className="min-w-0">
                             <SimilarMakersCard makers={profileQuery.data.profile.similar_makers} />
                         </aside>
                     </>
