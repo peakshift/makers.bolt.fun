@@ -18,7 +18,7 @@ interface Particle {
     offsetY: number,
     color: string
     animation: 'fly-spark-1' | 'fly-spark-2',
-    animationSpeed: 1 | 2 | 3,
+    animationSpeed: number,
     scale: number
 }
 
@@ -108,11 +108,11 @@ export default function VoteButton({
             id: (Math.random() + 1).toString(),
             offsetX: random(-10, 99),
             offsetY: random(10, 90),
-            animation: randomItem(styles.fly_spark_1, styles.fly_spark_1),
+            animation: randomItem(styles.fly_spark_1, styles.fly_spark_1) as any,
             animationSpeed: randomItem(1, 1.5, 2),
             color: `hsl(0deg 86% ${random(50, 63)}%)`,
             scale: random(1, 1.5)
-        }))
+        } as const))
 
         // if on mobile screen, reduce number of sparks particles to 60%
         setSparks(oldSparks => [...oldSparks, ...newSparks])

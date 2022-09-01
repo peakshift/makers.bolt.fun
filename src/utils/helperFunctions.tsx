@@ -8,7 +8,7 @@ export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
 
-export function randomItem(...args: any[]) {
+export function randomItem<T>(...args: T[]): T {
   return args[Math.floor(Math.random() * args.length)];
 }
 

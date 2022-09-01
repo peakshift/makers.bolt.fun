@@ -1,5 +1,5 @@
 import { Chance } from "chance";
-import { GenericMakerRole, MakerSkill, MyProfile, RoleLevelEnum, User } from "src/graphql";
+import { GenericMakerRole, MakerSkill, MyProfile, RoleLevelEnum, User, Tournament } from "src/graphql";
 import { randomItem, randomItems } from "src/utils/helperFunctions";
 import { posts } from "./posts";
 import { getCoverImage, getAvatarImage } from "./utils";
@@ -135,9 +135,9 @@ export const user: User & MyProfile = {
             thumbnail_image: getCoverImage(),
             start_date: new Date(2021, 3).toISOString(),
             end_date: new Date(2021, 4).toISOString(),
-            tags: [],
-            website: "https://breez-conf.com"
-        },
+            website: "https://breez-conf.com",
+
+        } as Tournament,
         {
             id: 2,
             title: "Shock the Web 3",
@@ -146,9 +146,9 @@ export const user: User & MyProfile = {
             thumbnail_image: getCoverImage(),
             start_date: new Date(2022, 7).toISOString(),
             end_date: new Date(2022, 11).toISOString(),
-            tags: [],
-            website: "https://shock-the-web.com"
-        },
+            website: "https://shock-the-web.com",
+
+        } as Tournament,
     ],
     similar_makers: [
         {
