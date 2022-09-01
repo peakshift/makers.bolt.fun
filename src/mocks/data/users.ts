@@ -118,11 +118,13 @@ export const user: User & MyProfile = {
     walletsKeys: [
         {
             key: "1645h234j2421zxvertw",
-            name: "My Alby wallet key"
+            name: "My Alby wallet key",
+            is_current: true
         },
         {
             key: "66345134234235",
-            name: "My Phoenix wallet key"
+            name: "My Phoenix wallet key",
+            is_current: false
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),

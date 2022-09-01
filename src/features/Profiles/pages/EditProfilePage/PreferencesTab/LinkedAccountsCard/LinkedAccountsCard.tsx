@@ -38,6 +38,7 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
         onChange([...value.slice(0, idx), ...value.slice(idx + 1)])
     }
 
+    const hasMultiWallets = value.length > 1;
 
     return (
         <Card>
@@ -50,32 +51,13 @@ export default function LinkedAccountsCard({ value, onChange }: Props) {
                     {value.map((item, idx) =>
                         <WalletKey
                             key={idx}
+                            hasMultiWallets={hasMultiWallets}
                             walletKey={item}
-                            canDelete={value.length > 1}
                             onRename={v => updateKeyName(idx, v)}
                             onDelete={() => deleteKey(idx)}
                         />
                     )}
                 </ul>
-                {/* <div className="flex justify-end gap-8">
-                    <Button
-                        color='gray'
-                        className=''
-                        disabled={!keysState.hasNewChanges || updatingKeysStatus.loading}
-                        onClick={cancelChanges}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        color='black'
-                        className=''
-                        disabled={!keysState.hasNewChanges}
-                        isLoading={updatingKeysStatus.loading}
-                        onClick={saveChanges}
-                    >
-                        Save Changes
-                    </Button>
-                </div> */}
             </div>
             {value.length < 3 &&
                 <Button color='none' size='sm' className='mt-16 text-gray-600 hover:bg-gray-50' onClick={connectNewWallet}>

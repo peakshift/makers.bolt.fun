@@ -4,6 +4,7 @@ query MyProfilePreferences {
     walletsKeys {
       key
       name
+      is_current
     }
     nostr_prv_key
     nostr_pub_key

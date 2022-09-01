@@ -382,6 +382,7 @@ type Vote {
 }
 
 type WalletKey {
+  is_current: Boolean!
   key: String!
   name: String!
 }
