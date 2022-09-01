@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { GrClose } from 'react-icons/gr'
 import Card from 'src/Components/Card/Card'
+import InfoCard from 'src/Components/InfoCard/InfoCard'
 import { MakerSkill } from 'src/graphql'
 import SkillsInput from './SkillsInput'
 
@@ -45,7 +46,9 @@ export default function UpdateSkillsCard(props: Props) {
                 </li>)}
             </ul>}
 
-            <p className="text-body5 text-gray-400 pt-16 mt-32 border-t-2 border-gray-200">ℹ️ Can't find a specific skill/role that you think should be here? You can ask for it to be added <a href="https://github.com/peakshift/makers.bolt.fun/discussions/143" target='_blank' rel="noreferrer" className='font-bold underline'>here</a> </p>
+            <InfoCard>
+                <span className="font-bold">ℹ️ Can't find a specific skill?</span> You can suggest it to be added <a href="https://github.com/peakshift/makers.bolt.fun/discussions/143" target='_blank' rel="noreferrer" className='font-bold underline'>here</a>
+            </InfoCard>
         </Card>
     )
 }
