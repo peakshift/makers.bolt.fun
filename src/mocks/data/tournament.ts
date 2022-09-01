@@ -38,7 +38,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         amount: "$ 1k",
         image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/fa7b7cdd-7c06-4ebe-1a2d-94af9d2dae00/public",
     }],
-    events_count: 28,
+    events_count: 6,
     makers_count: 668,
     projects_count: 21,
     events: [

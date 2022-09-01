@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
-import { useAppDispatch, useAppSelector } from 'src/utils/hooks';
+import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
@@ -16,6 +16,7 @@ import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
 import { setVoteAmount } from 'src/redux/features/vote.slice';
 import { numberFormatter } from 'src/utils/helperFunctions';
+import { MEDIA_QUERIES } from 'src/utils/theme';
 
 
 interface Props extends ModalCard {
@@ -28,11 +29,11 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
 
 
-    const { isWalletConnected, project, isMobileScreen } = useAppSelector(state => ({
+    const { isWalletConnected, project } = useAppSelector(state => ({
         isWalletConnected: state.wallet.isConnected,
-        project: state.project.project,
-        isMobileScreen: state.ui.isMobileScreen
+        project: state.project.project
     }));
+    const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
     const { loading, error } = useProjectDetailsQuery({
         variables: { projectId: projectId! },
@@ -57,7 +58,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
     if (error)
         return <div
-            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && 'rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[768px] ${props.isPageModal && !isMdScreen && 'rounded-0 w-full min-h-screen'}`}
         >
             <div className="p-64">
                 <ErrorMessage type='fetching' message='Something Wrong happened while fetching project details, please try refreshing the page' />
@@ -98,7 +99,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
     return (
         <div
-            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && '!rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[768px] ${(props.isPageModal && !isMdScreen) && '!rounded-0 w-full min-h-screen'}`}
         >
             <div className="relative h-[80px] lg:h-[152px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />

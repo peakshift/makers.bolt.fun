@@ -51,7 +51,7 @@ export default function ProjectsRow({ title, link, projects }: Props) {
 
     const handleClick = (projectId: number) => {
         if (isClickAllowed()) {
-            dispatch(openModal({ Modal: "ProjectDetailsCard", props: { projectId } }))
+            dispatch(openModal({ Modal: "ProjectDetailsCard", isPageModal: true, props: { projectId } }))
         }
     }
 
