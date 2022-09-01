@@ -44,6 +44,8 @@ export default function UpdateSkillsCard(props: Props) {
                     {idToValue.get(skill.id)?.title} <button className='ml-8' onClick={() => remove(skill.id)}><GrClose /></button>
                 </li>)}
             </ul>}
+
+            <p className="text-body5 text-gray-400 pt-16 mt-32 border-t-2 border-gray-200">ℹ️ Can't find a specific skill/role that you think should be here? You can ask for it to be added <a href="https://github.com/peakshift/makers.bolt.fun/discussions/143" target='_blank' rel="noreferrer" className='font-bold underline'>here</a> </p>
         </Card>
     )
 }
