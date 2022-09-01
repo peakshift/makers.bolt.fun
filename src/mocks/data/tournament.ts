@@ -1,4 +1,5 @@
 import { Tournament } from "src/graphql";
+import { getCoverImage } from "./utils";
 
 export const tournaments: Tournament[] = [{
     __typename: "Tournament",
@@ -40,7 +41,76 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
     events_count: 28,
     makers_count: 668,
     projects_count: 21,
-    events: [],
+    events: [
+        {
+            id: 12,
+            title: "STW3 Round Table #1",
+            date: "13:00 - 14:00 UTC, 23rd June",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
+            image: getCoverImage(),
+            links: [],
+            location: "Online",
+            type: "🐦  Twitter space",
+            website: "https://event.name"
+        },
+        {
+            id: 13,
+            title: "STW3 Round Table #2",
+            date: "15:00 - 16:00 UTC, 23rd June",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
+            image: getCoverImage(),
+            links: [],
+            location: "Online",
+            type: "🛠  Workshop",
+            website: "https://event.name"
+        },
+        {
+            id: 14,
+            title: "STW3 Round Table #3",
+            date: "13:00 - 14:00 UTC, 24rd June",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
+            image: getCoverImage(),
+            links: [],
+            location: "Online",
+            type: "🤝  IRL meetup",
+            website: "https://event.name"
+        },
+        {
+            id: 44,
+            title: "Lightning Login",
+            date: "15:00 - 16:00 UTC, 24rd June",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
+            image: getCoverImage(),
+            links: [],
+            location: "Online",
+            type: "🛠  Workshop",
+            website: "https://event.name"
+        },
+
+        {
+            id: 46,
+            title: "Escrow contracts",
+            date: "15:00 - 16:00 UTC, 23rd June",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
+            image: getCoverImage(),
+            links: [],
+            location: "Online",
+            type: "🛠  Workshop",
+            website: "https://event.name"
+        },
+
+        {
+            id: 444,
+            title: "Lsats - What & Why",
+            date: "15:00 - 16:00 UTC, 23rd June",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
+            image: getCoverImage(),
+            links: [],
+            location: "Online",
+            type: "🛠  Workshop",
+            website: "https://event.name"
+        },
+    ],
     judges: [
         {
             name: "Ben Arc",

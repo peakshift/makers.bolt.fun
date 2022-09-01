@@ -7,6 +7,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import OverviewPage from '../OverviewPage/OverviewPage'
 import { Helmet } from 'react-helmet'
 import Navigation from './Navigation/Navigation'
+import EventsPage from '../EventsPage/EventsPage'
 
 export default function TournamentDetailsPage() {
 
@@ -36,6 +37,7 @@ export default function TournamentDetailsPage() {
         <Routes >
           <Route index element={<Navigate to='overview' />} />
           <Route path='overview' element={<OverviewPage data={query.data?.getTournamentById} />} />
+          <Route path='events' element={<EventsPage data={query.data?.getTournamentById} />} />
         </Routes>
       </div>
     </div>

@@ -14,6 +14,7 @@
     "@remirror/react": "^1.0.34",
     "@shopify/react-web-worker": "^5.0.1",
     "@szhsin/react-menu": "^3.0.2",
+    "@tailwindcss/line-clamp": "^0.4.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
