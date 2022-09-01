@@ -56,9 +56,9 @@ const MyProfile = objectType({
 
         t.nonNull.list.nonNull.field('walletsKeys', {
             type: "WalletKey",
-            resolve: (parent) => {
-                return prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
-
+            resolve: async (parent, _, context) => {
+                const userKeys = await prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
+                return userKeys.map(k => ({ ...k, is_current: k.key === context.userPubKey }))
             }
         });
     }
@@ -144,6 +144,7 @@ const WalletKey = objectType({
     definition(t) {
         t.nonNull.string('key');
         t.nonNull.string('name');
+        t.nonNull.boolean('is_current')
     }
 })
 
