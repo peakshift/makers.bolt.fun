@@ -351,8 +351,14 @@ type TournamentEvent {
   links: [String!]!
   location: String!
   title: String!
-  type: String!
+  type: TournamentEventTypeEnum!
   website: String!
+}
+
+enum TournamentEventTypeEnum {
+  IRLMeetup
+  TwitterSpace
+  Workshop
 }
 
 type TournamentFAQ {

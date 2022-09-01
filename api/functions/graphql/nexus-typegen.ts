@@ -69,6 +69,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
+  TournamentEventTypeEnum: 2 | 0 | 1
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 
@@ -261,7 +262,7 @@ export interface NexusGenObjects {
     links: string[]; // [String!]!
     location: string; // String!
     title: string; // String!
-    type: string; // String!
+    type: NexusGenEnums['TournamentEventTypeEnum']; // TournamentEventTypeEnum!
     website: string; // String!
   }
   TournamentFAQ: { // root type
@@ -562,7 +563,7 @@ export interface NexusGenFieldTypes {
     links: string[]; // [String!]!
     location: string; // String!
     title: string; // String!
-    type: string; // String!
+    type: NexusGenEnums['TournamentEventTypeEnum']; // TournamentEventTypeEnum!
     website: string; // String!
   }
   TournamentFAQ: { // field return type
@@ -886,7 +887,7 @@ export interface NexusGenFieldTypeNames {
     links: 'String'
     location: 'String'
     title: 'String'
-    type: 'String'
+    type: 'TournamentEventTypeEnum'
     website: 'String'
   }
   TournamentFAQ: { // field return type name

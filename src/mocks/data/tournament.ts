@@ -1,4 +1,4 @@
-import { Tournament } from "src/graphql";
+import { Tournament, TournamentEventTypeEnum } from "src/graphql";
 import { getCoverImage } from "./utils";
 
 export const tournaments: Tournament[] = [{
@@ -50,7 +50,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
             image: getCoverImage(),
             links: [],
             location: "Online",
-            type: "🐦  Twitter space",
+            type: TournamentEventTypeEnum.TwitterSpace,
             website: "https://event.name"
         },
         {
@@ -61,7 +61,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
             image: getCoverImage(),
             links: [],
             location: "Online",
-            type: "🛠  Workshop",
+            type: TournamentEventTypeEnum.Workshop,
             website: "https://event.name"
         },
         {
@@ -72,7 +72,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
             image: getCoverImage(),
             links: [],
             location: "Online",
-            type: "🤝  IRL meetup",
+            type: TournamentEventTypeEnum.IrlMeetup,
             website: "https://event.name"
         },
         {
@@ -83,7 +83,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
             image: getCoverImage(),
             links: [],
             location: "Online",
-            type: "🛠  Workshop",
+            type: TournamentEventTypeEnum.Workshop,
             website: "https://event.name"
         },
 
@@ -95,7 +95,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
             image: getCoverImage(),
             links: [],
             location: "Online",
-            type: "🛠  Workshop",
+            type: TournamentEventTypeEnum.Workshop,
             website: "https://event.name"
         },
 
@@ -107,7 +107,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
             image: getCoverImage(),
             links: [],
             location: "Online",
-            type: "🛠  Workshop",
+            type: TournamentEventTypeEnum.Workshop,
             website: "https://event.name"
         },
     ],

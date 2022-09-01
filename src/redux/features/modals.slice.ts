@@ -14,6 +14,7 @@ import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
+import { EventModal } from "src/features/Tournaments/pages/EventsPage/EventModal";
 
 export enum Direction {
   START,
@@ -37,6 +38,9 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+
+  // Tournaments
+  EventModal: EventModal,
 
   // Misc
   ConfirmModal,
@@ -63,9 +67,9 @@ type NonNullableObject<T> = {
 
 type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = U extends any ?
   {} extends NonNullableObject<ModalProps<U>> ?
-  { Modal: U }
+  { Modal: U, isPageModal?: boolean, }
   :
-  { Modal: U, props: ModalProps<U> }
+  { Modal: U, isPageModal?: boolean, props: ModalProps<U> }
   :
   never;
 
@@ -134,7 +138,7 @@ export const modalSlice = createSlice({
       state.isOpen = true;
 
       let props: any = {};
-      props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
+      props.isPageModal = action.payload.isPageModal;
 
       if ('props' in action.payload)
         props = { ...props, ...action.payload.props }

@@ -4,6 +4,7 @@ const {
     stringArg,
     extendType,
     nonNull,
+    enumType,
 } = require('nexus');
 const { prisma } = require('../../../prisma');
 
@@ -35,6 +36,18 @@ const TournamentFAQ = objectType({
     }
 })
 
+
+
+const TournamentEventTypeEnum = enumType({
+    name: 'TournamentEventTypeEnum',
+    members: {
+        TwitterSpace: 0,
+        Workshop: 1,
+        IRLMeetup: 2,
+    },
+});
+
+
 const TournamentEvent = objectType({
     name: 'TournamentEvent',
     definition(t) {
@@ -45,7 +58,7 @@ const TournamentEvent = objectType({
         t.nonNull.date('date');
         t.nonNull.string('location');
         t.nonNull.string('website');
-        t.nonNull.string('type');
+        t.nonNull.field('type', { type: TournamentEventTypeEnum })
         t.nonNull.list.nonNull.string('links');
     }
 })

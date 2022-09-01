@@ -521,9 +521,15 @@ export type TournamentEvent = {
   links: Array<Scalars['String']>;
   location: Scalars['String'];
   title: Scalars['String'];
-  type: Scalars['String'];
+  type: TournamentEventTypeEnum;
   website: Scalars['String'];
 };
+
+export enum TournamentEventTypeEnum {
+  IrlMeetup = 'IRLMeetup',
+  TwitterSpace = 'TwitterSpace',
+  Workshop = 'Workshop'
+}
 
 export type TournamentFaq = {
   __typename?: 'TournamentFAQ';
@@ -787,7 +793,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, jobTitle: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, date: any, location: string, website: string, type: string, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, jobTitle: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, date: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> } };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
