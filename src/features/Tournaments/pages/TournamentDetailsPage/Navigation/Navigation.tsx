@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useMemo } from 'react'
+import { NavLink } from 'react-router-dom'
 import { Tournament } from 'src/graphql'
 import { useCarousel } from 'src/utils/hooks'
 
@@ -9,7 +9,7 @@ interface Props {
 
 export default function Navigation({ data }: Props) {
 
-    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({
+    const { viewportRef, } = useCarousel({
         align: 'start', slidesToScroll: 2,
         containScroll: "trimSnaps",
     })

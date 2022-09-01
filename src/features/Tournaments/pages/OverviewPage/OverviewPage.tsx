@@ -1,8 +1,4 @@
-import React from 'react'
-import { FaUsers } from 'react-icons/fa'
-import Button from 'src/Components/Button/Button'
 import Card from 'src/Components/Card/Card'
-import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { Tournament } from 'src/graphql'
 import FAQsSection from './FAQsSection/FAQsSection'
 import JudgesSection from './JudgesSection/JudgesSection'

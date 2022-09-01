@@ -1,10 +1,7 @@
 
 
 import Select from 'react-select';
-import { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
-import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { FiSearch } from 'react-icons/fi';
-import { useState } from 'react';
+import { OnChangeValue, StylesConfig, } from "react-select";
 import { MyProfileRolesSkillsQuery } from 'src/graphql';
 
 

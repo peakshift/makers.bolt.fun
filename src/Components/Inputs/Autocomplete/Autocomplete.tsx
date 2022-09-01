@@ -71,7 +71,7 @@ export default function AutoComplete<T extends object, IsMulti extends boolean>(
                 boxShadow: 'none !important'
             },
         }),
-    }), [size])
+    }), [])
 
     return (
         <div className='w-full'>
