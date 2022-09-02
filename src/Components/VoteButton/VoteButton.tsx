@@ -1,7 +1,7 @@
 import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import { useAppSelector, usePressHolder, useResizeListener, useVote } from 'src/utils/hooks'
-import { ComponentProps, SyntheticEvent, useRef, useState } from 'react'
+import { ComponentProps, SyntheticEvent, useRef, useState, useEffect } from 'react'
 import styles from './styles.module.scss'
 import { random, randomItem, numberFormatter } from 'src/utils/helperFunctions'
 import { useDebouncedCallback, useMountEffect, useThrottledCallback } from '@react-hookz/web'
@@ -179,28 +179,44 @@ export default function VoteButton({
         onHold();
     }
 
-    useMountEffect(() => {
-        const bodyRect = document.body.getBoundingClientRect();
-        const btnRect = btnContainerRef.current.getBoundingClientRect()
-        setBtnPosition({
-            top: btnRect.top - bodyRect.top,
-            left: btnRect.left - bodyRect.left,
-            width: btnRect.width,
-            height: btnRect.height
-        });
+    const updateParticlesContainerPos = useDebouncedCallback(
+        () => {
+            const bodyRect = document.body.getBoundingClientRect();
+            const btnRect = btnContainerRef.current.getBoundingClientRect()
+            setBtnPosition({
+                top: btnRect.top - bodyRect.top,
+                left: btnRect.left - bodyRect.left,
+                width: btnRect.width,
+                height: btnRect.height
+            });
+        },
+        [],
+        300
+    )
 
-    })
 
-    useResizeListener(() => {
-        const bodyRect = document.body.getBoundingClientRect();
-        const btnRect = btnContainerRef.current.getBoundingClientRect()
-        setBtnPosition({
-            top: btnRect.top - bodyRect.top,
-            left: btnRect.left - bodyRect.left,
-            width: btnRect.width,
-            height: btnRect.height
-        });
-    }, { debounce: 300 })
+    useEffect(() => {
+        updateParticlesContainerPos();
+        document.addEventListener('scroll', updateParticlesContainerPos)
+        document.addEventListener('resize', updateParticlesContainerPos)
+
+        return () => {
+
+            document.removeEventListener('scroll', updateParticlesContainerPos)
+            document.removeEventListener('resize', updateParticlesContainerPos)
+        }
+    }, [updateParticlesContainerPos])
+
+    // useResizeListener(() => {
+    //     const bodyRect = document.body.getBoundingClientRect();
+    //     const btnRect = btnContainerRef.current.getBoundingClientRect()
+    //     setBtnPosition({
+    //         top: btnRect.top - bodyRect.top,
+    //         left: btnRect.left - bodyRect.left,
+    //         width: btnRect.width,
+    //         height: btnRect.height
+    //     });
+    // }, { debounce: 300 })
 
     return (
         <button
