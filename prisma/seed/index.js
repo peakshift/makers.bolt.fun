@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { generatePrivateKey, getPublicKey } = require("../../api/utils/nostr-tools");
-const { categories, projects, tags, hackathons } = require("./data");
+const { categories, projects, tags, hackathons, roles, skills } = require("./data");
 const Chance = require('chance');
 const { getCoverImage, randomItems, random } = require("./helpers");
 
@@ -58,7 +58,11 @@ async function main() {
 
     // await createHackathons();
 
-    await fillUserKeysTable()
+    // await fillUserKeysTable()
+
+    // await createRoles();
+
+    // await createSkills();
 
 }
 
@@ -169,6 +173,26 @@ async function fillUserKeysTable() {
     })
 }
 
+async function createRoles() {
+    console.log("Creating Users Roles");
+    await prisma.workRole.createMany({
+        data: roles.map(item => ({
+            id: item.id,
+            title: item.title,
+            icon: item.icon,
+        }))
+    })
+}
+
+async function createSkills() {
+    console.log("Creating Users Skills");
+    await prisma.skill.createMany({
+        data: skills.map(item => ({
+            id: item.id,
+            title: item.title,
+        }))
+    })
+}
 
 
 main()

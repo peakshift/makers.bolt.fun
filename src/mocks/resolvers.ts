@@ -84,6 +84,13 @@ export function profile() {
     return { ...MOCK_DATA['user'], __typename: 'User' } as User
 }
 
+export function getAllMakersRoles() {
+    return MOCK_DATA['allMakersRoles']
+}
+
+export function getAllMakersSkills() {
+    return MOCK_DATA['allMakersSkills']
+}
 export function getMyDrafts(): Query['getMyDrafts'] {
     return MOCK_DATA['posts'].stories;
 }

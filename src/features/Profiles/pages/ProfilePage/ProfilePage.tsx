@@ -4,9 +4,14 @@ import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage"
 import { useProfileQuery } from "src/graphql"
 import AboutCard from "./AboutCard/AboutCard"
 import { Helmet } from 'react-helmet'
-import { useAppSelector } from 'src/utils/hooks';
+import { useAppSelector, useMediaQuery } from 'src/utils/hooks';
 import styles from './styles.module.scss'
 import StoriesCard from "./StoriesCard/StoriesCard"
+import RolesCard from "./RolesCard/RolesCard"
+import SkillsCard from "./SkillsCard/SkillsCard"
+import TournamentsCard from "./TournamentsCard/TournamentsCard"
+import { MEDIA_QUERIES } from "src/utils/theme"
+import SimilarMakersCard from "./SimilarMakersCard/SimilarMakersCard"
 
 export default function ProfilePage() {
 
@@ -17,7 +22,12 @@ export default function ProfilePage() {
         },
         skip: isNaN(Number(id)),
     })
-    const isOwner = useAppSelector(state => Boolean(state.user.me?.id && state.user.me?.id === profileQuery.data?.profile?.id))
+    const { isOwner } = useAppSelector(state => ({
+        isOwner: Boolean(state.user.me?.id && state.user.me?.id === profileQuery.data?.profile?.id),
+    }))
+
+    const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
+
 
 
     if (profileQuery.loading)
@@ -25,6 +35,7 @@ export default function ProfilePage() {
 
     if (!profileQuery.data?.profile)
         return <NotFoundPage />
+
 
     return (
         <>
@@ -39,12 +50,33 @@ export default function ProfilePage() {
             </Helmet>
             <div className={`page-container ${styles.grid}`}
             >
-                <aside></aside>
-                <main className="flex flex-col gap-24">
-                    <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
-                    <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
-                </main>
-                <aside></aside>
+                {isMediumScreen ?
+                    <>
+                        <aside>
+
+                            <RolesCard roles={profileQuery.data.profile.roles} isOwner={isOwner} />
+                            <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
+                            <TournamentsCard tournaments={profileQuery.data.profile.tournaments} isOwner={isOwner} />
+                        </aside>
+                        <main>
+
+                            <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
+                            <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
+                        </main>
+                        <aside className="min-w-0">
+                            <SimilarMakersCard makers={profileQuery.data.profile.similar_makers} />
+                        </aside>
+                    </>
+                    :
+                    <>
+                        <main>
+                            <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
+                            <RolesCard roles={profileQuery.data.profile.roles} isOwner={isOwner} />
+                            <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
+                            <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
+                        </main>
+                    </>
+                }
             </div>
         </>
     )

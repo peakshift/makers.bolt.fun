@@ -9,7 +9,7 @@ import { WalletKeyType } from './LinkedAccountsCard'
 import { useAppDispatch } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import 'react-popper-tooltip/dist/styles.css';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import { usePopperTooltip } from 'react-popper-tooltip'
 
 interface Props {
     walletKey: WalletKeyType,
