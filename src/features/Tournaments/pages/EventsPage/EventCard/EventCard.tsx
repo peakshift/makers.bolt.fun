@@ -40,10 +40,10 @@ export default function EventCard({ event }: Props) {
     return (
         <div
             role='button'
-            className="rounded-16 bg-white overflow-hidden border-2 flex flex-col group"
+            className="rounded-16 bg-white overflow-hidden outline outline-2 outline-gray-200 flex flex-col group"
             onClick={openEventModal}
         >
-            <img className="w-full h-[160px] object-cover" src={event.image} alt="" />
+            <img className="w-full h-[160px] object-cover rounded-t-16" src={event.image} alt="" />
             <div className="p-16 grow flex flex-col">
                 <div className="flex flex-col gap-8">
                     <h3 className="text-body2 font-bold text-gray-900 group-hover:underline">

@@ -21,8 +21,8 @@ const Card = React.forwardRef<HTMLDivElement, PropsWithChildren<Props>>(({
             ref={ref}
             className={`
             ${onlyMd ?
-                    `md:bg-white md:rounded-16 md:border-2 border-gray-200 ${defaultPadding && "md:p-24"}` :
-                    `bg-white rounded-12 md:rounded-16 border-2 border-gray-200 ${defaultPadding && "p-16 md:p-24"}`
+                    `md:bg-white md:rounded-16 md:outline outline-2 outline-gray-200 ${defaultPadding && "md:p-24"}` :
+                    `bg-white rounded-12 md:rounded-16 outline outline-2 outline-gray-200 ${defaultPadding && "p-16 md:p-24"}`
                 }
             ${className}
             `}

@@ -1,5 +1,5 @@
 import { FiSearch } from 'react-icons/fi'
-import AutoComplete from 'src/Components/Inputs/Autocomplete/Autocomplete';
+import BasicSelectInput from 'src/Components/Inputs/Selects/BasicSelectInput/BasicSelectInput';
 import { TournamentEventTypeEnum } from 'src/graphql';
 import { mapTypeToBadge } from '../EventCard/EventCard';
 
@@ -31,12 +31,12 @@ export default function EventsFilters(props: Props) {
                     onChange={e => props.onSearchChange(e.target.value)}
                 />
             </div>
-            <AutoComplete
+            <BasicSelectInput
+                isMulti={false}
                 labelField='label'
                 valueField='value'
-                isMulti={false}
-                size='lg'
                 placeholder='All events'
+                isClearable
                 value={props.eventValue ? { label: mapTypeToBadge[props.eventValue].text, value: props.eventValue } : null}
                 onChange={(v) => props.onEventChange(v ? v.value : null)}
                 options={options}
