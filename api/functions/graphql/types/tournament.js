@@ -7,6 +7,7 @@ const {
     enumType,
 } = require('nexus');
 const { prisma } = require('../../../prisma');
+const { paginationArgs } = require('./helpers');
 
 
 
@@ -103,9 +104,28 @@ const getTournamentById = extendType({
     }
 })
 
+const getMakersInTournament = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getMakersInTournament', {
+            type: "User",
+            args: {
+                tournamentId: nonNull(intArg()),
+                ...paginationArgs({ take: 10 }),
+                search: stringArg(),
+                roleId: intArg(),
+            },
+            resolve(_, { tournamentId }) {
+                return []
+            }
+        })
+    }
+})
+
 module.exports = {
     // Types 
     Tournament,
     // Queries
     getTournamentById,
+    getMakersInTournament,
 }

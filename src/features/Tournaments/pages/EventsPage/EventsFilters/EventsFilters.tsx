@@ -13,11 +13,7 @@ interface Props {
 
 export default function EventsFilters(props: Props) {
 
-    const options = [{
-        label: "📆 All events",
-        value: null as TournamentEventTypeEnum | null,
-    }]
-        .concat(Object.values(TournamentEventTypeEnum).map((v: TournamentEventTypeEnum) => ({ label: mapTypeToBadge[v].text, value: v })))
+    const options = Object.values(TournamentEventTypeEnum).map((v: TournamentEventTypeEnum) => ({ label: mapTypeToBadge[v].text, value: v }))
 
     return (
         <>

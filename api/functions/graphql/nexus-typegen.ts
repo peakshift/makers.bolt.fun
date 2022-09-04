@@ -487,6 +487,7 @@ export interface NexusGenFieldTypes {
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
+    getMakersInTournament: NexusGenRootTypes['User'][]; // [User!]!
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
@@ -812,6 +813,7 @@ export interface NexusGenFieldTypeNames {
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
+    getMakersInTournament: 'User'
     getMyDrafts: 'Post'
     getPostById: 'Post'
     getProject: 'Project'
@@ -1028,6 +1030,13 @@ export interface NexusGenArgTypes {
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!
+    }
+    getMakersInTournament: { // args
+      roleId?: number | null; // Int
+      search?: string | null; // String
+      skip?: number | null; // Int
+      take: number | null; // Int
+      tournamentId: number; // Int!
     }
     getMyDrafts: { // args
       type: NexusGenEnums['POST_TYPE']; // POST_TYPE!

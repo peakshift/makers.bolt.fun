@@ -24,9 +24,8 @@ export default function Navigation({ data }: Props) {
             path: "events",
         },
         {
-            text: `????? 🚧`,
+            text: `Makers (${data.makers_count})`,
             path: "makers",
-            isDisabled: true,
         },
         {
             text: `??????? 🚧`,
@@ -43,10 +42,10 @@ export default function Navigation({ data }: Props) {
             path: "resources",
             isDisabled: true,
         },
-    ], [data.events_count, data.makers_count, data.projects_count])
+    ], [data.events_count, data.makers_count])
 
     return (
-        <div className="w-full bg-white py-16 border-b-2 border-gray-200 sticky-top-element z-10">
+        <div className="w-full bg-white py-16 border-b border-gray-200 sticky-top-element z-10">
             <div className="relative group content-container">
                 <div className="overflow-hidden" ref={viewportRef}>
                     <div className="select-none w-full flex gap-16">

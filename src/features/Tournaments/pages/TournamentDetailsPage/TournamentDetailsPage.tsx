@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet'
 import Navigation from './Navigation/Navigation'
 import EventsPage from '../EventsPage/EventsPage'
 import { tournamentData } from './data'
+import MakersPage from '../MakersPage/MakersPage'
 
 const data = tournamentData
 
@@ -42,6 +43,7 @@ export default function TournamentDetailsPage() {
           <Route index element={<Navigate to='overview' />} />
           <Route path='overview' element={<OverviewPage data={data} />} />
           <Route path='events' element={<EventsPage data={data} />} />
+          <Route path='makers' element={<MakersPage data={data} />} />
         </Routes>
       </div>
     </div>

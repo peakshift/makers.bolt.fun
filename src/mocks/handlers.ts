@@ -33,6 +33,8 @@ import {
     MyProfilePreferencesQuery,
     GetTournamentByIdQuery,
     MyProfileRolesSkillsQuery,
+    GetAllRolesQuery,
+    GetMakersInTournamentQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -216,6 +218,19 @@ export const handlers = [
         )
     }),
 
+
+    graphql.query<MyProfileRolesSkillsQuery>('MyProfileRolesSkills', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: { ...me() },
+                getAllMakersRoles: getAllMakersRoles(),
+                getAllMakersSkills: getAllMakersSkills(),
+            })
+        )
+    }),
+
+
     graphql.query<MyProfilePreferencesQuery>('MyProfilePreferences', async (req, res, ctx) => {
         await delay()
         return res(
@@ -266,6 +281,27 @@ export const handlers = [
         return res(
             ctx.data({
                 getTournamentById: getTournamentById(12)
+            })
+        )
+    }),
+
+    graphql.query<GetMakersInTournamentQuery>('GetMakersInTournament', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                me: { ...me() },
+                getMakersInTournament: []
+            })
+        )
+    }),
+
+    graphql.query<GetAllRolesQuery>('GetAllRoles', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getAllMakersRoles: getAllMakersRoles()
             })
         )
     }),
