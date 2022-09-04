@@ -44,6 +44,7 @@ const TournamentEventTypeEnum = enumType({
         TwitterSpace: 0,
         Workshop: 1,
         IRLMeetup: 2,
+        OnlineMeetup: 3,
     },
 });
 

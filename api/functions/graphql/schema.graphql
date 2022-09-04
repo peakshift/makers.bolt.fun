@@ -357,6 +357,7 @@ type TournamentEvent {
 
 enum TournamentEventTypeEnum {
   IRLMeetup
+  OnlineMeetup
   TwitterSpace
   Workshop
 }

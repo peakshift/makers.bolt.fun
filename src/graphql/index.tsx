@@ -527,6 +527,7 @@ export type TournamentEvent = {
 
 export enum TournamentEventTypeEnum {
   IrlMeetup = 'IRLMeetup',
+  OnlineMeetup = 'OnlineMeetup',
   TwitterSpace = 'TwitterSpace',
   Workshop = 'Workshop'
 }

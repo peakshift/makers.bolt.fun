@@ -24,20 +24,24 @@ export default function Navigation({ data }: Props) {
             path: "events",
         },
         {
-            text: `Makers (${data.makers_count})`,
+            text: `????? 🚧`,
             path: "makers",
+            isDisabled: true,
         },
         {
-            text: `Projects (${data.projects_count})`,
+            text: `??????? 🚧`,
             path: "projects",
+            isDisabled: true,
         },
         {
-            text: "Ideas",
+            text: "???? 🚧",
             path: "ideas",
+            isDisabled: true,
         },
         {
-            text: "Resources",
+            text: "?????????? 🚧",
             path: "resources",
+            isDisabled: true,
         },
     ], [data.events_count, data.makers_count, data.projects_count])
 
@@ -52,8 +56,10 @@ export default function Navigation({ data }: Props) {
                             className={({ isActive }) => ` 
                    min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
                     active:scale-95 transition-transform
-                    ${isActive ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}`}
-                            // onClick={() => filterClicked(f.value)}
+                    ${isActive ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}
+                    ${link.isDisabled && "pointer-events-none opacity-60"}
+                    `}
+
                             role='button'
                         >
                             {link.text}

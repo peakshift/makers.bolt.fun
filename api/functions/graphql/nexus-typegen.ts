@@ -69,7 +69,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
-  TournamentEventTypeEnum: 2 | 0 | 1
+  TournamentEventTypeEnum: 2 | 3 | 0 | 1
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 

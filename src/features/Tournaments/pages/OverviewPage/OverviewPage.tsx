@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify'
+import { marked } from 'marked'
 import Card from 'src/Components/Card/Card'
 import { Tournament } from 'src/graphql'
 import FAQsSection from './FAQsSection/FAQsSection'
@@ -21,8 +23,11 @@ export default function OverviewPage({ data }: Props) {
         <Card onlyMd className='flex flex-col gap-42'>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-24 items-start">
                 <div className='md:col-span-2'>
-                    <h2 className='text-body1 font-bolder text-gray-900'>Tournament details</h2>
-                    <p className="text-body4 text-gray-600 mt-16 whitespace-pre-line">{data.description}</p>
+                    <div
+                        className={`text-gray-600 mt-16 prose `}
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(data.description)) }}
+                    >
+                    </div>
                 </div>
                 <RegisterCard makers_count={data.makers_count} start_date={data.start_date} />
             </div>

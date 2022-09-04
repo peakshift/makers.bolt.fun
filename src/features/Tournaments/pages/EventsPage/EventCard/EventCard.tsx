@@ -77,7 +77,11 @@ export const mapTypeToBadge: UnionToObjectKeys<Props['event'], 'type', { text: s
         color: "bg-green-50 text-green-500"
     },
     [TournamentEventTypeEnum.IrlMeetup]: {
-        text: "🤝  IRL meetup",
+        text: "🤝 IRL meetup",
         color: "bg-red-50 text-red-500"
+    },
+    [TournamentEventTypeEnum.OnlineMeetup]: {
+        text: "🤖 Online meetup",
+        color: "bg-violet-50 text-violet-500"
     },
 }
