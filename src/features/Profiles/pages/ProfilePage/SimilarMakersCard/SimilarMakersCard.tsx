@@ -25,8 +25,8 @@ export default function SimilarMakersCard({ makers }: Props) {
                     return <Link key={maker.id} to={createRoute({ type: "profile", id: maker.id, username: maker.name })} className="border-b py-16 last-of-type:border-b-0 last-of-type:pb-0">
                         <li className="flex items-start gap-8">
                             <Avatar width={40} src={maker.avatar} />
-                            <div>
-                                <p className="text-body4 text-gray-800 font-medium">{maker.name}</p>
+                            <div className='overflow-hidden'>
+                                <p className="text-body4 text-gray-800 font-medium overflow-hidden text-ellipsis">{maker.name}</p>
                                 <p className="text-body5 text-gray-500 font-medium">{maker.jobTitle}</p>
                             </div>
                         </li>

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { GrClose } from 'react-icons/gr'
 import Card from 'src/Components/Card/Card'
+import InfoCard from 'src/Components/InfoCard/InfoCard'
 import { MakerSkill } from 'src/graphql'
 import SkillsInput from './SkillsInput'
 
@@ -44,6 +45,10 @@ export default function UpdateSkillsCard(props: Props) {
                     {idToValue.get(skill.id)?.title} <button className='ml-8' onClick={() => remove(skill.id)}><GrClose /></button>
                 </li>)}
             </ul>}
+
+            <InfoCard>
+                <span className="font-bold">ℹ️ Can't find a specific skill?</span> You can suggest it to be added <a href="https://github.com/peakshift/makers.bolt.fun/discussions/143" target='_blank' rel="noreferrer" className='font-bold underline'>here</a>
+            </InfoCard>
         </Card>
     )
 }

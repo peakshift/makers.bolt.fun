@@ -158,14 +158,14 @@ export default function LoginPage() {
             <h2 className='text-h5 font-bold text-center'>Login with lightning ⚡</h2>
             <a href={`lightning:${lnurl}`} >
                 <QRCodeSVG
-                    width={240}
-                    height={240}
+                    width={280}
+                    height={280}
                     value={lnurl}
                     bgColor='transparent'
                     imageSettings={{
                         src: '/assets/images/nut_3d.png',
-                        width: 32,
-                        height: 32,
+                        width: 16,
+                        height: 16,
                         excavate: true,
 
                     }}
