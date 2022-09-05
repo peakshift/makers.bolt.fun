@@ -1,5 +1,5 @@
 import { MOCK_DATA } from "./data";
-import { MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, User } from 'src/graphql'
+import { GetMakersInTournamentQueryVariables, MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, User } from 'src/graphql'
 import { Chance } from "chance";
 import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
@@ -78,8 +78,6 @@ export function me() {
     } as MyProfile
 }
 
-
-
 export function profile() {
     return { ...MOCK_DATA['user'], __typename: 'User' } as User
 }
@@ -98,3 +96,20 @@ export function getMyDrafts(): Query['getMyDrafts'] {
 export function getTournamentById(id: number) {
     return MOCK_DATA['tournaments'][0]
 }
+
+export function getMakersInTournament(vars: GetMakersInTournamentQueryVariables) {
+
+    const offsetStart = vars.skip ?? 0;
+    const offsetEnd = offsetStart + (vars.take ?? 15)
+
+    return MOCK_DATA.users.slice(1)
+        .filter(u => {
+            if (!vars.search) return true;
+            return [u.name, u.jobTitle].some(attr => attr?.search(new RegExp(vars.search!, 'i')) !== -1)
+        })
+        .filter(u => {
+            if (!vars.roleId) return true;
+            return u.roles.some(r => r.id === vars.roleId)
+        })
+        .slice(offsetStart, offsetEnd) as User[];
+} 

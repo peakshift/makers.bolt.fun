@@ -8,23 +8,23 @@ import { useCallback, useEffect, useState } from "react";
 
 const headerLinks = [
   {
+    title:
+      <>
+        <p className="text-body1 font-bolder text-white">The Long Night tournament is coming!!!</p>
+        <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
+      </>,
+    img: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/1d5d2c86-fe46-4478-6909-bb3c425c0d00/public",
+    link: {
+      content: "Register Now",
+      url: "/tournaments/12",
+    },
+  },
+  {
     title: <p className="text-body1 font-bolder text-white">Explore a fun directory of lightning web apps</p>,
     img: Assets.Images_ExploreHeader1,
     link: {
       content: "Submit project",
       url: "https://form.jotform.com/220301236112030",
-    },
-  },
-  {
-    title:
-      <>
-        <p className="text-body1 font-bolder text-white">Take part in BOLT🔩FUN’s Shock the Web 2 ⚡️</p>
-        <p className="text-body3 font-medium text-white mt-8">16th - 19th June, 2022</p>
-      </>,
-    img: Assets.Images_ExploreHeader2,
-    link: {
-      content: "Register Now",
-      url: "https://bolt.fun/hackathons/shock-the-web-2/",
     },
   },
 ];
@@ -72,7 +72,7 @@ export default function Header() {
               {headerLinks[0].title}
             </div>
 
-            <Button href={headerLinks[0].link.url} newTab color="white" className="mt-24">
+            <Button href={headerLinks[0].link.url} color="white" className="mt-24">
               {headerLinks[0].link.content}
             </Button>
           </div>

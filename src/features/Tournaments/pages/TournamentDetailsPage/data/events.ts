@@ -68,7 +68,7 @@ export const events: Tournament['events'] = [
         image: getCoverImage(),
         links: [],
         location: "Online",
-        type: TournamentEventTypeEnum.Workshop,
+        type: TournamentEventTypeEnum.OnlineMeetup,
         website: "https://event.name"
     },
 ]

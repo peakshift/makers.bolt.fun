@@ -39,7 +39,15 @@ export default function MakersFilters(props: Props) {
                 value={props.roleValue}
                 onChange={props.onRoleChange}
                 options={options ?? []}
-                renderOption={option => <div className={`flex gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 ${option.isSelected ? "bg-gray-100 text-gray-800" : "hover:bg-gray-50"} cursor-pointer`}>
+                renderOption={option => <div
+                    className={`
+                            flex gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 cursor-pointer
+                            ${!(option.isSelected || option.isFocused) ?
+                            "hover:bg-gray-50"
+                            :
+                            option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"
+                        }
+     `}>
                     {option.data.icon} {option.data.title}
                 </div>}
 

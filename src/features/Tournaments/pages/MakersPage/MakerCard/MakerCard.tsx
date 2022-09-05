@@ -11,7 +11,7 @@ import { openModal } from "src/redux/features/modals.slice";
 import Card from 'src/Components/Card/Card';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Badge from 'src/Components/Badge/Badge';
-import { PAGES_ROUTES } from 'src/utils/routing';
+import { createRoute, PAGES_ROUTES } from 'src/utils/routing';
 
 type MakerType = GetMakersInTournamentQuery['getMakersInTournament'][number]
 
@@ -20,7 +20,7 @@ interface Props {
     isMe?: boolean;
 }
 
-export default function MakerCard({ maker }: Props) {
+export default function MakerCard({ maker, isMe }: Props) {
 
     const dispatch = useAppDispatch()
 
@@ -35,27 +35,26 @@ export default function MakerCard({ maker }: Props) {
                     <p className="text-body2 text-gray-900 font-bold">{maker.name}</p>
                     <p className="text-body4 text-gray-600 font-medium">{maker.jobTitle}</p>
                     <ul className="hidden md:flex flex-wrap gap-8 mt-4">
-                        {maker.roles.map(role => <li><Badge className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
+                        {maker.roles.map(role => <li><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
                     </ul>
                 </div>
-                <span className="ml-auto hidden md:inline-block"><Button color='white' href={PAGES_ROUTES.profile.editProfile} size='sm' className='ml-auto'>Edit Profile</Button></span>
+                {isMe && <span className="ml-auto hidden md:inline-block"><Button color='white' href={createRoute({ type: 'edit-profile' })} size='sm' className='ml-auto'>Edit Profile</Button></span>}
             </div>
             <hr className="hidden md:block bg-gray-200 mt-24"></hr>
 
             <div className="md:hidden mt-24">
                 <p className="text-body5 text-gray-900 font-medium">🌈 Roles</p>
-                <ul className="flex flex-wrap gap-8 mt-4">
-                    {maker.roles.map(role => <li><Badge className='!text-body5'>{role.icon} </Badge> </li>)}
+                <ul className="flex flex-wrap gap-8 mt-12">
+                    {maker.roles.map(role => <li><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
                 </ul>
             </div>
 
             <div className="mt-24">
                 <p className="text-body5 text-gray-900 font-medium">🛠️ Skills</p>
                 <ul className="flex flex-wrap gap-8 mt-12">
-                    {maker.skills.map(skill => <li><Badge className='!text-body5'>{skill.title}</Badge> </li>)}
+                    {maker.skills.map(skill => <li><Badge size='sm' className='!text-body5'>{skill.title}</Badge> </li>)}
                 </ul>
             </div>
-            <Button fullWidth color='white' href={PAGES_ROUTES.profile.editProfile} size='sm' className='mt-32 md:hidden'>Edit Profile</Button>
-        </Card>
+            {isMe && <Button fullWidth color='white' href={createRoute({ type: 'edit-profile' })} size='sm' className='mt-32 md:hidden'>Edit Profile</Button>}        </Card>
     )
 }

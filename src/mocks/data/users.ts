@@ -141,7 +141,7 @@ const tournaments = [
     },
 ] as Tournament[];
 
-export const users: (User | MyProfile)[] = [{
+export const users: (User & MyProfile)[] = [{
     id: 123,
     email: "mtg0987654321@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",

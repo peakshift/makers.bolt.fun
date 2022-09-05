@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMyDrafts, getPostById, getProject, getTournamentById, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMakersInTournament, getMyDrafts, getPostById, getProject, getTournamentById, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -35,6 +35,7 @@ import {
     MyProfileRolesSkillsQuery,
     GetAllRolesQuery,
     GetMakersInTournamentQuery,
+    GetMakersInTournamentQueryVariables,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -285,13 +286,13 @@ export const handlers = [
         )
     }),
 
-    graphql.query<GetMakersInTournamentQuery>('GetMakersInTournament', async (req, res, ctx) => {
+    graphql.query<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>('GetMakersInTournament', async (req, res, ctx) => {
         await delay()
 
         return res(
             ctx.data({
                 me: { ...me() },
-                getMakersInTournament: []
+                getMakersInTournament: getMakersInTournament(req.variables)
             })
         )
     }),

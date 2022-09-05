@@ -122,7 +122,15 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
 }
 
 function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T>['renderOption'], labelField: Props<T>['labelField']) {
-    const _render = renderOption ?? ((option) => <div className={`flex gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 ${option.isSelected ? "bg-gray-100 text-gray-800" : "hover:bg-gray-50"} cursor-pointer`}>
+    const _render = renderOption ?? ((option) => <div
+        className={`
+    flex gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 cursor-pointer
+     ${!(option.isSelected || option.isFocused) ?
+                "hover:bg-gray-50"
+                :
+                option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"
+            }
+     `}>
         {option.data[labelField]}
     </div>)
 

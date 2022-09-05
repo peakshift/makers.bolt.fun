@@ -31,6 +31,9 @@ type RouteOptions =
         id: string | number,
         username?: string,
     }
+    | {
+        type: "edit-profile",
+    }
 
 export function createRoute(options: RouteOptions) {
 
@@ -56,6 +59,9 @@ export function createRoute(options: RouteOptions) {
     if (options.type === "profile")
         return `/profile/${options.id}`
             + (options.username ? `/${toSlug(options.username)}` : "");
+
+    if (options.type === 'edit-profile')
+        return '/edit-profile'
 
     return ""
 }
