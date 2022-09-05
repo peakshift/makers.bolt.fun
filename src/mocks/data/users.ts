@@ -97,6 +97,52 @@ export const allMakersSkills: MakerSkill[] = [
     },
 ]
 
+const similar_makers = [
+    {
+        id: 144,
+        name: "Johns Beharry",
+        jobTitle: "Manager",
+        avatar: getAvatarImage(),
+    },
+    {
+        id: 155,
+        name: "Edward P",
+        jobTitle: "Front-end Developer",
+        avatar: getAvatarImage(),
+    },
+    {
+        id: 123,
+        name: "Mohammed T",
+        jobTitle: "Front-end Developer",
+        avatar: getAvatarImage(),
+    },
+] as User[]
+
+const tournaments = [
+    {
+        id: 1,
+        title: "BreezConf",
+        description: chance.paragraph(),
+        cover_image: getCoverImage(),
+        thumbnail_image: getCoverImage(),
+        start_date: new Date(2021, 3).toISOString(),
+        end_date: new Date(2021, 4).toISOString(),
+        tags: [],
+        website: "https://breez-conf.com"
+    },
+    {
+        id: 2,
+        title: "Shock the Web 3",
+        description: chance.paragraph(),
+        cover_image: getCoverImage(),
+        thumbnail_image: getCoverImage(),
+        start_date: new Date(2022, 7).toISOString(),
+        end_date: new Date(2022, 11).toISOString(),
+        tags: [],
+        website: "https://shock-the-web.com"
+    },
+];
+
 export const users: (User | MyProfile)[] = [{
     id: 123,
     email: "mtg0987654321@gmail.com",
@@ -128,51 +174,10 @@ export const users: (User | MyProfile)[] = [{
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
-    tournaments: [
-        {
-            id: 1,
-            title: "BreezConf",
-            description: chance.paragraph(),
-            cover_image: getCoverImage(),
-            thumbnail_image: getCoverImage(),
-            start_date: new Date(2021, 3).toISOString(),
-            end_date: new Date(2021, 4).toISOString(),
-            tags: [],
-            website: "https://breez-conf.com"
-        },
-        {
-            id: 2,
-            title: "Shock the Web 3",
-            description: chance.paragraph(),
-            cover_image: getCoverImage(),
-            thumbnail_image: getCoverImage(),
-            start_date: new Date(2022, 7).toISOString(),
-            end_date: new Date(2022, 11).toISOString(),
-            tags: [],
-            website: "https://shock-the-web.com"
-        },
-    ],
-    similar_makers: [
-        {
-            id: 144,
-            name: "Johns Beharry",
-            jobTitle: "Manager",
-            avatar: getAvatarImage(),
-        },
-        {
-            id: 155,
-            name: "Edward P",
-            jobTitle: "Front-end Developer",
-            avatar: getAvatarImage(),
-        },
-        {
-            id: 166,
-            name: "Mohammed T",
-            jobTitle: "Front-end Developer",
-            avatar: getAvatarImage(),
-        },
-    ] as User[]
-}, {
+    tournaments,
+    similar_makers
+},
+{
     id: 441,
     email: "eddy@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Eduardu.svg",
@@ -190,6 +195,22 @@ export const users: (User | MyProfile)[] = [{
     stories: posts.stories,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+
+    walletsKeys: [
+        {
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key",
+            is_current: true
+        },
+        {
+            key: "66345134234235",
+            name: "My Phoenix wallet key",
+            is_current: false
+        },],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
+    tournaments,
+    similar_makers
 },
 {
     id: 422,
@@ -209,6 +230,21 @@ export const users: (User | MyProfile)[] = [{
     stories: posts.stories,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+    walletsKeys: [
+        {
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key",
+            is_current: true
+        },
+        {
+            key: "66345134234235",
+            name: "My Phoenix wallet key",
+            is_current: false
+        },],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
+    tournaments,
+    similar_makers
 },
 {
     id: 511,
@@ -228,6 +264,21 @@ export const users: (User | MyProfile)[] = [{
     stories: posts.stories,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+    walletsKeys: [
+        {
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key",
+            is_current: true
+        },
+        {
+            key: "66345134234235",
+            name: "My Phoenix wallet key",
+            is_current: false
+        },],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
+    tournaments,
+    similar_makers
 }]
 
 
