@@ -126,7 +126,9 @@ const getMakersInTournament = extendType({
                             name: {
                                 contains: args.search,
                                 mode: 'insensitive'
-                            },
+                            }
+                        },
+                        {
                             jobTitle: {
                                 contains: args.search,
                                 mode: 'insensitive'
@@ -135,6 +137,7 @@ const getMakersInTournament = extendType({
                     ]
                 })
 
+
                 if (args.roleId) filters.push({
                     roles: {
                         some: {
@@ -142,6 +145,8 @@ const getMakersInTournament = extendType({
                         }
                     }
                 })
+
+                console.log(filters[0]);
 
 
                 return prisma.user.findMany({
