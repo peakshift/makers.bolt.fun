@@ -83,7 +83,7 @@ export default function MakersPage({ data: { id } }: Props) {
     return (
         <div className='pb-42'>
             <div className="flex flex-col gap-16 lg:gap-24">
-                <MakerCard isMe maker={(query.data?.me ?? query.previousData?.me) as User} />
+                {(query.data?.me ?? query.previousData?.me) && <MakerCard isMe maker={(query.data?.me ?? query.previousData?.me) as User} />}
                 <div className="flex flex-col gap-16">
                     <h3 className="text-body1 text-gray-900 font-bold mt-24">Makers 👾</h3>
 

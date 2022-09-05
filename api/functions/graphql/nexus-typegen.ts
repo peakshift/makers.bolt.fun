@@ -203,7 +203,6 @@ export interface NexusGenObjects {
     lnurl_callback_url?: string | null; // String
     screenshots: string[]; // [String!]!
     thumbnail_image: string; // String!
-    title: string; // String!
     votes_count: number; // Int!
     website: string; // String!
   }

@@ -115,8 +115,44 @@ const getMakersInTournament = extendType({
                 search: stringArg(),
                 roleId: intArg(),
             },
-            resolve(_, { tournamentId }) {
-                return []
+            resolve(_, args) {
+
+
+                let filters = [];
+
+                if (args.search) filters.push({
+                    OR: [
+                        {
+                            name: {
+                                contains: args.search,
+                                mode: 'insensitive'
+                            },
+                            jobTitle: {
+                                contains: args.search,
+                                mode: 'insensitive'
+                            }
+                        }
+                    ]
+                })
+
+                if (args.roleId) filters.push({
+                    roles: {
+                        some: {
+                            roleId: args.roleId
+                        }
+                    }
+                })
+
+
+                return prisma.user.findMany({
+                    ...(filters.length > 0 && {
+                        where: {
+                            AND: filters
+                        }
+                    }),
+                    skip: args.skip,
+                    take: args.take,
+                })
             }
         })
     }
