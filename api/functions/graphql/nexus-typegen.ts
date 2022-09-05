@@ -24,7 +24,7 @@ declare global {
 
 
 declare global {
-  interface NexusGen extends NexusGenTypes { }
+  interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
@@ -69,6 +69,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
+  TEAM_MEMBER_ROLE: "Admin" | "Maker"
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 
@@ -465,6 +466,7 @@ export interface NexusGenFieldTypes {
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    searchUsers: NexusGenRootTypes['User'][]; // [User!]!
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
   }
   Question: { // field return type
@@ -757,6 +759,7 @@ export interface NexusGenFieldTypeNames {
     profile: 'User'
     projectsByCategory: 'Project'
     searchProjects: 'Project'
+    searchUsers: 'User'
     similarMakers: 'User'
   }
   Question: { // field return type name
@@ -959,6 +962,9 @@ export interface NexusGenArgTypes {
       search: string; // String!
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    searchUsers: { // args
+      value: string; // String!
     }
     similarMakers: { // args
       id: number; // Int!
