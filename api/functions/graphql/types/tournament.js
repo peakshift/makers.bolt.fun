@@ -146,8 +146,6 @@ const getMakersInTournament = extendType({
                     }
                 })
 
-                console.log(filters[0]);
-
 
                 return prisma.user.findMany({
                     ...(filters.length > 0 && {
