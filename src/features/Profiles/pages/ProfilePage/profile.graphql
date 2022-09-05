@@ -1,19 +1,5 @@
 query profile($profileId: Int!) {
   profile(id: $profileId) {
-    id
-    name
-    avatar
-    join_date
-    role
-    email
-    jobTitle
-    lightning_address
-    website
-    twitter
-    github
-    linkedin
-    bio
-    location
     stories {
       id
       title
@@ -24,7 +10,20 @@ query profile($profileId: Int!) {
         icon
       }
     }
-    nostr_prv_key
-    nostr_pub_key
+    tournaments {
+      id
+      title
+      thumbnail_image
+      start_date
+      end_date
+    }
+    similar_makers {
+      id
+      name
+      avatar
+      jobTitle
+    }
+    ...UserBasicInfo
+    ...UserRolesSkills
   }
 }

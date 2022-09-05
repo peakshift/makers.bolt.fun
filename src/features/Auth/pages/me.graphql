@@ -4,5 +4,7 @@ query Me {
     name
     avatar
     join_date
+    jobTitle
+    bio
   }
 }

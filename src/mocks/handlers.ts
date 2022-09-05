@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getCategory, getFeed, getMyDrafts, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects, searchUsers } from './resolvers'
+import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMyDrafts, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects, searchUsers } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -31,6 +31,9 @@ import {
     GetMyDraftsQuery,
     SearchUsersQuery,
     SearchUsersQueryVariables,
+    MyProfileAboutQuery,
+    MyProfilePreferencesQuery,
+    MyProfileRolesSkillsQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -197,13 +200,44 @@ export const handlers = [
 
     graphql.query<MeQuery>('Me', async (req, res, ctx) => {
         await delay()
-
         return res(
             ctx.data({
                 me: me()
             })
         )
     }),
+
+
+    graphql.query<MyProfileAboutQuery>('MyProfileAbout', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: me(),
+            })
+        )
+    }),
+
+    graphql.query<MyProfilePreferencesQuery>('MyProfilePreferences', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: me(),
+            })
+        )
+    }),
+
+
+    graphql.query<MyProfileRolesSkillsQuery>('MyProfileRolesSkills', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: { ...me() },
+                getAllMakersRoles: getAllMakersRoles(),
+                getAllMakersSkills: getAllMakersSkills(),
+            })
+        )
+    }),
+
 
     graphql.query<ProfileQuery>('profile', async (req, res, ctx) => {
         await delay()

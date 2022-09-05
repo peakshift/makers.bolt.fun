@@ -35,6 +35,28 @@ export type Award = {
   url: Scalars['String'];
 };
 
+export type BaseUser = {
+  avatar: Scalars['String'];
+  bio: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  jobTitle: Maybe<Scalars['String']>;
+  join_date: Scalars['Date'];
+  lightning_address: Maybe<Scalars['String']>;
+  linkedin: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  role: Maybe<Scalars['String']>;
+  roles: Array<MakerRole>;
+  similar_makers: Array<User>;
+  skills: Array<MakerSkill>;
+  stories: Array<Story>;
+  tournaments: Array<Tournament>;
+  twitter: Maybe<Scalars['String']>;
+  website: Maybe<Scalars['String']>;
+};
+
 export type Bounty = PostBase & {
   __typename?: 'Bounty';
   applicants_count: Scalars['Int'];
@@ -93,6 +115,13 @@ export type DonationsStats = {
   touranments: Scalars['String'];
 };
 
+export type GenericMakerRole = {
+  __typename?: 'GenericMakerRole';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type Hackathon = {
   __typename?: 'Hackathon';
   cover_image: Scalars['String'];
@@ -114,6 +143,29 @@ export type LnurlDetails = {
   minSendable: Maybe<Scalars['Int']>;
 };
 
+export type MakerRole = {
+  __typename?: 'MakerRole';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  level: RoleLevelEnum;
+  title: Scalars['String'];
+};
+
+export type MakerRoleInput = {
+  id: Scalars['Int'];
+  level: RoleLevelEnum;
+};
+
+export type MakerSkill = {
+  __typename?: 'MakerSkill';
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
+export type MakerSkillInput = {
+  id: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   confirmDonation: Donation;
@@ -121,7 +173,9 @@ export type Mutation = {
   createStory: Maybe<Story>;
   deleteStory: Maybe<Story>;
   donate: Donation;
-  updateProfile: Maybe<User>;
+  updateProfileDetails: Maybe<MyProfile>;
+  updateProfileRoles: Maybe<MyProfile>;
+  updateUserPreferences: MyProfile;
   vote: Vote;
 };
 
@@ -153,8 +207,18 @@ export type MutationDonateArgs = {
 };
 
 
-export type MutationUpdateProfileArgs = {
-  data: InputMaybe<UpdateProfileInput>;
+export type MutationUpdateProfileDetailsArgs = {
+  data: InputMaybe<ProfileDetailsInput>;
+};
+
+
+export type MutationUpdateProfileRolesArgs = {
+  data: InputMaybe<ProfileRolesInput>;
+};
+
+
+export type MutationUpdateUserPreferencesArgs = {
+  userKeys: InputMaybe<Array<UserKeyInputType>>;
 };
 
 
@@ -162,6 +226,32 @@ export type MutationVoteArgs = {
   amount_in_sat: Scalars['Int'];
   item_id: Scalars['Int'];
   item_type: Vote_Item_Type;
+};
+
+export type MyProfile = BaseUser & {
+  __typename?: 'MyProfile';
+  avatar: Scalars['String'];
+  bio: Maybe<Scalars['String']>;
+  email: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  jobTitle: Maybe<Scalars['String']>;
+  join_date: Scalars['Date'];
+  lightning_address: Maybe<Scalars['String']>;
+  linkedin: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  nostr_prv_key: Maybe<Scalars['String']>;
+  nostr_pub_key: Maybe<Scalars['String']>;
+  role: Maybe<Scalars['String']>;
+  roles: Array<MakerRole>;
+  similar_makers: Array<User>;
+  skills: Array<MakerSkill>;
+  stories: Array<Story>;
+  tournaments: Array<Tournament>;
+  twitter: Maybe<Scalars['String']>;
+  walletsKeys: Array<WalletKey>;
+  website: Maybe<Scalars['String']>;
 };
 
 export enum Post_Type {
@@ -193,6 +283,25 @@ export type PostComment = {
   votes_count: Scalars['Int'];
 };
 
+export type ProfileDetailsInput = {
+  avatar: InputMaybe<Scalars['String']>;
+  bio: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  github: InputMaybe<Scalars['String']>;
+  jobTitle: InputMaybe<Scalars['String']>;
+  lightning_address: InputMaybe<Scalars['String']>;
+  linkedin: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
+};
+
+export type ProfileRolesInput = {
+  roles: Array<MakerRoleInput>;
+  skills: Array<MakerSkillInput>;
+};
+
 export type Project = {
   __typename?: 'Project';
   awards: Array<Award>;
@@ -215,6 +324,8 @@ export type Query = {
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   getAllHackathons: Array<Hackathon>;
+  getAllMakersRoles: Array<GenericMakerRole>;
+  getAllMakersSkills: Array<MakerSkill>;
   getCategory: Category;
   getDonationsStats: DonationsStats;
   getFeed: Array<Post>;
@@ -224,14 +335,14 @@ export type Query = {
   getProject: Project;
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
-  me: Maybe<User>;
+  me: Maybe<MyProfile>;
   newProjects: Array<Project>;
   officialTags: Array<Tag>;
   popularTags: Array<Tag>;
   profile: Maybe<User>;
   projectsByCategory: Array<Project>;
   searchProjects: Array<Project>;
-  searchUsers: Array<User>;
+  similarMakers: Array<User>;
 };
 
 
@@ -312,8 +423,8 @@ export type QuerySearchProjectsArgs = {
 };
 
 
-export type QuerySearchUsersArgs = {
-  value: Scalars['String'];
+export type QuerySimilarMakersArgs = {
+  id: Scalars['Int'];
 };
 
 export type Question = PostBase & {
@@ -330,6 +441,14 @@ export type Question = PostBase & {
   updatedAt: Scalars['Date'];
   votes_count: Scalars['Int'];
 };
+
+export enum RoleLevelEnum {
+  Advanced = 'Advanced',
+  Beginner = 'Beginner',
+  Hobbyist = 'Hobbyist',
+  Intermediate = 'Intermediate',
+  Pro = 'Pro'
+}
 
 export type Story = PostBase & {
   __typename?: 'Story';
@@ -372,21 +491,20 @@ export type Tag = {
   title: Scalars['String'];
 };
 
-export type UpdateProfileInput = {
-  avatar: InputMaybe<Scalars['String']>;
-  bio: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['String']>;
-  github: InputMaybe<Scalars['String']>;
-  jobTitle: InputMaybe<Scalars['String']>;
-  lightning_address: InputMaybe<Scalars['String']>;
-  linkedin: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
-  website: InputMaybe<Scalars['String']>;
+export type Tournament = {
+  __typename?: 'Tournament';
+  cover_image: Scalars['String'];
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  id: Scalars['Int'];
+  start_date: Scalars['Date'];
+  tags: Array<Tag>;
+  thumbnail_image: Scalars['String'];
+  title: Scalars['String'];
+  website: Scalars['String'];
 };
 
-export type User = {
+export type User = BaseUser & {
   __typename?: 'User';
   avatar: Scalars['String'];
   bio: Maybe<Scalars['String']>;
@@ -399,12 +517,19 @@ export type User = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  nostr_prv_key: Maybe<Scalars['String']>;
-  nostr_pub_key: Maybe<Scalars['String']>;
   role: Maybe<Scalars['String']>;
+  roles: Array<MakerRole>;
+  similar_makers: Array<User>;
+  skills: Array<MakerSkill>;
   stories: Array<Story>;
+  tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
+};
+
+export type UserKeyInputType = {
+  key: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export enum Vote_Item_Type {
@@ -425,6 +550,13 @@ export type Vote = {
   paid: Scalars['Boolean'];
   payment_hash: Scalars['String'];
   payment_request: Scalars['String'];
+};
+
+export type WalletKey = {
+  __typename?: 'WalletKey';
+  is_current: Scalars['Boolean'];
+  key: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type OfficialTagsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -454,7 +586,7 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -533,19 +665,60 @@ export type PostDetailsQueryVariables = Exact<{
 
 export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
+type UserBasicInfo_MyProfile_Fragment = { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
+
+type UserBasicInfo_User_Fragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
+
+export type UserBasicInfoFragment = UserBasicInfo_MyProfile_Fragment | UserBasicInfo_User_Fragment;
+
+export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+
 export type UpdateProfileAboutMutationVariables = Exact<{
-  data: InputMaybe<UpdateProfileInput>;
+  data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, website: string | null, role: string | null, email: string | null, lightning_address: string | null, jobTitle: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+
+export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, is_current: boolean }> } | null };
+
+export type UpdateUserPreferencesMutationVariables = Exact<{
+  walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
+}>;
+
+
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'MyProfile', id: number, nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } };
+
+type UserRolesSkills_MyProfile_Fragment = { __typename?: 'MyProfile', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
+
+type UserRolesSkills_User_Fragment = { __typename?: 'User', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
+
+export type UserRolesSkillsFragment = UserRolesSkills_MyProfile_Fragment | UserRolesSkills_User_Fragment;
+
+export type MyProfileRolesSkillsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProfileRolesSkillsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null, getAllMakersRoles: Array<{ __typename?: 'GenericMakerRole', id: number, title: string, icon: string }>, getAllMakersSkills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> };
+
+export type UpdateUserRolesSkillsMutationVariables = Exact<{
+  data: InputMaybe<ProfileRolesInput>;
+}>;
+
+
+export type UpdateUserRolesSkillsMutation = { __typename?: 'Mutation', updateProfileRoles: { __typename?: 'MyProfile', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, nostr_prv_key: string | null, nostr_pub_key: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -593,7 +766,38 @@ export type ConfirmVoteMutationVariables = Exact<{
 
 export type ConfirmVoteMutation = { __typename?: 'Mutation', confirmVote: { __typename?: 'Vote', id: number, amount_in_sat: number, payment_request: string, payment_hash: string, paid: boolean, item_type: Vote_Item_Type, item_id: number } };
 
-
+export const UserBasicInfoFragmentDoc = gql`
+    fragment UserBasicInfo on BaseUser {
+  id
+  name
+  avatar
+  join_date
+  role
+  email
+  jobTitle
+  lightning_address
+  website
+  twitter
+  github
+  linkedin
+  bio
+  location
+}
+    `;
+export const UserRolesSkillsFragmentDoc = gql`
+    fragment UserRolesSkills on BaseUser {
+  skills {
+    id
+    title
+  }
+  roles {
+    id
+    title
+    icon
+    level
+  }
+}
+    `;
 export const OfficialTagsDocument = gql`
     query OfficialTags {
   officialTags {
@@ -621,13 +825,13 @@ export const OfficialTagsDocument = gql`
  * });
  */
 export function useOfficialTagsQuery(baseOptions?: Apollo.QueryHookOptions<OfficialTagsQuery, OfficialTagsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<OfficialTagsQuery, OfficialTagsQueryVariables>(OfficialTagsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<OfficialTagsQuery, OfficialTagsQueryVariables>(OfficialTagsDocument, options);
+}
 export function useOfficialTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OfficialTagsQuery, OfficialTagsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<OfficialTagsQuery, OfficialTagsQueryVariables>(OfficialTagsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<OfficialTagsQuery, OfficialTagsQueryVariables>(OfficialTagsDocument, options);
+}
 export type OfficialTagsQueryHookResult = ReturnType<typeof useOfficialTagsQuery>;
 export type OfficialTagsLazyQueryHookResult = ReturnType<typeof useOfficialTagsLazyQuery>;
 export type OfficialTagsQueryResult = Apollo.QueryResult<OfficialTagsQuery, OfficialTagsQueryVariables>;
@@ -659,13 +863,13 @@ export const SearchUsersDocument = gql`
  * });
  */
 export function useSearchUsersQuery(baseOptions: Apollo.QueryHookOptions<SearchUsersQuery, SearchUsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchUsersQuery, SearchUsersQueryVariables>(SearchUsersDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SearchUsersQuery, SearchUsersQueryVariables>(SearchUsersDocument, options);
+}
 export function useSearchUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchUsersQuery, SearchUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchUsersQuery, SearchUsersQueryVariables>(SearchUsersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SearchUsersQuery, SearchUsersQueryVariables>(SearchUsersDocument, options);
+}
 export type SearchUsersQueryHookResult = ReturnType<typeof useSearchUsersQuery>;
 export type SearchUsersLazyQueryHookResult = ReturnType<typeof useSearchUsersLazyQuery>;
 export type SearchUsersQueryResult = Apollo.QueryResult<SearchUsersQuery, SearchUsersQueryVariables>;
@@ -696,13 +900,13 @@ export const NavCategoriesDocument = gql`
  * });
  */
 export function useNavCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<NavCategoriesQuery, NavCategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<NavCategoriesQuery, NavCategoriesQueryVariables>(NavCategoriesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<NavCategoriesQuery, NavCategoriesQueryVariables>(NavCategoriesDocument, options);
+}
 export function useNavCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NavCategoriesQuery, NavCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<NavCategoriesQuery, NavCategoriesQueryVariables>(NavCategoriesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<NavCategoriesQuery, NavCategoriesQueryVariables>(NavCategoriesDocument, options);
+}
 export type NavCategoriesQueryHookResult = ReturnType<typeof useNavCategoriesQuery>;
 export type NavCategoriesLazyQueryHookResult = ReturnType<typeof useNavCategoriesLazyQuery>;
 export type NavCategoriesQueryResult = Apollo.QueryResult<NavCategoriesQuery, NavCategoriesQueryVariables>;
@@ -737,13 +941,13 @@ export const SearchProjectsDocument = gql`
  * });
  */
 export function useSearchProjectsQuery(baseOptions: Apollo.QueryHookOptions<SearchProjectsQuery, SearchProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
+}
 export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchProjectsQuery, SearchProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
+}
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
@@ -754,6 +958,8 @@ export const MeDocument = gql`
     name
     avatar
     join_date
+    jobTitle
+    bio
   }
 }
     `;
@@ -774,13 +980,13 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
 export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
@@ -811,13 +1017,13 @@ export const DonationsStatsDocument = gql`
  * });
  */
 export function useDonationsStatsQuery(baseOptions?: Apollo.QueryHookOptions<DonationsStatsQuery, DonationsStatsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DonationsStatsQuery, DonationsStatsQueryVariables>(DonationsStatsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DonationsStatsQuery, DonationsStatsQueryVariables>(DonationsStatsDocument, options);
+}
 export function useDonationsStatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DonationsStatsQuery, DonationsStatsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DonationsStatsQuery, DonationsStatsQueryVariables>(DonationsStatsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DonationsStatsQuery, DonationsStatsQueryVariables>(DonationsStatsDocument, options);
+}
 export type DonationsStatsQueryHookResult = ReturnType<typeof useDonationsStatsQuery>;
 export type DonationsStatsLazyQueryHookResult = ReturnType<typeof useDonationsStatsLazyQuery>;
 export type DonationsStatsQueryResult = Apollo.QueryResult<DonationsStatsQuery, DonationsStatsQueryVariables>;
@@ -851,9 +1057,9 @@ export type DonateMutationFn = Apollo.MutationFunction<DonateMutation, DonateMut
  * });
  */
 export function useDonateMutation(baseOptions?: Apollo.MutationHookOptions<DonateMutation, DonateMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DonateMutation, DonateMutationVariables>(DonateDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DonateMutation, DonateMutationVariables>(DonateDocument, options);
+}
 export type DonateMutationHookResult = ReturnType<typeof useDonateMutation>;
 export type DonateMutationResult = Apollo.MutationResult<DonateMutation>;
 export type DonateMutationOptions = Apollo.BaseMutationOptions<DonateMutation, DonateMutationVariables>;
@@ -887,9 +1093,9 @@ export type ConfirmDonationMutationFn = Apollo.MutationFunction<ConfirmDonationM
  * });
  */
 export function useConfirmDonationMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmDonationMutation, ConfirmDonationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ConfirmDonationMutation, ConfirmDonationMutationVariables>(ConfirmDonationDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<ConfirmDonationMutation, ConfirmDonationMutationVariables>(ConfirmDonationDocument, options);
+}
 export type ConfirmDonationMutationHookResult = ReturnType<typeof useConfirmDonationMutation>;
 export type ConfirmDonationMutationResult = Apollo.MutationResult<ConfirmDonationMutation>;
 export type ConfirmDonationMutationOptions = Apollo.BaseMutationOptions<ConfirmDonationMutation, ConfirmDonationMutationVariables>;
@@ -931,13 +1137,13 @@ export const GetHackathonsDocument = gql`
  * });
  */
 export function useGetHackathonsQuery(baseOptions?: Apollo.QueryHookOptions<GetHackathonsQuery, GetHackathonsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetHackathonsQuery, GetHackathonsQueryVariables>(GetHackathonsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetHackathonsQuery, GetHackathonsQueryVariables>(GetHackathonsDocument, options);
+}
 export function useGetHackathonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetHackathonsQuery, GetHackathonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetHackathonsQuery, GetHackathonsQueryVariables>(GetHackathonsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetHackathonsQuery, GetHackathonsQueryVariables>(GetHackathonsDocument, options);
+}
 export type GetHackathonsQueryHookResult = ReturnType<typeof useGetHackathonsQuery>;
 export type GetHackathonsLazyQueryHookResult = ReturnType<typeof useGetHackathonsLazyQuery>;
 export type GetHackathonsQueryResult = Apollo.QueryResult<GetHackathonsQuery, GetHackathonsQueryVariables>;
@@ -988,13 +1194,13 @@ export const TrendingPostsDocument = gql`
  * });
  */
 export function useTrendingPostsQuery(baseOptions?: Apollo.QueryHookOptions<TrendingPostsQuery, TrendingPostsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TrendingPostsQuery, TrendingPostsQueryVariables>(TrendingPostsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<TrendingPostsQuery, TrendingPostsQueryVariables>(TrendingPostsDocument, options);
+}
 export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrendingPostsQuery, TrendingPostsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TrendingPostsQuery, TrendingPostsQueryVariables>(TrendingPostsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<TrendingPostsQuery, TrendingPostsQueryVariables>(TrendingPostsDocument, options);
+}
 export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
@@ -1037,13 +1243,13 @@ export const GetMyDraftsDocument = gql`
  * });
  */
 export function useGetMyDraftsQuery(baseOptions: Apollo.QueryHookOptions<GetMyDraftsQuery, GetMyDraftsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
+}
 export function useGetMyDraftsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyDraftsQuery, GetMyDraftsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetMyDraftsQuery, GetMyDraftsQueryVariables>(GetMyDraftsDocument, options);
+}
 export type GetMyDraftsQueryHookResult = ReturnType<typeof useGetMyDraftsQuery>;
 export type GetMyDraftsLazyQueryHookResult = ReturnType<typeof useGetMyDraftsLazyQuery>;
 export type GetMyDraftsQueryResult = Apollo.QueryResult<GetMyDraftsQuery, GetMyDraftsQueryVariables>;
@@ -1085,9 +1291,9 @@ export type CreateStoryMutationFn = Apollo.MutationFunction<CreateStoryMutation,
  * });
  */
 export function useCreateStoryMutation(baseOptions?: Apollo.MutationHookOptions<CreateStoryMutation, CreateStoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateStoryMutation, CreateStoryMutationVariables>(CreateStoryDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateStoryMutation, CreateStoryMutationVariables>(CreateStoryDocument, options);
+}
 export type CreateStoryMutationHookResult = ReturnType<typeof useCreateStoryMutation>;
 export type CreateStoryMutationResult = Apollo.MutationResult<CreateStoryMutation>;
 export type CreateStoryMutationOptions = Apollo.BaseMutationOptions<CreateStoryMutation, CreateStoryMutationVariables>;
@@ -1118,9 +1324,9 @@ export type DeleteStoryMutationFn = Apollo.MutationFunction<DeleteStoryMutation,
  * });
  */
 export function useDeleteStoryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteStoryMutation, DeleteStoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteStoryMutation, DeleteStoryMutationVariables>(DeleteStoryDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteStoryMutation, DeleteStoryMutationVariables>(DeleteStoryDocument, options);
+}
 export type DeleteStoryMutationHookResult = ReturnType<typeof useDeleteStoryMutation>;
 export type DeleteStoryMutationResult = Apollo.MutationResult<DeleteStoryMutation>;
 export type DeleteStoryMutationOptions = Apollo.BaseMutationOptions<DeleteStoryMutation, DeleteStoryMutationVariables>;
@@ -1150,13 +1356,13 @@ export const PopularTagsDocument = gql`
  * });
  */
 export function usePopularTagsQuery(baseOptions?: Apollo.QueryHookOptions<PopularTagsQuery, PopularTagsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
+}
 export function usePopularTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PopularTagsQuery, PopularTagsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
+}
 export type PopularTagsQueryHookResult = ReturnType<typeof usePopularTagsQuery>;
 export type PopularTagsLazyQueryHookResult = ReturnType<typeof usePopularTagsLazyQuery>;
 export type PopularTagsQueryResult = Apollo.QueryResult<PopularTagsQuery, PopularTagsQueryVariables>;
@@ -1247,13 +1453,13 @@ export const FeedDocument = gql`
  * });
  */
 export function useFeedQuery(baseOptions?: Apollo.QueryHookOptions<FeedQuery, FeedQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
+}
 export function useFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeedQuery, FeedQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FeedQuery, FeedQueryVariables>(FeedDocument, options);
+}
 export type FeedQueryHookResult = ReturnType<typeof useFeedQuery>;
 export type FeedLazyQueryHookResult = ReturnType<typeof useFeedLazyQuery>;
 export type FeedQueryResult = Apollo.QueryResult<FeedQuery, FeedQueryVariables>;
@@ -1352,36 +1558,57 @@ export const PostDetailsDocument = gql`
  * });
  */
 export function usePostDetailsQuery(baseOptions: Apollo.QueryHookOptions<PostDetailsQuery, PostDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PostDetailsQuery, PostDetailsQueryVariables>(PostDetailsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PostDetailsQuery, PostDetailsQueryVariables>(PostDetailsDocument, options);
+}
 export function usePostDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostDetailsQuery, PostDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PostDetailsQuery, PostDetailsQueryVariables>(PostDetailsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PostDetailsQuery, PostDetailsQueryVariables>(PostDetailsDocument, options);
+}
 export type PostDetailsQueryHookResult = ReturnType<typeof usePostDetailsQuery>;
 export type PostDetailsLazyQueryHookResult = ReturnType<typeof usePostDetailsLazyQuery>;
 export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDetailsQueryVariables>;
-export const UpdateProfileAboutDocument = gql`
-    mutation updateProfileAbout($data: UpdateProfileInput) {
-  updateProfile(data: $data) {
-    id
-    name
-    avatar
-    join_date
-    website
-    role
-    email
-    lightning_address
-    jobTitle
-    twitter
-    github
-    linkedin
-    bio
-    location
+export const MyProfileAboutDocument = gql`
+    query MyProfileAbout {
+  me {
+    ...UserBasicInfo
   }
 }
-    `;
+    ${UserBasicInfoFragmentDoc}`;
+
+/**
+ * __useMyProfileAboutQuery__
+ *
+ * To run a query within a React component, call `useMyProfileAboutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileAboutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileAboutQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfileAboutQuery(baseOptions?: Apollo.QueryHookOptions<MyProfileAboutQuery, MyProfileAboutQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyProfileAboutQuery, MyProfileAboutQueryVariables>(MyProfileAboutDocument, options);
+}
+export function useMyProfileAboutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfileAboutQuery, MyProfileAboutQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyProfileAboutQuery, MyProfileAboutQueryVariables>(MyProfileAboutDocument, options);
+}
+export type MyProfileAboutQueryHookResult = ReturnType<typeof useMyProfileAboutQuery>;
+export type MyProfileAboutLazyQueryHookResult = ReturnType<typeof useMyProfileAboutLazyQuery>;
+export type MyProfileAboutQueryResult = Apollo.QueryResult<MyProfileAboutQuery, MyProfileAboutQueryVariables>;
+export const UpdateProfileAboutDocument = gql`
+    mutation updateProfileAbout($data: ProfileDetailsInput) {
+  updateProfileDetails(data: $data) {
+    ...UserBasicInfo
+  }
+}
+    ${UserBasicInfoFragmentDoc}`;
 export type UpdateProfileAboutMutationFn = Apollo.MutationFunction<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
 
 /**
@@ -1402,29 +1629,182 @@ export type UpdateProfileAboutMutationFn = Apollo.MutationFunction<UpdateProfile
  * });
  */
 export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>(UpdateProfileAboutDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>(UpdateProfileAboutDocument, options);
+}
 export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
+export const MyProfilePreferencesDocument = gql`
+    query MyProfilePreferences {
+  me {
+    id
+    walletsKeys {
+      key
+      name
+      is_current
+    }
+    nostr_prv_key
+    nostr_pub_key
+  }
+}
+    `;
+
+/**
+ * __useMyProfilePreferencesQuery__
+ *
+ * To run a query within a React component, call `useMyProfilePreferencesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfilePreferencesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfilePreferencesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfilePreferencesQuery(baseOptions?: Apollo.QueryHookOptions<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>(MyProfilePreferencesDocument, options);
+}
+export function useMyProfilePreferencesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>(MyProfilePreferencesDocument, options);
+}
+export type MyProfilePreferencesQueryHookResult = ReturnType<typeof useMyProfilePreferencesQuery>;
+export type MyProfilePreferencesLazyQueryHookResult = ReturnType<typeof useMyProfilePreferencesLazyQuery>;
+export type MyProfilePreferencesQueryResult = Apollo.QueryResult<MyProfilePreferencesQuery, MyProfilePreferencesQueryVariables>;
+export const UpdateUserPreferencesDocument = gql`
+    mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
+  updateUserPreferences(userKeys: $walletsKeys) {
+    id
+    walletsKeys {
+      key
+      name
+    }
+    nostr_pub_key
+    nostr_prv_key
+  }
+}
+    `;
+export type UpdateUserPreferencesMutationFn = Apollo.MutationFunction<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
+
+/**
+ * __useUpdateUserPreferencesMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserPreferencesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserPreferencesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserPreferencesMutation, { data, loading, error }] = useUpdateUserPreferencesMutation({
+ *   variables: {
+ *      walletsKeys: // value for 'walletsKeys'
+ *   },
+ * });
+ */
+export function useUpdateUserPreferencesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>(UpdateUserPreferencesDocument, options);
+}
+export type UpdateUserPreferencesMutationHookResult = ReturnType<typeof useUpdateUserPreferencesMutation>;
+export type UpdateUserPreferencesMutationResult = Apollo.MutationResult<UpdateUserPreferencesMutation>;
+export type UpdateUserPreferencesMutationOptions = Apollo.BaseMutationOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
+export const MyProfileRolesSkillsDocument = gql`
+    query MyProfileRolesSkills {
+  me {
+    id
+    ...UserRolesSkills
+  }
+  getAllMakersRoles {
+    id
+    title
+    icon
+  }
+  getAllMakersSkills {
+    id
+    title
+  }
+}
+    ${UserRolesSkillsFragmentDoc}`;
+
+/**
+ * __useMyProfileRolesSkillsQuery__
+ *
+ * To run a query within a React component, call `useMyProfileRolesSkillsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProfileRolesSkillsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProfileRolesSkillsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProfileRolesSkillsQuery(baseOptions?: Apollo.QueryHookOptions<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>(MyProfileRolesSkillsDocument, options);
+}
+export function useMyProfileRolesSkillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>(MyProfileRolesSkillsDocument, options);
+}
+export type MyProfileRolesSkillsQueryHookResult = ReturnType<typeof useMyProfileRolesSkillsQuery>;
+export type MyProfileRolesSkillsLazyQueryHookResult = ReturnType<typeof useMyProfileRolesSkillsLazyQuery>;
+export type MyProfileRolesSkillsQueryResult = Apollo.QueryResult<MyProfileRolesSkillsQuery, MyProfileRolesSkillsQueryVariables>;
+export const UpdateUserRolesSkillsDocument = gql`
+    mutation UpdateUserRolesSkills($data: ProfileRolesInput) {
+  updateProfileRoles(data: $data) {
+    id
+    skills {
+      id
+      title
+    }
+    roles {
+      id
+      title
+      icon
+      level
+    }
+  }
+}
+    `;
+export type UpdateUserRolesSkillsMutationFn = Apollo.MutationFunction<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>;
+
+/**
+ * __useUpdateUserRolesSkillsMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserRolesSkillsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserRolesSkillsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserRolesSkillsMutation, { data, loading, error }] = useUpdateUserRolesSkillsMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateUserRolesSkillsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>(UpdateUserRolesSkillsDocument, options);
+}
+export type UpdateUserRolesSkillsMutationHookResult = ReturnType<typeof useUpdateUserRolesSkillsMutation>;
+export type UpdateUserRolesSkillsMutationResult = Apollo.MutationResult<UpdateUserRolesSkillsMutation>;
+export type UpdateUserRolesSkillsMutationOptions = Apollo.BaseMutationOptions<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>;
 export const ProfileDocument = gql`
     query profile($profileId: Int!) {
   profile(id: $profileId) {
-    id
-    name
-    avatar
-    join_date
-    role
-    email
-    jobTitle
-    lightning_address
-    website
-    twitter
-    github
-    linkedin
-    bio
-    location
     stories {
       id
       title
@@ -1435,11 +1815,25 @@ export const ProfileDocument = gql`
         icon
       }
     }
-    nostr_prv_key
-    nostr_pub_key
+    tournaments {
+      id
+      title
+      thumbnail_image
+      start_date
+      end_date
+    }
+    similar_makers {
+      id
+      name
+      avatar
+      jobTitle
+    }
+    ...UserBasicInfo
+    ...UserRolesSkills
   }
 }
-    `;
+    ${UserBasicInfoFragmentDoc}
+${UserRolesSkillsFragmentDoc}`;
 
 /**
  * __useProfileQuery__
@@ -1458,13 +1852,13 @@ export const ProfileDocument = gql`
  * });
  */
 export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+}
 export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+}
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
@@ -1506,13 +1900,13 @@ export const CategoryPageDocument = gql`
  * });
  */
 export function useCategoryPageQuery(baseOptions: Apollo.QueryHookOptions<CategoryPageQuery, CategoryPageQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CategoryPageQuery, CategoryPageQueryVariables>(CategoryPageDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CategoryPageQuery, CategoryPageQueryVariables>(CategoryPageDocument, options);
+}
 export function useCategoryPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoryPageQuery, CategoryPageQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CategoryPageQuery, CategoryPageQueryVariables>(CategoryPageDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CategoryPageQuery, CategoryPageQueryVariables>(CategoryPageDocument, options);
+}
 export type CategoryPageQueryHookResult = ReturnType<typeof useCategoryPageQuery>;
 export type CategoryPageLazyQueryHookResult = ReturnType<typeof useCategoryPageLazyQuery>;
 export type CategoryPageQueryResult = Apollo.QueryResult<CategoryPageQuery, CategoryPageQueryVariables>;
@@ -1542,13 +1936,13 @@ export const AllCategoriesDocument = gql`
  * });
  */
 export function useAllCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<AllCategoriesQuery, AllCategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, options);
+}
 export function useAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllCategoriesQuery, AllCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, options);
+}
 export type AllCategoriesQueryHookResult = ReturnType<typeof useAllCategoriesQuery>;
 export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategoriesLazyQuery>;
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
@@ -1607,13 +2001,13 @@ export const ExploreProjectsDocument = gql`
  * });
  */
 export function useExploreProjectsQuery(baseOptions?: Apollo.QueryHookOptions<ExploreProjectsQuery, ExploreProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ExploreProjectsQuery, ExploreProjectsQueryVariables>(ExploreProjectsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ExploreProjectsQuery, ExploreProjectsQueryVariables>(ExploreProjectsDocument, options);
+}
 export function useExploreProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExploreProjectsQuery, ExploreProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ExploreProjectsQuery, ExploreProjectsQueryVariables>(ExploreProjectsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ExploreProjectsQuery, ExploreProjectsQueryVariables>(ExploreProjectsDocument, options);
+}
 export type ExploreProjectsQueryHookResult = ReturnType<typeof useExploreProjectsQuery>;
 export type ExploreProjectsLazyQueryHookResult = ReturnType<typeof useExploreProjectsLazyQuery>;
 export type ExploreProjectsQueryResult = Apollo.QueryResult<ExploreProjectsQuery, ExploreProjectsQueryVariables>;
@@ -1648,13 +2042,13 @@ export const HottestProjectsDocument = gql`
  * });
  */
 export function useHottestProjectsQuery(baseOptions?: Apollo.QueryHookOptions<HottestProjectsQuery, HottestProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<HottestProjectsQuery, HottestProjectsQueryVariables>(HottestProjectsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<HottestProjectsQuery, HottestProjectsQueryVariables>(HottestProjectsDocument, options);
+}
 export function useHottestProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HottestProjectsQuery, HottestProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<HottestProjectsQuery, HottestProjectsQueryVariables>(HottestProjectsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<HottestProjectsQuery, HottestProjectsQueryVariables>(HottestProjectsDocument, options);
+}
 export type HottestProjectsQueryHookResult = ReturnType<typeof useHottestProjectsQuery>;
 export type HottestProjectsLazyQueryHookResult = ReturnType<typeof useHottestProjectsLazyQuery>;
 export type HottestProjectsQueryResult = Apollo.QueryResult<HottestProjectsQuery, HottestProjectsQueryVariables>;
@@ -1706,13 +2100,13 @@ export const ProjectDetailsDocument = gql`
  * });
  */
 export function useProjectDetailsQuery(baseOptions: Apollo.QueryHookOptions<ProjectDetailsQuery, ProjectDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>(ProjectDetailsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>(ProjectDetailsDocument, options);
+}
 export function useProjectDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectDetailsQuery, ProjectDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>(ProjectDetailsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>(ProjectDetailsDocument, options);
+}
 export type ProjectDetailsQueryHookResult = ReturnType<typeof useProjectDetailsQuery>;
 export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDetailsLazyQuery>;
 export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
@@ -1751,9 +2145,9 @@ export type VoteMutationFn = Apollo.MutationFunction<VoteMutation, VoteMutationV
  * });
  */
 export function useVoteMutation(baseOptions?: Apollo.MutationHookOptions<VoteMutation, VoteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument, options);
+}
 export type VoteMutationHookResult = ReturnType<typeof useVoteMutation>;
 export type VoteMutationResult = Apollo.MutationResult<VoteMutation>;
 export type VoteMutationOptions = Apollo.BaseMutationOptions<VoteMutation, VoteMutationVariables>;
@@ -1791,9 +2185,9 @@ export type ConfirmVoteMutationFn = Apollo.MutationFunction<ConfirmVoteMutation,
  * });
  */
 export function useConfirmVoteMutation(baseOptions?: Apollo.MutationHookOptions<ConfirmVoteMutation, ConfirmVoteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ConfirmVoteMutation, ConfirmVoteMutationVariables>(ConfirmVoteDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<ConfirmVoteMutation, ConfirmVoteMutationVariables>(ConfirmVoteDocument, options);
+}
 export type ConfirmVoteMutationHookResult = ReturnType<typeof useConfirmVoteMutation>;
 export type ConfirmVoteMutationResult = Apollo.MutationResult<ConfirmVoteMutation>;
 export type ConfirmVoteMutationOptions = Apollo.BaseMutationOptions<ConfirmVoteMutation, ConfirmVoteMutationVariables>;

@@ -49,6 +49,9 @@ export const apolloClient = new ApolloClient({
         httpLink
     ]),
     cache: new InMemoryCache({
+        possibleTypes: {
+            BaseUser: ['User', 'MyProfile']
+        },
         typePolicies: {
             Query: {
                 fields: {

@@ -7,6 +7,8 @@ import { QRCodeSVG } from 'qrcode.react';
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
+import { useApolloClient } from '@apollo/client';
+import { IoClose } from 'react-icons/io5';
 
 
 
@@ -57,7 +59,8 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
     const [copied, setCopied] = useState(false);
 
     const { loadingLnurl, data: { lnurl }, error } = useLnurlQuery();
-    const clipboard = useCopyToClipboard()
+    const clipboard = useCopyToClipboard();
+    const apolloClient = useApolloClient();
 
 
 
@@ -71,41 +74,50 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
         clipboard(lnurl);
     }
 
+    const done = () => {
+        apolloClient.refetchQueries({
+            include: ['MyProfilePreferences']
+        })
+        onClose?.()
+    }
+
 
     let content = <></>
 
     if (error)
-        content = <div className="flex flex-col gap-24 items-center">
-            <p className="text-body3 text-red-500 font-bold">Something wrong happened...</p>
-            <a href='/login' className="text body4 text-gray-500 hover:underline">Refresh the page</a>
+        content = <div className="flex flex-col gap-24 items-center my-32">
+            <p className="text-body3 text-red-500 font-bold">Ooops...😵</p>
+            <p className="text-body4 text-gray-600 text-center">An error happened while fetching the link, please check your internet connection and try again.</p>
         </div>
 
     else if (loadingLnurl)
-        content = <div className="flex flex-col gap-24 items-center">
-            <Grid color="var(--primary)" width="150" />
-            <p className="text-body3 font-bold">Fetching Lnurl-Auth...</p>
+        content = <div className="flex flex-col gap-24 items-center my-32">
+            <Grid color="var(--primary)" width="80" />
+            <p className="text-body4 text-gray-600 font-bold">Fetching Lnurl-Auth Link...</p>
         </div>
 
-    else
+    else {
         content =
-            <>
-                <p className="text-body1 font-bolder text-center">
-                    Link your account ⚡
-                </p>
-                <QRCodeSVG
-                    width={160}
-                    height={160}
-                    value={lnurl}
-                />
+            <div className='flex flex-col gap-24 items-center mt-32 '>
+                <a href={`lightning:${lnurl}`} >
+                    <QRCodeSVG
+                        width={280}
+                        height={280}
+                        level='H'
+                        value={`lightning:${lnurl}`}
+                        bgColor='transparent'
+                        imageSettings={{
+                            src: '/assets/images/nut_3d.png',
+                            width: 28,
+                            height: 28,
+                            excavate: true
+                        }}
+                    />
+                </a>
                 <p className="text-gray-600 text-body4 text-center">
-                    Scan this code or copy + paste it to your other lightning wallet to be able to login later with it to this account.
-                    <br />
-                    When done, click the button below to close this modal.
+                    Scan this code or copy + paste it to your lightning wallet to connect another account to your maker profile. You can also click the QR code to open your WebLN wallet. When done, click the button below to close this modal.
                 </p>
                 <div className="flex flex-col w-full gap-16">
-                    {/* <a href={lnurl}
-                        className='grow block text-body4 text-center text-white font-bolder bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
-                    >Click to connect <IoRocketOutline /></a> */}
                     <Button
                         color='gray'
                         className='grow'
@@ -114,15 +126,14 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
                     >{copied ? "Copied" : "Copy"} <FiCopy /></Button>
                     <Button
                         color='primary'
-                        onClick={onClose}
+                        onClick={done}
                         fullWidth
-                        className='mt-16'
                     >
-                        Done?
+                        Done
                     </Button>
                 </div>
-            </>
-
+            </div>
+    }
 
 
     return (
@@ -132,8 +143,10 @@ export default function LinkingAccountModal({ onClose, direction, ...props }: Mo
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card w-full max-w-[326px] bg-white border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-16 items-center"
+            className="modal-card max-w-[442px] p-24 rounded-xl relative"
         >
+            <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <h2 className='text-h5 font-bold text-center'>Connect another ⚡️ wallet</h2>
             {content}
         </motion.div>
     )

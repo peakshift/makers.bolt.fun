@@ -1,7 +1,7 @@
 import { hackathons } from "./data/hackathon";
 import { posts, feed, generatePostComments } from "./data/posts";
 import { categories, projects } from "./data/projects";
-import { users } from "./data/users";
+import { allMakersRoles, allMakersSkills, users } from "./data/users";
 
 export const MOCK_DATA = {
     projects,
@@ -12,4 +12,6 @@ export const MOCK_DATA = {
     generatePostComments: generatePostComments,
     user: users[0],
     users: users,
+    allMakersRoles: allMakersRoles,
+    allMakersSkills: allMakersSkills,
 }

@@ -3,7 +3,7 @@ import { MOCK_DATA } from 'src/mocks/data';
 import CommentsSettingsCard from './CommentsSettingsCard';
 
 export default {
-    title: 'Profiles/Profile Page/Comments Settings Card',
+    title: 'Profiles/Edit Profile Page/Comments Settings Card',
     component: CommentsSettingsCard,
     argTypes: {
         backgroundColor: { control: 'color' },
@@ -16,5 +16,6 @@ const Template: ComponentStory<typeof CommentsSettingsCard> = (args) => <Comment
 
 export const Default = Template.bind({});
 Default.args = {
-
+    nostr_prv_key: "1234389753205473258327580937245",
+    nostr_pub_key: "55234231277835473258327580937245",
 }

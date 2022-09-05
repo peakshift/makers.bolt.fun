@@ -14,7 +14,7 @@ export default function TrendingCard() {
 
     return (
         <Card onlyMd>
-            <h3 className="text-body2 font-bolder mb-16">Trending on BOLT.FUN</h3>
+            <h3 className="text-body2 font-bolder mb-16">Trending on BOLT🔩FUN</h3>
             <ul className='flex flex-col'>
                 {
                     trendingPosts.loading ?

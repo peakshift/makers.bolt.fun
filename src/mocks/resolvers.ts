@@ -1,5 +1,5 @@
 import { MOCK_DATA } from "./data";
-import { Query, QueryGetFeedArgs, QueryGetPostByIdArgs } from 'src/graphql'
+import { MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, User } from 'src/graphql'
 import { Chance } from "chance";
 import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
@@ -72,13 +72,25 @@ export function getAllHackathons() {
 }
 
 export function me() {
-    return MOCK_DATA['user']
+    return {
+        ...MOCK_DATA['user'],
+        __typename: "MyProfile",
+    } as MyProfile
 }
+
+
 
 export function profile() {
-    return MOCK_DATA['user']
+    return { ...MOCK_DATA['user'], __typename: 'User' } as User
 }
 
+export function getAllMakersRoles() {
+    return MOCK_DATA['allMakersRoles']
+}
+
+export function getAllMakersSkills() {
+    return MOCK_DATA['allMakersSkills']
+}
 export function searchUsers(value: string) {
     return MOCK_DATA['users'].filter(u => u.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
 }
