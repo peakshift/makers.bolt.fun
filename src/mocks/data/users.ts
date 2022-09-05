@@ -1,5 +1,5 @@
 import { Chance } from "chance";
-import { GenericMakerRole, MakerSkill, MyProfile, RoleLevelEnum, User, Tournament } from "src/graphql";
+import { GenericMakerRole, MakerSkill, MyProfile, RoleLevelEnum, Tournament, User } from "src/graphql";
 import { randomItem, randomItems } from "src/utils/helperFunctions";
 import { posts } from "./posts";
 import { getCoverImage, getAvatarImage } from "./utils";
@@ -97,7 +97,51 @@ export const allMakersSkills: MakerSkill[] = [
     },
 ]
 
-export const user: User & MyProfile = {
+const similar_makers = [
+    {
+        id: 144,
+        name: "Johns Beharry",
+        jobTitle: "Manager",
+        avatar: getAvatarImage(),
+    },
+    {
+        id: 155,
+        name: "Edward P",
+        jobTitle: "Front-end Developer",
+        avatar: getAvatarImage(),
+    },
+    {
+        id: 123,
+        name: "Mohammed T",
+        jobTitle: "Front-end Developer",
+        avatar: getAvatarImage(),
+    },
+] as User[]
+
+const tournaments = [
+    {
+        id: 1,
+        title: "BreezConf",
+        description: chance.paragraph(),
+        cover_image: getCoverImage(),
+        thumbnail_image: getCoverImage(),
+        start_date: new Date(2021, 3).toISOString(),
+        end_date: new Date(2021, 4).toISOString(),
+        website: "https://breez-conf.com",
+    },
+    {
+        id: 2,
+        title: "Shock the Web 3",
+        description: chance.paragraph(),
+        cover_image: getCoverImage(),
+        thumbnail_image: getCoverImage(),
+        start_date: new Date(2022, 7).toISOString(),
+        end_date: new Date(2022, 11).toISOString(),
+        website: "https://shock-the-web.com"
+    },
+] as Tournament[];
+
+export const users: (User | MyProfile)[] = [{
     id: 123,
     email: "mtg0987654321@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
@@ -128,50 +172,111 @@ export const user: User & MyProfile = {
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
-    tournaments: [
-        {
-            id: 1,
-            title: "BreezConf",
-            description: chance.paragraph(),
-            cover_image: getCoverImage(),
-            thumbnail_image: getCoverImage(),
-            start_date: new Date(2021, 3).toISOString(),
-            end_date: new Date(2021, 4).toISOString(),
-            website: "https://breez-conf.com",
+    tournaments,
+    similar_makers
+},
+{
+    id: 441,
+    email: "eddy@gmail.com",
+    avatar: "https://avatars.dicebear.com/api/bottts/Eduardu.svg",
+    bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    name: "Edward P",
+    github: "barefoot_88",
+    jobTitle: "Senior Product Designer",
+    join_date: new Date(2021).toISOString(),
+    lightning_address: "ed@getalby.com",
+    linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
+    location: "Germany, Berlin",
+    role: "user",
+    twitter: "john-doe",
+    website: "https://mtg-dev.tech",
+    stories: posts.stories,
+    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
 
-        } as Tournament,
+    walletsKeys: [
         {
-            id: 2,
-            title: "Shock the Web 3",
-            description: chance.paragraph(),
-            cover_image: getCoverImage(),
-            thumbnail_image: getCoverImage(),
-            start_date: new Date(2022, 7).toISOString(),
-            end_date: new Date(2022, 11).toISOString(),
-            website: "https://shock-the-web.com",
-
-        } as Tournament,
-    ],
-    similar_makers: [
-        {
-            id: 144,
-            name: "Johns Beharry",
-            jobTitle: "Manager",
-            avatar: getAvatarImage(),
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key",
+            is_current: true
         },
         {
-            id: 155,
-            name: "Edward P",
-            jobTitle: "Front-end Developer",
-            avatar: getAvatarImage(),
+            key: "66345134234235",
+            name: "My Phoenix wallet key",
+            is_current: false
+        },],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
+    tournaments,
+    similar_makers
+},
+{
+    id: 422,
+    email: "johns@gmail.com",
+    avatar: "https://avatars.dicebear.com/api/bottts/Johns.svg",
+    bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    name: "Johns Beharry",
+    github: "johnsbehhary",
+    jobTitle: "Manager",
+    join_date: new Date(2021).toISOString(),
+    lightning_address: "johns@getalby.com",
+    linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
+    location: "Germany, Berlin",
+    role: "user",
+    twitter: "john-doe",
+    website: "https://mtg-dev.tech",
+    stories: posts.stories,
+    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+    walletsKeys: [
+        {
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key",
+            is_current: true
         },
         {
-            id: 166,
-            name: "Mohammed T",
-            jobTitle: "Front-end Developer",
-            avatar: getAvatarImage(),
+            key: "66345134234235",
+            name: "My Phoenix wallet key",
+            is_current: false
+        },],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
+    tournaments,
+    similar_makers
+},
+{
+    id: 511,
+    email: "carlos@gmail.com",
+    avatar: "https://avatars.dicebear.com/api/bottts/Carlos.svg",
+    bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    name: "Mohammed Taher ",
+    github: "MTG2000",
+    jobTitle: "Back-end Web Developer",
+    join_date: new Date(2021).toISOString(),
+    lightning_address: "carlos@getalby.com",
+    linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
+    location: "Germany, Berlin",
+    role: "user",
+    twitter: "john-doe",
+    website: "https://mtg-dev.tech",
+    stories: posts.stories,
+    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+    walletsKeys: [
+        {
+            key: "1645h234j2421zxvertw",
+            name: "My Alby wallet key",
+            is_current: true
         },
-    ] as User[]
-}
+        {
+            key: "66345134234235",
+            name: "My Phoenix wallet key",
+            is_current: false
+        },],
+    roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
+    skills: randomItems(7, ...allMakersSkills),
+    tournaments,
+    similar_makers
+}]
 
 
