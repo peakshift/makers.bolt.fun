@@ -31,8 +31,8 @@ export default function MakerCard({ maker, isMe }: Props) {
                 <div className="shrink-0 w-64 md:w-80">
                     <Avatar src={maker.avatar} width={'100%'}></Avatar>
                 </div>
-                <div className="flex flex-col gap-4 flex-1">
-                    <p className="text-body2 text-gray-900 font-bold">{maker.name}</p>
+                <div className="flex flex-col gap-4 flex-1 overflow-hidden">
+                    <p className="text-body2 text-gray-900 font-bold overflow-hidden text-ellipsis">{maker.name}</p>
                     {maker.jobTitle ? <p className="text-body4 text-gray-600 font-medium">{maker.jobTitle}</p>
                         :
                         <p className="text-body4 text-gray-400 font-medium">No job title</p>}
