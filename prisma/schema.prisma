@@ -89,10 +89,11 @@ model UsersOnWorkRoles {
 }
 
 model WorkRole {
-  id    Int                @id @default(autoincrement())
-  title String             @unique
-  icon  String
-  users UsersOnWorkRoles[]
+  id       Int                   @id @default(autoincrement())
+  title    String                @unique
+  icon     String
+  users    UsersOnWorkRoles[]
+  projects ProjectRecruitRoles[]
 }
 
 model Skill {
@@ -133,6 +134,19 @@ model Project {
 
   awards Award[]
   tags   Tag[]
+
+  recruit_roles ProjectRecruitRoles[]
+}
+
+model ProjectRecruitRoles {
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId Int
+  role      WorkRole @relation(fields: [roleId], references: [id])
+  roleId    Int
+
+  level Int
+
+  @@id([projectId, roleId])
 }
 
 model Award {

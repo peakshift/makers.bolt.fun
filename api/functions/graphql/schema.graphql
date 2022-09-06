@@ -234,6 +234,7 @@ type Project {
   id: Int!
   lightning_address: String
   lnurl_callback_url: String
+  recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   tags: [Tag!]!
   thumbnail_image: String!
