@@ -200,13 +200,10 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Project: { // root type
-    cover_image: string; // String!
     description: string; // String!
     id: number; // Int!
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
-    screenshots: string[]; // [String!]!
-    thumbnail_image: string; // String!
     title: string; // String!
     votes_count: number; // Int!
     website: string; // String!

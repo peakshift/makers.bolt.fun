@@ -121,15 +121,20 @@ model Category {
 }
 
 model Project {
-  id                 Int      @id @default(autoincrement())
-  title              String
-  description        String
-  screenshots        String[]
-  website            String
-  thumbnail_image    String?
-  cover_image        String?
-  lightning_address  String?
-  lnurl_callback_url String?
+  id                  Int          @id @default(autoincrement())
+  title               String
+  description         String
+  screenshots         String[]
+  screenshots_ids     Int[]
+  website             String
+  thumbnail_image     String?
+  thumbnail_image_id  Int?
+  thumbnail_image_rel HostedImage? @relation("ProjectThumbnail", fields: [thumbnail_image_id], references: [id])
+  cover_image         String?
+  cover_image_id      Int?
+  cover_image_rel     HostedImage? @relation("ProjectCoverImage", fields: [cover_image_id], references: [id])
+  lightning_address   String?
+  lnurl_callback_url  String?
 
   category    Category @relation(fields: [category_id], references: [id])
   category_id Int
@@ -272,10 +277,16 @@ model GeneratedK1 {
 // Hosted Image
 // -----------------
 model HostedImage {
-  id        String   @id
-  filename  String
-  createdAt DateTime @default(now())
-  is_used   Boolean  @default(false)
+  id                Int      @id @default(autoincrement())
+  filename          String
+  provider_image_id String
+  provider          String
+  url               String
+  createdAt         DateTime @default(now())
+  is_used           Boolean  @default(false)
+
+  ProjectThumbnail  Project[] @relation("ProjectThumbnail")
+  ProjectCoverImage Project[] @relation("ProjectCoverImage")
 }
 
 // -----------------

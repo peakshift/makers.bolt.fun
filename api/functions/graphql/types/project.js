@@ -6,6 +6,7 @@ const {
     nonNull,
 } = require('nexus')
 const { prisma } = require('../../../prisma');
+const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 const { MakerRole } = require('./users');
@@ -17,9 +18,41 @@ const Project = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('description');
-        t.nonNull.string('cover_image');
-        t.nonNull.string('thumbnail_image');
-        t.nonNull.list.nonNull.string('screenshots');
+        t.nonNull.string('cover_image', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.cover_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
+        t.nonNull.string('thumbnail_image', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.thumbnail_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
+        t.nonNull.list.nonNull.string('screenshots', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findMany({
+                    where: {
+                        id: { in: parent.screenshots_ids }
+                    }
+                });
+
+                return imgObject.map(img => {
+                    return resolveImgObjectToUrl(img);
+                });
+            }
+        });
         t.nonNull.string('website');
         t.string('lightning_address');
         t.string('lnurl_callback_url');

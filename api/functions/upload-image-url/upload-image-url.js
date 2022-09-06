@@ -22,11 +22,11 @@ const postUploadImageUrl = async (req, res) => {
     try {
         const uploadUrl = await getDirectUploadUrl()
 
-        await prisma.hostedImage.create({
-            data: { id: uploadUrl.id, filename },
+        const hostedImage = await prisma.hostedImage.create({
+            data: { filename },
         })
 
-        return res.status(200).json(uploadUrl)
+        return res.status(200).json({ id: hostedImage.id, uploadUrl: uploadUrl.uploadUrl })
     } catch (error) {
         res.status(500).send('Unexpected error happened, please try again')
     }

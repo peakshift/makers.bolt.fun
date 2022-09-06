@@ -64,6 +64,79 @@ async function main() {
 
     // await createSkills();
 
+    // await migrateOldImages();
+}
+
+async function migrateOldImages() {
+    console.log('Migrating old images data to HostedImage');
+
+    // Can't use prisma method createMany() for columns like Project.screenshots, because this method doesn't return created IDs.
+
+    /**
+     * Project
+     **/
+    const projects = await prisma.project.findMany({
+        select: {
+            id: true,
+            screenshots: true,
+            cover_image: true,
+            thumbnail_image: true
+        }
+    })
+    for (const project of projects) {
+        /**
+         * Project.screenshots to Project.screenshots_ids
+         **/
+        let projectScreenshotIds = [];
+        for (const screenshot of project.screenshots) {
+            let hostedImageId = await _insertInHostedImage(screenshot)
+            projectScreenshotIds.push(hostedImageId);
+        }
+        if(projectScreenshotIds.length > 0) {
+            await _updateObjectWithHostedImageId(prisma.project, project.id, {
+                screenshots_ids: projectScreenshotIds,
+            })
+        }
+    
+        /**
+         * Project.cover_image to Project.cover_image_id
+         **/
+        if(project.cover_image) {
+            let hostedImageId = await _insertInHostedImage(project.cover_image)
+            await _updateObjectWithHostedImageId(prisma.project, project.id, {
+                cover_image_id: hostedImageId,
+            })
+        }
+
+        /**
+         * Project.thumbnail_image to Project.thumbnail_image_id
+         **/
+         if(project.cover_image) {
+            let hostedImageId = await _insertInHostedImage(project.thumbnail_image)
+            await _updateObjectWithHostedImageId(prisma.project, project.id, {
+                thumbnail_image_id: hostedImageId,
+            })
+        }
+    }
+}
+
+async function _insertInHostedImage(url){
+    const newHostedImage = await prisma.hostedImage.create({
+        data: {
+            filename: "default.png",
+            provider: "external",
+            provider_image_id: "",
+            url,
+            is_used: true  
+        }
+    });
+    return newHostedImage.id;
+}
+async function _updateObjectWithHostedImageId(prismaObject, objectId, data){
+    await prismaObject.update({
+        where: { id: objectId },
+        data,
+    });
 }
 
 async function createCategories() {
