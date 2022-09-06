@@ -3,9 +3,10 @@ import ProjectsRow from "../ProjectsRow/ProjectsRow";
 import ProjectsRowSkeleton from "../ProjectsRow/ProjectsRow.Skeleton";
 import { MdLocalFireDepartment } from "react-icons/md";
 import { useExploreProjectsQuery } from "src/graphql";
+import React from "react";
 
 
-export default function ProjectsSection() {
+function ProjectsSection() {
 
     const { data, loading } = useExploreProjectsQuery();
 
@@ -42,3 +43,5 @@ export default function ProjectsSection() {
         </div>
     )
 }
+
+export default React.memo(ProjectsSection)
