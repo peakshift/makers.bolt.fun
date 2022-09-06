@@ -1,5 +1,5 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables } from "src/graphql";
+import { useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables, UserBasicInfoFragmentDoc } from "src/graphql";
 import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

@@ -8,7 +8,7 @@ const { prisma } = require('../../prisma')
 
 const postUploadImageUrl = async (req, res) => {
 
-    return res.status(404).send("This api is in progress");
+    // return res.status(404).send("This api is in progress");
 
     const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
     const user = await getUserByPubKey(userPubKey)
