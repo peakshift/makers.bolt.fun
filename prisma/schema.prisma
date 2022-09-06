@@ -112,10 +112,12 @@ model Skill {
 // -----------------
 
 model Category {
-  id          Int     @id @default(autoincrement())
-  title       String
-  cover_image String?
-  icon        String?
+  id              Int          @id @default(autoincrement())
+  title           String
+  cover_image     String?
+  cover_image_id  Int?
+  cover_image_rel HostedImage? @relation("CategoryCoverImage", fields: [cover_image_id], references: [id])
+  icon            String?
 
   project Project[]
 }
@@ -285,8 +287,9 @@ model HostedImage {
   createdAt         DateTime @default(now())
   is_used           Boolean  @default(false)
 
-  ProjectThumbnail  Project[] @relation("ProjectThumbnail")
-  ProjectCoverImage Project[] @relation("ProjectCoverImage")
+  ProjectThumbnail   Project[]  @relation("ProjectThumbnail")
+  ProjectCoverImage  Project[]  @relation("ProjectCoverImage")
+  CategoryCoverImage Category[] @relation("CategoryCoverImage")
 }
 
 // -----------------

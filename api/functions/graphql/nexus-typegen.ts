@@ -122,7 +122,6 @@ export interface NexusGenObjects {
     workplan: string; // String!
   }
   Category: { // root type
-    cover_image?: string | null; // String
     icon?: string | null; // String
     id: number; // Int!
     title: string; // String!

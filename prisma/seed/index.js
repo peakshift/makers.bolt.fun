@@ -92,7 +92,7 @@ async function migrateOldImages() {
             let hostedImageId = await _insertInHostedImage(screenshot)
             projectScreenshotIds.push(hostedImageId);
         }
-        if(projectScreenshotIds.length > 0) {
+        if (projectScreenshotIds.length > 0) {
             await _updateObjectWithHostedImageId(prisma.project, project.id, {
                 screenshots_ids: projectScreenshotIds,
             })
@@ -101,7 +101,7 @@ async function migrateOldImages() {
         /**
          * Project.cover_image to Project.cover_image_id
          **/
-        if(project.cover_image) {
+        if (project.cover_image) {
             let hostedImageId = await _insertInHostedImage(project.cover_image)
             await _updateObjectWithHostedImageId(prisma.project, project.id, {
                 cover_image_id: hostedImageId,
@@ -111,10 +111,28 @@ async function migrateOldImages() {
         /**
          * Project.thumbnail_image to Project.thumbnail_image_id
          **/
-         if(project.cover_image) {
+        if (project.cover_image) {
             let hostedImageId = await _insertInHostedImage(project.thumbnail_image)
             await _updateObjectWithHostedImageId(prisma.project, project.id, {
                 thumbnail_image_id: hostedImageId,
+            })
+        }
+    }
+
+    /**
+     * Category
+     **/
+    const categories = await prisma.category.findMany({
+        select: {
+            id: true,
+            cover_image: true,
+        }
+    })
+    for (const category of categories) {
+        if (category.cover_image) {
+            let hostedImageId = await _insertInHostedImage(category.cover_image)
+            await _updateObjectWithHostedImageId(prisma.category, category.id, {
+                cover_image_id: hostedImageId,
             })
         }
     }

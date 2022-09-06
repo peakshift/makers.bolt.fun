@@ -4,7 +4,8 @@ const {
     extendType,
     nonNull,
 } = require('nexus');
-const { prisma } = require('../../../prisma')
+const { prisma } = require('../../../prisma');
+const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
 
 
 const Category = objectType({
@@ -12,7 +13,17 @@ const Category = objectType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
-        t.string('cover_image');
+        t.string('cover_image', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.cover_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
         t.string('icon');
 
 
