@@ -1,7 +1,4 @@
-import React from 'react'
-import { useGetTournamentByIdQuery } from 'src/graphql'
-import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
-import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
+
 import Header from './Header/Header'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import OverviewPage from '../OverviewPage/OverviewPage'

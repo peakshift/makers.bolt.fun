@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { GenericMakerRole } from 'src/graphql'
 import MakersFilters from '../MakersFilters/MakersFilters';
 import MakersList from './MakersList';
+import ProjectsList from './ProjectsList';
 
 interface Props {
     tournamentId: number
@@ -12,6 +13,7 @@ export default function ParticipantsSection({ tournamentId }: Props) {
     const [searchFilter, setSearchFilter] = useState("");
     const [debouncedsearchFilter, setDebouncedSearchFilter] = useDebouncedState("", 500);
     const [roleFilter, setRoleFilter] = useState<GenericMakerRole | null>(null);
+    const [curTab, setCurTab] = useState<'makers' | 'projects'>('makers')
 
 
 
@@ -35,7 +37,30 @@ export default function ParticipantsSection({ tournamentId }: Props) {
                 />
             </div>
         </div>
-        <MakersList searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />
+        <div className="flex gap-8">
+            <button
+                className={` 
+                   min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${curTab === 'makers' ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}
+                     `}
+                onClick={() => setCurTab('makers')}
+            >
+                Makers looking for projects
+            </button>
+            <button
+                className={` 
+                   min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${curTab === 'projects' ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}
+                     `}
+                onClick={() => setCurTab('projects')}
+            >
+                Projects looking for makers
+            </button>
+        </div>
+        {curTab === 'projects' && <ProjectsList searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}
+        {curTab === 'makers' && <MakersList searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}
     </>
     )
 }

@@ -1,17 +1,10 @@
-import { IoLocationOutline } from 'react-icons/io5'
 import Button from "src/Components/Button/Button"
-import dayjs from "dayjs";
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import { trimText } from "src/utils/helperFunctions";
-import { Override } from "src/utils/interfaces";
-import { GetMakersInTournamentQuery, GetMakersInTournamentQueryResult, Tag, Tournament, TournamentEventTypeEnum, User } from "src/graphql";
-import { UnionToObjectKeys } from 'src/utils/types/utils';
+import { GetMakersInTournamentQuery, } from "src/graphql";
 import { useAppDispatch, } from "src/utils/hooks";
-import { openModal } from "src/redux/features/modals.slice";
 import Card from 'src/Components/Card/Card';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Badge from 'src/Components/Badge/Badge';
-import { createRoute, PAGES_ROUTES } from 'src/utils/routing';
+import { createRoute } from 'src/utils/routing';
 
 type MakerType = GetMakersInTournamentQuery['getMakersInTournament']['makers'][number]
 
@@ -37,7 +30,7 @@ export default function MakerCard({ maker, isMe }: Props) {
                         :
                         <p className="text-body4 text-gray-400 font-medium">No job title</p>}
                     {maker.roles.length ? <ul className="hidden md:flex flex-wrap gap-8 mt-4">
-                        {maker.roles.map(role => <li><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
+                        {maker.roles.map(role => <li key={role.id}><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
                     </ul>
                         :
                         <p className="hidden md:block text-body4 text-gray-400">No roles added</p>
@@ -51,7 +44,7 @@ export default function MakerCard({ maker, isMe }: Props) {
                 <p className="text-body5 text-gray-900 font-medium mb-12">🌈 Roles</p>
 
                 {maker.roles.length ? <ul className="flex flex-wrap gap-8">
-                    {maker.roles.map(role => <li><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
+                    {maker.roles.map(role => <li key={role.id}><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
                 </ul>
                     :
                     <p className="text-body4 text-gray-400">No roles added</p>
@@ -61,7 +54,7 @@ export default function MakerCard({ maker, isMe }: Props) {
             <div className="mt-24">
                 <p className="text-body5 text-gray-900 font-medium mb-12">🛠️ Skills</p>
                 {maker.skills.length ? <ul className="flex flex-wrap gap-8">
-                    {maker.skills.map(skill => <li><Badge size='sm' className='!text-body5'>{skill.title}</Badge> </li>)}
+                    {maker.skills.map(skill => <li key={skill.id}><Badge size='sm' className='!text-body5'>{skill.title}</Badge> </li>)}
                 </ul>
                     :
                     <p className="text-body4 text-gray-400">No skills added</p>

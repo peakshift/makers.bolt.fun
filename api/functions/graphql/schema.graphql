@@ -257,6 +257,7 @@ type Query {
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
+  getProjectsInTournament(roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentProjectsResponse!
   getTournamentById(id: Int!): Tournament!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
@@ -385,6 +386,12 @@ type TournamentPrize {
   amount: String!
   image: String!
   title: String!
+}
+
+type TournamentProjectsResponse {
+  hasNext: Boolean
+  hasPrev: Boolean
+  projects: [Project!]!
 }
 
 type User implements BaseUser {

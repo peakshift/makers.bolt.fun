@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Tournament, TournamentEventTypeEnum } from 'src/graphql'
 import EventCard from './EventCard/EventCard';
 import EventsFilters from './EventsFilters/EventsFilters';

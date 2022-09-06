@@ -1,3 +1,21 @@
+query MeTournament {
+  me {
+    id
+    name
+    avatar
+    jobTitle
+    ...UserRolesSkills
+  }
+}
+
+query GetAllRoles {
+  getAllMakersRoles {
+    id
+    title
+    icon
+  }
+}
+
 query GetMakersInTournament(
   $tournamentId: Int!
   $take: Int
@@ -32,20 +50,40 @@ query GetMakersInTournament(
   }
 }
 
-query MeTournament {
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    ...UserRolesSkills
-  }
-}
+query GetProjectsInTournament(
+  $tournamentId: Int!
+  $take: Int
+  $skip: Int
+  $roleId: Int
+  $search: String
+) {
+  getProjectsInTournament(
+    tournamentId: $tournamentId
+    take: $take
+    skip: $skip
+    roleId: $roleId
+    search: $search
+  ) {
+    hasNext
+    hasPrev
+    projects {
+      id
+      title
+      description
+      thumbnail_image
 
-query GetAllRoles {
-  getAllMakersRoles {
-    id
-    title
-    icon
+      category {
+        id
+        title
+        icon
+      }
+
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
+    }
   }
 }

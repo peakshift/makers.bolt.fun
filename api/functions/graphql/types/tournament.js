@@ -230,16 +230,16 @@ const getProjectsInTournament = extendType({
                 })
 
 
-                // if (args.roleId) filters.push({
-                //     roles: {
-                //         some: {
-                //             roleId: args.roleId
-                //         }
-                //     }
-                // })
+                if (args.roleId) filters.push({
+                    recruit_roles: {
+                        some: {
+                            roleId: args.roleId
+                        }
+                    }
+                })
 
 
-                const makers = await prisma.project.findMany({
+                const projects = await prisma.project.findMany({
                     ...(filters.length > 0 && {
                         where: {
                             AND: filters
@@ -250,9 +250,9 @@ const getProjectsInTournament = extendType({
                 });
 
                 return {
-                    hasNext: makers.length === args.take + 1,
+                    hasNext: projects.length === args.take + 1,
                     hasPrev: args.skip !== 0,
-                    makers: makers.slice(0, args.take)
+                    projects: projects.slice(0, args.take)
                 }
             }
         })
@@ -265,4 +265,5 @@ module.exports = {
     // Queries
     getTournamentById,
     getMakersInTournament,
+    getProjectsInTournament,
 }

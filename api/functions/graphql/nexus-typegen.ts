@@ -283,6 +283,11 @@ export interface NexusGenObjects {
     image: string; // String!
     title: string; // String!
   }
+  TournamentProjectsResponse: { // root type
+    hasNext?: boolean | null; // Boolean
+    hasPrev?: boolean | null; // Boolean
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
+  }
   User: { // root type
     avatar: string; // String!
     bio?: string | null; // String
@@ -496,6 +501,7 @@ export interface NexusGenFieldTypes {
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
+    getProjectsInTournament: NexusGenRootTypes['TournamentProjectsResponse']; // TournamentProjectsResponse!
     getTournamentById: NexusGenRootTypes['Tournament']; // Tournament!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -591,6 +597,11 @@ export interface NexusGenFieldTypes {
     amount: string; // String!
     image: string; // String!
     title: string; // String!
+  }
+  TournamentProjectsResponse: { // field return type
+    hasNext: boolean | null; // Boolean
+    hasPrev: boolean | null; // Boolean
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
   User: { // field return type
     avatar: string; // String!
@@ -828,6 +839,7 @@ export interface NexusGenFieldTypeNames {
     getMyDrafts: 'Post'
     getPostById: 'Post'
     getProject: 'Project'
+    getProjectsInTournament: 'TournamentProjectsResponse'
     getTournamentById: 'Tournament'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
@@ -923,6 +935,11 @@ export interface NexusGenFieldTypeNames {
     amount: 'String'
     image: 'String'
     title: 'String'
+  }
+  TournamentProjectsResponse: { // field return type name
+    hasNext: 'Boolean'
+    hasPrev: 'Boolean'
+    projects: 'Project'
   }
   User: { // field return type name
     avatar: 'String'
@@ -1063,6 +1080,13 @@ export interface NexusGenArgTypes {
     }
     getProject: { // args
       id: number; // Int!
+    }
+    getProjectsInTournament: { // args
+      roleId?: number | null; // Int
+      search?: string | null; // String
+      skip?: number | null; // Int
+      take: number | null; // Int
+      tournamentId: number; // Int!
     }
     getTournamentById: { // args
       id: number; // Int!

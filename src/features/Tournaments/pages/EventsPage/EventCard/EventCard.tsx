@@ -1,10 +1,6 @@
 import { IoLocationOutline } from 'react-icons/io5'
-import Button from "src/Components/Button/Button"
-import dayjs from "dayjs";
-import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { trimText } from "src/utils/helperFunctions";
-import { Override } from "src/utils/interfaces";
-import { Tag, Tournament, TournamentEventTypeEnum } from "src/graphql";
+import { Tournament, TournamentEventTypeEnum } from "src/graphql";
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { useAppDispatch, } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
