@@ -39,3 +39,7 @@
   transition-timing-function: ease-in;
   transition-duration: 400ms;
 }
+
+.tooltip-arrow::after {
+  border-color: var(--arrowColor, #101828) transparent !important;
+}

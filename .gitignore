@@ -12,6 +12,7 @@ envs/server
 /.pnp
 .pnp.js
 
+/envs/server
 
 # testing
 /coverage

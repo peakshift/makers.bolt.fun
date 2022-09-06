@@ -9,9 +9,10 @@ import { toast } from "react-toastify";
 import Card from "src/Components/Card/Card";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import { setUser } from "src/redux/features/user.slice";
-import UpdateProfileAboutTabSkeleton from "./UpdateMyProfileTab.Skeleton";
+import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 import { imageSchema } from "src/utils/validation";
+import { useApolloClient } from "@apollo/client";
 
 interface Props {
 }
@@ -53,7 +54,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 }).required();
 
-export default function UpdateMyProfileTab() {
+export default function BasicProfileInfoTab() {
 
     const { register, formState: { errors, isDirty, }, handleSubmit, reset, control } = useForm<IFormInputs>({
         defaultValues: {
@@ -63,7 +64,7 @@ export default function UpdateMyProfileTab() {
         mode: 'onBlur',
     });
 
-
+    const apolloClient = useApolloClient()
     const profileQuery = useMyProfileAboutQuery({
         onCompleted: data => {
             if (data.me)
@@ -71,6 +72,7 @@ export default function UpdateMyProfileTab() {
         }
     })
     const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
+
 
     const dispatch = useAppDispatch()
     usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
@@ -108,6 +110,11 @@ export default function UpdateMyProfileTab() {
                 if (data) {
                     dispatch(setUser(data))
                     reset({ ...data, avatar: { url: data.avatar } });
+                    apolloClient.writeFragment({
+                        id: `User:${data?.id}`,
+                        data,
+                        fragment: UserBasicInfoFragmentDoc,
+                    })
                     toast.update(toastId, { render: "Saved changes successfully", type: "success", ...NotificationsService.defaultOptions, isLoading: false });
                 }
             }
@@ -198,6 +205,21 @@ export default function UpdateMyProfileTab() {
                             {errors.location.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
+                            Email
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="johndoe@gmail.com"
+                                {...register("email")}
+                            />
+                        </div>
+                        {errors.website && <p className="input-error">
+                            {errors.website.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
                             Website
                         </p>
                         <div className="input-wrapper mt-8 relative">
@@ -213,7 +235,7 @@ export default function UpdateMyProfileTab() {
                             {errors.website.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Twitter
+                            Twitter handle
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
@@ -228,7 +250,7 @@ export default function UpdateMyProfileTab() {
                             {errors.twitter.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Github
+                            Github username
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input

@@ -418,10 +418,103 @@ const hackathons = [
     },
 ]
 
+const roles = [
+    {
+        id: 1,
+        title: "Frontend Dev",
+        icon: "💄"
+    },
+    {
+        id: 2,
+        title: "Backend Dev",
+        icon: "💻️"
+    }, {
+        id: 3,
+        title: "UI/UX Designer",
+        icon: "🌈️️"
+    },
+    {
+        id: 4,
+        title: "Community Manager",
+        icon: "🎉️️"
+    },
+    {
+        id: 5,
+        title: "Founder",
+        icon: "🦄️"
+    },
+    {
+        id: 6,
+        title: "Marketer",
+        icon: "🚨️"
+    },
+    {
+        id: 7,
+        title: "Content Creator",
+        icon: "🎥️"
+    },
+    {
+        id: 8,
+        title: "Researcher",
+        icon: "🔬"
+    },
+    {
+        id: 9,
+        title: "Data engineer",
+        icon: "💿️"
+    },
+    {
+        id: 10,
+        title: "Growth hacker",
+        icon: "📉️"
+    },
+    {
+        id: 11,
+        title: "Technical Writer",
+        icon: "✍️️"
+    },
+]
+
+const skills = [
+    {
+        id: 1,
+        title: "Figma"
+    },
+    {
+        id: 2,
+        title: "Prototyping"
+    }, {
+        id: 3,
+        title: "Writing"
+    }, {
+        id: 4,
+        title: "CSS"
+    }, {
+        id: 5,
+        title: "React.js"
+    }, {
+        id: 6,
+        title: "Wordpress"
+    }, {
+        id: 7,
+        title: "Principle app"
+    }, {
+        id: 8,
+        title: "UX design"
+    }, {
+        id: 9,
+        title: "User research"
+    }, {
+        id: 10,
+        title: "User testing"
+    },
+]
 
 module.exports = {
     categories,
     projects,
     tags,
     hackathons,
+    roles,
+    skills,
 }

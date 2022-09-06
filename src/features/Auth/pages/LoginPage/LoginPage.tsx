@@ -9,7 +9,7 @@ import { IoRocketOutline } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
-import { getPropertyFromUnknown, } from "src/utils/helperFunctions";
+import { getPropertyFromUnknown, trimText, } from "src/utils/helperFunctions";
 import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 
 
@@ -133,9 +133,9 @@ export default function LoginPage() {
     else if (isLoggedIn)
         content = <div className="flex flex-col justify-center items-center">
             <h3 className="text-body4">
-                Hello: <span className="font-bold">@{meQuery.data?.me?.name.slice(0, 10)}...</span>
+                Hello: <span className="font-bold">@{trimText(meQuery.data?.me?.name, 10)}</span>
             </h3>
-            <img src={meQuery.data?.me?.avatar} className='w-80 h-80 object-cover' alt="" />
+            <img src={meQuery.data?.me?.avatar} className='w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200' alt="" />
         </div>
 
     else
@@ -144,14 +144,14 @@ export default function LoginPage() {
             <h2 className='text-h5 font-bold text-center'>Login with lightning ⚡</h2>
             <a href={`lightning:${lnurl}`} >
                 <QRCodeSVG
-                    width={240}
-                    height={240}
+                    width={280}
+                    height={280}
                     value={lnurl}
                     bgColor='transparent'
                     imageSettings={{
                         src: '/assets/images/nut_3d.png',
-                        width: 32,
-                        height: 32,
+                        width: 16,
+                        height: 16,
                         excavate: true,
 
                     }}

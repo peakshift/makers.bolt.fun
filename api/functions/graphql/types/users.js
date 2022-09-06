@@ -1,9 +1,10 @@
 
 const { prisma } = require('../../../prisma');
-const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list } = require("nexus");
+const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 const { ImageInput } = require('./misc');
+const { Tournament } = require('./tournaments');
 
 
 
@@ -25,6 +26,54 @@ const BaseUser = interfaceType({
         t.string('linkedin')
         t.string('bio')
         t.string('location')
+        t.nonNull.list.nonNull.field('roles', {
+            type: MakerRole,
+            resolve: async (parent) => {
+                const data = await prisma.user.findUnique({
+                    where: {
+                        id: parent.id
+                    },
+                    select: {
+                        roles: {
+                            select: {
+                                role: true,
+                                level: true
+                            }
+                        },
+                    }
+                })
+                return data.roles.map(data => {
+                    return ({ ...data.role, level: data.level })
+                })
+            }
+        })
+        t.nonNull.list.nonNull.field('skills', {
+            type: MakerSkill,
+            resolve: (parent) => {
+                return prisma.user.findUnique({ where: { id: parent.id } }).skills();
+            }
+        })
+        t.nonNull.list.nonNull.field('tournaments', {
+            type: Tournament,
+            resolve: (parent) => {
+                return []
+            }
+        })
+        t.nonNull.list.nonNull.field('similar_makers', {
+            type: "User",
+            resolve(parent,) {
+                return prisma.user.findMany({
+                    where: {
+                        AND: {
+                            id: {
+                                not: parent.id
+                            }
+                        }
+                    },
+                    take: 3,
+                })
+            }
+        })
 
 
         t.nonNull.list.nonNull.field('stories', {
@@ -40,6 +89,72 @@ const BaseUser = interfaceType({
         return null
     },
 })
+
+
+
+const RoleLevelEnum = enumType({
+    name: 'RoleLevelEnum',
+    members: {
+        Beginner: 0,
+        Hobbyist: 1,
+        Intermediate: 2,
+        Advanced: 3,
+        Pro: 4,
+    },
+});
+
+const GenericMakerRole = objectType({
+    name: 'GenericMakerRole',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+    }
+})
+
+const MakerRole = objectType({
+    name: 'MakerRole',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+        t.nonNull.field('level', { type: RoleLevelEnum })
+    }
+})
+
+const getAllMakersRoles = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getAllMakersRoles', {
+            type: GenericMakerRole,
+            async resolve(parent, args, context) {
+                return prisma.workRole.findMany();
+            }
+        })
+    }
+})
+
+
+const MakerSkill = objectType({
+    name: 'MakerSkill',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+    }
+})
+
+const getAllMakersSkills = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getAllMakersSkills', {
+            type: MakerSkill,
+            async resolve(parent, args, context) {
+                return prisma.skill.findMany();
+            }
+        })
+    }
+})
+
 
 const User = objectType({
     name: 'User',
@@ -57,9 +172,9 @@ const MyProfile = objectType({
 
         t.nonNull.list.nonNull.field('walletsKeys', {
             type: "WalletKey",
-            resolve: (parent) => {
-                return prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
-
+            resolve: async (parent, _, context) => {
+                const userKeys = await prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
+                return userKeys.map(k => ({ ...k, is_current: k.key === context.userPubKey }))
             }
         });
     }
@@ -89,6 +204,30 @@ const profile = extendType({
             },
             async resolve(parent, { id }, ctx) {
                 return prisma.user.findUnique({ where: { id } })
+            }
+        })
+    }
+})
+
+const similarMakers = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('similarMakers', {
+            type: "User",
+            args: {
+                id: nonNull(intArg())
+            },
+            async resolve(parent, { id }, ctx) {
+                return prisma.user.findMany({
+                    where: {
+                        AND: {
+                            id: {
+                                not: id
+                            }
+                        }
+                    },
+                    take: 3,
+                })
             }
         })
     }
@@ -153,6 +292,7 @@ const WalletKey = objectType({
     definition(t) {
         t.nonNull.string('key');
         t.nonNull.string('name');
+        t.nonNull.boolean('is_current')
     }
 })
 
@@ -234,17 +374,101 @@ const updateUserPreferences = extendType({
 
 
 
+const MakerRoleInput = inputObjectType({
+    name: "MakerRoleInput",
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.field('level', { type: RoleLevelEnum })
+    }
+})
+
+const MakerSkillInput = inputObjectType({
+    name: "MakerSkillInput",
+    definition(t) {
+        t.nonNull.int('id');
+    }
+})
+
+
+const ProfileRolesInput = inputObjectType({
+    name: 'ProfileRolesInput',
+    definition(t) {
+        t.nonNull.list.nonNull.field('roles', {
+            type: MakerRoleInput,
+        })
+        t.nonNull.list.nonNull.field('skills', {
+            type: MakerSkillInput,
+        })
+    }
+})
+
+const updateProfileRoles = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('updateProfileRoles', {
+            type: 'MyProfile',
+            args: { data: ProfileRolesInput },
+            async resolve(_root, args, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                // Do some validation
+                if (!user)
+                    throw new Error("You have to login");
+
+                await prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    data: {
+                        skills: {
+                            set: [],
+                        },
+                        roles: {
+                            deleteMany: {}
+                        },
+                    },
+                }
+                )
+
+
+                return prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    data: {
+                        skills: {
+                            connect: args.data.skills,
+                        },
+                        roles: {
+                            create: args.data.roles.map(r => ({ roleId: r.id, level: r.level }))
+                        }
+                    }
+                })
+            }
+        })
+    },
+})
+
+
+
+
 
 module.exports = {
     // Types
+
     BaseUser,
     User,
     MyProfile,
     WalletKey,
+    MakerRole,
     // Queries
     me,
     profile,
+    similarMakers,
+    getAllMakersRoles,
+    getAllMakersSkills,
     // Mutations
     updateProfileDetails,
     updateUserPreferences,
+    updateProfileRoles,
 }

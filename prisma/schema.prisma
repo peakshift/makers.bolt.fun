@@ -65,6 +65,8 @@ model User {
   posts_comments PostComment[]
   donations      Donation[]
   userKeys       UserKey[]
+  skills         Skill[]
+  roles          UsersOnWorkRoles[]
 }
 
 model UserKey {
@@ -73,6 +75,32 @@ model UserKey {
 
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
+}
+
+model UsersOnWorkRoles {
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int
+  role   WorkRole @relation(fields: [roleId], references: [id])
+  roleId Int
+
+  level Int
+
+  @@id([userId, roleId])
+}
+
+model WorkRole {
+  id       Int                   @id @default(autoincrement())
+  title    String                @unique
+  icon     String
+  users    UsersOnWorkRoles[]
+  projects ProjectRecruitRoles[]
+}
+
+model Skill {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+
+  users User[]
 }
 
 // -----------------
@@ -106,6 +134,19 @@ model Project {
 
   awards Award[]
   tags   Tag[]
+
+  recruit_roles ProjectRecruitRoles[]
+}
+
+model ProjectRecruitRoles {
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId Int
+  role      WorkRole @relation(fields: [roleId], references: [id])
+  roleId    Int
+
+  level Int
+
+  @@id([projectId, roleId])
 }
 
 model Award {
