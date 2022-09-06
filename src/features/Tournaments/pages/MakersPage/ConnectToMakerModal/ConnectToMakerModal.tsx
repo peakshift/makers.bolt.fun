@@ -25,7 +25,7 @@ export default function LinkingAccountModal({ onClose, direction, maker, ...prop
             hasValue: maker.twitter,
             text: maker.twitter,
             icon: FiTwitter,
-            url: `https://twitter.com/@${maker.twitter}`
+            url: `https://twitter.com/${maker.twitter}`
         },
         {
             hasValue: maker.github,

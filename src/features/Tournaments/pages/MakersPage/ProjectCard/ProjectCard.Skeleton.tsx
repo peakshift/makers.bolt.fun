@@ -16,9 +16,6 @@ export default function ProjectCardSkeleton() {
                     <p className="text-body2 text-gray-900 font-bold"><Skeleton width={"15ch"} /> </p>
                     <p className="text-body4 text-gray-600 font-medium"><Skeleton width={"8ch"} /> </p>
                     <p className="text-body5 text-gray-600 font-medium"><Skeleton width={"35ch"} /> </p>
-                    <ul className="hidden md:flex flex-wrap gap-8 mt-4">
-                        {Array(3).fill(0).map((_, idx) => <li key={idx}><Badge size='sm' className='!text-body5'> <span className="opacity-0">Loading role</span> </Badge> </li>)}
-                    </ul>
                 </div>
             </div>
             <hr className="hidden md:block bg-gray-200 mt-24"></hr>

@@ -44,7 +44,7 @@ export default function AboutCard({ user, isOwner }: Props) {
             text: user.twitter,
             icon: FiTwitter,
             colors: "bg-blue-100 text-blue-500",
-            url: `https://twitter.com/@${user.twitter}`
+            url: `https://twitter.com/${user.twitter}`
         },
         {
             hasValue: user.github,
