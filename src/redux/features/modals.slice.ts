@@ -14,6 +14,9 @@ import { EventModal } from "src/features/Tournaments/pages/EventsPage/EventModal
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
+import { ConnectToMakerModal } from "src/features/Tournaments/pages/MakersPage/ConnectToMakerModal";
+
+
 
 export enum Direction {
   START,
@@ -39,7 +42,8 @@ export const ALL_MODALS = {
   Claim_FundWithdrawCard,
 
   // Tournaments
-  EventModal: EventModal,
+  EventModal,
+  ConnectToMakerModal,
 
   // Misc
   ConfirmModal,

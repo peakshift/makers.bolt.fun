@@ -844,7 +844,7 @@ export type GetMakersInTournamentQueryVariables = Exact<{
 }>;
 
 
-export type GetMakersInTournamentQuery = { __typename?: 'Query', getMakersInTournament: { __typename?: 'TournamentMakersResponse', hasNext: boolean | null, hasPrev: boolean | null, makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, roles: Array<{ __typename?: 'MakerRole', id: number, icon: string, title: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> }> } };
+export type GetMakersInTournamentQuery = { __typename?: 'Query', getMakersInTournament: { __typename?: 'TournamentMakersResponse', hasNext: boolean | null, hasPrev: boolean | null, makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, email: string | null, twitter: string | null, linkedin: string | null, github: string | null, roles: Array<{ __typename?: 'MakerRole', id: number, icon: string, title: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> }> } };
 
 export type GetProjectsInTournamentQueryVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -2277,6 +2277,10 @@ export const GetMakersInTournamentDocument = gql`
       name
       avatar
       jobTitle
+      email
+      twitter
+      linkedin
+      github
       roles {
         id
         icon

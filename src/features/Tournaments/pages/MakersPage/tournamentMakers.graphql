@@ -37,6 +37,10 @@ query GetMakersInTournament(
       name
       avatar
       jobTitle
+      email
+      twitter
+      linkedin
+      github
       roles {
         id
         icon

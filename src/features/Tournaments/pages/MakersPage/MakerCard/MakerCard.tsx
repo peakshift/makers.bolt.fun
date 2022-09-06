@@ -5,6 +5,7 @@ import Card from 'src/Components/Card/Card';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Badge from 'src/Components/Badge/Badge';
 import { createRoute } from 'src/utils/routing';
+import { openModal } from "src/redux/features/modals.slice";
 
 type MakerType = GetMakersInTournamentQuery['getMakersInTournament']['makers'][number]
 
@@ -15,7 +16,12 @@ interface Props {
 
 export default function MakerCard({ maker, isMe }: Props) {
 
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+
+    let actionBtn = <Button fullWidth color='white' disabled size='sm' className='ml-auto'>Hacking solo</Button>
+
+    if (isMe) actionBtn = <Button fullWidth color='white' href={createRoute({ type: 'edit-profile' })} size='sm' className='ml-auto'>Edit Profile</Button>;
+    else actionBtn = <Button fullWidth color='white' size='sm' className='ml-auto' onClick={() => dispatch(openModal({ Modal: "ConnectToMakerModal", props: { maker } }))}>🤝 Team Up</Button>
 
 
     return (
@@ -36,7 +42,7 @@ export default function MakerCard({ maker, isMe }: Props) {
                         <p className="hidden md:block text-body4 text-gray-400">No roles added</p>
                     }
                 </div>
-                {isMe && <span className="ml-auto hidden md:inline-block"><Button color='white' href={createRoute({ type: 'edit-profile' })} size='sm' className='ml-auto'>Edit Profile</Button></span>}
+                <span className="ml-auto hidden md:inline-block">{actionBtn}</span>
             </div>
             <hr className="hidden md:block bg-gray-200 mt-24"></hr>
 
@@ -60,6 +66,7 @@ export default function MakerCard({ maker, isMe }: Props) {
                     <p className="text-body4 text-gray-400">No skills added</p>
                 }
             </div>
-            {isMe && <Button fullWidth color='white' href={createRoute({ type: 'edit-profile' })} size='sm' className='mt-32 md:hidden'>Edit Profile</Button>}        </Card>
+            <div className="md:hidden w-full mt-24">{actionBtn}</div>
+        </Card>
     )
 }
