@@ -27,7 +27,7 @@ export default function AboutCard({ user, isOwner }: Props) {
     const links = [
         {
             hasValue: user.email,
-            text: user.email?.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ""),
+            text: user.email,
             icon: FiMail,
             colors: "bg-violet-100 text-violet-900",
             url: user.email && `mailto:${user.email}`
