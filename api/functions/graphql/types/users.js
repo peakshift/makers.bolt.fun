@@ -451,6 +451,7 @@ module.exports = {
     User,
     MyProfile,
     WalletKey,
+    MakerRole,
     // Queries
     me,
     profile,

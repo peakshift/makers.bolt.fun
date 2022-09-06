@@ -474,6 +474,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
+    recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     thumbnail_image: string; // String!
@@ -805,6 +806,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     lightning_address: 'String'
     lnurl_callback_url: 'String'
+    recruit_roles: 'MakerRole'
     screenshots: 'String'
     tags: 'Tag'
     thumbnail_image: 'String'
