@@ -1,7 +1,7 @@
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar"
 import { User } from "src/graphql"
 import { trimText, withHttp } from "src/utils/helperFunctions"
-import { FiGithub, FiGlobe, FiLinkedin, FiTwitter } from 'react-icons/fi'
+import { FiGithub, FiGlobe, FiLinkedin, FiMail, FiTwitter } from 'react-icons/fi'
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 
@@ -25,6 +25,13 @@ interface Props {
 export default function AboutCard({ user, isOwner }: Props) {
 
     const links = [
+        {
+            hasValue: user.email,
+            text: user.email?.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ""),
+            icon: FiMail,
+            colors: "bg-violet-100 text-violet-900",
+            url: user.email && `mailto:${user.email}`
+        },
         {
             hasValue: user.website,
             text: user.website?.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ""),

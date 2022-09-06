@@ -207,6 +207,21 @@ export default function BasicProfileInfoTab() {
                             {errors.location.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
+                            Email
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="johndoe@gmail.com"
+                                {...register("email")}
+                            />
+                        </div>
+                        {errors.website && <p className="input-error">
+                            {errors.website.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
                             Website
                         </p>
                         <div className="input-wrapper mt-8 relative">
@@ -222,7 +237,7 @@ export default function BasicProfileInfoTab() {
                             {errors.website.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Twitter
+                            Twitter handle
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
@@ -237,7 +252,7 @@ export default function BasicProfileInfoTab() {
                             {errors.twitter.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Github
+                            Github username
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
