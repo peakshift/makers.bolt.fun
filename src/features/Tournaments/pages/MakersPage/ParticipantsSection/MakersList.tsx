@@ -9,9 +9,10 @@ interface Props {
     tournamentId: number
     searchFilter: string,
     roleFilter: number | null
+    onlyLookingToTeam?: boolean
 }
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 15;
 
 export default function MakersList(props: Props) {
 

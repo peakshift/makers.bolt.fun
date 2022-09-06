@@ -6,7 +6,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import SaveChangesCard from '../SaveChangesCard/SaveChangesCard';
 import { toast } from 'react-toastify';
 import { NotificationsService } from 'src/services';
-import { gql, NetworkStatus, useApolloClient } from '@apollo/client';
+import { NetworkStatus, useApolloClient } from '@apollo/client';
 import { usePrompt } from 'src/utils/hooks';
 import { UpdateUserRolesSkillsMutationVariables, useMyProfileRolesSkillsQuery, useUpdateUserRolesSkillsMutation, UserRolesSkillsFragmentDoc } from 'src/graphql'
 import UpdateRolesCard from "./UpdateRolesCard/UpdateRolesCard";

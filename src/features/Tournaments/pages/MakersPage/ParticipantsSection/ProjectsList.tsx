@@ -11,7 +11,7 @@ interface Props {
     roleFilter: number | null
 }
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 15;
 
 export default function ProjectsList(props: Props) {
 

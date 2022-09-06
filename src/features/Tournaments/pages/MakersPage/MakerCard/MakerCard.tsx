@@ -18,10 +18,12 @@ export default function MakerCard({ maker, isMe }: Props) {
 
     const dispatch = useAppDispatch();
 
+    const contactLinksAvailable = maker.github || maker.email || maker.linkedin || maker.twitter;
+
     let actionBtn = <Button fullWidth color='white' disabled size='sm' className='ml-auto'>Hacking solo</Button>
 
     if (isMe) actionBtn = <Button fullWidth color='white' href={createRoute({ type: 'edit-profile' })} size='sm' className='ml-auto'>Edit Profile</Button>;
-    else actionBtn = <Button fullWidth color='white' size='sm' className='ml-auto' onClick={() => dispatch(openModal({ Modal: "ConnectToMakerModal", props: { maker } }))}>🤝 Team Up</Button>
+    else if (contactLinksAvailable) actionBtn = <Button fullWidth color='white' size='sm' className='ml-auto' onClick={() => dispatch(openModal({ Modal: "ConnectToMakerModal", props: { maker } }))}>🤝 Team Up</Button>
 
 
     return (

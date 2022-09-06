@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
-import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiMail, FiTwitter } from "react-icons/fi";
 import { IoClose } from 'react-icons/io5';
 import { GetMakersInTournamentQuery } from 'src/graphql';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
@@ -16,24 +16,27 @@ export default function LinkingAccountModal({ onClose, direction, maker, ...prop
 
     const links = [
         {
+            hasValue: maker.email,
+            text: maker.email,
+            icon: FiMail,
+            url: maker.email && `mailto:${maker.email}`
+        },
+        {
             hasValue: maker.twitter,
             text: maker.twitter,
             icon: FiTwitter,
-            colors: "bg-blue-100 text-blue-500",
             url: `https://twitter.com/@${maker.twitter}`
         },
         {
             hasValue: maker.github,
             text: maker.github,
             icon: FiGithub,
-            colors: "bg-pink-100 text-pink-600",
             url: `https://github.com/${maker.github}`
         },
         {
             hasValue: maker.linkedin,
             text: "LinkedIn",
             icon: FiLinkedin,
-            colors: "bg-sky-100 text-cyan-600",
             url: maker.linkedin && withHttp(maker.linkedin),
         }
     ];
@@ -66,7 +69,7 @@ export default function LinkingAccountModal({ onClose, direction, maker, ...prop
                         <a
                             key={idx}
                             href={link.url!}
-                            className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
+                            className={`w-40 aspect-square rounded-full flex justify-center items-center bg-primary-100 text-primary-900`}
                             target='_blank'
                             rel="noreferrer">
                             <link.icon className="scale-125" />
