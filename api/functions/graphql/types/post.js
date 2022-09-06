@@ -15,6 +15,7 @@ const { prisma } = require('../../../prisma');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { ApolloError } = require('apollo-server-lambda');
 const { marked } = require('marked');
+const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
 const { ImageInput } = require('./misc');
 
 
@@ -72,7 +73,17 @@ const Story = objectType({
         t.nonNull.string('type', {
             resolve: () => t.typeName
         });
-        t.string('cover_image');
+        t.string('cover_image', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.cover_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
             resolve: (parent) => []
@@ -140,7 +151,17 @@ const Bounty = objectType({
         t.nonNull.string('type', {
             resolve: () => 'Bounty'
         });
-        t.string('cover_image');
+        t.string('cover_image', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.cover_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
         t.nonNull.string('deadline');
         t.nonNull.int('reward_amount');
         t.nonNull.int('applicants_count');

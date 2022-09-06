@@ -6,6 +6,7 @@ const {
     nonNull,
 } = require('nexus');
 const { prisma } = require('../../../prisma');
+const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
 
 
 
@@ -15,7 +16,17 @@ const Hackathon = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('description');
-        t.nonNull.string('cover_image');
+        t.nonNull.string('cover_image', {
+            async resolve(parent) {
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.cover_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
         t.nonNull.date('start_date');
         t.nonNull.date('end_date');
         t.nonNull.string('location');

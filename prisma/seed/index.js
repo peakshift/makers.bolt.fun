@@ -136,6 +136,78 @@ async function migrateOldImages() {
             })
         }
     }
+
+    /**
+     * Award
+     **/
+     const awards = await prisma.award.findMany({
+        select: {
+            id: true,
+            image: true,
+        }
+    })
+    for (const award of awards) {
+        if (award.image) {
+            let hostedImageId = await _insertInHostedImage(award.image)
+            await _updateObjectWithHostedImageId(prisma.award, award.id, {
+                image_id: hostedImageId,
+            })
+        }
+    }
+
+    /**
+     * Hackaton
+     **/
+     const hackatons = await prisma.hackathon.findMany({
+        select: {
+            id: true,
+            cover_image: true,
+        }
+    })
+    for (const hackaton of hackatons) {
+        if (hackaton.cover_image) {
+            let hostedImageId = await _insertInHostedImage(hackaton.cover_image)
+            await _updateObjectWithHostedImageId(prisma.hackathon, hackaton.id, {
+                cover_image_id: hostedImageId,
+            })
+        }
+    }
+
+    /**
+     * Story
+     **/
+     const stories = await prisma.story.findMany({
+        select: {
+            id: true,
+            cover_image: true,
+        }
+    })
+    for (const story of stories) {
+        if (story.cover_image) {
+            let hostedImageId = await _insertInHostedImage(story.cover_image)
+            await _updateObjectWithHostedImageId(prisma.story, story.id, {
+                cover_image_id: hostedImageId,
+            })
+        }
+    }
+
+    /**
+     * User
+     **/
+     const users = await prisma.user.findMany({
+        select: {
+            id: true,
+            avatar: true,
+        }
+    })
+    for (const user of users) {
+        if (user.avatar) {
+            let hostedImageId = await _insertInHostedImage(user.avatar)
+            await _updateObjectWithHostedImageId(prisma.user, user.id, {
+                avatar_id: hostedImageId,
+            })
+        }
+    }
 }
 
 async function _insertInHostedImage(url){
