@@ -5,14 +5,6 @@ query GetMakersInTournament(
   $search: String
   $roleId: Int
 ) {
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    ...UserRolesSkills
-  }
-
   getMakersInTournament(
     tournamentId: $tournamentId
     take: $take
@@ -20,19 +12,33 @@ query GetMakersInTournament(
     search: $search
     roleId: $roleId
   ) {
+    hasNext
+    hasPrev
+    makers {
+      id
+      name
+      avatar
+      jobTitle
+      roles {
+        id
+        icon
+        title
+      }
+      skills {
+        id
+        title
+      }
+    }
+  }
+}
+
+query MeTournament {
+  me {
     id
     name
     avatar
     jobTitle
-    roles {
-      id
-      icon
-      title
-    }
-    skills {
-      id
-      title
-    }
+    ...UserRolesSkills
   }
 }
 

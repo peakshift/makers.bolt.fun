@@ -36,6 +36,7 @@ import {
     GetAllRolesQuery,
     GetMakersInTournamentQuery,
     GetMakersInTournamentQueryVariables,
+    MeTournamentQuery,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -286,12 +287,21 @@ export const handlers = [
         )
     }),
 
+    graphql.query<MeTournamentQuery>('MeTournament', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                me: { ...me() }
+            })
+        )
+    }),
+
     graphql.query<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>('GetMakersInTournament', async (req, res, ctx) => {
         await delay()
 
         return res(
             ctx.data({
-                me: { ...me() },
                 getMakersInTournament: getMakersInTournament(req.variables)
             })
         )

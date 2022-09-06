@@ -79,7 +79,11 @@ const Tournament = objectType({
         t.nonNull.string('website');
 
         t.nonNull.int('events_count');
-        t.nonNull.int('makers_count');
+        t.nonNull.int('makers_count', {
+            resolve(parent) {
+                return prisma.user.count();
+            }
+        });
         t.nonNull.int('projects_count');
 
         t.nonNull.list.nonNull.field('prizes', { type: TournamentPrize, });
@@ -88,6 +92,29 @@ const Tournament = objectType({
         t.nonNull.list.nonNull.field('events', { type: TournamentEvent, });
     }
 })
+
+
+const TournamentMakersResponse = objectType({
+    name: 'TournamentMakersResponse',
+    definition(t) {
+        t.boolean('hasNext');
+        t.boolean('hasPrev');
+
+        t.nonNull.list.nonNull.field('makers', { type: "User" })
+    }
+}
+)
+
+const TournamentProjectsResponse = objectType({
+    name: 'TournamentProjectsResponse',
+    definition(t) {
+        t.boolean('hasNext');
+        t.boolean('hasPrev');
+
+        t.nonNull.list.nonNull.field('projects', { type: "Project" })
+    }
+}
+)
 
 const getTournamentById = extendType({
     type: "Query",
@@ -104,18 +131,20 @@ const getTournamentById = extendType({
     }
 })
 
+
+
 const getMakersInTournament = extendType({
     type: "Query",
     definition(t) {
-        t.nonNull.list.nonNull.field('getMakersInTournament', {
-            type: "User",
+        t.nonNull.field('getMakersInTournament', {
+            type: TournamentMakersResponse,
             args: {
                 tournamentId: nonNull(intArg()),
                 ...paginationArgs({ take: 10 }),
                 search: stringArg(),
                 roleId: intArg(),
             },
-            resolve(_, args) {
+            async resolve(_, args) {
 
 
                 let filters = [];
@@ -147,15 +176,84 @@ const getMakersInTournament = extendType({
                 })
 
 
-                return prisma.user.findMany({
+                const makers = await prisma.user.findMany({
                     ...(filters.length > 0 && {
                         where: {
                             AND: filters
                         }
                     }),
                     skip: args.skip,
-                    take: args.take,
+                    take: args.take + 1,
+                });
+
+                return {
+                    hasNext: makers.length === args.take + 1,
+                    hasPrev: args.skip !== 0,
+                    makers: makers.slice(0, args.take)
+                }
+            }
+        })
+    }
+})
+
+const getProjectsInTournament = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.field('getProjectsInTournament', {
+            type: TournamentProjectsResponse,
+            args: {
+                tournamentId: nonNull(intArg()),
+                ...paginationArgs({ take: 10 }),
+                search: stringArg(),
+                roleId: intArg(),
+            },
+            async resolve(_, args) {
+
+
+                let filters = [];
+
+                if (args.search) filters.push({
+                    OR: [
+                        {
+                            title: {
+                                contains: args.search,
+                                mode: 'insensitive'
+                            }
+                        },
+                        {
+                            description: {
+                                contains: args.search,
+                                mode: 'insensitive'
+                            }
+                        }
+                    ]
                 })
+
+
+                // if (args.roleId) filters.push({
+                //     roles: {
+                //         some: {
+                //             roleId: args.roleId
+                //         }
+                //     }
+                // })
+
+
+                const makers = await prisma.project.findMany({
+                    ...(filters.length > 0 && {
+                        where: {
+                            AND: filters
+                        }
+                    }),
+                    skip: args.skip,
+                    take: args.take + 1,
+                });
+
+                return {
+                    hasNext: makers.length === args.take + 1,
+                    hasPrev: args.skip !== 0,
+                    makers: makers.slice(0, args.take)
+                }
             }
         })
     }

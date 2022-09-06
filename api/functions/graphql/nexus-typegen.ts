@@ -246,7 +246,6 @@ export interface NexusGenObjects {
     id: number; // Int!
     judges: NexusGenRootTypes['TournamentJudge'][]; // [TournamentJudge!]!
     location: string; // String!
-    makers_count: number; // Int!
     prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
     projects_count: number; // Int!
     start_date: NexusGenScalars['Date']; // Date!
@@ -273,6 +272,11 @@ export interface NexusGenObjects {
     avatar: string; // String!
     jobTitle: string; // String!
     name: string; // String!
+  }
+  TournamentMakersResponse: { // root type
+    hasNext?: boolean | null; // Boolean
+    hasPrev?: boolean | null; // Boolean
+    makers: NexusGenRootTypes['User'][]; // [User!]!
   }
   TournamentPrize: { // root type
     amount: string; // String!
@@ -487,7 +491,7 @@ export interface NexusGenFieldTypes {
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
-    getMakersInTournament: NexusGenRootTypes['User'][]; // [User!]!
+    getMakersInTournament: NexusGenRootTypes['TournamentMakersResponse']; // TournamentMakersResponse!
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
@@ -576,6 +580,11 @@ export interface NexusGenFieldTypes {
     avatar: string; // String!
     jobTitle: string; // String!
     name: string; // String!
+  }
+  TournamentMakersResponse: { // field return type
+    hasNext: boolean | null; // Boolean
+    hasPrev: boolean | null; // Boolean
+    makers: NexusGenRootTypes['User'][]; // [User!]!
   }
   TournamentPrize: { // field return type
     amount: string; // String!
@@ -813,7 +822,7 @@ export interface NexusGenFieldTypeNames {
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
     getLnurlDetailsForProject: 'LnurlDetails'
-    getMakersInTournament: 'User'
+    getMakersInTournament: 'TournamentMakersResponse'
     getMyDrafts: 'Post'
     getPostById: 'Post'
     getProject: 'Project'
@@ -902,6 +911,11 @@ export interface NexusGenFieldTypeNames {
     avatar: 'String'
     jobTitle: 'String'
     name: 'String'
+  }
+  TournamentMakersResponse: { // field return type name
+    hasNext: 'Boolean'
+    hasPrev: 'Boolean'
+    makers: 'User'
   }
   TournamentPrize: { // field return type name
     amount: 'String'

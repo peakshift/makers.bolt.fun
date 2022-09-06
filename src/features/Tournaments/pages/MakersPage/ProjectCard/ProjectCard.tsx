@@ -1,17 +1,10 @@
-import { IoLocationOutline } from 'react-icons/io5'
 import Button from "src/Components/Button/Button"
-import dayjs from "dayjs";
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import { trimText } from "src/utils/helperFunctions";
-import { Override } from "src/utils/interfaces";
-import { GetMakersInTournamentQuery, GetMakersInTournamentQueryResult, Tag, Tournament, TournamentEventTypeEnum, User } from "src/graphql";
-import { UnionToObjectKeys } from 'src/utils/types/utils';
+import { GetMakersInTournamentQuery, } from "src/graphql";
 import { useAppDispatch, } from "src/utils/hooks";
-import { openModal } from "src/redux/features/modals.slice";
 import Card from 'src/Components/Card/Card';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import Badge from 'src/Components/Badge/Badge';
-import { createRoute, PAGES_ROUTES } from 'src/utils/routing';
+import { createRoute } from 'src/utils/routing';
 
 type MakerType = GetMakersInTournamentQuery['getMakersInTournament']['makers'][number]
 
@@ -20,10 +13,7 @@ interface Props {
     isMe?: boolean;
 }
 
-export default function MakerCard({ maker, isMe }: Props) {
-
-    const dispatch = useAppDispatch()
-
+export default function ProjectCard({ maker, isMe }: Props) {
 
     return (
         <Card>

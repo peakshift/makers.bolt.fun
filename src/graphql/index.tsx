@@ -330,7 +330,7 @@ export type Query = {
   getDonationsStats: DonationsStats;
   getFeed: Array<Post>;
   getLnurlDetailsForProject: LnurlDetails;
-  getMakersInTournament: Array<User>;
+  getMakersInTournament: TournamentMakersResponse;
   getMyDrafts: Array<Post>;
   getPostById: Post;
   getProject: Project;
@@ -553,6 +553,13 @@ export type TournamentJudge = {
   avatar: Scalars['String'];
   jobTitle: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type TournamentMakersResponse = {
+  __typename?: 'TournamentMakersResponse';
+  hasNext: Maybe<Scalars['Boolean']>;
+  hasPrev: Maybe<Scalars['Boolean']>;
+  makers: Array<User>;
 };
 
 export type TournamentPrize = {
@@ -809,7 +816,12 @@ export type GetMakersInTournamentQueryVariables = Exact<{
 }>;
 
 
-export type GetMakersInTournamentQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null, getMakersInTournament: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, roles: Array<{ __typename?: 'MakerRole', id: number, icon: string, title: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> }> };
+export type GetMakersInTournamentQuery = { __typename?: 'Query', getMakersInTournament: { __typename?: 'TournamentMakersResponse', hasNext: boolean | null, hasPrev: boolean | null, makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, roles: Array<{ __typename?: 'MakerRole', id: number, icon: string, title: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> }> } };
+
+export type MeTournamentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeTournamentQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2148,13 +2160,6 @@ export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDeta
 export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
 export const GetMakersInTournamentDocument = gql`
     query GetMakersInTournament($tournamentId: Int!, $take: Int, $skip: Int, $search: String, $roleId: Int) {
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    ...UserRolesSkills
-  }
   getMakersInTournament(
     tournamentId: $tournamentId
     take: $take
@@ -2162,22 +2167,26 @@ export const GetMakersInTournamentDocument = gql`
     search: $search
     roleId: $roleId
   ) {
-    id
-    name
-    avatar
-    jobTitle
-    roles {
+    hasNext
+    hasPrev
+    makers {
       id
-      icon
-      title
-    }
-    skills {
-      id
-      title
+      name
+      avatar
+      jobTitle
+      roles {
+        id
+        icon
+        title
+      }
+      skills {
+        id
+        title
+      }
     }
   }
 }
-    ${UserRolesSkillsFragmentDoc}`;
+    `;
 
 /**
  * __useGetMakersInTournamentQuery__
@@ -2210,6 +2219,44 @@ export function useGetMakersInTournamentLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetMakersInTournamentQueryHookResult = ReturnType<typeof useGetMakersInTournamentQuery>;
 export type GetMakersInTournamentLazyQueryHookResult = ReturnType<typeof useGetMakersInTournamentLazyQuery>;
 export type GetMakersInTournamentQueryResult = Apollo.QueryResult<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>;
+export const MeTournamentDocument = gql`
+    query MeTournament {
+  me {
+    id
+    name
+    avatar
+    jobTitle
+    ...UserRolesSkills
+  }
+}
+    ${UserRolesSkillsFragmentDoc}`;
+
+/**
+ * __useMeTournamentQuery__
+ *
+ * To run a query within a React component, call `useMeTournamentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeTournamentQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeTournamentQuery(baseOptions?: Apollo.QueryHookOptions<MeTournamentQuery, MeTournamentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeTournamentQuery, MeTournamentQueryVariables>(MeTournamentDocument, options);
+      }
+export function useMeTournamentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeTournamentQuery, MeTournamentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeTournamentQuery, MeTournamentQueryVariables>(MeTournamentDocument, options);
+        }
+export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery>;
+export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
+export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {

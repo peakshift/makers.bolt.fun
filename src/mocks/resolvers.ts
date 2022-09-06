@@ -99,10 +99,13 @@ export function getTournamentById(id: number) {
 
 export function getMakersInTournament(vars: GetMakersInTournamentQueryVariables) {
 
-    const offsetStart = vars.skip ?? 0;
-    const offsetEnd = offsetStart + (vars.take ?? 15)
+    const take = vars.take ?? 15;
+    const skip = vars.skip ?? 0;
 
-    return MOCK_DATA.users.slice(1)
+    const offsetStart = skip;
+    const offsetEnd = offsetStart + take;
+
+    const allMakers = MOCK_DATA.users.slice(1)
         .filter(u => {
             if (!vars.search) return true;
             return [u.name, u.jobTitle].some(attr => attr?.search(new RegExp(vars.search!, 'i')) !== -1)
@@ -111,5 +114,12 @@ export function getMakersInTournament(vars: GetMakersInTournamentQueryVariables)
             if (!vars.roleId) return true;
             return u.roles.some(r => r.id === vars.roleId)
         })
-        .slice(offsetStart, offsetEnd) as User[];
+        .slice(offsetStart, offsetEnd + 1) as User[]
+        ;
+
+    return {
+        hasNext: allMakers.length === take + 1,
+        hasPrev: skip !== 0,
+        makers: allMakers.slice(0, take)
+    };
 } 
