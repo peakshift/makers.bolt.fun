@@ -333,7 +333,8 @@ model TournamentEvent {
   title       String
   image       String
   description String
-  date        DateTime @db.Date
+  starts_at   DateTime @db.Date
+  ends_at     DateTime @db.Date
   location    String
   website     String
   type        Int
