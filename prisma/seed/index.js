@@ -202,7 +202,6 @@ async function createTournament() {
 
     const createdTournament = await prisma.tournament.create({
         data: {
-            id: tournamentMock.id,
             title: tournamentMock.title,
             description: tournamentMock.description,
             start_date: tournamentMock.start_date,
@@ -236,12 +235,6 @@ async function createTournament() {
         }
     })
 
-    await prisma.skill.createMany({
-        data: skills.map(item => ({
-            id: item.id,
-            title: item.title,
-        }))
-    })
 }
 
 
