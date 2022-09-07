@@ -67,6 +67,8 @@ model User {
   userKeys       UserKey[]
   skills         Skill[]
   roles          UsersOnWorkRoles[]
+
+  tournaments TournamentParticipant[]
 }
 
 model UserKey {
@@ -136,6 +138,7 @@ model Project {
   tags   Tag[]
 
   recruit_roles ProjectRecruitRoles[]
+  tournaments   TournamentProject[]
 }
 
 model ProjectRecruitRoles {
@@ -271,4 +274,88 @@ model HostedImage {
   filename  String
   createdAt DateTime @default(now())
   is_used   Boolean  @default(false)
+}
+
+// -----------------
+// Tournament
+// -----------------
+model Tournament {
+  id              Int      @id @default(autoincrement())
+  title           String
+  description     String
+  thumbnail_image String
+  cover_image     String
+  start_date      DateTime @db.Date
+  end_date        DateTime @db.Date
+  location        String
+  website         String
+  votes_count     Int      @default(0)
+
+  prizes       TournamentPrize[]
+  judges       TournamentJudge[]
+  faqs         TournamentFAQ[]
+  events       TournamentEvent[]
+  participants TournamentParticipant[]
+  projects     TournamentProject[]
+}
+
+model TournamentPrize {
+  id     Int    @id @default(autoincrement())
+  title  String
+  amount String
+  image  String
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentJudge {
+  id      Int     @id @default(autoincrement())
+  name    String
+  company String
+  twitter String?
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentFAQ {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentEvent {
+  id          Int      @id @default(autoincrement())
+  title       String
+  image       String
+  description String
+  date        DateTime @db.Date
+  location    String
+  website     String
+  type        Int
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentParticipant {
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
+
+  @@id([tournament_id, user_id])
+}
+
+model TournamentProject {
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+  project       Project    @relation(fields: [project_id], references: [id])
+  project_id    Int
+
+  @@id([tournament_id, project_id])
 }
