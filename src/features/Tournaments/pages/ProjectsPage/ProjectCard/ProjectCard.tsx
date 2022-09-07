@@ -44,7 +44,7 @@ export default function ProjectCard({ project }: Props) {
                     <FaUsers className='text-body2 mr-4' /> <span className='align-middle'>6 makers</span>
                 </p>
             </div>
-            <Button fullWidth color='primary' onClick={openProject} className=''>View Details</Button>
+            <Button fullWidth color='white' onClick={openProject} className=''>View Details</Button>
         </Card>
     )
 }
