@@ -312,6 +312,7 @@ model TournamentPrize {
 model TournamentJudge {
   id      Int     @id @default(autoincrement())
   name    String
+  avatar  String
   company String
   twitter String?
 
