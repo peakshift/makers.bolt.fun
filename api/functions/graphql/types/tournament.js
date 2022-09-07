@@ -266,4 +266,7 @@ module.exports = {
     getTournamentById,
     getMakersInTournament,
     getProjectsInTournament,
+
+    // Enums
+    TournamentEventTypeEnum,
 }
