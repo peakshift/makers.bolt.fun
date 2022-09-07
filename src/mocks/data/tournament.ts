@@ -45,7 +45,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             id: 12,
             title: "STW3 Round Table #1",
-            date: "13:00 - 14:00 UTC, 23rd June",
+            starts_at: "2022-09-30T21:00:00.000Z",
+            ends_at: "2022-10-30T22:00:00.000Z",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
             image: getCoverImage(),
             links: [],
@@ -56,7 +57,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             id: 13,
             title: "STW3 Round Table #2",
-            date: "15:00 - 16:00 UTC, 23rd June",
+            starts_at: "2022-09-30T21:00:00.000Z",
+            ends_at: "2022-10-30T22:00:00.000Z",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
             image: getCoverImage(),
             links: [],
@@ -67,7 +69,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             id: 14,
             title: "STW3 Round Table #3",
-            date: "13:00 - 14:00 UTC, 24rd June",
+            starts_at: "2022-09-30T21:00:00.000Z",
+            ends_at: "2022-10-30T22:00:00.000Z",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
             image: getCoverImage(),
             links: [],
@@ -78,7 +81,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             id: 44,
             title: "Lightning Login",
-            date: "15:00 - 16:00 UTC, 24rd June",
+            starts_at: "2022-09-30T21:00:00.000Z",
+            ends_at: "2022-10-30T22:00:00.000Z",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
             image: getCoverImage(),
             links: [],
@@ -90,7 +94,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             id: 46,
             title: "Escrow contracts",
-            date: "15:00 - 16:00 UTC, 23rd June",
+            starts_at: "2022-09-30T21:00:00.000Z",
+            ends_at: "2022-10-30T22:00:00.000Z",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
             image: getCoverImage(),
             links: [],
@@ -102,7 +107,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             id: 444,
             title: "Lsats - What & Why",
-            date: "15:00 - 16:00 UTC, 23rd June",
+            starts_at: "2022-09-30T21:00:00.000Z",
+            ends_at: "2022-10-30T22:00:00.000Z",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
             image: getCoverImage(),
             links: [],
@@ -115,62 +121,62 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
         {
             name: "Ben Arc",
             avatar: "https://s3-alpha-sig.figma.com/img/5e65/c22c/673b8f74ac43f024b036dbc4e6479e0d?Expires=1662940800&Signature=GR54s7FBcLGcPTVclWdmPjzU92tyrYpdUbbDUYKMUkdQbxq2yQlUhZ-AOLDHhOPY4P2G3aW2yT16b1AUbC8RBx1boH25MSrH-jpn6X57IJA-4ZeHP8zCo-yjTLpb8Gn~vudIi9rPfbwJ34stp-VeOAYMuOHlah3YO-B4MBsBv-NqhP7BMY4zz9vGdBLZhOjYQYdLZ2494Ae6L5FpD1ah3WD3U5qUN9dDvYvAtqYfhQeBOnsG6PfYoq8LouCuERC4S26BeooPg8UdGUCf324-SjEihCoL8mQFq80PSsaAZl5~EBOKRUx14FOprizMusaYN0K06E~fjDIDbM2Rmc9Xjg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-            jobTitle: "Maker"
+            company: "Company"
         },
     ],
 

@@ -535,12 +535,13 @@ export type Tournament = {
 
 export type TournamentEvent = {
   __typename?: 'TournamentEvent';
-  date: Scalars['Date'];
   description: Scalars['String'];
+  ends_at: Scalars['Date'];
   id: Scalars['Int'];
   image: Scalars['String'];
   links: Array<Scalars['String']>;
   location: Scalars['String'];
+  starts_at: Scalars['Date'];
   title: Scalars['String'];
   type: TournamentEventTypeEnum;
   website: Scalars['String'];
@@ -562,7 +563,7 @@ export type TournamentFaq = {
 export type TournamentJudge = {
   __typename?: 'TournamentJudge';
   avatar: Scalars['String'];
-  jobTitle: Scalars['String'];
+  company: Scalars['String'];
   name: Scalars['String'];
 };
 
@@ -862,7 +863,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, jobTitle: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, date: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'User', id: number, avatar: string }> } };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -2411,7 +2412,7 @@ export const GetTournamentByIdDocument = gql`
     }
     judges {
       name
-      jobTitle
+      company
       avatar
     }
     events {
@@ -2419,7 +2420,8 @@ export const GetTournamentByIdDocument = gql`
       title
       image
       description
-      date
+      starts_at
+      ends_at
       location
       website
       type
@@ -2428,6 +2430,12 @@ export const GetTournamentByIdDocument = gql`
     faqs {
       question
       answer
+    }
+  }
+  getMakersInTournament(tournamentId: $id, take: 4) {
+    makers {
+      id
+      avatar
     }
   }
 }

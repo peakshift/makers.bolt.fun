@@ -347,12 +347,13 @@ type Tournament {
 }
 
 type TournamentEvent {
-  date: Date!
   description: String!
+  ends_at: Date!
   id: Int!
   image: String!
   links: [String!]!
   location: String!
+  starts_at: Date!
   title: String!
   type: TournamentEventTypeEnum!
   website: String!
@@ -372,7 +373,7 @@ type TournamentFAQ {
 
 type TournamentJudge {
   avatar: String!
-  jobTitle: String!
+  company: String!
   name: String!
 }
 

@@ -21,7 +21,7 @@ query GetTournamentById($id: Int!) {
     }
     judges {
       name
-      jobTitle
+      company
       avatar
     }
     events {
@@ -29,7 +29,8 @@ query GetTournamentById($id: Int!) {
       title
       image
       description
-      date
+      starts_at
+      ends_at
       location
       website
       type
@@ -40,4 +41,11 @@ query GetTournamentById($id: Int!) {
       answer
     }
   }
-} #
+
+  getMakersInTournament(tournamentId: $id, take: 4) {
+    makers {
+      id
+      avatar
+    }
+  }
+}

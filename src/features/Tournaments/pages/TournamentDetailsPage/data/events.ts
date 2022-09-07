@@ -6,7 +6,9 @@ export const events: Tournament['events'] = [
     {
         id: 12,
         title: "STW3 Round Table #1",
-        date: "13:00 - 14:00 UTC, 23rd June",
+
+        starts_at: "2022-09-30T21:00:00.000Z",
+        ends_at: "2022-10-30T22:00:00.000Z",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
         image: getCoverImage(),
         links: [],
@@ -17,7 +19,9 @@ export const events: Tournament['events'] = [
     {
         id: 13,
         title: "STW3 Round Table #2",
-        date: "15:00 - 16:00 UTC, 23rd June",
+
+        starts_at: "2022-09-30T21:00:00.000Z",
+        ends_at: "2022-10-30T22:00:00.000Z",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
         image: getCoverImage(),
         links: [],
@@ -28,7 +32,9 @@ export const events: Tournament['events'] = [
     {
         id: 14,
         title: "STW3 Round Table #3",
-        date: "13:00 - 14:00 UTC, 24rd June",
+
+        starts_at: "2022-09-30T21:00:00.000Z",
+        ends_at: "2022-10-30T22:00:00.000Z",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
         image: getCoverImage(),
         links: [],
@@ -39,7 +45,9 @@ export const events: Tournament['events'] = [
     {
         id: 44,
         title: "Lightning Login",
-        date: "15:00 - 16:00 UTC, 24rd June",
+
+        starts_at: "2022-09-30T21:00:00.000Z",
+        ends_at: "2022-10-30T22:00:00.000Z",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
         image: getCoverImage(),
         links: [],
@@ -51,7 +59,9 @@ export const events: Tournament['events'] = [
     {
         id: 46,
         title: "Escrow contracts",
-        date: "15:00 - 16:00 UTC, 23rd June",
+
+        starts_at: "2022-09-30T21:00:00.000Z",
+        ends_at: "2022-10-30T22:00:00.000Z",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
         image: getCoverImage(),
         links: [],
@@ -63,7 +73,9 @@ export const events: Tournament['events'] = [
     {
         id: 444,
         title: "Lsats - What & Why",
-        date: "15:00 - 16:00 UTC, 23rd June",
+
+        starts_at: "2022-09-30T21:00:00.000Z",
+        ends_at: "2022-10-30T22:00:00.000Z",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam morbi pellentesque velit congue. Aliquet rutrum a, augue vitae tincidunt ac egestas. Mauris nec fringilla diam eget fusce malesuada cum parturient. Nulla pretium purus odio odio.",
         image: getCoverImage(),
         links: [],

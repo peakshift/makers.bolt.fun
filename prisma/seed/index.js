@@ -65,7 +65,7 @@ async function main() {
 
     // await createSkills();
 
-    await createTournament();
+    // await createTournament();
 
 }
 

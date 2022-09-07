@@ -24,11 +24,11 @@ export default function Navigation({ data }: Props) {
             path: "events",
         },
         {
-            text: `Makers`,
+            text: `Makers (${data.makers_count})`,
             path: "makers",
         },
         {
-            text: `Projects`,
+            text: `Projects (${data.projects_count})`,
             path: "projects",
         },
         {

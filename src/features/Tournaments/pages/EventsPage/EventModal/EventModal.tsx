@@ -6,6 +6,7 @@ import { Tournament, } from 'src/graphql';
 import { MEDIA_QUERIES } from 'src/utils/theme';
 import { IoGlobe, IoLocationOutline } from 'react-icons/io5';
 import { mapTypeToBadge } from '../EventCard/EventCard';
+import dayjs from 'dayjs';
 
 
 interface Props extends ModalCard {
@@ -14,7 +15,8 @@ interface Props extends ModalCard {
         | "title"
         | "image"
         | "description"
-        | "date"
+        | "starts_at"
+        | "ends_at"
         | "location"
         | "type"
         | "website">
@@ -43,7 +45,8 @@ export default function ProjectDetailsCard({ direction, event, ...props }: Props
             <div className="p-16 md:p-24">
                 <h1 className="text-body1 font-bold">{event.title}</h1>
                 <p className="text-body4 font-medium text-gray-900 mt-8">
-                    {event.date}
+
+                    {`${dayjs(event.starts_at).format('H:mm')} - ${dayjs(event.starts_at).format('H:mm, Do MMM')}`}
                 </p>
                 <div className="flex gap-16 mt-8">
                     <p className="text-body4 font-medium text-primary-600 shrink-0">

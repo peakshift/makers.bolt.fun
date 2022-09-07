@@ -240,26 +240,20 @@ export interface NexusGenObjects {
     cover_image: string; // String!
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
-    events: NexusGenRootTypes['TournamentEvent'][]; // [TournamentEvent!]!
-    events_count: number; // Int!
-    faqs: NexusGenRootTypes['TournamentFAQ'][]; // [TournamentFAQ!]!
     id: number; // Int!
-    judges: NexusGenRootTypes['TournamentJudge'][]; // [TournamentJudge!]!
     location: string; // String!
-    prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
-    projects_count: number; // Int!
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: string; // String!
     title: string; // String!
     website: string; // String!
   }
   TournamentEvent: { // root type
-    date: NexusGenScalars['Date']; // Date!
     description: string; // String!
+    ends_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     image: string; // String!
-    links: string[]; // [String!]!
     location: string; // String!
+    starts_at: NexusGenScalars['Date']; // Date!
     title: string; // String!
     type: NexusGenEnums['TournamentEventTypeEnum']; // TournamentEventTypeEnum!
     website: string; // String!
@@ -270,7 +264,7 @@ export interface NexusGenObjects {
   }
   TournamentJudge: { // root type
     avatar: string; // String!
-    jobTitle: string; // String!
+    company: string; // String!
     name: string; // String!
   }
   TournamentMakersResponse: { // root type
@@ -569,12 +563,13 @@ export interface NexusGenFieldTypes {
     website: string; // String!
   }
   TournamentEvent: { // field return type
-    date: NexusGenScalars['Date']; // Date!
     description: string; // String!
+    ends_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     image: string; // String!
     links: string[]; // [String!]!
     location: string; // String!
+    starts_at: NexusGenScalars['Date']; // Date!
     title: string; // String!
     type: NexusGenEnums['TournamentEventTypeEnum']; // TournamentEventTypeEnum!
     website: string; // String!
@@ -585,7 +580,7 @@ export interface NexusGenFieldTypes {
   }
   TournamentJudge: { // field return type
     avatar: string; // String!
-    jobTitle: string; // String!
+    company: string; // String!
     name: string; // String!
   }
   TournamentMakersResponse: { // field return type
@@ -907,12 +902,13 @@ export interface NexusGenFieldTypeNames {
     website: 'String'
   }
   TournamentEvent: { // field return type name
-    date: 'Date'
     description: 'String'
+    ends_at: 'Date'
     id: 'Int'
     image: 'String'
     links: 'String'
     location: 'String'
+    starts_at: 'Date'
     title: 'String'
     type: 'TournamentEventTypeEnum'
     website: 'String'
@@ -923,7 +919,7 @@ export interface NexusGenFieldTypeNames {
   }
   TournamentJudge: { // field return type name
     avatar: 'String'
-    jobTitle: 'String'
+    company: 'String'
     name: 'String'
   }
   TournamentMakersResponse: { // field return type name

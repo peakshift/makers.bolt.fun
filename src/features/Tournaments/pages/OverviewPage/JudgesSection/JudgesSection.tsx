@@ -25,7 +25,7 @@ export default function JudgesSection({ judges }: Props) {
                     <img src={judge.avatar} className='w-[100px] md:w-[128px] aspect-square object-contain' alt="" />
                     <div className='text-center'>
                         <p className='text-body4 font-medium'>{judge.name}</p>
-                        <p className='text-body4 mt-4'>{judge.jobTitle}</p>
+                        <p className='text-body4 mt-4'>{judge.company}</p>
                     </div>
                 </div>)}
             </div>

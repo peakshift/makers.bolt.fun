@@ -4,6 +4,7 @@ import { Tournament, TournamentEventTypeEnum } from "src/graphql";
 import { UnionToObjectKeys } from 'src/utils/types/utils';
 import { useAppDispatch, } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
+import dayjs from 'dayjs';
 
 
 interface Props {
@@ -11,7 +12,8 @@ interface Props {
         | 'id'
         | 'title'
         | 'image'
-        | 'date'
+        | 'starts_at'
+        | 'ends_at'
         | 'location'
         | 'description'
         | 'website'
@@ -46,7 +48,9 @@ export default function EventCard({ event }: Props) {
                         {event.title}
                     </h3>
                     <p className="text-body4 font-medium text-gray-900">
-                        {event.date}
+
+                        {`${dayjs(event.starts_at).format('H:mm')} - ${dayjs(event.starts_at).format('H:mm, Do MMM')}`}
+
                     </p>
                     <p className="text-body4 font-medium text-gray-600">
                         <IoLocationOutline className="mr-4" /> <span className="align-middle">{event.location}</span>

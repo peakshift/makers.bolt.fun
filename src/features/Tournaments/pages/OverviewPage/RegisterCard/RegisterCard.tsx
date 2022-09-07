@@ -8,9 +8,10 @@ import { useCountdown } from 'src/utils/hooks'
 interface Props {
     start_date: string;
     makers_count: number
+    avatars: string[]
 }
 
-export default function RegisterCard({ makers_count, start_date }: Props) {
+export default function RegisterCard({ makers_count, start_date, avatars }: Props) {
 
     const counter = useCountdown(start_date)
 
@@ -18,7 +19,10 @@ export default function RegisterCard({ makers_count, start_date }: Props) {
         <Card onlyMd className='flex flex-col gap-24'>
             <div>
                 <p className="text-body5 text-gray-600">
-                    <FaUsers className='text-body2 mr-4' /> <span className='align-middle'>+ {makers_count} makers</span>
+                    <div className="flex">
+                        {avatars.map((img, idx) => <div className='w-[16px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
+                        <span className='self-center ml-24 font-medium '>+ {makers_count} makers</span>
+                    </div>
                 </p>
                 <Button color='primary' fullWidth className='mt-16'>Register</Button>
             </div>

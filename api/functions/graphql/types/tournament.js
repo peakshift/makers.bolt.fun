@@ -24,7 +24,7 @@ const TournamentJudge = objectType({
     name: 'TournamentJudge',
     definition(t) {
         t.nonNull.string('name');
-        t.nonNull.string('jobTitle');
+        t.nonNull.string('company');
         t.nonNull.string('avatar');
     }
 })
@@ -57,11 +57,12 @@ const TournamentEvent = objectType({
         t.nonNull.string('title');
         t.nonNull.string('image');
         t.nonNull.string('description');
-        t.nonNull.date('date');
+        t.nonNull.date('starts_at');
+        t.nonNull.date('ends_at');
         t.nonNull.string('location');
         t.nonNull.string('website');
         t.nonNull.field('type', { type: TournamentEventTypeEnum })
-        t.nonNull.list.nonNull.string('links');
+        t.nonNull.list.nonNull.string('links', { resolve() { return [] } });
     }
 })
 
@@ -78,18 +79,58 @@ const Tournament = objectType({
         t.nonNull.string('location');
         t.nonNull.string('website');
 
-        t.nonNull.int('events_count');
-        t.nonNull.int('makers_count', {
+        t.nonNull.int('events_count', {
             resolve(parent) {
-                return prisma.user.count();
+                return prisma.tournamentEvent.count({
+                    where: {
+                        tournament_id: parent.id
+                    }
+                })
             }
         });
-        t.nonNull.int('projects_count');
+        t.nonNull.int('makers_count', {
+            resolve(parent) {
+                return prisma.tournamentParticipant.count({
+                    where: {
+                        tournament_id: parent.id
+                    }
+                })
+            }
+        });
+        t.nonNull.int('projects_count', {
+            resolve(parent) {
+                return prisma.tournamentProject.count({
+                    where: {
+                        tournament_id: parent.id
+                    }
+                })
+            }
+        });
 
-        t.nonNull.list.nonNull.field('prizes', { type: TournamentPrize, });
-        t.nonNull.list.nonNull.field('judges', { type: TournamentJudge, });
-        t.nonNull.list.nonNull.field('faqs', { type: TournamentFAQ, });
-        t.nonNull.list.nonNull.field('events', { type: TournamentEvent, });
+        t.nonNull.list.nonNull.field('prizes', {
+            type: TournamentPrize,
+            resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).prizes()
+            }
+        });
+        t.nonNull.list.nonNull.field('judges', {
+            type: TournamentJudge,
+            resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).judges()
+            }
+        });
+        t.nonNull.list.nonNull.field('faqs', {
+            type: TournamentFAQ,
+            resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).faqs()
+            }
+        });
+        t.nonNull.list.nonNull.field('events', {
+            type: TournamentEvent,
+            resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).events()
+            }
+        });
     }
 })
 
@@ -125,7 +166,9 @@ const getTournamentById = extendType({
                 id: nonNull(intArg()),
             },
             resolve(_, { id }) {
-                return null
+                return prisma.tournament.findUnique({
+                    where: { id }
+                })
             }
         })
     }
@@ -175,16 +218,23 @@ const getMakersInTournament = extendType({
                     }
                 })
 
-
-                const makers = await prisma.user.findMany({
-                    ...(filters.length > 0 && {
-                        where: {
-                            AND: filters
-                        }
-                    }),
+                const makers = (await prisma.tournamentParticipant.findMany({
+                    where: {
+                        tournament_id: args.tournamentId,
+                        ...(filters.length > 0 && {
+                            user: {
+                                AND: filters
+                            }
+                        })
+                    },
+                    include: {
+                        user: true,
+                    },
                     skip: args.skip,
                     take: args.take + 1,
-                });
+                })).map(item => item.user)
+
+
 
                 return {
                     hasNext: makers.length === args.take + 1,
@@ -230,24 +280,34 @@ const getProjectsInTournament = extendType({
                 })
 
 
-                if (args.roleId) filters.push({
-                    recruit_roles: {
-                        some: {
-                            roleId: args.roleId
-                        }
-                    }
-                })
+                // if (args.roleId) filters.push({
+                //     recruit_roles: {
+                //         some: {
+                //             roleId: args.roleId
+                //         }
+                //     }
+                // })
 
 
-                const projects = await prisma.project.findMany({
-                    ...(filters.length > 0 && {
-                        where: {
-                            AND: filters
-                        }
-                    }),
+
+                const projects = (await prisma.tournamentProject.findMany({
+                    where: {
+                        tournament_id: args.tournamentId,
+                        ...(filters.length > 0 && {
+                            project: {
+                                AND: filters
+                            }
+                        })
+                    },
+                    include: {
+                        project: true,
+                    },
                     skip: args.skip,
                     take: args.take + 1,
-                });
+                })).map(item => item.project)
+
+                console.log();
+
 
                 return {
                     hasNext: projects.length === args.take + 1,

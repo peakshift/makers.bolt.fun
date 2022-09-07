@@ -16,9 +16,10 @@ interface Props {
         | 'makers_count'
         | 'faqs'
     >
+    avatars: string[]
 }
 
-export default function OverviewPage({ data }: Props) {
+export default function OverviewPage({ data, avatars }: Props) {
     return (
         <Card onlyMd className='flex flex-col gap-42'>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-24 items-start">
@@ -29,7 +30,7 @@ export default function OverviewPage({ data }: Props) {
                     >
                     </div>
                 </div>
-                <RegisterCard makers_count={data.makers_count} start_date={data.start_date} />
+                <RegisterCard makers_count={data.makers_count} start_date={data.start_date} avatars={avatars} />
             </div>
             <PrizesSection prizes={data.prizes} />
             <JudgesSection judges={data.judges} />
