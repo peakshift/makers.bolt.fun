@@ -7,6 +7,7 @@ import Navigation from './Navigation/Navigation'
 import EventsPage from '../EventsPage/EventsPage'
 import { tournamentData } from './data'
 import MakersPage from '../MakersPage/MakersPage'
+import ProjectsPage from '../ProjectsPage/ProjectsPage'
 
 const data = tournamentData
 
@@ -41,6 +42,7 @@ export default function TournamentDetailsPage() {
           <Route path='overview' element={<OverviewPage data={data} />} />
           <Route path='events' element={<EventsPage data={data} />} />
           <Route path='makers' element={<MakersPage data={data} />} />
+          <Route path='projects' element={<ProjectsPage data={data} />} />
         </Routes>
       </div>
     </div>

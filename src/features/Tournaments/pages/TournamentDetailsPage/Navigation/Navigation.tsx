@@ -28,9 +28,8 @@ export default function Navigation({ data }: Props) {
             path: "makers",
         },
         {
-            text: `??????? 🚧`,
+            text: `Projects`,
             path: "projects",
-            isDisabled: true,
         },
         {
             text: "???? 🚧",

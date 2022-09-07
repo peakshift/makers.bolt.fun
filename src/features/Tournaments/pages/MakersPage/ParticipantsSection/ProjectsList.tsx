@@ -28,10 +28,6 @@ export default function ProjectsList(props: Props) {
         take: ITEMS_PER_PAGE,
     });
 
-
-
-
-
     const query = useGetProjectsInTournamentQuery({
         variables: queryFilter,
     });
