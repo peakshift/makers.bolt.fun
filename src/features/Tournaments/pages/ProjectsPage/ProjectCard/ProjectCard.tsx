@@ -29,21 +29,22 @@ export default function ProjectCard({ project }: Props) {
     }
 
     return (
-        <Card>
+        <Card className="flex flex-col gap-24">
             <div className="flex flex-wrap gap-24 items-start">
-                <img src={project.thumbnail_image} className='shrink-0 w-64 md:w-80 aspect-square rounded-full outline outline-2 outline-gray-200' alt="" />
+                <img src={project.thumbnail_image} className='shrink-0 w-64 aspect-square rounded-full outline outline-2 outline-gray-200' alt="" />
                 <div className="flex flex-col gap-4 flex-1 overflow-hidden">
                     <p className="text-body2 text-gray-900 font-bold">{project.title}</p>
                     <p className="text-body4 text-gray-600 font-medium">{project.category.icon} {project.category.title}</p>
                 </div>
             </div>
-            <p className="mt-24 text-body5 text-gray-400 line-clamp-2 max-w-[60ch]">{project.description} </p>
-            <div className="mt-24">
-                <p className="text-body5 text-gray-900 font-medium mb-12">👾 Makers</p>
-                <FaUsers className='text-body2 mr-4' /> <span className='align-middle'>6 makers</span>
-
+            <p className=" text-body5 text-gray-400 line-clamp-2 max-w-[60ch]">{project.description} </p>
+            <div className="mt-auto">
+                {/* <p className="text-body5 text-gray-900 font-medium mb-12">👾 Makers</p> */}
+                <p className="text-body5 text-gray-600 font-medium">
+                    <FaUsers className='text-body2 mr-4' /> <span className='align-middle'>6 makers</span>
+                </p>
             </div>
-            <Button fullWidth color='primary' onClick={openProject} size='sm' className='mt-24'>View Details</Button>
+            <Button fullWidth color='primary' onClick={openProject} className=''>View Details</Button>
         </Card>
     )
 }
