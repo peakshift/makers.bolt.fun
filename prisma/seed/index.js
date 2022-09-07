@@ -3,6 +3,7 @@ const { generatePrivateKey, getPublicKey } = require("../../api/utils/nostr-tool
 const { categories, projects, tags, hackathons, roles, skills } = require("./data");
 const Chance = require('chance');
 const { getCoverImage, randomItems, random } = require("./helpers");
+const { tournament: tournamentMock } = require("./data/tournament.seed");
 
 const chance = new Chance();
 
@@ -63,6 +64,8 @@ async function main() {
     // await createRoles();
 
     // await createSkills();
+
+    await createTournament();
 
 }
 
@@ -186,6 +189,53 @@ async function createRoles() {
 
 async function createSkills() {
     console.log("Creating Users Skills");
+    await prisma.skill.createMany({
+        data: skills.map(item => ({
+            id: item.id,
+            title: item.title,
+        }))
+    })
+}
+
+async function createTournament() {
+    console.log("Creating Tournament");
+
+    const createdTournament = await prisma.tournament.create({
+        data: {
+            id: tournamentMock.id,
+            title: tournamentMock.title,
+            description: tournamentMock.description,
+            start_date: tournamentMock.start_date,
+            end_date: tournamentMock.end_date,
+            thumbnail_image: tournamentMock.thumbnail_image,
+            cover_image: tournamentMock.cover_image,
+            location: tournamentMock.location,
+            website: tournamentMock.website,
+
+            faqs: {
+                createMany: {
+                    data: tournamentMock.faqs.map(f => ({ question: f.question, answer: f.answer }))
+                }
+            },
+            prizes: {
+                createMany: {
+                    data: tournamentMock.prizes.map(p => ({ title: p.title, image: p.image, amount: p.amount }))
+                }
+            },
+            judges: {
+                createMany: {
+                    data: tournamentMock.judges.map(j => ({ name: j.name, company: j.company, twitter: j.twitter, avatar: j.avatar }))
+                }
+            },
+            events: {
+                createMany: {
+                    data: tournamentMock.events.map(e => ({ title: e.title, description: e.description, starts_at: e.starts_at, ends_at: e.ends_at, image: e.image, location: e.location, type: e.type, website: e.website }))
+                }
+            },
+
+        }
+    })
+
     await prisma.skill.createMany({
         data: skills.map(item => ({
             id: item.id,
