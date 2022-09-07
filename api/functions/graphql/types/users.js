@@ -6,6 +6,7 @@ const { removeNulls } = require("./helpers");
 const { ImageInput } = require('./misc');
 const { Tournament } = require('./tournaments');
 const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
+const { deleteImage } = require('../../../services/imageUpload.service');
 
 
 
@@ -288,6 +289,39 @@ const updateProfileDetails = extendType({
                 // Check if the user uploaded a new image, and if so, 
                 // remove the old one from the hosting service, then replace it with this one
                 // ----------------
+                let avatarId = user.avatar_id;
+                if (args.data.avatar.id) {
+                    const newAvatarProviderId = args.data.avatar.id;
+                    const newAvatar = await prisma.hostedImage.findFirst({
+                        where: {
+                            provider_image_id: newAvatarProviderId
+                        }
+                    })
+
+                    if (newAvatar && newAvatar.id !== user.avatar_id) {
+                        avatarId = newAvatar.id;
+
+                        // Set is_used to false in case of deleteImage() fail. The scheduled job will try to delete the HostedImage row
+                        await prisma.hostedImage.update({
+                            where: {
+                                id: user.avatar_id
+                            },
+                            data: {
+                                is_used: false
+                            }
+                        });
+                        await prisma.hostedImage.update({
+                            where: {
+                                id: newAvatar.id
+                            },
+                            data: {
+                                is_used: true
+                            }
+                        });
+
+                        deleteImage(user.avatar_id)
+                    }
+                }
 
                 // Preprocess & insert
                 return prisma.user.update({
@@ -296,7 +330,11 @@ const updateProfileDetails = extendType({
                     },
                     data: removeNulls({
                         ...args.data,
-                        avatar: args.data.avatar?.url,
+                        avatar_id: avatarId,
+
+                        //hack to remove avatar from args.data
+                        // can be removed later with a schema data validator
+                        avatar: '',
                     })
                 })
             }
