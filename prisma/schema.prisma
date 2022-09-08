@@ -350,6 +350,9 @@ model TournamentParticipant {
   user          User       @relation(fields: [user_id], references: [id])
   user_id       Int
 
+  email          String
+  hacking_status Int
+
   @@id([tournament_id, user_id])
 }
 
