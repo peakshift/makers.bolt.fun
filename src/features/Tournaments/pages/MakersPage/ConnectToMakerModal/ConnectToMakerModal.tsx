@@ -16,12 +16,6 @@ export default function LinkingAccountModal({ onClose, direction, maker, ...prop
 
     const links = [
         {
-            hasValue: maker.email,
-            text: maker.email,
-            icon: FiMail,
-            url: maker.email && `mailto:${maker.email}`
-        },
-        {
             hasValue: maker.twitter,
             text: maker.twitter,
             icon: FiTwitter,

@@ -157,6 +157,7 @@ export const users: (User & MyProfile)[] = [{
     twitter: "mtg",
     website: "https://mtg-dev.tech",
     stories: posts.stories,
+    in_tournament: true,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
     walletsKeys: [
@@ -191,6 +192,7 @@ export const users: (User & MyProfile)[] = [{
     twitter: "john-doe",
     website: "https://mtg-dev.tech",
     stories: posts.stories,
+    in_tournament: true,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
 
@@ -226,6 +228,7 @@ export const users: (User & MyProfile)[] = [{
     twitter: "john-doe",
     website: "https://mtg-dev.tech",
     stories: posts.stories,
+    in_tournament: true,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
     walletsKeys: [
@@ -260,6 +263,7 @@ export const users: (User & MyProfile)[] = [{
     twitter: "john-doe",
     website: "https://mtg-dev.tech",
     stories: posts.stories,
+    in_tournament: true,
     nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
     nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
     walletsKeys: [

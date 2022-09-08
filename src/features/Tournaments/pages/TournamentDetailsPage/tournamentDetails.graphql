@@ -48,4 +48,15 @@ query GetTournamentById($id: Int!) {
       avatar
     }
   }
+
+  me {
+    id
+    name
+    avatar
+    jobTitle
+
+    in_tournament(id: $id)
+
+    ...UserRolesSkills
+  }
 }

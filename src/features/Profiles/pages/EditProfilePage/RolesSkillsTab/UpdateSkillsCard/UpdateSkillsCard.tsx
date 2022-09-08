@@ -46,7 +46,7 @@ export default function UpdateSkillsCard(props: Props) {
                 </li>)}
             </ul>}
 
-            <InfoCard>
+            <InfoCard className='mt-24'>
                 <span className="font-bold">ℹ️ Can't find a specific skill?</span> You can suggest it to be added <a href="https://github.com/peakshift/makers.bolt.fun/discussions/143" target='_blank' rel="noreferrer" className='font-bold underline'>here</a>
             </InfoCard>
         </Card>

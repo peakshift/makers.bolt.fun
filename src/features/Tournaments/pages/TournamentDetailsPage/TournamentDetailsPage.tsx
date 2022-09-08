@@ -1,30 +1,34 @@
 
 import Header from './Header/Header'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import OverviewPage from '../OverviewPage/OverviewPage'
 import { Helmet } from 'react-helmet'
 import Navigation from './Navigation/Navigation'
 import EventsPage from '../EventsPage/EventsPage'
 import MakersPage from '../MakersPage/MakersPage'
 import ProjectsPage from '../ProjectsPage/ProjectsPage'
-import { useGetTournamentByIdQuery } from 'src/graphql'
+import { useGetTournamentByIdQuery, GetTournamentByIdQuery } from 'src/graphql'
 import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
 import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
 
 
+export type MeTournament = GetTournamentByIdQuery['me']
+
 export default function TournamentDetailsPage() {
 
-  const query = useGetTournamentByIdQuery({
-    variables: {
-      id: 12,
-    },
+  const { id } = useParams()
 
+  const tournaemntQuery = useGetTournamentByIdQuery({
+    variables: {
+      id: Number(id)!,
+    },
+    skip: !id
   })
 
-  if (query.loading)
+  if (tournaemntQuery.loading)
     return <LoadingPage />
 
-  if (!query.data?.getTournamentById)
+  if (!tournaemntQuery.data?.getTournamentById)
     return <NotFoundPage />
 
   return (
@@ -32,18 +36,18 @@ export default function TournamentDetailsPage() {
       "--maxPageWidth": "910px"
     } as any}>
       <Helmet>
-        <title>{query.data.getTournamentById.title} Tournament</title>
+        <title>{tournaemntQuery.data.getTournamentById.title} Tournament</title>
       </Helmet>
-      <Header data={query.data.getTournamentById} />
-      <Navigation data={query.data.getTournamentById} />
+      <Header data={tournaemntQuery.data.getTournamentById} />
+      <Navigation data={tournaemntQuery.data.getTournamentById} />
 
       <div className="content-container !mt-24">
         <Routes >
           <Route index element={<Navigate to='overview' />} />
-          <Route path='overview' element={<OverviewPage data={query.data.getTournamentById} avatars={query.data.getMakersInTournament.makers.map(m => m.avatar)} />} />
-          <Route path='events' element={<EventsPage data={query.data.getTournamentById} />} />
-          <Route path='makers' element={<MakersPage data={query.data.getTournamentById} />} />
-          <Route path='projects' element={<ProjectsPage data={query.data.getTournamentById} />} />
+          <Route path='overview' element={<OverviewPage data={tournaemntQuery.data.getTournamentById} avatars={tournaemntQuery.data.getMakersInTournament.makers.map(m => m.avatar)} isRegistered={!!tournaemntQuery.data.me?.in_tournament} />} />
+          <Route path='events' element={<EventsPage data={tournaemntQuery.data.getTournamentById} />} />
+          <Route path='makers' element={<MakersPage data={tournaemntQuery.data.getTournamentById} />} />
+          <Route path='projects' element={<ProjectsPage data={tournaemntQuery.data.getTournamentById} />} />
         </Routes>
       </div>
     </div>

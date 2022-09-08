@@ -41,7 +41,7 @@ export default function Navigation({ data }: Props) {
             path: "resources",
             isDisabled: true,
         },
-    ], [data.events_count])
+    ], [data.events_count, data.makers_count, data.projects_count])
 
     return (
         <div className="w-full bg-white py-16 border-b border-gray-200 sticky-top-element z-10">

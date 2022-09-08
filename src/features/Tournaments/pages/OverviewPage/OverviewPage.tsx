@@ -17,9 +17,10 @@ interface Props {
         | 'faqs'
     >
     avatars: string[]
+    isRegistered: boolean;
 }
 
-export default function OverviewPage({ data, avatars }: Props) {
+export default function OverviewPage({ data, avatars, isRegistered }: Props) {
     return (
         <Card onlyMd className='flex flex-col gap-42'>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-24 items-start">
@@ -30,7 +31,7 @@ export default function OverviewPage({ data, avatars }: Props) {
                     >
                     </div>
                 </div>
-                <RegisterCard makers_count={data.makers_count} start_date={data.start_date} avatars={avatars} />
+                <RegisterCard makers_count={data.makers_count} start_date={data.start_date} avatars={avatars} isRegistered={isRegistered} />
             </div>
             <PrizesSection prizes={data.prizes} />
             <JudgesSection judges={data.judges} />

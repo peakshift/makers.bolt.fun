@@ -52,6 +52,10 @@ export interface NexusGenInputs {
     roles: NexusGenInputs['MakerRoleInput'][]; // [MakerRoleInput!]!
     skills: NexusGenInputs['MakerSkillInput'][]; // [MakerSkillInput!]!
   }
+  RegisterInTournamentInput: { // input type
+    email: string; // String!
+    hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+  }
   StoryInputType: { // input type
     body: string; // String!
     cover_image?: string | null; // String
@@ -70,6 +74,7 @@ export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
   TournamentEventTypeEnum: 2 | 3 | 0 | 1
+  TournamentMakerHackingStatusEnum: 1 | 0
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 
@@ -428,6 +433,7 @@ export interface NexusGenFieldTypes {
     createStory: NexusGenRootTypes['Story'] | null; // Story
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
+    registerInTournament: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateUserPreferences: NexusGenRootTypes['MyProfile']; // MyProfile!
@@ -439,6 +445,7 @@ export interface NexusGenFieldTypes {
     email: string | null; // String
     github: string | null; // String
     id: number; // Int!
+    in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
@@ -604,6 +611,7 @@ export interface NexusGenFieldTypes {
     email: string | null; // String
     github: string | null; // String
     id: number; // Int!
+    in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
@@ -639,6 +647,7 @@ export interface NexusGenFieldTypes {
     email: string | null; // String
     github: string | null; // String
     id: number; // Int!
+    in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
@@ -767,6 +776,7 @@ export interface NexusGenFieldTypeNames {
     createStory: 'Story'
     deleteStory: 'Story'
     donate: 'Donation'
+    registerInTournament: 'User'
     updateProfileDetails: 'MyProfile'
     updateProfileRoles: 'MyProfile'
     updateUserPreferences: 'MyProfile'
@@ -778,6 +788,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     github: 'String'
     id: 'Int'
+    in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     lightning_address: 'String'
@@ -943,6 +954,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     github: 'String'
     id: 'Int'
+    in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     lightning_address: 'String'
@@ -978,6 +990,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     github: 'String'
     id: 'Int'
+    in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     lightning_address: 'String'
@@ -1024,6 +1037,10 @@ export interface NexusGenArgTypes {
     donate: { // args
       amount_in_sat: number; // Int!
     }
+    registerInTournament: { // args
+      data?: NexusGenInputs['RegisterInTournamentInput'] | null; // RegisterInTournamentInput
+      tournament_id: number; // Int!
+    }
     updateProfileDetails: { // args
       data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput
     }
@@ -1037,6 +1054,11 @@ export interface NexusGenArgTypes {
       amount_in_sat: number; // Int!
       item_id: number; // Int!
       item_type: NexusGenEnums['VOTE_ITEM_TYPE']; // VOTE_ITEM_TYPE!
+    }
+  }
+  MyProfile: {
+    in_tournament: { // args
+      id: number; // Int!
     }
   }
   Query: {
@@ -1109,6 +1131,16 @@ export interface NexusGenArgTypes {
       take: number | null; // Int
     }
     similarMakers: { // args
+      id: number; // Int!
+    }
+  }
+  User: {
+    in_tournament: { // args
+      id: number; // Int!
+    }
+  }
+  BaseUser: {
+    in_tournament: { // args
       id: number; // Int!
     }
   }

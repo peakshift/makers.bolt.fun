@@ -1,30 +1,57 @@
 import React from 'react'
 import { FaUsers } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 import Button from 'src/Components/Button/Button'
 import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
+import { openModal } from 'src/redux/features/modals.slice'
 import { useCountdown } from 'src/utils/hooks'
+import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 
 interface Props {
     start_date: string;
     makers_count: number
     avatars: string[]
+    isRegistered: boolean;
 }
 
-export default function RegisterCard({ makers_count, start_date, avatars }: Props) {
+export default function RegisterCard({ makers_count, start_date, avatars, isRegistered }: Props) {
 
     const counter = useCountdown(start_date)
+    const { id: tournamentId } = useParams()
+
+
+    const isLoggedIn = useAppSelector(state => !!state.user.me)
+    const dispatch = useAppDispatch()
+
+    const onRegister = () => {
+        if (!tournamentId) return;
+
+        if (isLoggedIn)
+            dispatch(openModal({
+                Modal: "RegisterTournamet_ConfrimAccount",
+                props: {
+                    tournamentId: Number(tournamentId)
+                }
+            }))
+        else
+            dispatch(openModal({
+                Modal: "RegisterTournamet_Login",
+                props: {
+                    tournamentId: Number(tournamentId)
+                }
+            }))
+    }
+
 
     return (
         <Card onlyMd className='flex flex-col gap-24'>
             <div>
-                <p className="text-body5 text-gray-600">
-                    <div className="flex">
-                        {avatars.map((img, idx) => <div className='w-[16px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
-                        <span className='self-center ml-24 font-medium '>+ {makers_count} makers</span>
-                    </div>
+                <p className="text-body5 text-gray-600 flex">
+                    {avatars.map((img, idx) => <div className='w-[16px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
+                    <span className='self-center ml-24 font-medium '>+ {makers_count} makers</span>
                 </p>
-                <Button color='primary' fullWidth className='mt-16'>Register</Button>
+                <Button color='primary' disabled={isRegistered} fullWidth className='mt-16' onClick={onRegister}>{isRegistered ? "Registered!" : "Register Now"}</Button>
             </div>
             <div>
                 {counter.isExpired ?

@@ -1,0 +1,12 @@
+query MeTournament($inTournamentId: Int!) {
+  me {
+    id
+    name
+    avatar
+    jobTitle
+
+    in_tournament(id: $inTournamentId)
+
+    ...UserRolesSkills
+  }
+}

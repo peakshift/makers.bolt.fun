@@ -54,8 +54,15 @@ const BaseUser = interfaceType({
         })
         t.nonNull.list.nonNull.field('tournaments', {
             type: Tournament,
-            resolve: (parent) => {
-                return []
+            resolve: async (parent) => {
+                return prisma.tournamentParticipant.findMany({
+                    where: {
+                        user_id: parent.id
+                    },
+                    include: {
+                        tournament: true
+                    }
+                }).then(d => d.map(item => item.tournament))
             }
         })
         t.nonNull.list.nonNull.field('similar_makers', {
@@ -81,6 +88,15 @@ const BaseUser = interfaceType({
                 return prisma.story.findMany({ where: { user_id: parent.id, is_published: true }, orderBy: { createdAt: "desc" } });
             }
         });
+
+        t.nonNull.boolean('in_tournament', {
+            args: {
+                id: nonNull(intArg())
+            },
+            resolve(parent, args) {
+                return prisma.tournamentParticipant.findFirst({ where: { tournament_id: args.id, user_id: parent.id } }).then(res => !!res)
+            }
+        })
 
 
     },

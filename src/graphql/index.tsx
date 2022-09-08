@@ -41,6 +41,7 @@ export type BaseUser = {
   email: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  in_tournament: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
@@ -55,6 +56,11 @@ export type BaseUser = {
   tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
+};
+
+
+export type BaseUserIn_TournamentArgs = {
+  id: Scalars['Int'];
 };
 
 export type Bounty = PostBase & {
@@ -173,6 +179,7 @@ export type Mutation = {
   createStory: Maybe<Story>;
   deleteStory: Maybe<Story>;
   donate: Donation;
+  registerInTournament: Maybe<User>;
   updateProfileDetails: Maybe<MyProfile>;
   updateProfileRoles: Maybe<MyProfile>;
   updateUserPreferences: MyProfile;
@@ -207,6 +214,12 @@ export type MutationDonateArgs = {
 };
 
 
+export type MutationRegisterInTournamentArgs = {
+  data: InputMaybe<RegisterInTournamentInput>;
+  tournament_id: Scalars['Int'];
+};
+
+
 export type MutationUpdateProfileDetailsArgs = {
   data: InputMaybe<ProfileDetailsInput>;
 };
@@ -235,6 +248,7 @@ export type MyProfile = BaseUser & {
   email: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  in_tournament: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
@@ -252,6 +266,11 @@ export type MyProfile = BaseUser & {
   twitter: Maybe<Scalars['String']>;
   walletsKeys: Array<WalletKey>;
   website: Maybe<Scalars['String']>;
+};
+
+
+export type MyProfileIn_TournamentArgs = {
+  id: Scalars['Int'];
 };
 
 export enum Post_Type {
@@ -469,6 +488,11 @@ export type Question = PostBase & {
   votes_count: Scalars['Int'];
 };
 
+export type RegisterInTournamentInput = {
+  email: Scalars['String'];
+  hacking_status: TournamentMakerHackingStatusEnum;
+};
+
 export enum RoleLevelEnum {
   Advanced = 'Advanced',
   Beginner = 'Beginner',
@@ -567,6 +591,11 @@ export type TournamentJudge = {
   name: Scalars['String'];
 };
 
+export enum TournamentMakerHackingStatusEnum {
+  OpenToConnect = 'OpenToConnect',
+  Solo = 'Solo'
+}
+
 export type TournamentMakersResponse = {
   __typename?: 'TournamentMakersResponse';
   hasNext: Maybe<Scalars['Boolean']>;
@@ -595,6 +624,7 @@ export type User = BaseUser & {
   email: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  in_tournament: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
@@ -609,6 +639,11 @@ export type User = BaseUser & {
   tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
+};
+
+
+export type UserIn_TournamentArgs = {
+  id: Scalars['Int'];
 };
 
 export type UserKeyInputType = {
@@ -826,11 +861,6 @@ export type ProjectDetailsQueryVariables = Exact<{
 
 export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string }, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
-export type MeTournamentQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeTournamentQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
-
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -858,12 +888,27 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
 
 export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
 
+export type RegisterInTournamentMutationVariables = Exact<{
+  tournamentId: Scalars['Int'];
+  data: InputMaybe<RegisterInTournamentInput>;
+}>;
+
+
+export type RegisterInTournamentMutation = { __typename?: 'Mutation', registerInTournament: { __typename?: 'User', id: number, in_tournament: boolean } | null };
+
+export type MeTournamentQueryVariables = Exact<{
+  inTournamentId: Scalars['Int'];
+}>;
+
+
+export type MeTournamentQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, in_tournament: boolean, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'User', id: number, avatar: string }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'User', id: number, avatar: string }> }, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, in_tournament: boolean, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -2188,44 +2233,6 @@ export function useProjectDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type ProjectDetailsQueryHookResult = ReturnType<typeof useProjectDetailsQuery>;
 export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDetailsLazyQuery>;
 export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
-export const MeTournamentDocument = gql`
-    query MeTournament {
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    ...UserRolesSkills
-  }
-}
-    ${UserRolesSkillsFragmentDoc}`;
-
-/**
- * __useMeTournamentQuery__
- *
- * To run a query within a React component, call `useMeTournamentQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeTournamentQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeTournamentQuery(baseOptions?: Apollo.QueryHookOptions<MeTournamentQuery, MeTournamentQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeTournamentQuery, MeTournamentQueryVariables>(MeTournamentDocument, options);
-      }
-export function useMeTournamentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeTournamentQuery, MeTournamentQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeTournamentQuery, MeTournamentQueryVariables>(MeTournamentDocument, options);
-        }
-export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery>;
-export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
-export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {
@@ -2390,6 +2397,81 @@ export function useGetProjectsInTournamentLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetProjectsInTournamentQueryHookResult = ReturnType<typeof useGetProjectsInTournamentQuery>;
 export type GetProjectsInTournamentLazyQueryHookResult = ReturnType<typeof useGetProjectsInTournamentLazyQuery>;
 export type GetProjectsInTournamentQueryResult = Apollo.QueryResult<GetProjectsInTournamentQuery, GetProjectsInTournamentQueryVariables>;
+export const RegisterInTournamentDocument = gql`
+    mutation RegisterInTournament($tournamentId: Int!, $data: RegisterInTournamentInput) {
+  registerInTournament(tournament_id: $tournamentId, data: $data) {
+    id
+    in_tournament(id: $tournamentId)
+  }
+}
+    `;
+export type RegisterInTournamentMutationFn = Apollo.MutationFunction<RegisterInTournamentMutation, RegisterInTournamentMutationVariables>;
+
+/**
+ * __useRegisterInTournamentMutation__
+ *
+ * To run a mutation, you first call `useRegisterInTournamentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterInTournamentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerInTournamentMutation, { data, loading, error }] = useRegisterInTournamentMutation({
+ *   variables: {
+ *      tournamentId: // value for 'tournamentId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useRegisterInTournamentMutation(baseOptions?: Apollo.MutationHookOptions<RegisterInTournamentMutation, RegisterInTournamentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterInTournamentMutation, RegisterInTournamentMutationVariables>(RegisterInTournamentDocument, options);
+      }
+export type RegisterInTournamentMutationHookResult = ReturnType<typeof useRegisterInTournamentMutation>;
+export type RegisterInTournamentMutationResult = Apollo.MutationResult<RegisterInTournamentMutation>;
+export type RegisterInTournamentMutationOptions = Apollo.BaseMutationOptions<RegisterInTournamentMutation, RegisterInTournamentMutationVariables>;
+export const MeTournamentDocument = gql`
+    query MeTournament($inTournamentId: Int!) {
+  me {
+    id
+    name
+    avatar
+    jobTitle
+    in_tournament(id: $inTournamentId)
+    ...UserRolesSkills
+  }
+}
+    ${UserRolesSkillsFragmentDoc}`;
+
+/**
+ * __useMeTournamentQuery__
+ *
+ * To run a query within a React component, call `useMeTournamentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeTournamentQuery({
+ *   variables: {
+ *      inTournamentId: // value for 'inTournamentId'
+ *   },
+ * });
+ */
+export function useMeTournamentQuery(baseOptions: Apollo.QueryHookOptions<MeTournamentQuery, MeTournamentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeTournamentQuery, MeTournamentQueryVariables>(MeTournamentDocument, options);
+      }
+export function useMeTournamentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeTournamentQuery, MeTournamentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeTournamentQuery, MeTournamentQueryVariables>(MeTournamentDocument, options);
+        }
+export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery>;
+export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
+export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetTournamentByIdDocument = gql`
     query GetTournamentById($id: Int!) {
   getTournamentById(id: $id) {
@@ -2438,8 +2520,16 @@ export const GetTournamentByIdDocument = gql`
       avatar
     }
   }
+  me {
+    id
+    name
+    avatar
+    jobTitle
+    in_tournament(id: $id)
+    ...UserRolesSkills
+  }
 }
-    `;
+    ${UserRolesSkillsFragmentDoc}`;
 
 /**
  * __useGetTournamentByIdQuery__

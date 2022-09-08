@@ -15,6 +15,7 @@ import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
 import { ConnectToMakerModal } from "src/features/Tournaments/pages/MakersPage/ConnectToMakerModal";
+import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals";
 
 
 
@@ -44,6 +45,10 @@ export const ALL_MODALS = {
   // Tournaments
   EventModal,
   ConnectToMakerModal,
+  RegisterTournamet_Login: RegistrationModals.LoginModal,
+  RegisterTournamet_ConfrimAccount: RegistrationModals.ConfirmAccount,
+  RegisterTournamet_RegistrationDetails: RegistrationModals.RegistrationDetails,
+  RegisterTournamet_RegistrationSuccess: RegistrationModals.RegistrationSuccess,
 
   // Misc
   ConfirmModal,

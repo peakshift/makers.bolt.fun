@@ -24,6 +24,7 @@ interface BaseUser {
   email: String
   github: String
   id: Int!
+  in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String
@@ -148,6 +149,7 @@ type Mutation {
   createStory(data: StoryInputType): Story
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
+  registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
   updateProfileRoles(data: ProfileRolesInput): MyProfile
   updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
@@ -160,6 +162,7 @@ type MyProfile implements BaseUser {
   email: String
   github: String
   id: Int!
+  in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String
@@ -285,6 +288,11 @@ type Question implements PostBase {
   votes_count: Int!
 }
 
+input RegisterInTournamentInput {
+  email: String!
+  hacking_status: TournamentMakerHackingStatusEnum!
+}
+
 enum RoleLevelEnum {
   Advanced
   Beginner
@@ -377,6 +385,11 @@ type TournamentJudge {
   name: String!
 }
 
+enum TournamentMakerHackingStatusEnum {
+  OpenToConnect
+  Solo
+}
+
 type TournamentMakersResponse {
   hasNext: Boolean
   hasPrev: Boolean
@@ -401,6 +414,7 @@ type User implements BaseUser {
   email: String
   github: String
   id: Int!
+  in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String

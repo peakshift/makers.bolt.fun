@@ -21,7 +21,7 @@ const fetchLnurlAuth = async () => {
     return data;
 }
 
-const useLnurlQuery = () => {
+export const useLnurlQuery = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<any>(null);
     const [data, setData] = useState<{ lnurl: string, session_token: string }>({ lnurl: '', session_token: '' })

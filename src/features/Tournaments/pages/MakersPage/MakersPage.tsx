@@ -11,7 +11,9 @@ interface Props {
 
 export default function MakersPage({ data: { id } }: Props) {
 
-    const query = useMeTournamentQuery();
+    const query = useMeTournamentQuery({
+        variables: { inTournamentId: id }
+    });
 
     return (
         <div className='pb-42'>
@@ -19,7 +21,7 @@ export default function MakersPage({ data: { id } }: Props) {
                 {query.loading ?
                     <MakerCardSkeleton />
                     :
-                    query.data?.me ?
+                    query.data?.me?.in_tournament ?
                         <MakerCard isMe maker={query.data.me as User} />
                         : null
                 }

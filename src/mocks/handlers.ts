@@ -283,7 +283,8 @@ export const handlers = [
         return res(
             ctx.data({
                 getTournamentById: getTournamentById(12),
-                getMakersInTournament: getMakersInTournament({ roleId: null, search: null, skip: null, take: 4, tournamentId: 12 })
+                getMakersInTournament: getMakersInTournament({ roleId: null, search: null, skip: null, take: 4, tournamentId: 12 }),
+                me: { ...me() }
             })
         )
     }),

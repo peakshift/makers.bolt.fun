@@ -345,9 +345,12 @@ const registerInTournament = extendType({
     type: 'Mutation',
     definition(t) {
         t.field('registerInTournament', {
-            type: 'boolean',
-            args: { data: RegisterInTournamentInput },
-            async resolve(_root, { email, hacking_status }, ctx) {
+            type: 'User',
+            args: {
+                data: RegisterInTournamentInput,
+                tournament_id: nonNull(intArg())
+            },
+            async resolve(_root, { tournament_id, data: { email, hacking_status } }, ctx) {
                 const user = await getUserByPubKey(ctx.userPubKey);
 
                 // Do some validation
@@ -359,12 +362,17 @@ const registerInTournament = extendType({
                 // ....
                 // ....
 
-                prisma.tournamentParticipant.create({
-                    data:{
-                        
+                return (await prisma.tournamentParticipant.create({
+                    data: {
+                        tournament_id,
+                        user_id: user.id,
+                        email,
+                        hacking_status
+                    },
+                    include: {
+                        user: true
                     }
-                })
-
+                })).user;
             }
         })
     },

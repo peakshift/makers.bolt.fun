@@ -1,13 +1,3 @@
-query MeTournament {
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    ...UserRolesSkills
-  }
-}
-
 query GetAllRoles {
   getAllMakersRoles {
     id
