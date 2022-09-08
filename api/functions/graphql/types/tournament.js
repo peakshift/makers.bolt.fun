@@ -5,7 +5,9 @@ const {
     extendType,
     nonNull,
     enumType,
+    inputObjectType,
 } = require('nexus');
+const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { prisma } = require('../../../prisma');
 const { paginationArgs } = require('./helpers');
 
@@ -48,6 +50,15 @@ const TournamentEventTypeEnum = enumType({
         OnlineMeetup: 3,
     },
 });
+
+const TournamentMakerHackingStatusEnum = enumType({
+    name: 'TournamentMakerHackingStatusEnum',
+    members: {
+        Solo: 0,
+        OpenToConnect: 1,
+    },
+});
+
 
 
 const TournamentEvent = objectType({
@@ -319,14 +330,58 @@ const getProjectsInTournament = extendType({
     }
 })
 
+
+
+const RegisterInTournamentInput = inputObjectType({
+    name: 'RegisterInTournamentInput',
+    definition(t) {
+        t.nonNull.string('email')
+        t.nonNull.field('hacking_status', { type: TournamentMakerHackingStatusEnum })
+    }
+})
+
+
+const registerInTournament = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('registerInTournament', {
+            type: 'boolean',
+            args: { data: RegisterInTournamentInput },
+            async resolve(_root, { email, hacking_status }, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                // Do some validation
+                if (!user)
+                    throw new Error("You have to login");
+
+
+                // Email verification here:
+                // ....
+                // ....
+
+                prisma.tournamentParticipant.create({
+                    data:{
+                        
+                    }
+                })
+
+            }
+        })
+    },
+})
+
 module.exports = {
     // Types 
     Tournament,
+    // Enums
+    TournamentEventTypeEnum,
+
     // Queries
     getTournamentById,
     getMakersInTournament,
     getProjectsInTournament,
 
-    // Enums
-    TournamentEventTypeEnum,
+    // Mutations
+    registerInTournament,
+
 }
