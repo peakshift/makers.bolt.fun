@@ -10,6 +10,7 @@ import InfoCard from "src/Components/InfoCard/InfoCard";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { NotificationsService } from "src/services";
+import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
 
 type MakerType = GetMakersInTournamentQuery['getMakersInTournament']['makers'][number]
 
@@ -22,6 +23,9 @@ export default function MakerCard({ maker, isMe }: Props) {
 
     const dispatch = useAppDispatch();
     const [hackingStatus, setHackingStatus] = useState(maker.hacking_status)
+
+    const { tournamentDetails: { id: tournamentId } } = useTournament()
+
 
     const contactLinksAvailable = maker.user.github || maker.user.linkedin || maker.user.twitter;
     const [udpateInfo, updateInfoMutation] = useUpdateTournamentRegistrationMutation()
@@ -42,7 +46,7 @@ export default function MakerCard({ maker, isMe }: Props) {
         setHackingStatus(value);
         udpateInfo({
             variables: {
-                tournamentId: 12,
+                tournamentId,
                 data: {
                     hacking_status: value
                 }

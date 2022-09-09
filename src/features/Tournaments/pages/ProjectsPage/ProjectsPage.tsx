@@ -1,17 +1,16 @@
 import { useDebouncedState } from '@react-hookz/web';
 import { useState } from 'react'
 import { FiSearch } from 'react-icons/fi';
-import { Tournament, useGetProjectsInTournamentQuery } from 'src/graphql'
+import { useGetProjectsInTournamentQuery } from 'src/graphql'
+import { useTournament } from '../TournamentDetailsPage/TournamentDetailsContext';
 import ProjectCard from './ProjectCard/ProjectCard';
 import ProjectCardSkeleton from './ProjectCard/ProjectCard.Skeleton';
 
-interface Props {
-    data: Pick<Tournament,
-        | 'id'>
-}
 
-export default function ProjectsPage({ data: { id } }: Props) {
+export default function ProjectsPage() {
 
+
+    const { tournamentDetails: { id } } = useTournament()
 
     const [searchFilter, setSearchFilter] = useState("");
     const [debouncedsearchFilter, setDebouncedSearchFilter] = useDebouncedState("", 500);

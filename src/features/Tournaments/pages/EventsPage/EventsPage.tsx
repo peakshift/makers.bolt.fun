@@ -1,18 +1,14 @@
 import { useState } from 'react'
-import { Tournament, TournamentEventTypeEnum } from 'src/graphql'
+import { TournamentEventTypeEnum } from 'src/graphql'
+import { useTournament } from '../TournamentDetailsPage/TournamentDetailsContext';
 import EventCard from './EventCard/EventCard';
 import EventsFilters from './EventsFilters/EventsFilters';
 
-interface Props {
-    data: Pick<Tournament,
-        | 'events_count'
-        | 'events'>
-}
-
-export default function EventsPage({ data: { events, events_count } }: Props) {
+export default function EventsPage() {
 
     const [searchFilter, setSearchFilter] = useState("")
     const [eventFilter, setEventFilter] = useState<TournamentEventTypeEnum | null>(null)
+    const { tournamentDetails: { events, events_count } } = useTournament()
 
     return (
         <div className='pb-42'>

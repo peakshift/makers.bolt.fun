@@ -1,18 +1,17 @@
-import { Tournament, useMeTournamentQuery, User, } from 'src/graphql'
+import { useMeTournamentQuery, User, } from 'src/graphql'
+import { useTournament } from '../TournamentDetailsPage/TournamentDetailsContext';
 import MakerCard from './MakerCard/MakerCard';
 import MakerCardSkeleton from './MakerCard/MakerCard.Skeleton';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
 
-interface Props {
-    data: Pick<Tournament,
-        | 'id'>
-}
 
 
-export default function MakersPage({ data: { id } }: Props) {
+export default function MakersPage() {
+
+    const { tournamentDetails: { id } } = useTournament()
 
     const query = useMeTournamentQuery({
-        variables: { id: id }
+        variables: { id }
     });
 
     return (

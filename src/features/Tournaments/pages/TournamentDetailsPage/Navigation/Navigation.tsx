@@ -1,18 +1,17 @@
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Tournament } from 'src/graphql'
 import { useCarousel } from 'src/utils/hooks'
+import { useTournament } from '../TournamentDetailsContext'
 
-interface Props {
-    data: Pick<Tournament, 'events_count' | 'makers_count' | 'projects_count'>
-}
 
-export default function Navigation({ data }: Props) {
+export default function Navigation() {
 
     const { viewportRef, } = useCarousel({
         align: 'start', slidesToScroll: 2,
         containScroll: "trimSnaps",
     })
+
+    const { tournamentDetails } = useTournament()
 
     const links = useMemo(() => [
         {
@@ -20,11 +19,11 @@ export default function Navigation({ data }: Props) {
             path: "overview",
         },
         {
-            text: `Events (${data.events_count})`,
+            text: `Events (${tournamentDetails.events_count})`,
             path: "events",
         },
         {
-            text: `Makers (${data.makers_count})`,
+            text: `Makers (${tournamentDetails.makers_count})`,
             path: "makers",
         },
         {
@@ -42,7 +41,7 @@ export default function Navigation({ data }: Props) {
         //     path: "resources",
         //     isDisabled: true,
         // },
-    ], [data.events_count, data.makers_count])
+    ], [tournamentDetails.events_count, tournamentDetails.makers_count])
 
     return (
         <div className="w-full bg-white py-16 border-b border-gray-200 sticky-top-element z-10">
