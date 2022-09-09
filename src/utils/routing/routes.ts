@@ -34,6 +34,11 @@ type RouteOptions =
     | {
         type: "edit-profile",
     }
+    | {
+        type: "tournament",
+        id: string | number
+        tab: 'overview' | 'events' | 'makers' | 'projects'
+    }
 
 export function createRoute(options: RouteOptions) {
 
@@ -62,6 +67,10 @@ export function createRoute(options: RouteOptions) {
 
     if (options.type === 'edit-profile')
         return '/edit-profile'
+
+
+    if (options.type === 'tournament')
+        return `/tournaments/${options.id}/${options.tab}`
 
     return ""
 }

@@ -475,6 +475,7 @@ type Vote {
 }
 
 type WalletKey {
+  createdAt: Date!
   is_current: Boolean!
   key: String!
   name: String!

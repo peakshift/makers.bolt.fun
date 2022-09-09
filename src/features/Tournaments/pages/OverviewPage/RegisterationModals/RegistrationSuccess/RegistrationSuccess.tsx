@@ -6,10 +6,11 @@ import { useAppSelector } from "src/utils/hooks";
 import Button from 'src/Components/Button/Button';
 import Confetti from "react-confetti";
 import { Portal } from 'src/Components/Portal/Portal';
+import { createRoute } from 'src/utils/routing';
 
 
 interface Props extends ModalCard {
-
+    tournamentId: number
 }
 
 export default function RegistrationSuccess({ onClose, direction, ...props }: Props) {
@@ -60,8 +61,8 @@ export default function RegistrationSuccess({ onClose, direction, ...props }: Pr
                 </div>
 
                 <div className="flex flex-col gap-16 w-full mt-24">
-                    <Button fullWidth color='primary'>👾 Complete maker profile</Button>
-                    <Button fullWidth color='gray'>🤝 Team up with other makers</Button>
+                    <Button fullWidth href={createRoute({ type: "edit-profile" })} onClick={onClose} color='primary'>👾 Complete maker profile</Button>
+                    <Button fullWidth href={createRoute({ type: "tournament", tab: "makers", id: props.tournamentId })} onClick={onClose} color='gray'>🤝 Team up with other makers</Button>
                 </div>
             </div>
         </motion.div>

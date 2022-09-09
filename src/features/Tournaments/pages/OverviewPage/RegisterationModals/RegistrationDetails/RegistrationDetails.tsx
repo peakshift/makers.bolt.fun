@@ -82,7 +82,10 @@ export default function RegistrationDetails({ onClose, direction, ...props }: Pr
                 if (data.registerInTournament?.in_tournament) {
                     dispatch(replaceModal({
                         Modal: "RegisterTournamet_RegistrationSuccess",
-                        direction: Direction.NEXT
+                        direction: Direction.NEXT,
+                        props: {
+                            tournamentId: Number(props.tournamentId)
+                        }
                     }))
 
                 }
