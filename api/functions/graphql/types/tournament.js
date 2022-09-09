@@ -6,10 +6,11 @@ const {
     nonNull,
     enumType,
     inputObjectType,
+    booleanArg,
 } = require('nexus');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { prisma } = require('../../../prisma');
-const { paginationArgs } = require('./helpers');
+const { paginationArgs, removeNulls } = require('./helpers');
 
 
 
@@ -196,6 +197,7 @@ const ParticipationInfo = objectType({
     name: "ParticipationInfo",
     definition(t) {
         t.nonNull.date('createdAt')
+        t.nonNull.string('email')
         t.nonNull.field('hacking_status', { type: TournamentMakerHackingStatusEnum });
 
     }
@@ -237,6 +239,7 @@ const getMakersInTournament = extendType({
                 ...paginationArgs({ take: 10 }),
                 search: stringArg(),
                 roleId: intArg(),
+                openToConnect: booleanArg()
             },
             async resolve(_, args, ctx) {
 
@@ -271,11 +274,32 @@ const getMakersInTournament = extendType({
                     }
                 })
 
+                if (args.openToConnect) filters.push({
+                    OR: [
+                        {
+                            github: {
+                                not: null
+                            }
+                        },
+                        {
+                            twitter: {
+                                not: null
+                            }
+                        },
+                        {
+                            linkedin: {
+                                not: null
+                            }
+                        },
+                    ]
+                })
+
                 if (user?.id) filters.push({
                     id: {
                         not: user.id
                     }
                 })
+
 
                 const makers = (await prisma.tournamentParticipant.findMany({
                     where: {
@@ -284,6 +308,9 @@ const getMakersInTournament = extendType({
                             user: {
                                 AND: filters
                             }
+                        }),
+                        ...(args.openToConnect && {
+                            hacking_status: TournamentMakerHackingStatusEnum.value.members.OpenToConnect
                         })
                     },
                     orderBy: {
@@ -433,6 +460,50 @@ const registerInTournament = extendType({
     },
 })
 
+const UpdateTournamentRegistrationInput = inputObjectType({
+    name: 'UpdateTournamentRegistrationInput',
+    definition(t) {
+        t.string('email')
+        t.field('hacking_status', { type: TournamentMakerHackingStatusEnum })
+    }
+})
+
+const updateTournamentRegistration = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('updateTournamentRegistration', {
+            type: ParticipationInfo,
+            args: {
+                data: UpdateTournamentRegistrationInput,
+                tournament_id: nonNull(intArg())
+            },
+            async resolve(_root, { tournament_id, data: { email, hacking_status } }, ctx) {
+                const user = await getUserByPubKey(ctx.userPubKey);
+
+                // Do some validation
+                // if (!user)
+                //     throw new Error("You have to login");
+
+
+                // Email verification here:
+                // ....
+                // .... 
+
+                return prisma.tournamentParticipant.update({
+                    where: {
+                        tournament_id_user_id: { tournament_id, user_id: user.id }
+                    },
+                    data: removeNulls({
+                        email,
+                        hacking_status
+                    }),
+                });
+            }
+        })
+    },
+})
+
+
 module.exports = {
     // Types 
     Tournament,
@@ -448,5 +519,5 @@ module.exports = {
 
     // Mutations
     registerInTournament,
-
+    updateTournamentRegistration,
 }

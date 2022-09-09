@@ -64,6 +64,10 @@ export interface NexusGenInputs {
     tags: string[]; // [String!]!
     title: string; // String!
   }
+  UpdateTournamentRegistrationInput: { // input type
+    email?: string | null; // String
+    hacking_status?: NexusGenEnums['TournamentMakerHackingStatusEnum'] | null; // TournamentMakerHackingStatusEnum
+  }
   UserKeyInputType: { // input type
     key: string; // String!
     name: string; // String!
@@ -194,6 +198,7 @@ export interface NexusGenObjects {
   }
   ParticipationInfo: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
+    email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
   }
   PostComment: { // root type
@@ -445,6 +450,7 @@ export interface NexusGenFieldTypes {
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    updateTournamentRegistration: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     updateUserPreferences: NexusGenRootTypes['MyProfile']; // MyProfile!
     vote: NexusGenRootTypes['Vote']; // Vote!
   }
@@ -475,6 +481,7 @@ export interface NexusGenFieldTypes {
   }
   ParticipationInfo: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
+    email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
   }
   PostComment: { // field return type
@@ -798,6 +805,7 @@ export interface NexusGenFieldTypeNames {
     registerInTournament: 'User'
     updateProfileDetails: 'MyProfile'
     updateProfileRoles: 'MyProfile'
+    updateTournamentRegistration: 'ParticipationInfo'
     updateUserPreferences: 'MyProfile'
     vote: 'Vote'
   }
@@ -828,6 +836,7 @@ export interface NexusGenFieldTypeNames {
   }
   ParticipationInfo: { // field return type name
     createdAt: 'Date'
+    email: 'String'
     hacking_status: 'TournamentMakerHackingStatusEnum'
   }
   PostComment: { // field return type name
@@ -1076,6 +1085,10 @@ export interface NexusGenArgTypes {
     updateProfileRoles: { // args
       data?: NexusGenInputs['ProfileRolesInput'] | null; // ProfileRolesInput
     }
+    updateTournamentRegistration: { // args
+      data?: NexusGenInputs['UpdateTournamentRegistrationInput'] | null; // UpdateTournamentRegistrationInput
+      tournament_id: number; // Int!
+    }
     updateUserPreferences: { // args
       userKeys?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]
     }
@@ -1112,6 +1125,7 @@ export interface NexusGenArgTypes {
       project_id: number; // Int!
     }
     getMakersInTournament: { // args
+      openToConnect?: boolean | null; // Boolean
       roleId?: number | null; // Int
       search?: string | null; // String
       skip?: number | null; // Int

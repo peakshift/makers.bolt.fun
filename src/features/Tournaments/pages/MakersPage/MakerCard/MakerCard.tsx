@@ -1,5 +1,5 @@
 import Button from "src/Components/Button/Button"
-import { GetMakersInTournamentQuery, TournamentMakerHackingStatusEnum, } from "src/graphql";
+import { GetMakersInTournamentQuery, TournamentMakerHackingStatusEnum, useUpdateTournamentRegistrationMutation } from "src/graphql";
 import { useAppDispatch, } from "src/utils/hooks";
 import Card from 'src/Components/Card/Card';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
@@ -8,6 +8,8 @@ import { createRoute } from 'src/utils/routing';
 import { openModal } from "src/redux/features/modals.slice";
 import InfoCard from "src/Components/InfoCard/InfoCard";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { NotificationsService } from "src/services";
 
 type MakerType = GetMakersInTournamentQuery['getMakersInTournament']['makers'][number]
 
@@ -19,8 +21,10 @@ interface Props {
 export default function MakerCard({ maker, isMe }: Props) {
 
     const dispatch = useAppDispatch();
+    const [hackingStatus, setHackingStatus] = useState(maker.hacking_status)
 
     const contactLinksAvailable = maker.user.github || maker.user.linkedin || maker.user.twitter;
+    const [udpateInfo, updateInfoMutation] = useUpdateTournamentRegistrationMutation()
 
     let actionBtn = <></>
 
@@ -32,7 +36,23 @@ export default function MakerCard({ maker, isMe }: Props) {
         actionBtn = <Button fullWidth color='white' disabled size='sm' className='ml-auto'>Hacking solo</Button>
 
 
-    const missingFields = isMe && getMissingFields(maker)
+    const missingFields = isMe && getMissingFields(maker);
+
+    const changeHacktingStatus = (value: typeof hackingStatus) => {
+        setHackingStatus(value);
+        udpateInfo({
+            variables: {
+                tournamentId: 12,
+                data: {
+                    hacking_status: value
+                }
+            },
+        })
+            .catch(() => {
+                setHackingStatus(maker.hacking_status)
+                NotificationsService.error("A network error happened")
+            })
+    }
 
     return (
         <Card>
@@ -76,6 +96,19 @@ export default function MakerCard({ maker, isMe }: Props) {
                     <p className="text-body4 text-gray-400">No skills added</p>
                 }
             </div>
+            {isMe && <div className="mt-24">
+                <p className="text-body5 text-gray-900 font-medium mb-12">🚦 Hacking status</p>
+                <div className="flex flex-wrap gap-8">
+                    <button
+                        className={`py-8 px-16 rounded-10 border ${hackingStatus === TournamentMakerHackingStatusEnum.OpenToConnect ? "bg-primary-100 text-primary-600 border-primary-200" : "bg-gray-50 hover:bg-gray-100 border-gray-200"}`}
+                        onClick={() => changeHacktingStatus(TournamentMakerHackingStatusEnum.OpenToConnect)}
+                    >👋 Open to connect</button>
+                    <button
+                        className={`py-8 px-16 rounded-10 border ${hackingStatus === TournamentMakerHackingStatusEnum.Solo ? "bg-primary-100 text-primary-600 border-primary-200" : "bg-gray-50 hover:bg-gray-100 border-gray-200"}`}
+                        onClick={() => changeHacktingStatus(TournamentMakerHackingStatusEnum.Solo)}
+                    >👻 Hacking han solo</button>
+                </div>
+            </div>}
             <div className="md:hidden w-full mt-24">{actionBtn}</div>
             {missingFields && <InfoCard className="!bg-warning-50 !border-warning-200 mt-24">
                 <span className="font-bold">👾 Complete your profile:</span> make it easy for other makers to find you by adding your <span className="font-bold">{missingFields}</span>. You can add this information in your profile’s <Link to={createRoute({ type: "edit-profile" })} className='underline text-blue-500'>Settings ⚙️ menu.</Link>

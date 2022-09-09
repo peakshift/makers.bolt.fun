@@ -27,6 +27,7 @@ export default function MakersList(props: Props) {
         search: props.searchFilter ?? null,
         skip: ITEMS_PER_PAGE * page,
         take: ITEMS_PER_PAGE,
+        openToConnect: props.onlyLookingToTeam ?? null
     });
 
 
@@ -40,8 +41,8 @@ export default function MakersList(props: Props) {
 
     useEffect(() => {
         setPage(0);
-        setQueryFilter(f => ({ ...f, search: props.searchFilter, roleId: props.roleFilter, skip: 0 }))
-    }, [props.roleFilter, props.searchFilter]);
+        setQueryFilter(f => ({ ...f, search: props.searchFilter, roleId: props.roleFilter, openToConnect: props.onlyLookingToTeam ?? null, skip: 0 }))
+    }, [props.onlyLookingToTeam, props.roleFilter, props.searchFilter]);
 
 
 

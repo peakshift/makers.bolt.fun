@@ -12,6 +12,7 @@ query GetMakersInTournament(
   $skip: Int
   $search: String
   $roleId: Int
+  $openToConnect: Boolean
 ) {
   getMakersInTournament(
     tournamentId: $tournamentId
@@ -19,6 +20,7 @@ query GetMakersInTournament(
     skip: $skip
     search: $search
     roleId: $roleId
+    openToConnect: $openToConnect
   ) {
     hasNext
     hasPrev
@@ -81,5 +83,16 @@ query GetProjectsInTournament(
         level
       }
     }
+  }
+}
+
+mutation UpdateTournamentRegistration(
+  $tournamentId: Int!
+  $data: UpdateTournamentRegistrationInput
+) {
+  updateTournamentRegistration(tournament_id: $tournamentId, data: $data) {
+    createdAt
+    email
+    hacking_status
   }
 }

@@ -182,6 +182,7 @@ export type Mutation = {
   registerInTournament: Maybe<User>;
   updateProfileDetails: Maybe<MyProfile>;
   updateProfileRoles: Maybe<MyProfile>;
+  updateTournamentRegistration: Maybe<ParticipationInfo>;
   updateUserPreferences: MyProfile;
   vote: Vote;
 };
@@ -227,6 +228,12 @@ export type MutationUpdateProfileDetailsArgs = {
 
 export type MutationUpdateProfileRolesArgs = {
   data: InputMaybe<ProfileRolesInput>;
+};
+
+
+export type MutationUpdateTournamentRegistrationArgs = {
+  data: InputMaybe<UpdateTournamentRegistrationInput>;
+  tournament_id: Scalars['Int'];
 };
 
 
@@ -282,6 +289,7 @@ export enum Post_Type {
 export type ParticipationInfo = {
   __typename?: 'ParticipationInfo';
   createdAt: Scalars['Date'];
+  email: Scalars['String'];
   hacking_status: TournamentMakerHackingStatusEnum;
 };
 
@@ -309,17 +317,17 @@ export type PostComment = {
 };
 
 export type ProfileDetailsInput = {
-  avatar: InputMaybe<Scalars['String']>;
-  bio: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['String']>;
-  github: InputMaybe<Scalars['String']>;
-  jobTitle: InputMaybe<Scalars['String']>;
-  lightning_address: InputMaybe<Scalars['String']>;
-  linkedin: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
-  website: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  bio?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  jobTitle?: InputMaybe<Scalars['String']>;
+  lightning_address?: InputMaybe<Scalars['String']>;
+  linkedin?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  twitter?: InputMaybe<Scalars['String']>;
+  website?: InputMaybe<Scalars['String']>;
 };
 
 export type ProfileRolesInput = {
@@ -407,6 +415,7 @@ export type QueryGetLnurlDetailsForProjectArgs = {
 
 
 export type QueryGetMakersInTournamentArgs = {
+  openToConnect: InputMaybe<Scalars['Boolean']>;
   roleId: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -533,9 +542,9 @@ export type Story = PostBase & {
 
 export type StoryInputType = {
   body: Scalars['String'];
-  cover_image: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['Int']>;
-  is_published: InputMaybe<Scalars['Boolean']>;
+  cover_image?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  is_published?: InputMaybe<Scalars['Boolean']>;
   tags: Array<Scalars['String']>;
   title: Scalars['String'];
 };
@@ -634,6 +643,11 @@ export type TournamentProjectsResponse = {
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
   projects: Array<Project>;
+};
+
+export type UpdateTournamentRegistrationInput = {
+  email?: InputMaybe<Scalars['String']>;
+  hacking_status?: InputMaybe<TournamentMakerHackingStatusEnum>;
 };
 
 export type User = BaseUser & {
@@ -891,6 +905,7 @@ export type GetMakersInTournamentQueryVariables = Exact<{
   skip: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
   roleId: InputMaybe<Scalars['Int']>;
+  openToConnect: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -906,6 +921,14 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
 
 
 export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
+
+export type UpdateTournamentRegistrationMutationVariables = Exact<{
+  tournamentId: Scalars['Int'];
+  data: InputMaybe<UpdateTournamentRegistrationInput>;
+}>;
+
+
+export type UpdateTournamentRegistrationMutation = { __typename?: 'Mutation', updateTournamentRegistration: { __typename?: 'ParticipationInfo', createdAt: any, email: string, hacking_status: TournamentMakerHackingStatusEnum } | null };
 
 export type RegisterInTournamentMutationVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -2289,13 +2312,14 @@ export type GetAllRolesQueryHookResult = ReturnType<typeof useGetAllRolesQuery>;
 export type GetAllRolesLazyQueryHookResult = ReturnType<typeof useGetAllRolesLazyQuery>;
 export type GetAllRolesQueryResult = Apollo.QueryResult<GetAllRolesQuery, GetAllRolesQueryVariables>;
 export const GetMakersInTournamentDocument = gql`
-    query GetMakersInTournament($tournamentId: Int!, $take: Int, $skip: Int, $search: String, $roleId: Int) {
+    query GetMakersInTournament($tournamentId: Int!, $take: Int, $skip: Int, $search: String, $roleId: Int, $openToConnect: Boolean) {
   getMakersInTournament(
     tournamentId: $tournamentId
     take: $take
     skip: $skip
     search: $search
     roleId: $roleId
+    openToConnect: $openToConnect
   ) {
     hasNext
     hasPrev
@@ -2341,6 +2365,7 @@ export const GetMakersInTournamentDocument = gql`
  *      skip: // value for 'skip'
  *      search: // value for 'search'
  *      roleId: // value for 'roleId'
+ *      openToConnect: // value for 'openToConnect'
  *   },
  * });
  */
@@ -2418,6 +2443,42 @@ export function useGetProjectsInTournamentLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetProjectsInTournamentQueryHookResult = ReturnType<typeof useGetProjectsInTournamentQuery>;
 export type GetProjectsInTournamentLazyQueryHookResult = ReturnType<typeof useGetProjectsInTournamentLazyQuery>;
 export type GetProjectsInTournamentQueryResult = Apollo.QueryResult<GetProjectsInTournamentQuery, GetProjectsInTournamentQueryVariables>;
+export const UpdateTournamentRegistrationDocument = gql`
+    mutation UpdateTournamentRegistration($tournamentId: Int!, $data: UpdateTournamentRegistrationInput) {
+  updateTournamentRegistration(tournament_id: $tournamentId, data: $data) {
+    createdAt
+    email
+    hacking_status
+  }
+}
+    `;
+export type UpdateTournamentRegistrationMutationFn = Apollo.MutationFunction<UpdateTournamentRegistrationMutation, UpdateTournamentRegistrationMutationVariables>;
+
+/**
+ * __useUpdateTournamentRegistrationMutation__
+ *
+ * To run a mutation, you first call `useUpdateTournamentRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTournamentRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTournamentRegistrationMutation, { data, loading, error }] = useUpdateTournamentRegistrationMutation({
+ *   variables: {
+ *      tournamentId: // value for 'tournamentId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateTournamentRegistrationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTournamentRegistrationMutation, UpdateTournamentRegistrationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTournamentRegistrationMutation, UpdateTournamentRegistrationMutationVariables>(UpdateTournamentRegistrationDocument, options);
+      }
+export type UpdateTournamentRegistrationMutationHookResult = ReturnType<typeof useUpdateTournamentRegistrationMutation>;
+export type UpdateTournamentRegistrationMutationResult = Apollo.MutationResult<UpdateTournamentRegistrationMutation>;
+export type UpdateTournamentRegistrationMutationOptions = Apollo.BaseMutationOptions<UpdateTournamentRegistrationMutation, UpdateTournamentRegistrationMutationVariables>;
 export const RegisterInTournamentDocument = gql`
     mutation RegisterInTournament($tournamentId: Int!, $data: RegisterInTournamentInput) {
   registerInTournament(tournament_id: $tournamentId, data: $data) {
