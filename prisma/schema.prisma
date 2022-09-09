@@ -72,8 +72,9 @@ model User {
 }
 
 model UserKey {
-  key  String @id
-  name String @default("My new wallet key")
+  key       String   @id
+  name      String   @default("My new wallet key")
+  createdAt DateTime @default(now())
 
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
@@ -349,6 +350,7 @@ model TournamentParticipant {
   tournament_id Int
   user          User       @relation(fields: [user_id], references: [id])
   user_id       Int
+  createdAt     DateTime   @default(now())
 
   email          String
   hacking_status Int
