@@ -52,6 +52,7 @@ model User {
   website           String?
   twitter           String?
   github            String?
+  discord           String?
   linkedin          String?
   bio               String?
   location          String?
