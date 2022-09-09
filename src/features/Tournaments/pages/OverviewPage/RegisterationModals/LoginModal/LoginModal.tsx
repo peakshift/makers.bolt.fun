@@ -6,7 +6,7 @@ import { useMeTournamentQuery } from 'src/graphql';
 import Button from 'src/Components/Button/Button';
 import { QRCodeSVG } from 'qrcode.react';
 import { Grid } from 'react-loader-spinner';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CONSTS } from 'src/utils';
 import useCopyToClipboard from 'src/utils/hooks/useCopyToClipboard';
 import { useLnurlQuery } from 'src/features/Auth/pages/LoginPage/LoginPage';
@@ -24,7 +24,9 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
     const [copied, setCopied] = useState(false);
 
     const { loadingLnurl, data: { lnurl, session_token }, error } = useLnurlQuery();
-    const clipboard = useCopyToClipboard()
+    const clipboard = useCopyToClipboard();
+
+    const canFetchIsLogged = useRef(true)
 
     const dispatch = useAppDispatch();
 
@@ -64,17 +66,25 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
     const startPolling = useCallback(
         () => {
             const interval = setInterval(() => {
+                if (canFetchIsLogged.current === false) return;
+
+                canFetchIsLogged.current = false;
                 fetch(CONSTS.apiEndpoint + '/is-logged-in', {
                     credentials: 'include',
                     headers: {
                         session_token
                     }
-                }).then(data => data.json())
+                })
+                    .then(data => data.json())
                     .then(data => {
                         if (data.logged_in) {
                             clearInterval(interval)
                             refetch();
                         }
+                    })
+                    .catch()
+                    .finally(() => {
+                        canFetchIsLogged.current = true;
                     })
             }, 2000);
 
@@ -91,6 +101,7 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
             interval = startPolling();
 
         return () => {
+            canFetchIsLogged.current = true;
             clearInterval(interval)
         }
     }, [lnurl, startPolling])
