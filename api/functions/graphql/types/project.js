@@ -6,7 +6,7 @@ const {
     nonNull,
 } = require('nexus')
 const { prisma } = require('../../../prisma');
-const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 const { MakerRole } = require('./users');
@@ -20,6 +20,7 @@ const Project = objectType({
         t.nonNull.string('description');
         t.nonNull.string('cover_image', {
             async resolve(parent) {
+                if (!parent.cover_image_id) return null
                 const imgObject = await prisma.hostedImage.findUnique({
                     where: {
                         id: parent.cover_image_id
@@ -31,6 +32,7 @@ const Project = objectType({
         });
         t.nonNull.string('thumbnail_image', {
             async resolve(parent) {
+                if (!parent.thumbnail_image_id) return null
                 const imgObject = await prisma.hostedImage.findUnique({
                     where: {
                         id: parent.thumbnail_image_id
@@ -42,6 +44,7 @@ const Project = objectType({
         });
         t.nonNull.list.nonNull.string('screenshots', {
             async resolve(parent) {
+                if (!parent.screenshots_ids) return null
                 const imgObject = await prisma.hostedImage.findMany({
                     where: {
                         id: { in: parent.screenshots_ids }

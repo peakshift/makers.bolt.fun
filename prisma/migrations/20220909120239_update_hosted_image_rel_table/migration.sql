@@ -13,7 +13,8 @@ ADD COLUMN     "screenshots_ids" INTEGER[],
 ADD COLUMN     "thumbnail_image_id" INTEGER;
 
 -- AlterTable
-ALTER TABLE "Story" ADD COLUMN     "cover_image_id" INTEGER;
+ALTER TABLE "Story" ADD COLUMN     "body_image_ids" INTEGER[],
+ADD COLUMN     "cover_image_id" INTEGER;
 
 -- AlterTable
 ALTER TABLE "User" ADD COLUMN     "avatar_id" INTEGER;

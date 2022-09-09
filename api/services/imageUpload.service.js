@@ -42,6 +42,19 @@ async function getDirectUploadUrl() {
     return { id: data.id, uploadURL: data.uploadURL, provider: 'cloudflare' }
 }
 
+async function deleteImageFromProvider(providerImageId) {
+    try {
+        const url = operationUrls['image.delete'] + providerImageId
+        const result = await axios.delete(url, getAxiosConfig())
+
+        if (!result.data.success) {
+            throw new Error(result.data, { cause: result.data.errors })
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
 async function deleteImage(hostedImageId) {
     if (!hostedImageId) throw new Error("argument 'hostedImageId' must be provider")
 
@@ -52,23 +65,34 @@ async function deleteImage(hostedImageId) {
     })
 
     if (!hostedImage) throw new Error(`No HostedImage row found for HostedImage.id=${hostedImageId}`)
-    if (hostedImage.provider_image_id && hostedImage.provider_image_id === '') throw new Error(`Field 'provider_image_id' for HostedImage.id=${hostedImageId} must not be empty. Current value '${hostedImage.provider_image_id}'`)
+    if (hostedImage.provider_image_id && hostedImage.provider_image_id === '')
+        throw new Error(`Field 'provider_image_id' for HostedImage.id=${hostedImageId} must not be empty. Current value '${hostedImage.provider_image_id}'`)
 
-    const url = operationUrls['image.delete'] + hostedImage.provider_image_id
-    const result = await axios.delete(url, getAxiosConfig())
-
-    if (!result.data.success) {
-        throw new Error(result.data, { cause: result.data.errors })
-    }
-
-    await prisma.hostedImage.delete({
+    // Set is_used to false in case of deletion fail from the hosting image provider. The scheduled job will try to delete the HostedImage row
+    await prisma.hostedImage.update({
         where: {
-            id: hostedImageId,
+            id: hostedImage.id,
+        },
+        data: {
+            is_used: false,
         },
     })
+
+    if (hostedImage.provider_image_id && hostedImage.provider_image_id !== '') {
+        deleteImageFromProvider(hostedImage.provider_image_id)
+            .then(async () => {
+                await prisma.hostedImage.delete({
+                    where: {
+                        id: hostedImageId,
+                    },
+                })
+            })
+            .catch((error) => console.error(error))
+    }
 }
 
 module.exports = {
     getDirectUploadUrl,
     deleteImage,
+    deleteImageFromProvider,
 }

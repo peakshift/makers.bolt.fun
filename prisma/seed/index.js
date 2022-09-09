@@ -180,9 +180,30 @@ async function migrateOldImages() {
         select: {
             id: true,
             cover_image: true,
+            body: true,
         }
     })
     for (const story of stories) {
+        /**
+         * Story.body to Story.body_image_ids
+         **/
+        let bodyImageIds = [];
+        const regex = /(?:!\[(.*?)\]\((.*?)\))/g
+        let match;
+        while((match = regex.exec(story.body))) {
+            const [,,value] = match
+            let hostedImageId = await _insertInHostedImage(value)
+            bodyImageIds.push(hostedImageId)
+        }
+        if (bodyImageIds.length > 0) {
+            await _updateObjectWithHostedImageId(prisma.story, story.id, {
+                body_image_ids: bodyImageIds,
+            })
+        }
+
+        /**
+         * Story.cover_image to Story.cover_image_id
+         **/
         if (story.cover_image) {
             let hostedImageId = await _insertInHostedImage(story.cover_image)
             await _updateObjectWithHostedImageId(prisma.story, story.id, {

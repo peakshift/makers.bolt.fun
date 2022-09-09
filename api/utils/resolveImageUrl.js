@@ -26,16 +26,20 @@ function resolveImgObjectToUrl(imgObject, variant = null) {
         return imgObject.url
     }
 
-    const provider = PROVIDERS.find((p) => p.name === imgObject.provider)
+    return getUrlFromProvider(imgObject.provider, imgObject.provider_image_id, variant)
+}
 
-    if (provider) {
-        if (provider && provider.name === 'cloudflare') {
-            const variantName = variant ?? provider.variants.find((v) => v.default).name
-            return provider.prefixUrl + imgObject.provider_image_id + '/' + variantName
+function getUrlFromProvider(provider, providerImageId, variant = null) {
+    const p = PROVIDERS.find((p) => p.name === provider)
+
+    if (p) {
+        if (p && p.name === 'cloudflare') {
+            const variantName = variant ?? p.variants.find((v) => v.default).name
+            return p.prefixUrl + providerImageId + '/' + variantName
         }
     }
 
     throw new Error('Hosting images provider not supported')
 }
 
-module.exports = resolveImgObjectToUrl
+module.exports = { resolveImgObjectToUrl, getUrlFromProvider }

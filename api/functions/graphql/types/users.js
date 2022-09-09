@@ -5,7 +5,7 @@ const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 const { ImageInput } = require('./misc');
 const { Tournament } = require('./tournaments');
-const resolveImgObjectToUrl = require('../../../utils/resolveImageUrl');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { deleteImage } = require('../../../services/imageUpload.service');
 
 
@@ -18,6 +18,7 @@ const BaseUser = interfaceType({
         t.nonNull.string('name');
         t.nonNull.string('avatar', {
             async resolve(parent) {
+                if (!parent.avatar_id) return null
                 const imgObject = await prisma.hostedImage.findUnique({
                     where: {
                         id: parent.avatar_id
@@ -301,15 +302,6 @@ const updateProfileDetails = extendType({
                     if (newAvatar && newAvatar.id !== user.avatar_id) {
                         avatarId = newAvatar.id;
 
-                        // Set is_used to false in case of deleteImage() fail. The scheduled job will try to delete the HostedImage row
-                        await prisma.hostedImage.update({
-                            where: {
-                                id: user.avatar_id
-                            },
-                            data: {
-                                is_used: false
-                            }
-                        });
                         await prisma.hostedImage.update({
                             where: {
                                 id: newAvatar.id
@@ -319,7 +311,7 @@ const updateProfileDetails = extendType({
                             }
                         });
 
-                        deleteImage(user.avatar_id)
+                        await deleteImage(user.avatar_id)
                     }
                 }
 

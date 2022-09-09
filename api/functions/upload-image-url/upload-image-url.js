@@ -5,6 +5,7 @@ const extractKeyFromCookie = require('../../utils/extractKeyFromCookie')
 const { getUserByPubKey } = require('../../auth/utils/helperFuncs')
 const { getDirectUploadUrl } = require('../../services/imageUpload.service')
 const { prisma } = require('../../prisma')
+const { getUrlFromProvider } = require('../../utils/resolveImageUrl')
 
 const postUploadImageUrl = async (req, res) => {
 
@@ -23,7 +24,7 @@ const postUploadImageUrl = async (req, res) => {
         const hostedImage = await prisma.hostedImage.create({
             data: {
                 filename,
-                url: uploadUrl.uploadURL,
+                url: getUrlFromProvider(uploadUrl.provider, uploadUrl.id),
                 provider_image_id: uploadUrl.id,
                 provider: uploadUrl.provider
             },

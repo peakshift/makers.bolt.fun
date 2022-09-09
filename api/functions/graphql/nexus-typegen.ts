@@ -88,7 +88,6 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Author: { // root type
-    avatar: string; // String!
     id: number; // Int!
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address?: string | null; // String

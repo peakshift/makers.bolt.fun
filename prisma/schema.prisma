@@ -185,6 +185,7 @@ model Story {
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   body            String
+  body_image_ids  Int[]
   excerpt         String
   cover_image     String?
   cover_image_id  Int?
