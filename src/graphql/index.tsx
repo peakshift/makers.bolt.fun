@@ -279,6 +279,12 @@ export enum Post_Type {
   Story = 'Story'
 }
 
+export type ParticipationInfo = {
+  __typename?: 'ParticipationInfo';
+  createdAt: Scalars['Date'];
+  hacking_status: TournamentMakerHackingStatusEnum;
+};
+
 export type Post = Bounty | Question | Story;
 
 export type PostBase = {
@@ -366,6 +372,7 @@ export type Query = {
   projectsByCategory: Array<Project>;
   searchProjects: Array<Project>;
   similarMakers: Array<User>;
+  tournamentParticipationInfo: Maybe<ParticipationInfo>;
 };
 
 
@@ -471,6 +478,11 @@ export type QuerySearchProjectsArgs = {
 
 export type QuerySimilarMakersArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryTournamentParticipationInfoArgs = {
+  tournamentId: Scalars['Int'];
 };
 
 export type Question = PostBase & {
@@ -600,7 +612,14 @@ export type TournamentMakersResponse = {
   __typename?: 'TournamentMakersResponse';
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
-  makers: Array<User>;
+  makers: Array<TournamentParticipant>;
+};
+
+export type TournamentParticipant = {
+  __typename?: 'TournamentParticipant';
+  hacking_status: TournamentMakerHackingStatusEnum;
+  is_registered: Maybe<Scalars['Boolean']>;
+  user: User;
 };
 
 export type TournamentPrize = {
@@ -875,7 +894,7 @@ export type GetMakersInTournamentQueryVariables = Exact<{
 }>;
 
 
-export type GetMakersInTournamentQuery = { __typename?: 'Query', getMakersInTournament: { __typename?: 'TournamentMakersResponse', hasNext: boolean | null, hasPrev: boolean | null, makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, email: string | null, twitter: string | null, linkedin: string | null, github: string | null, roles: Array<{ __typename?: 'MakerRole', id: number, icon: string, title: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> }> } };
+export type GetMakersInTournamentQuery = { __typename?: 'Query', getMakersInTournament: { __typename?: 'TournamentMakersResponse', hasNext: boolean | null, hasPrev: boolean | null, makers: Array<{ __typename?: 'TournamentParticipant', hacking_status: TournamentMakerHackingStatusEnum, user: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, roles: Array<{ __typename?: 'MakerRole', id: number, icon: string, title: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> } }> } };
 
 export type GetProjectsInTournamentQueryVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -897,18 +916,18 @@ export type RegisterInTournamentMutationVariables = Exact<{
 export type RegisterInTournamentMutation = { __typename?: 'Mutation', registerInTournament: { __typename?: 'User', id: number, in_tournament: boolean } | null };
 
 export type MeTournamentQueryVariables = Exact<{
-  inTournamentId: Scalars['Int'];
+  id: Scalars['Int'];
 }>;
 
 
-export type MeTournamentQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, in_tournament: boolean, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'User', id: number, avatar: string }> }, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, in_tournament: boolean, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> }, tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -2281,22 +2300,24 @@ export const GetMakersInTournamentDocument = gql`
     hasNext
     hasPrev
     makers {
-      id
-      name
-      avatar
-      jobTitle
-      email
-      twitter
-      linkedin
-      github
-      roles {
+      hacking_status
+      user {
         id
-        icon
-        title
-      }
-      skills {
-        id
-        title
+        name
+        avatar
+        jobTitle
+        twitter
+        linkedin
+        github
+        roles {
+          id
+          icon
+          title
+        }
+        skills {
+          id
+          title
+        }
       }
     }
   }
@@ -2433,13 +2454,19 @@ export type RegisterInTournamentMutationHookResult = ReturnType<typeof useRegist
 export type RegisterInTournamentMutationResult = Apollo.MutationResult<RegisterInTournamentMutation>;
 export type RegisterInTournamentMutationOptions = Apollo.BaseMutationOptions<RegisterInTournamentMutation, RegisterInTournamentMutationVariables>;
 export const MeTournamentDocument = gql`
-    query MeTournament($inTournamentId: Int!) {
+    query MeTournament($id: Int!) {
+  tournamentParticipationInfo(tournamentId: $id) {
+    createdAt
+    hacking_status
+  }
   me {
     id
     name
     avatar
     jobTitle
-    in_tournament(id: $inTournamentId)
+    twitter
+    linkedin
+    github
     ...UserRolesSkills
   }
 }
@@ -2457,7 +2484,7 @@ export const MeTournamentDocument = gql`
  * @example
  * const { data, loading, error } = useMeTournamentQuery({
  *   variables: {
- *      inTournamentId: // value for 'inTournamentId'
+ *      id: // value for 'id'
  *   },
  * });
  */
@@ -2516,16 +2543,24 @@ export const GetTournamentByIdDocument = gql`
   }
   getMakersInTournament(tournamentId: $id, take: 4) {
     makers {
-      id
-      avatar
+      user {
+        id
+        avatar
+      }
     }
+  }
+  tournamentParticipationInfo(tournamentId: $id) {
+    createdAt
+    hacking_status
   }
   me {
     id
     name
     avatar
     jobTitle
-    in_tournament(id: $id)
+    twitter
+    linkedin
+    github
     ...UserRolesSkills
   }
 }

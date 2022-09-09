@@ -44,7 +44,7 @@ export default function TournamentDetailsPage() {
       <div className="content-container !mt-24">
         <Routes >
           <Route index element={<Navigate to='overview' />} />
-          <Route path='overview' element={<OverviewPage data={tournaemntQuery.data.getTournamentById} avatars={tournaemntQuery.data.getMakersInTournament.makers.map(m => m.avatar)} isRegistered={!!tournaemntQuery.data.me?.in_tournament} />} />
+          <Route path='overview' element={<OverviewPage data={tournaemntQuery.data.getTournamentById} avatars={tournaemntQuery.data.getMakersInTournament.makers.map(m => m.user.avatar)} isRegistered={!!tournaemntQuery.data.tournamentParticipationInfo} />} />
           <Route path='events' element={<EventsPage data={tournaemntQuery.data.getTournamentById} />} />
           <Route path='makers' element={<MakersPage data={tournaemntQuery.data.getTournamentById} />} />
           <Route path='projects' element={<ProjectsPage data={tournaemntQuery.data.getTournamentById} />} />

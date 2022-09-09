@@ -1,4 +1,4 @@
-import { Tournament, useMeTournamentQuery, User } from 'src/graphql'
+import { Tournament, useMeTournamentQuery, User, } from 'src/graphql'
 import MakerCard from './MakerCard/MakerCard';
 import MakerCardSkeleton from './MakerCard/MakerCard.Skeleton';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
@@ -12,7 +12,7 @@ interface Props {
 export default function MakersPage({ data: { id } }: Props) {
 
     const query = useMeTournamentQuery({
-        variables: { inTournamentId: id }
+        variables: { id: id }
     });
 
     return (
@@ -21,8 +21,8 @@ export default function MakersPage({ data: { id } }: Props) {
                 {query.loading ?
                     <MakerCardSkeleton />
                     :
-                    query.data?.me?.in_tournament ?
-                        <MakerCard isMe maker={query.data.me as User} />
+                    query.data?.me ?
+                        <MakerCard isMe maker={{ user: query.data.me as User, hacking_status: query.data.tournamentParticipationInfo?.hacking_status! }} />
                         : null
                 }
                 <ParticipantsSection tournamentId={id} />

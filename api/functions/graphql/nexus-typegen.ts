@@ -192,6 +192,10 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     website?: string | null; // String
   }
+  ParticipationInfo: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
+    hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+  }
   PostComment: { // root type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
@@ -275,7 +279,12 @@ export interface NexusGenObjects {
   TournamentMakersResponse: { // root type
     hasNext?: boolean | null; // Boolean
     hasPrev?: boolean | null; // Boolean
-    makers: NexusGenRootTypes['User'][]; // [User!]!
+    makers: NexusGenRootTypes['TournamentParticipant'][]; // [TournamentParticipant!]!
+  }
+  TournamentParticipant: { // root type
+    hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+    is_registered?: boolean | null; // Boolean
+    user: NexusGenRootTypes['User']; // User!
   }
   TournamentPrize: { // root type
     amount: string; // String!
@@ -464,6 +473,10 @@ export interface NexusGenFieldTypes {
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
     website: string | null; // String
   }
+  ParticipationInfo: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
+    hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+  }
   PostComment: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
     body: string; // String!
@@ -514,6 +527,7 @@ export interface NexusGenFieldTypes {
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
+    tournamentParticipationInfo: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
   }
   Question: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -593,7 +607,12 @@ export interface NexusGenFieldTypes {
   TournamentMakersResponse: { // field return type
     hasNext: boolean | null; // Boolean
     hasPrev: boolean | null; // Boolean
-    makers: NexusGenRootTypes['User'][]; // [User!]!
+    makers: NexusGenRootTypes['TournamentParticipant'][]; // [TournamentParticipant!]!
+  }
+  TournamentParticipant: { // field return type
+    hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+    is_registered: boolean | null; // Boolean
+    user: NexusGenRootTypes['User']; // User!
   }
   TournamentPrize: { // field return type
     amount: string; // String!
@@ -807,6 +826,10 @@ export interface NexusGenFieldTypeNames {
     walletsKeys: 'WalletKey'
     website: 'String'
   }
+  ParticipationInfo: { // field return type name
+    createdAt: 'Date'
+    hacking_status: 'TournamentMakerHackingStatusEnum'
+  }
   PostComment: { // field return type name
     author: 'Author'
     body: 'String'
@@ -857,6 +880,7 @@ export interface NexusGenFieldTypeNames {
     projectsByCategory: 'Project'
     searchProjects: 'Project'
     similarMakers: 'User'
+    tournamentParticipationInfo: 'ParticipationInfo'
   }
   Question: { // field return type name
     author: 'Author'
@@ -936,7 +960,12 @@ export interface NexusGenFieldTypeNames {
   TournamentMakersResponse: { // field return type name
     hasNext: 'Boolean'
     hasPrev: 'Boolean'
-    makers: 'User'
+    makers: 'TournamentParticipant'
+  }
+  TournamentParticipant: { // field return type name
+    hacking_status: 'TournamentMakerHackingStatusEnum'
+    is_registered: 'Boolean'
+    user: 'User'
   }
   TournamentPrize: { // field return type name
     amount: 'String'
@@ -1132,6 +1161,9 @@ export interface NexusGenArgTypes {
     }
     similarMakers: { // args
       id: number; // Int!
+    }
+    tournamentParticipationInfo: { // args
+      tournamentId: number; // Int!
     }
   }
   User: {

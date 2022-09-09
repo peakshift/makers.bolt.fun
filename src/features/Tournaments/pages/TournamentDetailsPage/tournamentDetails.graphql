@@ -44,18 +44,25 @@ query GetTournamentById($id: Int!) {
 
   getMakersInTournament(tournamentId: $id, take: 4) {
     makers {
-      id
-      avatar
+      user {
+        id
+        avatar
+      }
     }
   }
 
+  tournamentParticipationInfo(tournamentId: $id) {
+    createdAt
+    hacking_status
+  }
   me {
     id
     name
     avatar
     jobTitle
-
-    in_tournament(id: $id)
+    twitter
+    linkedin
+    github
 
     ...UserRolesSkills
   }

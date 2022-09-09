@@ -64,7 +64,7 @@ export default function ParticipantsSection({ tournamentId }: Props) {
                 >
                     Makers looking for a team
                 </button>
-                <button
+                {/* <button
                     className={` 
                    min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
                     active:scale-95 transition-transform
@@ -73,7 +73,7 @@ export default function ParticipantsSection({ tournamentId }: Props) {
                     onClick={() => setCurTab('projects')}
                 >
                     Projects looking for makers
-                </button>
+                </button> */}
             </div>
         </div>
         {curTab === 'projects' && <ProjectsList searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}

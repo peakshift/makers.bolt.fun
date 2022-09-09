@@ -28,20 +28,21 @@ export default function Navigation({ data }: Props) {
             path: "makers",
         },
         {
-            text: `Projects (${data.projects_count})`,
+            text: `Projects 🔒`,
             path: "projects",
-        },
-        {
-            text: "???? 🚧",
-            path: "ideas",
             isDisabled: true,
         },
-        {
-            text: "?????????? 🚧",
-            path: "resources",
-            isDisabled: true,
-        },
-    ], [data.events_count, data.makers_count, data.projects_count])
+        // {
+        //     text: "???? 🚧",
+        //     path: "ideas",
+        //     isDisabled: true,
+        // },
+        // {
+        //     text: "?????????? 🚧",
+        //     path: "resources",
+        //     isDisabled: true,
+        // },
+    ], [data.events_count, data.makers_count])
 
     return (
         <div className="w-full bg-white py-16 border-b border-gray-200 sticky-top-element z-10">

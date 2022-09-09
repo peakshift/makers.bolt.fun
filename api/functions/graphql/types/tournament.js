@@ -39,7 +39,14 @@ const TournamentFAQ = objectType({
     }
 })
 
-
+const TournamentParticipant = objectType({
+    name: "TournamentParticipant",
+    definition(t) {
+        t.nonNull.field('hacking_status', { type: TournamentMakerHackingStatusEnum });
+        t.boolean('is_registered')
+        t.nonNull.field('user', { type: "User" })
+    }
+})
 
 const TournamentEventTypeEnum = enumType({
     name: 'TournamentEventTypeEnum',
@@ -152,7 +159,7 @@ const TournamentMakersResponse = objectType({
         t.boolean('hasNext');
         t.boolean('hasPrev');
 
-        t.nonNull.list.nonNull.field('makers', { type: "User" })
+        t.nonNull.list.nonNull.field('makers', { type: TournamentParticipant })
     }
 }
 )
@@ -185,7 +192,40 @@ const getTournamentById = extendType({
     }
 })
 
+const ParticipationInfo = objectType({
+    name: "ParticipationInfo",
+    definition(t) {
+        t.nonNull.date('createdAt')
+        t.nonNull.field('hacking_status', { type: TournamentMakerHackingStatusEnum });
 
+    }
+})
+
+const tournamentParticipationInfo = extendType({
+    type: "Query",
+    definition(t) {
+        t.field('tournamentParticipationInfo', {
+            type: ParticipationInfo,
+            args: {
+                tournamentId: nonNull(intArg()),
+            },
+            async resolve(_, args, ctx) {
+
+                const user = await getUserByPubKey(ctx.userPubKey);
+                if (!user)
+                    return null
+
+
+                return prisma.tournamentParticipant.findFirst({
+                    where: {
+                        user_id: user.id,
+                        tournament_id: args.tournamentId
+                    }
+                })
+            }
+        })
+    }
+})
 
 const getMakersInTournament = extendType({
     type: "Query",
@@ -198,7 +238,9 @@ const getMakersInTournament = extendType({
                 search: stringArg(),
                 roleId: intArg(),
             },
-            async resolve(_, args) {
+            async resolve(_, args, ctx) {
+
+                const user = await getUserByPubKey(ctx.userPubKey);
 
 
                 let filters = [];
@@ -229,6 +271,12 @@ const getMakersInTournament = extendType({
                     }
                 })
 
+                if (user?.id) filters.push({
+                    id: {
+                        not: user.id
+                    }
+                })
+
                 const makers = (await prisma.tournamentParticipant.findMany({
                     where: {
                         tournament_id: args.tournamentId,
@@ -238,12 +286,19 @@ const getMakersInTournament = extendType({
                             }
                         })
                     },
+                    orderBy: {
+                        createdAt: 'desc'
+                    },
                     include: {
                         user: true,
                     },
                     skip: args.skip,
                     take: args.take + 1,
-                })).map(item => item.user)
+                }))
+                    .map(item => ({
+                        hacking_status: item.hacking_status,
+                        user: item.user
+                    }))
 
 
 
@@ -381,6 +436,7 @@ const registerInTournament = extendType({
 module.exports = {
     // Types 
     Tournament,
+
     // Enums
     TournamentEventTypeEnum,
 
@@ -388,6 +444,7 @@ module.exports = {
     getTournamentById,
     getMakersInTournament,
     getProjectsInTournament,
+    tournamentParticipationInfo,
 
     // Mutations
     registerInTournament,

@@ -12,6 +12,7 @@ import useCopyToClipboard from 'src/utils/hooks/useCopyToClipboard';
 import { useLnurlQuery } from 'src/features/Auth/pages/LoginPage/LoginPage';
 import { useAppDispatch } from 'src/utils/hooks';
 import { Direction, replaceModal } from 'src/redux/features/modals.slice';
+import { NotificationsService } from 'src/services';
 
 
 interface Props extends ModalCard {
@@ -34,13 +35,15 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
 
     const meQuery = useMeTournamentQuery({
         variables: {
-            inTournamentId: tournamentId
+            id: tournamentId
         },
         onCompleted: (data) => {
             if (data.me) {
-                const already_registerd = data.me.in_tournament;
-                if (already_registerd)
+                const already_registerd = !!data.tournamentParticipationInfo;
+                if (already_registerd) {
                     onClose?.();
+                    NotificationsService.info("You are already registered")
+                }
                 else dispatch(replaceModal({
                     Modal: "RegisterTournamet_RegistrationDetails",
                     direction: Direction.NEXT,

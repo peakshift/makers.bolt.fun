@@ -23,22 +23,24 @@ query GetMakersInTournament(
     hasNext
     hasPrev
     makers {
-      id
-      name
-      avatar
-      jobTitle
-      email
-      twitter
-      linkedin
-      github
-      roles {
+      hacking_status
+      user {
         id
-        icon
-        title
-      }
-      skills {
-        id
-        title
+        name
+        avatar
+        jobTitle
+        twitter
+        linkedin
+        github
+        roles {
+          id
+          icon
+          title
+        }
+        skills {
+          id
+          title
+        }
       }
     }
   }

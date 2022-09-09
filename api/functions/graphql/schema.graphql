@@ -188,6 +188,11 @@ enum POST_TYPE {
   Story
 }
 
+type ParticipationInfo {
+  createdAt: Date!
+  hacking_status: TournamentMakerHackingStatusEnum!
+}
+
 union Post = Bounty | Question | Story
 
 interface PostBase {
@@ -272,6 +277,7 @@ type Query {
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   similarMakers(id: Int!): [User!]!
+  tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
 }
 
 type Question implements PostBase {
@@ -393,7 +399,13 @@ enum TournamentMakerHackingStatusEnum {
 type TournamentMakersResponse {
   hasNext: Boolean
   hasPrev: Boolean
-  makers: [User!]!
+  makers: [TournamentParticipant!]!
+}
+
+type TournamentParticipant {
+  hacking_status: TournamentMakerHackingStatusEnum!
+  is_registered: Boolean
+  user: User!
 }
 
 type TournamentPrize {

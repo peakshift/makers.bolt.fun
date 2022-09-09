@@ -87,7 +87,7 @@ export default function MakersList(props: Props) {
                         </>
                         :
                         (itemsCount !== 0 ?
-                            query.data?.getMakersInTournament.makers.map(maker => <MakerCard key={maker.id} maker={maker} />) :
+                            query.data?.getMakersInTournament.makers.map(maker => <MakerCard key={maker.user.id} maker={maker} />) :
                             <div className="py-80 text-center text-body2">
                                 <p className="text-gray-400">No makers found here...</p>
                             </div>)

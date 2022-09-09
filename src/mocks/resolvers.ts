@@ -1,5 +1,5 @@
 import { MOCK_DATA } from "./data";
-import { GetMakersInTournamentQueryVariables, MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, User } from 'src/graphql'
+import { GetMakersInTournamentQueryVariables, MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, TournamentMakerHackingStatusEnum, User } from 'src/graphql'
 import { Chance } from "chance";
 import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
@@ -114,7 +114,8 @@ export function getMakersInTournament(vars: GetMakersInTournamentQueryVariables)
             if (!vars.roleId) return true;
             return u.roles.some(r => r.id === vars.roleId)
         })
-        .slice(offsetStart, offsetEnd + 1) as User[]
+        .slice(offsetStart, offsetEnd + 1)
+        .map(u => ({ user: u as User, hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect }))
         ;
 
     return {

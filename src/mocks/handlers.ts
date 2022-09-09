@@ -37,6 +37,7 @@ import {
     GetMakersInTournamentQuery,
     GetMakersInTournamentQueryVariables,
     MeTournamentQuery,
+    TournamentMakerHackingStatusEnum,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -284,7 +285,12 @@ export const handlers = [
             ctx.data({
                 getTournamentById: getTournamentById(12),
                 getMakersInTournament: getMakersInTournament({ roleId: null, search: null, skip: null, take: 4, tournamentId: 12 }),
-                me: { ...me() }
+                me: { ...me() },
+                tournamentParticipationInfo: {
+                    hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
+                    createdAt: new Date()
+                }
+
             })
         )
     }),
@@ -294,7 +300,11 @@ export const handlers = [
 
         return res(
             ctx.data({
-                me: { ...me() }
+                me: { ...me() },
+                tournamentParticipationInfo: {
+                    hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
+                    createdAt: new Date()
+                }
             })
         )
     }),
@@ -304,7 +314,7 @@ export const handlers = [
 
         return res(
             ctx.data({
-                getMakersInTournament: getMakersInTournament(req.variables)
+                getMakersInTournament: getMakersInTournament(req.variables),
             })
         )
     }),

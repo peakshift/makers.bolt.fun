@@ -1,11 +1,16 @@
-query MeTournament($inTournamentId: Int!) {
+query MeTournament($id: Int!) {
+  tournamentParticipationInfo(tournamentId: $id) {
+    createdAt
+    hacking_status
+  }
   me {
     id
     name
     avatar
     jobTitle
-
-    in_tournament(id: $inTournamentId)
+    twitter
+    linkedin
+    github
 
     ...UserRolesSkills
   }

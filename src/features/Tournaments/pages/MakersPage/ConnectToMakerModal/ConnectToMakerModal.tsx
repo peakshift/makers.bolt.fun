@@ -16,22 +16,22 @@ export default function LinkingAccountModal({ onClose, direction, maker, ...prop
 
     const links = [
         {
-            hasValue: maker.twitter,
-            text: maker.twitter,
+            hasValue: maker.user.twitter,
+            text: maker.user.twitter,
             icon: FiTwitter,
-            url: `https://twitter.com/${maker.twitter}`
+            url: `https://twitter.com/${maker.user.twitter}`
         },
         {
-            hasValue: maker.github,
-            text: maker.github,
+            hasValue: maker.user.github,
+            text: maker.user.github,
             icon: FiGithub,
-            url: `https://github.com/${maker.github}`
+            url: `https://github.com/${maker.user.github}`
         },
         {
-            hasValue: maker.linkedin,
+            hasValue: maker.user.linkedin,
             text: "LinkedIn",
             icon: FiLinkedin,
-            url: maker.linkedin && withHttp(maker.linkedin),
+            url: maker.user.linkedin && withHttp(maker.user.linkedin),
         }
     ];
 
@@ -51,10 +51,10 @@ export default function LinkingAccountModal({ onClose, direction, maker, ...prop
             </div>
             <hr className="bg-gray-200" />
             <div className='flex flex-col justify-center gap-24 items-center text-center p-24'>
-                <Avatar src={maker.avatar} width={80} />
+                <Avatar src={maker.user.avatar} width={80} />
                 <div className="flex flex-col gap-4">
-                    <p className="text-body3 text-gray-900">{maker.name}</p>
-                    <p className="text-body4 text-gray-600">{maker.jobTitle}</p>
+                    <p className="text-body3 text-gray-900">{maker.user.name}</p>
+                    <p className="text-body4 text-gray-600">{maker.user.jobTitle}</p>
                 </div>
 
                 <p className="text-gray-600">Team up with this maker by sending them a message on one of the following platforms.</p>
