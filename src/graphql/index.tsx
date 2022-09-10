@@ -706,6 +706,7 @@ export type Vote = {
 
 export type WalletKey = {
   __typename?: 'WalletKey';
+  createdAt: Scalars['Date'];
   is_current: Scalars['Boolean'];
   key: Scalars['String'];
   name: Scalars['String'];

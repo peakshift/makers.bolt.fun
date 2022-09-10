@@ -65,7 +65,7 @@ async function main() {
 
     // await createSkills();
 
-    // await createTournament();
+    await createTournament();
 
 }
 
@@ -200,6 +200,15 @@ async function createSkills() {
 async function createTournament() {
     console.log("Creating Tournament");
 
+    await prisma.tournamentFAQ.createMany({
+
+        data: tournamentMock.faqs.map(i => ({
+            tournament_id: 1,
+            question: i.question,
+            answer: i.answer
+        }))
+    })
+    return
     const createdTournament = await prisma.tournament.create({
         data: {
             title: tournamentMock.title,

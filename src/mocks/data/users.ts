@@ -164,12 +164,14 @@ export const users: (User & MyProfile)[] = [{
         {
             key: "1645h234j2421zxvertw",
             name: "My Alby wallet key",
-            is_current: true
+            is_current: true,
+            createdAt: new Date(2022, 6, 2).toISOString(),
         },
         {
             key: "66345134234235",
             name: "My Phoenix wallet key",
-            is_current: false
+            is_current: false,
+            createdAt: new Date(2022, 6, 2).toISOString()
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
@@ -200,12 +202,14 @@ export const users: (User & MyProfile)[] = [{
         {
             key: "1645h234j2421zxvertw",
             name: "My Alby wallet key",
-            is_current: true
+            is_current: true,
+            createdAt: new Date(2022, 6, 2).toISOString(),
         },
         {
             key: "66345134234235",
             name: "My Phoenix wallet key",
-            is_current: false
+            is_current: false,
+            createdAt: new Date(2022, 6, 2).toISOString()
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
@@ -235,12 +239,14 @@ export const users: (User & MyProfile)[] = [{
         {
             key: "1645h234j2421zxvertw",
             name: "My Alby wallet key",
-            is_current: true
+            is_current: true,
+            createdAt: new Date(2022, 6, 2).toISOString(),
         },
         {
             key: "66345134234235",
             name: "My Phoenix wallet key",
-            is_current: false
+            is_current: false,
+            createdAt: new Date(2022, 6, 2).toISOString()
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
@@ -270,12 +276,14 @@ export const users: (User & MyProfile)[] = [{
         {
             key: "1645h234j2421zxvertw",
             name: "My Alby wallet key",
-            is_current: true
+            is_current: true,
+            createdAt: new Date(2022, 6, 2).toISOString(),
         },
         {
             key: "66345134234235",
             name: "My Phoenix wallet key",
-            is_current: false
+            is_current: false,
+            createdAt: new Date(2022, 6, 2).toISOString()
         },],
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),

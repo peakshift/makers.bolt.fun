@@ -5,18 +5,19 @@ import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import CustomDot from "./CustomDot/CustomDot";
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from "react";
+import { createRoute } from "src/utils/routing";
 
 const headerLinks = [
   {
     title:
       <>
-        <p className="text-body1 font-bolder text-white">The Long Night tournament is coming!!!</p>
+        <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
         <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
       </>,
     img: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/1d5d2c86-fe46-4478-6909-bb3c425c0d00/public",
     link: {
       content: "Register Now",
-      url: "/tournaments/12",
+      url: createRoute({ type: "tournament", id: 1, tab: 'overview' }),
     },
   },
   {

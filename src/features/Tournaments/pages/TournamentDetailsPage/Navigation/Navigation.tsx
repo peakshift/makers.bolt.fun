@@ -47,7 +47,7 @@ export default function Navigation() {
         <div className="w-full bg-white py-16 border-b border-gray-200 sticky-top-element z-10">
             <div className="relative group content-container">
                 <div className="overflow-hidden" ref={viewportRef}>
-                    <div className="select-none w-full flex gap-16">
+                    <div className="select-none w-full flex gap-8 md:gap-16">
                         {links.map((link) => <NavLink
                             key={link.path}
                             to={link.path}

@@ -278,17 +278,17 @@ const getMakersInTournament = extendType({
                     OR: [
                         {
                             github: {
-                                not: null
+                                not: ''
                             }
                         },
                         {
                             twitter: {
-                                not: null
+                                not: ''
                             }
                         },
                         {
                             linkedin: {
-                                not: null
+                                not: ''
                             }
                         },
                     ]
@@ -299,6 +299,7 @@ const getMakersInTournament = extendType({
                         not: user.id
                     }
                 })
+
 
 
                 const makers = (await prisma.tournamentParticipant.findMany({
