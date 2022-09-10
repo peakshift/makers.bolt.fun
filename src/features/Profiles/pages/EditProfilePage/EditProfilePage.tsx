@@ -87,7 +87,7 @@ export default function EditProfilePage() {
                 </aside>
                 <main className="md:col-span-3">
                     <Routes>
-                        <Route index element={<Navigate to='basic-info' />} />
+                        <Route index element={<Navigate to='basic-info' replace />} />
                         <Route path='basic-info' element={<BasicProfileInfoTab />} />
                         <Route path='roles-skills' element={<RolesSkillsTab />} />
                         <Route path='preferences' element={<PreferencesTab />

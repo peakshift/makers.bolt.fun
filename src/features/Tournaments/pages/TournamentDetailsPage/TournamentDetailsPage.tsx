@@ -28,7 +28,7 @@ export default function TournamentDetailsPage() {
 
         <div className="content-container !mt-24">
           <Routes >
-            <Route index element={<Navigate to='overview' />} />
+            <Route index element={<Navigate to='overview' replace />} />
             <Route path='overview' element={<OverviewPage />} />
             <Route path='events' element={<EventsPage />} />
             <Route path='makers' element={<MakersPage />} />
