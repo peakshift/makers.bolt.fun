@@ -249,7 +249,7 @@ model Hackathon {
 model Donation {
   id              Int      @id @default(autoincrement())
   amount          Int
-  createdAt       DateTime @default(now()) @db.Date
+  createdAt       DateTime @default(now())
   payment_request String?
   payment_hash    String?
   preimage        String?
@@ -287,8 +287,8 @@ model Tournament {
   description     String
   thumbnail_image String
   cover_image     String
-  start_date      DateTime @db.Date
-  end_date        DateTime @db.Date
+  start_date      DateTime
+  end_date        DateTime
   location        String
   website         String
   votes_count     Int      @default(0)
@@ -336,8 +336,8 @@ model TournamentEvent {
   title       String
   image       String
   description String
-  starts_at   DateTime @db.Date
-  ends_at     DateTime @db.Date
+  starts_at   DateTime
+  ends_at     DateTime
   location    String
   website     String
   type        Int
