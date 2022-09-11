@@ -49,7 +49,7 @@ export default function EventCard({ event }: Props) {
                     </h3>
                     <p className="text-body4 font-medium text-gray-900">
 
-                        {`${dayjs(event.starts_at).format('H:mm')} - ${dayjs(event.starts_at).format('H:mm, Do MMM')}`}
+                        {`${dayjs(event.starts_at).format('H:mm')} - ${dayjs(event.ends_at).format('H:mm, Do MMM')}`}
 
                     </p>
                     <p className="text-body4 font-medium text-gray-600">
