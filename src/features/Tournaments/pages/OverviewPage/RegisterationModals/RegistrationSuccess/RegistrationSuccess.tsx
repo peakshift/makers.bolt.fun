@@ -30,15 +30,15 @@ export default function RegistrationSuccess({ onClose, direction, ...props }: Pr
             exit='exit'
             className="modal-card max-w-[442px] rounded-xl relative"
         >
-            <div className="p-24">
-                <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <div className="p-16 md:p-24">
+                <IoClose className='absolute text-body2 top-16 right-16 hover:cursor-pointer' onClick={onClose} />
                 <h2 className='text-h5 font-bold text-center'>Registration succeeded!! ✅</h2>
             </div>
             <hr className="bg-gray-200" />
-            <div className='flex flex-col justify-center gap-16 items-center text-center p-24'>
+            <div className='flex flex-col justify-center gap-16 items-center text-center p-16 md:p-24'>
                 <Avatar src={me.avatar} width={80} />
-                <div className="flex flex-col gap-4">
-                    <p className="text-body3 text-gray-900 font-medium">{me.name}</p>
+                <div className="flex flex-col gap-4 max-w-full">
+                    <p className="text-body3 text-gray-900 font-medium overflow-hidden text-ellipsis">{me.name}</p>
                     <p className="text-body4 text-gray-600">{me.jobTitle}</p>
                 </div>
 
@@ -61,8 +61,8 @@ export default function RegistrationSuccess({ onClose, direction, ...props }: Pr
                 </div>
 
                 <div className="flex flex-col gap-16 w-full mt-24">
-                    <Button fullWidth href={createRoute({ type: "edit-profile" })} onClick={onClose} color='primary'>👾 Complete maker profile</Button>
-                    <Button fullWidth href={createRoute({ type: "tournament", tab: "makers", id: props.tournamentId })} onClick={onClose} color='gray'>🤝 Team up with other makers</Button>
+                    <Button fullWidth href={createRoute({ type: "tournament", tab: "makers", id: props.tournamentId })} onClick={onClose} color='primary'>🤝 Team up with other makers</Button>
+                    <Button fullWidth href={createRoute({ type: "edit-profile" })} onClick={onClose} color='gray'>👾 Complete maker profile</Button>
                 </div>
             </div>
         </motion.div>

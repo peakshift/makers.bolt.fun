@@ -171,12 +171,12 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
             exit='exit'
             className="modal-card max-w-[442px] rounded-xl relative"
         >
-            <div className="p-24">
-                <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <div className="p-16 md:p-24">
+                <IoClose className='absolute text-body2 top-16 right-16 hover:cursor-pointer' onClick={onClose} />
                 <h2 className='text-h5 font-bold text-center'>Connect ⚡️ your maker profile</h2>
             </div>
             <hr className="bg-gray-200" />
-            <div className=' p-24'>
+            <div className=' p-16 md:p-24'>
                 {content}
             </div>
         </motion.div>

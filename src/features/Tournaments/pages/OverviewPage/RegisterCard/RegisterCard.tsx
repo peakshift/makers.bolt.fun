@@ -45,13 +45,13 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
 
 
     return (
-        <Card onlyMd className='flex flex-col gap-24'>
+        <Card onlyMd className='flex flex-col gap-24 !outline-1'>
             <div>
                 {makers_count > 2 && <p className="text-body5 text-gray-600 flex">
                     {avatars.map((img, idx) => <div className='w-[16px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
                     <span className='self-center ml-24 font-medium '>+ {makers_count} makers</span>
                 </p>}
-                <Button color='primary' disabled={isRegistered} fullWidth className='mt-16' onClick={onRegister}>{isRegistered ? "Registered!" : "Register Now"}</Button>
+                <Button color={isRegistered ? 'gray' : "primary"} disabled={isRegistered} fullWidth className='mt-16' onClick={onRegister}>{isRegistered ? "Registered!" : "Register Now"}</Button>
             </div>
             <div>
                 {counter.isExpired ?
@@ -77,14 +77,9 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
             </div>
             <div>
                 <p className="text-body5 text-gray-900 font-medium">
-                    Sponsors
+                    Sponsored by
                 </p>
-                <div className="flex flex-wrap gap-12 mt-16">
-                    <Avatar width={42} src='https://i.pravatar.cc/42?id=70' />
-                    <Avatar width={42} src='https://i.pravatar.cc/42?id=80' />
-                    <Avatar width={42} src='https://i.pravatar.cc/42?id=90' />
-                    <Avatar width={42} src='https://i.pravatar.cc/42?id=100' />
-                </div>
+                <img src={'/assets/images/logos/fulgur_logo.svg'} alt="Fulgur Ventures Logo" className='max-h-48 mt-16 ' />
             </div>
         </Card>
     )

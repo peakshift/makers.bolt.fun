@@ -113,12 +113,12 @@ export default function RegistrationDetails({ onClose, direction, ...props }: Pr
             exit='exit'
             className="modal-card max-w-[442px] rounded-xl relative "
         >
-            <div className="p-24">
-                <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
+            <div className="p-16 md:p-24">
+                <IoClose className='absolute text-body2 top-16 right-16 hover:cursor-pointer' onClick={onClose} />
                 <h2 className='text-h5 font-bold text-center'>Register for tournament</h2>
             </div>
             <hr className="bg-gray-200" />
-            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-24 p-24'>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-24 p-16 md:p-24'>
                 <p className="text-body4 text-gray-600">Please provide us with some additional details below.</p>
 
                 <div className='flex flex-col gap-8'>

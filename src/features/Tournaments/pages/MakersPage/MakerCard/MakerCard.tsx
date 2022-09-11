@@ -104,11 +104,11 @@ export default function MakerCard({ maker, isMe }: Props) {
                 <p className="text-body5 text-gray-900 font-medium mb-12">🚦 Hacking status</p>
                 <div className="flex flex-wrap gap-8">
                     <button
-                        className={`py-8 px-16 rounded-10 border ${hackingStatus === TournamentMakerHackingStatusEnum.OpenToConnect ? "bg-primary-100 text-primary-600 border-primary-200" : "bg-gray-50 hover:bg-gray-100 border-gray-200"}`}
+                        className={`py-8 px-16 text-body5 rounded-10 border ${hackingStatus === TournamentMakerHackingStatusEnum.OpenToConnect ? "bg-primary-100 text-primary-600 border-primary-200" : "bg-gray-50 hover:bg-gray-100 border-gray-200"}`}
                         onClick={() => changeHacktingStatus(TournamentMakerHackingStatusEnum.OpenToConnect)}
                     >👋 Open to connect</button>
                     <button
-                        className={`py-8 px-16 rounded-10 border ${hackingStatus === TournamentMakerHackingStatusEnum.Solo ? "bg-primary-100 text-primary-600 border-primary-200" : "bg-gray-50 hover:bg-gray-100 border-gray-200"}`}
+                        className={`py-8 px-16 text-body5 rounded-10 border ${hackingStatus === TournamentMakerHackingStatusEnum.Solo ? "bg-primary-100 text-primary-600 border-primary-200" : "bg-gray-50 hover:bg-gray-100 border-gray-200"}`}
                         onClick={() => changeHacktingStatus(TournamentMakerHackingStatusEnum.Solo)}
                     >👻 Hacking han solo</button>
                 </div>

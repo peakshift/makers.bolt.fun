@@ -44,7 +44,7 @@ export default function Navigation() {
     ], [tournamentDetails.events_count, tournamentDetails.makers_count])
 
     return (
-        <div className="w-full bg-white py-16 border-b border-gray-200 sticky-top-element z-10">
+        <div className="w-full bg-white py-16 border-y border-gray-200 sticky-top-element z-10">
             <div className="relative group content-container">
                 <div className="overflow-hidden" ref={viewportRef}>
                     <div className="select-none w-full flex gap-8 md:gap-16">

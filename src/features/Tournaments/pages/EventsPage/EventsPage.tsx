@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from 'src/Components/Button/Button';
 import { TournamentEventTypeEnum } from 'src/graphql'
 import { useTournament } from '../TournamentDetailsPage/TournamentDetailsContext';
 import EventCard from './EventCard/EventCard';
@@ -12,7 +13,10 @@ export default function EventsPage() {
 
     return (
         <div className='pb-42'>
-            <h2 className='text-body1 font-bolder text-gray-900 mb-24'>Events 📆 ({events_count})</h2>
+            <div className="flex gap-24 justify-between">
+                <h2 className='text-body1 font-bolder text-gray-900 mb-24'>Events 📆 ({events_count})</h2>
+                <Button size='sm' href='https://airtable.com/shrjVx8MjLfl8zyXD' color='primary' newTab className='ml-auto'>List an event</Button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">
                 <EventsFilters
                     searchValue={searchFilter}
