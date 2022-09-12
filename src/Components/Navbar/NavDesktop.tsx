@@ -41,7 +41,6 @@ export default function NavDesktop() {
         <nav className="bg-white py-16 flex items-center w-full min-w-full">
             <div className="content-container">
                 <div className="flex items-center">
-
                     <Link to="/">
                         <h2 className="text-h5 font-bold mr-40 lg:mr-64">
                             <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
