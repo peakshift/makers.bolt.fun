@@ -143,7 +143,6 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
             <p className="text-gray-600 text-body4 text-left">
                 To register for this tournament, you need a maker profile. Luckily, this is very easy!
                 <br />
-                <br />
                 To sign in or create an account, just scan this QR, or click to connect using any lightning wallet like <a href="https://getalby.com" className='underline' target='_blank' rel="noreferrer">Alby</a> or <a href="https://breez.technology/" className='underline' target='_blank' rel="noreferrer">Breez</a>.
             </p>
             <div className="w-full grid grid-cols-2 gap-16">
@@ -154,7 +153,7 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
                     color='gray'
                     onClick={copyToClipboard}
                 >{copied ? "Copied" : "Copy"} <FiCopy /></Button>
-                <a href={`https://wiki.ion.radar.tech/tutorials/wallets`} target='_blank' rel="noreferrer"
+                <a href={`https://makers.bolt.fun/blog/post/story/99/sign-in-with-lightning`} target='_blank' rel="noreferrer"
                     className='col-span-2 block text-body4 text-center text-gray-900 border border-gray-200 rounded-10 px-16 py-12 active:scale-90 transition-transform'
                 >What is a lightning wallet?</a>
             </div>
