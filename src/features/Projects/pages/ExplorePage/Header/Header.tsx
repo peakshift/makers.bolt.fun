@@ -13,7 +13,7 @@ export const bannerData = {
       <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
       <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
     </>,
-  img: "https://i.ibb.co/k8qPB23/standard.png",
+  img: "https://i.ibb.co/bRY635n/wide.png",
   link: {
     content: "Register Now",
     url: createRoute({ type: "tournament", id: 1, tab: 'overview' }),
@@ -27,7 +27,7 @@ const headerLinks = [
         <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
         <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
       </>,
-    img: "https://i.ibb.co/k8qPB23/standard.png",
+    img: "https://i.ibb.co/bRY635n/wide.png",
     link: {
       content: "Register Now",
       url: createRoute({ type: "tournament", id: 1, tab: 'overview' }),
