@@ -47,3 +47,9 @@
     @apply rounded-[40px] bg-white overflow-hidden w-full shadow-2xl z-10;
   }
 }
+
+@layer utilities {
+  .fill-grid-row {
+    grid-column: 1/-1;
+  }
+}

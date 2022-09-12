@@ -45,10 +45,10 @@ export default function PostDetailsPage() {
             </Helmet>
             <ScrollToTop />
             <div
-                className={`page-container`}
+                className={`page-container max-md:bg-white`}
             >
                 <div className={`grid w-full gap-32 ${styles.grid}`}>
-                    <aside id='actions' className='no-scrollbar'>
+                    <aside id='actions' className='no-scrollbar fill-container'>
                         <div className="sticky-side-element">
                             <PostActions post={post} />
                         </div>
