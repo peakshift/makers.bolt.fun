@@ -31,6 +31,7 @@ query GetMakersInTournament(
         name
         avatar
         jobTitle
+        discord
         twitter
         linkedin
         github
