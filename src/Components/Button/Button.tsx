@@ -5,7 +5,7 @@ import { TailSpin } from 'react-loader-spinner';
 
 type Props = {
     color?: 'primary' | 'red' | 'white' | 'gray' | "black" | 'none',
-    variant?: 'fill' | 'outline'
+    variant?: 'fill' | 'outline' | 'text'
     size?: 'sm' | 'md' | 'lg'
     children: ReactNode;
     href?: string;
@@ -40,7 +40,7 @@ const loadingColor: UnionToObjectKeys<Props, 'color'> = {
 const btnStylesOutline: UnionToObjectKeys<Props, 'color'> = {
     none: "",
     primary: "text-primary-600",
-    gray: 'text-gray-700',
+    gray: 'text-gray-600',
     white: 'text-gray-900',
     black: 'text-black',
     red: "text-red-500",
@@ -48,7 +48,8 @@ const btnStylesOutline: UnionToObjectKeys<Props, 'color'> = {
 
 const baseBtnStyles: UnionToObjectKeys<Props, 'variant'> = {
     fill: "transition-transform active:scale-95",
-    outline: "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 "
+    outline: "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 ",
+    text: "transition-transform active:scale-95 hover:bg-gray-100 active:bg-gray-50"
 }
 
 
