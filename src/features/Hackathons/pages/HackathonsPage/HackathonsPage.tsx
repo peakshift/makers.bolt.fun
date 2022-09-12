@@ -33,7 +33,7 @@ export default function HackathonsPage() {
             <div
                 className={`page-container`}
             >
-                <div className={`pt-16 w-full ${styles.grid}`}>
+                <div className={`pt-16 w-full`}>
                     <Link to={createRoute({ type: "tournament", id: 1, tab: 'overview' })}>
                         <div className="rounded-16 min-h-[200px] md:min-h-[240px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end">
                             <img
