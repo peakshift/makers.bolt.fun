@@ -45,7 +45,7 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
 
 
     return (
-        <Card onlyMd className='flex flex-col gap-24 !outline-1'>
+        <Card onlyMd className='flex flex-col gap-24 !border'>
             <div>
                 {makers_count > 2 && <p className="text-body5 text-gray-600 flex">
                     {avatars.map((img, idx) => <div className='w-[16px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}

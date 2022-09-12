@@ -10,6 +10,7 @@ import { Fulgur } from 'src/Components/Ads/Fulgur'
 import { IoLocationOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import { createRoute } from 'src/utils/routing'
+import { bannerData } from 'src/features/Projects/pages/ExplorePage/Header/Header'
 
 
 export default function HackathonsPage() {
@@ -33,24 +34,22 @@ export default function HackathonsPage() {
             <div
                 className={`page-container`}
             >
-                <div className={`pt-16 w-full`}>
-                    <Link to={createRoute({ type: "tournament", id: 1, tab: 'overview' })}>
-                        <div className="rounded-16 min-h-[200px] md:min-h-[240px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end">
-                            <img
-                                className="w-full h-full object-cover object-top absolute top-0 left-0 z-[-2]"
-                                src='https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/1d5d2c86-fe46-4478-6909-bb3c425c0d00/public'
-                                alt=""
-                            />
-                            <div className="w-full h-full object-cover bg-black bg-opacity-60 absolute top-0 left-0 z-[-1]"></div>
-                            <div className="max-w-[90%]">
-                                <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
-                                <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
-                            </div>
-                            <p className="text-body4 font-medium text-white mt-8">
-                                <IoLocationOutline className="mr-8" /> Online
-                            </p>
+                <div className={`w-full`}>
+                    <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end">
+                        <img
+                            className="w-full h-full object-cover object-top absolute top-0 left-0 z-[-2]"
+                            src={bannerData.img}
+                            alt=""
+                        />
+                        <div className="w-full h-full object-cover bg-black bg-opacity-60 absolute top-0 left-0 z-[-1]"></div>
+                        <div className="max-w-[90%]">
+                            {bannerData.title}
                         </div>
-                    </Link>
+
+                        <Button href={bannerData.link.url} color="white" className="mt-24">
+                            {bannerData.link.content}
+                        </Button>
+                    </div>
                     <div className="flex gap-16 flex-wrap my-24 justify-between">
                         <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
                         <div className="self-center">

@@ -89,7 +89,7 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}
     ${isLoading && disableOnLoading && 'bg-opacity-70 pointer-events-none'}
     ${fullWidth && 'w-full'}
-    ${disabled && 'opacity-40 pointer-events-none'}
+    ${disabled && 'opacity-90 pointer-events-none'}
     `;
 
 
