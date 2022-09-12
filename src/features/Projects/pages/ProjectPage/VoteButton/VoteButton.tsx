@@ -12,7 +12,7 @@ interface Particle {
     offsetX: number,
     color: '#ff6a00' | '#ff7717' | '#ff6217' | '#ff8217' | '#ff5717'
     animation: 'fly-spark-1' | 'fly-spark-2',
-    animationSpeed: 1 | 2 | 3,
+    animationSpeed: number,
     scale: number
 }
 
@@ -40,11 +40,11 @@ export default function VoteButton({ onVote = () => { }, ...props }: Props) {
         const newSpark = {
             id: Math.random().toString(),
             offsetX: random(1, 99),
-            animation: randomItem(styles.fly_spark_1, styles.fly_spark_1),
+            animation: randomItem(styles.fly_spark_1, styles.fly_spark_1) as any,
             animationSpeed: randomItem(1, 1.5, 2),
             color: randomItem('#ff6a00', '#ff7717', '#ff6217', '#ff8217', '#ff5717'),
             scale: random(1.2, 2.2)
-        };
+        } as const;
 
         // if on mobile screen, reduce number of sparks particles to 60%
         if (!isMobileScreen || Math.random() > .4) {

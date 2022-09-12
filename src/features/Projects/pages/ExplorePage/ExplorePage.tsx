@@ -6,7 +6,7 @@ import Categories from "./Categories/Categories";
 
 export default function ExplorePage() {
     return (
-        <>
+        <div className="bg-white">
             <Helmet>
                 <title>{`Explore Lightning Products`}</title>
                 <meta property="og:title" content={`Explore Lightning Products`} />
@@ -20,6 +20,6 @@ export default function ExplorePage() {
                     <ProjectsSection />
                 </div>
             </div>
-        </>
+        </div>
     )
 }

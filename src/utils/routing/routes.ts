@@ -31,6 +31,14 @@ type RouteOptions =
         id: string | number,
         username?: string,
     }
+    | {
+        type: "edit-profile",
+    }
+    | {
+        type: "tournament",
+        id: string | number
+        tab: 'overview' | 'events' | 'makers' | 'projects'
+    }
 
 export function createRoute(options: RouteOptions) {
 
@@ -57,6 +65,13 @@ export function createRoute(options: RouteOptions) {
         return `/profile/${options.id}`
             + (options.username ? `/${toSlug(options.username)}` : "");
 
+    if (options.type === 'edit-profile')
+        return '/edit-profile'
+
+
+    if (options.type === 'tournament')
+        return `/tournaments/${options.id}/${options.tab}`
+
     return ""
 }
 
@@ -80,6 +95,9 @@ export const PAGES_ROUTES = {
     profile: {
         editProfile: "/edit-profile/*",
         byId: "/profile/:id/*",
+    },
+    tournament: {
+        byId: "/tournaments/:id/*",
     },
     auth: {
         login: "/login",

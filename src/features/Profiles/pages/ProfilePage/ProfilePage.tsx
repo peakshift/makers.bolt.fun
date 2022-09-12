@@ -50,7 +50,7 @@ export default function ProfilePage() {
             </Helmet>
             <div className={`page-container`}
             >
-                <div className={`${styles.grid}`}
+                <div className={` ${styles.grid}`}
                 >{isMediumScreen ?
                     <>
                         <aside>
@@ -59,7 +59,7 @@ export default function ProfilePage() {
                             <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
                             <TournamentsCard tournaments={profileQuery.data.profile.tournaments} isOwner={isOwner} />
                         </aside>
-                        <main>
+                        <main className="min-w-0">
 
                             <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />

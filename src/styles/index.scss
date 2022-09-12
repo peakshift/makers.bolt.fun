@@ -12,7 +12,7 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: #ffffff;
+  background-color: #f9fafb;
 }
 
 .content-container,
@@ -28,17 +28,16 @@ body {
   }
 
   display: grid;
-  grid-template-columns: minmax(var(--padding), 1fr) minmax(auto, 1440px) minmax(
-      var(--padding),
-      1fr
-    );
+  grid-template-columns:
+    minmax(var(--padding), 1fr) minmax(auto, var(--maxPageWidth, 1440px))
+    minmax(var(--padding), 1fr);
 
   > * {
     grid-column: 2/3;
     min-width: 0;
   }
 
-  > .full-width {
+  > .fill-container {
     grid-column: 1/-1;
   }
 }

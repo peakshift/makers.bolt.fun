@@ -3,7 +3,7 @@ const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
-const { Tournament } = require('./tournaments');
+const { Tournament } = require('./tournament');
 
 
 
@@ -16,11 +16,11 @@ const BaseUser = interfaceType({
         t.nonNull.string('avatar');
         t.nonNull.date('join_date');
         t.string('role');
-        t.string('email')
         t.string('jobTitle')
         t.string('lightning_address')
         t.string('website')
         t.string('twitter')
+        t.string('discord')
         t.string('github')
         t.string('linkedin')
         t.string('bio')
@@ -54,8 +54,15 @@ const BaseUser = interfaceType({
         })
         t.nonNull.list.nonNull.field('tournaments', {
             type: Tournament,
-            resolve: (parent) => {
-                return []
+            resolve: async (parent) => {
+                return prisma.tournamentParticipant.findMany({
+                    where: {
+                        user_id: parent.id
+                    },
+                    include: {
+                        tournament: true
+                    }
+                }).then(d => d.map(item => item.tournament))
             }
         })
         t.nonNull.list.nonNull.field('similar_makers', {
@@ -81,6 +88,15 @@ const BaseUser = interfaceType({
                 return prisma.story.findMany({ where: { user_id: parent.id, is_published: true }, orderBy: { createdAt: "desc" } });
             }
         });
+
+        t.nonNull.boolean('in_tournament', {
+            args: {
+                id: nonNull(intArg())
+            },
+            resolve(parent, args) {
+                return prisma.tournamentParticipant.findFirst({ where: { tournament_id: args.id, user_id: parent.id } }).then(res => !!res)
+            }
+        })
 
 
     },
@@ -166,6 +182,8 @@ const MyProfile = objectType({
     name: 'MyProfile',
     definition(t) {
         t.implements('BaseUser')
+
+        t.string('email')
         t.string('nostr_prv_key')
         t.string('nostr_pub_key')
 
@@ -209,6 +227,11 @@ const profile = extendType({
                 id: nonNull(intArg())
             },
             async resolve(parent, { id }, ctx) {
+
+                const user = await getUserByPubKey(ctx.userPubKey)
+                let isMy = false;
+                if (user?.id === id) isMy = true;
+
                 return prisma.user.findUnique({ where: { id } })
             }
         })
@@ -249,6 +272,7 @@ const ProfileDetailsInput = inputObjectType({
         t.string('lightning_address')
         t.string('website')
         t.string('twitter')
+        t.string('discord')
         t.string('github')
         t.string('linkedin')
         t.string('bio')

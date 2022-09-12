@@ -1,8 +1,6 @@
 import React from 'react'
-import { Control, useFieldArray } from 'react-hook-form'
 import Card from 'src/Components/Card/Card'
 import { GenericMakerRole, MakerRole, RoleLevelEnum } from 'src/graphql'
-import { IRolesSkillsForm } from '../RolesSkillsTab'
 
 type Value = Pick<MakerRole, 'id' | 'level'>
 

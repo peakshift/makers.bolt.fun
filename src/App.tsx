@@ -25,6 +25,8 @@ const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "expl
 
 const HackathonsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
 
+const TournamentDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage")))
+
 const DonatePage = Loadable(React.lazy(() => import( /* webpackChunkName: "donate_page" */ "./features/Donations/pages/DonatePage/DonatePage")))
 const LoginPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "login_page" */ "./features/Auth/pages/LoginPage/LoginPage")))
 const LogoutPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "logout_page" */ "./features/Auth/pages/LogoutPage/LogoutPage")))
@@ -102,6 +104,8 @@ function App() {
           <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
 
           <Route path={PAGES_ROUTES.hackathons.default} element={<HackathonsPage />} />
+
+          <Route path={PAGES_ROUTES.tournament.byId} element={<TournamentDetailsPage />} />
 
           <Route path={PAGES_ROUTES.donate.default} element={<DonatePage />} />
 

@@ -67,28 +67,30 @@ export default function EditProfilePage() {
                                 </ul>
                             </Card>
                             :
-                            <div className="border-b-2 border-gray-200">
-                                <Slider>
-                                    {links.map((link, idx) =>
-                                        <NavLink
-                                            to={link.path}
-                                            key={idx}
-                                            className={`flex items-start cursor-pointer font-bold py-12
+                            <div className="overflow-hidden">
+                                <div className="border-b-2 border-gray-200">
+                                    <Slider>
+                                        {links.map((link, idx) =>
+                                            <NavLink
+                                                to={link.path}
+                                                key={idx}
+                                                className={`flex items-start cursor-pointer font-bold py-12
                                                 active:scale-95 transition-transform`}
-                                            style={({ isActive }) => ({
-                                                boxShadow: isActive ? '0px 2px var(--primary)' : 'none'
-                                            })}
-                                        >
-                                            {link.text}
-                                        </NavLink>
-                                    )}
-                                </Slider>
+                                                style={({ isActive }) => ({
+                                                    boxShadow: isActive ? '0px 3px 1px -1px var(--primary)' : 'none'
+                                                })}
+                                            >
+                                                {link.text}
+                                            </NavLink>
+                                        )}
+                                    </Slider>
+                                </div>
                             </div>
                         }
                     </aside>
                     <main className="md:col-span-3">
                         <Routes>
-                            <Route index element={<Navigate to='basic-info' />} />
+                            <Route index element={<Navigate to='basic-info' replace />} />
                             <Route path='basic-info' element={<BasicProfileInfoTab />} />
                             <Route path='roles-skills' element={<RolesSkillsTab />} />
                             <Route path='preferences' element={<PreferencesTab />

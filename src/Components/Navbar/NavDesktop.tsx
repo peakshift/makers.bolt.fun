@@ -237,6 +237,7 @@ export default function NavDesktop() {
                             />
                         </motion.div>
                     </div>
+
                 </div>
             </div>
         </nav>

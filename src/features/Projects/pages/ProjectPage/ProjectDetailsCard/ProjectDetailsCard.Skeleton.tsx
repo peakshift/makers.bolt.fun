@@ -3,7 +3,8 @@ import { MdClose, } from 'react-icons/md';
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import Skeleton from 'react-loading-skeleton';
 import Badge from 'src/Components/Badge/Badge';
-import { useAppSelector } from 'src/utils/hooks';
+import { useMediaQuery } from 'src/utils/hooks';
+import { MEDIA_QUERIES } from 'src/utils/theme';
 
 
 interface Props extends ModalCard {
@@ -13,9 +14,7 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
 
 
 
-    const { isMobileScreen } = useAppSelector(state => ({
-        isMobileScreen: state.ui.isMobileScreen
-    }));
+    const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
 
 
@@ -27,12 +26,12 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
             initial='initial'
             animate="animate"
             exit='exit'
-            className={`modal-card max-w-[768px] ${props.isPageModal && isMobileScreen && 'rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[768px] ${props.isPageModal && !isMdScreen && 'rounded-0 w-full min-h-screen'}`}
 
         >
             <div className="relative h-[80px] lg:h-[152px]">
                 <Skeleton height='100%' className='!leading-inherit' />
-                <button className="w-[48px] h-[48px] bg-white z-10 absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
+                <button className="w-40 h-40 md:w-48 md:h-48 bg-white z-10 absolute top-1/2 left-32 -translate-y-1/2 rounded-full hover:bg-gray-200 text-center" onClick={onClose}><MdClose className=' inline-block text-body2 lg:text-body1' /></button>
             </div>
             <div className="p-24">
                 <div className="flex gap-24 items-center h-[93px]">

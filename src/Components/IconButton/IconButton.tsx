@@ -9,6 +9,7 @@ interface Props {
     className?: string
     size?: "sm" | 'md' | 'lg'
     variant?: 'blank' | 'fill'
+    isDisabled?: boolean
 }
 
 
@@ -32,7 +33,8 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(({
     children,
     onClick = () => { },
     onKeyDown,
-    variant = 'blank'
+    variant = 'blank',
+    isDisabled,
 }, ref) => {
 
     if (href)
@@ -57,12 +59,16 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(({
             ref={ref}
             type='button'
             className={`
+            ${className}
             ${sizeToPadding[size]} 
             ${baseBtnStyles[variant]} 
-            active:scale-95 rounded-full ${className}`}
+            active:scale-95 rounded-full
+            ${isDisabled && "opacity-60"}
+             `}
             style={{ lineHeight: 0 }}
             onClick={onClick}
             onKeyDown={onKeyDown}
+            disabled={isDisabled}
         >
             {children}
         </button>
