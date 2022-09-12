@@ -58,7 +58,7 @@ export default function EventCard({ event }: Props) {
                     <p className="text-body4 text-gray-600 line-clamp-2">
                         {trimText(event.description, 90)}
                     </p>
-                    <span className={`mt-8 text-body5 self-start px-8 py-4 rounded-20 ${mapTypeToBadge[event.type].color}`}>
+                    <span className={`mt-8 text-body5 self-start px-8 py-4 rounded-20 whitespace-pre-line ${mapTypeToBadge[event.type].color}`}>
                         {mapTypeToBadge[event.type].text}
                     </span>
                 </div>
