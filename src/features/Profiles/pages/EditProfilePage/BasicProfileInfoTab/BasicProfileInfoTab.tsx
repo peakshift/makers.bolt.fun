@@ -109,7 +109,7 @@ export default function BasicProfileInfoTab() {
             onCompleted: ({ updateProfileDetails: data }) => {
                 if (data) {
                     dispatch(setUser(data))
-                    reset(data);
+                    reset({ ...data, avatar: { url: data.avatar } });
                     apolloClient.writeFragment({
                         id: `User:${data?.id}`,
                         data,

@@ -28,17 +28,17 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  ImageInput: { // input type
+    id?: string | null; // String
+    name?: string | null; // String
+    url: string; // String!
+  }
   MakerRoleInput: { // input type
     id: number; // Int!
     level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
   }
   MakerSkillInput: { // input type
     id: number; // Int!
-  }
-  ImageInput: { // input type
-    id?: string | null; // String
-    name?: string | null; // String
-    url: string; // String!
   }
   ProfileDetailsInput: { // input type
     avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
@@ -265,6 +265,7 @@ export interface NexusGenObjects {
     payment_request: string; // String!
   }
   WalletKey: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
     is_current: boolean; // Boolean!
     key: string; // String!
     name: string; // String!
@@ -540,6 +541,7 @@ export interface NexusGenFieldTypes {
     payment_request: string; // String!
   }
   WalletKey: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
     is_current: boolean; // Boolean!
     key: string; // String!
     name: string; // String!
@@ -833,6 +835,7 @@ export interface NexusGenFieldTypeNames {
     payment_request: 'String'
   }
   WalletKey: { // field return type name
+    createdAt: 'Date'
     is_current: 'Boolean'
     key: 'String'
     name: 'String'
