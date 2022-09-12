@@ -21,6 +21,22 @@ interface Props {
     >
 }
 
+export const getSpanDate = (_date1: string, _date2: string) => {
+    const date1 = new Date(_date1);
+    const date2 = new Date(_date2);
+
+    const isSameMonth = date1.getMonth() === date2.getMonth();
+    if (!isSameMonth)
+        return `${dayjs(_date1).format('Do MMM')} - ${dayjs(_date2).format('Do MMM')}`
+
+    const isSameDay = date1.getDay() === date2.getDay();
+    if (!isSameDay)
+        return `${dayjs(_date1).format('Do')} - ${dayjs(_date2).format('Do MMM')}`
+    // Same Day
+    return `${dayjs(_date1).format('H:mm')} - ${dayjs(_date2).format('H:mm, Do MMM')}`
+
+}
+
 export default function EventCard({ event }: Props) {
 
     const dispatch = useAppDispatch()
@@ -35,6 +51,13 @@ export default function EventCard({ event }: Props) {
         }))
     }
 
+    // If single day => show time
+    // If multi-days:
+    //  if same month: show months
+    //  if diff month: hide month
+
+
+
     return (
         <div
             role='button'
@@ -48,9 +71,7 @@ export default function EventCard({ event }: Props) {
                         {event.title}
                     </h3>
                     <p className="text-body4 font-medium text-gray-900">
-
-                        {`${dayjs(event.starts_at).format('H:mm')} - ${dayjs(event.ends_at).format('H:mm, Do MMM')}`}
-
+                        {getSpanDate(event.starts_at, event.ends_at)}
                     </p>
                     <p className="text-body4 font-medium text-gray-600">
                         <IoLocationOutline className="mr-4" /> <span className="align-middle">{event.location}</span>
