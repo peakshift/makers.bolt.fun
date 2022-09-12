@@ -43,78 +43,80 @@ export default function FeedPage() {
                 <meta property="og:title" content={`Bolt.Fun Stories`} />
             </Helmet>
             <div
-                className={`page-container pt-16 w-full ${styles.grid}`}
+                className={`page-container`}
             >
-                <div id="title">
-                    {tagFilter && <p className="text-body6 text-gray-500 font-medium mb-8">
-                        <span className='cursor-pointer' onClick={() => setTagFilter(null)}>Stories </span>
-                        <FiArrowRight />
-                        <span> {tagFilter.title}</span>
-                    </p>}
-                    <h1 className="text-h2 font-bolder">{
-                        tagFilter ?
-                            <>{tagFilter.icon} {capitalize(tagFilter.title)}</>
-                            :
-                            "Stories ✍🏼"
-                    }</h1>
-                </div>
-                <div id="sort-by">
-                    <SortBy
-                        filterChanged={setSortByFilter}
-                    />
-                </div>
-                <div id="content">
-                    <PostsList
-                        isLoading={feedQuery.loading}
-                        items={feedQuery.data?.getFeed}
-                        isFetching={isFetchingMore}
-                        onReachedBottom={fetchMore}
-                    />
-                </div>
-                <aside id='categories' className='no-scrollbar'>
-                    <div className="pb-16 md:overflow-y-scroll sticky-side-element">
-                        <Button
-                            href='/blog/create-post'
-                            color='primary'
-                            fullWidth
-                        >
-                            Write a story
-                        </Button>
-                        <div className="my-24"></div>
-                        <div className="my-24"></div>
-                        <PopularTagsFilter
-                            value={tagFilter}
-                            onChange={setTagFilter as any}
-                        />
-
+                <div className={`w-full ${styles.grid}`}>
+                    <div id="title">
+                        {tagFilter && <p className="text-body6 text-gray-500 font-medium mb-8">
+                            <span className='cursor-pointer' onClick={() => setTagFilter(null)}>Stories </span>
+                            <FiArrowRight />
+                            <span> {tagFilter.title}</span>
+                        </p>}
+                        <h1 className="text-h2 font-bolder">{
+                            tagFilter ?
+                                <>{tagFilter.icon} {capitalize(tagFilter.title)}</>
+                                :
+                                "Stories ✍🏼"
+                        }</h1>
                     </div>
-                </aside>
-                <aside id='side' className='no-scrollbar'>
-                    <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element" >
-                        <TrendingCard />
-                        <div className='min-h-[300px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden'
-                            style={{
-                                backgroundImage: "url(/assets/images/stw2.jfif)"
-                            }}
-                        >
-                            <div className="absolute bg-black inset-0 opacity-10"></div>
-                            <div className="relative flex flex-col gap-24">
-                                <div className="flex flex-col gap-8">
-                                    <p className="text-body1 font-bolder">Shock the Web 2 ⚡️</p>
-                                    <p className="text-body3 font-medium">16th - 18th June, 2022</p>
+                    <div id="sort-by">
+                        <SortBy
+                            filterChanged={setSortByFilter}
+                        />
+                    </div>
+                    <div id="content">
+                        <PostsList
+                            isLoading={feedQuery.loading}
+                            items={feedQuery.data?.getFeed}
+                            isFetching={isFetchingMore}
+                            onReachedBottom={fetchMore}
+                        />
+                    </div>
+                    <aside id='categories' className='no-scrollbar'>
+                        <div className="pb-16 md:overflow-y-scroll sticky-side-element">
+                            <Button
+                                href='/blog/create-post'
+                                color='primary'
+                                fullWidth
+                            >
+                                Write a story
+                            </Button>
+                            <div className="my-24"></div>
+                            <div className="my-24"></div>
+                            <PopularTagsFilter
+                                value={tagFilter}
+                                onChange={setTagFilter as any}
+                            />
+
+                        </div>
+                    </aside>
+                    <aside id='side' className='no-scrollbar'>
+                        <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element" >
+                            <TrendingCard />
+                            <div className='min-h-[300px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden'
+                                style={{
+                                    backgroundImage: "url(/assets/images/stw2.jfif)"
+                                }}
+                            >
+                                <div className="absolute bg-black inset-0 opacity-10"></div>
+                                <div className="relative flex flex-col gap-24">
+                                    <div className="flex flex-col gap-8">
+                                        <p className="text-body1 font-bolder">Shock the Web 2 ⚡️</p>
+                                        <p className="text-body3 font-medium">16th - 18th June, 2022</p>
+                                    </div>
+                                    <Button
+                                        color='white'
+                                        fullWidth
+                                        href='https://discord.gg/HFqtxavb7x'
+                                        newTab
+                                    >
+                                        <FaDiscord className='scale-125 mr-8' /> <span className="align-middle">Join in Discord</span>
+                                    </Button>
                                 </div>
-                                <Button
-                                    color='white'
-                                    fullWidth
-                                    href='https://discord.gg/HFqtxavb7x'
-                                    newTab
-                                >
-                                    <FaDiscord className='scale-125 mr-8' /> <span className="align-middle">Join in Discord</span>
-                                </Button>
                             </div>
                         </div>
-                    </div>
-                </aside>
+                    </aside>
+                </div>
             </div>
         </>
     )

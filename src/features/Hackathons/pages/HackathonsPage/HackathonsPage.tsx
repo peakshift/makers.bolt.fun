@@ -28,36 +28,38 @@ export default function HackathonsPage() {
                 <meta property="og:title" content={'Hackathons'} />
             </Helmet>
             <div
-                className={`page-container  pt-16 w-full ${styles.grid}`}
+                className={`page-container`}
             >
-                <aside className='no-scrollbar'>
-                    <div className="flex flex-col gap-24 md:overflow-y-scroll sticky-side-element">
-                        <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
-                        <SortByFilter
-                            filterChanged={setSortByFilter}
-                        />
-                        {/* <TopicsFilter
+                <div className={`pt-16 w-full ${styles.grid}`}>
+                    <aside className='no-scrollbar'>
+                        <div className="flex flex-col gap-24 md:overflow-y-scroll sticky-side-element">
+                            <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
+                            <SortByFilter
+                                filterChanged={setSortByFilter}
+                            />
+                            {/* <TopicsFilter
                         filterChanged={setTopicsFilter}
                     /> */}
-                        <Button
-                            href='https://airtable.com/shrgXKynON8YWeyyE'
-                            newTab
-                            color='primary'
-                            fullWidth
-                        >
-                            List Your Hackathon
-                        </Button>
-                        <div className="hidden md:block">
-                            <Fulgur />
+                            <Button
+                                href='https://airtable.com/shrgXKynON8YWeyyE'
+                                newTab
+                                color='primary'
+                                fullWidth
+                            >
+                                List Your Hackathon
+                            </Button>
+                            <div className="hidden md:block">
+                                <Fulgur />
+                            </div>
                         </div>
-                    </div>
-                </aside>
-                <main className="self-start">
-                    <HackathonsList
-                        currentFilter={sortByFilter}
-                        isLoading={hackathonsQuery.loading}
-                        items={hackathonsQuery.data?.getAllHackathons} />
-                </main>
+                    </aside>
+                    <main className="self-start">
+                        <HackathonsList
+                            currentFilter={sortByFilter}
+                            isLoading={hackathonsQuery.loading}
+                            items={hackathonsQuery.data?.getAllHackathons} />
+                    </main>
+                </div>
             </div></>
     )
 }

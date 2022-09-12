@@ -45,29 +45,31 @@ export default function PostDetailsPage() {
             </Helmet>
             <ScrollToTop />
             <div
-                className={`page-container grid pt-16 w-full gap-32 ${styles.grid}`}
+                className={`page-container`}
             >
-                <aside id='actions' className='no-scrollbar'>
-                    <div className="sticky-side-element">
-                        <PostActions post={post} />
-                    </div>
-                </aside>
+                <div className={`grid w-full gap-32 ${styles.grid}`}>
+                    <aside id='actions' className='no-scrollbar'>
+                        <div className="sticky-side-element">
+                            <PostActions post={post} />
+                        </div>
+                    </aside>
 
 
-                <PageContent post={post} />
-                <aside id='author' className='no-scrollbar min-w-0'>
-                    <div className="flex flex-col gap-24 overflow-y-auto sticky-side-element">
-                        <AuthorCard author={post.author} />
-                        <div className="hidden md:block"><TrendingCard /></div>
+                    <PageContent post={post} />
+                    <aside id='author' className='no-scrollbar min-w-0'>
+                        <div className="flex flex-col gap-24 overflow-y-auto sticky-side-element">
+                            <AuthorCard author={post.author} />
+                            <div className="hidden md:block"><TrendingCard /></div>
+                        </div>
+                    </aside>
+                    <div id="comments">
+                        <Suspense fallback={
+                            <div className="flex justify-center py-32"><RotatingLines strokeColor='#ddd' width="64" /></div>
+                        }>
+                            <CommentsSection id={post.id} type={type as Post_Type} />
+                        </Suspense>
+                        <div className="md:hidden mt-24"><TrendingCard /></div>
                     </div>
-                </aside>
-                <div id="comments">
-                    <Suspense fallback={
-                        <div className="flex justify-center py-32"><RotatingLines strokeColor='#ddd' width="64" /></div>
-                    }>
-                        <CommentsSection id={post.id} type={type as Post_Type} />
-                    </Suspense>
-                    <div className="md:hidden mt-24"><TrendingCard /></div>
                 </div>
             </div>
         </>

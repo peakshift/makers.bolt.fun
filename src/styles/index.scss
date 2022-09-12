@@ -26,20 +26,26 @@ body {
   @include gt-md {
     --padding: 32px;
   }
-  width: calc(min(100% - 2 * var(--padding), 1440px));
-  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(var(--padding), 1fr) minmax(auto, 1440px) minmax(
+      var(--padding),
+      1fr
+    );
+
+  > * {
+    grid-column: 2/3;
+    min-width: 0;
+  }
+
+  > .full-width {
+    grid-column: 1/-1;
+  }
 }
 
 .page-container {
   padding: 32px 0;
 }
-
-// @media screen and (min-width: 780px) {
-//   .page-container {
-//     width: calc(min(100% - 64px, 1440px));
-//     margin: 0 auto;
-//   }
-// }
 
 svg {
   display: inline-block;
