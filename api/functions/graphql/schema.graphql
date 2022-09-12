@@ -21,7 +21,7 @@ type Award {
 interface BaseUser {
   avatar: String!
   bio: String
-  email: String
+  discord: String
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
@@ -160,6 +160,7 @@ type Mutation {
 type MyProfile implements BaseUser {
   avatar: String!
   bio: String
+  discord: String
   email: String
   github: String
   id: Int!
@@ -220,6 +221,7 @@ type PostComment {
 input ProfileDetailsInput {
   avatar: String
   bio: String
+  discord: String
   email: String
   github: String
   jobTitle: String
@@ -430,7 +432,7 @@ input UpdateTournamentRegistrationInput {
 type User implements BaseUser {
   avatar: String!
   bio: String
-  email: String
+  discord: String
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!

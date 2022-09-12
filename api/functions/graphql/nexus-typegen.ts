@@ -38,6 +38,7 @@ export interface NexusGenInputs {
   ProfileDetailsInput: { // input type
     avatar?: string | null; // String
     bio?: string | null; // String
+    discord?: string | null; // String
     email?: string | null; // String
     github?: string | null; // String
     jobTitle?: string | null; // String
@@ -181,6 +182,7 @@ export interface NexusGenObjects {
   MyProfile: { // root type
     avatar: string; // String!
     bio?: string | null; // String
+    discord?: string | null; // String
     email?: string | null; // String
     github?: string | null; // String
     id: number; // Int!
@@ -304,7 +306,7 @@ export interface NexusGenObjects {
   User: { // root type
     avatar: string; // String!
     bio?: string | null; // String
-    email?: string | null; // String
+    discord?: string | null; // String
     github?: string | null; // String
     id: number; // Int!
     jobTitle?: string | null; // String
@@ -458,6 +460,7 @@ export interface NexusGenFieldTypes {
   MyProfile: { // field return type
     avatar: string; // String!
     bio: string | null; // String
+    discord: string | null; // String
     email: string | null; // String
     github: string | null; // String
     id: number; // Int!
@@ -635,7 +638,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     avatar: string; // String!
     bio: string | null; // String
-    email: string | null; // String
+    discord: string | null; // String
     github: string | null; // String
     id: number; // Int!
     in_tournament: boolean; // Boolean!
@@ -672,7 +675,7 @@ export interface NexusGenFieldTypes {
   BaseUser: { // field return type
     avatar: string; // String!
     bio: string | null; // String
-    email: string | null; // String
+    discord: string | null; // String
     github: string | null; // String
     id: number; // Int!
     in_tournament: boolean; // Boolean!
@@ -814,6 +817,7 @@ export interface NexusGenFieldTypeNames {
   MyProfile: { // field return type name
     avatar: 'String'
     bio: 'String'
+    discord: 'String'
     email: 'String'
     github: 'String'
     id: 'Int'
@@ -991,7 +995,7 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     avatar: 'String'
     bio: 'String'
-    email: 'String'
+    discord: 'String'
     github: 'String'
     id: 'Int'
     in_tournament: 'Boolean'
@@ -1028,7 +1032,7 @@ export interface NexusGenFieldTypeNames {
   BaseUser: { // field return type name
     avatar: 'String'
     bio: 'String'
-    email: 'String'
+    discord: 'String'
     github: 'String'
     id: 'Int'
     in_tournament: 'Boolean'

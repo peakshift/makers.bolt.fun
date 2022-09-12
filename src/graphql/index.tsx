@@ -38,7 +38,7 @@ export type Award = {
 export type BaseUser = {
   avatar: Scalars['String'];
   bio: Maybe<Scalars['String']>;
-  email: Maybe<Scalars['String']>;
+  discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
@@ -252,6 +252,7 @@ export type MyProfile = BaseUser & {
   __typename?: 'MyProfile';
   avatar: Scalars['String'];
   bio: Maybe<Scalars['String']>;
+  discord: Maybe<Scalars['String']>;
   email: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
@@ -319,6 +320,7 @@ export type PostComment = {
 export type ProfileDetailsInput = {
   avatar?: InputMaybe<Scalars['String']>;
   bio?: InputMaybe<Scalars['String']>;
+  discord?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   github?: InputMaybe<Scalars['String']>;
   jobTitle?: InputMaybe<Scalars['String']>;
@@ -654,7 +656,7 @@ export type User = BaseUser & {
   __typename?: 'User';
   avatar: Scalars['String'];
   bio: Maybe<Scalars['String']>;
-  email: Maybe<Scalars['String']>;
+  discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
@@ -811,23 +813,23 @@ export type PostDetailsQueryVariables = Exact<{
 
 export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
 
-type UserBasicInfo_MyProfile_Fragment = { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
+type UserBasicInfo_MyProfile_Fragment = { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
 
-type UserBasicInfo_User_Fragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
+type UserBasicInfo_User_Fragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
 
 export type UserBasicInfoFragment = UserBasicInfo_MyProfile_Fragment | UserBasicInfo_User_Fragment;
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', email: string | null, id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', email: string | null, id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
 
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -864,7 +866,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, email: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -977,11 +979,11 @@ export const UserBasicInfoFragmentDoc = gql`
   avatar
   join_date
   role
-  email
   jobTitle
   lightning_address
   website
   twitter
+  discord
   github
   linkedin
   bio
@@ -1737,6 +1739,7 @@ export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDe
 export const MyProfileAboutDocument = gql`
     query MyProfileAbout {
   me {
+    email
     ...UserBasicInfo
   }
 }
@@ -1771,6 +1774,7 @@ export type MyProfileAboutQueryResult = Apollo.QueryResult<MyProfileAboutQuery, 
 export const UpdateProfileAboutDocument = gql`
     mutation updateProfileAbout($data: ProfileDetailsInput) {
   updateProfileDetails(data: $data) {
+    email
     ...UserBasicInfo
   }
 }

@@ -16,11 +16,11 @@ const BaseUser = interfaceType({
         t.nonNull.string('avatar');
         t.nonNull.date('join_date');
         t.string('role');
-        t.string('email')
         t.string('jobTitle')
         t.string('lightning_address')
         t.string('website')
         t.string('twitter')
+        t.string('discord')
         t.string('github')
         t.string('linkedin')
         t.string('bio')
@@ -182,6 +182,8 @@ const MyProfile = objectType({
     name: 'MyProfile',
     definition(t) {
         t.implements('BaseUser')
+
+        t.string('email')
         t.string('nostr_prv_key')
         t.string('nostr_pub_key')
 
@@ -225,6 +227,11 @@ const profile = extendType({
                 id: nonNull(intArg())
             },
             async resolve(parent, { id }, ctx) {
+
+                const user = await getUserByPubKey(ctx.userPubKey)
+                let isMy = false;
+                if (user?.id === id) isMy = true;
+
                 return prisma.user.findUnique({ where: { id } })
             }
         })
@@ -265,6 +272,7 @@ const ProfileDetailsInput = inputObjectType({
         t.string('lightning_address')
         t.string('website')
         t.string('twitter')
+        t.string('discord')
         t.string('github')
         t.string('linkedin')
         t.string('bio')
