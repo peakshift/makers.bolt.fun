@@ -57,7 +57,7 @@ export default function ProjectDetailsCard({ direction, event, ...props }: Props
                         <a href={event.website} target="_blank" rel="noreferrer" > <span className="align-middle ">{event.website}</span></a>
                     </p>
                 </div>
-                <p className="text-body4 text-gray-600 mt-24">
+                <p className="text-body4 text-gray-600 mt-24  whitespace-pre-line">
                     {event.description}
                 </p>
             </div>
