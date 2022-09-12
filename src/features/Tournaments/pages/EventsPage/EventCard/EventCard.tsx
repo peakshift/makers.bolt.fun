@@ -51,11 +51,10 @@ export default function EventCard({ event }: Props) {
         }))
     }
 
-    // If single day => show time
+    // If single day => show time - time, day mon
     // If multi-days:
-    //  if same month: show months
-    //  if diff month: hide month
-
+    //  if same month: day - day mon
+    //  if diff month: day mon - day mon
 
 
     return (
