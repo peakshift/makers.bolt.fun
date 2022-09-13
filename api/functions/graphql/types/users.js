@@ -3,7 +3,10 @@ const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
+const { ImageInput } = require('./misc');
 const { Tournament } = require('./tournament');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
+const { deleteImage } = require('../../../services/imageUpload.service');
 
 
 
@@ -13,7 +16,18 @@ const BaseUser = interfaceType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('name');
-        t.nonNull.string('avatar');
+        t.nonNull.string('avatar', {
+            async resolve(parent) {
+                if (!parent.avatar_id) return null
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.avatar_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
         t.nonNull.date('join_date');
         t.string('role');
         t.string('jobTitle')
@@ -266,7 +280,9 @@ const ProfileDetailsInput = inputObjectType({
     name: 'ProfileDetailsInput',
     definition(t) {
         t.string('name');
-        t.string('avatar');
+        t.field('avatar', {
+            type: ImageInput
+        })
         t.string('email')
         t.string('jobTitle')
         t.string('lightning_address')
@@ -294,14 +310,48 @@ const updateProfileDetails = extendType({
                     throw new Error("You have to login");
                 // TODO: validate new data
 
+                // ----------------
+                // Check if the user uploaded a new image, and if so, 
+                // remove the old one from the hosting service, then replace it with this one
+                // ----------------
+                let avatarId = user.avatar_id;
+                if (args.data.avatar.id) {
+                    const newAvatarProviderId = args.data.avatar.id;
+                    const newAvatar = await prisma.hostedImage.findFirst({
+                        where: {
+                            provider_image_id: newAvatarProviderId
+                        }
+                    })
+
+                    if (newAvatar && newAvatar.id !== user.avatar_id) {
+                        avatarId = newAvatar.id;
+
+                        await prisma.hostedImage.update({
+                            where: {
+                                id: newAvatar.id
+                            },
+                            data: {
+                                is_used: true
+                            }
+                        });
+
+                        await deleteImage(user.avatar_id)
+                    }
+                }
 
                 // Preprocess & insert
-
                 return prisma.user.update({
                     where: {
                         id: user.id,
                     },
-                    data: removeNulls(args.data)
+                    data: removeNulls({
+                        ...args.data,
+                        avatar_id: avatarId,
+
+                        //hack to remove avatar from args.data
+                        // can be removed later with a schema data validator
+                        avatar: '',
+                    })
                 })
             }
         })

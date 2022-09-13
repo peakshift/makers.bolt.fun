@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
 import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
-import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageModal'
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
 import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
+
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
@@ -18,6 +18,7 @@ import { ConnectToMakerModal } from "src/features/Tournaments/pages/MakersPage/C
 import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals";
 
 
+import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
 
 export enum Direction {
   START,

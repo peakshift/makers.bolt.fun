@@ -54,6 +54,8 @@
   img {
     border-radius: 16px;
     outline: 1px solid #e4e7ec;
+    max-width: 100%;
+    object-fit: contain;
   }
 
   pre {

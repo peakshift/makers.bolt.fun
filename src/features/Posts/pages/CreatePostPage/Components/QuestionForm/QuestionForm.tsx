@@ -1,8 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import Button from "src/Components/Button/Button";
-import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
+import { Tag } from "src/graphql";
 import * as yup from "yup";
 import ContentEditor from "../ContentEditor/ContentEditor";
 
@@ -29,7 +29,7 @@ const schema = yup.object({
 
 interface IFormInputs {
     title: string
-    tags: NestedValue<object[]>
+    tags: NestedValue<Tag[]>
     cover_image: NestedValue<File[]> | string
     body: string
 }
@@ -60,7 +60,7 @@ export default function QuestionForm() {
                 <div
                     className='bg-white shadow-lg rounded-8 overflow-hidden'>
                     <div className="p-32">
-                        <Controller
+                        {/* <Controller
                             control={control}
                             name="cover_image"
                             render={({ field: { onChange, value, onBlur } }) => (
@@ -71,7 +71,7 @@ export default function QuestionForm() {
                                     uploadText='Add a cover image'
                                 />
                             )}
-                        />
+                        /> */}
                         <p className='input-error'>{errors.cover_image?.message}</p>
 
 
@@ -95,9 +95,18 @@ export default function QuestionForm() {
                         <p className="text-body5 mt-16">
                             Tags
                         </p>
-                        <TagsInput
-                            placeholder="Enter your tag and click enter. You can add multiple tags to your post"
-                            classes={{ container: 'mt-8' }}
+                        <Controller
+                            control={control}
+                            name="tags"
+                            render={({ field: { onChange, value, onBlur } }) => (
+                                <TagsInput
+                                    placeholder="Add up to 5 popular tags..."
+                                    classes={{ container: 'mt-16' }}
+                                    value={value}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                />
+                            )}
                         />
                         {errors.tags && <p className="input-error">
                             {errors.tags.message}

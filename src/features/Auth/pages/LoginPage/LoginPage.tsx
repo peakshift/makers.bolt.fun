@@ -10,6 +10,7 @@ import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText, } from "src/utils/helperFunctions";
+import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 
 
 
