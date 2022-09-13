@@ -9,6 +9,7 @@ const {
     booleanArg,
 } = require('nexus');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { prisma } = require('../../../prisma');
 const { paginationArgs, removeNulls } = require('./helpers');
 
@@ -92,7 +93,18 @@ const Tournament = objectType({
         t.nonNull.string('title');
         t.nonNull.string('description');
         t.nonNull.string('thumbnail_image');
-        t.nonNull.string('cover_image');
+        t.nonNull.string('cover_image', {
+            async resolve(parent) {
+                if (!parent.cover_image_id) return null
+                const imgObject = await prisma.hostedImage.findUnique({
+                    where: {
+                        id: parent.cover_image_id
+                    }
+                });
+
+                return resolveImgObjectToUrl(imgObject);
+            }
+        });
         t.nonNull.date('start_date');
         t.nonNull.date('end_date');
         t.nonNull.string('location');
