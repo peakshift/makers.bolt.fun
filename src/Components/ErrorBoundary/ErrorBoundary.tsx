@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ErrorMessage from "../Errors/ErrorMessage/ErrorMessage";
 
 interface Props {
     place?: string

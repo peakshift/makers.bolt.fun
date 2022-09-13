@@ -10,6 +10,7 @@ import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText, } from "src/utils/helperFunctions";
+import { useErrorHandler } from 'react-error-boundary';
 
 
 
@@ -33,7 +34,7 @@ export const useLnurlQuery = () => {
         const doFetch = async () => {
             const res = await fetchLnurlAuth();
             if (!res?.encoded)
-                setError(true)
+                setError(new Error("Response doesn't contain data"))
             else {
                 setLoading(false);
                 setData({
@@ -43,7 +44,7 @@ export const useLnurlQuery = () => {
                 timeOut = setTimeout(doFetch, 1000 * 60 * 2)
             }
         }
-        doFetch()
+        doFetch().catch(err => setError(err));
 
         return () => clearTimeout(timeOut)
     }, [])
@@ -64,8 +65,9 @@ export default function LoginPage() {
 
     const canFetchIsLogged = useRef(true)
     const { loadingLnurl, data: { lnurl, session_token }, error } = useLnurlQuery();
-    const clipboard = useCopyToClipboard()
 
+    useErrorHandler(error)
+    const clipboard = useCopyToClipboard()
 
 
     useEffect(() => {
@@ -197,6 +199,8 @@ export default function LoginPage() {
             </div>
 
         </div>;
+
+
 
     return (
         <>

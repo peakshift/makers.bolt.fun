@@ -1,6 +1,6 @@
 import ASSETS from 'src/assets';
 
-import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
+import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import HeaderImage from 'src/features/Projects/pages/CategoryPage/HeaderImage/HeaderImage';
 import ProjectsGrid from 'src/features/Projects/pages/CategoryPage/ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
