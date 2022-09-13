@@ -232,6 +232,84 @@ async function migrateOldImages() {
             })
         }
     }
+
+    /**
+     * Tournament
+     **/
+     const tournaments = await prisma.tournament.findMany({
+        select: {
+            id: true,
+            thumbnail_image: true,
+            cover_image: true,
+        }
+    })
+    for (const tournament of tournaments) {
+        if (tournament.thumbnail_image) {
+            let hostedImageId = await _insertInHostedImage(tournament.thumbnail_image)
+            await _updateObjectWithHostedImageId(prisma.tournament, tournament.id, {
+                thumbnail_image_id: hostedImageId,
+            })
+        }
+        if (tournament.cover_image) {
+            let hostedImageId = await _insertInHostedImage(tournament.cover_image)
+            await _updateObjectWithHostedImageId(prisma.tournament, tournament.id, {
+                cover_image_id: hostedImageId,
+            })
+        }
+    }
+
+    /**
+     * TournamentPrize
+     **/
+     const tournamentPrizes = await prisma.tournamentPrize.findMany({
+        select: {
+            id: true,
+            image: true,
+        }
+    })
+    for (const tournament of tournamentPrizes) {
+        if (tournament.image) {
+            let hostedImageId = await _insertInHostedImage(tournament.image)
+            await _updateObjectWithHostedImageId(prisma.tournamentPrize, tournament.id, {
+                image_id: hostedImageId,
+            })
+        }
+    }
+
+    /**
+     * TournamentJudge
+     **/
+    const tournamentJudges = await prisma.tournamentJudge.findMany({
+        select: {
+            id: true,
+            avatar: true,
+        }
+    })
+    for (const tournament of tournamentJudges) {
+        if (tournament.avatar) {
+            let hostedImageId = await _insertInHostedImage(tournament.avatar)
+            await _updateObjectWithHostedImageId(prisma.tournamentJudge, tournament.id, {
+                avatar_id: hostedImageId,
+            })
+        }
+    }
+    /**
+     * TournamentEvent
+    **/
+    const tournamentEvents = await prisma.tournamentEvent.findMany({
+        select: {
+            id: true,
+            image: true,
+        }
+    })
+    for (const tournament of tournamentEvents) {
+        if (tournament.image) {
+            let hostedImageId = await _insertInHostedImage(tournament.image)
+            await _updateObjectWithHostedImageId(prisma.tournamentEvent, tournament.id, {
+                image_id: hostedImageId,
+            })
+        }
+    }
 }
 
 async function _insertInHostedImage(url) {
