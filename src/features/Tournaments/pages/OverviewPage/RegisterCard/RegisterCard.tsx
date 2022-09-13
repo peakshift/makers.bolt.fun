@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaUsers } from 'react-icons/fa'
+import { FaDiscord, FaUsers } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 import Button from 'src/Components/Button/Button'
 import Card from 'src/Components/Card/Card'
@@ -52,6 +52,8 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
                     <span className='self-center ml-24 font-medium '>+ {makers_count} makers</span>
                 </p>}
                 <Button color={isRegistered ? 'gray' : "primary"} disabled={isRegistered} fullWidth className='mt-16' onClick={onRegister}>{isRegistered ? "Registered!" : "Register Now"}</Button>
+                <Button color={"gray"} href={'https://discord.gg/HFqtxavb7x'} newTab fullWidth className='mt-8 !text-primary-500'><FaDiscord /> <span className="align-middle ml-4">Join the Discord</span></Button>
+
             </div>
             <div>
                 {counter.isExpired ?
