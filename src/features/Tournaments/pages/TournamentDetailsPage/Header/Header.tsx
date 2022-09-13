@@ -16,7 +16,7 @@ export default function Header() {
                 <title>{tournamentDetails.title} Tournament</title>
             </Helmet>
             <div className="w-full p-16 md:p-24 flex flex-col h-[280px] relative mb-[-1px]">
-                <img src={tournamentDetails.cover_image} className='absolute inset-0 h-full w-full object-cover object-top' alt="" />
+                <img src={tournamentDetails.cover_image} className='absolute inset-0 h-full w-full object-cover object-center' alt="" />
                 <div className='absolute inset-0 h-full w-full bg-black bg-opacity-50 ' />
                 <div className="content-container mt-auto">
                     <div className=" text-white flex flex-col md:flex-row gap-16 md:gap-32 relative" style={{ marginTop: 'auto' }}>

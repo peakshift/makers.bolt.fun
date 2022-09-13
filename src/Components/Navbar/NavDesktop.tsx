@@ -38,7 +38,7 @@ export default function NavDesktop() {
 
 
     return (
-        <nav className="bg-white py-16 flex items-center w-full min-w-full">
+        <nav className="bg-white py-16 w-full min-w-full">
             <div className="content-container">
                 <div className="flex items-center">
                     <Link to="/">

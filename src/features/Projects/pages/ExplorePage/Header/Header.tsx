@@ -77,7 +77,7 @@ export default function Header() {
         <div className="w-full flex gap-16">
           <div className="flex-[0_0_100%] rounded-20 min-h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
             <img
-              className="w-full h-full object-cover object-top absolute top-0 left-0 z-[-2]"
+              className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
               src={bannerData.img}
               alt=""
             />
