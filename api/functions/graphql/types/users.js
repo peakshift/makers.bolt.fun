@@ -18,14 +18,7 @@ const BaseUser = interfaceType({
         t.nonNull.string('name');
         t.nonNull.string('avatar', {
             async resolve(parent) {
-                if (!parent.avatar_id) return null
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.avatar_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
+                return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.date('join_date');

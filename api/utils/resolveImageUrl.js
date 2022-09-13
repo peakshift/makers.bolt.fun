@@ -20,7 +20,7 @@ const PROVIDERS = [
  * @returns {string} image url
  */
 function resolveImgObjectToUrl(imgObject, variant = null) {
-    if (!imgObject) throw new Error('Image not found')
+    if (!imgObject) return null;
 
     if (imgObject.provider === 'external') {
         return imgObject.url

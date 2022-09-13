@@ -86,14 +86,7 @@ const Story = objectType({
         });
         t.string('cover_image', {
             async resolve(parent) {
-                if (!parent.cover_image_id) return null
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.cover_image_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
+                return prisma.story.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.list.nonNull.field('comments', {
@@ -405,8 +398,8 @@ const getHostedImageIdsFromBody = async (body, oldBodyImagesIds = null) => {
 
     const regex = /(?:!\[(.*?)\]\((.*?)\))/g
     let match;
-    while((match = regex.exec(body))) {
-        const [,,value] = match
+    while ((match = regex.exec(body))) {
+        const [, , value] = match
 
         // Useful for old external images in case of duplicates. We need to be sure we are targeting an image from the good story.
         const where = oldBodyImagesIds ? {
@@ -414,10 +407,10 @@ const getHostedImageIdsFromBody = async (body, oldBodyImagesIds = null) => {
                 { url: value },
                 { id: { in: oldBodyImagesIds } }
             ]
-        } : 
-        {
-            url: value,
-        }
+        } :
+            {
+                url: value,
+            }
 
         const hostedImage = await prisma.hostedImage.findFirst({
             where
@@ -453,9 +446,9 @@ const createStory = extendType({
 
                 let was_published = false;
 
-                
+
                 // TODO: validate post data
-                
+
                 let coverImage = null
                 let bodyImageIds = []
 
@@ -479,7 +472,7 @@ const createStory = extendType({
                     // Old cover image is found
                     if (oldPost.cover_image_id) {
                         const oldCoverImage = await prisma.hostedImage.findFirst({
-                            where : {
+                            where: {
                                 id: oldPost.cover_image_id
                             }
                         })
@@ -524,9 +517,9 @@ const createStory = extendType({
 
 
                 const coverImageRel = coverImage ? {
-                    cover_image_rel: { 
-                        connect: 
-                        { 
+                    cover_image_rel: {
+                        connect:
+                        {
                             id: coverImage ? coverImage.id : null
                         }
                     }
@@ -653,7 +646,7 @@ const deleteStory = extendType({
                     }
                 })
                 coverImage.map(async i => await deleteImage(i.id))
-                
+
                 return deletedPost
             }
         })

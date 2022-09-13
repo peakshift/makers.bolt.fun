@@ -65,9 +65,9 @@ async function main() {
 
     // await createSkills();
 
-    await createTournament();
+    // await createTournament();
 
-    // await migrateOldImages();
+    await migrateOldImages();
 }
 
 async function migrateOldImages() {
