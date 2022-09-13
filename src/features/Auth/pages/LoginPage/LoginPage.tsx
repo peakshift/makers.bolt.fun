@@ -152,8 +152,7 @@ export default function LoginPage() {
         </div>
 
     else
-        content = <div className="max-w-[364px] border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-24 items-center" >
-
+        content = <div className="max-w-[442px] bg-white border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-24 items-center" >
             <h2 className='text-h5 font-bold text-center'>Login with lightning ⚡</h2>
             <a href={`lightning:${lnurl}`} >
                 <QRCodeSVG
@@ -173,26 +172,32 @@ export default function LoginPage() {
             <p className="text-gray-600 text-body4 text-center">
                 Scan this code or copy + paste it to your lightning wallet. Or click to login with your browser's wallet.
             </p>
-            <div className="w-full flex flex-col items-stretch gap-16">
+            <div className="w-full grid md:grid-cols-2 gap-16">
                 <a href={`lightning:${lnurl}`}
-                    className='grow block text-body4 text-center text-white font-bolder bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
+                    className='block text-body4 text-center text-white bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform'
                 >Click to connect <IoRocketOutline /></a>
                 <Button
                     color='gray'
-                    className='grow'
                     onClick={copyToClipboard}
                 >{copied ? "Copied" : "Copy"} <FiCopy /></Button>
+                <a href={`https://makers.bolt.fun/blog/post/story/99/sign-in-with-lightning`} target='_blank' rel="noreferrer"
+                    className='md:col-span-2 block text-body4 text-center text-gray-900 border border-gray-200 rounded-10 px-16 py-12 active:scale-90 transition-transform'
+                >What is a lightning wallet?</a>
             </div>
 
         </div>;
 
     return (
-        <div className="min-h-[80vh] page-container flex flex-col justify-center items-center">
+        <>
             <Helmet>
                 <title>{`makers.bolt.fun`}</title>
                 <meta property="og:title" content={`makers.bolt.fun`} />
             </Helmet>
-            {content}
-        </div>
+            <div className="page-container">
+                <div className="min-h-[80vh] flex flex-col justify-center items-center">
+                    {content}
+                </div>
+            </div>
+        </>
     )
 }
