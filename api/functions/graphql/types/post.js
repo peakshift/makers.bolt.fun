@@ -42,13 +42,7 @@ const Author = objectType({
         t.nonNull.string('name');
         t.nonNull.string('avatar', {
             async resolve(parent) {
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.avatar_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
+                return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.date('join_date');
@@ -156,18 +150,7 @@ const Bounty = objectType({
         t.nonNull.string('type', {
             resolve: () => 'Bounty'
         });
-        t.string('cover_image', {
-            async resolve(parent) {
-                if (!parent.cover_image_id) return null
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.cover_image_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
-            }
-        });
+        t.string('cover_image');
         t.nonNull.string('deadline');
         t.nonNull.int('reward_amount');
         t.nonNull.int('applicants_count');

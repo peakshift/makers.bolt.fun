@@ -254,7 +254,6 @@ export interface NexusGenObjects {
     id: number; // Int!
     location: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
-    thumbnail_image: string; // String!
     title: string; // String!
     website: string; // String!
   }
@@ -262,7 +261,6 @@ export interface NexusGenObjects {
     description: string; // String!
     ends_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
-    image: string; // String!
     location: string; // String!
     starts_at: NexusGenScalars['Date']; // Date!
     title: string; // String!
@@ -274,7 +272,6 @@ export interface NexusGenObjects {
     question: string; // String!
   }
   TournamentJudge: { // root type
-    avatar: string; // String!
     company: string; // String!
     name: string; // String!
   }
@@ -290,7 +287,6 @@ export interface NexusGenObjects {
   }
   TournamentPrize: { // root type
     amount: string; // String!
-    image: string; // String!
     title: string; // String!
   }
   TournamentProjectsResponse: { // root type

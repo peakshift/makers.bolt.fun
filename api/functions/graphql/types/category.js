@@ -15,14 +15,7 @@ const Category = objectType({
         t.nonNull.string('title');
         t.string('cover_image', {
             async resolve(parent) {
-                if (!parent.cover_image_id) return null
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.cover_image_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
+                return prisma.category.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.string('icon');

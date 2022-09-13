@@ -20,26 +20,12 @@ const Project = objectType({
         t.nonNull.string('description');
         t.nonNull.string('cover_image', {
             async resolve(parent) {
-                if (!parent.cover_image_id) return null
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.cover_image_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
+                return prisma.project.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.string('thumbnail_image', {
             async resolve(parent) {
-                if (!parent.thumbnail_image_id) return null
-                const imgObject = await prisma.hostedImage.findUnique({
-                    where: {
-                        id: parent.thumbnail_image_id
-                    }
-                });
-
-                return resolveImgObjectToUrl(imgObject);
+                return prisma.project.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.list.nonNull.string('screenshots', {
