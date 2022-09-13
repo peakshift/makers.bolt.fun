@@ -13,7 +13,7 @@ import { Wallet_Service } from 'src/services'
 import { useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
-import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
+import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { setVoteAmount } from 'src/redux/features/vote.slice';
 import { numberFormatter } from 'src/utils/helperFunctions';
 import { MEDIA_QUERIES } from 'src/utils/theme';

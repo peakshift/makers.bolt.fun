@@ -13,6 +13,7 @@ import Button from 'src/Components/Button/Button'
 import { FaDiscord } from 'react-icons/fa'
 import { FiArrowRight } from 'react-icons/fi'
 import { capitalize } from 'src/utils/helperFunctions'
+import { bannerData } from 'src/features/Projects/pages/ExplorePage/Header/Header'
 
 
 export default function FeedPage() {
@@ -95,14 +96,15 @@ export default function FeedPage() {
                             <TrendingCard />
                             <div className='min-h-[300px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden'
                                 style={{
-                                    backgroundImage: "url(/assets/images/stw2.jfif)"
+                                    backgroundImage: `url(${bannerData.img})`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: "left"
                                 }}
                             >
                                 <div className="absolute bg-black inset-0 opacity-10"></div>
                                 <div className="relative flex flex-col gap-24">
                                     <div className="flex flex-col gap-8">
-                                        <p className="text-body1 font-bolder">Shock the Web 2 ⚡️</p>
-                                        <p className="text-body3 font-medium">16th - 18th June, 2022</p>
+                                        {bannerData.title}
                                     </div>
                                     <Button
                                         color='white'
