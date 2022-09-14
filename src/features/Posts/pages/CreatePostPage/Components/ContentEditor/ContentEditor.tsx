@@ -51,7 +51,6 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
         () => [
             new PlaceholderExtension({ placeholder }),
             new LinkExtension({
-                autoLink: true,
                 defaultTarget: "_blank",
                 extraAttributes: {
                     rel: 'noopener noreferrer'

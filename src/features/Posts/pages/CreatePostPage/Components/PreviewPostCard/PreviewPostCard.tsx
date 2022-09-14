@@ -1,7 +1,8 @@
-import { marked } from 'marked';
+
 import styles from 'src/features/Posts/pages/PostDetailsPage/Components/PageContent/styles.module.scss'
 import Badge from "src/Components/Badge/Badge";
 import { Post } from "src/graphql";
+import { mdToHtml } from 'src/utils/mdParser/mdParser';
 
 function isPost(type?: string): type is 'story' {
     return type === 'story'
@@ -29,6 +30,9 @@ export default function PreviewPostContent({ post, }: Props) {
     else
         coverImg = URL.createObjectURL(post.cover_image);
 
+    console.log(mdToHtml(post.body));
+
+
 
     return (
         <>
@@ -46,7 +50,7 @@ export default function PreviewPostContent({ post, }: Props) {
                     </div>}
                 </div>
 
-                <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(post.body, {}) }}>
+                <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: mdToHtml(post.body) }}>
                 </div>
             </div>
             {/* <div id="comments" className="mt-10 comments_col">

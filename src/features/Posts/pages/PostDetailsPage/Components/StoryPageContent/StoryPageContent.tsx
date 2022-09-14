@@ -8,8 +8,8 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useAppSelector } from "src/utils/hooks";
 import { useUpdateStory } from './useUpdateStory'
 import { FaPen } from "react-icons/fa";
-import DOMPurify from 'dompurify';
 import Card from "src/Components/Card/Card";
+import { mdToHtml } from "src/utils/mdParser/mdParser";
 
 
 interface Props {
@@ -69,7 +69,7 @@ export default function StoryPageContent({ story }: Props) {
 
                 <div
                     className={`mt-42 ${styles.body}`}
-                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(story.body)) }}
+                    dangerouslySetInnerHTML={{ __html: mdToHtml(story.body) }}
                 >
                 </div>
 

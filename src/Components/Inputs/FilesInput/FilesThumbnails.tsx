@@ -7,10 +7,13 @@ interface Props {
 }
 
 function processFiles(files: Props['files']) {
-
     if (!files) return [];
-    if (typeof files === 'string') return [files];
-    return files;
+    if (Array.isArray(files))
+        return files;
+    if (typeof files === 'string')
+        return [files];
+
+    return []
 }
 
 export default function FilesThumbnails({ files, onRemove }: Props) {
