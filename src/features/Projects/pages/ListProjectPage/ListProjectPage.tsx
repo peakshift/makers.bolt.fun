@@ -117,6 +117,7 @@ export default function ListProjectPage() {
                                             if (curTab === 'project-details') setCurTab(tabs['team'].path)
                                             else if (curTab === 'team') setCurTab(tabs['extras'].path)
                                         }}
+                                        onBackToFirstPage={() => setCurTab(tabs["project-details"].path)}
                                     />
                                 </div>
                             </div>

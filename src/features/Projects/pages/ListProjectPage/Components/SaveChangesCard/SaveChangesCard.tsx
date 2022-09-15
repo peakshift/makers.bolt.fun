@@ -9,31 +9,40 @@ import { tabs } from '../../ListProjectPage'
 import { NotificationsService } from 'src/services'
 import { useAppDispatch } from 'src/utils/hooks';
 import { openModal } from 'src/redux/features/modals.slice';
+import { useCreateProjectMutation, useUpdateProjectMutation } from 'src/graphql'
 
 interface Props {
     currentTab: keyof typeof tabs
     onNext: () => void
+    onBackToFirstPage: () => void
 }
 
 export default function SaveChangesCard(props: Props) {
 
     const { handleSubmit, formState: { errors, isDirty, }, reset, getValues, watch } = useFormContext<IListProjectForm>();
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
     const isUpdating = useMemo(() => !!getValues('id'), [getValues]);
 
+    const [update, updatingStatus] = useUpdateProjectMutation();
+    const [create, creatingStatus] = useCreateProjectMutation()
 
-    const [img, name, tagline] = watch(['thumbnail_image', 'title', 'tagline'])
+
+    const [img, name, tagline] = watch(['thumbnail_image', 'title', 'tagline',])
 
     const clickCancel = () => {
         if (window.confirm('You might lose some unsaved changes. Are you sure you want to continue?'))
             reset();
     }
 
-    const clickSubmit = handleSubmit<IListProjectForm>(data => {
-
+    const clickSubmit = handleSubmit<IListProjectForm>(async data => {
+        try {
+            await (isUpdating ? update({ variables: { input: data } }) : create({ variables: { input: data } }))
+        } catch (error) {
+            NotificationsService.error("A network error happened...");
+            return;
+        }
         if (isUpdating)
             NotificationsService.success("Saved changes successfully")
         else {
@@ -48,10 +57,9 @@ export default function SaveChangesCard(props: Props) {
                 }
             }))
         }
-        console.log(data);
-    }, () => {
+    }, (errors) => {
         NotificationsService.error("Please fill all the required fields");
-        navigate(tabs['project-details'].path)
+        props.onBackToFirstPage()
     })
 
 
@@ -91,7 +99,7 @@ export default function SaveChangesCard(props: Props) {
             >
                 List your product
             </Button>
-    }, [clickSubmit, isDirty, isLoading, isUpdating, props.currentTab])
+    }, [clickSubmit, isDirty, isLoading, isUpdating, props.currentTab, props.onNext])
 
 
     return (

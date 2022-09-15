@@ -1,13 +1,14 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import ScreenshotsInput, { ScreenshotType } from './ScreenshotsInput';
+import ScreenshotsInput from './ScreenshotsInput';
 import { WrapForm, WrapFormController } from 'src/utils/storybook/decorators';
+import { ImageInput } from 'src/graphql';
 
 export default {
     title: 'Shared/Inputs/Files Inputs/Screenshots',
     component: ScreenshotsInput,
     decorators: [
-        WrapFormController<{ screenshots: Array<ScreenshotType> }>({
+        WrapFormController<{ screenshots: Array<ImageInput> }>({
             logValues: true,
             name: "screenshots",
             defaultValues: {
@@ -29,7 +30,7 @@ Empty.args = {
 
 export const WithValues = Template.bind({});
 WithValues.decorators = [
-    WrapFormController<{ screenshots: Array<ScreenshotType> }>({
+    WrapFormController<{ screenshots: Array<ImageInput> }>({
         logValues: true,
         name: "screenshots",
         defaultValues: {
@@ -51,7 +52,7 @@ WithValues.args = {
 
 export const Full = Template.bind({});
 Full.decorators = [
-    WrapFormController<{ screenshots: Array<ScreenshotType> }>({
+    WrapFormController<{ screenshots: Array<ImageInput> }>({
         logValues: true,
         name: "screenshots",
         defaultValues: {

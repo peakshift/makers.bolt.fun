@@ -5,6 +5,9 @@ import { FiCamera, FiGithub, FiTwitter } from "react-icons/fi";
 import CategoriesInput from "../CategoriesInput/CategoriesInput";
 import CapabilitiesInput from "../CapabilitiesInput/CapabilitiesInput";
 import { IListProjectForm } from "../FormContainer/FormContainer";
+import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
+import CoverImageInput from "src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput";
+import ScreenshotsInput from "src/Components/Inputs/FilesInputs/ScreenshotsInput/ScreenshotsInput";
 
 interface Props { }
 
@@ -21,15 +24,28 @@ export default function ProjectDetailsTab(props: Props) {
         <div className="md:col-span-2 flex flex-col gap-24">
             <Card className="" defaultPadding={false}>
                 <div className="bg-gray-600 relative h-[160px] rounded-t-12 md:rounded-t-16">
+                    <Controller
+                        control={control}
+                        name="cover_image"
+                        render={({ field: { onChange, value, onBlur, ref } }) => <CoverImageInput
+                            value={value}
+                            rounded='rounded-t-12 md:rounded-t-16'
+                            onChange={e => {
+                                onChange(e)
+                            }}
+                        // uploadText='Add a cover image'
+                        />
+
+                        }
+                    />
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
-                        {/* <Avatar src={data.avatar} width={120} /> */}
-                        <div
-                            className="rounded-full w-[120px] aspect-square border-2 border-gray-200 bg-white flex flex-col gap-8 items-center justify-center"
-                            role={'button'}
-                        >
-                            <FiCamera className="text-gray-400 text-h2" />
-                            <span className="text-gray-400 text-body6">Add image</span>
-                        </div>
+                        <Controller
+                            control={control}
+                            name="thumbnail_image"
+                            render={({ field: { onChange, value } }) => (
+                                <AvatarInput value={value} onChange={onChange} width={120} />
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="p-16 md:p-24 mt-64">
@@ -180,6 +196,26 @@ export default function ProjectDetailsTab(props: Props) {
                                 onChange={onChange}
                             />
                         )}
+                    />
+                    {errors.capabilities && <p className='input-error'>{errors.capabilities?.message}</p>}
+                </div>
+            </Card>
+
+            <Card>
+                <h2 className="text-body2 font-bolder">📷  Screenshots</h2>
+                <p className="text-body4 font-light text-gray-600 mt-8">Choose up to 4 images from your project</p>
+                <div className="mt-24">
+                    <Controller
+                        control={control}
+                        name="screenshots"
+                        render={({ field: { onChange, value, onBlur, ref } }) => <ScreenshotsInput
+                            value={value}
+                            onChange={e => {
+                                onChange(e)
+                            }}
+                        />
+
+                        }
                     />
                     {errors.capabilities && <p className='input-error'>{errors.capabilities?.message}</p>}
                 </div>

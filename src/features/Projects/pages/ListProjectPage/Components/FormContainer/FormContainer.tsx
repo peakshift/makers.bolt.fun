@@ -71,11 +71,11 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     github: yup.string().url().ensure(),
     category_id: yup.number().required("Please choose a category"),
     capabilities: yup.array().of(yup.string().required()).default([]),
-    screenshots: yup.array().of(yup.string().required()).default([]),
+    screenshots: yup.array().of(imageSchema.required()).default([]),
     members: yup.array().of(yup.object() as any).default([]),
-    recruit_roles: yup.array().of(yup.object() as any).default([]),
+    recruit_roles: yup.array().of(yup.number().required()).default([]),
     launch_status: yup.mixed().oneOf(['wip', 'launched']).default('wip'),
-    tournaments: yup.array().default([])
+    tournaments: yup.array().of(yup.number().required()).default([])
 }).required();
 
 export default function FormContainer(props: PropsWithChildren<Props>) {

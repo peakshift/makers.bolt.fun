@@ -11,6 +11,8 @@ import { getMockSenderEnhancer } from "@rpldy/mock-sender";
 import ScreenshotThumbnail from "./ScreenshotThumbnail";
 import { FiCamera } from "react-icons/fi";
 import { Control, Path, useController } from "react-hook-form";
+import { ImageInput } from "src/graphql";
+import { fetchUploadImageUrl } from "src/api/uploading";
 
 
 
@@ -20,15 +22,10 @@ const mockSenderEnhancer = getMockSenderEnhancer({
 
 const MAX_UPLOAD_COUNT = 4 as const;
 
-export interface ScreenshotType {
-    id: string,
-    name: string,
-    url: string;
-}
 
 interface Props {
-    value: ScreenshotType[],
-    onChange: (new_value: ScreenshotType[]) => void
+    value: ImageInput[],
+    onChange: (new_value: ImageInput[]) => void
 }
 
 
@@ -49,7 +46,6 @@ export default function ScreenshotsInput(props: Props) {
             multiple={true}
             inputFieldName='file'
             grouped={false}
-            enhancer={mockSenderEnhancer}
             listeners={{
                 [UPLOADER_EVENTS.BATCH_ADD]: (batch) => {
                     setUploadingCount(v => v + batch.items.length)
@@ -96,17 +92,18 @@ const DropZone = forwardRef<any, any>((props, ref) => {
 
 
     useRequestPreSend(async (data) => {
-
         const filename = data.items?.[0].file.name ?? ''
 
-        // const url = await fetchUploadUrl({ filename });
+        const res = await fetchUploadImageUrl({ filename });
+
         return {
             options: {
                 destination: {
-                    url: "URL"
-                }
+                    url: res.uploadURL
+                },
             }
         }
+
     })
 
     const onZoneClick = useCallback(
