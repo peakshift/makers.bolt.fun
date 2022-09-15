@@ -42,11 +42,11 @@ export default function ProjectDetailsTab(props: Props) {
                             type='text'
                             className="input-text"
                             placeholder='e.g BOLT🔩FUN'
-                            {...register("name")}
+                            {...register("title")}
                         />
                     </div>
-                    {errors.name && <p className="input-error">
-                        {errors.name.message}
+                    {errors.title && <p className="input-error">
+                        {errors.title.message}
                     </p>}
                     <p className="text-body5 mt-16 font-medium">
                         Project link<sup className="text-red-500">*</sup>

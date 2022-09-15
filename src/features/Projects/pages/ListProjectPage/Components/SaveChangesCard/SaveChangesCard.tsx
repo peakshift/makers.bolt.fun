@@ -24,7 +24,7 @@ export default function SaveChangesCard(props: Props) {
     const isUpdating = useMemo(() => !!getValues('id'), [getValues]);
 
 
-    const [img, name, tagline] = watch(['thumbnail_image', 'name', 'tagline'])
+    const [img, name, tagline] = watch(['thumbnail_image', 'title', 'tagline'])
 
     const clickCancel = () => {
         if (window.confirm('You might lose some unsaved changes. Are you sure you want to continue?'))
@@ -40,7 +40,7 @@ export default function SaveChangesCard(props: Props) {
                 Modal: "ProjectListedModal", props: {
                     project: {
                         id: data.id!,
-                        name: data.name,
+                        name: data.title,
                         img: data.thumbnail_image || "https://picsum.photos/id/870/150/150.jpg",
                         tagline: data.tagline,
                     }

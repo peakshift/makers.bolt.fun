@@ -16,7 +16,7 @@ import "src/styles/index.scss";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../apollo';
-import { Controller, FormProvider, useForm, UseFormProps, Controller } from 'react-hook-form';
+import { Controller, FormProvider, useForm, UseFormProps, } from 'react-hook-form';
 import ModalsContainer from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { ToastContainer } from 'react-toastify';
 import { NotificationsService } from 'src/services';

@@ -40,7 +40,7 @@ export class NotificationsService {
 
     static warn(msg: string, options?: AlertOptions) {
         toast.warn(msg, {
-            onClose: options?.onComplete,
+            onClose: options?.onClose,
             autoClose: options?.autoClose ?? 2500,
             ...options,
         })

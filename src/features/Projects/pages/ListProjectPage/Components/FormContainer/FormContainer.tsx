@@ -14,7 +14,7 @@ interface Props {
 
 export interface IListProjectForm {
     id?: number
-    name: string
+    title: string
     website: string
     tagline: string
     description: string
@@ -43,7 +43,7 @@ export interface IListProjectForm {
 
 const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     id: yup.number().optional(),
-    name: yup.string().trim().required().min(2),
+    title: yup.string().trim().required().min(2),
     website: yup.string().trim().url().required(),
     tagline: yup.string().trim().required().min(10),
     description: yup.string().trim().required().min(50, 'Write at least 10 words descriping your project'),
@@ -68,7 +68,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
     const methods = useForm<IListProjectForm>({
         defaultValues: {
             id: !!params.get('id') ? Number(params.get('id')) : undefined,
-            name: "",
+            title: "",
             website: "",
             tagline: "",
             description: "",
