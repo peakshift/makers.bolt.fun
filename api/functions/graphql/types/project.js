@@ -304,24 +304,64 @@ const CreateProjectInput = inputObjectType({
     }
 })
 
+const CreateProjectResponse = objectType({
+    name: 'CreateProjectResponse',
+    definition(t) {
+        t.nonNull.field('project', { type: Project })
+    }
+})
+
 const createProject = extendType({
     type: 'Mutation',
     definition(t) {
         t.field('createProject', {
-            type: 'Project',
-            args: { data: CreateProjectInput },
+            type: CreateProjectResponse,
+            args: { input: CreateProjectInput },
             async resolve(_root, args, ctx) {
-                if (args.data.id) {
-                    // Update project
-                } else {
-                    // Create project
-                }
+                const { title } = args.input;
+
             }
         })
     },
 })
 
 
+const UpdateProjectInput = inputObjectType({
+    name: 'UpdateProjectInput',
+    definition(t) {
+        t.int('id')
+        t.nonNull.string('title');
+        t.nonNull.string('website');
+        t.nonNull.string('tagline');
+        t.nonNull.string('description');
+        t.nonNull.string('thumbnail_image');
+        t.nonNull.string('cover_image');
+        t.string('twitter');
+        t.string('discord');
+        t.string('github');
+        t.nonNull.int('category_id');
+        t.nonNull.list.nonNull.string('capabilities');
+        t.nonNull.list.nonNull.string('screenshots');
+        t.nonNull.list.nonNull.field('members', {
+            type: TeamMemberInput
+        });
+        t.nonNull.list.nonNull.int('recruit_roles'); // ids
+        t.nonNull.string('launch_status');   // "wip" | "launched"
+    }
+})
+
+const updateProject = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('updateProject', {
+            type: CreateProjectResponse,
+            args: { input: UpdateProjectInput },
+            async resolve(_root, args, ctx) {
+
+            }
+        })
+    },
+})
 
 
 
@@ -341,4 +381,5 @@ module.exports = {
 
     // Mutations
     createProject,
+    updateProject,
 }
