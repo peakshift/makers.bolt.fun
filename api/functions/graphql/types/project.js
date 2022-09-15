@@ -5,6 +5,7 @@ const {
     extendType,
     nonNull,
     enumType,
+    inputObjectType,
 } = require('nexus')
 const { prisma } = require('../../../prisma');
 
@@ -269,6 +270,61 @@ const getLnurlDetailsForProject = extendType({
     }
 })
 
+const TeamMemberInput = inputObjectType({
+    name: 'CreateProjectInput',
+    definition(t) {
+        t.nonNull.int('id')
+        t.nonNull.field("role", {
+            type: TEAM_MEMBER_ROLE
+        })
+    }
+})
+
+const CreateProjectInput = inputObjectType({
+    name: 'CreateProjectInput',
+    definition(t) {
+        t.int('id') // exists in update
+        t.nonNull.string('title');
+        t.nonNull.string('website');
+        t.nonNull.string('tagline');
+        t.nonNull.string('description');
+        t.nonNull.string('thumbnail_image');
+        t.nonNull.string('cover_image');
+        t.string('twitter');
+        t.string('discord');
+        t.string('github');
+        t.nonNull.int('category_id');
+        t.nonNull.list.nonNull.string('capabilities');
+        t.nonNull.list.nonNull.string('screenshots');
+        t.nonNull.list.nonNull.field('members', {
+            type: TeamMemberInput
+        });
+        t.nonNull.list.nonNull.int('recruit_roles'); // ids
+        t.nonNull.string('launch_status');   // "wip" | "launched"
+    }
+})
+
+const createProject = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('createProject', {
+            type: 'Project',
+            args: { data: CreateProjectInput },
+            async resolve(_root, args, ctx) {
+                if (args.data.id) {
+                    // Update project
+                } else {
+                    // Create project
+                }
+            }
+        })
+    },
+})
+
+
+
+
+
 module.exports = {
     // Types
     Project,
@@ -281,5 +337,8 @@ module.exports = {
     hottestProjects,
     searchProjects,
     projectsByCategory,
-    getLnurlDetailsForProject
+    getLnurlDetailsForProject,
+
+    // Mutations
+    createProject,
 }
