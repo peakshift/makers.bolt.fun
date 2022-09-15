@@ -1,7 +1,9 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRef, useState } from "react";
+import { ErrorBoundary, withErrorBoundary } from "react-error-boundary";
 import { FormProvider, NestedValue, Resolver, useForm } from "react-hook-form";
+import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { CreateStoryMutationVariables, Post_Type } from "src/graphql";
 import { StorageService } from "src/services";
 import { useAppSelector } from "src/utils/hooks";
@@ -43,7 +45,7 @@ export type CreateStoryType = Override<IStoryFormInputs, {
 const storageService = new StorageService<CreateStoryType>('story-edit');
 
 
-export default function CreateStoryPage() {
+function CreateStoryPage() {
 
 
     const { story } = useAppSelector(state => ({
@@ -91,3 +93,6 @@ export default function CreateStoryPage() {
         </FormProvider>
     )
 }
+
+// TODO: change the default cover_image on error
+export default withErrorBoundary(CreateStoryPage, { FallbackComponent: ErrorPage, onError: () => { storageService.set({ ...storageService.get()!, cover_image: null as any }) } })
