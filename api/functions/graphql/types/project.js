@@ -11,6 +11,7 @@ const { prisma } = require('../../../prisma');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
+const { ImageInput } = require('./misc');
 const { MakerRole } = require('./users');
 
 
@@ -310,14 +311,20 @@ const CreateProjectInput = inputObjectType({
         t.nonNull.string('website');
         t.nonNull.string('tagline');
         t.nonNull.string('description');
-        t.nonNull.string('thumbnail_image');
-        t.nonNull.string('cover_image');
+        t.nonNull.field('thumbnail_image', {
+            type: ImageInput
+        })
+        t.nonNull.field('cover_image', {
+            type: ImageInput
+        })
         t.string('twitter');
         t.string('discord');
         t.string('github');
         t.nonNull.int('category_id');
         t.nonNull.list.nonNull.string('capabilities');
-        t.nonNull.list.nonNull.string('screenshots');
+        t.nonNull.list.nonNull.field('screenshots', {
+            type: ImageInput
+        });
         t.nonNull.list.nonNull.field('members', {
             type: TeamMemberInput
         });
@@ -356,14 +363,20 @@ const UpdateProjectInput = inputObjectType({
         t.nonNull.string('website');
         t.nonNull.string('tagline');
         t.nonNull.string('description');
-        t.nonNull.string('thumbnail_image');
-        t.nonNull.string('cover_image');
+        t.nonNull.field('thumbnail_image', {
+            type: ImageInput
+        })
+        t.nonNull.field('cover_image', {
+            type: ImageInput
+        })
         t.string('twitter');
         t.string('discord');
         t.string('github');
         t.nonNull.int('category_id');
         t.nonNull.list.nonNull.string('capabilities');
-        t.nonNull.list.nonNull.string('screenshots');
+        t.nonNull.list.nonNull.field('screenshots', {
+            type: ImageInput
+        });
         t.nonNull.list.nonNull.field('members', {
             type: TeamMemberInput
         });
@@ -385,6 +398,18 @@ const updateProject = extendType({
     },
 })
 
+const deleteProject = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('deleteProject', {
+            type: CreateProjectResponse,
+            args: { id: nonNull(intArg()) },
+            async resolve(_root, args, ctx) {
+                // ...
+            }
+        })
+    },
+})
 
 
 module.exports = {
@@ -404,4 +429,5 @@ module.exports = {
     // Mutations
     createProject,
     updateProject,
+    deleteProject,
 }
