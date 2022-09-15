@@ -43,6 +43,7 @@ export interface NexusGenInputs {
     tagline: string; // String!
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
+    tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
   }
@@ -107,6 +108,7 @@ export interface NexusGenInputs {
     tagline: string; // String!
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
+    tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
   }

@@ -330,6 +330,7 @@ const CreateProjectInput = inputObjectType({
         });
         t.nonNull.list.nonNull.int('recruit_roles'); // ids
         t.nonNull.string('launch_status');   // "wip" | "launched"
+        t.nonNull.list.nonNull.int('tournaments'); // ids
     }
 })
 
@@ -382,6 +383,7 @@ const UpdateProjectInput = inputObjectType({
         });
         t.nonNull.list.nonNull.int('recruit_roles'); // ids
         t.nonNull.string('launch_status');   // "wip" | "launched"
+        t.nonNull.list.nonNull.int('tournaments'); // ids
     }
 })
 

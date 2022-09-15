@@ -75,7 +75,7 @@ export default function ListProjectPage() {
                         </aside>
                         :
                         <aside
-                            className=" bg-white z-10 w-full sticky-top-element"
+                            className=" bg-white z-10 w-full sticky-top-element !col-start-1"
                         >
                             <div className="relative group overflow-hidden">
                                 <div className="border-b-2 border-gray-200" ref={viewportRef}>
@@ -92,7 +92,7 @@ export default function ListProjectPage() {
                                                     }),
                                                 }
                                                 }
-
+                                                onClick={() => setCurTab(link.path)}
                                             >
                                                 {link.text}
                                             </button>
@@ -111,7 +111,13 @@ export default function ListProjectPage() {
                                     {curTab === tabs["extras"].path && <ExtrasTab />}
                                 </div>
                                 <div className="self-start sticky-side-element">
-                                    <SaveChangesCard currentTab={curTab} />
+                                    <SaveChangesCard
+                                        currentTab={curTab}
+                                        onNext={() => {
+                                            if (curTab === 'project-details') setCurTab(tabs['team'].path)
+                                            else if (curTab === 'team') setCurTab(tabs['extras'].path)
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </FormContainer>

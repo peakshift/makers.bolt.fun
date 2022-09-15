@@ -2,14 +2,14 @@ import Button from 'src/Components/Button/Button';
 import { random } from 'src/utils/helperFunctions';
 
 interface Props {
-    value: string[];
-    onChange?: (v: string[]) => void;
+    value: number[];
+    onChange?: (v: number[]) => void;
 }
 
 export default function TournamentsInput(props: Props) {
 
 
-    const handleClick = (clickedValue: string) => {
+    const handleClick = (clickedValue: number) => {
         if (props.value.includes(clickedValue))
             props.onChange?.(props.value.filter(v => v !== clickedValue));
         else
@@ -29,20 +29,20 @@ export default function TournamentsInput(props: Props) {
                 :
                 data.map(item =>
                     <Button
-                        key={item.text}
+                        key={item.id}
                         color='none'
                         size='sm'
                         className={`
                         border border-gray-200
-                        ${props.value.includes(item.text) ?
-                                'text-primary-600 bg-primary-100'
+                        ${props.value.includes(item.id) ?
+                                'title-primary-600 bg-primary-100'
                                 :
                                 "bg-gray-100"
                             }
                         `}
-                        onClick={() => handleClick(item.text)}
+                        onClick={() => handleClick(item.id)}
                     >
-                        {item.text}
+                        {item.title}
                     </Button>)
             }
         </div>
@@ -51,15 +51,19 @@ export default function TournamentsInput(props: Props) {
 
 const data = [
     {
-        text: 'ShockTheWeb3',
+        id: 1,
+        title: 'ShockTheWeb3',
     },
     {
-        text: 'Adopting Bitcoin 2022',
+        id: 2,
+        title: 'Adopting Bitcoin 2022',
     },
     {
-        text: 'TabConf',
+        id: 3,
+        title: 'TabConf',
     },
     {
-        text: 'Blockstream',
+        id: 4,
+        title: 'Blockstream',
     },
 ]

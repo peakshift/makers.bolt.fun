@@ -92,6 +92,7 @@ input CreateProjectInput {
   tagline: String!
   thumbnail_image: ImageInput!
   title: String!
+  tournaments: [Int!]!
   twitter: String
   website: String!
 }
@@ -482,6 +483,7 @@ input UpdateProjectInput {
   tagline: String!
   thumbnail_image: ImageInput!
   title: String!
+  tournaments: [Int!]!
   twitter: String
   website: String!
 }

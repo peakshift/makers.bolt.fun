@@ -102,6 +102,31 @@ export type Category = {
   votes_sum: Scalars['Int'];
 };
 
+export type CreateProjectInput = {
+  capabilities: Array<Scalars['String']>;
+  category_id: Scalars['Int'];
+  cover_image: ImageInput;
+  description: Scalars['String'];
+  discord?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  launch_status: Scalars['String'];
+  members: Array<TeamMemberInput>;
+  recruit_roles: Array<Scalars['Int']>;
+  screenshots: Array<ImageInput>;
+  tagline: Scalars['String'];
+  thumbnail_image: ImageInput;
+  title: Scalars['String'];
+  tournaments: Array<Scalars['Int']>;
+  twitter?: InputMaybe<Scalars['String']>;
+  website: Scalars['String'];
+};
+
+export type CreateProjectResponse = {
+  __typename?: 'CreateProjectResponse';
+  project: Project;
+};
+
 export type Donation = {
   __typename?: 'Donation';
   amount: Scalars['Int'];
@@ -182,12 +207,15 @@ export type Mutation = {
   __typename?: 'Mutation';
   confirmDonation: Donation;
   confirmVote: Vote;
+  createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
+  deleteProject: Maybe<CreateProjectResponse>;
   deleteStory: Maybe<Story>;
   donate: Donation;
   registerInTournament: Maybe<User>;
   updateProfileDetails: Maybe<MyProfile>;
   updateProfileRoles: Maybe<MyProfile>;
+  updateProject: Maybe<CreateProjectResponse>;
   updateTournamentRegistration: Maybe<ParticipationInfo>;
   updateUserPreferences: MyProfile;
   vote: Vote;
@@ -206,8 +234,18 @@ export type MutationConfirmVoteArgs = {
 };
 
 
+export type MutationCreateProjectArgs = {
+  input: InputMaybe<CreateProjectInput>;
+};
+
+
 export type MutationCreateStoryArgs = {
   data: InputMaybe<StoryInputType>;
+};
+
+
+export type MutationDeleteProjectArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -234,6 +272,11 @@ export type MutationUpdateProfileDetailsArgs = {
 
 export type MutationUpdateProfileRolesArgs = {
   data: InputMaybe<ProfileRolesInput>;
+};
+
+
+export type MutationUpdateProjectArgs = {
+  input: InputMaybe<UpdateProjectInput>;
 };
 
 
@@ -577,6 +620,11 @@ export type Tag = {
   title: Scalars['String'];
 };
 
+export type TeamMemberInput = {
+  id: Scalars['Int'];
+  role: Team_Member_Role;
+};
+
 export type Tournament = {
   __typename?: 'Tournament';
   cover_image: Scalars['String'];
@@ -662,6 +710,26 @@ export type TournamentProjectsResponse = {
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
   projects: Array<Project>;
+};
+
+export type UpdateProjectInput = {
+  capabilities: Array<Scalars['String']>;
+  category_id: Scalars['Int'];
+  cover_image: ImageInput;
+  description: Scalars['String'];
+  discord?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  launch_status: Scalars['String'];
+  members: Array<TeamMemberInput>;
+  recruit_roles: Array<Scalars['Int']>;
+  screenshots: Array<ImageInput>;
+  tagline: Scalars['String'];
+  thumbnail_image: ImageInput;
+  title: Scalars['String'];
+  tournaments: Array<Scalars['Int']>;
+  twitter?: InputMaybe<Scalars['String']>;
+  website: Scalars['String'];
 };
 
 export type UpdateTournamentRegistrationInput = {
@@ -913,6 +981,20 @@ export type HottestProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HottestProjectsQuery = { __typename?: 'Query', hottestProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> };
+
+export type CreateProjectMutationVariables = Exact<{
+  input: InputMaybe<CreateProjectInput>;
+}>;
+
+
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } } | null };
+
+export type UpdateProjectMutationVariables = Exact<{
+  input: InputMaybe<UpdateProjectInput>;
+}>;
+
+
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } } | null };
 
 export type ProjectDetailsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -2284,6 +2366,126 @@ export function useHottestProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type HottestProjectsQueryHookResult = ReturnType<typeof useHottestProjectsQuery>;
 export type HottestProjectsLazyQueryHookResult = ReturnType<typeof useHottestProjectsLazyQuery>;
 export type HottestProjectsQueryResult = Apollo.QueryResult<HottestProjectsQuery, HottestProjectsQueryVariables>;
+export const CreateProjectDocument = gql`
+    mutation CreateProject($input: CreateProjectInput) {
+  createProject(input: $input) {
+    project {
+      id
+      title
+      description
+      cover_image
+      thumbnail_image
+      screenshots
+      website
+      lightning_address
+      lnurl_callback_url
+      votes_count
+      category {
+        id
+        title
+        icon
+      }
+      tags {
+        id
+        title
+        icon
+      }
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
+    }
+  }
+}
+    `;
+export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
+
+/**
+ * __useCreateProjectMutation__
+ *
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, options);
+      }
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const UpdateProjectDocument = gql`
+    mutation UpdateProject($input: UpdateProjectInput) {
+  updateProject(input: $input) {
+    project {
+      id
+      title
+      description
+      cover_image
+      thumbnail_image
+      screenshots
+      website
+      lightning_address
+      lnurl_callback_url
+      votes_count
+      category {
+        id
+        title
+        icon
+      }
+      tags {
+        id
+        title
+        icon
+      }
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
+    }
+  }
+}
+    `;
+export type UpdateProjectMutationFn = Apollo.MutationFunction<UpdateProjectMutation, UpdateProjectMutationVariables>;
+
+/**
+ * __useUpdateProjectMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectMutation, { data, loading, error }] = useUpdateProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(UpdateProjectDocument, options);
+      }
+export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
+export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
+export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
 export const ProjectDetailsDocument = gql`
     query ProjectDetails($projectId: Int!) {
   getProject(id: $projectId) {

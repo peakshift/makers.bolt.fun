@@ -12,6 +12,7 @@ import { openModal } from 'src/redux/features/modals.slice';
 
 interface Props {
     currentTab: keyof typeof tabs
+    onNext: () => void
 }
 
 export default function SaveChangesCard(props: Props) {
@@ -41,7 +42,7 @@ export default function SaveChangesCard(props: Props) {
                     project: {
                         id: data.id!,
                         name: data.title,
-                        img: data.thumbnail_image || "https://picsum.photos/id/870/150/150.jpg",
+                        img: data.thumbnail_image.url || "https://picsum.photos/id/870/150/150.jpg",
                         tagline: data.tagline,
                     }
                 }
@@ -69,7 +70,7 @@ export default function SaveChangesCard(props: Props) {
             return <Button
                 color="primary"
                 fullWidth
-                href={tabs.team.path}
+                onClick={props.onNext}
             >
                 Next step: {tabs.team.text}
             </Button>
@@ -77,7 +78,7 @@ export default function SaveChangesCard(props: Props) {
             return <Button
                 color="primary"
                 fullWidth
-                href={tabs.extras.path}
+                onClick={props.onNext}
             >
                 Next step: {tabs.extras.text}
             </Button>
@@ -97,7 +98,7 @@ export default function SaveChangesCard(props: Props) {
         <Card className='flex flex-col gap-24'>
             <div className='flex gap-8 items-center'>
                 {img ?
-                    <Avatar width={48} src={img} /> :
+                    <Avatar width={48} src={img.url} /> :
                     <div className="bg-gray-50 border border-gray-200 rounded-full w-48 h-48 shrink-0"></div>
                 }
                 <div className='overflow-hidden'>

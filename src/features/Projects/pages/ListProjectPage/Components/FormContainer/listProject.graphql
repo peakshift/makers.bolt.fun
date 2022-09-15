@@ -1,0 +1,65 @@
+mutation CreateProject($input: CreateProjectInput) {
+  createProject(input: $input) {
+    project {
+      id
+      title
+      description
+      cover_image
+      thumbnail_image
+      screenshots
+      website
+      lightning_address
+      lnurl_callback_url
+      votes_count
+      category {
+        id
+        title
+        icon
+      }
+      tags {
+        id
+        title
+        icon
+      }
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
+    }
+  }
+}
+
+mutation UpdateProject($input: UpdateProjectInput) {
+  updateProject(input: $input) {
+    project {
+      id
+      title
+      description
+      cover_image
+      thumbnail_image
+      screenshots
+      website
+      lightning_address
+      lnurl_callback_url
+      votes_count
+      category {
+        id
+        title
+        icon
+      }
+      tags {
+        id
+        title
+        icon
+      }
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
+    }
+  }
+}
