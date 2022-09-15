@@ -10,17 +10,12 @@ import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText, } from "src/utils/helperFunctions";
+import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 import { useErrorHandler } from 'react-error-boundary';
 
 
 
-const fetchLnurlAuth = async () => {
-    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url', {
-        credentials: 'include'
-    })
-    const data = await res.json()
-    return data;
-}
+
 
 export const useLnurlQuery = () => {
     const [loading, setLoading] = useState(true)
@@ -102,15 +97,9 @@ export default function LoginPage() {
                 if (canFetchIsLogged.current === false) return;
 
                 canFetchIsLogged.current = false;
-                fetch(CONSTS.apiEndpoint + '/is-logged-in', {
-                    credentials: 'include',
-                    headers: {
-                        session_token
-                    }
-                })
-                    .then(data => data.json())
-                    .then(data => {
-                        if (data.logged_in) {
+                fetchIsLoggedIn(session_token)
+                    .then(is_logged_in => {
+                        if (is_logged_in) {
                             clearInterval(interval)
                             refetch();
                         }

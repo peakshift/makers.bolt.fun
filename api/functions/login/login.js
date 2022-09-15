@@ -85,11 +85,21 @@ const loginHandler = async (req, res) => {
                 const nostr_prv_key = generatePrivateKey();
                 const nostr_pub_key = getPublicKey(nostr_prv_key);
 
+                const avatar = await prisma.hostedImage.create({
+                    data: {
+                        filename: 'avatar.svg',
+                        provider: 'external',
+                        is_used: true,
+                        url: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
+                        provider_image_id: ''
+                    }
+                })
+
                 const createdUser = await prisma.user.create({
                     data: {
                         pubKey: key,
                         name: key,
-                        avatar: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
+                        avatar_id: avatar.id,
                         nostr_prv_key,
                         nostr_pub_key,
                     },

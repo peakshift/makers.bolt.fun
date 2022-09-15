@@ -28,6 +28,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  ImageInput: { // input type
+    id?: string | null; // String
+    name?: string | null; // String
+    url: string; // String!
+  }
   MakerRoleInput: { // input type
     id: number; // Int!
     level: NexusGenEnums['RoleLevelEnum']; // RoleLevelEnum!
@@ -36,7 +41,7 @@ export interface NexusGenInputs {
     id: number; // Int!
   }
   ProfileDetailsInput: { // input type
-    avatar?: string | null; // String
+    avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
     bio?: string | null; // String
     discord?: string | null; // String
     email?: string | null; // String
@@ -59,7 +64,7 @@ export interface NexusGenInputs {
   }
   StoryInputType: { // input type
     body: string; // String!
-    cover_image?: string | null; // String
+    cover_image?: NexusGenInputs['ImageInput'] | null; // ImageInput
     id?: number | null; // Int
     is_published?: boolean | null; // Boolean
     tags: string[]; // [String!]!
@@ -95,7 +100,6 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Author: { // root type
-    avatar: string; // String!
     id: number; // Int!
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address?: string | null; // String
@@ -111,7 +115,6 @@ export interface NexusGenObjects {
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     body: string; // String!
-    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
@@ -129,7 +132,6 @@ export interface NexusGenObjects {
     workplan: string; // String!
   }
   Category: { // root type
-    cover_image?: string | null; // String
     icon?: string | null; // String
     id: number; // Int!
     title: string; // String!
@@ -154,7 +156,6 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   Hackathon: { // root type
-    cover_image: string; // String!
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -181,7 +182,6 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   MyProfile: { // root type
-    avatar: string; // String!
     bio?: string | null; // String
     discord?: string | null; // String
     email?: string | null; // String
@@ -213,13 +213,10 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Project: { // root type
-    cover_image: string; // String!
     description: string; // String!
     id: number; // Int!
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
-    screenshots: string[]; // [String!]!
-    thumbnail_image: string; // String!
     title: string; // String!
     votes_count: number; // Int!
     website: string; // String!
@@ -237,7 +234,6 @@ export interface NexusGenObjects {
   }
   Story: { // root type
     body: string; // String!
-    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
     id: number; // Int!
@@ -254,13 +250,11 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   Tournament: { // root type
-    cover_image: string; // String!
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     location: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
-    thumbnail_image: string; // String!
     title: string; // String!
     website: string; // String!
   }
@@ -268,7 +262,6 @@ export interface NexusGenObjects {
     description: string; // String!
     ends_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
-    image: string; // String!
     location: string; // String!
     starts_at: NexusGenScalars['Date']; // Date!
     title: string; // String!
@@ -280,7 +273,6 @@ export interface NexusGenObjects {
     question: string; // String!
   }
   TournamentJudge: { // root type
-    avatar: string; // String!
     company: string; // String!
     name: string; // String!
   }
@@ -296,7 +288,6 @@ export interface NexusGenObjects {
   }
   TournamentPrize: { // root type
     amount: string; // String!
-    image: string; // String!
     title: string; // String!
   }
   TournamentProjectsResponse: { // root type
@@ -305,7 +296,6 @@ export interface NexusGenObjects {
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
   User: { // root type
-    avatar: string; // String!
     bio?: string | null; // String
     discord?: string | null; // String
     github?: string | null; // String
