@@ -294,7 +294,7 @@ const getLnurlDetailsForProject = extendType({
 })
 
 const TeamMemberInput = inputObjectType({
-    name: 'CreateProjectInput',
+    name: 'TeamMemberInput',
     definition(t) {
         t.nonNull.int('id')
         t.nonNull.field("role", {

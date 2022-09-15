@@ -77,6 +77,29 @@ type Category {
   votes_sum: Int!
 }
 
+input CreateProjectInput {
+  capabilities: [String!]!
+  category_id: Int!
+  cover_image: ImageInput!
+  description: String!
+  discord: String
+  github: String
+  id: Int
+  launch_status: String!
+  members: [TeamMemberInput!]!
+  recruit_roles: [Int!]!
+  screenshots: [ImageInput!]!
+  tagline: String!
+  thumbnail_image: ImageInput!
+  title: String!
+  twitter: String
+  website: String!
+}
+
+type CreateProjectResponse {
+  project: Project!
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -152,12 +175,15 @@ input MakerSkillInput {
 type Mutation {
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
+  deleteProject(id: Int!): CreateProjectResponse
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
   updateProfileRoles(data: ProfileRolesInput): MyProfile
+  updateProject(input: UpdateProjectInput): CreateProjectResponse
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
@@ -357,6 +383,11 @@ type Tag {
   title: String!
 }
 
+input TeamMemberInput {
+  id: Int!
+  role: TEAM_MEMBER_ROLE!
+}
+
 type Tournament {
   cover_image: String!
   description: String!
@@ -434,6 +465,25 @@ type TournamentProjectsResponse {
   hasNext: Boolean
   hasPrev: Boolean
   projects: [Project!]!
+}
+
+input UpdateProjectInput {
+  capabilities: [String!]!
+  category_id: Int!
+  cover_image: ImageInput!
+  description: String!
+  discord: String
+  github: String
+  id: Int
+  launch_status: String!
+  members: [TeamMemberInput!]!
+  recruit_roles: [Int!]!
+  screenshots: [ImageInput!]!
+  tagline: String!
+  thumbnail_image: ImageInput!
+  title: String!
+  twitter: String
+  website: String!
 }
 
 input UpdateTournamentRegistrationInput {

@@ -24,10 +24,28 @@ declare global {
 
 
 declare global {
-  interface NexusGen extends NexusGenTypes { }
+  interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
+  CreateProjectInput: { // input type
+    capabilities: string[]; // [String!]!
+    category_id: number; // Int!
+    cover_image: NexusGenInputs['ImageInput']; // ImageInput!
+    description: string; // String!
+    discord?: string | null; // String
+    github?: string | null; // String
+    id?: number | null; // Int
+    launch_status: string; // String!
+    members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
+    recruit_roles: number[]; // [Int!]!
+    screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
+    tagline: string; // String!
+    thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
+    title: string; // String!
+    twitter?: string | null; // String
+    website: string; // String!
+  }
   ImageInput: { // input type
     id?: string | null; // String
     name?: string | null; // String
@@ -70,6 +88,28 @@ export interface NexusGenInputs {
     tags: string[]; // [String!]!
     title: string; // String!
   }
+  TeamMemberInput: { // input type
+    id: number; // Int!
+    role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
+  }
+  UpdateProjectInput: { // input type
+    capabilities: string[]; // [String!]!
+    category_id: number; // Int!
+    cover_image: NexusGenInputs['ImageInput']; // ImageInput!
+    description: string; // String!
+    discord?: string | null; // String
+    github?: string | null; // String
+    id?: number | null; // Int
+    launch_status: string; // String!
+    members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
+    recruit_roles: number[]; // [Int!]!
+    screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
+    tagline: string; // String!
+    thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
+    title: string; // String!
+    twitter?: string | null; // String
+    website: string; // String!
+  }
   UpdateTournamentRegistrationInput: { // input type
     email?: string | null; // String
     hacking_status?: NexusGenEnums['TournamentMakerHackingStatusEnum'] | null; // TournamentMakerHackingStatusEnum
@@ -83,9 +123,9 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
+  TEAM_MEMBER_ROLE: "Admin" | "Maker"
   TournamentEventTypeEnum: 2 | 3 | 0 | 1
   TournamentMakerHackingStatusEnum: 1 | 0
-  TEAM_MEMBER_ROLE: "Admin" | "Maker"
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
 }
 
@@ -115,6 +155,7 @@ export interface NexusGenObjects {
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     body: string; // String!
+    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!
@@ -135,6 +176,9 @@ export interface NexusGenObjects {
     icon?: string | null; // String
     id: number; // Int!
     title: string; // String!
+  }
+  CreateProjectResponse: { // root type
+    project: NexusGenRootTypes['Project']; // Project!
   }
   Donation: { // root type
     amount: number; // Int!
@@ -388,6 +432,9 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     votes_sum: number; // Int!
   }
+  CreateProjectResponse: { // field return type
+    project: NexusGenRootTypes['Project']; // Project!
+  }
   Donation: { // field return type
     amount: number; // Int!
     by: NexusGenRootTypes['User'] | null; // User
@@ -438,12 +485,15 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
+    createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
+    deleteProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     updateTournamentRegistration: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     updateUserPreferences: NexusGenRootTypes['MyProfile']; // MyProfile!
     vote: NexusGenRootTypes['Vote']; // Vote!
@@ -746,6 +796,9 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     votes_sum: 'Int'
   }
+  CreateProjectResponse: { // field return type name
+    project: 'Project'
+  }
   Donation: { // field return type name
     amount: 'Int'
     by: 'User'
@@ -796,12 +849,15 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
+    createProject: 'CreateProjectResponse'
     createStory: 'Story'
+    deleteProject: 'CreateProjectResponse'
     deleteStory: 'Story'
     donate: 'Donation'
     registerInTournament: 'User'
     updateProfileDetails: 'MyProfile'
     updateProfileRoles: 'MyProfile'
+    updateProject: 'CreateProjectResponse'
     updateTournamentRegistration: 'ParticipationInfo'
     updateUserPreferences: 'MyProfile'
     vote: 'Vote'
@@ -1066,8 +1122,14 @@ export interface NexusGenArgTypes {
       payment_request: string; // String!
       preimage: string; // String!
     }
+    createProject: { // args
+      input?: NexusGenInputs['CreateProjectInput'] | null; // CreateProjectInput
+    }
     createStory: { // args
       data?: NexusGenInputs['StoryInputType'] | null; // StoryInputType
+    }
+    deleteProject: { // args
+      id: number; // Int!
     }
     deleteStory: { // args
       id: number; // Int!
@@ -1084,6 +1146,9 @@ export interface NexusGenArgTypes {
     }
     updateProfileRoles: { // args
       data?: NexusGenInputs['ProfileRolesInput'] | null; // ProfileRolesInput
+    }
+    updateProject: { // args
+      input?: NexusGenInputs['UpdateProjectInput'] | null; // UpdateProjectInput
     }
     updateTournamentRegistration: { // args
       data?: NexusGenInputs['UpdateTournamentRegistrationInput'] | null; // UpdateTournamentRegistrationInput
