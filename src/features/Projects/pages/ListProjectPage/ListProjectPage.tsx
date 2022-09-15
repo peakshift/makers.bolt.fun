@@ -47,74 +47,76 @@ export default function ListProjectPage() {
                 <title>List a project</title>
                 <meta property="og:title" content='List a project' />
             </Helmet>
-            <div className="page-container grid grid-cols-1 md:grid-cols-4 gap-24">
-                {isMediumScreen ?
-                    <aside >
-                        <Card className="sticky-side-element">
-                            <p className="text-body2 font-bolder text-black mb-16">List a project</p>
-                            <ul className=' flex flex-col gap-8'>
-                                {links.map((link, idx) =>
-                                    <li key={idx}>
-                                        <button
-                                            //             className={({ isActive }) => `flex items-start rounded-8 cursor-pointer font-bold p-12
-                                            //  active:scale-95 transition-transform
-                                            // ${isActive ? 'bg-gray-100' : 'hover:bg-gray-50'}
-                                            // `}
-                                            className={`flex w-full items-start rounded-8 cursor-pointer font-bold p-12
+            <div className="page-container">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-24">
+                    {isMediumScreen ?
+                        <aside >
+                            <Card className="sticky-side-element">
+                                <p className="text-body2 font-bolder text-black mb-16">List a project</p>
+                                <ul className=' flex flex-col gap-8'>
+                                    {links.map((link, idx) =>
+                                        <li key={idx}>
+                                            <button
+                                                //             className={({ isActive }) => `flex items-start rounded-8 cursor-pointer font-bold p-12
+                                                //  active:scale-95 transition-transform
+                                                // ${isActive ? 'bg-gray-100' : 'hover:bg-gray-50'}
+                                                // `}
+                                                className={`flex w-full items-start rounded-8 cursor-pointer font-bold p-12
                                                         active:scale-95 transition-transform
                                                         ${link.path === curTab ? 'bg-gray-100' : 'hover:bg-gray-50'}
                                                         `}
-                                            onClick={() => setCurTab(link.path)}
-                                        >
-                                            {link.text}
-                                        </button>
-                                    </li>)}
-                            </ul>
-                        </Card>
-                    </aside>
-                    :
-                    <aside
-                        className=" bg-white z-10 w-full sticky-top-element"
-                    >
-                        <div className="relative group overflow-hidden">
-                            <div className="border-b-2 border-gray-200" ref={viewportRef}>
-                                <div className="select-none w-full flex gap-16">
-                                    {links.map((link, idx) =>
-                                        <button
-                                            key={idx}
-                                            className={`flex min-w-max  items-start cursor-pointer font-bold py-12 px-8
+                                                onClick={() => setCurTab(link.path)}
+                                            >
+                                                {link.text}
+                                            </button>
+                                        </li>)}
+                                </ul>
+                            </Card>
+                        </aside>
+                        :
+                        <aside
+                            className=" bg-white z-10 w-full sticky-top-element"
+                        >
+                            <div className="relative group overflow-hidden">
+                                <div className="border-b-2 border-gray-200" ref={viewportRef}>
+                                    <div className="select-none w-full flex gap-16">
+                                        {links.map((link, idx) =>
+                                            <button
+                                                key={idx}
+                                                className={`flex min-w-max  items-start cursor-pointer font-bold py-12 px-8
                                                 active:scale-95 transition-transform`}
-                                            style={{
-                                                ...(link.path === curTab && {
-                                                    borderBottom: '2px solid var(--primary)',
-                                                    marginBottom: -2
-                                                }),
-                                            }
-                                            }
+                                                style={{
+                                                    ...(link.path === curTab && {
+                                                        borderBottom: '2px solid var(--primary)',
+                                                        marginBottom: -2
+                                                    }),
+                                                }
+                                                }
 
-                                        >
-                                            {link.text}
-                                        </button>
-                                    )}
+                                            >
+                                                {link.text}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </aside>
-                }
-                <main className="md:col-span-3">
-                    <FormContainer>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
-                            <div className="md:col-span-2">
-                                {curTab === tabs["project-details"].path && <ProjectDetailsTab />}
-                                {curTab === tabs["team"].path && <TeamTab />}
-                                {curTab === tabs["extras"].path && <ExtrasTab />}
+                        </aside>
+                    }
+                    <main className="md:col-span-3">
+                        <FormContainer>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
+                                <div className="md:col-span-2">
+                                    {curTab === tabs["project-details"].path && <ProjectDetailsTab />}
+                                    {curTab === tabs["team"].path && <TeamTab />}
+                                    {curTab === tabs["extras"].path && <ExtrasTab />}
+                                </div>
+                                <div className="self-start sticky-side-element">
+                                    <SaveChangesCard currentTab={curTab} />
+                                </div>
                             </div>
-                            <div className="self-start sticky-side-element">
-                                <SaveChangesCard currentTab={curTab} />
-                            </div>
-                        </div>
-                    </FormContainer>
-                </main>
+                        </FormContainer>
+                    </main>
+                </div>
             </div>
         </>
     )
