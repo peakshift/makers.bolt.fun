@@ -2,23 +2,16 @@ import { motion } from 'framer-motion'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { useEffect, useState } from "react"
 import { Grid } from "react-loader-spinner";
-import { CONSTS } from "src/utils";
 import { QRCodeSVG } from 'qrcode.react';
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { useApolloClient } from '@apollo/client';
 import { IoClose } from 'react-icons/io5';
+import { fetchLnurlAuth } from 'src/api/auth';
 
 
 
-const fetchLnurlAuth = async () => {
-    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url?action=link', {
-        credentials: 'include'
-    })
-    const data = await res.json()
-    return data;
-}
 
 const useLnurlQuery = () => {
     const [loading, setLoading] = useState(true)

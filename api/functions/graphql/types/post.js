@@ -15,6 +15,9 @@ const { prisma } = require('../../../prisma');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { ApolloError } = require('apollo-server-lambda');
 const { marked } = require('marked');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
+const { ImageInput } = require('./misc');
+const { deleteImage } = require('../../../services/imageUpload.service');
 
 
 const POST_TYPE = enumType({
@@ -37,7 +40,11 @@ const Author = objectType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('name');
-        t.nonNull.string('avatar');
+        t.nonNull.string('avatar', {
+            async resolve(parent) {
+                return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
+            }
+        });
         t.nonNull.date('join_date');
 
         t.string('lightning_address');
@@ -71,7 +78,11 @@ const Story = objectType({
         t.nonNull.string('type', {
             resolve: () => t.typeName
         });
-        t.string('cover_image');
+        t.string('cover_image', {
+            async resolve(parent) {
+                return prisma.story.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
+            }
+        });
         t.nonNull.list.nonNull.field('comments', {
             type: "PostComment",
             resolve: (parent) => []
@@ -111,7 +122,9 @@ const StoryInputType = inputObjectType({
         t.int('id');
         t.nonNull.string('title');
         t.nonNull.string('body');
-        t.string('cover_image');
+        t.field('cover_image', {
+            type: ImageInput
+        })
         t.nonNull.list.nonNull.string('tags');
         t.boolean('is_published')
     }
@@ -342,6 +355,64 @@ const getPostById = extendType({
     }
 })
 
+const addCoverImage = async (providerImageId) => {
+    const newCoverImage = await prisma.hostedImage.findFirst({
+        where: {
+            provider_image_id: providerImageId
+        }
+    })
+
+    if (!newCoverImage) throw new ApolloError("New cover image not found")
+
+    await prisma.hostedImage.update({
+        where: {
+            id: newCoverImage.id
+        },
+        data: {
+            is_used: true
+        }
+    })
+
+    return newCoverImage
+}
+
+const getHostedImageIdsFromBody = async (body, oldBodyImagesIds = null) => {
+    let bodyImageIds = []
+
+    const regex = /(?:!\[(.*?)\]\((.*?)\))/g
+    let match;
+    while ((match = regex.exec(body))) {
+        const [, , value] = match
+
+        // Useful for old external images in case of duplicates. We need to be sure we are targeting an image from the good story.
+        const where = oldBodyImagesIds ? {
+            AND: [
+                { url: value },
+                { id: { in: oldBodyImagesIds } }
+            ]
+        } :
+            {
+                url: value,
+            }
+
+        const hostedImage = await prisma.hostedImage.findFirst({
+            where
+        })
+        if (hostedImage) {
+            bodyImageIds.push(hostedImage.id)
+            await prisma.hostedImage.update({
+                where: {
+                    id: hostedImage.id
+                },
+                data: {
+                    is_used: true
+                }
+            })
+        }
+    }
+    return bodyImageIds
+}
+
 const createStory = extendType({
     type: 'Mutation',
     definition(t) {
@@ -358,20 +429,64 @@ const createStory = extendType({
 
                 let was_published = false;
 
+
+                // TODO: validate post data
+
+                let coverImage = null
+                let bodyImageIds = []
+
+                // Edit story
                 if (id) {
                     const oldPost = await prisma.story.findFirst({
                         where: { id },
                         select: {
                             user_id: true,
-                            is_published: true
+                            is_published: true,
+                            cover_image_id: true,
+                            body_image_ids: true
                         }
                     })
                     was_published = oldPost.is_published;
-                    if (user.id !== oldPost.user_id)
-                        throw new ApolloError("Not post author")
-                }
-                // TODO: validate post data
+                    if (user.id !== oldPost.user_id) throw new ApolloError("Not post author")
 
+                    // Body images
+                    bodyImageIds = await getHostedImageIdsFromBody(body, oldPost.body_image_ids)
+
+                    // Old cover image is found
+                    if (oldPost.cover_image_id) {
+                        const oldCoverImage = await prisma.hostedImage.findFirst({
+                            where: {
+                                id: oldPost.cover_image_id
+                            }
+                        })
+
+                        // New cover image
+                        if (cover_image?.id && cover_image.id !== oldCoverImage?.provider_image_id) {
+                            await deleteImage(oldCoverImage.id)
+                            coverImage = await addCoverImage(cover_image.id)
+                        } else {
+                            coverImage = oldCoverImage
+                        }
+                    } else {
+                        // No old image found and new cover image
+                        if (cover_image?.id) {
+                            coverImage = await addCoverImage(cover_image.id)
+                        }
+                    }
+
+                    // Remove unused body images
+                    const unusedImagesIds = oldPost.body_image_ids.filter(x => !bodyImageIds.includes(x));
+                    unusedImagesIds.map(async i => await deleteImage(i))
+
+                } else {
+                    // Body images
+                    bodyImageIds = await getHostedImageIdsFromBody(body)
+
+                    // New story and new cover image
+                    if (cover_image?.id) {
+                        coverImage = await addCoverImage(cover_image.id)
+                    }
+                }
 
                 // Preprocess & insert
                 const htmlBody = marked.parse(body);
@@ -382,6 +497,16 @@ const createStory = extendType({
                     .replace(/&#39;/g, "'")
                     .replace(/&quot;/g, '"')
                     ;
+
+
+                const coverImageRel = coverImage ? {
+                    cover_image_rel: {
+                        connect:
+                        {
+                            id: coverImage ? coverImage.id : null
+                        }
+                    }
+                } : {}
 
                 if (id) {
                     await prisma.story.update({
@@ -398,7 +523,7 @@ const createStory = extendType({
                         data: {
                             title,
                             body,
-                            cover_image,
+                            cover_image: '',
                             excerpt,
                             is_published: was_published || is_published,
                             tags: {
@@ -415,16 +540,17 @@ const createStory = extendType({
                                         }
                                     })
                             },
+                            body_image_ids: bodyImageIds,
+                            ...coverImageRel
                         }
                     })
                 }
 
-
-                return prisma.story.create({
+                return await prisma.story.create({
                     data: {
                         title,
                         body,
-                        cover_image,
+                        cover_image: '',
                         excerpt,
                         is_published,
                         tags: {
@@ -445,7 +571,9 @@ const createStory = extendType({
                             connect: {
                                 id: user.id,
                             }
-                        }
+                        },
+                        body_image_ids: bodyImageIds,
+                        ...coverImageRel
                     }
                 })
             }
@@ -470,17 +598,39 @@ const deleteStory = extendType({
                 const oldPost = await prisma.story.findFirst({
                     where: { id },
                     select: {
-                        user_id: true
+                        user_id: true,
+                        body_image_ids: true,
+                        cover_image_id: true
                     }
                 })
                 if (user.id !== oldPost.user_id)
                     throw new ApolloError("Not post author")
 
-                return prisma.story.delete({
+                const deletedPost = await prisma.story.delete({
                     where: {
                         id
                     }
                 })
+
+                const coverImage = await prisma.hostedImage.findMany({
+                    where: {
+                        OR: [
+                            { id: oldPost.cover_image_id },
+                            {
+                                id: {
+                                    in: oldPost.body_image_ids
+                                }
+                            }
+                        ]
+                    },
+                    select: {
+                        id: true,
+                        provider_image_id: true
+                    }
+                })
+                coverImage.map(async i => await deleteImage(i.id))
+
+                return deletedPost
             }
         })
     },

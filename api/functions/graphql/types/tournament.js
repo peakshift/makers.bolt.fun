@@ -9,6 +9,7 @@ const {
     booleanArg,
 } = require('nexus');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { prisma } = require('../../../prisma');
 const { paginationArgs, removeNulls } = require('./helpers');
 
@@ -19,7 +20,11 @@ const TournamentPrize = objectType({
     definition(t) {
         t.nonNull.string('title');
         t.nonNull.string('amount');
-        t.nonNull.string('image');
+        t.nonNull.string('image', {
+            async resolve(parent) {
+                return prisma.tournamentPrize.findUnique({ where: { id: parent.id } }).image_rel().then(resolveImgObjectToUrl)
+            }
+        });
     }
 })
 
@@ -28,7 +33,11 @@ const TournamentJudge = objectType({
     definition(t) {
         t.nonNull.string('name');
         t.nonNull.string('company');
-        t.nonNull.string('avatar');
+        t.nonNull.string('avatar', {
+            async resolve(parent) {
+                return prisma.tournamentJudge.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
+            }
+        });
     }
 })
 
@@ -74,7 +83,11 @@ const TournamentEvent = objectType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
-        t.nonNull.string('image');
+        t.nonNull.string('image', {
+            async resolve(parent) {
+                return prisma.tournamentEvent.findUnique({ where: { id: parent.id } }).image_rel().then(resolveImgObjectToUrl)
+            }
+        });
         t.nonNull.string('description');
         t.nonNull.date('starts_at');
         t.nonNull.date('ends_at');
@@ -91,8 +104,16 @@ const Tournament = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('description');
-        t.nonNull.string('thumbnail_image');
-        t.nonNull.string('cover_image');
+        t.nonNull.string('thumbnail_image', {
+            async resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
+            }
+        });
+        t.nonNull.string('cover_image', {
+            async resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
+            }
+        });
         t.nonNull.date('start_date');
         t.nonNull.date('end_date');
         t.nonNull.string('location');

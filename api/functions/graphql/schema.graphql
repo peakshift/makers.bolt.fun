@@ -115,6 +115,12 @@ type Hackathon {
   website: String!
 }
 
+input ImageInput {
+  id: String
+  name: String
+  url: String!
+}
+
 type LnurlDetails {
   commentAllowed: Int
   maxSendable: Int
@@ -219,7 +225,7 @@ type PostComment {
 }
 
 input ProfileDetailsInput {
-  avatar: String
+  avatar: ImageInput
   bio: String
   discord: String
   email: String
@@ -330,7 +336,7 @@ type Story implements PostBase {
 
 input StoryInputType {
   body: String!
-  cover_image: String
+  cover_image: ImageInput
   id: Int
   is_published: Boolean
   tags: [String!]!

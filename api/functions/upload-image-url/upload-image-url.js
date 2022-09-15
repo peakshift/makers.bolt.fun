@@ -5,10 +5,9 @@ const extractKeyFromCookie = require('../../utils/extractKeyFromCookie')
 const { getUserByPubKey } = require('../../auth/utils/helperFuncs')
 const { getDirectUploadUrl } = require('../../services/imageUpload.service')
 const { prisma } = require('../../prisma')
+const { getUrlFromProvider } = require('../../utils/resolveImageUrl')
 
 const postUploadImageUrl = async (req, res) => {
-
-    return res.status(404).send("This api is in progress");
 
     const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
     const user = await getUserByPubKey(userPubKey)
@@ -22,11 +21,16 @@ const postUploadImageUrl = async (req, res) => {
     try {
         const uploadUrl = await getDirectUploadUrl()
 
-        await prisma.hostedImage.create({
-            data: { id: uploadUrl.id, filename },
+        const hostedImage = await prisma.hostedImage.create({
+            data: {
+                filename,
+                url: getUrlFromProvider(uploadUrl.provider, uploadUrl.id),
+                provider_image_id: uploadUrl.id,
+                provider: uploadUrl.provider
+            },
         })
 
-        return res.status(200).json(uploadUrl)
+        return res.status(200).json({ id: hostedImage.id, uploadURL: uploadUrl.uploadURL })
     } catch (error) {
         res.status(500).send('Unexpected error happened, please try again')
     }
