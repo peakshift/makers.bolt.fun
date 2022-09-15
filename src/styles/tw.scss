@@ -16,7 +16,7 @@
   }
 
   .input-wrapper {
-    @apply relative w-full border border-gray-300 rounded-12 flex focus-within:outline-primary-400 focus-within:border-primary-300 focus-within:ring focus-within:ring-primary-200 focus-within:ring-opacity-50;
+    @apply relative w-full border bg-white border-gray-300 rounded-12 flex focus-within:outline-primary-400 focus-within:border-primary-300 focus-within:ring focus-within:ring-primary-200 focus-within:ring-opacity-50;
   }
 
   .input-text {
@@ -44,6 +44,12 @@
   }
 
   .modal-card {
-    @apply rounded-[40px] bg-gray-50 overflow-hidden w-full shadow-2xl z-10;
+    @apply rounded-[40px] bg-white overflow-hidden w-full shadow-2xl z-10;
+  }
+}
+
+@layer utilities {
+  .fill-grid-row {
+    grid-column: 1/-1;
   }
 }

@@ -21,9 +21,10 @@ type Award {
 interface BaseUser {
   avatar: String!
   bio: String
-  email: String
+  discord: String
   github: String
   id: Int!
+  in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String
@@ -148,8 +149,10 @@ type Mutation {
   createStory(data: StoryInputType): Story
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
+  registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
   updateProfileRoles(data: ProfileRolesInput): MyProfile
+  updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
@@ -157,9 +160,11 @@ type Mutation {
 type MyProfile implements BaseUser {
   avatar: String!
   bio: String
+  discord: String
   email: String
   github: String
   id: Int!
+  in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String
@@ -183,6 +188,12 @@ enum POST_TYPE {
   Bounty
   Question
   Story
+}
+
+type ParticipationInfo {
+  createdAt: Date!
+  email: String!
+  hacking_status: TournamentMakerHackingStatusEnum!
 }
 
 union Post = Bounty | Question | Story
@@ -210,6 +221,7 @@ type PostComment {
 input ProfileDetailsInput {
   avatar: String
   bio: String
+  discord: String
   email: String
   github: String
   jobTitle: String
@@ -234,6 +246,7 @@ type Project {
   id: Int!
   lightning_address: String
   lnurl_callback_url: String
+  recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   tags: [Tag!]!
   thumbnail_image: String!
@@ -252,9 +265,12 @@ type Query {
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
+  getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int!): Project!
+  getProjectsInTournament(roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentProjectsResponse!
+  getTournamentById(id: Int!): Tournament!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: MyProfile
@@ -266,6 +282,7 @@ type Query {
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!
   similarMakers(id: Int!): [User!]!
+  tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
 }
 
 type Question implements PostBase {
@@ -280,6 +297,11 @@ type Question implements PostBase {
   type: String!
   updatedAt: Date!
   votes_count: Int!
+}
+
+input RegisterInTournamentInput {
+  email: String!
+  hacking_status: TournamentMakerHackingStatusEnum!
 }
 
 enum RoleLevelEnum {
@@ -333,20 +355,93 @@ type Tournament {
   cover_image: String!
   description: String!
   end_date: Date!
+  events: [TournamentEvent!]!
+  events_count: Int!
+  faqs: [TournamentFAQ!]!
   id: Int!
+  judges: [TournamentJudge!]!
+  location: String!
+  makers_count: Int!
+  prizes: [TournamentPrize!]!
+  projects_count: Int!
   start_date: Date!
-  tags: [Tag!]!
   thumbnail_image: String!
   title: String!
   website: String!
 }
 
+type TournamentEvent {
+  description: String!
+  ends_at: Date!
+  id: Int!
+  image: String!
+  links: [String!]!
+  location: String!
+  starts_at: Date!
+  title: String!
+  type: TournamentEventTypeEnum!
+  website: String!
+}
+
+enum TournamentEventTypeEnum {
+  IRLMeetup
+  OnlineMeetup
+  TwitterSpace
+  Workshop
+}
+
+type TournamentFAQ {
+  answer: String!
+  question: String!
+}
+
+type TournamentJudge {
+  avatar: String!
+  company: String!
+  name: String!
+}
+
+enum TournamentMakerHackingStatusEnum {
+  OpenToConnect
+  Solo
+}
+
+type TournamentMakersResponse {
+  hasNext: Boolean
+  hasPrev: Boolean
+  makers: [TournamentParticipant!]!
+}
+
+type TournamentParticipant {
+  hacking_status: TournamentMakerHackingStatusEnum!
+  is_registered: Boolean
+  user: User!
+}
+
+type TournamentPrize {
+  amount: String!
+  image: String!
+  title: String!
+}
+
+type TournamentProjectsResponse {
+  hasNext: Boolean
+  hasPrev: Boolean
+  projects: [Project!]!
+}
+
+input UpdateTournamentRegistrationInput {
+  email: String
+  hacking_status: TournamentMakerHackingStatusEnum
+}
+
 type User implements BaseUser {
   avatar: String!
   bio: String
-  email: String
+  discord: String
   github: String
   id: Int!
+  in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String
@@ -388,6 +483,7 @@ type Vote {
 }
 
 type WalletKey {
+  createdAt: Date!
   is_current: Boolean!
   key: String!
   name: String!

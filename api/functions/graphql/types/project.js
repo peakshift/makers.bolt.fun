@@ -9,6 +9,7 @@ const {
 const { prisma } = require('../../../prisma');
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
+const { MakerRole } = require('./users');
 
 
 const Project = objectType({
@@ -43,6 +44,28 @@ const Project = objectType({
             type: "Tag",
             resolve: (parent) => {
                 return prisma.project.findUnique({ where: { id: parent.id } }).tags();
+            }
+        })
+
+        t.nonNull.list.nonNull.field('recruit_roles', {
+            type: MakerRole,
+            resolve: async (parent) => {
+                const data = await prisma.project.findUnique({
+                    where: {
+                        id: parent.id
+                    },
+                    select: {
+                        recruit_roles: {
+                            select: {
+                                role: true,
+                                level: true
+                            }
+                        },
+                    }
+                })
+                return data.recruit_roles.map(data => {
+                    return ({ ...data.role, level: data.level })
+                })
             }
         })
     }

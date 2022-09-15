@@ -40,11 +40,13 @@ model Vote {
 // -----------------
 
 model User {
-  id     Int     @id @default(autoincrement())
-  pubKey String? @unique
-  name   String?
-  avatar String?
-  role   String  @default("user")
+  id         Int          @id @default(autoincrement())
+  pubKey     String?      @unique
+  name       String?
+  avatar     String?
+  avatar_id  Int?         @unique
+  avatar_rel HostedImage? @relation("User_Avatar", fields: [avatar_id], references: [id])
+  role       String       @default("user")
 
   email             String?
   jobTitle          String?
@@ -52,6 +54,7 @@ model User {
   website           String?
   twitter           String?
   github            String?
+  discord           String?
   linkedin          String?
   bio               String?
   location          String?
@@ -67,11 +70,14 @@ model User {
   userKeys       UserKey[]
   skills         Skill[]
   roles          UsersOnWorkRoles[]
+
+  tournaments TournamentParticipant[]
 }
 
 model UserKey {
-  key  String @id
-  name String @default("My new wallet key")
+  key       String   @id
+  name      String   @default("My new wallet key")
+  createdAt DateTime @default(now())
 
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
@@ -89,10 +95,11 @@ model UsersOnWorkRoles {
 }
 
 model WorkRole {
-  id    Int                @id @default(autoincrement())
-  title String             @unique
-  icon  String
-  users UsersOnWorkRoles[]
+  id       Int                   @id @default(autoincrement())
+  title    String                @unique
+  icon     String
+  users    UsersOnWorkRoles[]
+  projects ProjectRecruitRoles[]
 }
 
 model Skill {
@@ -107,24 +114,31 @@ model Skill {
 // -----------------
 
 model Category {
-  id          Int     @id @default(autoincrement())
-  title       String
-  cover_image String?
-  icon        String?
+  id              Int          @id @default(autoincrement())
+  title           String
+  cover_image     String?
+  cover_image_id  Int?         @unique
+  cover_image_rel HostedImage? @relation("Category_CoverImage", fields: [cover_image_id], references: [id])
+  icon            String?
 
   project Project[]
 }
 
 model Project {
-  id                 Int      @id @default(autoincrement())
-  title              String
-  description        String
-  screenshots        String[]
-  website            String
-  thumbnail_image    String?
-  cover_image        String?
-  lightning_address  String?
-  lnurl_callback_url String?
+  id                  Int          @id @default(autoincrement())
+  title               String
+  description         String
+  screenshots         String[]
+  screenshots_ids     Int[]
+  website             String
+  thumbnail_image     String?
+  thumbnail_image_id  Int?         @unique
+  thumbnail_image_rel HostedImage? @relation("Project_Thumbnail", fields: [thumbnail_image_id], references: [id])
+  cover_image         String?
+  cover_image_id      Int?         @unique
+  cover_image_rel     HostedImage? @relation("Project_CoverImage", fields: [cover_image_id], references: [id])
+  lightning_address   String?
+  lnurl_callback_url  String?
 
   category    Category @relation(fields: [category_id], references: [id])
   category_id Int
@@ -133,13 +147,29 @@ model Project {
 
   awards Award[]
   tags   Tag[]
+
+  recruit_roles ProjectRecruitRoles[]
+  tournaments   TournamentProject[]
+}
+
+model ProjectRecruitRoles {
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId Int
+  role      WorkRole @relation(fields: [roleId], references: [id])
+  roleId    Int
+
+  level Int
+
+  @@id([projectId, roleId])
 }
 
 model Award {
-  id    Int    @id @default(autoincrement())
-  title String
-  image String
-  url   String
+  id        Int          @id @default(autoincrement())
+  title     String
+  image     String
+  image_id  Int?         @unique
+  image_rel HostedImage? @relation("Award_Image", fields: [image_id], references: [id])
+  url       String
 
   project    Project @relation(fields: [project_id], references: [id])
   project_id Int
@@ -150,15 +180,18 @@ model Award {
 // -----------------
 
 model Story {
-  id           Int      @id @default(autoincrement())
-  title        String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  body         String
-  excerpt      String
-  cover_image  String?
-  votes_count  Int      @default(0)
-  is_published Boolean  @default(true)
+  id              Int          @id @default(autoincrement())
+  title           String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  body            String
+  body_image_ids  Int[]
+  excerpt         String
+  cover_image     String?
+  cover_image_id  Int?         @unique
+  cover_image_rel HostedImage? @relation("Story_CoverImage", fields: [cover_image_id], references: [id])
+  votes_count     Int          @default(0)
+  is_published    Boolean      @default(true)
 
   tags Tag[]
 
@@ -211,15 +244,17 @@ model PostComment {
 // Hackathons
 // -----------------
 model Hackathon {
-  id          Int      @id @default(autoincrement())
-  title       String
-  start_date  DateTime @db.Date
-  end_date    DateTime @db.Date
-  cover_image String
-  description String
-  location    String
-  website     String
-  votes_count Int      @default(0)
+  id              Int          @id @default(autoincrement())
+  title           String
+  start_date      DateTime     @db.Date
+  end_date        DateTime     @db.Date
+  cover_image     String
+  cover_image_id  Int?         @unique
+  cover_image_rel HostedImage? @relation("Hackathon_CoverImage", fields: [cover_image_id], references: [id])
+  description     String
+  location        String
+  website         String
+  votes_count     Int          @default(0)
 
   tags Tag[]
 }
@@ -230,7 +265,7 @@ model Hackathon {
 model Donation {
   id              Int      @id @default(autoincrement())
   amount          Int
-  createdAt       DateTime @default(now()) @db.Date
+  createdAt       DateTime @default(now())
   payment_request String?
   payment_hash    String?
   preimage        String?
@@ -253,8 +288,124 @@ model GeneratedK1 {
 // Hosted Image
 // -----------------
 model HostedImage {
-  id        String   @id
-  filename  String
-  createdAt DateTime @default(now())
-  is_used   Boolean  @default(false)
+  id                Int      @id @default(autoincrement())
+  filename          String
+  provider_image_id String
+  provider          String
+  url               String
+  createdAt         DateTime @default(now())
+  is_used           Boolean  @default(false)
+
+  ProjectThumbnail       Project?         @relation("Project_Thumbnail")
+  ProjectCoverImage      Project?         @relation("Project_CoverImage")
+  CategoryCoverImage     Category?        @relation("Category_CoverImage")
+  AwardImage             Award?           @relation("Award_Image")
+  HackathonCoverImage    Hackathon?       @relation("Hackathon_CoverImage")
+  StoryCoverImage        Story?           @relation("Story_CoverImage")
+  User                   User?            @relation("User_Avatar")
+  TournamentThumbnail    Tournament?      @relation("Tournament_ThumbnailImage")
+  Tournament_CoverImage  Tournament?      @relation("Tournament_CoverImage")
+  TournamentPrize_Image  TournamentPrize? @relation("TournamentPrize_Image")
+  TournamentJudge_Avatar TournamentJudge? @relation("TournamentJudge_Avatar")
+  TournamentEvent_Image  TournamentEvent? @relation("TournamentEvent_Image")
+}
+
+// -----------------
+// Tournament
+// -----------------
+model Tournament {
+  id                  Int          @id @default(autoincrement())
+  title               String
+  description         String
+  thumbnail_image     String
+  thumbnail_image_id  Int?         @unique
+  thumbnail_image_rel HostedImage? @relation("Tournament_ThumbnailImage", fields: [thumbnail_image_id], references: [id])
+  cover_image         String
+  cover_image_id      Int?         @unique
+  cover_image_rel     HostedImage? @relation("Tournament_CoverImage", fields: [cover_image_id], references: [id])
+  start_date          DateTime
+  end_date            DateTime
+  location            String
+  website             String
+  votes_count         Int          @default(0)
+
+  prizes       TournamentPrize[]
+  judges       TournamentJudge[]
+  faqs         TournamentFAQ[]
+  events       TournamentEvent[]
+  participants TournamentParticipant[]
+  projects     TournamentProject[]
+}
+
+model TournamentPrize {
+  id        Int          @id @default(autoincrement())
+  title     String
+  amount    String
+  image     String
+  image_id  Int?         @unique
+  image_rel HostedImage? @relation("TournamentPrize_Image", fields: [image_id], references: [id])
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentJudge {
+  id         Int          @id @default(autoincrement())
+  name       String
+  avatar     String
+  avatar_id  Int?         @unique
+  avatar_rel HostedImage? @relation("TournamentJudge_Avatar", fields: [avatar_id], references: [id])
+  company    String
+  twitter    String?
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentFAQ {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentEvent {
+  id          Int          @id @default(autoincrement())
+  title       String
+  image       String
+  image_id    Int?         @unique
+  image_rel   HostedImage? @relation("TournamentEvent_Image", fields: [image_id], references: [id])
+  description String
+  starts_at   DateTime
+  ends_at     DateTime
+  location    String
+  website     String
+  type        Int
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+}
+
+model TournamentParticipant {
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
+  createdAt     DateTime   @default(now())
+
+  email          String
+  hacking_status Int
+
+  @@id([tournament_id, user_id])
+}
+
+model TournamentProject {
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+  project       Project    @relation(fields: [project_id], references: [id])
+  project_id    Int
+
+  @@id([tournament_id, project_id])
 }

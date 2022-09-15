@@ -7,7 +7,32 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from "react";
 import { createRoute } from "src/utils/routing";
 
+export const bannerData = {
+  title:
+    <>
+      <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
+      <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
+    </>,
+  img: "https://i.ibb.co/bRY635n/wide.png",
+  link: {
+    content: "Register Now",
+    url: createRoute({ type: "tournament", id: 1, tab: 'overview' }),
+  },
+}
+
 const headerLinks = [
+  {
+    title:
+      <>
+        <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
+        <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
+      </>,
+    img: "https://i.ibb.co/bRY635n/wide.png",
+    link: {
+      content: "Register Now",
+      url: createRoute({ type: "tournament", id: 1, tab: 'overview' }),
+    },
+  },
   {
     title: <p className="text-body1 font-bolder text-white">Explore a fun directory of lightning web apps</p>,
     img: Assets.Images_ExploreHeader1,
@@ -17,6 +42,7 @@ const headerLinks = [
       newTab: false,
     },
   },
+<<<<<<< HEAD
   {
     title:
       <>
@@ -30,6 +56,8 @@ const headerLinks = [
       newTab: true,
     },
   },
+=======
+>>>>>>> dev
 ];
 
 
@@ -64,22 +92,22 @@ export default function Header() {
     <div className="relative group">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="w-full flex gap-16">
-          <div className="flex-[0_0_100%] md:flex-[0_0_calc(50%-8px)] rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
+          <div className="flex-[0_0_100%] rounded-20 min-h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
             <img
-              className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
-              src={headerLinks[0].img}
+              className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
+              src={bannerData.img}
               alt=""
             />
-            <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
+            <div className="w-full h-full object-cover bg-gradient-to-tr from-gray-900 absolute top-0 left-0 z-[-1]"></div>
             <div className="max-w-[90%]">
-              {headerLinks[0].title}
+              {bannerData.title}
             </div>
 
-            <Button href={headerLinks[0].link.url} newTab={headerLinks[0].link.newTab} color="white" className="mt-24">
-              {headerLinks[0].link.content}
+            <Button href={bannerData.link.url} color="white" className="mt-24">
+              {bannerData.link.content}
             </Button>
           </div>
-          <div className="flex-[0_0_100%] md:flex-[0_0_calc(50%-8px)] rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
+          {/* <div className="flex-[0_0_100%] md:flex-[0_0_calc(50%-8px)] rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
             <img
               className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
               src={headerLinks[1].img}
@@ -92,7 +120,7 @@ export default function Header() {
             <Button color="white" href={headerLinks[1].link.url} newTab={headerLinks[1].link.newTab} className="mt-24">
               {headerLinks[1].link.content}
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="absolute inset-x-0 bottom-8 flex justify-center gap-4 md:hidden">

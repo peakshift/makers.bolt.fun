@@ -4,11 +4,11 @@ fragment UserBasicInfo on BaseUser {
   avatar
   join_date
   role
-  email
   jobTitle
   lightning_address
   website
   twitter
+  discord
   github
   linkedin
   bio
@@ -17,12 +17,14 @@ fragment UserBasicInfo on BaseUser {
 
 query MyProfileAbout {
   me {
+    email
     ...UserBasicInfo
   }
 }
 
 mutation updateProfileAbout($data: ProfileDetailsInput) {
   updateProfileDetails(data: $data) {
+    email
     ...UserBasicInfo
   }
 }

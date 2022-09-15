@@ -1,0 +1,99 @@
+query GetAllRoles {
+  getAllMakersRoles {
+    id
+    title
+    icon
+  }
+}
+
+query GetMakersInTournament(
+  $tournamentId: Int!
+  $take: Int
+  $skip: Int
+  $search: String
+  $roleId: Int
+  $openToConnect: Boolean
+) {
+  getMakersInTournament(
+    tournamentId: $tournamentId
+    take: $take
+    skip: $skip
+    search: $search
+    roleId: $roleId
+    openToConnect: $openToConnect
+  ) {
+    hasNext
+    hasPrev
+    makers {
+      hacking_status
+      user {
+        id
+        name
+        avatar
+        jobTitle
+        discord
+        twitter
+        linkedin
+        github
+        roles {
+          id
+          icon
+          title
+        }
+        skills {
+          id
+          title
+        }
+      }
+    }
+  }
+}
+
+query GetProjectsInTournament(
+  $tournamentId: Int!
+  $take: Int
+  $skip: Int
+  $roleId: Int
+  $search: String
+) {
+  getProjectsInTournament(
+    tournamentId: $tournamentId
+    take: $take
+    skip: $skip
+    roleId: $roleId
+    search: $search
+  ) {
+    hasNext
+    hasPrev
+    projects {
+      id
+      title
+      description
+      thumbnail_image
+
+      category {
+        id
+        title
+        icon
+      }
+
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
+    }
+  }
+}
+
+mutation UpdateTournamentRegistration(
+  $tournamentId: Int!
+  $data: UpdateTournamentRegistrationInput
+) {
+  updateTournamentRegistration(tournament_id: $tournamentId, data: $data) {
+    createdAt
+    email
+    hacking_status
+  }
+}

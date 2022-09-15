@@ -32,7 +32,6 @@ export default function PopularTagsFilter({ value, onChange }: Props) {
         <div className='overflow-hidden'>
             {isMdScreen ?
                 <Card>
-
                     <p className="text-body2 font-bolder text-black mb-16">Popular Tags</p>
                     <ul className=' flex flex-col gap-16'>
                         {tagsQuery.loading ?

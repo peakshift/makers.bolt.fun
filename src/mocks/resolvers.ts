@@ -1,5 +1,5 @@
 import { MOCK_DATA } from "./data";
-import { MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, User } from 'src/graphql'
+import { GetMakersInTournamentQueryVariables, MyProfile, Query, QueryGetFeedArgs, QueryGetPostByIdArgs, TournamentMakerHackingStatusEnum, User } from 'src/graphql'
 import { Chance } from "chance";
 import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
@@ -78,8 +78,6 @@ export function me() {
     } as MyProfile
 }
 
-
-
 export function profile() {
     return { ...MOCK_DATA['user'], __typename: 'User' } as User
 }
@@ -98,3 +96,35 @@ export function searchUsers(value: string) {
 export function getMyDrafts(): Query['getMyDrafts'] {
     return MOCK_DATA['posts'].stories;
 }
+
+export function getTournamentById(id: number) {
+    return MOCK_DATA['tournaments'][0]
+}
+
+export function getMakersInTournament(vars: GetMakersInTournamentQueryVariables) {
+
+    const take = vars.take ?? 15;
+    const skip = vars.skip ?? 0;
+
+    const offsetStart = skip;
+    const offsetEnd = offsetStart + take;
+
+    const allMakers = MOCK_DATA.users.slice(1)
+        .filter(u => {
+            if (!vars.search) return true;
+            return [u.name, u.jobTitle].some(attr => attr?.search(new RegExp(vars.search!, 'i')) !== -1)
+        })
+        .filter(u => {
+            if (!vars.roleId) return true;
+            return u.roles.some(r => r.id === vars.roleId)
+        })
+        .slice(offsetStart, offsetEnd + 1)
+        .map(u => ({ user: u as User, hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect }))
+        ;
+
+    return {
+        hasNext: allMakers.length === take + 1,
+        hasPrev: skip !== 0,
+        makers: allMakers.slice(0, take)
+    };
+} 

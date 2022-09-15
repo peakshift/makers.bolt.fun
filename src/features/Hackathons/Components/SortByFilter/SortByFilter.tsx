@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import AutoComplete from 'src/Components/Inputs/Autocomplete/Autocomplete';
 import { useMediaQuery } from 'src/utils/hooks';
 import { MEDIA_QUERIES } from 'src/utils/theme';
 

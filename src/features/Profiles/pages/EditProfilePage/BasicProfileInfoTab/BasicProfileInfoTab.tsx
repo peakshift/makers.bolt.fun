@@ -24,6 +24,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
     bio: yup.string().ensure(),
     email: yup.string().email().ensure(),
     github: yup.string().ensure(),
+    discord: yup.string().ensure(),
     jobTitle: yup.string().ensure(),
     lightning_address: yup
         .string()
@@ -94,6 +95,7 @@ export default function BasicProfileInfoTab() {
                     jobTitle: data.jobTitle,
                     bio: data.bio,
                     email: data.email,
+                    discord: data.discord,
                     github: data.github,
                     linkedin: data.linkedin,
                     lightning_address: data.lightning_address,
@@ -196,7 +198,6 @@ export default function BasicProfileInfoTab() {
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
-
                                 type='text'
                                 className="input-text"
                                 placeholder="UK, London"
@@ -207,22 +208,25 @@ export default function BasicProfileInfoTab() {
                             {errors.location.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Website
+                            Email
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
-
                                 type='text'
                                 className="input-text"
-                                placeholder="www.website.io"
-                                {...register("website")}
+                                placeholder="johndoe@gmail.com"
+                                {...register("email")}
                             />
                         </div>
-                        {errors.website && <p className="input-error">
-                            {errors.website.message}
+                        {errors.email && <p className="input-error">
+                            {errors.email.message}
                         </p>}
+                        <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
+                            Your email is visible only to you, we will only use it to send you important updates or notices. No spam!
+                        </p>
+
                         <p className="text-body5 mt-16 font-medium">
-                            Twitter
+                            Twitter handle
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
@@ -237,7 +241,22 @@ export default function BasicProfileInfoTab() {
                             {errors.twitter.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Github
+                            Discord username
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="Satoshi#2121"
+                                {...register("discord")}
+                            />
+                        </div>
+                        {errors.discord && <p className="input-error">
+                            {errors.discord.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Github username
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
@@ -265,6 +284,20 @@ export default function BasicProfileInfoTab() {
                         </div>
                         {errors.linkedin && <p className="input-error">
                             {errors.linkedin.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Your website
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+                                type='text'
+                                className="input-text"
+                                placeholder="www.website.io"
+                                {...register("website")}
+                            />
+                        </div>
+                        {errors.website && <p className="input-error">
+                            {errors.website.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
                             Lightning address

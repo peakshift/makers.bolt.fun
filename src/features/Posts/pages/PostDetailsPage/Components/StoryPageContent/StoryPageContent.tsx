@@ -28,7 +28,7 @@ export default function StoryPageContent({ story }: Props) {
     return (
         <>
             <div id="content" className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"> </div>
-            <Card id="content" onlyMd className="relative">
+            <Card id="content" onlyMd className="relative max">
                 {story.cover_image &&
                     <img src={story.cover_image}
                         className='w-full object-cover rounded-12 md:rounded-16 mb-16'

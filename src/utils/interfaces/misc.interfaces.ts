@@ -13,12 +13,10 @@ export type ListComponentProps<T> = {
 export type ControlledStateHandler<T, IsMulti extends boolean> = {
     isMulti?: IsMulti;
     value?:
-    | (true extends IsMulti ? T[] : never)
-    | (false extends IsMulti ? T : never)
+    | (true extends IsMulti ? T[] : T)
     | null
     onChange?: (
-        nv: | (true extends IsMulti ? T[] : never)
-            | (false extends IsMulti ? T : never)
+        nv: | (true extends IsMulti ? T[] : T)
             | null
     ) => void
     onBlur?: () => void

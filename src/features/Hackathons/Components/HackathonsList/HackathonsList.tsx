@@ -19,6 +19,7 @@ export default function HackathonsList(props: Props) {
                 <HackathonCardSkeleton />
                 <HackathonCardSkeleton />
                 <HackathonCardSkeleton />
+                <HackathonCardSkeleton />
             </>
             }
         </div>

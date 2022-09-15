@@ -73,68 +73,70 @@ export default function NavMobile() {
   return (
     <div className={`${styles.navMobile}`}>
       <nav className={`bg-white h-[67px] w-full py-16`}>
-        <div className="content-container flex justify-between items-center">
+        <div className="content-container">
+          <div className="flex justify-between items-center">
 
-          <div className="flex-1 flex content-start">
-            <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
-              {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
-                : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
-            </IconButton>
+            <div className="flex-1 flex content-start">
+              <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
+                {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
+                  : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
+              </IconButton>
+
+            </div>
+
+            <div className="flex-[2] flex justify-center">
+              <Link to="/">
+                <img className='max-h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
+              </Link>
+            </div>
+
+            <div className="flex-1 flex justify-end">
+              {curUser ?
+
+                <Menu
+                  align="end"
+                  offsetY={4}
+                  menuClassName='!p-8 !rounded-12'
+                  menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
+                  <MenuItem
+                    href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
+                    }}
+                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                  >
+                    👾 Profile
+                  </MenuItem>
+                  <MenuItem
+                    href="/edit-profile"
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/edit-profile");
+                    }}
+                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                  >
+                    ⚙️ Settings
+                  </MenuItem>
+                  <MenuItem
+                    href="/logout"
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/logout");
+                    }}
+                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                  >
+                    👋 Logout
+                  </MenuItem>
+                </Menu>
+                :
+                <Button size="sm" color="none" className="!text-body5 whitespace-nowrap" href="/login">
+                  Connect ⚡
+                </Button>
+
+              }</div>
 
           </div>
-
-          <div className="flex-[2] flex justify-center">
-            <Link to="/">
-              <img className='max-h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
-            </Link>
-          </div>
-
-          <div className="flex-1 flex justify-end">
-            {curUser ?
-
-              <Menu
-                align="end"
-                offsetY={4}
-                menuClassName='!p-8 !rounded-12'
-                menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
-                <MenuItem
-                  href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
-                  }}
-                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                >
-                  👾 Profile
-                </MenuItem>
-                <MenuItem
-                  href="/edit-profile"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/edit-profile");
-                  }}
-                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                >
-                  ⚙️ Settings
-                </MenuItem>
-                <MenuItem
-                  href="/logout"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/logout");
-                  }}
-                  className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                >
-                  👋 Logout
-                </MenuItem>
-              </Menu>
-              :
-              <Button size="sm" color="none" className="!text-body5 whitespace-nowrap" href="/login">
-                Connect ⚡
-              </Button>
-
-            }</div>
-
         </div>
       </nav>
 
