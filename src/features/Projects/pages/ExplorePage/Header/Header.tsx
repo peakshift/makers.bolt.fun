@@ -42,22 +42,6 @@ const headerLinks = [
       newTab: false,
     },
   },
-<<<<<<< HEAD
-  {
-    title:
-      <>
-        <p className="text-body1 font-bolder text-white">Take part in BOLT🔩FUN’s Shock the Web 2 ⚡️</p>
-        <p className="text-body3 font-medium text-white mt-8">16th - 19th June, 2022</p>
-      </>,
-    img: Assets.Images_ExploreHeader2,
-    link: {
-      content: "Register Now",
-      url: "https://bolt.fun/hackathons/shock-the-web-2/",
-      newTab: true,
-    },
-  },
-=======
->>>>>>> dev
 ];
 
 
