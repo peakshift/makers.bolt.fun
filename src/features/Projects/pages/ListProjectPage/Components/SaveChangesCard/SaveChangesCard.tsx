@@ -38,7 +38,10 @@ export default function SaveChangesCard(props: Props) {
 
     const clickSubmit = handleSubmit<IListProjectForm>(async data => {
         try {
-            await (isUpdating ? update({ variables: { input: data } }) : create({ variables: { input: data } }))
+            await (isUpdating ?
+                update({ variables: { input: { ...data, members: data.members.map(m => ({ id: m.id, role: m.role })) } } })
+                : create({ variables: { input: { ...data, members: data.members.map(m => ({ id: m.id, role: m.role })) } } })
+            )
         } catch (error) {
             NotificationsService.error("A network error happened...");
             return;
