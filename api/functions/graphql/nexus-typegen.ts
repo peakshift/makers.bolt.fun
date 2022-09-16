@@ -35,8 +35,9 @@ export interface NexusGenInputs {
     description: string; // String!
     discord?: string | null; // String
     github?: string | null; // String
+    hashtag: string; // String!
     id?: number | null; // Int
-    launch_status: string; // String!
+    launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
@@ -100,8 +101,9 @@ export interface NexusGenInputs {
     description: string; // String!
     discord?: string | null; // String
     github?: string | null; // String
+    hashtag: string; // String!
     id?: number | null; // Int
-    launch_status: string; // String!
+    launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
@@ -124,6 +126,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
+  ProjectLaunchStatusEnum: "Launched" | "WIP"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
   TEAM_MEMBER_ROLE: "Admin" | "Maker"
   TournamentEventTypeEnum: 2 | 3 | 0 | 1

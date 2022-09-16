@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom'
 import Button from 'src/Components/Button/Button'
 import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { useFormContext } from "react-hook-form"
 import { IListProjectForm } from "../FormContainer/FormContainer";
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { tabs } from '../../ListProjectPage'
 import { NotificationsService } from 'src/services'
 import { useAppDispatch } from 'src/utils/hooks';
@@ -19,14 +18,15 @@ interface Props {
 
 export default function SaveChangesCard(props: Props) {
 
-    const { handleSubmit, formState: { errors, isDirty, }, reset, getValues, watch } = useFormContext<IListProjectForm>();
+    const { handleSubmit, formState: { isDirty, }, reset, getValues, watch } = useFormContext<IListProjectForm>();
     const dispatch = useAppDispatch();
 
-    const [isLoading, setIsLoading] = useState(false);
     const isUpdating = useMemo(() => !!getValues('id'), [getValues]);
 
     const [update, updatingStatus] = useUpdateProjectMutation();
     const [create, creatingStatus] = useCreateProjectMutation()
+
+    const isLoading = updatingStatus.loading || creatingStatus.loading
 
 
     const [img, name, tagline] = watch(['thumbnail_image', 'title', 'tagline',])

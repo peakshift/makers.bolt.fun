@@ -15,11 +15,6 @@ export default function ProjectDetailsTab(props: Props) {
 
     const { register, formState: { errors, }, control, getValues } = useFormContext<IListProjectForm>();
 
-
-    // usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
-
-
-
     return (
         <div className="md:col-span-2 flex flex-col gap-24">
             <Card className="" defaultPadding={false}>
@@ -33,7 +28,6 @@ export default function ProjectDetailsTab(props: Props) {
                             onChange={e => {
                                 onChange(e)
                             }}
-                        // uploadText='Add a cover image'
                         />
 
                         }
@@ -48,7 +42,16 @@ export default function ProjectDetailsTab(props: Props) {
                         />
                     </div>
                 </div>
+
                 <div className="p-16 md:p-24 mt-64">
+                    {(errors.cover_image || errors.thumbnail_image) && <div className="mb-16">
+                        {errors.cover_image && <p className="input-error">
+                            {errors.cover_image.message}
+                        </p>}
+                        {errors.thumbnail_image && <p className="input-error">
+                            {errors.thumbnail_image.message}
+                        </p>}
+                    </div>}
                     <p className="text-body5 font-medium">
                         Project name<sup className="text-red-500">*</sup>
                     </p>
@@ -110,7 +113,20 @@ export default function ProjectDetailsTab(props: Props) {
                     {errors.description && <p className="input-error">
                         {errors.description.message}
                     </p>}
-
+                    <p className="text-body5 font-medium mt-16">
+                        Hashtag<sup className="text-red-500">*</sup>
+                    </p>
+                    <div className="input-wrapper mt-8 relative">
+                        <input
+                            type='text'
+                            className="input-text"
+                            placeholder='#my_awesome_app'
+                            {...register("hashtag")}
+                        />
+                    </div>
+                    {errors.hashtag && <p className="input-error">
+                        {errors.hashtag.message}
+                    </p>}
                 </div>
             </Card>
             <Card className="">
@@ -203,7 +219,7 @@ export default function ProjectDetailsTab(props: Props) {
 
             <Card>
                 <h2 className="text-body2 font-bolder">📷  Screenshots</h2>
-                <p className="text-body4 font-light text-gray-600 mt-8">Choose up to 4 images from your project</p>
+                <p className="text-body4 font-light text-gray-600 mt-8">Choose up to 4 screenshots from your project</p>
                 <div className="mt-24">
                     <Controller
                         control={control}

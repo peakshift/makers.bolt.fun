@@ -2,16 +2,14 @@ import { Controller, useFormContext } from "react-hook-form"
 import Card from "src/Components/Card/Card";
 import TournamentsInput from "../TournamentsInput/TournamentsInput";
 import { IListProjectForm } from "../FormContainer/FormContainer";
+import { ProjectLaunchStatusEnum } from "src/graphql";
 
 interface Props { }
 
 export default function ExtrasTab(props: Props) {
 
-    const { register, formState: { errors, isDirty, }, control } = useFormContext<IListProjectForm>();
+    const { register, formState: { errors, }, control } = useFormContext<IListProjectForm>();
 
-
-
-    // usePrompt('You may have some unsaved changes. You still want to leave?', isDirty)
 
 
     return (
@@ -25,7 +23,7 @@ export default function ExtrasTab(props: Props) {
                             {...register("launch_status")}
                             type="radio"
                             name="launch_status"
-                            value='wip'
+                            value={ProjectLaunchStatusEnum.Wip}
                         />
                         <div>
                             <p className="text-body4 font-medium">WIP 🛠️</p>
@@ -37,7 +35,7 @@ export default function ExtrasTab(props: Props) {
                             {...register("launch_status")}
                             type="radio"
                             name="launch_status"
-                            value='launched'
+                            value={ProjectLaunchStatusEnum.Launched}
                         />
                         <div>
                             <p className="text-body4 font-medium">Launched 🚀</p>

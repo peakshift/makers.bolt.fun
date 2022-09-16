@@ -109,8 +109,9 @@ export type CreateProjectInput = {
   description: Scalars['String'];
   discord?: InputMaybe<Scalars['String']>;
   github?: InputMaybe<Scalars['String']>;
+  hashtag: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
-  launch_status: Scalars['String'];
+  launch_status: ProjectLaunchStatusEnum;
   members: Array<TeamMemberInput>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;
@@ -403,6 +404,11 @@ export type Project = {
   votes_count: Scalars['Int'];
   website: Scalars['String'];
 };
+
+export enum ProjectLaunchStatusEnum {
+  Launched = 'Launched',
+  Wip = 'WIP'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -719,8 +725,9 @@ export type UpdateProjectInput = {
   description: Scalars['String'];
   discord?: InputMaybe<Scalars['String']>;
   github?: InputMaybe<Scalars['String']>;
+  hashtag: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
-  launch_status: Scalars['String'];
+  launch_status: ProjectLaunchStatusEnum;
   members: Array<TeamMemberInput>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;

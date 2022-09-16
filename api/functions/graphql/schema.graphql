@@ -84,8 +84,9 @@ input CreateProjectInput {
   description: String!
   discord: String
   github: String
+  hashtag: String!
   id: Int
-  launch_status: String!
+  launch_status: ProjectLaunchStatusEnum!
   members: [TeamMemberInput!]!
   recruit_roles: [Int!]!
   screenshots: [ImageInput!]!
@@ -288,6 +289,11 @@ type Project {
   website: String!
 }
 
+enum ProjectLaunchStatusEnum {
+  Launched
+  WIP
+}
+
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
@@ -475,8 +481,9 @@ input UpdateProjectInput {
   description: String!
   discord: String
   github: String
+  hashtag: String!
   id: Int
-  launch_status: String!
+  launch_status: ProjectLaunchStatusEnum!
   members: [TeamMemberInput!]!
   recruit_roles: [Int!]!
   screenshots: [ImageInput!]!

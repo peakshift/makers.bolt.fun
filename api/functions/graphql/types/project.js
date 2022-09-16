@@ -303,11 +303,17 @@ const TeamMemberInput = inputObjectType({
     }
 })
 
+const ProjectLaunchStatusEnum = enumType({
+    name: 'ProjectLaunchStatusEnum',
+    members: ['WIP', 'Launched'],
+});
+
 const CreateProjectInput = inputObjectType({
     name: 'CreateProjectInput',
     definition(t) {
         t.int('id') // exists in update
         t.nonNull.string('title');
+        t.nonNull.string('hashtag');
         t.nonNull.string('website');
         t.nonNull.string('tagline');
         t.nonNull.string('description');
@@ -329,7 +335,9 @@ const CreateProjectInput = inputObjectType({
             type: TeamMemberInput
         });
         t.nonNull.list.nonNull.int('recruit_roles'); // ids
-        t.nonNull.string('launch_status');   // "wip" | "launched"
+        t.nonNull.field('launch_status', {
+            type: ProjectLaunchStatusEnum
+        });
         t.nonNull.list.nonNull.int('tournaments'); // ids
     }
 })
@@ -361,6 +369,7 @@ const UpdateProjectInput = inputObjectType({
     definition(t) {
         t.int('id')
         t.nonNull.string('title');
+        t.nonNull.string('hashtag');
         t.nonNull.string('website');
         t.nonNull.string('tagline');
         t.nonNull.string('description');
@@ -382,7 +391,9 @@ const UpdateProjectInput = inputObjectType({
             type: TeamMemberInput
         });
         t.nonNull.list.nonNull.int('recruit_roles'); // ids
-        t.nonNull.string('launch_status');   // "wip" | "launched"
+        t.nonNull.field('launch_status', {
+            type: ProjectLaunchStatusEnum
+        });
         t.nonNull.list.nonNull.int('tournaments'); // ids
     }
 })
