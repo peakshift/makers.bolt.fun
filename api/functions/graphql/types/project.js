@@ -119,6 +119,27 @@ const Award = objectType({
 })
 
 
+const Capability = objectType({
+    name: 'Capability',
+    definition(t) {
+        t.nonNull.int('id');
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+        t.nonNull.boolean('is_official');
+    }
+})
+
+const getAllCapabilities = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getAllCapabilities', {
+            type: Capability,
+            async resolve(parent, args, context) {
+                return prisma.capability.findMany();
+            }
+        })
+    }
+})
 
 
 const getProject = extendType({
@@ -297,6 +318,9 @@ const TeamMemberInput = inputObjectType({
     name: 'TeamMemberInput',
     definition(t) {
         t.nonNull.int('id')
+        t.nullable.string('name')
+        t.nullable.string('avatar')
+        t.nullable.string('jobTitle')
         t.nonNull.field("role", {
             type: TEAM_MEMBER_ROLE
         })
@@ -356,8 +380,33 @@ const createProject = extendType({
             type: CreateProjectResponse,
             args: { input: CreateProjectInput },
             async resolve(_root, args, ctx) {
-                const { title } = args.input;
+                const {
+                    title,
+                    tagline,
+                    hashtag,
+                    description,
+                    capabilities,
+                    category_id,
+                    cover_image,
+                    discord,
+                    github,
+                    twitter,
+                    website,
+                    launch_status,
+                    members,
+                    recruit_roles,
+                    screenshots,
+                    thumbnail_image,
+                    tournaments,
+                } = args.input
+                
+                const user = await getUserByPubKey(ctx.userPubKey);
 
+                // Do some validation
+                if (!user)
+                    throw new ApolloError("Not Authenticated");
+
+                // TODO Create project
             }
         })
     },
@@ -438,6 +487,7 @@ module.exports = {
     searchProjects,
     projectsByCategory,
     getLnurlDetailsForProject,
+    getAllCapabilities,
 
     // Mutations
     createProject,

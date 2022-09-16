@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { generatePrivateKey, getPublicKey } = require("../../api/utils/nostr-tools");
-const { categories, projects, tags, hackathons, roles, skills } = require("./data");
+const { categories, projects, tags, hackathons, roles, skills, capabilities } = require("./data");
 const Chance = require('chance');
 const { getCoverImage, randomItems, random } = require("./helpers");
 const { tournament: tournamentMock } = require("./data/tournament.seed");
@@ -67,7 +67,9 @@ async function main() {
 
     // await createTournament();
 
-    await migrateOldImages();
+    // await migrateOldImages();
+
+    await createCapabilities();
 }
 
 async function migrateOldImages() {
@@ -497,6 +499,13 @@ async function createTournament() {
         }
     })
 
+}
+
+async function createCapabilities() {
+    console.log("Creating Capabilities");
+    await prisma.capability.createMany({
+        data: capabilities
+    })
 }
 
 

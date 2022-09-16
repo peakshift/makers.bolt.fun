@@ -67,6 +67,13 @@ type BountyApplication {
   workplan: String!
 }
 
+type Capability {
+  icon: String!
+  id: Int!
+  is_official: Boolean!
+  title: String!
+}
+
 type Category {
   apps_count: Int!
   cover_image: String
@@ -297,6 +304,7 @@ enum ProjectLaunchStatusEnum {
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  getAllCapabilities: [Capability!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!
   getAllMakersSkills: [MakerSkill!]!
@@ -391,7 +399,10 @@ type Tag {
 }
 
 input TeamMemberInput {
+  avatar: String
   id: Int!
+  jobTitle: String
+  name: String
   role: TEAM_MEMBER_ROLE!
 }
 

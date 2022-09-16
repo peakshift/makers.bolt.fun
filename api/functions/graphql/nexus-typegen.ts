@@ -91,7 +91,10 @@ export interface NexusGenInputs {
     title: string; // String!
   }
   TeamMemberInput: { // input type
+    avatar?: string | null; // String
     id: number; // Int!
+    jobTitle?: string | null; // String
+    name?: string | null; // String
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
   }
   UpdateProjectInput: { // input type
@@ -176,6 +179,12 @@ export interface NexusGenObjects {
     date: string; // String!
     id: number; // Int!
     workplan: string; // String!
+  }
+  Capability: { // root type
+    icon: string; // String!
+    id: number; // Int!
+    is_official: boolean; // Boolean!
+    title: string; // String!
   }
   Category: { // root type
     icon?: string | null; // String
@@ -428,6 +437,12 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     workplan: string; // String!
   }
+  Capability: { // field return type
+    icon: string; // String!
+    id: number; // Int!
+    is_official: boolean; // Boolean!
+    title: string; // String!
+  }
   Category: { // field return type
     apps_count: number; // Int!
     cover_image: string | null; // String
@@ -561,6 +576,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    getAllCapabilities: NexusGenRootTypes['Capability'][]; // [Capability!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getAllMakersRoles: NexusGenRootTypes['GenericMakerRole'][]; // [GenericMakerRole!]!
     getAllMakersSkills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
@@ -792,6 +808,12 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     workplan: 'String'
   }
+  Capability: { // field return type name
+    icon: 'String'
+    id: 'Int'
+    is_official: 'Boolean'
+    title: 'String'
+  }
   Category: { // field return type name
     apps_count: 'Int'
     cover_image: 'String'
@@ -925,6 +947,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     allCategories: 'Category'
     allProjects: 'Project'
+    getAllCapabilities: 'Capability'
     getAllHackathons: 'Hackathon'
     getAllMakersRoles: 'GenericMakerRole'
     getAllMakersSkills: 'MakerSkill'
