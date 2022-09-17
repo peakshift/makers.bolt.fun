@@ -16,16 +16,22 @@ import { RotatingLines } from 'react-loader-spinner'
 
 const CommentsSection = lazy(() => import( /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"))
 
-export default function PostDetailsPage() {
-    const { type: _type, id } = useParams();
-    const type = capitalize(_type);
+interface Props {
+    postType: 'story' | 'bounty' | 'question'
+}
+
+export default function PostDetailsPage(props: Props) {
+    const { slug } = useParams();
+    const type = capitalize(props.postType);
+
+    const id = Number(slug?.includes('--') ? slug.slice(slug.lastIndexOf('--') + 2) : slug)
 
     const postDetailsQuery = usePostDetailsQuery({
         variables: {
-            id: Number(id!),
+            id,
             type: type as any
         },
-        skip: isNaN(Number(id)),
+        skip: isNaN(id),
     })
 
 

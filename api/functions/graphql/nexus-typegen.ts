@@ -114,6 +114,7 @@ export interface NexusGenObjects {
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
     body: string; // String!
+    cover_image?: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
     deadline: string; // String!
     excerpt: string; // String!

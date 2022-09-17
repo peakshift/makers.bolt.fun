@@ -14,7 +14,7 @@ import styles from './styles.module.css'
 import '@szhsin/react-menu/dist/index.css';
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { createRoute } from "src/utils/routing";
+import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -186,7 +186,7 @@ export default function NavMobile() {
               >
                 <div className='flex flex-col gap-24 pt-16'    >
                   <Link
-                    to="/blog"
+                    to={PAGES_ROUTES.blog.feed}
                     onClick={() => toggleDrawerOpen(false)}
                     className='font-medium flex gap-16 !rounded-12 '
                   >

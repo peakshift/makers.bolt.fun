@@ -92,15 +92,16 @@ function App() {
     </Helmet>
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path={PAGES_ROUTES.blog.createPost} element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+        <Route path={PAGES_ROUTES.blog.writeStory} element={<ProtectedRoute><CreatePostPage initType="story" /></ProtectedRoute>} />
 
         <Route element={<NavbarLayout />}>
           <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
           <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />
           <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
 
-          <Route path={PAGES_ROUTES.blog.postById} element={<PostDetailsPage />} />
+          <Route path={PAGES_ROUTES.blog.storyById} element={<PostDetailsPage postType='story' />} />
           <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
+          <Route path={PAGES_ROUTES.blog.catchStory} element={<Navigate replace to={PAGES_ROUTES.blog.feed} />} />
 
           <Route path={PAGES_ROUTES.hackathons.default} element={<HackathonsPage />} />
 
@@ -114,7 +115,7 @@ function App() {
           <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
           <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
-          <Route path="/" element={<Navigate to={PAGES_ROUTES.projects.default} />} />
+          <Route path="/" element={<Navigate replace to={PAGES_ROUTES.blog.feed} />} />
         </Route>
 
       </Routes>

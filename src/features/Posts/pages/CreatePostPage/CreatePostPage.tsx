@@ -6,12 +6,13 @@ import BountyForm from "./Components/BountyForm/BountyForm";
 import QuestionForm from "./Components/QuestionForm/QuestionForm";
 import CreateStoryPage from "./CreateStoryPage/CreateStoryPage";
 
+interface Props {
+    initType: 'story' | 'bounty' | 'question'
+}
 
-export default function CreatePostPage() {
+export default function CreatePostPage(props: Props) {
 
-    const { type } = useParams()
-
-    const [postType] = useState<'story' | 'bounty' | 'question'>((type as any) ?? 'story');
+    const [postType] = useState<'story' | 'bounty' | 'question'>(props.initType);
 
 
     const navigate = useNavigate();

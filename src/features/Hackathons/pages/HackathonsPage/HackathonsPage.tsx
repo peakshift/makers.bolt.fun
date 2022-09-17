@@ -37,7 +37,7 @@ export default function HackathonsPage() {
                 <div className={`w-full`}>
                     <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end">
                         <img
-                            className="w-full h-full object-cover object-top absolute top-0 left-0 z-[-2]"
+                            className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
                             src={bannerData.img}
                             alt=""
                         />
