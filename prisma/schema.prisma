@@ -146,7 +146,7 @@ model Project {
   lightning_address   String?
   lnurl_callback_url  String?
   tagline             String       @default("")
-  launch_status       String       @default("")
+  launch_status       String       @default("Launched")
   hashtag             String       @default("")
 
   category    Category @relation(fields: [category_id], references: [id])
