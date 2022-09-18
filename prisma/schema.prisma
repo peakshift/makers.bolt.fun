@@ -131,6 +131,9 @@ model Project {
   screenshots         String[]
   screenshots_ids     Int[]
   website             String
+  discord             String       @default("")
+  twitter             String       @default("")
+  github              String       @default("")
   thumbnail_image     String?
   thumbnail_image_id  Int?         @unique
   thumbnail_image_rel HostedImage? @relation("Project_Thumbnail", fields: [thumbnail_image_id], references: [id])
@@ -139,14 +142,18 @@ model Project {
   cover_image_rel     HostedImage? @relation("Project_CoverImage", fields: [cover_image_id], references: [id])
   lightning_address   String?
   lnurl_callback_url  String?
+  tagline             String       @default("")
+  launch_status       String       @default("")
+  hashtag             String       @default("")
 
   category    Category @relation(fields: [category_id], references: [id])
   category_id Int
   votes_count Int      @default(0)
   createdAt   DateTime @default(now())
 
-  awards Award[]
-  tags   Tag[]
+  awards       Award[]
+  tags         Tag[]
+  capabilities Capability[]
 
   recruit_roles ProjectRecruitRoles[]
   tournaments   TournamentProject[]
@@ -408,4 +415,15 @@ model TournamentProject {
   project_id    Int
 
   @@id([tournament_id, project_id])
+}
+
+// -----------------
+// Capability
+// -----------------
+model Capability {
+  id         Int       @id @default(autoincrement())
+  title      String    @unique
+  icon       String?
+  is_official Boolean   @default(false)
+  project    Project[]
 }

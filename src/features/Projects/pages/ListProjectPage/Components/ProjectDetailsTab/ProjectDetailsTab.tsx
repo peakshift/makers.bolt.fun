@@ -201,7 +201,7 @@ export default function ProjectDetailsTab(props: Props) {
 
             <Card>
                 <h2 className="text-body2 font-bolder">🦾  Capabilities</h2>
-                <p className="text-body4 font-light text-gray-600 mt-8">Let other makers know what lightning capabilities your applicaiton has.</p>
+                <p className="text-body4 font-light text-gray-600 mt-8">Let other makers know what lightning capabilities your application has.</p>
                 <div className="mt-24">
                     <Controller
                         control={control}
