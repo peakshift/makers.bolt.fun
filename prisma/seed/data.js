@@ -513,55 +513,46 @@ const skills = [
 const capabilities = [
     {
         id: 1,
-        is_official: true,
         title: 'Mobile',
         icon: '📱'
     },
     {
         id: 2,
-        is_official: true,
         title: 'Web',
         icon: '💻'
     },
     {
         id: 3,
-        is_official: true,
         title: 'WebLN',
         icon: '🎛️'
     },
     {
         id: 4,
-        is_official: true,
         title: 'LNURL-auth',
         icon: '🔑️️'
     },
     {
         id: 5,
-        is_official: true,
         title: 'LNURL-pay',
         icon: '💸'
     },
     {
         id: 6,
-        is_official: true,
         title: 'LNURL-channel',
         icon: '🕳️️'
     },
     {
         id: 7,
-        is_official: true,
         title: 'LNURL-withdraw',
         icon: '🎬️'
     },
     {
         id: 8,
-        is_official: true,
         title: 'BOLT 11',
         icon: '⚡'
     },
     {
         id: 9,
-        is_official: true,
         title: 'BOLT 12',
         icon: '⚡'
     },

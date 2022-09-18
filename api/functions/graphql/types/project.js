@@ -1,3 +1,4 @@
+const { ApolloError } = require('apollo-server-lambda');
 const {
     intArg,
     objectType,
@@ -6,7 +7,8 @@ const {
     nonNull,
     enumType,
     inputObjectType,
-} = require('nexus')
+} = require('nexus');
+const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { prisma } = require('../../../prisma');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 
@@ -125,7 +127,6 @@ const Capability = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('icon');
-        t.nonNull.boolean('is_official');
     }
 })
 
@@ -318,9 +319,6 @@ const TeamMemberInput = inputObjectType({
     name: 'TeamMemberInput',
     definition(t) {
         t.nonNull.int('id')
-        t.nullable.string('name')
-        t.nullable.string('avatar')
-        t.nullable.string('jobTitle')
         t.nonNull.field("role", {
             type: TEAM_MEMBER_ROLE
         })
@@ -350,8 +348,10 @@ const CreateProjectInput = inputObjectType({
         t.string('twitter');
         t.string('discord');
         t.string('github');
+        t.string('slack');
+        t.string('telegram');
         t.nonNull.int('category_id');
-        t.nonNull.list.nonNull.string('capabilities');
+        t.nonNull.list.nonNull.int('capabilities'); // ids
         t.nonNull.list.nonNull.field('screenshots', {
             type: ImageInput
         });
@@ -399,7 +399,7 @@ const createProject = extendType({
                     thumbnail_image,
                     tournaments,
                 } = args.input
-                
+                console.log(launch_status);
                 const user = await getUserByPubKey(ctx.userPubKey);
 
                 // Do some validation
@@ -431,8 +431,10 @@ const UpdateProjectInput = inputObjectType({
         t.string('twitter');
         t.string('discord');
         t.string('github');
+        t.string('slack');
+        t.string('telegram');
         t.nonNull.int('category_id');
-        t.nonNull.list.nonNull.string('capabilities');
+        t.nonNull.list.nonNull.int('capabilities');
         t.nonNull.list.nonNull.field('screenshots', {
             type: ImageInput
         });

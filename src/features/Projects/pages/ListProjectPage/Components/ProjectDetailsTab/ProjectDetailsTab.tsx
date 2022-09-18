@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form"
 import Card from "src/Components/Card/Card";
-import { FaDiscord } from "react-icons/fa";
+import { FaDiscord, FaSlack, FaTelegram } from "react-icons/fa";
 import { FiCamera, FiGithub, FiTwitter } from "react-icons/fi";
 import CategoriesInput from "../CategoriesInput/CategoriesInput";
 import CapabilitiesInput from "../CapabilitiesInput/CapabilitiesInput";
@@ -176,6 +176,34 @@ export default function ProjectDetailsTab(props: Props) {
                         </div>
                         {errors.github && <p className="input-error">
                             {errors.github.message}
+                        </p>}
+                    </div>
+                    <div>
+                        <div className="input-wrapper mt-8 relative">
+                            <FaSlack className="text-yellow-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
+                            <input
+                                type='text'
+                                className="input-text"
+                                placeholder='https://slack.com/'
+                                {...register("slack")}
+                            />
+                        </div>
+                        {errors.slack && <p className="input-error">
+                            {errors.slack.message}
+                        </p>}
+                    </div>
+                    <div>
+                        <div className="input-wrapper mt-8 relative">
+                            <FaTelegram className="text-teal-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
+                            <input
+                                type='text'
+                                className="input-text"
+                                placeholder='https://t.me/XXXXXX'
+                                {...register("telegram")}
+                            />
+                        </div>
+                        {errors.telegram && <p className="input-error">
+                            {errors.telegram.message}
                         </p>}
                     </div>
                 </div>

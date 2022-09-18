@@ -131,9 +131,11 @@ model Project {
   screenshots         String[]
   screenshots_ids     Int[]
   website             String
-  discord             String       @default("")
-  twitter             String       @default("")
-  github              String       @default("")
+  discord             String?
+  twitter             String?
+  github              String?
+  telegram            String?
+  slack               String?
   thumbnail_image     String?
   thumbnail_image_id  Int?         @unique
   thumbnail_image_rel HostedImage? @relation("Project_Thumbnail", fields: [thumbnail_image_id], references: [id])
@@ -421,9 +423,8 @@ model TournamentProject {
 // Capability
 // -----------------
 model Capability {
-  id         Int       @id @default(autoincrement())
-  title      String    @unique
-  icon       String?
-  is_official Boolean   @default(false)
-  project    Project[]
+  id      Int       @id @default(autoincrement())
+  title   String    @unique
+  icon    String?
+  project Project[]
 }

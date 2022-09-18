@@ -1,17 +1,20 @@
 import React from 'react'
 import Button from 'src/Components/Button/Button';
-import { useAllCategoriesQuery } from 'src/graphql'
+import { useGetAllCapabilitiesQuery } from 'src/graphql';
 import { random } from 'src/utils/helperFunctions';
 
 interface Props {
-    value: string[];
-    onChange?: (v: string[]) => void;
+    value: number[];
+    onChange?: (v: number[]) => void;
 }
 
 export default function CapabilitiesInput(props: Props) {
 
 
-    const handleClick = (clickedValue: string) => {
+    const categoriesQuery = useGetAllCapabilitiesQuery();
+
+
+    const handleClick = (clickedValue: number) => {
         if (props.value.includes(clickedValue))
             props.onChange?.(props.value.filter(v => v !== clickedValue));
         else
@@ -21,7 +24,7 @@ export default function CapabilitiesInput(props: Props) {
 
     return (
         <div className="flex flex-wrap gap-8">
-            {false ?
+            {categoriesQuery.loading ?
                 Array(10).fill(0).map((_, idx) =>
                     <div
                         key={idx}
@@ -29,63 +32,24 @@ export default function CapabilitiesInput(props: Props) {
                         <span className='invisible'>{"loading category skeleton".slice(random(6, 12))}</span>
                     </div>)
                 :
-                data.map(item =>
+                categoriesQuery.data?.getAllCapabilities.map(item =>
                     <Button
-                        key={item.text}
+                        key={item.id}
                         color='none'
                         size='sm'
                         className={`
                         border border-gray-200
-                        ${props.value.includes(item.text) ?
+                        ${props.value.includes(item.id) ?
                                 'text-primary-600 bg-primary-100'
                                 :
                                 "bg-gray-100"
                             }
                         `}
-                        onClick={() => handleClick(item.text)}
+                        onClick={() => handleClick(item.id)}
                     >
-                        {item.icon} {item.text}
+                        {item.icon} {item.title}
                     </Button>)
             }
         </div>
     )
-}
-
-const data = [
-    {
-        text: 'Mobile',
-        icon: '📱'
-    },
-    {
-        text: 'Web',
-        icon: '💻'
-    },
-    {
-        text: 'WebLN',
-        icon: '🎛️'
-    },
-    {
-        text: 'LNURL-auth',
-        icon: '🔑️️'
-    },
-    {
-        text: 'LNURL-pay',
-        icon: '💸'
-    },
-    {
-        text: 'LNURL-channel',
-        icon: '🕳️️'
-    },
-    {
-        text: 'LNURL-withdraw',
-        icon: '🎬️'
-    },
-    {
-        text: 'BOLT 11',
-        icon: '⚡'
-    },
-    {
-        text: 'BOLT 12',
-        icon: '⚡'
-    },
-]
+} 

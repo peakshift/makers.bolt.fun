@@ -29,7 +29,7 @@ declare global {
 
 export interface NexusGenInputs {
   CreateProjectInput: { // input type
-    capabilities: string[]; // [String!]!
+    capabilities: number[]; // [Int!]!
     category_id: number; // Int!
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
@@ -41,7 +41,9 @@ export interface NexusGenInputs {
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
+    slack?: string | null; // String
     tagline: string; // String!
+    telegram?: string | null; // String
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
     tournaments: number[]; // [Int!]!
@@ -91,14 +93,11 @@ export interface NexusGenInputs {
     title: string; // String!
   }
   TeamMemberInput: { // input type
-    avatar?: string | null; // String
     id: number; // Int!
-    jobTitle?: string | null; // String
-    name?: string | null; // String
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
   }
   UpdateProjectInput: { // input type
-    capabilities: string[]; // [String!]!
+    capabilities: number[]; // [Int!]!
     category_id: number; // Int!
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
@@ -110,7 +109,9 @@ export interface NexusGenInputs {
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
+    slack?: string | null; // String
     tagline: string; // String!
+    telegram?: string | null; // String
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
     tournaments: number[]; // [Int!]!
@@ -183,7 +184,6 @@ export interface NexusGenObjects {
   Capability: { // root type
     icon: string; // String!
     id: number; // Int!
-    is_official: boolean; // Boolean!
     title: string; // String!
   }
   Category: { // root type
@@ -440,7 +440,6 @@ export interface NexusGenFieldTypes {
   Capability: { // field return type
     icon: string; // String!
     id: number; // Int!
-    is_official: boolean; // Boolean!
     title: string; // String!
   }
   Category: { // field return type
@@ -811,7 +810,6 @@ export interface NexusGenFieldTypeNames {
   Capability: { // field return type name
     icon: 'String'
     id: 'Int'
-    is_official: 'Boolean'
     title: 'String'
   }
   Category: { // field return type name

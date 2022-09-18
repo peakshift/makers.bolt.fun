@@ -91,6 +91,13 @@ export type BountyApplication = {
   workplan: Scalars['String'];
 };
 
+export type Capability = {
+  __typename?: 'Capability';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type Category = {
   __typename?: 'Category';
   apps_count: Scalars['Int'];
@@ -103,7 +110,7 @@ export type Category = {
 };
 
 export type CreateProjectInput = {
-  capabilities: Array<Scalars['String']>;
+  capabilities: Array<Scalars['Int']>;
   category_id: Scalars['Int'];
   cover_image: ImageInput;
   description: Scalars['String'];
@@ -115,7 +122,9 @@ export type CreateProjectInput = {
   members: Array<TeamMemberInput>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;
+  slack?: InputMaybe<Scalars['String']>;
   tagline: Scalars['String'];
+  telegram?: InputMaybe<Scalars['String']>;
   thumbnail_image: ImageInput;
   title: Scalars['String'];
   tournaments: Array<Scalars['Int']>;
@@ -414,6 +423,7 @@ export type Query = {
   __typename?: 'Query';
   allCategories: Array<Category>;
   allProjects: Array<Project>;
+  getAllCapabilities: Array<Capability>;
   getAllHackathons: Array<Hackathon>;
   getAllMakersRoles: Array<GenericMakerRole>;
   getAllMakersSkills: Array<MakerSkill>;
@@ -719,7 +729,7 @@ export type TournamentProjectsResponse = {
 };
 
 export type UpdateProjectInput = {
-  capabilities: Array<Scalars['String']>;
+  capabilities: Array<Scalars['Int']>;
   category_id: Scalars['Int'];
   cover_image: ImageInput;
   description: Scalars['String'];
@@ -731,7 +741,9 @@ export type UpdateProjectInput = {
   members: Array<TeamMemberInput>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;
+  slack?: InputMaybe<Scalars['String']>;
   tagline: Scalars['String'];
+  telegram?: InputMaybe<Scalars['String']>;
   thumbnail_image: ImageInput;
   title: Scalars['String'];
   tournaments: Array<Scalars['Int']>;
@@ -988,6 +1000,11 @@ export type HottestProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HottestProjectsQuery = { __typename?: 'Query', hottestProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string, title: string, votes_count: number, category: { __typename?: 'Category', title: string, id: number } }> };
+
+export type GetAllCapabilitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCapabilitiesQuery = { __typename?: 'Query', getAllCapabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
 
 export type CreateProjectMutationVariables = Exact<{
   input: InputMaybe<CreateProjectInput>;
@@ -2373,6 +2390,42 @@ export function useHottestProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type HottestProjectsQueryHookResult = ReturnType<typeof useHottestProjectsQuery>;
 export type HottestProjectsLazyQueryHookResult = ReturnType<typeof useHottestProjectsLazyQuery>;
 export type HottestProjectsQueryResult = Apollo.QueryResult<HottestProjectsQuery, HottestProjectsQueryVariables>;
+export const GetAllCapabilitiesDocument = gql`
+    query GetAllCapabilities {
+  getAllCapabilities {
+    id
+    title
+    icon
+  }
+}
+    `;
+
+/**
+ * __useGetAllCapabilitiesQuery__
+ *
+ * To run a query within a React component, call `useGetAllCapabilitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCapabilitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCapabilitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCapabilitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCapabilitiesQuery, GetAllCapabilitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCapabilitiesQuery, GetAllCapabilitiesQueryVariables>(GetAllCapabilitiesDocument, options);
+      }
+export function useGetAllCapabilitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCapabilitiesQuery, GetAllCapabilitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCapabilitiesQuery, GetAllCapabilitiesQueryVariables>(GetAllCapabilitiesDocument, options);
+        }
+export type GetAllCapabilitiesQueryHookResult = ReturnType<typeof useGetAllCapabilitiesQuery>;
+export type GetAllCapabilitiesLazyQueryHookResult = ReturnType<typeof useGetAllCapabilitiesLazyQuery>;
+export type GetAllCapabilitiesQueryResult = Apollo.QueryResult<GetAllCapabilitiesQuery, GetAllCapabilitiesQueryVariables>;
 export const CreateProjectDocument = gql`
     mutation CreateProject($input: CreateProjectInput) {
   createProject(input: $input) {
