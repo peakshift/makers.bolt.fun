@@ -180,7 +180,7 @@ model ProjectMember {
   user      User    @relation(fields: [userId], references: [id])
   userId    Int
 
-  level String // Admin | Maker | (new_roles_later)
+  role String // Admin | Maker | (new_roles_later)
 
   @@id([projectId, userId])
 }
