@@ -83,7 +83,7 @@ const Project = objectType({
             }
         })
 
-        t.nonNull.list.nonNull.field('memebrs', {
+        t.nonNull.list.nonNull.field('members', {
             type: ProjectMember,
             resolve: (parent) => {
                 return prisma.projectMember.findMany({
@@ -97,17 +97,11 @@ const Project = objectType({
             }
         })
 
-        t.nonNull.list.nonNull.field('memebrs', {
-            type: ProjectMember,
-            resolve: (parent) => {
-                return prisma.projectMember.findMany({
-                    where: {
-                        projectId: parent.id
-                    },
-                    include: {
-                        user: true
-                    }
-                })
+
+        t.nonNull.list.nonNull.field('capabilities', {
+            type: Capability,
+            resolve: async (parent) => {
+                return prisma.project.findUnique({ where: { id: parent.id } }).capabilities()
             }
         })
 

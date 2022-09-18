@@ -399,17 +399,26 @@ export type ProfileRolesInput = {
 export type Project = {
   __typename?: 'Project';
   awards: Array<Award>;
+  capabilities: Array<Capability>;
   category: Category;
   cover_image: Scalars['String'];
   description: Scalars['String'];
+  discord: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  launch_status: ProjectLaunchStatusEnum;
   lightning_address: Maybe<Scalars['String']>;
   lnurl_callback_url: Maybe<Scalars['String']>;
+  members: Array<ProjectMember>;
   recruit_roles: Array<MakerRole>;
   screenshots: Array<Scalars['String']>;
+  slack: Maybe<Scalars['String']>;
+  tagline: Scalars['String'];
   tags: Array<Tag>;
+  telegram: Maybe<Scalars['String']>;
   thumbnail_image: Scalars['String'];
   title: Scalars['String'];
+  twitter: Maybe<Scalars['String']>;
   votes_count: Scalars['Int'];
   website: Scalars['String'];
 };
@@ -418,6 +427,12 @@ export enum ProjectLaunchStatusEnum {
   Launched = 'Launched',
   Wip = 'WIP'
 }
+
+export type ProjectMember = {
+  __typename?: 'ProjectMember';
+  role: Team_Member_Role;
+  user: User;
+};
 
 export type Query = {
   __typename?: 'Query';
@@ -1025,7 +1040,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string }, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2551,17 +2566,32 @@ export const ProjectDetailsDocument = gql`
   getProject(id: $projectId) {
     id
     title
+    tagline
     description
     cover_image
     thumbnail_image
+    launch_status
+    twitter
+    discord
+    github
+    slack
+    telegram
     screenshots
     website
     lightning_address
-    lnurl_callback_url
     votes_count
     category {
       id
+      icon
       title
+    }
+    members {
+      role
+      user {
+        id
+        name
+        avatar
+      }
     }
     awards {
       title
@@ -2572,6 +2602,17 @@ export const ProjectDetailsDocument = gql`
     tags {
       id
       title
+    }
+    recruit_roles {
+      id
+      title
+      icon
+      level
+    }
+    capabilities {
+      id
+      title
+      icon
     }
   }
 }

@@ -569,6 +569,7 @@ export interface NexusGenFieldTypes {
   }
   Project: { // field return type
     awards: NexusGenRootTypes['Award'][]; // [Award!]!
+    capabilities: NexusGenRootTypes['Capability'][]; // [Capability!]!
     category: NexusGenRootTypes['Category']; // Category!
     cover_image: string; // String!
     description: string; // String!
@@ -578,7 +579,7 @@ export interface NexusGenFieldTypes {
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
-    memebrs: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
+    members: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
     slack: string | null; // String
@@ -951,6 +952,7 @@ export interface NexusGenFieldTypeNames {
   }
   Project: { // field return type name
     awards: 'Award'
+    capabilities: 'Capability'
     category: 'Category'
     cover_image: 'String'
     description: 'String'
@@ -960,7 +962,7 @@ export interface NexusGenFieldTypeNames {
     launch_status: 'ProjectLaunchStatusEnum'
     lightning_address: 'String'
     lnurl_callback_url: 'String'
-    memebrs: 'ProjectMember'
+    members: 'ProjectMember'
     recruit_roles: 'MakerRole'
     screenshots: 'String'
     slack: 'String'

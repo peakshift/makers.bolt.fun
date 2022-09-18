@@ -282,6 +282,7 @@ input ProfileRolesInput {
 
 type Project {
   awards: [Award!]!
+  capabilities: [Capability!]!
   category: Category!
   cover_image: String!
   description: String!
@@ -291,7 +292,7 @@ type Project {
   launch_status: ProjectLaunchStatusEnum!
   lightning_address: String
   lnurl_callback_url: String
-  memebrs: [ProjectMember!]!
+  members: [ProjectMember!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   slack: String

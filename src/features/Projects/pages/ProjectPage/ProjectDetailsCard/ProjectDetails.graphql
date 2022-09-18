@@ -2,19 +2,26 @@ query ProjectDetails($projectId: Int!) {
   getProject(id: $projectId) {
     id
     title
+    tagline
     description
     cover_image
     thumbnail_image
+    launch_status
+    twitter
+    discord
+    github
+    slack
+    telegram
     screenshots
     website
     lightning_address
-    lnurl_callback_url
     votes_count
     category {
       id
+      icon
       title
     }
-    memebrs {
+    members {
       role
       user {
         id
@@ -31,6 +38,18 @@ query ProjectDetails($projectId: Int!) {
     tags {
       id
       title
+    }
+    recruit_roles {
+      id
+      title
+      icon
+      level
+    }
+
+    capabilities {
+      id
+      title
+      icon
     }
   }
 }
