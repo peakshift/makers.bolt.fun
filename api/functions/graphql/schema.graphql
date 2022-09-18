@@ -288,6 +288,7 @@ type Project {
   id: Int!
   lightning_address: String
   lnurl_callback_url: String
+  memebrs: [ProjectMember!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   tags: [Tag!]!
@@ -300,6 +301,11 @@ type Project {
 enum ProjectLaunchStatusEnum {
   Launched
   WIP
+}
+
+type ProjectMember {
+  role: TEAM_MEMBER_ROLE!
+  user: User!
 }
 
 type Query {

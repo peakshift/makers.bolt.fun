@@ -17,6 +17,7 @@ const { ImageInput } = require('./misc');
 const { MakerRole } = require('./users');
 
 
+
 const Project = objectType({
     name: 'Project',
     definition(t) {
@@ -73,6 +74,20 @@ const Project = objectType({
             }
         })
 
+        t.nonNull.list.nonNull.field('memebrs', {
+            type: ProjectMember,
+            resolve: (parent) => {
+                return prisma.projectMember.findMany({
+                    where: {
+                        projectId: parent.id
+                    },
+                    include: {
+                        user: true
+                    }
+                })
+            }
+        })
+
         t.nonNull.list.nonNull.field('recruit_roles', {
             type: MakerRole,
             resolve: async (parent) => {
@@ -102,6 +117,17 @@ const TEAM_MEMBER_ROLE = enumType({
     members: ['Admin', 'Maker'],
 });
 
+const ProjectMember = objectType({
+    name: "ProjectMember",
+    definition(t) {
+        t.nonNull.field('user', {
+            type: "User"
+        })
+        t.nonNull.field("role", {
+            type: TEAM_MEMBER_ROLE
+        })
+    }
+})
 
 
 const Award = objectType({

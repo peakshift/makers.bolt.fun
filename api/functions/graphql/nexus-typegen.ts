@@ -279,6 +279,10 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
     website: string; // String!
   }
+  ProjectMember: { // root type
+    role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Query: {};
   Question: { // root type
     body: string; // String!
@@ -564,6 +568,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
+    memebrs: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -571,6 +576,10 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     votes_count: number; // Int!
     website: string; // String!
+  }
+  ProjectMember: { // field return type
+    role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
+    user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
@@ -934,6 +943,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     lightning_address: 'String'
     lnurl_callback_url: 'String'
+    memebrs: 'ProjectMember'
     recruit_roles: 'MakerRole'
     screenshots: 'String'
     tags: 'Tag'
@@ -941,6 +951,10 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     votes_count: 'Int'
     website: 'String'
+  }
+  ProjectMember: { // field return type name
+    role: 'TEAM_MEMBER_ROLE'
+    user: 'User'
   }
   Query: { // field return type name
     allCategories: 'Category'
