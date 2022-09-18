@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
-import BountyForm from "./Components/BountyForm/BountyForm";
-import QuestionForm from "./Components/QuestionForm/QuestionForm";
+// import BountyForm from "./Components/BountyForm/BountyForm";
+// import QuestionForm from "./Components/QuestionForm/QuestionForm";
 import CreateStoryPage from "./CreateStoryPage/CreateStoryPage";
 
+interface Props {
+    initType: 'story' | 'bounty' | 'question'
+}
 
-export default function CreatePostPage() {
+export default function CreatePostPage(props: Props) {
 
-    const { type } = useParams()
-
-    const [postType] = useState<'story' | 'bounty' | 'question'>((type as any) ?? 'story');
+    const [postType] = useState<'story' | 'bounty' | 'question'>(props.initType);
 
 
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function CreatePostPage() {
                     </h2> */}
                         <CreateStoryPage />
                     </>}
-                    {postType === 'bounty' && <>
+                    {/* {postType === 'bounty' && <>
                         <h2 className="text-h2 font-bolder text-gray-800 mb-32">
                             Write a Bounty
                         </h2>
@@ -55,7 +56,7 @@ export default function CreatePostPage() {
                             Write a Question
                         </h2>
                         <QuestionForm />
-                    </>}
+                    </>} */}
                 </div>
             </div>
         </div>

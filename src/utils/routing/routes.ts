@@ -50,25 +50,23 @@ type RouteOptions =
 
 export function createRoute(options: RouteOptions) {
 
-
-    if (options.type === "post")
-        return `/blog/post/${options.postType.toLowerCase()}/${options.id}`
-            + (options.title ? `/${toSlug(options.title)}` : "");
-
-    if (options.type === "story")
-        return `/blog/post/story/${options.id}`
-            + (options.title ? `/${toSlug(options.title)}` : "");
-
-
-    if (options.type === "edit-story")
-        return `/blog/create-post` + (options.id ? `?id=${options.id}` : '')
-
-    if (options.type === "bounty")
+    if ((options.type === "post" && options.postType.toLowerCase() === 'story')
+        || options.type === "story") {
+        const onlyId = !options.title;
+        return "/story/"
+            // + (options.username ? `${toSlug(options.username)}-` : "")
+            + (options.title ? `${toSlug(options.title)}-` : "")
+            + (!onlyId ? "-" : "")
+            + `${options.id}`
+    }
+    if ((options.type === "post" && options.postType.toLowerCase() === 'bounty')
+        || options.type === "bounty")
         return `/blog/post/bounty/${options.id}`
             + (options.title ? `/${toSlug(options.title)}` : "");
 
 
-    if (options.type === "question")
+    if ((options.type === "post" && options.postType.toLowerCase() === 'question')
+        || options.type === "question")
         return `/blog/post/question/${options.id}`
             + (options.title ? `/${toSlug(options.title)}` : "");
 
@@ -98,9 +96,12 @@ export const PAGES_ROUTES = {
         listProject: "/projects/list-project"
     },
     blog: {
-        feed: "/blog",
-        postById: "/blog/post/:type/:id/*",
-        createPost: "/blog/create-post"
+        feed: "/feed",
+        postById: "/feed/post/:type/:id/*",
+        storyById: "/story/:slug",
+        writeStory: "/story/write",
+        createPost: "/story/create-post",
+        catchStory: '/story'
     },
     hackathons: {
         default: "/hackathons"

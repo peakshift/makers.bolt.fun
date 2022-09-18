@@ -14,7 +14,7 @@ import {
 import '@szhsin/react-menu/dist/index.css';
 import { FiChevronDown } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { createRoute } from "src/utils/routing";
+import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import Button from "../Button/Button";
 
 
@@ -64,10 +64,10 @@ export default function NavDesktop() {
                                 menuStyle={{ border: '1px solid' }}
                             >
                                 <MenuItem
-                                    href="/blog"
+                                    href={PAGES_ROUTES.blog.feed}
                                     onClick={(e) => {
                                         e.syntheticEvent.preventDefault();
-                                        navigate("/blog");
+                                        navigate(PAGES_ROUTES.blog.feed);
                                     }}
                                     className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 '
                                 >

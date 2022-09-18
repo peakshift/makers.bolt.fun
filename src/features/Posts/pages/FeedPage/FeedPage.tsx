@@ -14,6 +14,7 @@ import { FaDiscord } from 'react-icons/fa'
 import { FiArrowRight } from 'react-icons/fi'
 import { capitalize } from 'src/utils/helperFunctions'
 import { bannerData } from 'src/features/Projects/pages/ExplorePage/Header/Header'
+import { PAGES_ROUTES } from 'src/utils/routing'
 
 
 export default function FeedPage() {
@@ -46,6 +47,21 @@ export default function FeedPage() {
             <div
                 className={`page-container`}
             >
+                <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end mb-24">
+                    <img
+                        className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
+                        src={bannerData.img}
+                        alt=""
+                    />
+                    <div className="w-full h-full object-cover bg-black bg-opacity-60 absolute top-0 left-0 z-[-1]"></div>
+                    <div className="max-w-[90%]">
+                        {bannerData.title}
+                    </div>
+
+                    <Button href={bannerData.link.url} color="white" className="mt-24">
+                        {bannerData.link.content}
+                    </Button>
+                </div>
                 <div className={`w-full ${styles.grid}`}>
                     <div id="title">
                         {tagFilter && <p className="text-body6 text-gray-500 font-medium mb-8">
@@ -76,7 +92,7 @@ export default function FeedPage() {
                     <aside id='categories' className='no-scrollbar'>
                         <div className="pb-16 md:overflow-y-scroll sticky-side-element">
                             <Button
-                                href='/blog/create-post'
+                                href={PAGES_ROUTES.blog.writeStory}
                                 color='primary'
                                 fullWidth
                             >
