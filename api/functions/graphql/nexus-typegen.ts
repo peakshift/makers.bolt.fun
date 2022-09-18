@@ -272,10 +272,17 @@ export interface NexusGenObjects {
   }
   Project: { // root type
     description: string; // String!
+    discord?: string | null; // String
+    github?: string | null; // String
     id: number; // Int!
+    launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
+    slack?: string | null; // String
+    tagline: string; // String!
+    telegram?: string | null; // String
     title: string; // String!
+    twitter?: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
   }
@@ -565,15 +572,22 @@ export interface NexusGenFieldTypes {
     category: NexusGenRootTypes['Category']; // Category!
     cover_image: string; // String!
     description: string; // String!
+    discord: string | null; // String
+    github: string | null; // String
     id: number; // Int!
+    launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
     memebrs: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
+    slack: string | null; // String
+    tagline: string; // String!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
+    telegram: string | null; // String
     thumbnail_image: string; // String!
     title: string; // String!
+    twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
   }
@@ -940,15 +954,22 @@ export interface NexusGenFieldTypeNames {
     category: 'Category'
     cover_image: 'String'
     description: 'String'
+    discord: 'String'
+    github: 'String'
     id: 'Int'
+    launch_status: 'ProjectLaunchStatusEnum'
     lightning_address: 'String'
     lnurl_callback_url: 'String'
     memebrs: 'ProjectMember'
     recruit_roles: 'MakerRole'
     screenshots: 'String'
+    slack: 'String'
+    tagline: 'String'
     tags: 'Tag'
+    telegram: 'String'
     thumbnail_image: 'String'
     title: 'String'
+    twitter: 'String'
     votes_count: 'Int'
     website: 'String'
   }

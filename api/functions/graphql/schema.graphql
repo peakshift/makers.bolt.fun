@@ -285,15 +285,22 @@ type Project {
   category: Category!
   cover_image: String!
   description: String!
+  discord: String
+  github: String
   id: Int!
+  launch_status: ProjectLaunchStatusEnum!
   lightning_address: String
   lnurl_callback_url: String
   memebrs: [ProjectMember!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
+  slack: String
+  tagline: String!
   tags: [Tag!]!
+  telegram: String
   thumbnail_image: String!
   title: String!
+  twitter: String
   votes_count: Int!
   website: String!
 }

@@ -23,6 +23,7 @@ const Project = objectType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('title');
+        t.nonNull.string('tagline');
         t.nonNull.string('description');
         t.nonNull.string('cover_image', {
             async resolve(parent) {
@@ -34,6 +35,14 @@ const Project = objectType({
                 return prisma.project.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
             }
         });
+        t.nonNull.field('launch_status', {
+            type: ProjectLaunchStatusEnum
+        });
+        t.string('twitter');
+        t.string('discord');
+        t.string('github');
+        t.string('slack');
+        t.string('telegram');
         t.nonNull.list.nonNull.string('screenshots', {
             async resolve(parent) {
                 if (!parent.screenshots_ids) return null
@@ -71,6 +80,20 @@ const Project = objectType({
             type: "Tag",
             resolve: (parent) => {
                 return prisma.project.findUnique({ where: { id: parent.id } }).tags();
+            }
+        })
+
+        t.nonNull.list.nonNull.field('memebrs', {
+            type: ProjectMember,
+            resolve: (parent) => {
+                return prisma.projectMember.findMany({
+                    where: {
+                        projectId: parent.id
+                    },
+                    include: {
+                        user: true
+                    }
+                })
             }
         })
 
