@@ -510,6 +510,54 @@ const skills = [
     },
 ]
 
+const capabilities = [
+    {
+        id: 1,
+        title: 'Mobile',
+        icon: '📱'
+    },
+    {
+        id: 2,
+        title: 'Web',
+        icon: '💻'
+    },
+    {
+        id: 3,
+        title: 'WebLN',
+        icon: '🎛️'
+    },
+    {
+        id: 4,
+        title: 'LNURL-auth',
+        icon: '🔑️️'
+    },
+    {
+        id: 5,
+        title: 'LNURL-pay',
+        icon: '💸'
+    },
+    {
+        id: 6,
+        title: 'LNURL-channel',
+        icon: '🕳️️'
+    },
+    {
+        id: 7,
+        title: 'LNURL-withdraw',
+        icon: '🎬️'
+    },
+    {
+        id: 8,
+        title: 'BOLT 11',
+        icon: '⚡'
+    },
+    {
+        id: 9,
+        title: 'BOLT 12',
+        icon: '⚡'
+    },
+]
+
 module.exports = {
     categories,
     projects,
@@ -517,4 +565,5 @@ module.exports = {
     hackathons,
     roles,
     skills,
+    capabilities,
 }
