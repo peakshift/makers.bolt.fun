@@ -52,7 +52,12 @@ export default function NavDesktop() {
                                 Projects
                             </Link>
                         </li>
-                        <li>
+                        <li className="relative">
+                            <Link to={'/hackathons'} className='text-body4 font-bold hover:text-primary-600'>
+                                Events
+                            </Link>
+                        </li>
+                        {/* <li>
                             <Menu
                                 offsetY={28}
                                 menuButton={
@@ -72,8 +77,7 @@ export default function NavDesktop() {
                                     className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 '
                                 >
                                     <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                                        {/* <FiFeather className={`text-body1 inline-block text-primary-600 `} /> */}
-                                        <span className="text-body2">✍🏼</span>
+                                         <span className="text-body2">✍🏼</span>
                                     </div>
                                     <div>
                                         <p className="text-body4 text-black font-medium">
@@ -121,7 +125,7 @@ export default function NavDesktop() {
                                     </div>
                                 </MenuItem>
                             </Menu>
-                        </li>
+                        </li> */}
                         <li className="relative">
                             <a
                                 href={'https://bolt.fun/guide/'}

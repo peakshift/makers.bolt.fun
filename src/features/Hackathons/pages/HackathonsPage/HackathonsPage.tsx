@@ -35,21 +35,19 @@ export default function HackathonsPage() {
                 className={`page-container`}
             >
                 <div className={`w-full`}>
-                    <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end">
-                        <img
-                            className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
-                            src={bannerData.img}
-                            alt=""
-                        />
-                        <div className="w-full h-full object-cover bg-black bg-opacity-60 absolute top-0 left-0 z-[-1]"></div>
-                        <div className="max-w-[90%]">
-                            {bannerData.title}
+                    <Link to={createRoute({ type: "tournament", id: 12 })}>
+                        <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end mb-24">
+                            <img
+                                className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
+                                src={bannerData.img}
+                                alt=""
+                            />
+                            <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
+                            <div className="max-w-[90%]">
+                                {bannerData.title}
+                            </div>
                         </div>
-
-                        <Button href={bannerData.link.url} color="white" className="mt-24">
-                            {bannerData.link.content}
-                        </Button>
-                    </div>
+                    </Link>
                     <div className="flex gap-16 flex-wrap my-24 justify-between">
                         <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
                         <div className="self-center">
