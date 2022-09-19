@@ -15,7 +15,7 @@ export const bannerData = {
       <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
       <p className="text-body4 text-white mt-8"><IoLocationOutline className="mr-8" /> Online</p>
     </>,
-  img: "https://i.ibb.co/bRY635n/wide.png",
+  img: "https://i.ibb.co/Xzwm6St/wide.jpg",
   link: {
     content: "Register Now",
     url: createRoute({ type: "tournament", id: 1 }),
