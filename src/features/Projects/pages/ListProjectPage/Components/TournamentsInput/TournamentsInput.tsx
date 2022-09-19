@@ -52,18 +52,6 @@ export default function TournamentsInput(props: Props) {
 const data = [
     {
         id: 1,
-        title: 'ShockTheWeb3',
-    },
-    {
-        id: 2,
-        title: 'Adopting Bitcoin 2022',
-    },
-    {
-        id: 3,
-        title: 'TabConf',
-    },
-    {
-        id: 4,
-        title: 'Blockstream',
+        title: 'Legends of Lightning',
     },
 ]
