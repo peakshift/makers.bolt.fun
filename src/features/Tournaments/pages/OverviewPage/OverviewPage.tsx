@@ -19,7 +19,7 @@ export default function OverviewPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-24 items-start">
                 <div className='md:col-span-2'>
                     <div
-                        className={`text-gray-600 mt-16 prose `}
+                        className={`text-gray-600 prose `}
                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(tournamentDetails.description)) }}
                     >
                     </div>
