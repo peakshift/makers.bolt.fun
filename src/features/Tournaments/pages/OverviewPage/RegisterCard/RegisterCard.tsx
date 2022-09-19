@@ -79,10 +79,48 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
             </div>
             <div>
                 <p className="text-body5 text-gray-900 font-medium">
-                    Sponsored by
+                    In partnership with
                 </p>
-                <img src={'/assets/images/logos/fulgur_logo.svg'} alt="Fulgur Ventures Logo" className='max-h-48 mt-16 ' />
+                <div className="flex flex-wrap gap-x-8 gap-y-8 mt-16">
+                    {partners.map((p, idx) => <a key={idx} href={p.link}><Avatar src={p.image} width={48} /> </a>)}
+                </div>
             </div>
         </Card>
     )
 }
+
+const partners = [
+    {
+        link: "https://fulgur.ventures/",
+        image: "https://i.ibb.co/9gZFQ4d/fulgur.webp",
+    },
+    {
+        link: "https://2022.tabconf.com/",
+        image: "https://i.ibb.co/zFGVqvV/tab-conf.jpg",
+    },
+    {
+        link: "https://adoptingbitcoin.org/2022/",
+        image: "https://i.ibb.co/HdvRbxQ/Screenshot-2022-09-14-at-17-06-33.jpg",
+    },
+    {
+        link: "https://breez.technology/",
+        image: "https://i.ibb.co/6stx8tC/breez.webp",
+    },
+    {
+        link: "https://www.afrobitcoin.org/",
+        image: "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
+    },
+    {
+        link: "https://opensats.org/",
+        image: "https://i.ibb.co/b5y29TL/open-sats.jpg",
+    },
+    {
+        link: "https://bitcoin.design/",
+        image: "https://i.ibb.co/cgY6zy2/bitcoin-design.jpg",
+    },
+    {
+        link: "https://geyser.fund/",
+        image: "https://i.ibb.co/tp6L5bt/geyser.jpg",
+    },
+]
+
