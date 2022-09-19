@@ -14,6 +14,7 @@ const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 const { ImageInput } = require('./misc');
+const { TournamentProject } = require('./tournament');
 const { MakerRole } = require('./users');
 
 
@@ -98,6 +99,9 @@ const Project = objectType({
             }
         })
 
+        t.list.nonNull.field('tournaments', {
+            type: TournamentProject
+        })
 
         t.nonNull.list.nonNull.field('capabilities', {
             type: Capability,
@@ -467,6 +471,8 @@ const createProject = extendType({
                     cover_image,
                     discord,
                     github,
+                    slack,
+                    telegram,
                     twitter,
                     website,
                     launch_status,
@@ -476,15 +482,123 @@ const createProject = extendType({
                     thumbnail_image,
                     tournaments,
                 } = args.input
-                console.log(launch_status);
-                const user = await getUserByPubKey(ctx.userPubKey);
+
+                const user = await getUserByPubKey(ctx.userPubKey)
 
                 // Do some validation
-                if (!user)
-                    throw new ApolloError("Not Authenticated");
+                if (!user) throw new ApolloError('Not Authenticated')
 
-                // TODO Create project
-            }
+                const coverImage = await prisma.hostedImage.findFirst({
+                    where: {
+                        provider_image_id: cover_image.id,
+                    },
+                })
+
+                const coverImageRel = coverImage
+                    ? {
+                          cover_image_rel: {
+                              connect: {
+                                  id: coverImage ? coverImage.id : null,
+                              },
+                          },
+                      }
+                    : {}
+
+                const thumbnailImage = await prisma.hostedImage.findFirst({
+                    where: {
+                        provider_image_id: thumbnail_image.id,
+                    },
+                })
+
+                const thumbnailImageRel = thumbnailImage
+                    ? {
+                          thumbnail_image_rel: {
+                              connect: {
+                                  id: thumbnailImage ? thumbnailImage.id : null,
+                              },
+                          },
+                      }
+                    : {}
+
+                const screenshots_ids = await prisma.hostedImage.findMany({
+                    where: {
+                        provider_image_id: {
+                            in: screenshots.map((s) => s.id),
+                        },
+                    },
+                    select: {
+                        id: true,
+                    },
+                })
+
+                return await prisma.project.create({
+                    data: {
+                        title,
+                        description,
+                        tagline,
+                        hashtag,
+                        website,
+                        discord,
+                        github,
+                        twitter,
+                        slack,
+                        telegram,
+                        launch_status,
+
+                        ...coverImageRel,
+                        ...thumbnailImageRel,
+                        screenshots_ids: screenshots_ids.map((s) => s.id),
+
+                        category: {
+                            connect: {
+                                id: category_id,
+                            },
+                        },
+                        members: {
+                            create: members.map((member) => {
+                                return {
+                                    role: member.role,
+                                    user: {
+                                        connect: {
+                                            id: member.id,
+                                        },
+                                    },
+                                }
+                            }),
+                        },
+                        recruit_roles: {
+                            create: recruit_roles.map((role) => {
+                                return {
+                                    level: 0,
+                                    role: {
+                                        connect: {
+                                            id: role,
+                                        },
+                                    },
+                                }
+                            }),
+                        },
+                        tournaments: {
+                            create: tournaments.map((tournament) => {
+                                return {
+                                    tournament: {
+                                        connect: {
+                                            id: tournament,
+                                        },
+                                    },
+                                }
+                            }),
+                        },
+                        capabilities: {
+                            connect: capabilities.map((c) => {
+                                return {
+                                    id: c,
+                                }
+                            }),
+                        },
+                    },
+                })
+            },
         })
     },
 })

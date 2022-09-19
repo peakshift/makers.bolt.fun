@@ -283,6 +283,7 @@ export interface NexusGenObjects {
     tagline: string; // String!
     telegram?: string | null; // String
     title: string; // String!
+    tournaments?: NexusGenRootTypes['TournamentProject'][] | null; // [TournamentProject!]
     twitter?: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
@@ -359,6 +360,10 @@ export interface NexusGenObjects {
   TournamentPrize: { // root type
     amount: string; // String!
     title: string; // String!
+  }
+  TournamentProject: { // root type
+    project: NexusGenRootTypes['Project']; // Project!
+    tournament: NexusGenRootTypes['Tournament']; // Tournament!
   }
   TournamentProjectsResponse: { // root type
     hasNext?: boolean | null; // Boolean
@@ -590,6 +595,7 @@ export interface NexusGenFieldTypes {
     telegram: string | null; // String
     thumbnail_image: string; // String!
     title: string; // String!
+    tournaments: NexusGenRootTypes['TournamentProject'][] | null; // [TournamentProject!]
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
@@ -719,6 +725,10 @@ export interface NexusGenFieldTypes {
     amount: string; // String!
     image: string; // String!
     title: string; // String!
+  }
+  TournamentProject: { // field return type
+    project: NexusGenRootTypes['Project']; // Project!
+    tournament: NexusGenRootTypes['Tournament']; // Tournament!
   }
   TournamentProjectsResponse: { // field return type
     hasNext: boolean | null; // Boolean
@@ -976,6 +986,7 @@ export interface NexusGenFieldTypeNames {
     telegram: 'String'
     thumbnail_image: 'String'
     title: 'String'
+    tournaments: 'TournamentProject'
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
@@ -1105,6 +1116,10 @@ export interface NexusGenFieldTypeNames {
     amount: 'String'
     image: 'String'
     title: 'String'
+  }
+  TournamentProject: { // field return type name
+    project: 'Project'
+    tournament: 'Tournament'
   }
   TournamentProjectsResponse: { // field return type name
     hasNext: 'Boolean'
