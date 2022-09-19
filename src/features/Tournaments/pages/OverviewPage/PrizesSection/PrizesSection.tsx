@@ -28,7 +28,21 @@ export default function PrizesSection({ prizes }: Props) {
                   <p className='text-[118px]' data-attr={trackNumber + 1}>{track.prizes[0].amount}</p>
                 </div>
               }
-              {/* Four Prizez */}
+
+              {/* Two Prizes */}
+              {track.prizes.length === 2 &&
+                <div className='flex justify-end flex-wrap gap-40'>
+                  <div>
+                    <h4 className='text-h2'>{track.prizes[0].title}</h4>
+                    <p className='text-[72px] leading-[1em]' data-attr={trackNumber + 1}>{track.prizes[0].amount}</p>
+                  </div>
+                  <div>
+                    <h4 className='text-body2'>{track.prizes[1].title}</h4>
+                    <p className='text-h1' data-attr={trackNumber + 1}>{track.prizes[1].amount}</p>
+                  </div>
+                </div>
+              }
+              {/* Four Prizes */}
               {track.prizes.length === 4 &&
                 <div className='flex justify-end flex-wrap gap-40'>
                   {track.prizes.map((prize, idx) => <div key={prize.id} className='first:w-full'>
@@ -69,6 +83,11 @@ const data = {
           id: 1,
           title: "the legend",
           amount: "1 BTC"
+        },
+        {
+          id: 1,
+          title: "Runners UP x2",
+          amount: "0.5 BTC"
         }
       ]
     },
