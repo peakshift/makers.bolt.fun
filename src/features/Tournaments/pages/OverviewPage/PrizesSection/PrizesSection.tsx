@@ -1,4 +1,3 @@
-import React from 'react'
 import { Tournament } from 'src/graphql'
 import styles from './styles.module.scss'
 
@@ -20,7 +19,7 @@ export default function PrizesSection({ prizes }: Props) {
               <h3 className="text-body2 text-gray-900 font-bolder">{track.title}</h3>
               <p className="text-body4 text-gray-500">{track.description}</p>
             </div>
-            <div className={`text-right ${styles.prizes}`}>
+            <div className={`md:text-right ${styles.prizes}`}>
               {/* One Prize */}
               {track.prizes.length === 1 &&
                 <div>
@@ -31,7 +30,7 @@ export default function PrizesSection({ prizes }: Props) {
 
               {/* Two Prizes */}
               {track.prizes.length === 2 &&
-                <div className='flex justify-end flex-wrap gap-40'>
+                <div className='flex flex-col gap-40'>
                   <div>
                     <h4 className='text-h2'>{track.prizes[0].title}</h4>
                     <p className='text-[72px] leading-[1em]' data-attr={trackNumber + 1}>{track.prizes[0].amount}</p>
@@ -44,7 +43,7 @@ export default function PrizesSection({ prizes }: Props) {
               }
               {/* Four Prizes */}
               {track.prizes.length === 4 &&
-                <div className='flex justify-end flex-wrap gap-40'>
+                <div className='flex md:justify-end flex-wrap gap-40'>
                   {track.prizes.map((prize, idx) => <div key={prize.id} className='first:w-full'>
                     <h4 className={`${idx === 0 ? "text-h2" : "text-body2"}`}>{prize.title}</h4>
                     <p className={`${idx === 0 ? "text-[48px]" : "text-[36px]"}`} data-attr={trackNumber + 1}>{prize.amount}</p>
