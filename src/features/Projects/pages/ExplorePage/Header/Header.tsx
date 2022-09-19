@@ -18,7 +18,7 @@ export const bannerData = {
   img: "https://i.ibb.co/bRY635n/wide.png",
   link: {
     content: "Register Now",
-    url: createRoute({ type: "tournament", id: 1, tab: 'overview' }),
+    url: createRoute({ type: "tournament", id: 1 }),
   },
 }
 
@@ -76,7 +76,7 @@ export default function Header() {
             <div className="max-w-[90%]">
               {headerLinks[0].title}
             </div>
-            <Button color="white" href={headerLinks[0].link.url} newTab className="mt-24">
+            <Button color="white" href={headerLinks[0].link.url} className="mt-24">
               {headerLinks[0].link.content}
             </Button>
           </div>

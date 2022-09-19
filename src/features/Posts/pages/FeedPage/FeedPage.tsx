@@ -49,7 +49,7 @@ export default function FeedPage() {
             <div
                 className={`page-container`}
             >
-                <Link to={createRoute({ type: "tournament", id: 12 })}>
+                <Link to={createRoute({ type: "tournament", id: 1 })}>
                     <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end mb-24">
                         <img
                             className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"
