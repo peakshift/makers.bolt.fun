@@ -49,7 +49,7 @@ export default function HackathonsPage() {
                         </div>
                     </Link>
                     <div className="flex gap-16 flex-wrap my-24 justify-between">
-                        <h1 id='title' className="text-body1 lg:text-h2 font-bolder">Hackathons 🏆</h1>
+                        <h1 id='title' className="text-body1 lg:text-h2 font-bolder">{sortByFilter ? sortByFilter : "All"} Events</h1>
                         <div className="self-center">
                             <SortByFilter
                                 filterChanged={setSortByFilter}

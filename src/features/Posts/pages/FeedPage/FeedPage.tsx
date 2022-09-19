@@ -43,8 +43,8 @@ export default function FeedPage() {
     return (
         <>
             <Helmet>
-                <title>{`Bolt.Fun Stories`}</title>
-                <meta property="og:title" content={`Bolt.Fun Stories`} />
+                <title>{`Bolt.Fun`}</title>
+                <meta property="og:title" content={`Bolt.Fun`} />
             </Helmet>
             <div
                 className={`page-container`}
@@ -109,28 +109,24 @@ export default function FeedPage() {
                     <aside id='side' className='no-scrollbar'>
                         <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element" >
                             <TrendingCard />
-                            <div className='min-h-[300px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden'
-                                style={{
-                                    backgroundImage: `url("assets/images/join-discord-card.jpg")`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: "center"
-                                }}
-                            >
-                                <div className="absolute bg-black inset-0 opacity-10"></div>
-                                <div className="relative flex flex-col gap-24">
-                                    <div className="flex flex-col gap-8">
-                                        {bannerData.title}
+                            <a href='https://discord.gg/HFqtxavb7x' target='_blank' rel="noreferrer">
+                                <div className='min-h-[248px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden'
+                                    style={{
+                                        backgroundImage: `url("/assets/images/join-discord-card.jpg")`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: "center"
+                                    }}
+                                >
+                                    <div className="absolute bg-black inset-0 opacity-10"></div>
+                                    <div className="relative flex flex-col gap-24">
+                                        <div className="flex flex-col gap-8 text-white">
+                                            <img src={'assets/icons/join-discord.svg'} className='h-48 max-w-full self-start' alt="" />
+                                            <p className="text-body2 font-bold">BOLT🔩FUN Discord</p>
+                                            <p className="text-body4 font-medium">Join the Bolt.Fun Community Discord server and connect with other like minded developers!</p>
+                                        </div>
                                     </div>
-                                    <Button
-                                        color='white'
-                                        fullWidth
-                                        href='https://discord.gg/HFqtxavb7x'
-                                        newTab
-                                    >
-                                        <FaDiscord className='scale-125 mr-8' /> <span className="align-middle">Join in Discord</span>
-                                    </Button>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </aside>
                 </div>
