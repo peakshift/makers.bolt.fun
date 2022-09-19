@@ -18,6 +18,7 @@ const { marked } = require('marked');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { ImageInput } = require('./misc');
 const { deleteImage } = require('../../../services/imageUpload.service');
+const { logError } = require('../../../utils/logger');
 
 
 const POST_TYPE = enumType({
@@ -435,97 +436,129 @@ const createStory = extendType({
                 let coverImage = null
                 let bodyImageIds = []
 
-                // Edit story
-                if (id) {
-                    const oldPost = await prisma.story.findFirst({
-                        where: { id },
-                        select: {
-                            user_id: true,
-                            is_published: true,
-                            cover_image_id: true,
-                            body_image_ids: true
-                        }
-                    })
-                    was_published = oldPost.is_published;
-                    if (user.id !== oldPost.user_id) throw new ApolloError("Not post author")
 
-                    // Body images
-                    bodyImageIds = await getHostedImageIdsFromBody(body, oldPost.body_image_ids)
-
-                    // Old cover image is found
-                    if (oldPost.cover_image_id) {
-                        const oldCoverImage = await prisma.hostedImage.findFirst({
-                            where: {
-                                id: oldPost.cover_image_id
+                try {
+                    if (id) {
+                        const oldPost = await prisma.story.findFirst({
+                            where: { id },
+                            select: {
+                                user_id: true,
+                                is_published: true,
+                                cover_image_id: true,
+                                body_image_ids: true
                             }
                         })
+                        was_published = oldPost.is_published;
+                        if (user.id !== oldPost.user_id) throw new ApolloError("Not post author")
 
-                        // New cover image
-                        if (cover_image?.id && cover_image.id !== oldCoverImage?.provider_image_id) {
-                            await deleteImage(oldCoverImage.id)
-                            coverImage = await addCoverImage(cover_image.id)
+                        // Body images
+                        bodyImageIds = await getHostedImageIdsFromBody(body, oldPost.body_image_ids)
+
+                        // Old cover image is found
+                        if (oldPost.cover_image_id) {
+                            const oldCoverImage = await prisma.hostedImage.findFirst({
+                                where: {
+                                    id: oldPost.cover_image_id
+                                }
+                            })
+
+                            // New cover image
+                            if (cover_image?.id && cover_image.id !== oldCoverImage?.provider_image_id) {
+                                await deleteImage(oldCoverImage.id)
+                                coverImage = await addCoverImage(cover_image.id)
+                            } else {
+                                coverImage = oldCoverImage
+                            }
                         } else {
-                            coverImage = oldCoverImage
+                            // No old image found and new cover image
+                            if (cover_image?.id) {
+                                coverImage = await addCoverImage(cover_image.id)
+                            }
                         }
+
+                        // Remove unused body images
+                        const unusedImagesIds = oldPost.body_image_ids.filter(x => !bodyImageIds.includes(x));
+                        unusedImagesIds.map(async i => await deleteImage(i))
+
                     } else {
-                        // No old image found and new cover image
+                        // Body images
+                        bodyImageIds = await getHostedImageIdsFromBody(body)
+
+                        // New story and new cover image
                         if (cover_image?.id) {
                             coverImage = await addCoverImage(cover_image.id)
                         }
                     }
 
-                    // Remove unused body images
-                    const unusedImagesIds = oldPost.body_image_ids.filter(x => !bodyImageIds.includes(x));
-                    unusedImagesIds.map(async i => await deleteImage(i))
-
-                } else {
-                    // Body images
-                    bodyImageIds = await getHostedImageIdsFromBody(body)
-
-                    // New story and new cover image
-                    if (cover_image?.id) {
-                        coverImage = await addCoverImage(cover_image.id)
-                    }
-                }
-
-                // Preprocess & insert
-                const htmlBody = marked.parse(body);
-                const excerpt = htmlBody
-                    .replace(/<[^>]+>/g, '')
-                    .slice(0, 120)
-                    .replace(/&amp;/g, "&")
-                    .replace(/&#39;/g, "'")
-                    .replace(/&quot;/g, '"')
-                    ;
+                    // Preprocess & insert
+                    const htmlBody = marked.parse(body);
+                    const excerpt = htmlBody
+                        .replace(/<[^>]+>/g, '')
+                        .slice(0, 120)
+                        .replace(/&amp;/g, "&")
+                        .replace(/&#39;/g, "'")
+                        .replace(/&quot;/g, '"')
+                        ;
 
 
-                const coverImageRel = coverImage ? {
-                    cover_image_rel: {
-                        connect:
-                        {
-                            id: coverImage ? coverImage.id : null
+                    const coverImageRel = coverImage ? {
+                        cover_image_rel: {
+                            connect:
+                            {
+                                id: coverImage ? coverImage.id : null
+                            }
                         }
+                    } : {}
+
+                    if (id) {
+                        await prisma.story.update({
+                            where: { id },
+                            data: {
+                                tags: {
+                                    set: []
+                                },
+                            }
+                        });
+
+                        return prisma.story.update({
+                            where: { id },
+                            data: {
+                                title,
+                                body,
+                                cover_image: '',
+                                excerpt,
+                                is_published: was_published || is_published,
+                                tags: {
+                                    connectOrCreate:
+                                        tags.map(tag => {
+                                            tag = tag.toLowerCase().trim();
+                                            return {
+                                                where: {
+                                                    title: tag,
+                                                },
+                                                create: {
+                                                    title: tag
+                                                }
+                                            }
+                                        })
+                                },
+                                body_image_ids: bodyImageIds,
+                                ...coverImageRel
+                            }
+                        })
+                            .catch(error => {
+                                logError(error)
+                                throw new ApolloError("Unexpected error happened...")
+                            })
                     }
-                } : {}
 
-                if (id) {
-                    await prisma.story.update({
-                        where: { id },
-                        data: {
-                            tags: {
-                                set: []
-                            },
-                        }
-                    });
-
-                    return prisma.story.update({
-                        where: { id },
+                    return prisma.story.create({
                         data: {
                             title,
                             body,
                             cover_image: '',
                             excerpt,
-                            is_published: was_published || is_published,
+                            is_published,
                             tags: {
                                 connectOrCreate:
                                     tags.map(tag => {
@@ -540,42 +573,24 @@ const createStory = extendType({
                                         }
                                     })
                             },
+                            user: {
+                                connect: {
+                                    id: user.id,
+                                }
+                            },
                             body_image_ids: bodyImageIds,
                             ...coverImageRel
                         }
+                    }).catch(error => {
+                        logError(error)
+                        throw new ApolloError("Unexpected error happened...")
                     })
-                }
 
-                return await prisma.story.create({
-                    data: {
-                        title,
-                        body,
-                        cover_image: '',
-                        excerpt,
-                        is_published,
-                        tags: {
-                            connectOrCreate:
-                                tags.map(tag => {
-                                    tag = tag.toLowerCase().trim();
-                                    return {
-                                        where: {
-                                            title: tag,
-                                        },
-                                        create: {
-                                            title: tag
-                                        }
-                                    }
-                                })
-                        },
-                        user: {
-                            connect: {
-                                id: user.id,
-                            }
-                        },
-                        body_image_ids: bodyImageIds,
-                        ...coverImageRel
-                    }
-                })
+
+                } catch (error) {
+                    logError(error)
+                    throw new ApolloError("Unexpected error happened...")
+                }
             }
         })
     },
