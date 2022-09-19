@@ -2,6 +2,32 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
 
+.prizes {
+  font-family: "Luckiest Guy", cursive;
+  h4 {
+    color: white;
+    -webkit-text-stroke: 1px black;
+  }
+
+  @include gt-md {
+    h4 {
+      -webkit-text-stroke: 0.06em black;
+    }
+  }
+
+  p[data-attr="1"] {
+    color: #fb923c;
+  }
+
+  p[data-attr="2"] {
+    color: #4ade80;
+  }
+
+  p[data-attr="3"] {
+    color: #3b82f6;
+  }
+}
+
 .grid {
   font-family: "Luckiest Guy", cursive;
   display: grid;
