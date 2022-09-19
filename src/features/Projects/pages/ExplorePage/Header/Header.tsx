@@ -12,7 +12,7 @@ export const bannerData = {
   title:
     <>
       <p className="text-body1 font-bolder text-white">Legends of Lightning ⚡️ Tournament</p>
-      <p className="text-body3 font-medium text-white mt-8">1st Oct - 31st Nov, 2022</p>
+      <p className="text-body3 font-medium text-white mt-8">12th Oct - 7th Dec, 2022</p>
       <p className="text-body4 text-white mt-8"><IoLocationOutline className="mr-8" /> Online</p>
     </>,
   img: "https://i.ibb.co/3S35g6T/wide.jpg",
