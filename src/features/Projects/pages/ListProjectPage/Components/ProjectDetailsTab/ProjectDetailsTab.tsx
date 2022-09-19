@@ -103,8 +103,7 @@ export default function ProjectDetailsTab(props: Props) {
                     </p>
                     <div className="input-wrapper mt-8 relative">
                         <textarea
-
-                            rows={3}
+                            rows={5}
                             className="input-text !px-16 !py-12"
                             placeholder='Provide a short description your product...'
                             {...register("description")}

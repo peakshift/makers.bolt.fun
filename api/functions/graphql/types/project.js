@@ -24,7 +24,9 @@ const Project = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('tagline');
+        t.nonNull.string('website');
         t.nonNull.string('description');
+        t.nonNull.string('hashtag');
         t.nonNull.string('cover_image', {
             async resolve(parent) {
                 return prisma.project.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
@@ -57,7 +59,6 @@ const Project = objectType({
                 });
             }
         });
-        t.nonNull.string('website');
         t.string('lightning_address');
         t.string('lnurl_callback_url');
         t.nonNull.int('votes_count');
@@ -170,6 +171,39 @@ const Capability = objectType({
         t.nonNull.int('id');
         t.nonNull.string('title');
         t.nonNull.string('icon');
+    }
+})
+
+const checkValidProjectHashtag = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.boolean('checkValidProjectHashtag', {
+            args: {
+                hashtag: nonNull(stringArg()),
+                projectId: intArg(),
+            },
+            async resolve(parent, args, context) {
+                if (args.projectId) {
+                    return !(await prisma.project.findFirst({
+                        where: {
+                            id: {
+                                not: args.projectId,
+                            },
+                            hashtag: {
+                                equals: args.hashtag
+                            }
+                        }
+                    }))
+                }
+                return !(await prisma.project.findFirst({
+                    where: {
+                        hashtag: {
+                            equals: args.hashtag
+                        }
+                    }
+                }))
+            }
+        })
     }
 })
 
@@ -533,6 +567,7 @@ module.exports = {
     projectsByCategory,
     getLnurlDetailsForProject,
     getAllCapabilities,
+    checkValidProjectHashtag,
 
     // Mutations
     createProject,

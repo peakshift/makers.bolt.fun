@@ -405,6 +405,7 @@ export type Project = {
   description: Scalars['String'];
   discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
+  hashtag: Scalars['String'];
   id: Scalars['Int'];
   launch_status: ProjectLaunchStatusEnum;
   lightning_address: Maybe<Scalars['String']>;
@@ -438,6 +439,7 @@ export type Query = {
   __typename?: 'Query';
   allCategories: Array<Category>;
   allProjects: Array<Project>;
+  checkValidProjectHashtag: Scalars['Boolean'];
   getAllCapabilities: Array<Capability>;
   getAllHackathons: Array<Hackathon>;
   getAllMakersRoles: Array<GenericMakerRole>;
@@ -471,6 +473,12 @@ export type Query = {
 export type QueryAllProjectsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryCheckValidProjectHashtagArgs = {
+  hashtag: Scalars['String'];
+  projectId: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -1027,14 +1035,22 @@ export type CreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } } | null };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type UpdateProjectMutationVariables = Exact<{
   input: InputMaybe<UpdateProjectInput>;
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } } | null };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+
+export type IsValidProjectHashtagQueryVariables = Exact<{
+  hashtag: Scalars['String'];
+  projectId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type IsValidProjectHashtagQuery = { __typename?: 'Query', checkValidProjectHashtag: boolean };
 
 export type GetTournamentsToRegisterQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1046,7 +1062,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2463,19 +2479,37 @@ export const CreateProjectDocument = gql`
       votes_count
       category {
         id
-        title
         icon
+        title
+      }
+      members {
+        role
+        user {
+          id
+          name
+          avatar
+        }
+      }
+      awards {
+        title
+        image
+        url
+        id
       }
       tags {
         id
         title
-        icon
       }
       recruit_roles {
         id
         title
         icon
         level
+      }
+      capabilities {
+        id
+        title
+        icon
       }
     }
   }
@@ -2523,19 +2557,37 @@ export const UpdateProjectDocument = gql`
       votes_count
       category {
         id
-        title
         icon
+        title
+      }
+      members {
+        role
+        user {
+          id
+          name
+          avatar
+        }
+      }
+      awards {
+        title
+        image
+        url
+        id
       }
       tags {
         id
         title
-        icon
       }
       recruit_roles {
         id
         title
         icon
         level
+      }
+      capabilities {
+        id
+        title
+        icon
       }
     }
   }
@@ -2567,6 +2619,40 @@ export function useUpdateProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
 export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
 export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export const IsValidProjectHashtagDocument = gql`
+    query IsValidProjectHashtag($hashtag: String!, $projectId: Int) {
+  checkValidProjectHashtag(hashtag: $hashtag, projectId: $projectId)
+}
+    `;
+
+/**
+ * __useIsValidProjectHashtagQuery__
+ *
+ * To run a query within a React component, call `useIsValidProjectHashtagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsValidProjectHashtagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsValidProjectHashtagQuery({
+ *   variables: {
+ *      hashtag: // value for 'hashtag'
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useIsValidProjectHashtagQuery(baseOptions: Apollo.QueryHookOptions<IsValidProjectHashtagQuery, IsValidProjectHashtagQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IsValidProjectHashtagQuery, IsValidProjectHashtagQueryVariables>(IsValidProjectHashtagDocument, options);
+      }
+export function useIsValidProjectHashtagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsValidProjectHashtagQuery, IsValidProjectHashtagQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IsValidProjectHashtagQuery, IsValidProjectHashtagQueryVariables>(IsValidProjectHashtagDocument, options);
+        }
+export type IsValidProjectHashtagQueryHookResult = ReturnType<typeof useIsValidProjectHashtagQuery>;
+export type IsValidProjectHashtagLazyQueryHookResult = ReturnType<typeof useIsValidProjectHashtagLazyQuery>;
+export type IsValidProjectHashtagQueryResult = Apollo.QueryResult<IsValidProjectHashtagQuery, IsValidProjectHashtagQueryVariables>;
 export const GetTournamentsToRegisterDocument = gql`
     query GetTournamentsToRegister {
   getTournamentToRegister {
@@ -2609,6 +2695,7 @@ export const ProjectDetailsDocument = gql`
     title
     tagline
     description
+    hashtag
     cover_image
     thumbnail_image
     launch_status
@@ -2631,6 +2718,7 @@ export const ProjectDetailsDocument = gql`
       user {
         id
         name
+        jobTitle
         avatar
       }
     }

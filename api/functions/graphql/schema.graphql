@@ -288,6 +288,7 @@ type Project {
   description: String!
   discord: String
   github: String
+  hashtag: String!
   id: Int!
   launch_status: ProjectLaunchStatusEnum!
   lightning_address: String
@@ -319,6 +320,7 @@ type ProjectMember {
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!
   getAllCapabilities: [Capability!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!

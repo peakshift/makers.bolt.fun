@@ -274,6 +274,7 @@ export interface NexusGenObjects {
     description: string; // String!
     discord?: string | null; // String
     github?: string | null; // String
+    hashtag: string; // String!
     id: number; // Int!
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
@@ -575,6 +576,7 @@ export interface NexusGenFieldTypes {
     description: string; // String!
     discord: string | null; // String
     github: string | null; // String
+    hashtag: string; // String!
     id: number; // Int!
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address: string | null; // String
@@ -599,6 +601,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    checkValidProjectHashtag: boolean; // Boolean!
     getAllCapabilities: NexusGenRootTypes['Capability'][]; // [Capability!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getAllMakersRoles: NexusGenRootTypes['GenericMakerRole'][]; // [GenericMakerRole!]!
@@ -959,6 +962,7 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     discord: 'String'
     github: 'String'
+    hashtag: 'String'
     id: 'Int'
     launch_status: 'ProjectLaunchStatusEnum'
     lightning_address: 'String'
@@ -983,6 +987,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     allCategories: 'Category'
     allProjects: 'Project'
+    checkValidProjectHashtag: 'Boolean'
     getAllCapabilities: 'Capability'
     getAllHackathons: 'Hackathon'
     getAllMakersRoles: 'GenericMakerRole'
@@ -1237,6 +1242,10 @@ export interface NexusGenArgTypes {
     allProjects: { // args
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    checkValidProjectHashtag: { // args
+      hashtag: string; // String!
+      projectId?: number | null; // Int
     }
     getAllHackathons: { // args
       sortBy?: string | null; // String

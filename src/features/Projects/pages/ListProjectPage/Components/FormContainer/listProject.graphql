@@ -13,19 +13,38 @@ mutation CreateProject($input: CreateProjectInput) {
       votes_count
       category {
         id
-        title
         icon
+        title
+      }
+      members {
+        role
+        user {
+          id
+          name
+          avatar
+        }
+      }
+      awards {
+        title
+        image
+        url
+        id
       }
       tags {
         id
         title
-        icon
       }
       recruit_roles {
         id
         title
         icon
         level
+      }
+
+      capabilities {
+        id
+        title
+        icon
       }
     }
   }
@@ -44,21 +63,41 @@ mutation UpdateProject($input: UpdateProjectInput) {
       lightning_address
       lnurl_callback_url
       votes_count
+
       category {
         id
-        title
         icon
+        title
+      }
+      members {
+        role
+        user {
+          id
+          name
+          avatar
+        }
+      }
+      awards {
+        title
+        image
+        url
+        id
       }
       tags {
         id
         title
-        icon
       }
       recruit_roles {
         id
         title
         icon
         level
+      }
+
+      capabilities {
+        id
+        title
+        icon
       }
     }
   }

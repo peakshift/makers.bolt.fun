@@ -4,6 +4,7 @@ query ProjectDetails($projectId: Int!) {
     title
     tagline
     description
+    hashtag
     cover_image
     thumbnail_image
     launch_status
@@ -26,6 +27,7 @@ query ProjectDetails($projectId: Int!) {
       user {
         id
         name
+        jobTitle
         avatar
       }
     }
