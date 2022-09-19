@@ -1,5 +1,5 @@
 import { useParams, Navigate } from 'react-router-dom'
-import ErrorMessage from 'src/Components/ErrorMessage/ErrorMessage';
+import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { useCategoryPageQuery } from 'src/graphql';
 import HeaderImage from './HeaderImage/HeaderImage';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';

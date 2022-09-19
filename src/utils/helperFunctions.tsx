@@ -8,7 +8,7 @@ export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
 
-export function randomItem(...args: any[]) {
+export function randomItem<T>(...args: T[]): T {
   return args[Math.floor(Math.random() * args.length)];
 }
 
@@ -165,4 +165,20 @@ export async function lightningAddressToPR(address: string, amount_in_sat: numbe
     .then((prResponse) => {
       return prResponse.data.pr as string;
     });
+}
+
+export const getSpanDate = (_date1: string, _date2: string) => {
+  const date1 = new Date(_date1);
+  const date2 = new Date(_date2);
+
+  const isSameMonth = date1.getMonth() === date2.getMonth();
+  if (!isSameMonth)
+    return `${dayjs(_date1).format('Do MMM')} - ${dayjs(_date2).format('Do MMM')}`
+
+  const isSameDay = date1.getDay() === date2.getDay();
+  if (!isSameDay)
+    return `${dayjs(_date1).format('Do')} - ${dayjs(_date2).format('Do MMM')}`
+  // Same Day
+  return `${dayjs(_date1).format('H:mm')} - ${dayjs(_date2).format('H:mm, Do MMM')}`
+
 }

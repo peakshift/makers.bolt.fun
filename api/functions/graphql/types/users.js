@@ -3,7 +3,10 @@ const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
-const { Tournament } = require('./tournaments');
+const { ImageInput } = require('./misc');
+const { Tournament } = require('./tournament');
+const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
+const { deleteImage } = require('../../../services/imageUpload.service');
 
 
 
@@ -13,14 +16,18 @@ const BaseUser = interfaceType({
     definition(t) {
         t.nonNull.int('id');
         t.nonNull.string('name');
-        t.nonNull.string('avatar');
+        t.nonNull.string('avatar', {
+            async resolve(parent) {
+                return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
+            }
+        });
         t.nonNull.date('join_date');
         t.string('role');
-        t.string('email')
         t.string('jobTitle')
         t.string('lightning_address')
         t.string('website')
         t.string('twitter')
+        t.string('discord')
         t.string('github')
         t.string('linkedin')
         t.string('bio')
@@ -54,8 +61,15 @@ const BaseUser = interfaceType({
         })
         t.nonNull.list.nonNull.field('tournaments', {
             type: Tournament,
-            resolve: (parent) => {
-                return []
+            resolve: async (parent) => {
+                return prisma.tournamentParticipant.findMany({
+                    where: {
+                        user_id: parent.id
+                    },
+                    include: {
+                        tournament: true
+                    }
+                }).then(d => d.map(item => item.tournament))
             }
         })
         t.nonNull.list.nonNull.field('similar_makers', {
@@ -81,6 +95,15 @@ const BaseUser = interfaceType({
                 return prisma.story.findMany({ where: { user_id: parent.id, is_published: true }, orderBy: { createdAt: "desc" } });
             }
         });
+
+        t.nonNull.boolean('in_tournament', {
+            args: {
+                id: nonNull(intArg())
+            },
+            resolve(parent, args) {
+                return prisma.tournamentParticipant.findFirst({ where: { tournament_id: args.id, user_id: parent.id } }).then(res => !!res)
+            }
+        })
 
 
     },
@@ -166,14 +189,23 @@ const MyProfile = objectType({
     name: 'MyProfile',
     definition(t) {
         t.implements('BaseUser')
+
+        t.string('email')
         t.string('nostr_prv_key')
         t.string('nostr_pub_key')
 
         t.nonNull.list.nonNull.field('walletsKeys', {
             type: "WalletKey",
-            resolve: async (parent, _, context) => {
-                const userKeys = await prisma.user.findUnique({ where: { id: parent.id } }).userKeys();
-                return userKeys.map(k => ({ ...k, is_current: k.key === context.userPubKey }))
+            resolve: (parent, _, context) => {
+                return prisma.userKey.findMany({
+                    where: {
+                        user_id: parent.id,
+                    },
+                    orderBy: {
+                        createdAt: "asc"
+                    }
+                })
+                    .then(keys => keys.map(k => ({ ...k, is_current: k.key === context.userPubKey })))
             }
         });
     }
@@ -202,6 +234,11 @@ const profile = extendType({
                 id: nonNull(intArg())
             },
             async resolve(parent, { id }, ctx) {
+
+                const user = await getUserByPubKey(ctx.userPubKey)
+                let isMy = false;
+                if (user?.id === id) isMy = true;
+
                 return prisma.user.findUnique({ where: { id } })
             }
         })
@@ -236,12 +273,15 @@ const ProfileDetailsInput = inputObjectType({
     name: 'ProfileDetailsInput',
     definition(t) {
         t.string('name');
-        t.string('avatar');
+        t.field('avatar', {
+            type: ImageInput
+        })
         t.string('email')
         t.string('jobTitle')
         t.string('lightning_address')
         t.string('website')
         t.string('twitter')
+        t.string('discord')
         t.string('github')
         t.string('linkedin')
         t.string('bio')
@@ -263,14 +303,48 @@ const updateProfileDetails = extendType({
                     throw new Error("You have to login");
                 // TODO: validate new data
 
+                // ----------------
+                // Check if the user uploaded a new image, and if so, 
+                // remove the old one from the hosting service, then replace it with this one
+                // ----------------
+                let avatarId = user.avatar_id;
+                if (args.data.avatar.id) {
+                    const newAvatarProviderId = args.data.avatar.id;
+                    const newAvatar = await prisma.hostedImage.findFirst({
+                        where: {
+                            provider_image_id: newAvatarProviderId
+                        }
+                    })
+
+                    if (newAvatar && newAvatar.id !== user.avatar_id) {
+                        avatarId = newAvatar.id;
+
+                        await prisma.hostedImage.update({
+                            where: {
+                                id: newAvatar.id
+                            },
+                            data: {
+                                is_used: true
+                            }
+                        });
+
+                        await deleteImage(user.avatar_id)
+                    }
+                }
 
                 // Preprocess & insert
-
                 return prisma.user.update({
                     where: {
                         id: user.id,
                     },
-                    data: removeNulls(args.data)
+                    data: removeNulls({
+                        ...args.data,
+                        avatar_id: avatarId,
+
+                        //hack to remove avatar from args.data
+                        // can be removed later with a schema data validator
+                        avatar: '',
+                    })
                 })
             }
         })
@@ -283,6 +357,7 @@ const WalletKey = objectType({
     definition(t) {
         t.nonNull.string('key');
         t.nonNull.string('name');
+        t.nonNull.date('createdAt');
         t.nonNull.boolean('is_current')
     }
 })
@@ -451,6 +526,7 @@ module.exports = {
     User,
     MyProfile,
     WalletKey,
+    MakerRole,
     // Queries
     me,
     profile,

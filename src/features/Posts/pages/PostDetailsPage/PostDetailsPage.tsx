@@ -16,16 +16,22 @@ import { RotatingLines } from 'react-loader-spinner'
 
 const CommentsSection = lazy(() => import( /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"))
 
-export default function PostDetailsPage() {
-    const { type: _type, id } = useParams();
-    const type = capitalize(_type);
+interface Props {
+    postType: 'story' | 'bounty' | 'question'
+}
+
+export default function PostDetailsPage(props: Props) {
+    const { slug } = useParams();
+    const type = capitalize(props.postType);
+
+    const id = Number(slug?.includes('--') ? slug.slice(slug.lastIndexOf('--') + 2) : slug)
 
     const postDetailsQuery = usePostDetailsQuery({
         variables: {
-            id: Number(id!),
+            id,
             type: type as any
         },
-        skip: isNaN(Number(id)),
+        skip: isNaN(id),
     })
 
 
@@ -45,29 +51,31 @@ export default function PostDetailsPage() {
             </Helmet>
             <ScrollToTop />
             <div
-                className={`page-container grid pt-16 w-full gap-32 ${styles.grid}`}
+                className={`page-container max-md:bg-white`}
             >
-                <aside id='actions' className='no-scrollbar'>
-                    <div className="sticky-side-element">
-                        <PostActions post={post} />
-                    </div>
-                </aside>
+                <div className={`grid w-full gap-32 ${styles.grid}`}>
+                    <aside id='actions' className='no-scrollbar fill-container'>
+                        <div className="sticky-side-element">
+                            <PostActions post={post} />
+                        </div>
+                    </aside>
 
 
-                <PageContent post={post} />
-                <aside id='author' className='no-scrollbar min-w-0'>
-                    <div className="flex flex-col gap-24 overflow-y-auto sticky-side-element">
-                        <AuthorCard author={post.author} />
-                        <div className="hidden md:block"><TrendingCard /></div>
+                    <PageContent post={post} />
+                    <aside id='author' className='no-scrollbar min-w-0'>
+                        <div className="flex flex-col gap-24 overflow-y-auto sticky-side-element">
+                            <AuthorCard author={post.author} />
+                            <div className="hidden md:block"><TrendingCard /></div>
+                        </div>
+                    </aside>
+                    <div id="comments">
+                        <Suspense fallback={
+                            <div className="flex justify-center py-32"><RotatingLines strokeColor='#ddd' width="64" /></div>
+                        }>
+                            <CommentsSection id={post.id} type={type as Post_Type} />
+                        </Suspense>
+                        <div className="md:hidden mt-24"><TrendingCard /></div>
                     </div>
-                </aside>
-                <div id="comments">
-                    <Suspense fallback={
-                        <div className="flex justify-center py-32"><RotatingLines strokeColor='#ddd' width="64" /></div>
-                    }>
-                        <CommentsSection id={post.id} type={type as Post_Type} />
-                    </Suspense>
-                    <div className="md:hidden mt-24"><TrendingCard /></div>
                 </div>
             </div>
         </>

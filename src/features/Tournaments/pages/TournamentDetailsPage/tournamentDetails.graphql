@@ -1,0 +1,69 @@
+query GetTournamentById($id: Int!) {
+  getTournamentById(id: $id) {
+    id
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+
+    events_count
+    makers_count
+    projects_count
+
+    prizes {
+      title
+      amount
+      image
+    }
+    judges {
+      name
+      company
+      avatar
+    }
+    events {
+      id
+      title
+      image
+      description
+      starts_at
+      ends_at
+      location
+      website
+      type
+      links
+    }
+    faqs {
+      question
+      answer
+    }
+  }
+
+  getMakersInTournament(tournamentId: $id, take: 4) {
+    makers {
+      user {
+        id
+        avatar
+      }
+    }
+  }
+
+  tournamentParticipationInfo(tournamentId: $id) {
+    createdAt
+    hacking_status
+  }
+  me {
+    id
+    name
+    avatar
+    jobTitle
+    twitter
+    linkedin
+    github
+
+    ...UserRolesSkills
+  }
+}

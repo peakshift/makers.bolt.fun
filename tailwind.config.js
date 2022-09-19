@@ -92,6 +92,9 @@ module.exports = {
       outline: {
         primary: ["2px solid #7B61FF", "1px"],
       },
+      screens: {
+        'max-md': { 'max': THEME.screens.md + 'px' },
+      }
     },
   },
   variants: {
@@ -99,5 +102,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/typography'),
   ],
 }

@@ -1,9 +1,8 @@
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { useUpdateProfileAboutMutation, useMyProfileAboutQuery, UpdateProfileAboutMutationVariables, UserBasicInfoFragmentDoc } from "src/graphql";
 import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { useAppDispatch, usePrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
@@ -12,18 +11,22 @@ import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import { setUser } from "src/redux/features/user.slice";
 import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
 import { useApolloClient } from "@apollo/client";
+import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
+import { imageSchema } from "src/utils/validation";
 
 interface Props {
 }
 
 type IFormInputs = NonNullable<UpdateProfileAboutMutationVariables['data']>;
 
+
 const schema: yup.SchemaOf<IFormInputs> = yup.object({
     name: yup.string().trim().required().min(2),
-    avatar: yup.string().url().required(),
+    avatar: imageSchema.required(),
     bio: yup.string().ensure(),
     email: yup.string().email().ensure(),
     github: yup.string().ensure(),
+    discord: yup.string().ensure(),
     jobTitle: yup.string().ensure(),
     lightning_address: yup
         .string()
@@ -54,8 +57,10 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
 
 export default function BasicProfileInfoTab() {
 
-    const { register, formState: { errors, isDirty, }, handleSubmit, reset } = useForm<IFormInputs>({
-        defaultValues: {},
+    const { register, formState: { errors, isDirty, }, handleSubmit, reset, control } = useForm<IFormInputs>({
+        defaultValues: {
+
+        },
         resolver: yupResolver(schema),
         mode: 'onBlur',
     });
@@ -64,7 +69,7 @@ export default function BasicProfileInfoTab() {
     const profileQuery = useMyProfileAboutQuery({
         onCompleted: data => {
             if (data.me)
-                reset(data.me)
+                reset({ ...data.me, avatar: { url: data.me.avatar } })
         }
     })
     const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
@@ -94,6 +99,7 @@ export default function BasicProfileInfoTab() {
                     jobTitle: data.jobTitle,
                     bio: data.bio,
                     email: data.email,
+                    discord: data.discord,
                     github: data.github,
                     linkedin: data.linkedin,
                     lightning_address: data.lightning_address,
@@ -105,7 +111,7 @@ export default function BasicProfileInfoTab() {
             onCompleted: ({ updateProfileDetails: data }) => {
                 if (data) {
                     dispatch(setUser(data))
-                    reset(data);
+                    reset({ ...data, avatar: { url: data.avatar } });
                     apolloClient.writeFragment({
                         id: `User:${data?.id}`,
                         data,
@@ -121,12 +127,21 @@ export default function BasicProfileInfoTab() {
             })
     };
 
+
+
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
             <Card className="md:col-span-2" defaultPadding={false}>
                 <div className="bg-gray-600 relative h-[160px] rounded-t-16">
                     <div className="absolute left-24 bottom-0 translate-y-1/2">
-                        <Avatar src={profileQuery.data.me.avatar} width={120} />
+                        <Controller
+                            control={control}
+                            name="avatar"
+                            render={({ field: { onChange, value } }) => (
+                                <AvatarInput value={value} onChange={onChange} width={120} />
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="p-16 md:p-24 mt-64">
@@ -147,28 +162,13 @@ export default function BasicProfileInfoTab() {
                             {errors.name.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Avatar
-                        </p>
-                        <div className="input-wrapper mt-8 relative">
-                            <input
-
-                                type='text'
-                                className="input-text"
-                                placeholder='https://images.com/my-avatar.jpg'
-                                {...register("avatar")}
-                            />
-                        </div>
-                        {errors.avatar && <p className="input-error">
-                            {errors.avatar.message}
-                        </p>}
-                        <p className="text-body5 mt-16 font-medium">
                             Bio
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <textarea
 
-                                rows={3}
-                                className="input-text !p-20"
+                                rows={4}
+                                className="input-text"
                                 placeholder='Tell others a little bit about yourself'
                                 {...register("bio")}
                             />
@@ -196,7 +196,6 @@ export default function BasicProfileInfoTab() {
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
-
                                 type='text'
                                 className="input-text"
                                 placeholder="UK, London"
@@ -207,22 +206,25 @@ export default function BasicProfileInfoTab() {
                             {errors.location.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Website
+                            Email
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
-
                                 type='text'
                                 className="input-text"
-                                placeholder="www.website.io"
-                                {...register("website")}
+                                placeholder="johndoe@gmail.com"
+                                {...register("email")}
                             />
                         </div>
-                        {errors.website && <p className="input-error">
-                            {errors.website.message}
+                        {errors.email && <p className="input-error">
+                            {errors.email.message}
                         </p>}
+                        <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
+                            Your email is visible only to you, we will only use it to send you important updates or notices. No spam!
+                        </p>
+
                         <p className="text-body5 mt-16 font-medium">
-                            Twitter
+                            Twitter handle
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
@@ -237,7 +239,22 @@ export default function BasicProfileInfoTab() {
                             {errors.twitter.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
-                            Github
+                            Discord username
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+
+                                type='text'
+                                className="input-text"
+                                placeholder="Satoshi#2121"
+                                {...register("discord")}
+                            />
+                        </div>
+                        {errors.discord && <p className="input-error">
+                            {errors.discord.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Github username
                         </p>
                         <div className="input-wrapper mt-8 relative">
                             <input
@@ -265,6 +282,20 @@ export default function BasicProfileInfoTab() {
                         </div>
                         {errors.linkedin && <p className="input-error">
                             {errors.linkedin.message}
+                        </p>}
+                        <p className="text-body5 mt-16 font-medium">
+                            Your website
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                            <input
+                                type='text'
+                                className="input-text"
+                                placeholder="www.website.io"
+                                {...register("website")}
+                            />
+                        </div>
+                        {errors.website && <p className="input-error">
+                            {errors.website.message}
                         </p>}
                         <p className="text-body5 mt-16 font-medium">
                             Lightning address

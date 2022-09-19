@@ -9,6 +9,7 @@ const jose = require('jose');
 const { JWT_SECRET } = require('../../utils/consts');
 const { generatePrivateKey, getPublicKey } = require('../../utils/nostr-tools');
 const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
+const { logError } = require('../../utils/logger');
 
 
 
@@ -28,10 +29,18 @@ const loginHandler = async (req, res) => {
 
     if (action === 'link' && user_token) {
         try {
-            const { payload } = await jose.jwtVerify(user_token, Buffer.from(JWT_SECRET), {
-                algorithms: ['HS256'],
-            })
-            const user_id = payload.user_id;
+
+            let user_id;
+
+            try {
+                const { payload } = await jose.jwtVerify(user_token, Buffer.from(JWT_SECRET), {
+                    algorithms: ['HS256'],
+                })
+                user_id = payload.user_id;
+            } catch (error) {
+                return res.status(400).json({ status: 'ERROR', reason: "Invalid user_token" })
+            }
+
             const existingKeys = await prisma.userKey.findMany({ where: { user_id }, select: { key: true } });
 
             if (existingKeys.length >= 3)
@@ -55,7 +64,8 @@ const loginHandler = async (req, res) => {
                 .json({ status: "OK" })
 
         } catch (error) {
-            return res.status(400).json({ status: 'ERROR', reason: 'Invalid User Token' })
+            logError(error)
+            return res.status(500).json({ status: 'ERROR', reason: 'Unexpected error happened' })
         }
     }
 
@@ -65,8 +75,7 @@ const loginHandler = async (req, res) => {
         const user = await getUserByPubKey(key)
         if (user === null) {
 
-            // Check if user had a previous account using this wallet
-
+            // Check if user had a previous account using this wallet 
             const oldAccount = await prisma.user.findFirst({
                 where: {
                     pubKey: key
@@ -85,11 +94,21 @@ const loginHandler = async (req, res) => {
                 const nostr_prv_key = generatePrivateKey();
                 const nostr_pub_key = getPublicKey(nostr_prv_key);
 
+                const avatar = await prisma.hostedImage.create({
+                    data: {
+                        filename: 'avatar.svg',
+                        provider: 'external',
+                        is_used: true,
+                        url: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
+                        provider_image_id: ''
+                    }
+                })
+
                 const createdUser = await prisma.user.create({
                     data: {
                         pubKey: key,
                         name: key,
-                        avatar: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
+                        avatar_id: avatar.id,
                         nostr_prv_key,
                         nostr_pub_key,
                     },
@@ -126,7 +145,8 @@ const loginHandler = async (req, res) => {
         return res.status(200).json({ status: "OK" })
 
     } catch (error) {
-        return res.status(400).json({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
+        logError(error)
+        return res.status(500).json({ status: 'ERROR', reason: 'Unexpected error happened, please try again' })
     }
 }
 

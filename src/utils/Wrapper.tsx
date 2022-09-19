@@ -13,8 +13,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import THEME from './theme';
-import ErrorBoundary from 'src/Components/ErrorBoundary/ErrorBoundary';
 import { NotificationsService } from 'src/services';
+import ErrorPage from 'src/Components/Errors/ErrorPage/ErrorPage';
+import { ErrorBoundary } from 'react-error-boundary';
 THEME.injectStyles();
 
 let basename = '/';
@@ -45,7 +46,9 @@ export default function Wrapper(props: any) {
 
     return (
         <>
-            <ErrorBoundary place='app'>
+            <ErrorBoundary
+                FallbackComponent={ErrorPage}
+            >
                 <ApolloProvider client={apolloClient}>
                     <Provider store={store}>
                         <BrowserRouter basename={basename}>

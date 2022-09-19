@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMyDrafts, getPostById, getProject, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMakersInTournament, getMyDrafts, getPostById, getProject, getTournamentById, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -31,7 +31,13 @@ import {
     GetMyDraftsQuery,
     MyProfileAboutQuery,
     MyProfilePreferencesQuery,
+    GetTournamentByIdQuery,
     MyProfileRolesSkillsQuery,
+    GetAllRolesQuery,
+    GetMakersInTournamentQuery,
+    GetMakersInTournamentQueryVariables,
+    MeTournamentQuery,
+    TournamentMakerHackingStatusEnum,
 } from 'src/graphql'
 
 const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
@@ -215,6 +221,19 @@ export const handlers = [
         )
     }),
 
+
+    graphql.query<MyProfileRolesSkillsQuery>('MyProfileRolesSkills', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                me: { ...me() },
+                getAllMakersRoles: getAllMakersRoles(),
+                getAllMakersSkills: getAllMakersSkills(),
+            })
+        )
+    }),
+
+
     graphql.query<MyProfilePreferencesQuery>('MyProfilePreferences', async (req, res, ctx) => {
         await delay()
         return res(
@@ -253,6 +272,59 @@ export const handlers = [
         return res(
             ctx.data({
                 getMyDrafts: getMyDrafts()
+            })
+        )
+    }),
+
+
+
+    graphql.query<GetTournamentByIdQuery>('GetTournamentById', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getTournamentById: getTournamentById(12),
+                getMakersInTournament: getMakersInTournament({ roleId: null, search: null, skip: null, take: 4, tournamentId: 12, openToConnect: null }),
+                me: { ...me() },
+                tournamentParticipationInfo: {
+                    hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
+                    createdAt: new Date()
+                }
+
+            })
+        )
+    }),
+
+    graphql.query<MeTournamentQuery>('MeTournament', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                me: { ...me() },
+                tournamentParticipationInfo: {
+                    hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
+                    createdAt: new Date()
+                }
+            })
+        )
+    }),
+
+    graphql.query<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>('GetMakersInTournament', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getMakersInTournament: getMakersInTournament(req.variables),
+            })
+        )
+    }),
+
+    graphql.query<GetAllRolesQuery>('GetAllRoles', async (req, res, ctx) => {
+        await delay()
+
+        return res(
+            ctx.data({
+                getAllMakersRoles: getAllMakersRoles()
             })
         )
     }),

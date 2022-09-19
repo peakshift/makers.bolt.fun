@@ -71,10 +71,9 @@ export default function ModalsContainer() {
         <div className="z-[2020]">
             {openModals.map((modal, idx) => {
                 const Child = ALL_MODALS[modal.Modal];
-
                 return (
                     <Modal
-                        key={idx}
+                        key={modal.id}
                         isOpen={modal.isOpen}
                         onClose={onClose}
                         direction={direction}

@@ -12,4 +12,6 @@ export * from './useCurrentSection'
 export * from './usePreload'
 export * from './useCarousel'
 export * from './usePrompt'
+export * from './useIsDraggingOnElement'
+export * from './useCountdown'
 

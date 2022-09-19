@@ -1,0 +1,25 @@
+.zone {
+  background-color: #f2f4f7;
+  border-color: #e4e7ec;
+
+  .active_content {
+    display: none;
+  }
+
+  .idle_content {
+    display: block;
+  }
+
+  &.active {
+    background-color: #b3a0ff;
+    border-color: #9e88ff;
+
+    .active_content {
+      display: block;
+    }
+
+    .idle_content {
+      display: none;
+    }
+  }
+}

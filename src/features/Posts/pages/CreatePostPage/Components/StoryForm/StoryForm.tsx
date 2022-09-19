@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Controller, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
-import FilesInput from "src/Components/Inputs/FilesInput/FilesInput";
 import TagsInput from "src/Components/Inputs/TagsInput/TagsInput";
 import ContentEditor from "../ContentEditor/ContentEditor";
 import { useCreateStoryMutation } from 'src/graphql'
@@ -13,7 +12,8 @@ import { createRoute } from 'src/utils/routing';
 import PreviewPostCard from '../PreviewPostCard/PreviewPostCard'
 import { StorageService } from 'src/services';
 import { useThrottledCallback } from '@react-hookz/web';
-import { CreateStoryType, IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
+import { CreateStoryType } from '../../CreateStoryPage/CreateStoryPage';
+import CoverImageInput from 'src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput';
 
 interface Props {
     isUpdating?: boolean;
@@ -29,7 +29,7 @@ export default function StoryForm(props: Props) {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { handleSubmit, control, register, trigger, getValues, watch, reset } = useFormContext<IStoryFormInputs>();
+    const { handleSubmit, control, register, trigger, getValues, watch, reset } = useFormContext<CreateStoryType>();
 
 
     const [editMode, setEditMode] = useState(true)
@@ -80,7 +80,7 @@ export default function StoryForm(props: Props) {
         refetchQueries: ['GetMyDrafts']
     });
 
-    const clickSubmit = (publish_now: boolean) => handleSubmit<IStoryFormInputs>(data => {
+    const clickSubmit = (publish_now: boolean) => handleSubmit<CreateStoryType>(data => {
         setLoading(true);
         createStory({
             variables: {
@@ -90,7 +90,7 @@ export default function StoryForm(props: Props) {
                     body: data.body,
                     tags: data.tags.map(t => t.title),
                     is_published: publish_now,
-                    cover_image: (data.cover_image[0] ?? null) as string | null,
+                    cover_image: data.cover_image,
                 },
             }
         })
@@ -101,6 +101,8 @@ export default function StoryForm(props: Props) {
 
     const postId = watch('id') ?? -1;
     const { ref: registerTitleRef, ...titleRegisteration } = register('title');
+
+
 
 
     return (
@@ -117,19 +119,21 @@ export default function StoryForm(props: Props) {
                     <div
                         className='bg-white border-2 border-gray-200 rounded-16 overflow-hidden'>
                         <div className="p-16 md:p-24 lg:p-32">
-                            <Controller
-                                control={control}
-                                name="cover_image"
-                                render={({ field: { onChange, value, onBlur, ref } }) => (
-                                    <FilesInput
-                                        ref={ref}
+                            <div className="w-full h-[120px] md:h-[240px] rounded-12 mb-16 overflow-hidden">
+                                <Controller
+                                    control={control}
+                                    name="cover_image"
+                                    render={({ field: { onChange, value, onBlur, ref } }) => <CoverImageInput
                                         value={value}
-                                        onBlur={onBlur}
-                                        onChange={onChange}
-                                        uploadText='Add a cover image'
+                                        onChange={e => {
+                                            onChange(e)
+                                        }}
+                                    // uploadText='Add a cover image'
                                     />
-                                )}
-                            />
+
+                                    }
+                                />
+                            </div>
 
 
 
@@ -153,10 +157,20 @@ export default function StoryForm(props: Props) {
                                 />
                             </div>
 
-                            <TagsInput
-                                placeholder="Add up to 5 popular tags..."
-                                classes={{ container: 'mt-16' }}
+                            <Controller
+                                control={control}
+                                name="tags"
+                                render={({ field: { onChange, value, onBlur } }) => (
+                                    <TagsInput
+                                        placeholder="Add up to 5 popular tags..."
+                                        classes={{ container: 'mt-16' }}
+                                        value={value}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                    />
+                                )}
                             />
+
 
                         </div>
                         <ContentEditor
@@ -167,7 +181,7 @@ export default function StoryForm(props: Props) {
                         />
                     </div>
                 </>}
-                {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues().cover_image[0] }} />}
+                {!editMode && <PreviewPostCard post={{ ...getValues(), cover_image: getValues('cover_image.url') }} />}
                 <div className="flex gap-16 mt-32">
                     <Button
                         type='submit'

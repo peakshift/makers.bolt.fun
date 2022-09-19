@@ -48,9 +48,10 @@ export default function ProfilePage() {
                 }
                 <meta property="og:image" content={profileQuery.data.profile.avatar} />
             </Helmet>
-            <div className={`page-container ${styles.grid}`}
+            <div className={`page-container`}
             >
-                {isMediumScreen ?
+                <div className={` ${styles.grid}`}
+                >{isMediumScreen ?
                     <>
                         <aside>
 
@@ -58,7 +59,7 @@ export default function ProfilePage() {
                             <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
                             <TournamentsCard tournaments={profileQuery.data.profile.tournaments} isOwner={isOwner} />
                         </aside>
-                        <main>
+                        <main className="min-w-0">
 
                             <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
@@ -76,7 +77,7 @@ export default function ProfilePage() {
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
                         </main>
                     </>
-                }
+                    }</div>
             </div>
         </>
     )

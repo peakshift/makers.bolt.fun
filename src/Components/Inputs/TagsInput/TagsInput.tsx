@@ -13,7 +13,9 @@ interface Option {
     readonly description: string | null
 }
 
+
 type Tag = Omit<OfficialTagsQuery['officialTags'][number], 'id'>
+type Value = { title: Tag['title'] }
 
 interface Props {
     classes?: {
@@ -22,11 +24,80 @@ interface Props {
     }
     placeholder?: string
     max?: number;
+    value: Value[];
+    onChange?: (new_value: Value[]) => void;
+    onBlur?: () => void;
     [k: string]: any
 }
 
 
+
+export default function TagsInput({
+    classes,
+    placeholder = 'Write some tags',
+    max = 5,
+    value,
+    onChange,
+    onBlur,
+    ...props }: Props) {
+
+    const officalTags = useOfficialTagsQuery();
+
+
+    const handleChange = (newValue: OnChangeValue<Option, true>,) => {
+        onChange?.([...newValue.map(transformer.optionToTag)]);
+        onBlur?.();
+    }
+
+
+
+    const maxReached = value.length >= max;
+
+    const currentPlaceholder = maxReached ? '' : value.length > 0 ? "Add Another..." : placeholder;
+
+    const tagsOptions = !maxReached ? (officalTags.data?.officialTags ?? []).filter(t => !value.some((v) => v.title === t.title)).map(transformer.tagToOption) : [];
+
+    return (
+        <div className={`${classes?.container}`}>
+            <Select
+                isLoading={officalTags.loading}
+                options={tagsOptions}
+                isMulti
+                isOptionDisabled={() => maxReached}
+                placeholder={currentPlaceholder}
+                noOptionsMessage={() => {
+                    return maxReached
+                        ? "You've reached the max number of tags."
+                        : "No tags available";
+                }}
+                closeMenuOnSelect={false}
+                value={value.map(transformer.valueToOption)}
+                onChange={handleChange as any}
+                onBlur={onBlur}
+                components={{
+                    Option: OptionComponent,
+                    // ValueContainer: CustomValueContainer
+                }}
+                styles={colourStyles as any}
+                theme={(theme) => ({
+                    ...theme,
+                    borderRadius: 8,
+                    colors: {
+                        ...theme.colors,
+                        primary: 'var(--primary)',
+                    },
+                })}
+            />
+            {/* <div className="flex mt-16 gap-8 flex-wrap">
+                {(value as Tag[]).map((tag, idx) => <Badge color="gray" key={tag.title} onRemove={() => handleRemove(idx)} >{tag.title}</Badge>)}
+            </div> */}
+        </div>
+    )
+}
+
+
 const transformer = {
+    valueToOption: (tag: Value): Option => ({ label: tag.title, value: tag.title, icon: null, description: null }),
     tagToOption: (tag: Tag): Option => ({ label: tag.title, value: tag.title, icon: tag.icon, description: tag.description }),
     optionToTag: (o: Option): Tag => ({ title: o.value, icon: o.icon, description: o.description, })
 }
@@ -106,76 +177,4 @@ const colourStyles: StylesConfig = {
         paddingLeft: 0,
         paddingRight: 0,
     })
-}
-
-
-export default function TagsInput({
-    classes,
-    placeholder = 'Write some tags',
-    max = 5,
-    ...props }: Props) {
-
-    const officalTags = useOfficialTagsQuery();
-
-    const { field: { value, onChange, onBlur } } = useController({
-        name: props.name ?? "tags",
-        control: props.control,
-    })
-
-
-    const handleChange = (newValue: OnChangeValue<Option, true>,) => {
-        onChange([...newValue.map(transformer.optionToTag)]);
-        onBlur();
-    }
-
-
-    const handleRemove = (idx: number) => {
-        onChange((value as Tag[]).filter((_, i) => idx !== i))
-        onBlur();
-    }
-
-
-
-    const maxReached = value.length >= max;
-
-    const currentPlaceholder = maxReached ? '' : value.length > 0 ? "Add Another..." : placeholder;
-
-    const tagsOptions = !maxReached ? (officalTags.data?.officialTags ?? []).filter(t => !value.some((v: Tag) => v.title === t.title)).map(transformer.tagToOption) : [];
-
-    return (
-        <div className={`${classes?.container}`}>
-            <Select
-                isLoading={officalTags.loading}
-                options={tagsOptions}
-                isMulti
-                isOptionDisabled={() => maxReached}
-                placeholder={currentPlaceholder}
-                noOptionsMessage={() => {
-                    return maxReached
-                        ? "You've reached the max number of tags."
-                        : "No tags available";
-                }}
-                closeMenuOnSelect={false}
-                value={value.map(transformer.tagToOption)}
-                onChange={handleChange as any}
-                onBlur={onBlur}
-                components={{
-                    Option: OptionComponent,
-                    // ValueContainer: CustomValueContainer
-                }}
-                styles={colourStyles as any}
-                theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 8,
-                    colors: {
-                        ...theme.colors,
-                        primary: 'var(--primary)',
-                    },
-                })}
-            />
-            {/* <div className="flex mt-16 gap-8 flex-wrap">
-                {(value as Tag[]).map((tag, idx) => <Badge color="gray" key={tag.title} onRemove={() => handleRemove(idx)} >{tag.title}</Badge>)}
-            </div> */}
-        </div>
-    )
 }

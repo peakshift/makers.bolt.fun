@@ -2,18 +2,23 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
 import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
-import { InsertImageModal } from 'src/Components/Inputs/TextEditor/InsertImageModal'
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
 import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
+
 import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
 import { RemoveWalletKeyModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveWalletKeyModal";
 import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingAccountModal";
-
+import { EventModal } from "src/features/Tournaments/pages/EventsPage/EventModal";
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
+import { ConnectToMakerModal } from "src/features/Tournaments/pages/MakersPage/ConnectToMakerModal";
+import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals";
+
+
+import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
 
 export enum Direction {
   START,
@@ -37,6 +42,14 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+
+  // Tournaments
+  EventModal,
+  ConnectToMakerModal,
+  RegisterTournamet_Login: RegistrationModals.LoginModal,
+  RegisterTournamet_ConfrimAccount: RegistrationModals.ConfirmAccount,
+  RegisterTournamet_RegistrationDetails: RegistrationModals.RegistrationDetails,
+  RegisterTournamet_RegistrationSuccess: RegistrationModals.RegistrationSuccess,
 
   // Misc
   ConfirmModal,
@@ -63,9 +76,9 @@ type NonNullableObject<T> = {
 
 type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = U extends any ?
   {} extends NonNullableObject<ModalProps<U>> ?
-  { Modal: U }
+  { Modal: U, isPageModal?: boolean, }
   :
-  { Modal: U, props: ModalProps<U> }
+  { Modal: U, isPageModal?: boolean, props: ModalProps<U> }
   :
   never;
 
@@ -134,7 +147,7 @@ export const modalSlice = createSlice({
       state.isOpen = true;
 
       let props: any = {};
-      props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
+      props.isPageModal = action.payload.isPageModal;
 
       if ('props' in action.payload)
         props = { ...props, ...action.payload.props }
