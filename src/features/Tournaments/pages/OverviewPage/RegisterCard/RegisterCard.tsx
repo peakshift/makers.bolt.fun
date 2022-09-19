@@ -95,6 +95,18 @@ const partners = [
         image: "https://i.ibb.co/9gZFQ4d/fulgur.webp",
     },
     {
+        link: "https://breez.technology/",
+        image: "https://i.ibb.co/6stx8tC/breez.webp",
+    },
+    {
+        link: "https://bitcoin.design/",
+        image: "https://i.ibb.co/cgY6zy2/bitcoin-design.jpg",
+    },
+    {
+        link: "https://www.afrobitcoin.org/",
+        image: "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
+    },
+    {
         link: "https://2022.tabconf.com/",
         image: "https://i.ibb.co/zFGVqvV/tab-conf.jpg",
     },
@@ -103,24 +115,12 @@ const partners = [
         image: "https://i.ibb.co/HdvRbxQ/Screenshot-2022-09-14-at-17-06-33.jpg",
     },
     {
-        link: "https://breez.technology/",
-        image: "https://i.ibb.co/6stx8tC/breez.webp",
-    },
-    {
-        link: "https://www.afrobitcoin.org/",
-        image: "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
+        link: "https://geyser.fund/",
+        image: "https://i.ibb.co/tp6L5bt/geyser.jpg",
     },
     {
         link: "https://opensats.org/",
         image: "https://i.ibb.co/b5y29TL/open-sats.jpg",
-    },
-    {
-        link: "https://bitcoin.design/",
-        image: "https://i.ibb.co/cgY6zy2/bitcoin-design.jpg",
-    },
-    {
-        link: "https://geyser.fund/",
-        image: "https://i.ibb.co/tp6L5bt/geyser.jpg",
     },
 ]
 
