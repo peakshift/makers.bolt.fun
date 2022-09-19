@@ -214,6 +214,28 @@ const getTournamentById = extendType({
     }
 })
 
+
+const getTournamentToRegister = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getTournamentToRegister', {
+            type: Tournament,
+            args: {
+            },
+            resolve() {
+
+                return prisma.tournament.findMany({
+                    where: {
+                        end_date: {
+                            gt: new Date()
+                        },
+                    }
+                })
+            }
+        })
+    }
+})
+
 const ParticipationInfo = objectType({
     name: "ParticipationInfo",
     definition(t) {
@@ -538,6 +560,7 @@ module.exports = {
     getMakersInTournament,
     getProjectsInTournament,
     tournamentParticipationInfo,
+    getTournamentToRegister,
 
     // Mutations
     registerInTournament,

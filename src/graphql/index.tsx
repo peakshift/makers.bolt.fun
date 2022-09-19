@@ -452,6 +452,7 @@ export type Query = {
   getProject: Project;
   getProjectsInTournament: TournamentProjectsResponse;
   getTournamentById: Tournament;
+  getTournamentToRegister: Array<Tournament>;
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
   me: Maybe<MyProfile>;
@@ -1034,6 +1035,11 @@ export type UpdateProjectMutationVariables = Exact<{
 
 
 export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } } | null };
+
+export type GetTournamentsToRegisterQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTournamentsToRegisterQuery = { __typename?: 'Query', getTournamentToRegister: Array<{ __typename?: 'Tournament', id: number, title: string }> };
 
 export type ProjectDetailsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -2561,6 +2567,41 @@ export function useUpdateProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
 export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
 export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export const GetTournamentsToRegisterDocument = gql`
+    query GetTournamentsToRegister {
+  getTournamentToRegister {
+    id
+    title
+  }
+}
+    `;
+
+/**
+ * __useGetTournamentsToRegisterQuery__
+ *
+ * To run a query within a React component, call `useGetTournamentsToRegisterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTournamentsToRegisterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTournamentsToRegisterQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTournamentsToRegisterQuery(baseOptions?: Apollo.QueryHookOptions<GetTournamentsToRegisterQuery, GetTournamentsToRegisterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTournamentsToRegisterQuery, GetTournamentsToRegisterQueryVariables>(GetTournamentsToRegisterDocument, options);
+      }
+export function useGetTournamentsToRegisterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTournamentsToRegisterQuery, GetTournamentsToRegisterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTournamentsToRegisterQuery, GetTournamentsToRegisterQueryVariables>(GetTournamentsToRegisterDocument, options);
+        }
+export type GetTournamentsToRegisterQueryHookResult = ReturnType<typeof useGetTournamentsToRegisterQuery>;
+export type GetTournamentsToRegisterLazyQueryHookResult = ReturnType<typeof useGetTournamentsToRegisterLazyQuery>;
+export type GetTournamentsToRegisterQueryResult = Apollo.QueryResult<GetTournamentsToRegisterQuery, GetTournamentsToRegisterQueryVariables>;
 export const ProjectDetailsDocument = gql`
     query ProjectDetails($projectId: Int!) {
   getProject(id: $projectId) {

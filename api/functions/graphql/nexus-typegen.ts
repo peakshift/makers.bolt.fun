@@ -613,6 +613,7 @@ export interface NexusGenFieldTypes {
     getProject: NexusGenRootTypes['Project']; // Project!
     getProjectsInTournament: NexusGenRootTypes['TournamentProjectsResponse']; // TournamentProjectsResponse!
     getTournamentById: NexusGenRootTypes['Tournament']; // Tournament!
+    getTournamentToRegister: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     me: NexusGenRootTypes['MyProfile'] | null; // MyProfile
@@ -996,6 +997,7 @@ export interface NexusGenFieldTypeNames {
     getProject: 'Project'
     getProjectsInTournament: 'TournamentProjectsResponse'
     getTournamentById: 'Tournament'
+    getTournamentToRegister: 'Tournament'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
     me: 'MyProfile'

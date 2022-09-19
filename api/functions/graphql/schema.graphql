@@ -333,6 +333,7 @@ type Query {
   getProject(id: Int!): Project!
   getProjectsInTournament(roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentProjectsResponse!
   getTournamentById(id: Int!): Tournament!
+  getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: MyProfile

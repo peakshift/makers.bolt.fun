@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
-import { BsJoystick } from 'react-icons/bs'
 import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
-import { AiFillThunderbolt } from 'react-icons/ai';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 // import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
 import { NotificationsService, Wallet_Service } from 'src/services'
