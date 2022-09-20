@@ -137,6 +137,7 @@ model Project {
   github              String?
   telegram            String?
   slack               String?
+  contact_email       String?
   thumbnail_image     String?
   thumbnail_image_id  Int?         @unique
   thumbnail_image_rel HostedImage? @relation("Project_Thumbnail", fields: [thumbnail_image_id], references: [id])
