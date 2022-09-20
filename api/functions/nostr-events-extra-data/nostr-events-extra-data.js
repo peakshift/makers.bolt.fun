@@ -23,11 +23,18 @@ const getEventsExtraData = async (req, res) => {
                     select: {
                         id: true,
                         avatar: true,
+                        avatar_rel: {
+                            select: {
+                                url: true,
+                            }
+                        },
                         name: true,
                     }
                 }
             }
         });
+
+        comments.map(c => c.user.avatar = c.user.avatar_rel?.url ?? c.user.avatar)
 
         return res
             .status(200)
