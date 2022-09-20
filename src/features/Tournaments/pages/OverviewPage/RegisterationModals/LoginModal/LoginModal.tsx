@@ -153,7 +153,7 @@ export default function LinkingAccountModal({ onClose, direction, tournamentId, 
                     color='gray'
                     onClick={copyToClipboard}
                 >{copied ? "Copied" : "Copy"} <FiCopy /></Button>
-                <a href={`https://makers.bolt.fun/blog/post/story/99/sign-in-with-lightning`} target='_blank' rel="noreferrer"
+                <a href={`https://makers.bolt.fun/story/sign-in-with-lightning--99`} target='_blank' rel="noreferrer"
                     className='col-span-2 block text-body4 text-center text-gray-900 border border-gray-200 rounded-10 px-16 py-12 active:scale-90 transition-transform'
                 >What is a lightning wallet?</a>
             </div>
