@@ -407,6 +407,7 @@ input StoryInputType {
 enum TEAM_MEMBER_ROLE {
   Admin
   Maker
+  Owner
 }
 
 type Tag {

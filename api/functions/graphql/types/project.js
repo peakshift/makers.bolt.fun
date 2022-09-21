@@ -10,6 +10,8 @@ const {
 } = require('nexus');
 const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { prisma } = require('../../../prisma');
+const { deleteImage } = require('../../../services/imageUpload.service');
+const { logError } = require('../../../utils/logger');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
@@ -134,9 +136,13 @@ const Project = objectType({
     }
 })
 
+const ROLE_OWNER = 'Owner'
+const ROLE_ADMIN = 'Admin'
+const ROLE_MAKER = 'Maker'
+
 const TEAM_MEMBER_ROLE = enumType({
     name: 'TEAM_MEMBER_ROLE',
-    members: ['Admin', 'Maker'],
+    members: [ROLE_OWNER, ROLE_ADMIN, ROLE_MAKER],
 });
 
 const ProjectMember = objectType({
@@ -454,6 +460,8 @@ const CreateProjectResponse = objectType({
     }
 })
 
+
+
 const createProject = extendType({
     type: 'Mutation',
     definition(t) {
@@ -461,7 +469,7 @@ const createProject = extendType({
             type: CreateProjectResponse,
             args: { input: CreateProjectInput },
             async resolve(_root, args, ctx) {
-                const {
+                let {
                     title,
                     tagline,
                     hashtag,
@@ -487,6 +495,21 @@ const createProject = extendType({
 
                 // Do some validation
                 if (!user) throw new ApolloError('Not Authenticated')
+
+                // Many Owners found. Throw an error
+                if (members.filter((m) => m.role === ROLE_OWNER).length > 1) {
+                    throw new ApolloError('Only 1 owner can be defined.')
+                }
+
+                // No owner found. Set the current user as Owner
+                if (!members.find((m) => m.role === ROLE_OWNER)) {
+                    const currentUser = members.find((m) => m.id === user.id)
+                    if (currentUser) {
+                        currentUser.role = ROLE_OWNER
+                    } else {
+                        members = [{ id: user.id, role: ROLE_OWNER }, ...members]
+                    }
+                }
 
                 const coverImage = await prisma.hostedImage.findFirst({
                     where: {
@@ -531,7 +554,7 @@ const createProject = extendType({
                     },
                 })
 
-                return await prisma.project.create({
+                const project = await prisma.project.create({
                     data: {
                         title,
                         description,
@@ -598,46 +621,63 @@ const createProject = extendType({
                         },
                     },
                 })
+
+                await prisma.hostedImage
+                    .updateMany({
+                        where: {
+                            id: {
+                                in: [coverImage.id, thumbnailImage.id, ...screenshots_ids.map((s) => s.id)],
+                            },
+                        },
+                        data: {
+                            is_used: true,
+                        },
+                    })
+                    .catch((error) => {
+                        logError(error)
+                        throw new ApolloError('Unexpected error happened...')
+                    })
+
+                return { project }
             },
         })
     },
 })
 
-
 const UpdateProjectInput = inputObjectType({
     name: 'UpdateProjectInput',
     definition(t) {
         t.int('id')
-        t.nonNull.string('title');
-        t.nonNull.string('hashtag');
-        t.nonNull.string('website');
-        t.nonNull.string('tagline');
-        t.nonNull.string('description');
+        t.nonNull.string('title')
+        t.nonNull.string('hashtag')
+        t.nonNull.string('website')
+        t.nonNull.string('tagline')
+        t.nonNull.string('description')
         t.nonNull.field('thumbnail_image', {
-            type: ImageInput
+            type: ImageInput,
         })
         t.nonNull.field('cover_image', {
-            type: ImageInput
+            type: ImageInput,
         })
-        t.string('twitter');
-        t.string('discord');
-        t.string('github');
-        t.string('slack');
-        t.string('telegram');
-        t.nonNull.int('category_id');
-        t.nonNull.list.nonNull.int('capabilities');
+        t.string('twitter')
+        t.string('discord')
+        t.string('github')
+        t.string('slack')
+        t.string('telegram')
+        t.nonNull.int('category_id')
+        t.nonNull.list.nonNull.int('capabilities')
         t.nonNull.list.nonNull.field('screenshots', {
-            type: ImageInput
-        });
+            type: ImageInput,
+        })
         t.nonNull.list.nonNull.field('members', {
-            type: TeamMemberInput
-        });
-        t.nonNull.list.nonNull.int('recruit_roles'); // ids
+            type: TeamMemberInput,
+        })
+        t.nonNull.list.nonNull.int('recruit_roles') // ids
         t.nonNull.field('launch_status', {
-            type: ProjectLaunchStatusEnum
-        });
-        t.nonNull.list.nonNull.int('tournaments'); // ids
-    }
+            type: ProjectLaunchStatusEnum,
+        })
+        t.nonNull.list.nonNull.int('tournaments') // ids
+    },
 })
 
 const updateProject = extendType({
@@ -647,8 +687,252 @@ const updateProject = extendType({
             type: CreateProjectResponse,
             args: { input: UpdateProjectInput },
             async resolve(_root, args, ctx) {
+                const {
+                    id,
+                    title,
+                    tagline,
+                    hashtag,
+                    description,
+                    capabilities,
+                    category_id,
+                    cover_image,
+                    discord,
+                    github,
+                    slack,
+                    telegram,
+                    twitter,
+                    website,
+                    launch_status,
+                    members,
+                    recruit_roles,
+                    screenshots,
+                    thumbnail_image,
+                    tournaments,
+                } = args.input
 
-            }
+                const user = await getUserByPubKey(ctx.userPubKey)
+
+                // Do some validation
+                if (!user) throw new ApolloError('Not Authenticated')
+
+                const project = await prisma.project.findFirst({
+                    where: {
+                        id,
+                    },
+                    include: {
+                        members: true,
+                    },
+                })
+
+                // Maker can't project info
+                if (project.members.find((m) => m.userId === user.id)?.role === ROLE_MAKER) {
+                    throw new ApolloError("Makers can't change project info")
+                }
+
+                let newMembers = []
+
+                // Admin can only change makers
+                if (project.members.find((m) => m.userId === user.id)?.role === ROLE_ADMIN) {
+                    // Changing Makers
+                    const newMakers = members.filter((m) => m.role === ROLE_MAKER)
+
+                    // Set old Admins and Owner using current project.memebers because Admin can't change these Roles
+                    const currentAdminsOwner = project.members
+                        .filter((m) => m.role === ROLE_ADMIN || m.role === ROLE_OWNER)
+                        .map((m) => ({ id: m.userId, role: m.role }))
+
+                    newMembers = [...newMakers, ...currentAdminsOwner]
+                } else {
+                    // Curent user is Owner. Can change all users roles
+                    newMembers = members
+                }
+
+                let imagesToDelete = []
+                let imagesToAdd = []
+
+                let coverImageRel = {}
+                if (cover_image.id) {
+                    const coverImage = await prisma.hostedImage.findFirst({
+                        where: {
+                            provider_image_id: cover_image.id,
+                        },
+                    })
+
+                    coverImageRel = coverImage
+                        ? {
+                              cover_image_rel: {
+                                  connect: {
+                                      id: coverImage ? coverImage.id : null,
+                                  },
+                              },
+                          }
+                        : {}
+
+                    if (coverImage) {
+                        imagesToAdd.push(coverImage.id)
+                    }
+
+                    imagesToDelete.push(project.cover_image_id)
+                }
+
+                let thumbnailImageRel = {}
+                if (thumbnail_image.id) {
+                    const thumbnailImage = await prisma.hostedImage.findFirst({
+                        where: {
+                            provider_image_id: thumbnail_image.id,
+                        },
+                    })
+
+                    thumbnailImageRel = thumbnailImage
+                        ? {
+                              thumbnail_image_rel: {
+                                  connect: {
+                                      id: thumbnailImage ? thumbnailImage.id : null,
+                                  },
+                              },
+                          }
+                        : {}
+
+                    if (thumbnailImage) {
+                        imagesToAdd.push(thumbnailImage.id)
+                    }
+
+                    imagesToDelete.push(project.thumbnail_image_id)
+                }
+
+                let screenshots_ids = []
+                for (const screenshot of screenshots) {
+                    if (screenshot.id) {
+                        const newScreenshot = await prisma.hostedImage.findFirst({
+                            where: {
+                                provider_image_id: screenshot.id,
+                            },
+                            select: {
+                                id: true,
+                            },
+                        })
+                        if (newScreenshot) {
+                            screenshots_ids.push(newScreenshot.id)
+                            imagesToAdd.push(newScreenshot.id)
+                        }
+                    } else {
+                        const newScreenshot = await prisma.hostedImage.findFirst({
+                            where: {
+                                url: screenshot.url,
+                            },
+                            select: {
+                                id: true,
+                            },
+                        })
+                        if (newScreenshot) {
+                            screenshots_ids.push(newScreenshot.id)
+                        }
+                    }
+                }
+                const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !screenshots_ids.includes(x))
+                imagesToDelete = [...imagesToDelete, ...screenshotsIdsToDelete]
+
+                const updatedProject = await prisma.project
+                    .update({
+                        where: {
+                            id,
+                        },
+                        data: {
+                            title,
+                            description,
+                            tagline,
+                            hashtag,
+                            website,
+                            discord,
+                            github,
+                            twitter,
+                            slack,
+                            telegram,
+                            launch_status,
+
+                            ...coverImageRel,
+                            ...thumbnailImageRel,
+                            screenshots_ids,
+
+                            category: {
+                                connect: {
+                                    id: category_id,
+                                },
+                            },
+                            members: {
+                                deleteMany: {},
+                                create: newMembers.map((member) => {
+                                    return {
+                                        role: member.role,
+                                        user: {
+                                            connect: {
+                                                id: member.id,
+                                            },
+                                        },
+                                    }
+                                }),
+                            },
+                            recruit_roles: {
+                                deleteMany: {},
+                                create: recruit_roles.map((role) => {
+                                    return {
+                                        level: 0,
+                                        role: {
+                                            connect: {
+                                                id: role,
+                                            },
+                                        },
+                                    }
+                                }),
+                            },
+                            tournaments: {
+                                deleteMany: {},
+                                create: tournaments.map((tournament) => {
+                                    return {
+                                        tournament: {
+                                            connect: {
+                                                id: tournament,
+                                            },
+                                        },
+                                    }
+                                }),
+                            },
+                            capabilities: {
+                                set: capabilities.map((c) => {
+                                    return {
+                                        id: c,
+                                    }
+                                }),
+                            },
+                        },
+                    })
+                    .catch((error) => {
+                        logError(error)
+                        throw new ApolloError('Unexpected error happened...')
+                    })
+
+                if (imagesToAdd.length > 0) {
+                    await prisma.hostedImage
+                        .updateMany({
+                            where: {
+                                id: {
+                                    in: imagesToAdd,
+                                },
+                            },
+                            data: {
+                                is_used: true,
+                            },
+                        })
+                        .catch((error) => {
+                            logError(error)
+                            throw new ApolloError('Unexpected error happened...')
+                        })
+                }
+
+                imagesToDelete.map(async (i) => await deleteImage(i))
+
+                return { project: updatedProject }
+            },
         })
     },
 })

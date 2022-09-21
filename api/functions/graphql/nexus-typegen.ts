@@ -132,7 +132,7 @@ export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   ProjectLaunchStatusEnum: "Launched" | "WIP"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
-  TEAM_MEMBER_ROLE: "Admin" | "Maker"
+  TEAM_MEMBER_ROLE: "Admin" | "Maker" | "Owner"
   TournamentEventTypeEnum: 2 | 3 | 0 | 1
   TournamentMakerHackingStatusEnum: 1 | 0
   VOTE_ITEM_TYPE: "Bounty" | "PostComment" | "Project" | "Question" | "Story" | "User"
