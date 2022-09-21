@@ -941,11 +941,78 @@ const deleteProject = extendType({
     type: 'Mutation',
     definition(t) {
         t.field('deleteProject', {
-            type: CreateProjectResponse,
+            type: 'Project',
             args: { id: nonNull(intArg()) },
             async resolve(_root, args, ctx) {
-                // ...
-            }
+                const { id } = args
+                const user = await getUserByPubKey(ctx.userPubKey)
+
+                // Do some validation
+                if (!user) throw new ApolloError('Not Authenticated')
+
+                const project = await prisma.project.findFirst({
+                    where: { id },
+                    include: {
+                        members: true,
+                    },
+                })
+
+                if (!project) throw new ApolloError('Project not found')
+
+                if (project.members.find((m) => m.userId === user.id)?.role !== ROLE_OWNER)
+                    throw new ApolloError("You don't have the right to delete this project")
+
+                // Award is not implemented yet
+                // await prisma.award.deleteMany({
+                //     where: {
+                //         projectId: project.id
+                //     }
+                // })
+
+                await prisma.projectRecruitRoles.deleteMany({
+                    where: {
+                        projectId: project.id,
+                    },
+                })
+
+                await prisma.projectMember.deleteMany({
+                    where: {
+                        projectId: project.id,
+                    },
+                })
+
+                await prisma.tournamentProject.deleteMany({
+                    where: {
+                        project_id: project.id,
+                    },
+                })
+
+                const deletedProject = await prisma.project.delete({
+                    where: {
+                        id,
+                    },
+                })
+
+                const imagesToDelete = await prisma.hostedImage.findMany({
+                    where: {
+                        OR: [
+                            { id: project.cover_image_id },
+                            { id: project.thumbnail_image_id },
+                            {
+                                id: {
+                                    in: project.screenshots_ids,
+                                },
+                            },
+                        ],
+                    },
+                    select: {
+                        id: true,
+                    },
+                })
+                imagesToDelete.map(async (i) => await deleteImage(i.id))
+
+                return deletedProject
+            },
         })
     },
 })

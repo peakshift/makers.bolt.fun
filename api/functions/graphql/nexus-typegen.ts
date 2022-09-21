@@ -523,7 +523,7 @@ export interface NexusGenFieldTypes {
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
-    deleteProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
+    deleteProject: NexusGenRootTypes['Project'] | null; // Project
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
     registerInTournament: NexusGenRootTypes['User'] | null; // User
@@ -914,7 +914,7 @@ export interface NexusGenFieldTypeNames {
     confirmVote: 'Vote'
     createProject: 'CreateProjectResponse'
     createStory: 'Story'
-    deleteProject: 'CreateProjectResponse'
+    deleteProject: 'Project'
     deleteStory: 'Story'
     donate: 'Donation'
     registerInTournament: 'User'

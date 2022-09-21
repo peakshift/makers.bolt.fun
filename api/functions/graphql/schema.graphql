@@ -187,7 +187,7 @@ type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
-  deleteProject(id: Int!): CreateProjectResponse
+  deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
