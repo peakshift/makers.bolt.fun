@@ -13,10 +13,9 @@ const { prisma } = require('../../../prisma');
 const { deleteImage } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
-
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 const { ImageInput } = require('./misc');
-const { TournamentProject } = require('./tournament');
+const { Tournament } = require('./tournament');
 const { MakerRole } = require('./users');
 
 
@@ -101,8 +100,19 @@ const Project = objectType({
             }
         })
 
+
+        // No need to create this "middle" kind of relations
+        // Instead, just return tournaments
         t.list.nonNull.field('tournaments', {
-            type: TournamentProject
+            type: Tournament,
+            resolve: (parent) => {
+                return prisma.tournamentProject.findMany({
+                    where: { project_id: parent.id },
+                    include: {
+                        tournament: true
+                    }
+                }).then(res => res.map(item => item.tournament))
+            }
         })
 
         t.nonNull.list.nonNull.field('capabilities', {
@@ -519,12 +529,12 @@ const createProject = extendType({
 
                 const coverImageRel = coverImage
                     ? {
-                          cover_image_rel: {
-                              connect: {
-                                  id: coverImage ? coverImage.id : null,
-                              },
-                          },
-                      }
+                        cover_image_rel: {
+                            connect: {
+                                id: coverImage ? coverImage.id : null,
+                            },
+                        },
+                    }
                     : {}
 
                 const thumbnailImage = await prisma.hostedImage.findFirst({
@@ -535,12 +545,12 @@ const createProject = extendType({
 
                 const thumbnailImageRel = thumbnailImage
                     ? {
-                          thumbnail_image_rel: {
-                              connect: {
-                                  id: thumbnailImage ? thumbnailImage.id : null,
-                              },
-                          },
-                      }
+                        thumbnail_image_rel: {
+                            connect: {
+                                id: thumbnailImage ? thumbnailImage.id : null,
+                            },
+                        },
+                    }
                     : {}
 
                 const screenshots_ids = await prisma.hostedImage.findMany({
@@ -760,12 +770,12 @@ const updateProject = extendType({
 
                     coverImageRel = coverImage
                         ? {
-                              cover_image_rel: {
-                                  connect: {
-                                      id: coverImage ? coverImage.id : null,
-                                  },
-                              },
-                          }
+                            cover_image_rel: {
+                                connect: {
+                                    id: coverImage ? coverImage.id : null,
+                                },
+                            },
+                        }
                         : {}
 
                     if (coverImage) {
@@ -785,12 +795,12 @@ const updateProject = extendType({
 
                     thumbnailImageRel = thumbnailImage
                         ? {
-                              thumbnail_image_rel: {
-                                  connect: {
-                                      id: thumbnailImage ? thumbnailImage.id : null,
-                                  },
-                              },
-                          }
+                            thumbnail_image_rel: {
+                                connect: {
+                                    id: thumbnailImage ? thumbnailImage.id : null,
+                                },
+                            },
+                        }
                         : {}
 
                     if (thumbnailImage) {

@@ -76,14 +76,6 @@ const TournamentMakerHackingStatusEnum = enumType({
     },
 });
 
-const TournamentProject = objectType({
-    name: "TournamentProject",
-    definition(t) {
-        t.nonNull.field('project', { type: "Project" });
-        t.nonNull.field('tournament', { type: "Tournament" })
-    }
-});
-
 const TournamentEvent = objectType({
     name: 'TournamentEvent',
     definition(t) {
@@ -557,7 +549,6 @@ const updateTournamentRegistration = extendType({
 module.exports = {
     // Types 
     Tournament,
-    TournamentProject,
 
     // Enums
     TournamentEventTypeEnum,
