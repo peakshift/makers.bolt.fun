@@ -294,6 +294,7 @@ type Project {
   lightning_address: String
   lnurl_callback_url: String
   members: [ProjectMember!]!
+  permissions: [ProjectPermissionEnum!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   slack: String
@@ -302,7 +303,7 @@ type Project {
   telegram: String
   thumbnail_image: String!
   title: String!
-  tournaments: [TournamentProject!]
+  tournaments: [Tournament!]!
   twitter: String
   votes_count: Int!
   website: String!
@@ -316,6 +317,13 @@ enum ProjectLaunchStatusEnum {
 type ProjectMember {
   role: TEAM_MEMBER_ROLE!
   user: User!
+}
+
+enum ProjectPermissionEnum {
+  DeleteProject
+  UpdateAdmins
+  UpdateInfo
+  UpdateMembers
 }
 
 type Query {
@@ -494,11 +502,6 @@ type TournamentPrize {
   amount: String!
   image: String!
   title: String!
-}
-
-type TournamentProject {
-  project: Project!
-  tournament: Tournament!
 }
 
 type TournamentProjectsResponse {

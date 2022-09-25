@@ -131,6 +131,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   POST_TYPE: "Bounty" | "Question" | "Story"
   ProjectLaunchStatusEnum: "Launched" | "WIP"
+  ProjectPermissionEnum: "DeleteProject" | "UpdateAdmins" | "UpdateInfo" | "UpdateMembers"
   RoleLevelEnum: 3 | 0 | 1 | 2 | 4
   TEAM_MEMBER_ROLE: "Admin" | "Maker" | "Owner"
   TournamentEventTypeEnum: 2 | 3 | 0 | 1
@@ -283,7 +284,6 @@ export interface NexusGenObjects {
     tagline: string; // String!
     telegram?: string | null; // String
     title: string; // String!
-    tournaments?: NexusGenRootTypes['TournamentProject'][] | null; // [TournamentProject!]
     twitter?: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
@@ -360,10 +360,6 @@ export interface NexusGenObjects {
   TournamentPrize: { // root type
     amount: string; // String!
     title: string; // String!
-  }
-  TournamentProject: { // root type
-    project: NexusGenRootTypes['Project']; // Project!
-    tournament: NexusGenRootTypes['Tournament']; // Tournament!
   }
   TournamentProjectsResponse: { // root type
     hasNext?: boolean | null; // Boolean
@@ -587,6 +583,7 @@ export interface NexusGenFieldTypes {
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
     members: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
+    permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
     slack: string | null; // String
@@ -595,7 +592,7 @@ export interface NexusGenFieldTypes {
     telegram: string | null; // String
     thumbnail_image: string; // String!
     title: string; // String!
-    tournaments: NexusGenRootTypes['TournamentProject'][] | null; // [TournamentProject!]
+    tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
@@ -725,10 +722,6 @@ export interface NexusGenFieldTypes {
     amount: string; // String!
     image: string; // String!
     title: string; // String!
-  }
-  TournamentProject: { // field return type
-    project: NexusGenRootTypes['Project']; // Project!
-    tournament: NexusGenRootTypes['Tournament']; // Tournament!
   }
   TournamentProjectsResponse: { // field return type
     hasNext: boolean | null; // Boolean
@@ -978,6 +971,7 @@ export interface NexusGenFieldTypeNames {
     lightning_address: 'String'
     lnurl_callback_url: 'String'
     members: 'ProjectMember'
+    permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
     screenshots: 'String'
     slack: 'String'
@@ -986,7 +980,7 @@ export interface NexusGenFieldTypeNames {
     telegram: 'String'
     thumbnail_image: 'String'
     title: 'String'
-    tournaments: 'TournamentProject'
+    tournaments: 'Tournament'
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
@@ -1116,10 +1110,6 @@ export interface NexusGenFieldTypeNames {
     amount: 'String'
     image: 'String'
     title: 'String'
-  }
-  TournamentProject: { // field return type name
-    project: 'Project'
-    tournament: 'Tournament'
   }
   TournamentProjectsResponse: { // field return type name
     hasNext: 'Boolean'

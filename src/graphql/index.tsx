@@ -219,7 +219,7 @@ export type Mutation = {
   confirmVote: Vote;
   createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
-  deleteProject: Maybe<CreateProjectResponse>;
+  deleteProject: Maybe<Project>;
   deleteStory: Maybe<Story>;
   donate: Donation;
   registerInTournament: Maybe<User>;
@@ -411,6 +411,7 @@ export type Project = {
   lightning_address: Maybe<Scalars['String']>;
   lnurl_callback_url: Maybe<Scalars['String']>;
   members: Array<ProjectMember>;
+  permissions: Array<ProjectPermissionEnum>;
   recruit_roles: Array<MakerRole>;
   screenshots: Array<Scalars['String']>;
   slack: Maybe<Scalars['String']>;
@@ -419,6 +420,7 @@ export type Project = {
   telegram: Maybe<Scalars['String']>;
   thumbnail_image: Scalars['String'];
   title: Scalars['String'];
+  tournaments: Array<Tournament>;
   twitter: Maybe<Scalars['String']>;
   votes_count: Scalars['Int'];
   website: Scalars['String'];
@@ -434,6 +436,13 @@ export type ProjectMember = {
   role: Team_Member_Role;
   user: User;
 };
+
+export enum ProjectPermissionEnum {
+  DeleteProject = 'DeleteProject',
+  UpdateAdmins = 'UpdateAdmins',
+  UpdateInfo = 'UpdateInfo',
+  UpdateMembers = 'UpdateMembers'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -647,9 +656,9 @@ export type StoryInputType = {
 };
 
 export enum Team_Member_Role {
-  Owner = 'Owner',
   Admin = 'Admin',
-  Maker = 'Maker'
+  Maker = 'Maker',
+  Owner = 'Owner'
 }
 
 export type Tag = {
@@ -1063,7 +1072,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2714,6 +2723,7 @@ export const ProjectDetailsDocument = gql`
       icon
       title
     }
+    permissions
     members {
       role
       user {
