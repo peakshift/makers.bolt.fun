@@ -22,6 +22,7 @@ query ProjectDetails($projectId: Int!) {
       icon
       title
     }
+    permissions
     members {
       role
       user {

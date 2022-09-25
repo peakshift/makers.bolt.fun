@@ -15,7 +15,6 @@ const { logError } = require('../../../utils/logger');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 const { ImageInput } = require('./misc');
-const { Tournament } = require('./tournament');
 const { MakerRole } = require('./users');
 
 
@@ -101,10 +100,8 @@ const Project = objectType({
         })
 
 
-        // No need to create this "middle" kind of relations
-        // Instead, just return tournaments
-        t.list.nonNull.field('tournaments', {
-            type: Tournament,
+        t.nonNull.list.nonNull.field('tournaments', {
+            type: "Tournament",
             resolve: (parent) => {
                 return prisma.tournamentProject.findMany({
                     where: { project_id: parent.id },
@@ -143,6 +140,24 @@ const Project = objectType({
                 })
             }
         })
+
+        t.nonNull.list.nonNull.field('permissions', {
+            type: ProjectPermissionEnum,
+            resolve: async (parent, _, ctx) => {
+                const user = await getUserByPubKey(ctx.userPubKey)
+                if (!user) return [];
+
+                const role = (await prisma.projectMember.findUnique({ where: { projectId_userId: { projectId: parent.id, userId: user.id } } }))?.role;
+
+                if (!role) return [];
+
+                if (role === ROLE_ADMIN) return [PROJECT_PERMISSIONS.UpdateMembers, PROJECT_PERMISSIONS.UpdateInfo];
+
+                if (role === ROLE_OWNER) return Object.values(PROJECT_PERMISSIONS);
+
+                return []
+            }
+        })
     }
 })
 
@@ -153,6 +168,18 @@ const ROLE_MAKER = 'Maker'
 const TEAM_MEMBER_ROLE = enumType({
     name: 'TEAM_MEMBER_ROLE',
     members: [ROLE_OWNER, ROLE_ADMIN, ROLE_MAKER],
+});
+
+const PROJECT_PERMISSIONS = {
+    UpdateInfo: "UpdateInfo",
+    DeleteProject: "DeleteProject",
+    UpdateAdmins: "UpdateAdmins",
+    UpdateMembers: "UpdateMembers",
+}
+
+const ProjectPermissionEnum = enumType({
+    name: 'ProjectPermissionEnum',
+    members: PROJECT_PERMISSIONS,
 });
 
 const ProjectMember = objectType({
