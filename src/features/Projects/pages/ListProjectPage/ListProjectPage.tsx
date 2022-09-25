@@ -2,12 +2,15 @@ import { useCarousel, useMediaQuery, } from "src/utils/hooks";
 import { Helmet } from 'react-helmet'
 import { MEDIA_QUERIES } from "src/utils/theme";
 import Card from "src/Components/Card/Card";
+import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import ProjectDetailsTab from "./Components/ProjectDetailsTab/ProjectDetailsTab";
 import TeamTab from "./Components/TeamTab/TeamTab";
 import ExtrasTab from "./Components/ExtrasTab/ExtrasTab";
 import FormContainer from "./Components/FormContainer/FormContainer";
 import { useState } from "react";
 import SaveChangesCard from "./Components/SaveChangesCard/SaveChangesCard";
+import { useMeQuery } from "src/graphql";
+import { Navigate, useLocation } from 'react-router-dom'
 
 
 export const tabs = {
@@ -38,8 +41,15 @@ export default function ListProjectPage() {
         align: 'start', slidesToScroll: 2,
         containScroll: "trimSnaps",
     })
+    const location = useLocation()
 
+    const meQuery = useMeQuery({
 
+    });
+
+    if (meQuery.loading) return <LoadingPage />
+
+    if (meQuery.error || !meQuery.data?.me) return <Navigate to={'/login'} state={{ from: location.pathname }} />
 
     return (
         <>

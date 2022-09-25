@@ -1,7 +1,7 @@
 import { FormProvider, NestedValue, Resolver, SubmitHandler, useForm } from "react-hook-form"
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IsValidProjectHashtagDocument, ProjectLaunchStatusEnum, Team_Member_Role, UpdateProjectInput, useProjectDetailsQuery } from "src/graphql";
+import { IsValidProjectHashtagDocument, ProjectDetailsQuery, ProjectLaunchStatusEnum, ProjectPermissionEnum, Team_Member_Role, UpdateProjectInput, useProjectDetailsQuery } from "src/graphql";
 import { PropsWithChildren } from "react";
 import { useSearchParams } from "react-router-dom";
 import { usePrompt } from "src/utils/hooks";
@@ -9,6 +9,10 @@ import { imageSchema } from "src/utils/validation";
 import { Override } from "src/utils/interfaces";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import { apolloClient } from "src/utils/apollo";
+import { store } from "src/redux/store";
+import UpdateProjectContextProvider from './updateProjectContext'
+import { useNavigate } from 'react-router-dom'
+import { createRoute } from 'src/utils/routing'
 
 
 interface Props {
@@ -16,19 +20,21 @@ interface Props {
 }
 
 export type IListProjectForm = Override<UpdateProjectInput, {
-    members: NestedValue<{
-        id: number,
-        name: string,
-        jobTitle: string | null,
-        avatar: string,
-        role: Team_Member_Role,
-    }[]>
+    members: NestedValue<ProjectMember[]>
     capabilities: NestedValue<UpdateProjectInput['capabilities']>
     recruit_roles: NestedValue<UpdateProjectInput['recruit_roles']>
     tournaments: NestedValue<UpdateProjectInput['tournaments']>
     cover_image: NestedValue<UpdateProjectInput['cover_image']>
     thumbnail_image: NestedValue<UpdateProjectInput['thumbnail_image']>
 }>
+
+export type ProjectMember = {
+    id: number,
+    name: string,
+    jobTitle: string | null,
+    avatar: string,
+    role: Team_Member_Role,
+}
 
 const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     id: yup.number().optional(),
@@ -85,7 +91,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
 
     const id = Number(params.get('id'));
     const isUpdating = !Number.isNaN(id);
-
+    const navigate = useNavigate()
 
 
     const methods = useForm<IListProjectForm>({
@@ -103,7 +109,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
             category_id: undefined,
             capabilities: [],
             screenshots: [],
-            members: [],
+            members: prepareMembers([]),
             recruit_roles: [],
             launch_status: ProjectLaunchStatusEnum.Wip,
             tournaments: [],
@@ -120,30 +126,33 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
         onCompleted: (res) => {
             if (res.getProject) {
                 const data = res.getProject
-                methods.reset({
-                    id: data.id,
-                    title: data.title,
-                    cover_image: { url: data.cover_image },
-                    thumbnail_image: { url: data.thumbnail_image },
-                    tagline: data.tagline,
-                    website: data.website,
-                    description: data.description,
-                    hashtag: data.hashtag,
-                    twitter: data.twitter,
-                    discord: data.discord,
-                    slack: data.slack,
-                    telegram: data.telegram,
-                    github: data.github,
-                    category_id: data.category.id,
-                    capabilities: data.capabilities.map(c => c.id),
-                    screenshots: data.screenshots.map(url => ({ url })),
+                if (!res.getProject.permissions.includes(ProjectPermissionEnum.UpdateInfo))
+                    navigate({ pathname: createRoute({ type: "projects-page" }) })
+                else
+                    methods.reset({
+                        id: data.id,
+                        title: data.title,
+                        cover_image: { url: data.cover_image },
+                        thumbnail_image: { url: data.thumbnail_image },
+                        tagline: data.tagline,
+                        website: data.website,
+                        description: data.description,
+                        hashtag: data.hashtag,
+                        twitter: data.twitter,
+                        discord: data.discord,
+                        slack: data.slack,
+                        telegram: data.telegram,
+                        github: data.github,
+                        category_id: data.category.id,
+                        capabilities: data.capabilities.map(c => c.id),
+                        screenshots: data.screenshots.map(url => ({ url })),
 
-                    members: data.members.map(({ role, user }) => ({ role, id: user.id, avatar: user.avatar, name: user.name, jobTitle: user.jobTitle })),
-                    recruit_roles: data.recruit_roles.map(r => r.id),
+                        members: prepareMembers(data.members),
+                        recruit_roles: data.recruit_roles.map(r => r.id),
 
-                    tournaments: [],
-                    launch_status: data.launch_status,
-                })
+                        tournaments: [],
+                        launch_status: data.launch_status,
+                    })
             }
         }
     })
@@ -159,9 +168,39 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
 
     return (
         <FormProvider {...methods} >
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                {props.children}
-            </form>
+            <UpdateProjectContextProvider permissions={query.data?.getProject.permissions ?? Object.values(ProjectPermissionEnum)}>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                    {props.children}
+                </form>
+            </UpdateProjectContextProvider>
         </FormProvider>
     )
+}
+
+
+function prepareMembers(members: ProjectDetailsQuery['getProject']['members']): ProjectMember[] {
+
+    const me = store.getState().user.me;
+
+    if (!me) {
+        window.location.href = '/login';
+        return [];
+    }
+
+    if (members.length === 0)
+        return [{
+            id: me.id,
+            avatar: me.avatar,
+            name: me.name,
+            jobTitle: me.jobTitle,
+            role: Team_Member_Role.Owner,
+        }]
+
+    const _members = members.map(({ role, user }) => ({ role, id: user.id, avatar: user.avatar, name: user.name, jobTitle: user.jobTitle }))
+
+    const myMember = _members.find(m => m.id === me.id);
+
+    if (!myMember) throw new Error("Not a member of the project")
+
+    return [myMember, ..._members.filter(m => m.id !== me.id)]
 }

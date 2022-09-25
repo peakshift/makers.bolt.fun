@@ -146,9 +146,10 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             </div>
             <div className="p-24 flex flex-col gap-24">
 
-                <div className='flex justify-end'>
-                    <Button color='gray' size='sm' className='ml-auto' onClick={() => props.onClose?.()} href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>
-                </div>
+                {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
+                    <div className='flex justify-end'>
+                        <Button color='gray' size='sm' className='ml-auto' onClick={() => props.onClose?.()} href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>
+                    </div>}
 
                 {/* Title & Basic Info */}
                 <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 items-start relative">

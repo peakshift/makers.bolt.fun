@@ -36,6 +36,9 @@ type RouteOptions =
         username?: string,
     }
     | {
+        type: "projects-page"
+    }
+    | {
         type: "edit-project",
         id?: number,
     }
@@ -81,6 +84,9 @@ export function createRoute(options: RouteOptions) {
 
     if (options.type === 'tournament')
         return `/tournaments/${options.id}` + (options.tab ? `/${options.tab}` : "")
+
+    if (options.type === 'projects-page')
+        return '/projects'
 
     if (options.type === 'edit-project')
         return `/projects/list-project` + (options.id ? `?id=${options.id}` : '')

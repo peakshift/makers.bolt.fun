@@ -8,7 +8,7 @@ import { IListProjectForm } from "../FormContainer/FormContainer";
 interface Props {
 }
 
-export default function TeamTab(props: Props) {
+export default function TeamTab() {
 
     const { formState: { errors, }, control } = useFormContext<IListProjectForm>();
 
@@ -16,8 +16,6 @@ export default function TeamTab(props: Props) {
 
     return (
         <div className="flex flex-col gap-24">
-
-
             <Card >
                 <h2 className="text-body2 font-bolder">⚡️  Team</h2>
                 <p className="text-body4 font-light text-gray-600 mt-8">Let us know who is on this product’s team.</p>
@@ -29,6 +27,7 @@ export default function TeamTab(props: Props) {
                             <TeamMembersInput
                                 value={value}
                                 onChange={onChange}
+
                             />
                         )}
                     />
