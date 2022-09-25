@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
+import { MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
@@ -15,7 +15,7 @@ import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { setVoteAmount } from 'src/redux/features/vote.slice';
 import { numberFormatter } from 'src/utils/helperFunctions';
 import { MEDIA_QUERIES } from 'src/utils/theme';
-import { FaDiscord } from 'react-icons/fa';
+import { FaDiscord, FaTimes } from 'react-icons/fa';
 import { FiGithub, FiGlobe, FiTwitter } from 'react-icons/fi';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import Badge from 'src/Components/Badge/Badge';
@@ -144,7 +144,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             {/* Cover Image */}
             <div className="relative h-[100px] lg:h-[80px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-32 h-32  bg-gray-600 bg-opacity-80 text-white absolute top-24 right-24 rounded-full hover:bg-gray-800 text-center flex flex-col justify-center items-center" onClick={closeModal}><MdClose className=' inline-block' /></button>
+                <button className="w-32 h-32  bg-gray-600 bg-opacity-80 text-white absolute top-24 right-24 rounded-full hover:bg-gray-800 text-center flex flex-col justify-center items-center" onClick={closeModal}><FaTimes className=' inline-block' /></button>
             </div>
             <div className="p-24 flex flex-col gap-24">
 
