@@ -1040,19 +1040,21 @@ export type GetAllCapabilitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllCapabilitiesQuery = { __typename?: 'Query', getAllCapabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
 
+export type ProjectDetailsFragment = { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
+
 export type CreateProjectMutationVariables = Exact<{
   input: InputMaybe<CreateProjectInput>;
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type UpdateProjectMutationVariables = Exact<{
   input: InputMaybe<UpdateProjectInput>;
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, description: string, cover_image: string, thumbnail_image: string, screenshots: Array<string>, website: string, lightning_address: string | null, lnurl_callback_url: string | null, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type IsValidProjectHashtagQueryVariables = Exact<{
   hashtag: Scalars['String'];
@@ -1178,6 +1180,63 @@ export const UserRolesSkillsFragmentDoc = gql`
     title
     icon
     level
+  }
+}
+    `;
+export const ProjectDetailsFragmentDoc = gql`
+    fragment ProjectDetails on Project {
+  id
+  title
+  tagline
+  description
+  hashtag
+  cover_image
+  thumbnail_image
+  launch_status
+  twitter
+  discord
+  github
+  slack
+  telegram
+  screenshots
+  website
+  lightning_address
+  votes_count
+  category {
+    id
+    icon
+    title
+  }
+  permissions
+  members {
+    role
+    user {
+      id
+      name
+      jobTitle
+      avatar
+    }
+  }
+  awards {
+    title
+    image
+    url
+    id
+  }
+  tags {
+    id
+    title
+  }
+  recruit_roles {
+    id
+    title
+    icon
+    level
+  }
+  capabilities {
+    id
+    title
+    icon
   }
 }
     `;
@@ -2477,54 +2536,11 @@ export const CreateProjectDocument = gql`
     mutation CreateProject($input: CreateProjectInput) {
   createProject(input: $input) {
     project {
-      id
-      title
-      description
-      cover_image
-      thumbnail_image
-      screenshots
-      website
-      lightning_address
-      lnurl_callback_url
-      votes_count
-      category {
-        id
-        icon
-        title
-      }
-      members {
-        role
-        user {
-          id
-          name
-          avatar
-        }
-      }
-      awards {
-        title
-        image
-        url
-        id
-      }
-      tags {
-        id
-        title
-      }
-      recruit_roles {
-        id
-        title
-        icon
-        level
-      }
-      capabilities {
-        id
-        title
-        icon
-      }
+      ...ProjectDetails
     }
   }
 }
-    `;
+    ${ProjectDetailsFragmentDoc}`;
 export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
 
 /**
@@ -2555,54 +2571,11 @@ export const UpdateProjectDocument = gql`
     mutation UpdateProject($input: UpdateProjectInput) {
   updateProject(input: $input) {
     project {
-      id
-      title
-      description
-      cover_image
-      thumbnail_image
-      screenshots
-      website
-      lightning_address
-      lnurl_callback_url
-      votes_count
-      category {
-        id
-        icon
-        title
-      }
-      members {
-        role
-        user {
-          id
-          name
-          avatar
-        }
-      }
-      awards {
-        title
-        image
-        url
-        id
-      }
-      tags {
-        id
-        title
-      }
-      recruit_roles {
-        id
-        title
-        icon
-        level
-      }
-      capabilities {
-        id
-        title
-        icon
-      }
+      ...ProjectDetails
     }
   }
 }
-    `;
+    ${ProjectDetailsFragmentDoc}`;
 export type UpdateProjectMutationFn = Apollo.MutationFunction<UpdateProjectMutation, UpdateProjectMutationVariables>;
 
 /**

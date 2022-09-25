@@ -18,8 +18,6 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
     const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
 
-
-
     return (
         <motion.div
             custom={direction}
@@ -27,7 +25,7 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
             initial='initial'
             animate="animate"
             exit='exit'
-            className={`modal-card max-w-[768px] ${props.isPageModal && !isMdScreen && 'rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[676px] ${props.isPageModal && !isMdScreen && 'rounded-0 w-full min-h-screen'}`}
 
         >
             <div className="relative h-[100px] lg:h-[80px]">

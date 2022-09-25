@@ -1,51 +1,64 @@
+fragment ProjectDetails on Project {
+  id
+  title
+  tagline
+  description
+  hashtag
+  cover_image
+  thumbnail_image
+  launch_status
+  twitter
+  discord
+  github
+  slack
+  telegram
+  screenshots
+  website
+  lightning_address
+  votes_count
+  category {
+    id
+    icon
+    title
+  }
+  permissions
+  members {
+    role
+    user {
+      id
+      name
+      jobTitle
+      avatar
+    }
+  }
+  awards {
+    title
+    image
+    url
+    id
+  }
+  tags {
+    id
+    title
+  }
+  recruit_roles {
+    id
+    title
+    icon
+    level
+  }
+
+  capabilities {
+    id
+    title
+    icon
+  }
+}
+
 mutation CreateProject($input: CreateProjectInput) {
   createProject(input: $input) {
     project {
-      id
-      title
-      description
-      cover_image
-      thumbnail_image
-      screenshots
-      website
-      lightning_address
-      lnurl_callback_url
-      votes_count
-      category {
-        id
-        icon
-        title
-      }
-      members {
-        role
-        user {
-          id
-          name
-          avatar
-        }
-      }
-      awards {
-        title
-        image
-        url
-        id
-      }
-      tags {
-        id
-        title
-      }
-      recruit_roles {
-        id
-        title
-        icon
-        level
-      }
-
-      capabilities {
-        id
-        title
-        icon
-      }
+      ...ProjectDetails
     }
   }
 }
@@ -53,52 +66,7 @@ mutation CreateProject($input: CreateProjectInput) {
 mutation UpdateProject($input: UpdateProjectInput) {
   updateProject(input: $input) {
     project {
-      id
-      title
-      description
-      cover_image
-      thumbnail_image
-      screenshots
-      website
-      lightning_address
-      lnurl_callback_url
-      votes_count
-
-      category {
-        id
-        icon
-        title
-      }
-      members {
-        role
-        user {
-          id
-          name
-          avatar
-        }
-      }
-      awards {
-        title
-        image
-        url
-        id
-      }
-      tags {
-        id
-        title
-      }
-      recruit_roles {
-        id
-        title
-        icon
-        level
-      }
-
-      capabilities {
-        id
-        title
-        icon
-      }
+      ...ProjectDetails
     }
   }
 }

@@ -13,6 +13,7 @@ import { FiCamera } from "react-icons/fi";
 import { Control, Path, useController } from "react-hook-form";
 import { ImageInput } from "src/graphql";
 import { fetchUploadImageUrl } from "src/api/uploading";
+import { removeArrayItemAtIndex } from "src/utils/helperFunctions";
 
 
 
@@ -43,6 +44,7 @@ export default function ScreenshotsInput(props: Props) {
 
     return (
         <Uploady
+            accept="image/*"
             multiple={true}
             inputFieldName='file'
             grouped={false}
@@ -53,31 +55,24 @@ export default function ScreenshotsInput(props: Props) {
                 [UPLOADER_EVENTS.ITEM_FINALIZE]: () => setUploadingCount(v => v - 1),
                 [UPLOADER_EVENTS.ITEM_FINISH]: (item) => {
 
-                    // Just for mocking purposes
-                    const dataUrl = URL.createObjectURL(item.file);
+                    const { id, filename, variants } = item?.uploadResponse?.data?.result;
 
-                    const { id, filename, variants } = item?.uploadResponse?.data?.result ?? {
-                        id: Math.random().toString(),
-                        filename: item.file.name,
-                        variants: [
-                            "",
-                            dataUrl
-                        ]
-                    }
-                    if (id) {
-                        onChange([...uploadedFiles, { id, name: filename, url: variants[1] }].slice(-MAX_UPLOAD_COUNT))
+                    const url = (variants as string[]).find(v => v.includes('public'));
+
+                    if (id && url) {
+                        onChange([...uploadedFiles, { id, name: filename, url: url }].slice(-MAX_UPLOAD_COUNT))
                     }
                 }
             }}
         >
 
             <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-16 mt-24">
-                {canUploadMore && <DropZoneButton />}
-                {uploadedFiles.map(f => <ScreenshotThumbnail
+                <DropZoneButton extraProps={{ canUploadMore }} />
+                {uploadedFiles.map((f, idx) => <ScreenshotThumbnail
                     key={f.id}
                     url={f.url}
                     onCancel={() => {
-                        onChange(uploadedFiles.filter(file => file.id !== f.id))
+                        onChange(removeArrayItemAtIndex(uploadedFiles, idx))
                     }} />)}
                 <ImagePreviews />
                 {(placeholdersCount > 0) &&
@@ -88,7 +83,7 @@ export default function ScreenshotsInput(props: Props) {
 }
 
 const DropZone = forwardRef<any, any>((props, ref) => {
-    const { onClick, ...buttonProps } = props;
+    const { canUploadMore, onClick, ...buttonProps } = props;
 
 
     useRequestPreSend(async (data) => {
@@ -114,6 +109,8 @@ const DropZone = forwardRef<any, any>((props, ref) => {
         },
         [onClick]
     );
+
+    if (!canUploadMore) return null
 
     return <UploadDropZone
         {...buttonProps}

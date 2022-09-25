@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
+import { MdClose, MdEdit, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
@@ -8,7 +8,7 @@ import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 // import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
 import { NotificationsService, Wallet_Service } from 'src/services'
-import { useProjectDetailsQuery } from 'src/graphql';
+import { ProjectPermissionEnum, useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
@@ -108,6 +108,8 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         },
     ];
 
+    const canEdit = project.permissions.includes(ProjectPermissionEnum.UpdateInfo);
+
     const onVote = (votes?: number) => {
         dispatch(setVoteAmount(votes ?? 10));
         dispatch(openModal({
@@ -140,9 +142,14 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             {/* Cover Image */}
             <div className="relative h-[100px] lg:h-[80px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-32 h-32  bg-gray-600 bg-opacity-80 text-white absolute top-24 right-24 rounded-full hover:bg-gray-800 text-center" onClick={closeModal}><MdClose className=' inline-block' /></button>
+                <button className="w-32 h-32  bg-gray-600 bg-opacity-80 text-white absolute top-24 right-24 rounded-full hover:bg-gray-800 text-center flex flex-col justify-center items-center" onClick={closeModal}><MdClose className=' inline-block' /></button>
             </div>
             <div className="p-24 flex flex-col gap-24">
+
+                <div className='flex justify-end'>
+                    <Button color='gray' size='sm' className='ml-auto' onClick={() => props.onClose?.()} href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>
+                </div>
+
                 {/* Title & Basic Info */}
                 <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 items-start relative">
                     <div className="flex-shrink-0 w-[108px] h-[108px]">
@@ -170,6 +177,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         </Button>
                     </div>
                 </div>
+
 
                 {/* About */}
                 <div>

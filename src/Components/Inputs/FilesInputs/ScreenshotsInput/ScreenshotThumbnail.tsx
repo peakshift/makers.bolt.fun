@@ -45,7 +45,7 @@ export default function ScreenshotThumbnail({ url, isLoading, isError, onCancel 
                     Failed...
                 </div>}
             {!isEmpty &&
-                <button className="absolute bg-gray-900 hover:bg-opacity-100 bg-opacity-60 text-white rounded-full w-32 h-32 top-8 right-8 flex flex-col justify-center items-center" onClick={() => onCancel?.()}><FaTimes /></button>
+                <button type='button' className="absolute bg-gray-900 hover:bg-opacity-100 bg-opacity-60 text-white rounded-full w-32 h-32 top-8 right-8 flex flex-col justify-center items-center" onClick={() => onCancel?.()}><FaTimes /></button>
             }
         </div>
     )
