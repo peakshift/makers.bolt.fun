@@ -14,7 +14,9 @@ interface Props { }
 
 export default function ProjectDetailsTab(props: Props) {
 
-    const { register, formState: { errors, }, control, getValues } = useFormContext<IListProjectForm>();
+    const { register, formState: { errors, dirtyFields }, control, getValues } = useFormContext<IListProjectForm>();
+
+    const isUpdating = !!getValues('id');
 
     return (
         <div className="md:col-span-2 flex flex-col gap-24">
@@ -124,6 +126,9 @@ export default function ProjectDetailsTab(props: Props) {
                             {...register("hashtag")}
                         />
                     </div>
+                    {(isUpdating && dirtyFields.hashtag) && <p className="text-body5 text-orange-500 mt-8">
+                        <span className="font-bolder text-orange-400">Warning:</span> changing the hashtag of the project will break all the old links for the project.
+                    </p>}
                     {errors.hashtag && <p className="input-error">
                         {errors.hashtag.message}
                     </p>}

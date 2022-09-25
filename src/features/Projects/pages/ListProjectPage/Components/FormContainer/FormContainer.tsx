@@ -13,6 +13,7 @@ import { store } from "src/redux/store";
 import UpdateProjectContextProvider from './updateProjectContext'
 import { useNavigate } from 'react-router-dom'
 import { createRoute } from 'src/utils/routing'
+import { nanoid } from "@reduxjs/toolkit";
 
 
 interface Props {
@@ -160,10 +161,10 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
                         slack: data.slack,
                         telegram: data.telegram,
                         github: data.github,
-                        lightning_address:data.lightning_address,
+                        lightning_address: data.lightning_address,
                         category_id: data.category.id,
                         capabilities: data.capabilities.map(c => c.id),
-                        screenshots: data.screenshots.map(url => ({ url })),
+                        screenshots: data.screenshots.map(url => ({ url, local_id: nanoid(5), })),
 
                         members: prepareMembers(data.members),
                         recruit_roles: data.recruit_roles.map(r => r.id),

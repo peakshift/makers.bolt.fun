@@ -24,9 +24,13 @@ const mockSenderEnhancer = getMockSenderEnhancer({
 const MAX_UPLOAD_COUNT = 4 as const;
 
 
+interface Image extends ImageInput {
+    local_id?: string
+}
+
 interface Props {
-    value: ImageInput[],
-    onChange: (new_value: ImageInput[]) => void
+    value: Image[],
+    onChange: (new_value: Image[]) => void
 }
 
 
@@ -56,11 +60,9 @@ export default function ScreenshotsInput(props: Props) {
                 [UPLOADER_EVENTS.ITEM_FINISH]: (item) => {
 
                     const { id, filename, variants } = item?.uploadResponse?.data?.result;
-
                     const url = (variants as string[]).find(v => v.includes('public'));
-
                     if (id && url) {
-                        onChange([...uploadedFiles, { id, name: filename, url: url }].slice(-MAX_UPLOAD_COUNT))
+                        onChange([...uploadedFiles, { id, local_id: id, name: filename, url: url }].slice(-MAX_UPLOAD_COUNT))
                     }
                 }
             }}
@@ -69,7 +71,7 @@ export default function ScreenshotsInput(props: Props) {
             <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-16 mt-24">
                 <DropZoneButton extraProps={{ canUploadMore }} />
                 {uploadedFiles.map((f, idx) => <ScreenshotThumbnail
-                    key={f.id}
+                    key={f.local_id}
                     url={f.url}
                     onCancel={() => {
                         onChange(removeArrayItemAtIndex(uploadedFiles, idx))
