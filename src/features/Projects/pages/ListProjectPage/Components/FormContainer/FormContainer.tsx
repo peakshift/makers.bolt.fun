@@ -69,6 +69,26 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     website: yup.string().trim().url().required().label("project's link"),
     tagline: yup.string().trim().required().min(10),
     description: yup.string().trim().required().min(50, 'Write at least 10 words descriping your project'),
+    lightning_address: yup
+        .string()
+        .test({
+            name: "is valid lightning_address",
+            test: async value => {
+                try {
+                    if (value) {
+                        const [name, domain] = value.split("@");
+                        const lnurl = `https://${domain}/.well-known/lnurlp/${name}`;
+                        const res = await fetch(lnurl);
+                        if (res.status === 200) return true;
+                    }
+                    return true;
+                } catch (error) {
+                    return false;
+                }
+            }
+        })
+        .nullable()
+        .label("lightning address"),
     thumbnail_image: imageSchema.required("Please pick a thumbnail image").default(undefined),
     cover_image: imageSchema.required("Please pick a cover image").default(undefined),
     twitter: yup.string().url().nullable(),
@@ -103,9 +123,6 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
             website: "",
             tagline: "",
             description: "",
-            twitter: "",
-            discord: "",
-            github: "",
             category_id: undefined,
             capabilities: [],
             screenshots: [],
@@ -143,6 +160,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
                         slack: data.slack,
                         telegram: data.telegram,
                         github: data.github,
+                        lightning_address:data.lightning_address,
                         category_id: data.category.id,
                         capabilities: data.capabilities.map(c => c.id),
                         screenshots: data.screenshots.map(url => ({ url })),

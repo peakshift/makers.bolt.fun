@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MdClose, MdEdit, MdLocalFireDepartment } from 'react-icons/md';
+import { MdClose, MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
 import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
@@ -107,6 +107,8 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             url: project.github
         },
     ];
+
+
 
     const canEdit = project.permissions.includes(ProjectPermissionEnum.UpdateInfo);
 
@@ -252,7 +254,17 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         <p className="text-body5 text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
                             {project.members.map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
-                                <Avatar width={40} src={m.user.avatar} />
+                                <Avatar
+                                    width={40}
+                                    src={m.user.avatar}
+                                    renderTooltip={() => <div className='bg-white px-12 py-8 border border-gray-200 rounded-12 flex flex-wrap gap-12 shadow-lg'>
+                                        <Avatar width={48} src={m.user.avatar} />
+                                        <div className='overflow-hidden'>
+                                            <p className={`text-black font-medium overflow-hidden text-ellipsis`}>{m.user.name}</p>
+                                            <p className={`text-body6 text-gray-600`}>{m.user.jobTitle}</p>
+                                        </div>
+                                    </div>}
+                                />
                             </Link>)}
                         </div>
                     </div>}

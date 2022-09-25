@@ -38,6 +38,7 @@ export interface NexusGenInputs {
     hashtag: string; // String!
     id?: number | null; // Int
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
+    lightning_address?: string | null; // String
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
@@ -106,6 +107,7 @@ export interface NexusGenInputs {
     hashtag: string; // String!
     id?: number | null; // Int
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
+    lightning_address?: string | null; // String
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!

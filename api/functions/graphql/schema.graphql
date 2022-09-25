@@ -93,6 +93,7 @@ input CreateProjectInput {
   hashtag: String!
   id: Int
   launch_status: ProjectLaunchStatusEnum!
+  lightning_address: String
   members: [TeamMemberInput!]!
   recruit_roles: [Int!]!
   screenshots: [ImageInput!]!
@@ -520,6 +521,7 @@ input UpdateProjectInput {
   hashtag: String!
   id: Int
   launch_status: ProjectLaunchStatusEnum!
+  lightning_address: String
   members: [TeamMemberInput!]!
   recruit_roles: [Int!]!
   screenshots: [ImageInput!]!

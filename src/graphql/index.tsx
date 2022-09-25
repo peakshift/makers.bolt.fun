@@ -119,6 +119,7 @@ export type CreateProjectInput = {
   hashtag: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   launch_status: ProjectLaunchStatusEnum;
+  lightning_address?: InputMaybe<Scalars['String']>;
   members: Array<TeamMemberInput>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;
@@ -772,6 +773,7 @@ export type UpdateProjectInput = {
   hashtag: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   launch_status: ProjectLaunchStatusEnum;
+  lightning_address?: InputMaybe<Scalars['String']>;
   members: Array<TeamMemberInput>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;

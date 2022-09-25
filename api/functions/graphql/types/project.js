@@ -474,6 +474,7 @@ const CreateProjectInput = inputObjectType({
         t.string('github');
         t.string('slack');
         t.string('telegram');
+        t.string('lightning_address');
         t.nonNull.int('category_id');
         t.nonNull.list.nonNull.int('capabilities'); // ids
         t.nonNull.list.nonNull.field('screenshots', {
@@ -511,6 +512,7 @@ const createProject = extendType({
                     tagline,
                     hashtag,
                     description,
+                    lightning_address,
                     capabilities,
                     category_id,
                     cover_image,
@@ -595,6 +597,7 @@ const createProject = extendType({
                     data: {
                         title,
                         description,
+                        lightning_address,
                         tagline,
                         hashtag,
                         website,
@@ -701,6 +704,7 @@ const UpdateProjectInput = inputObjectType({
         t.string('github')
         t.string('slack')
         t.string('telegram')
+        t.string('lightning_address');
         t.nonNull.int('category_id')
         t.nonNull.list.nonNull.int('capabilities')
         t.nonNull.list.nonNull.field('screenshots', {
@@ -730,6 +734,7 @@ const updateProject = extendType({
                     tagline,
                     hashtag,
                     description,
+                    lightning_address,
                     capabilities,
                     category_id,
                     cover_image,
@@ -877,6 +882,7 @@ const updateProject = extendType({
                         data: {
                             title,
                             description,
+                            lightning_address,
                             tagline,
                             hashtag,
                             website,

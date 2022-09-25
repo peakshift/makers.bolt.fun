@@ -8,6 +8,7 @@ import { IListProjectForm } from "../FormContainer/FormContainer";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 import CoverImageInput from "src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput";
 import ScreenshotsInput from "src/Components/Inputs/FilesInputs/ScreenshotsInput/ScreenshotsInput";
+import { BsLightningChargeFill } from "react-icons/bs";
 
 interface Props { }
 
@@ -179,7 +180,7 @@ export default function ProjectDetailsTab(props: Props) {
                     </div>
                     <div>
                         <div className="input-wrapper mt-8 relative">
-                            <FaSlack className="text-yellow-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
+                            <FaSlack className="text-pink-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
                             <input
                                 type='text'
                                 className="input-text"
@@ -203,6 +204,20 @@ export default function ProjectDetailsTab(props: Props) {
                         </div>
                         {errors.telegram && <p className="input-error">
                             {errors.telegram.message}
+                        </p>}
+                    </div>
+                    <div>
+                        <div className="input-wrapper mt-8 relative">
+                            <BsLightningChargeFill className="text-yellow-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
+                            <input
+                                type='text'
+                                className="input-text"
+                                placeholder='lightning_address@XXX.com'
+                                {...register("lightning_address")}
+                            />
+                        </div>
+                        {errors.lightning_address && <p className="input-error">
+                            {errors.lightning_address.message}
                         </p>}
                     </div>
                 </div>
