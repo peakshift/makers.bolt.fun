@@ -187,7 +187,7 @@ type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
-  deleteProject(id: Int!): CreateProjectResponse
+  deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
@@ -302,6 +302,7 @@ type Project {
   telegram: String
   thumbnail_image: String!
   title: String!
+  tournaments: [TournamentProject!]
   twitter: String
   votes_count: Int!
   website: String!
@@ -406,6 +407,7 @@ input StoryInputType {
 enum TEAM_MEMBER_ROLE {
   Admin
   Maker
+  Owner
 }
 
 type Tag {
@@ -492,6 +494,11 @@ type TournamentPrize {
   amount: String!
   image: String!
   title: String!
+}
+
+type TournamentProject {
+  project: Project!
+  tournament: Tournament!
 }
 
 type TournamentProjectsResponse {

@@ -647,6 +647,7 @@ export type StoryInputType = {
 };
 
 export enum Team_Member_Role {
+  Owner = 'Owner',
   Admin = 'Admin',
   Maker = 'Maker'
 }
