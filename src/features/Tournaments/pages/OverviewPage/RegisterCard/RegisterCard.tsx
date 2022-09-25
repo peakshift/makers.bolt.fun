@@ -47,11 +47,11 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
     return (
         <Card onlyMd className='flex flex-col gap-24 md:!border'>
             <div>
-                {makers_count > 2 && <p className="text-body5 text-gray-600 flex">
+                {makers_count > 2 && <p className="text-body5 text-gray-600 flex mb-16">
                     {avatars.map((img, idx) => <div className='w-[16px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
                     <span className='self-center ml-24 font-medium '>+ {makers_count} makers</span>
                 </p>}
-                <Button color={isRegistered ? 'gray' : "primary"} disabled={isRegistered} fullWidth className='mt-16' onClick={onRegister}>{isRegistered ? "Registered!" : "Register Now"}</Button>
+                <Button color={isRegistered ? 'gray' : "primary"} disabled={isRegistered} fullWidth onClick={onRegister}>{isRegistered ? "Registered!" : "Register Now"}</Button>
                 <Button color={"gray"} href={'https://discord.gg/HFqtxavb7x'} newTab fullWidth className='mt-8 !text-primary-500'><FaDiscord /> <span className="align-middle ml-4">Join the Discord</span></Button>
 
             </div>
@@ -79,10 +79,48 @@ export default function RegisterCard({ makers_count, start_date, avatars, isRegi
             </div>
             <div>
                 <p className="text-body5 text-gray-900 font-medium">
-                    Sponsored by
+                    In partnership with
                 </p>
-                <img src={'/assets/images/logos/fulgur_logo.svg'} alt="Fulgur Ventures Logo" className='max-h-48 mt-16 ' />
+                <div className="flex flex-wrap gap-x-8 gap-y-8 mt-16">
+                    {partners.map((p, idx) => <a key={idx} href={p.link}><Avatar src={p.image} width={48} /> </a>)}
+                </div>
             </div>
         </Card>
     )
 }
+
+const partners = [
+    {
+        link: "https://fulgur.ventures/",
+        image: "https://i.ibb.co/9gZFQ4d/fulgur.webp",
+    },
+    {
+        link: "https://breez.technology/",
+        image: "https://i.ibb.co/6stx8tC/breez.webp",
+    },
+    {
+        link: "https://bitcoin.design/",
+        image: "https://i.ibb.co/cgY6zy2/bitcoin-design.jpg",
+    },
+    {
+        link: "https://www.afrobitcoin.org/",
+        image: "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
+    },
+    {
+        link: "https://2022.tabconf.com/",
+        image: "https://i.ibb.co/zFGVqvV/tab-conf.jpg",
+    },
+    {
+        link: "https://adoptingbitcoin.org/2022/",
+        image: "https://i.ibb.co/HdvRbxQ/Screenshot-2022-09-14-at-17-06-33.jpg",
+    },
+    {
+        link: "https://geyser.fund/",
+        image: "https://i.ibb.co/tp6L5bt/geyser.jpg",
+    },
+    {
+        link: "https://opensats.org/",
+        image: "https://i.ibb.co/b5y29TL/open-sats.jpg",
+    },
+]
+

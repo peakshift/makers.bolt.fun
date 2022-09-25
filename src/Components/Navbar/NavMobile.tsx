@@ -166,7 +166,15 @@ export default function NavMobile() {
                 Projects
               </Link>
             </li>
-            <li>
+            <li className="relative">
+              <Link
+                to={'/hackathons'}
+                onClick={() => toggleDrawerOpen(false)}
+                className='text-body4 font-bold hover:text-primary-600'>
+                Events
+              </Link>
+            </li>
+            {/* <li>
               <button
                 className='text-body4 font-bold hover:text-primary-600 w-full flex justify-between'
                 onClick={() => toggleCommunityOpen()}
@@ -237,7 +245,7 @@ export default function NavMobile() {
                   </Link>
                 </div>
               </motion.div>}
-            </li>
+            </li> */}
             <li className="relative">
               <a
                 href={'https://bolt.fun/guide/'}

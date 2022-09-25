@@ -3,6 +3,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import { IoLocationOutline } from 'react-icons/io5'
+import { getSpanDate } from 'src/utils/helperFunctions'
 import { useTournament } from '../TournamentDetailsContext'
 dayjs.extend(advancedFormat)
 
@@ -24,7 +25,7 @@ export default function Header() {
                         <div className='flex flex-col gap-4'>
                             <p className="text-body6">TOURNAMENT 🏆</p>
                             <p className="text-body1 md:text-h2 font-bold">{tournamentDetails.title}</p>
-                            <p className="text-body3"> {`${dayjs(tournamentDetails.start_date).format('Do')} - ${dayjs(tournamentDetails.end_date).format('Do MMMM, YYYY')}`}</p>
+                            <p className="text-body3">{getSpanDate(tournamentDetails.start_date, tournamentDetails.end_date)}</p>
 
                             <p className='text-body5'><IoLocationOutline className="mr-8" /> {tournamentDetails.location}</p>
                         </div>

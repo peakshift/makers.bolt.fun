@@ -45,7 +45,7 @@ type RouteOptions =
     | {
         type: "tournament",
         id: string | number
-        tab: 'overview' | 'events' | 'makers' | 'projects'
+        tab?: 'overview' | 'events' | 'makers' | 'projects'
     }
 
 export function createRoute(options: RouteOptions) {
@@ -80,7 +80,7 @@ export function createRoute(options: RouteOptions) {
 
 
     if (options.type === 'tournament')
-        return `/tournaments/${options.id}/${options.tab}`
+        return `/tournaments/${options.id}` + (options.tab ? `/${options.tab}` : "")
 
     if (options.type === 'edit-project')
         return `/projects/list-project` + (options.id ? `?id=${options.id}` : '')

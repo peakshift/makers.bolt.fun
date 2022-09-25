@@ -11,7 +11,7 @@
 
   @include gt-md {
     h4 {
-      -webkit-text-stroke: 0.06em black;
+      -webkit-text-stroke: calc(max(1.4px, 0.06em)) black;
     }
   }
 
