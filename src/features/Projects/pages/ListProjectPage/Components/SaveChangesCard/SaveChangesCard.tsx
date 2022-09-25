@@ -8,7 +8,7 @@ import { tabs } from '../../ListProjectPage'
 import { NotificationsService } from 'src/services'
 import { useAppDispatch } from 'src/utils/hooks';
 import { openModal } from 'src/redux/features/modals.slice';
-import { useCreateProjectMutation, useUpdateProjectMutation } from 'src/graphql'
+import { useCreateProjectMutation, useUpdateProjectMutation, UpdateProjectInput } from 'src/graphql'
 
 interface Props {
     currentTab: keyof typeof tabs
@@ -38,9 +38,16 @@ export default function SaveChangesCard(props: Props) {
 
     const clickSubmit = handleSubmit<IListProjectForm>(async data => {
         try {
+
+            const input: UpdateProjectInput = {
+                ...data,
+                members: data.members.map(m => ({ id: m.id, role: m.role })),
+                screenshots: data.screenshots.map(s => ({ id: s.id, name: s.name, url: s.url }))
+            }
+
             await (isUpdating ?
-                update({ variables: { input: { ...data, members: data.members.map(m => ({ id: m.id, role: m.role })) } } })
-                : create({ variables: { input: { ...data, members: data.members.map(m => ({ id: m.id, role: m.role })) } } })
+                update({ variables: { input } })
+                : create({ variables: { input } })
             )
         } catch (error) {
             NotificationsService.error("A network error happened...");
