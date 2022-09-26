@@ -766,7 +766,12 @@ const updateProject = extendType({
                     },
                 })
 
-                // Maker can't project info
+                // Verifying current user is a member
+                if (!project.members.some((m) => m.userId === user.id)) {
+                    throw new ApolloError("You don't have permission to update this project")
+                }
+
+                // Maker can't change project info
                 if (project.members.find((m) => m.userId === user.id)?.role === ROLE_MAKER) {
                     throw new ApolloError("Makers can't change project info")
                 }
