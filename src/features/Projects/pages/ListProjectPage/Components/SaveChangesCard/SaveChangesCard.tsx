@@ -49,6 +49,7 @@ export default function SaveChangesCard(props: Props) {
                 update({ variables: { input } })
                 : create({ variables: { input } })
             )
+            reset(data)
         } catch (error) {
             NotificationsService.error("A network error happened...");
             return;
@@ -82,7 +83,7 @@ export default function SaveChangesCard(props: Props) {
                 onClick={clickSubmit}
                 disabled={!isDirty || isLoading}
             >
-                Save Changes
+                {isLoading ? "Saving..." : "Save Changes"}
             </Button>
         else if (props.currentTab === 'project-details')
             return <Button
@@ -107,7 +108,7 @@ export default function SaveChangesCard(props: Props) {
                 onClick={clickSubmit}
                 disabled={!isDirty || isLoading}
             >
-                List your product
+                {isLoading ? "Listing your product..." : "List your product"}
             </Button>
     }, [clickSubmit, isDirty, isLoading, isUpdating, props.currentTab, props.onNext])
 
