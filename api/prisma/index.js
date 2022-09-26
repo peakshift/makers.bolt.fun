@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client/edge');
+const { PrismaClient } = process.env.PRISMA_GENERATE_DATAPROXY ? require('@prisma/client/edge') : require('@prisma/client');
 const createGlobalModule = require('../utils/createGlobalModule');
 
 const createPrismaClient = () => {
