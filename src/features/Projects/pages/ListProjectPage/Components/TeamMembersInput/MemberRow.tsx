@@ -40,6 +40,7 @@ export default function MemberRow({ user, onRemove, onUpdateRole, disabled, canU
                     menuButton={<MenuButton className='border border-gray-200 p-8 rounded-8 text-gray-500'>{user.role} <FaChevronDown className='ml-4 text-gray-400' /></MenuButton>} transition>
                     {[Team_Member_Role.Admin, Team_Member_Role.Maker].map(role =>
                         <MenuItem
+                            className={'text-body5'}
                             onClick={() => onUpdateRole(role)}
                             key={role}>{role}</MenuItem>
                     )}

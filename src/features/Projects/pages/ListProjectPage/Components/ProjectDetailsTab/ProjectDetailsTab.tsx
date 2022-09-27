@@ -9,6 +9,7 @@ import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInp
 import CoverImageInput from "src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput";
 import ScreenshotsInput from "src/Components/Inputs/FilesInputs/ScreenshotsInput/ScreenshotsInput";
 import { BsLightningChargeFill } from "react-icons/bs";
+import InfoCard from "src/Components/InfoCard/InfoCard";
 
 interface Props { }
 
@@ -116,7 +117,7 @@ export default function ProjectDetailsTab(props: Props) {
                         {errors.description.message}
                     </p>}
                     <p className="text-body5 font-medium mt-16">
-                        Hashtag<sup className="text-red-500">*</sup>
+                        Project tag<sup className="text-red-500">*</sup>
                     </p>
                     <div className="input-wrapper mt-8 relative">
                         <input
@@ -126,12 +127,20 @@ export default function ProjectDetailsTab(props: Props) {
                             {...register("hashtag")}
                         />
                     </div>
-                    {(isUpdating && dirtyFields.hashtag) && <p className="text-body5 text-orange-500 mt-8">
-                        <span className="font-bolder text-orange-400">Warning:</span> changing the hashtag of the project will break all the old links for the project.
-                    </p>}
                     {errors.hashtag && <p className="input-error">
                         {errors.hashtag.message}
                     </p>}
+                    {(isUpdating && dirtyFields.hashtag) &&
+                        <InfoCard className="mt-8 bg-warning-50 border-warning-100">
+                            <span className="font-medium text-orange-600">⚠️ Warning:</span> when you change the tag of your project, existing links that use this tag will no longer work & will need to be updateded.
+                        </InfoCard>}
+                    {!isUpdating &&
+                        <InfoCard className="mt-8">
+                            <span className="font-medium text-gray-900">ℹ️ Project tag</span>  allows you to mention your project in stories, or across other platforms like Discord. <br />
+                            You can change your project’s tag later, but links that use the old tag will no longer work & need to be updated.
+                        </InfoCard>
+                    }
+
                 </div>
             </Card>
             <Card className="">

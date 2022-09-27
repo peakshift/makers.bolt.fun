@@ -42,11 +42,13 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     title: yup.string().trim().required("please provide a title").min(2),
     hashtag: yup
         .string()
-        .required("please provide a hashtag")
+        .required("please provide a project tag")
+        .matches(/^#/, "a hashtag has to start with '#'")
         .matches(
-            /^(?:#)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:(?!))){0,28}(?:[A-Za-z0-9_]))?)((?: #)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?))*$/,
-            "a hashtag should only contain letters, numbers, & underscores"
+            /^#[^ !@#$%^&*(),.?":{}|<>]*$/,
+            "your project's tag can only contain letters, numbers and '_’"
         )
+        .max(35, 'Your project tag must be shorter than 35 characters.')
         .test({
             name: "is unique hashtag",
             test: async (value, context) => {

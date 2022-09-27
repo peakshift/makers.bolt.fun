@@ -35,7 +35,7 @@ export default function TeamTab() {
                 </div>
                 <div className="bg-gray-50 p-16 rounded-12 border border-gray-200 mt-24">
                     <p className="text-body5">
-                        <span className="font-bold">💡 Onboard your team:</span> Make sure you onboard any other team members so they can help you manage this project.
+                        <span className="font-bold">ℹ️ Onboard your team:</span> Make sure you onboard any other team members so they can help you manage this project and its development progress. To add them, they will first need to create a maker profile.
                     </p>
                 </div>
             </Card>
