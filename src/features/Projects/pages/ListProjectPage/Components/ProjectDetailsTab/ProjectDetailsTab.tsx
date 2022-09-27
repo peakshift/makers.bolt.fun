@@ -120,10 +120,11 @@ export default function ProjectDetailsTab(props: Props) {
                         Project tag<sup className="text-red-500">*</sup>
                     </p>
                     <div className="input-wrapper mt-8 relative">
+                        <span className="flex flex-col justify-center pl-16 shrink-0">#</span>
                         <input
                             type='text'
-                            className="input-text"
-                            placeholder='#my_awesome_app'
+                            className="input-text pl-8"
+                            placeholder='my_project_name'
                             {...register("hashtag")}
                         />
                     </div>
@@ -136,8 +137,7 @@ export default function ProjectDetailsTab(props: Props) {
                         </InfoCard>}
                     {!isUpdating &&
                         <InfoCard className="mt-8">
-                            <span className="font-medium text-gray-900">ℹ️ Project tag</span>  allows you to mention your project in stories, or across other platforms like Discord. <br />
-                            You can change your project’s tag later, but links that use the old tag will no longer work & need to be updated.
+                            <span className="font-medium text-gray-900">ℹ️ Project tag</span>  allows you to mention your project in stories, or across other platforms like Discord. You can change your project’s tag later, but links that use the old tag will no longer work & need to be updated.
                         </InfoCard>
                     }
 

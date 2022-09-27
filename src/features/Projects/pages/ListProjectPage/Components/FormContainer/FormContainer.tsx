@@ -43,12 +43,13 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     hashtag: yup
         .string()
         .required("please provide a project tag")
-        .matches(/^#/, "a hashtag has to start with '#'")
+        .transform(v => v ? '#' + v : undefined)
         .matches(
             /^#[^ !@#$%^&*(),.?":{}|<>]*$/,
             "your project's tag can only contain letters, numbers and '_’"
         )
-        .max(35, 'Your project tag must be shorter than 35 characters.')
+        .min(3, "your project tag must be longer than 2 characters.")
+        .max(35, 'your project tag must be shorter than 35 characters.')
         .test({
             name: "is unique hashtag",
             test: async (value, context) => {
@@ -113,8 +114,9 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
 
     const [params] = useSearchParams();
 
-    const id = Number(params.get('id'));
-    const isUpdating = !Number.isNaN(id);
+    const id = params.get('id') ? Number(params.get('id')) : null;
+
+    const isUpdating = !!id;
     const navigate = useNavigate()
 
 
@@ -136,12 +138,12 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
             tournaments: [],
         },
         resolver: yupResolver(schema) as Resolver<IListProjectForm>,
+        mode: 'onTouched'
     });
-
 
     const query = useProjectDetailsQuery({
         variables: {
-            projectId: id
+            projectId: id!
         },
         skip: !isUpdating,
         onCompleted: (res) => {
@@ -158,7 +160,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
                         tagline: data.tagline,
                         website: data.website,
                         description: data.description,
-                        hashtag: data.hashtag,
+                        hashtag: data.hashtag.slice(1),
                         twitter: data.twitter,
                         discord: data.discord,
                         slack: data.slack,
