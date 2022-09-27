@@ -39,13 +39,13 @@ export type ProjectMember = {
 
 const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     id: yup.number().optional(),
-    title: yup.string().trim().required().min(2),
+    title: yup.string().trim().required("please provide a title").min(2),
     hashtag: yup
         .string()
-        .required()
+        .required("please provide a hashtag")
         .matches(
             /^(?:#)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:(?!))){0,28}(?:[A-Za-z0-9_]))?)((?: #)([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?))*$/,
-            "Invalid format for hashtag"
+            "a hashtag should only contain letters, numbers, & underscores"
         )
         .test({
             name: "is unique hashtag",
@@ -65,11 +65,11 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
                     return false;
                 }
             },
-            message: "This hashtag is already used by another project"
+            message: "this hashtag is already used by another project"
         }),
     website: yup.string().trim().url().required().label("project's link"),
-    tagline: yup.string().trim().required().min(10),
-    description: yup.string().trim().required().min(50, 'Write at least 10 words descriping your project'),
+    tagline: yup.string().trim().required("please provide a tagline").min(10),
+    description: yup.string().trim().required("please provide a description for your project").min(50, 'Write at least 10 words descriping your project'),
     lightning_address: yup
         .string()
         .test({
@@ -86,18 +86,19 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
                 } catch (error) {
                     return false;
                 }
-            }
+            },
+            message: "this lightning address isn't valid"
         })
         .nullable()
         .label("lightning address"),
-    thumbnail_image: imageSchema.required("Please pick a thumbnail image").default(undefined),
-    cover_image: imageSchema.required("Please pick a cover image").default(undefined),
+    thumbnail_image: imageSchema.required("please pick a thumbnail image").default(undefined),
+    cover_image: imageSchema.required("please pick a cover image").default(undefined),
     twitter: yup.string().url().nullable(),
     discord: yup.string().url().nullable(),
     github: yup.string().url().nullable(),
     slack: yup.string().url().nullable(),
     telegram: yup.string().url().nullable(),
-    category_id: yup.number().required("Please choose a category"),
+    category_id: yup.number().required("please choose a category"),
     capabilities: yup.array().of(yup.number().required()).default([]),
     screenshots: yup.array().of(imageSchema.required()).default([]),
     members: yup.array().of(yup.object() as any).default([]),
