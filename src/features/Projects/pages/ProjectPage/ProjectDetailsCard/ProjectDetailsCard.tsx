@@ -8,20 +8,21 @@ import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 // import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
 import { NotificationsService, Wallet_Service } from 'src/services'
-import { ProjectPermissionEnum, useProjectDetailsQuery } from 'src/graphql';
+import { ProjectLaunchStatusEnum, ProjectPermissionEnum, useProjectDetailsQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { setVoteAmount } from 'src/redux/features/vote.slice';
 import { numberFormatter } from 'src/utils/helperFunctions';
 import { MEDIA_QUERIES } from 'src/utils/theme';
-import { FaDiscord, FaTimes } from 'react-icons/fa';
-import { FiGithub, FiGlobe, FiTwitter } from 'react-icons/fi';
+import { FaDiscord, } from 'react-icons/fa';
+import { FiEdit2, FiGithub, FiGlobe, FiTwitter } from 'react-icons/fi';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import Badge from 'src/Components/Badge/Badge';
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import { Link } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
+import { IoMdClose } from 'react-icons/io';
 
 
 interface Props extends ModalCard {
@@ -142,24 +143,27 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             className={`modal-card max-w-[676px] ${(props.isPageModal && !isMdScreen) && '!rounded-0 w-full min-h-screen'}`}
         >
             {/* Cover Image */}
-            <div className="relative h-[100px] lg:h-[80px]">
+            <div className="relative h-[120px] lg:h-[80px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <button className="w-32 h-32  bg-gray-600 bg-opacity-80 text-white absolute top-24 right-24 rounded-full hover:bg-gray-800 text-center flex flex-col justify-center items-center" onClick={closeModal}><FaTimes className=' inline-block' /></button>
+                <div className="absolute top-16 md:top-24 left-24 flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
+                    {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
+                    {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
+                </div>
+                <div className="absolute top-16 md:top-24 right-24 flex gap-8">
+                    {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
+                        <Link className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={() => props.onClose?.()} to={createRoute({ type: "edit-project", id: project.id })}><FiEdit2 /></Link>}
+                    <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button>
+                </div>
             </div>
             <div className="p-24 flex flex-col gap-24">
 
-                {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
-                    <div className='flex justify-end'>
-                        <Button color='gray' size='sm' className='ml-auto' onClick={() => props.onClose?.()} href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>
-                    </div>}
-
                 {/* Title & Basic Info */}
-                <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 items-start relative">
+                <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 md:items-center relative">
                     <div className="flex-shrink-0 w-[108px] h-[108px]">
                         <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image} alt="" />
                     </div>
                     <div className='flex flex-col gap-8 items-start justify-between'>
-                        <h3 className="text-body1 font-bold">{project.title}</h3>
+                        <a href={project.website} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project.title}</h3></a>
                         <p className="text-body4 text-gray-600">{project.tagline}</p>
                         <div>
                             <span className="font-medium text-body4 text-gray-600">{project.category.icon} {project.category.title}</span>
@@ -184,7 +188,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
                 {/* About */}
                 <div>
-                    <p className="text-body5 text-gray-400 mb-8">About</p>
+                    <p className="text-body6 uppercase font-medium text-gray-400 mb-8">About</p>
                     <div className=" text-body4 text-gray-600 leading-normal whitespace-pre-line" dangerouslySetInnerHTML={{
                         __html: linkifyHtml(project.description, {
                             className: ' text-blue-500 underline',
@@ -243,7 +247,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
                 {project.capabilities.length > 0 &&
                     <div>
-                        <p className="text-body5 text-gray-400 mb-8">CAPABILITIES</p>
+                        <p className="text-body6 uppercase font-medium text-gray-400 mb-8">CAPABILITIES</p>
                         <div className="flex flex-wrap gap-8">
                             {project.capabilities.map(cap => <Badge key={cap.id} size='sm'>{cap.icon} {cap.title}</Badge>)}
                         </div>
@@ -251,7 +255,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                 <hr className="" />
                 {project.members.length > 0 &&
                     <div>
-                        <p className="text-body5 text-gray-400 mb-8">MAKERS</p>
+                        <p className="text-body6 uppercase font-medium text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
                             {project.members.map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
                                 <Avatar
