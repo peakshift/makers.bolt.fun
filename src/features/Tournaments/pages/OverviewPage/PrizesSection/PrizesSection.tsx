@@ -18,6 +18,9 @@ export default function PrizesSection({ prizes }: Props) {
               <img src={track.image} alt={`${track.title} track prize`} className='h-[64px]' />
               <h3 className="text-body2 text-gray-900 font-bolder">{track.title}</h3>
               <p className="text-body4 text-gray-500">{track.description}</p>
+              <div className="flex gap-8 mt-8">
+                <p className="text-body6 text-gray-500">Sponsored by </p> <img src={track.sponsor.logo} alt='sponsor logo' className='h-16' />
+              </div>
             </div>
             <div className={`md:text-right ${styles.prizes}`}>
               {/* One Prize */}
@@ -88,7 +91,10 @@ const data = {
           title: "Runners UP x2",
           amount: "0.5 BTC"
         }
-      ]
+      ],
+      sponsor: {
+        logo: "https://i.ibb.co/gTX30Rq/fulgur.png"
+      }
     },
     {
       id: 2,
@@ -116,7 +122,10 @@ const data = {
           title: " Design",
           amount: "$1k"
         },
-      ]
+      ],
+      sponsor: {
+        logo: "https://i.ibb.co/gTX30Rq/fulgur.png"
+      }
     },
     {
       id: 3,
@@ -144,7 +153,10 @@ const data = {
           title: " Design",
           amount: "$1k"
         },
-      ]
+      ],
+      sponsor: {
+        logo: "https://i.ibb.co/wRvRQ0h/Frame-251.png"
+      }
     },
   ]
 }
