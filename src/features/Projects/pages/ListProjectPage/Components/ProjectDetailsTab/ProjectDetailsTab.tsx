@@ -10,6 +10,8 @@ import CoverImageInput from "src/Components/Inputs/FilesInputs/CoverImageInput/C
 import ScreenshotsInput from "src/Components/Inputs/FilesInputs/ScreenshotsInput/ScreenshotsInput";
 import { BsLightningChargeFill } from "react-icons/bs";
 import InfoCard from "src/Components/InfoCard/InfoCard";
+import TextInput from "src/Components/Inputs/TextInput/TextInput";
+import TextareaInput from "src/Components/Inputs/TextareaInput/TextareaInput";
 
 interface Props { }
 
@@ -18,6 +20,7 @@ export default function ProjectDetailsTab(props: Props) {
     const { register, formState: { errors, dirtyFields }, control, getValues } = useFormContext<IListProjectForm>();
 
     const isUpdating = !!getValues('id');
+
 
     return (
         <div className="md:col-span-2 flex flex-col gap-24">
@@ -59,75 +62,63 @@ export default function ProjectDetailsTab(props: Props) {
                     <p className="text-body5 font-medium">
                         Project name<sup className="text-red-500">*</sup>
                     </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-                            autoFocus
-                            type='text'
-                            className="input-text"
-                            placeholder='e.g BOLT🔩FUN'
-                            {...register("title")}
-                        />
-                    </div>
+                    <TextInput
+                        className="mt-8"
+                        isError={!!errors.title}
+                        placeholder='e.g BOLT🔩FUN'
+                        {...register("title")}
+                    />
                     {errors.title && <p className="input-error">
                         {errors.title.message}
                     </p>}
                     <p className="text-body5 mt-16 font-medium">
                         Project link<sup className="text-red-500">*</sup>
                     </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-
-                            type='text'
-                            className="input-text"
-                            placeholder='https://lightning.xyz'
-                            {...register("website")}
-                        />
-                    </div>
+                    <TextInput
+                        className="mt-8"
+                        isError={!!errors.website}
+                        placeholder='https://lightning.xyz'
+                        {...register("website")}
+                    />
                     {errors.website && <p className="input-error">
                         {errors.website.message}
                     </p>}
                     <p className="text-body5 mt-16 font-medium">
                         Tagline<sup className="text-red-500">*</sup>
                     </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <input
-                            maxLength={32}
-                            type='text'
-                            className="input-text"
-                            placeholder='Your product’s one liner'
-                            {...register("tagline")}
-                        />
-                        <span className="h-full shrink-0 px-12 text-gray-400 text-body6 font-medium self-center">{getValues('tagline').length} / 32</span>
-                    </div>
+                    <TextInput
+                        className="mt-8"
+                        isError={!!errors.tagline}
+                        placeholder='Your product’s one liner'
+                        {...register("tagline")}
+                    />
                     {errors.tagline && <p className="input-error">
                         {errors.tagline.message}
                     </p>}
                     <p className="text-body5 mt-16 font-medium">
                         Description<sup className="text-red-500">*</sup>
                     </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <textarea
-                            rows={5}
-                            className="input-text !px-16 !py-12"
-                            placeholder='Provide a short description your product...'
-                            {...register("description")}
-                        />
-                    </div>
+                    <TextareaInput
+                        className="mt-8"
+                        isError={!!errors.description}
+                        rows={5}
+                        placeholder='Provide a short description your product...'
+                        {...register("description")}
+                    />
                     {errors.description && <p className="input-error">
                         {errors.description.message}
                     </p>}
                     <p className="text-body5 font-medium mt-16">
                         Project tag<sup className="text-red-500">*</sup>
                     </p>
-                    <div className="input-wrapper mt-8 relative">
-                        <span className="flex flex-col justify-center pl-16 shrink-0">#</span>
-                        <input
-                            type='text'
-                            className="input-text pl-8"
-                            placeholder='my_project_name'
-                            {...register("hashtag")}
-                        />
-                    </div>
+                    <TextInput
+                        className="mt-8"
+                        isError={!!errors.hashtag}
+                        placeholder='my_project_name'
+                        inputClass="pl-8"
+                        renderBefore={() => <span className="flex flex-col justify-center pl-16 shrink-0">#</span>}
+                        {...register("hashtag")}
+                    />
                     {errors.hashtag && <p className="input-error">
                         {errors.hashtag.message}
                     </p>}
@@ -149,93 +140,82 @@ export default function ProjectDetailsTab(props: Props) {
                 <div className="flex flex-col gap-8 mt-24">
 
                     <div>
-                        <div className="input-wrapper mt-8 relative">
-                            <FiTwitter className="text-blue-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='https://twitter.com/'
-                                {...register("twitter")}
-                            />
-                        </div>
+                        <TextInput
+                            className="mt-8"
+                            isError={!!errors.twitter}
+                            renderBefore={() => <FiTwitter className="text-blue-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />}
+                            placeholder='https://twitter.com/project_handle'
+                            {...register("twitter")}
+                        />
                         {errors.twitter && <p className="input-error">
                             {errors.twitter.message}
                         </p>}
                     </div>
 
                     <div>
-                        <div className="input-wrapper mt-8 relative">
-                            <FaDiscord className="text-violet-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='https://discord.com/'
-                                {...register("discord")}
-                            />
-                        </div>
+                        <TextInput
+                            className="mt-8"
+                            isError={!!errors.discord}
+                            renderBefore={() => <FaDiscord className="text-violet-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />}
+                            placeholder='https://discord.com/'
+                            {...register("discord")}
+                        />
                         {errors.discord && <p className="input-error">
                             {errors.discord.message}
                         </p>}
                     </div>
 
                     <div>
-                        <div className="input-wrapper mt-8 relative">
-                            <FiGithub className="text-gray-700 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='https://github.com/'
-                                {...register("github")}
-                            />
-                        </div>
+                        <TextInput
+                            className="mt-8"
+                            isError={!!errors.github}
+                            renderBefore={() => <FiGithub className="text-gray-700 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />}
+                            placeholder='https://github.com/'
+                            {...register("github")}
+                        />
                         {errors.github && <p className="input-error">
                             {errors.github.message}
                         </p>}
                     </div>
                     <div>
-                        <div className="input-wrapper mt-8 relative">
-                            <FaSlack className="text-pink-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='https://slack.com/'
-                                {...register("slack")}
-                            />
-                        </div>
+                        <TextInput
+                            className="mt-8"
+                            isError={!!errors.slack}
+                            renderBefore={() => <FaSlack className="text-pink-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />}
+                            placeholder='https://slack.com/'
+                            {...register("slack")}
+                        />
                         {errors.slack && <p className="input-error">
                             {errors.slack.message}
                         </p>}
                     </div>
                     <div>
-                        <div className="input-wrapper mt-8 relative">
-                            <FaTelegram className="text-teal-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='https://t.me/XXXXXX'
-                                {...register("telegram")}
-                            />
-                        </div>
+                        <TextInput
+                            className="mt-8"
+                            isError={!!errors.telegram}
+                            renderBefore={() => <FaTelegram className="text-teal-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />}
+                            placeholder='https://t.me/XXXXXX'
+                            {...register("telegram")}
+                        />
                         {errors.telegram && <p className="input-error">
                             {errors.telegram.message}
                         </p>}
                     </div>
                     <div>
-                        <div className="input-wrapper mt-8 relative">
-                            <BsLightningChargeFill className="text-yellow-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
-                            <input
-                                type='text'
-                                className="input-text"
-                                placeholder='lightning_address@XXX.com'
-                                {...register("lightning_address")}
-                            />
-                        </div>
+
+                        <TextInput
+                            className="mt-8"
+                            isError={!!errors.lightning_address}
+                            renderBefore={() => <BsLightningChargeFill className="text-yellow-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />}
+                            placeholder='lightning_address@XXX.com'
+                            {...register("lightning_address")}
+                        />
                         {errors.lightning_address && <p className="input-error">
                             {errors.lightning_address.message}
                         </p>}
                     </div>
                 </div>
-            </Card>
+            </Card >
 
             <Card>
                 <h2 className="text-body2 font-bolder">🌶️ Category<sup className="text-red-500">*</sup></h2>
@@ -292,6 +272,6 @@ export default function ProjectDetailsTab(props: Props) {
                     {errors.capabilities && <p className='input-error'>{errors.capabilities?.message}</p>}
                 </div>
             </Card>
-        </div>
+        </div >
     )
 }
