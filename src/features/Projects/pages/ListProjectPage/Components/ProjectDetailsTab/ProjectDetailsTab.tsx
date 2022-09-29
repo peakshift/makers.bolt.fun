@@ -12,12 +12,13 @@ import { BsLightningChargeFill } from "react-icons/bs";
 import InfoCard from "src/Components/InfoCard/InfoCard";
 import TextInput from "src/Components/Inputs/TextInput/TextInput";
 import TextareaInput from "src/Components/Inputs/TextareaInput/TextareaInput";
+import { registerDebounceValidation } from "src/utils/validation";
 
 interface Props { }
 
 export default function ProjectDetailsTab(props: Props) {
 
-    const { register, formState: { errors, dirtyFields }, control, getValues } = useFormContext<IListProjectForm>();
+    const { register, formState: { errors, dirtyFields }, control, getValues, trigger } = useFormContext<IListProjectForm>();
 
     const isUpdating = !!getValues('id');
 
@@ -117,7 +118,7 @@ export default function ProjectDetailsTab(props: Props) {
                         placeholder='my_project_name'
                         inputClass="pl-8"
                         renderBefore={() => <span className="flex flex-col justify-center pl-16 shrink-0">#</span>}
-                        {...register("hashtag")}
+                        {...registerDebounceValidation("hashtag", 1000, trigger, register)}
                     />
                     {errors.hashtag && <p className="input-error">
                         {errors.hashtag.message}
