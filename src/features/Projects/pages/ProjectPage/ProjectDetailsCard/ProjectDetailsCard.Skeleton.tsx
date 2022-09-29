@@ -74,8 +74,7 @@ export default function ProjectDetailsCardSkeleton({ onClose, direction, ...prop
                         }
                     </div>
                 </div>
-                <hr className="my-40" />
-                <div className="text-center h-[100px]">
+                <div className="text-center h-[40px]">
 
                 </div>
             </div>

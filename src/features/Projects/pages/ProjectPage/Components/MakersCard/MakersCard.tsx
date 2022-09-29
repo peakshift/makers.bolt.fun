@@ -16,6 +16,7 @@ export default function MakersCard({ members }: Props) {
             <p className="text-body2 font-bold">👾 Makers</p>
             <div className="mt-16">
                 <div className="flex flex-wrap gap-8">
+                    {members.length === 0 && <p className="text-body4 text-gray-500">Not listed</p>}
                     {members.map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
                         <Avatar
                             width={40}

@@ -14,6 +14,7 @@ import TournamentsCard from "src/features/Profiles/pages/ProfilePage/Tournaments
 import StoriesCard from "src/features/Profiles/pages/ProfilePage/StoriesCard/StoriesCard"
 import MakersCard from "./Components/MakersCard/MakersCard"
 import AboutCard from "./Components/AboutCard/AboutCard"
+import SimilarProjectsCard from "./Components/SimilarProjectsCard/SimilarProjectsCard"
 
 export default function ProjectPage() {
 
@@ -77,6 +78,7 @@ export default function ProjectPage() {
                         </main>
                         <aside className="min-w-0">
                             <MakersCard members={project.members} />
+                            <SimilarProjectsCard id={project.id} />
                         </aside>
                     </>
                     :

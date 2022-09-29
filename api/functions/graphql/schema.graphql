@@ -357,6 +357,7 @@ type Query {
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!
   similarMakers(id: Int!): [User!]!
+  similarProjects(id: Int!): [Project!]!
   tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
 }
 

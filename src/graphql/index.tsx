@@ -476,6 +476,7 @@ export type Query = {
   searchProjects: Array<Project>;
   searchUsers: Array<User>;
   similarMakers: Array<User>;
+  similarProjects: Array<Project>;
   tournamentParticipationInfo: Maybe<ParticipationInfo>;
 };
 
@@ -594,6 +595,11 @@ export type QuerySearchUsersArgs = {
 
 
 export type QuerySimilarMakersArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QuerySimilarProjectsArgs = {
   id: Scalars['Int'];
 };
 
@@ -1079,6 +1085,13 @@ export type ProjectDetailsQueryVariables = Exact<{
 
 
 export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+
+export type SimilarProjectsQueryVariables = Exact<{
+  projectId: Scalars['Int'];
+}>;
+
+
+export type SimilarProjectsQuery = { __typename?: 'Query', similarProjects: Array<{ __typename?: 'Project', id: number, title: string, hashtag: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2763,6 +2776,49 @@ export function useProjectDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type ProjectDetailsQueryHookResult = ReturnType<typeof useProjectDetailsQuery>;
 export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDetailsLazyQuery>;
 export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
+export const SimilarProjectsDocument = gql`
+    query SimilarProjects($projectId: Int!) {
+  similarProjects(id: $projectId) {
+    id
+    title
+    hashtag
+    thumbnail_image
+    category {
+      id
+      icon
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useSimilarProjectsQuery__
+ *
+ * To run a query within a React component, call `useSimilarProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSimilarProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSimilarProjectsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useSimilarProjectsQuery(baseOptions: Apollo.QueryHookOptions<SimilarProjectsQuery, SimilarProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SimilarProjectsQuery, SimilarProjectsQueryVariables>(SimilarProjectsDocument, options);
+      }
+export function useSimilarProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SimilarProjectsQuery, SimilarProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SimilarProjectsQuery, SimilarProjectsQueryVariables>(SimilarProjectsDocument, options);
+        }
+export type SimilarProjectsQueryHookResult = ReturnType<typeof useSimilarProjectsQuery>;
+export type SimilarProjectsLazyQueryHookResult = ReturnType<typeof useSimilarProjectsLazyQuery>;
+export type SimilarProjectsQueryResult = Apollo.QueryResult<SimilarProjectsQuery, SimilarProjectsQueryVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {

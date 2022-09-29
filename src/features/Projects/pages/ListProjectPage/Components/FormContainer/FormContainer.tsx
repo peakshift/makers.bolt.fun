@@ -14,6 +14,7 @@ import UpdateProjectContextProvider from './updateProjectContext'
 import { useNavigate } from 'react-router-dom'
 import { createRoute } from 'src/utils/routing'
 import { nanoid } from "@reduxjs/toolkit";
+import { Helmet } from "react-helmet";
 
 
 interface Props {
@@ -43,9 +44,8 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
     hashtag: yup
         .string()
         .required("please provide a project tag")
-        .transform(v => v ? '#' + v : undefined)
         .matches(
-            /^#[^ !@#$%^&*(),.?":{}|<>]*$/,
+            /^[^ !@#$%^&*(),.?":{}|<>]*$/,
             "your project's tag can only contain letters, numbers and '_’"
         )
         .min(3, "your project tag must be longer than 2 characters.")
@@ -161,7 +161,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
                         tagline: data.tagline,
                         website: data.website,
                         description: data.description,
-                        hashtag: data.hashtag.slice(1),
+                        hashtag: data.hashtag,
                         twitter: data.twitter,
                         discord: data.discord,
                         slack: data.slack,
@@ -191,7 +191,10 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
     if (query.loading)
         return <LoadingPage />
 
-    return (
+    return (<>
+        <Helmet>
+            <title>{isUpdating ? "Update project" : "List a project"}</title>
+        </Helmet>
         <FormProvider {...methods} >
             <UpdateProjectContextProvider permissions={query.data?.getProject.permissions ?? Object.values(ProjectPermissionEnum)}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -199,7 +202,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
                 </form>
             </UpdateProjectContextProvider>
         </FormProvider>
-    )
+    </>)
 }
 
 

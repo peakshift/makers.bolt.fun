@@ -441,6 +441,35 @@ const getLnurlDetailsForProject = extendType({
     }
 })
 
+const similarProjects = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('similarProjects', {
+            type: "Project",
+            args: {
+                id: nonNull(intArg())
+            },
+            async resolve(parent, { id }, ctx) {
+                const currentProject = await prisma.project.findUnique({ where: { id }, select: { category_id: true } })
+
+                return prisma.project.findMany({
+                    where: {
+                        AND: {
+                            id: {
+                                not: id
+                            },
+                            category_id: {
+                                equals: currentProject.category_id
+                            }
+                        }
+                    },
+                    take: 3,
+                })
+            }
+        })
+    }
+})
+
 const TeamMemberInput = inputObjectType({
     name: 'TeamMemberInput',
     definition(t) {
@@ -1083,6 +1112,7 @@ module.exports = {
     getLnurlDetailsForProject,
     getAllCapabilities,
     checkValidProjectHashtag,
+    similarProjects,
 
     // Mutations
     createProject,

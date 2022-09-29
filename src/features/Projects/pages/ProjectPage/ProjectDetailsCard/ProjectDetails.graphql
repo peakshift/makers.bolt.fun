@@ -56,3 +56,17 @@ query ProjectDetails($projectId: Int, $projectTag: String) {
     }
   }
 }
+
+query SimilarProjects($projectId: Int!) {
+  similarProjects(id: $projectId) {
+    id
+    title
+    hashtag
+    thumbnail_image
+    category {
+      id
+      icon
+      title
+    }
+  }
+}
