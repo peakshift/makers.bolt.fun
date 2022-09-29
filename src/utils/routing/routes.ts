@@ -107,7 +107,8 @@ export const PAGES_ROUTES = {
         hottest: "/projects/hottest",
         byCategoryId: "/projects/category/:id",
         listProject: "/projects/list-project",
-        projectPage: "/project/:tag"
+        projectPage: "/project/:tag",
+        catchProject: '/project',
     },
     blog: {
         feed: "/feed",

@@ -101,6 +101,7 @@ function App() {
           <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
           <Route path={PAGES_ROUTES.projects.listProject} element={<ListProjectPage />} />
           <Route path={PAGES_ROUTES.projects.projectPage} element={<ProjectPage />} />
+          <Route path={PAGES_ROUTES.projects.catchProject} element={<Navigate replace to={PAGES_ROUTES.projects.default} />} />
 
           <Route path={PAGES_ROUTES.blog.storyById} element={<PostDetailsPage postType='story' />} />
           <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
