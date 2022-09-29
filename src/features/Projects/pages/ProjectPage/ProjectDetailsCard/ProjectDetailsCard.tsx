@@ -51,10 +51,6 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         skip: !Boolean(projectId)
     });
 
-    useEffect(() => {
-        return () => {
-        }
-    }, [dispatch]);
 
     const closeModal = () => {
         props.onClose?.();

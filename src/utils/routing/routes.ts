@@ -39,6 +39,10 @@ type RouteOptions =
         type: "projects-page"
     }
     | {
+        type: "project",
+        tag: string,
+    }
+    | {
         type: "edit-project",
         id?: number,
     }
@@ -88,6 +92,9 @@ export function createRoute(options: RouteOptions) {
     if (options.type === 'projects-page')
         return '/projects'
 
+    if (options.type === 'project')
+        return `/project/${options.tag}`
+
     if (options.type === 'edit-project')
         return `/projects/list-project` + (options.id ? `?id=${options.id}` : '')
 
@@ -99,7 +106,8 @@ export const PAGES_ROUTES = {
         default: "/projects",
         hottest: "/projects/hottest",
         byCategoryId: "/projects/category/:id",
-        listProject: "/projects/list-project"
+        listProject: "/projects/list-project",
+        projectPage: "/project/:tag"
     },
     blog: {
         feed: "/feed",

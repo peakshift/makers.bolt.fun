@@ -51,12 +51,12 @@ export default function StoriesCard({ stories, isOwner }: Props) {
                 </ul>}
             {stories.length === 0 &&
                 <div className="flex flex-col gap-16 mt-24">
-                    <p className="text-body3 font-medium">
+                    <p className="text-body3 text-gray-500 font-medium">
                         😐 No Stories Added Yet
                     </p>
-                    <p className="text-body5 text-gray-500">
+                    {/* <p className="text-body5 text-gray-500">
                         The maker have not written any stories yet
-                    </p>
+                    </p> */}
                     {isOwner && <Button
                         href='/blog/create-post'
                         color='primary'
