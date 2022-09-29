@@ -38,6 +38,14 @@ export class NotificationsService {
         })
     }
 
+    static warn(msg: string, options?: AlertOptions) {
+        toast.warn(msg, {
+            onClose: options?.onClose,
+            autoClose: options?.autoClose ?? 2500,
+            ...options,
+        })
+    }
+
     static error(msg: string, options?: AlertOptions & Partial<{ error: any }>) {
         if (options?.error && DEBUG) console.log(options?.error)
         toast.error(msg, {

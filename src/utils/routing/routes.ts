@@ -15,6 +15,10 @@ type RouteOptions =
         username?: string,
     }
     | {
+        type: "edit-story",
+        id?: number,
+    }
+    | {
         type: "bounty",
         id: string | number,
         title?: string,
@@ -30,6 +34,13 @@ type RouteOptions =
         type: "profile",
         id: string | number,
         username?: string,
+    }
+    | {
+        type: "projects-page"
+    }
+    | {
+        type: "edit-project",
+        id?: number,
     }
     | {
         type: "edit-profile",
@@ -74,6 +85,12 @@ export function createRoute(options: RouteOptions) {
     if (options.type === 'tournament')
         return `/tournaments/${options.id}` + (options.tab ? `/${options.tab}` : "")
 
+    if (options.type === 'projects-page')
+        return '/projects'
+
+    if (options.type === 'edit-project')
+        return `/projects/list-project` + (options.id ? `?id=${options.id}` : '')
+
     return ""
 }
 
@@ -81,7 +98,8 @@ export const PAGES_ROUTES = {
     projects: {
         default: "/projects",
         hottest: "/projects/hottest",
-        byCategoryId: "/projects/category/:id"
+        byCategoryId: "/projects/category/:id",
+        listProject: "/projects/list-project"
     },
     blog: {
         feed: "/feed",

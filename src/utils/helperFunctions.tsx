@@ -182,3 +182,8 @@ export const getSpanDate = (_date1: string, _date2: string) => {
   return `${dayjs(_date1).format('H:mm')} - ${dayjs(_date2).format('H:mm, Do MMM')}`
 
 }
+
+
+export function removeArrayItemAtIndex<T>(arr: T[], indexToRemove: number) {
+  return [...arr.slice(0, indexToRemove), ...arr.slice(indexToRemove + 1)]
+}

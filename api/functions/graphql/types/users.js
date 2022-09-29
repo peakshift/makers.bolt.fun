@@ -1,6 +1,6 @@
 
 const { prisma } = require('../../../prisma');
-const { objectType, extendType, intArg, nonNull, inputObjectType, interfaceType, list, enumType } = require("nexus");
+const { objectType, extendType, intArg, nonNull, inputObjectType, stringArg, interfaceType, list, enumType } = require("nexus");
 const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 const { ImageInput } = require('./misc');
@@ -244,6 +244,29 @@ const profile = extendType({
         })
     }
 })
+
+const searchUsers = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('searchUsers', {
+            type: "User",
+            args: {
+                value: nonNull(stringArg())
+            },
+            async resolve(_, { value }) {
+                return prisma.user.findMany({
+                    where: {
+                        name: {
+                            contains: value,
+                            mode: "insensitive"
+                        }
+                    },
+                })
+            }
+        })
+    }
+})
+
 
 const similarMakers = extendType({
     type: "Query",
@@ -530,6 +553,7 @@ module.exports = {
     // Queries
     me,
     profile,
+    searchUsers,
     similarMakers,
     getAllMakersRoles,
     getAllMakersSkills,

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
 import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
+import { ProjectListedModal } from "src/features/Projects/pages/ListProjectPage/Components/ProjectListedModal";
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
 import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
 import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
@@ -55,11 +56,11 @@ export const ALL_MODALS = {
   ConfirmModal,
   VoteCard,
   NoWeblnModal,
+  ProjectListedModal,
 
   // User Wallets Keys
   LinkingAccountModal,
   RemoveWalletKeyModal,
-
   // Text Editor Modals
   InsertImageModal,
   InsertVideoModal,

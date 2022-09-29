@@ -11,6 +11,9 @@ import { getMockSenderEnhancer } from "@rpldy/mock-sender";
 import ScreenshotThumbnail from "./ScreenshotThumbnail";
 import { FiCamera } from "react-icons/fi";
 import { Control, Path, useController } from "react-hook-form";
+import { ImageInput } from "src/graphql";
+import { fetchUploadImageUrl } from "src/api/uploading";
+import { removeArrayItemAtIndex } from "src/utils/helperFunctions";
 
 
 
@@ -20,15 +23,14 @@ const mockSenderEnhancer = getMockSenderEnhancer({
 
 const MAX_UPLOAD_COUNT = 4 as const;
 
-export interface ScreenshotType {
-    id: string,
-    name: string,
-    url: string;
+
+interface Image extends ImageInput {
+    local_id?: string
 }
 
 interface Props {
-    value: ScreenshotType[],
-    onChange: (new_value: ScreenshotType[]) => void
+    value: Image[],
+    onChange: (new_value: Image[]) => void
 }
 
 
@@ -46,10 +48,10 @@ export default function ScreenshotsInput(props: Props) {
 
     return (
         <Uploady
+            accept="image/*"
             multiple={true}
             inputFieldName='file'
             grouped={false}
-            enhancer={mockSenderEnhancer}
             listeners={{
                 [UPLOADER_EVENTS.BATCH_ADD]: (batch) => {
                     setUploadingCount(v => v + batch.items.length)
@@ -57,31 +59,22 @@ export default function ScreenshotsInput(props: Props) {
                 [UPLOADER_EVENTS.ITEM_FINALIZE]: () => setUploadingCount(v => v - 1),
                 [UPLOADER_EVENTS.ITEM_FINISH]: (item) => {
 
-                    // Just for mocking purposes
-                    const dataUrl = URL.createObjectURL(item.file);
-
-                    const { id, filename, variants } = item?.uploadResponse?.data?.result ?? {
-                        id: Math.random().toString(),
-                        filename: item.file.name,
-                        variants: [
-                            "",
-                            dataUrl
-                        ]
-                    }
-                    if (id) {
-                        onChange([...uploadedFiles, { id, name: filename, url: variants[1] }].slice(-MAX_UPLOAD_COUNT))
+                    const { id, filename, variants } = item?.uploadResponse?.data?.result;
+                    const url = (variants as string[]).find(v => v.includes('public'));
+                    if (id && url) {
+                        onChange([...uploadedFiles, { id, local_id: id, name: filename, url: url }].slice(-MAX_UPLOAD_COUNT))
                     }
                 }
             }}
         >
 
             <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-16 mt-24">
-                {canUploadMore && <DropZoneButton />}
-                {uploadedFiles.map(f => <ScreenshotThumbnail
-                    key={f.id}
+                <DropZoneButton extraProps={{ canUploadMore }} />
+                {uploadedFiles.map((f, idx) => <ScreenshotThumbnail
+                    key={f.local_id}
                     url={f.url}
                     onCancel={() => {
-                        onChange(uploadedFiles.filter(file => file.id !== f.id))
+                        onChange(removeArrayItemAtIndex(uploadedFiles, idx))
                     }} />)}
                 <ImagePreviews />
                 {(placeholdersCount > 0) &&
@@ -92,21 +85,22 @@ export default function ScreenshotsInput(props: Props) {
 }
 
 const DropZone = forwardRef<any, any>((props, ref) => {
-    const { onClick, ...buttonProps } = props;
+    const { canUploadMore, onClick, ...buttonProps } = props;
 
 
     useRequestPreSend(async (data) => {
-
         const filename = data.items?.[0].file.name ?? ''
 
-        // const url = await fetchUploadUrl({ filename });
+        const res = await fetchUploadImageUrl({ filename });
+
         return {
             options: {
                 destination: {
-                    url: "URL"
-                }
+                    url: res.uploadURL
+                },
             }
         }
+
     })
 
     const onZoneClick = useCallback(
@@ -117,6 +111,8 @@ const DropZone = forwardRef<any, any>((props, ref) => {
         },
         [onClick]
     );
+
+    if (!canUploadMore) return null
 
     return <UploadDropZone
         {...buttonProps}

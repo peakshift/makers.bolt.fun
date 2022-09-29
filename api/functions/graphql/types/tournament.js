@@ -76,8 +76,6 @@ const TournamentMakerHackingStatusEnum = enumType({
     },
 });
 
-
-
 const TournamentEvent = objectType({
     name: 'TournamentEvent',
     definition(t) {
@@ -208,6 +206,28 @@ const getTournamentById = extendType({
             resolve(_, { id }) {
                 return prisma.tournament.findUnique({
                     where: { id }
+                })
+            }
+        })
+    }
+})
+
+
+const getTournamentToRegister = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getTournamentToRegister', {
+            type: Tournament,
+            args: {
+            },
+            resolve() {
+
+                return prisma.tournament.findMany({
+                    where: {
+                        end_date: {
+                            gt: new Date()
+                        },
+                    }
                 })
             }
         })
@@ -538,6 +558,7 @@ module.exports = {
     getMakersInTournament,
     getProjectsInTournament,
     tournamentParticipationInfo,
+    getTournamentToRegister,
 
     // Mutations
     registerInTournament,
