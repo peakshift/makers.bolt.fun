@@ -4,7 +4,7 @@ import { MdLocalFireDepartment } from 'react-icons/md'
 import Button from 'src/Components/Button/Button'
 import Card from 'src/Components/Card/Card'
 import Lightbox from 'src/Components/Lightbox/Lightbox'
-import { ProjectDetailsQuery, ProjectLaunchStatusEnum, } from 'src/graphql'
+import { ProjectDetailsQuery, ProjectLaunchStatusEnum, ProjectPermissionEnum, } from 'src/graphql'
 import { openModal } from 'src/redux/features/modals.slice'
 import { setVoteAmount } from 'src/redux/features/vote.slice'
 import { numberFormatter } from 'src/utils/helperFunctions'
@@ -45,6 +45,9 @@ export default function AboutCard({ project }: Props) {
         }))
     }
 
+
+    const canEdit = project.permissions.includes(ProjectPermissionEnum.UpdateInfo);
+
     return (
         <Card defaultPadding={false}>
             {/* Cover Image */}
@@ -62,7 +65,7 @@ export default function AboutCard({ project }: Props) {
                 {/* Title & Basic Info */}
                 <div className="flex flex-col gap-24 relative">
                     <div className="flex flex-wrap justify-end items-center gap-16">
-                        <Button size="sm" color="gray" href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>
+                        {canEdit && <Button size="sm" color="gray" href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>}
                         <Button size="sm" variant='outline' color='gray' className='w-full md:w-auto' onClick={() => onVote()}>
                             <MdLocalFireDepartment />{<span className="align-middle w-[4ch]"> {numberFormatter(project.votes_count)}</span>}
                         </Button>

@@ -22,7 +22,7 @@ export default function ProjectPage() {
     const dispatch = useAppDispatch();
 
     const { data, loading, error } = useProjectDetailsQuery({
-        variables: { projectId: Number(tag!) },
+        variables: { projectId: null, projectTag: tag! },
         onCompleted: data => {
             dispatch(setProject(data.getProject))
         },

@@ -143,7 +143,8 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
 
     const query = useProjectDetailsQuery({
         variables: {
-            projectId: id!
+            projectId: id!,
+            projectTag: null,
         },
         skip: !isUpdating,
         onCompleted: (res) => {

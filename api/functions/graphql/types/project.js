@@ -273,9 +273,11 @@ const getProject = extendType({
         t.nonNull.field('getProject', {
             type: "Project",
             args: {
-                id: nonNull(intArg())
+                id: intArg(),
+                tag: stringArg(),
             },
-            resolve(_, { id }) {
+            resolve(_, { id, tag }) {
+                if (tag) return prisma.project.findFirst({ where: { hashtag: tag } })
                 return prisma.project.findUnique({
                     where: { id }
                 })

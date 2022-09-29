@@ -1286,7 +1286,8 @@ export interface NexusGenArgTypes {
       type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
     }
     getProject: { // args
-      id: number; // Int!
+      id?: number | null; // Int
+      tag?: string | null; // String
     }
     getProjectsInTournament: { // args
       roleId?: number | null; // Int

@@ -41,7 +41,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
     const { data, loading, error } = useProjectDetailsQuery({
-        variables: { projectId: projectId! },
+        variables: { projectId: projectId!, projectTag: null },
         onCompleted: data => {
             dispatch(setProject(data.getProject))
         },
@@ -69,9 +69,6 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     if (loading || !data?.getProject)
         return <ProjectCardSkeleton onClose={closeModal} direction={direction} isPageModal={props.isPageModal} />;
 
-    const onConnectWallet = async () => {
-        Wallet_Service.connectWallet()
-    }
 
     const project = data.getProject;
 
@@ -105,10 +102,6 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         },
     ];
 
-
-
-    const canEdit = project.permissions.includes(ProjectPermissionEnum.UpdateInfo);
-
     const onVote = (votes?: number) => {
         dispatch(setVoteAmount(votes ?? 10));
         dispatch(openModal({
@@ -117,21 +110,6 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                 initVotes: votes
             }
         }))
-    }
-
-
-    const onClaim = () => {
-        if (!isWalletConnected) {
-            dispatch(scheduleModal({
-                Modal: 'Claim_GenerateSignatureCard',
-            }))
-            dispatch(openModal({
-                Modal: 'Login_ScanningWalletCard'
-            }))
-        } else
-            dispatch(openModal({
-                Modal: 'Claim_GenerateSignatureCard',
-            }))
     }
 
     return (
@@ -241,15 +219,16 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     />
                 </>}
 
-                {project.capabilities.length > 0 &&
+                {/* {project.capabilities.length > 0 &&
                     <div>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">CAPABILITIES</p>
                         <div className="flex flex-wrap gap-8">
                             {project.capabilities.map(cap => <Badge key={cap.id} size='sm'>{cap.icon} {cap.title}</Badge>)}
                         </div>
                     </div>}
-                <hr className="" />
-                {project.members.length > 0 &&
+                */}
+                <Button color='gray' fullWidth href={createRoute({ type: "project", tag: project.hashtag })} onClick={props.onClose}>Show More</Button>
+                {/* {project.members.length > 0 &&
                     <div>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
@@ -267,7 +246,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                                 />
                             </Link>)}
                         </div>
-                    </div>}
+                    </div>} */}
                 {/* <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project</h3>
                     <Button
