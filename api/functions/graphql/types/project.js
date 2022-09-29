@@ -463,7 +463,7 @@ const similarProjects = extendType({
                             }
                         }
                     },
-                    take: 3,
+                    take: 5,
                 })
             }
         })
