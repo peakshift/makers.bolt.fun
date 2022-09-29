@@ -3,13 +3,13 @@ import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { useFormContext } from "react-hook-form"
 import { IListProjectForm } from "../FormContainer/FormContainer";
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { tabs } from '../../ListProjectPage'
 import { NotificationsService } from 'src/services'
 import { useAppDispatch } from 'src/utils/hooks';
 import { openModal } from 'src/redux/features/modals.slice';
 import { useCreateProjectMutation, useUpdateProjectMutation, UpdateProjectInput } from 'src/graphql'
-import { Link } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
 import { wrapLink } from 'src/utils/hoc';
 
@@ -23,8 +23,8 @@ export default function SaveChangesCard(props: Props) {
 
     const { handleSubmit, formState: { isDirty, }, reset, getValues, watch } = useFormContext<IListProjectForm>();
     const dispatch = useAppDispatch();
-
     const isUpdating = useMemo(() => !!getValues('id'), [getValues]);
+    const [navigateToCreatedProject, setNavigateToCreatedProject] = useState(false)
 
     const [update, updatingStatus] = useUpdateProjectMutation();
     const [create, creatingStatus] = useCreateProjectMutation()
@@ -41,7 +41,6 @@ export default function SaveChangesCard(props: Props) {
 
     const clickSubmit = handleSubmit<IListProjectForm>(async data => {
         try {
-
             const input: UpdateProjectInput = {
                 ...data,
                 members: data.members.map(m => ({ id: m.id, role: m.role })),
@@ -70,6 +69,7 @@ export default function SaveChangesCard(props: Props) {
                     }
                 }
             }))
+            setNavigateToCreatedProject(true);
         }
     }, (errors) => {
         NotificationsService.error("Please fill all the required fields");
@@ -114,6 +114,8 @@ export default function SaveChangesCard(props: Props) {
                 {isLoading ? "Listing your product..." : "List your product"}
             </Button>
     }, [clickSubmit, isDirty, isLoading, isUpdating, props.currentTab, props.onNext])
+
+    if (navigateToCreatedProject) return <Navigate to={createRoute({ type: "project", tag: hashtag })} />
 
 
     return (
