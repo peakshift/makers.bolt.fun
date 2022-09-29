@@ -107,6 +107,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         dispatch(openModal({
             Modal: 'VoteCard', props: {
                 projectId: project.id,
+                title: project.title,
                 initVotes: votes
             }
         }))

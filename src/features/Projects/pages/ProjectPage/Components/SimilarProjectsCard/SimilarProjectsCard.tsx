@@ -15,6 +15,8 @@ export default function SimilarProjectsCard({ id }: Props) {
 
     if (query.loading) return null;
 
+    if (query.data?.similarProjects.length === 0) return null;
+
     return (
         <Card onlyMd>
             <h3 className="text-body2 font-bolder">🚀 Similar projects</h3>
