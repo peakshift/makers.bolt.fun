@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import Badge from 'src/Components/Badge/Badge'
 import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
 import { ProjectDetailsQuery } from 'src/graphql'
@@ -7,13 +8,15 @@ import { createRoute } from 'src/utils/routing'
 
 interface Props {
     members: ProjectDetailsQuery['getProject']['members']
+    recruit_roles: ProjectDetailsQuery['getProject']['recruit_roles']
+
 }
 
 
-export default function MakersCard({ members }: Props) {
+export default function MakersCard({ members, recruit_roles }: Props) {
     return (
-        <Card>
-            <p className="text-body2 font-bold">👾 Makers</p>
+        <Card onlyMd>
+            <p className="text-body6 max-md:uppercase max-md:text-gray-400 md:text-body2 font-bold">👾 Makers</p>
             <div className="mt-16">
                 <div className="flex flex-wrap gap-8">
                     {members.length === 0 && <p className="text-body4 text-gray-500">Not listed</p>}
@@ -30,6 +33,15 @@ export default function MakersCard({ members }: Props) {
                             </div>}
                         />
                     </Link>)}
+                </div>
+            </div>
+            <p className="text-body6 uppercase font-medium text-gray-400 mt-24">Open roles</p>
+            <div className="mt-8">
+                {recruit_roles.length === 0 && <>
+                    <p className="text-gray-700 text-body4">No open roles for now</p>
+                </>}
+                <div className="flex flex-wrap gap-16">
+                    {recruit_roles.map(role => <Badge key={role.id} size='sm'>{role.icon} {role.title}</Badge>)}
                 </div>
             </div>
         </Card>

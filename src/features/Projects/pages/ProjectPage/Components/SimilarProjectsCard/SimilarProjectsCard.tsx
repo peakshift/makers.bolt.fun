@@ -27,7 +27,7 @@ export default function SimilarProjectsCard({ id }: Props) {
                             <img className='w-48 aspect-square rounded-12 border border-gray-100' alt='' src={project.thumbnail_image} />
                             <div className='overflow-hidden'>
                                 <p className="text-body4 text-gray-800 font-medium whitespace-nowrap overflow-hidden text-ellipsis">{project.title}</p>
-                                <p className="text-body5 text-gray-500 font-medium">{project.category.icon} {project.category.title}</p>
+                                <p className="text-body5 text-gray-500">{project.category.icon} {project.category.title}</p>
                             </div>
                         </li>
                     </Link>

@@ -10,7 +10,7 @@ interface Props {
 
 export default function OpenRolesCard({ recruit_roles }: Props) {
     return (
-        <Card>
+        <Card onlyMd>
             <p className="text-body2 font-bold">👀  Open roles</p>
             <div className="mt-16">
                 {recruit_roles.length === 0 && <>

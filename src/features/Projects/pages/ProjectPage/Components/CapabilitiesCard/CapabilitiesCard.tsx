@@ -11,8 +11,8 @@ interface Props {
 
 export default function CapabilitiesCard({ capabilities }: Props) {
     return (
-        <Card>
-            <p className="text-body2 font-bold">🦾  Capabilities</p>
+        <Card onlyMd>
+            <p className="text-body6 max-md:uppercase max-md:text-gray-400 md:text-body2 font-bold">🦾  Capabilities</p>
             <div className="mt-16">
                 {capabilities.length === 0 && <>
                     <p className="text-gray-700 text-body4">No capabilities added</p>

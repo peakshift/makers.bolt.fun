@@ -220,16 +220,15 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     />
                 </>}
 
-                {/* {project.capabilities.length > 0 &&
+                {project.capabilities.length > 0 &&
                     <div>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">CAPABILITIES</p>
                         <div className="flex flex-wrap gap-8">
                             {project.capabilities.map(cap => <Badge key={cap.id} size='sm'>{cap.icon} {cap.title}</Badge>)}
                         </div>
                     </div>}
-                */}
-                <Button color='gray' fullWidth href={createRoute({ type: "project", tag: project.hashtag })} onClick={props.onClose}>Show More</Button>
-                {/* {project.members.length > 0 &&
+
+                {project.members.length > 0 &&
                     <div>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
@@ -247,7 +246,10 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                                 />
                             </Link>)}
                         </div>
-                    </div>} */}
+                    </div>}
+
+                <Button color='gray' fullWidth href={createRoute({ type: "project", tag: project.hashtag })} onClick={props.onClose}>View Project Details</Button>
+
                 {/* <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project</h3>
                     <Button

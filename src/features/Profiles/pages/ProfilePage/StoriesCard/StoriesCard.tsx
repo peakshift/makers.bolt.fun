@@ -21,11 +21,12 @@ interface Props {
             tags: Array<Pick<Tag, 'id' | 'icon' | 'title'>>
         }
     >
+    onlyMd?: boolean
 }
 
-export default function StoriesCard({ stories, isOwner }: Props) {
+export default function StoriesCard({ stories, isOwner, onlyMd }: Props) {
     return (
-        <Card>
+        <Card onlyMd={onlyMd}>
             <p className="text-body2 font-bold">Stories ({stories.length})</p>
             {stories.length > 0 &&
                 <ul className="">

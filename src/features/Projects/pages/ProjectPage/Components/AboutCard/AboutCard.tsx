@@ -50,10 +50,10 @@ export default function AboutCard({ project }: Props) {
     const canEdit = project.permissions.includes(ProjectPermissionEnum.UpdateInfo);
 
     return (
-        <Card defaultPadding={false}>
+        <Card defaultPadding={false} onlyMd>
             {/* Cover Image */}
             <div className="relative rounded-t-12 md:rounded-t-16 h-[120px] lg:h-[160px]">
-                <img className="w-full h-full object-cover rounded-t-12 md:rounded-t-16" src={project.cover_image} alt="" />
+                <img className="w-full h-full object-cover rounded-12 md:rounded-0 md:rounded-t-16" src={project.cover_image} alt="" />
                 <div className="absolute top-16 md:top-24 left-24 flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
                     {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
                     {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
@@ -62,12 +62,12 @@ export default function AboutCard({ project }: Props) {
                     <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image} alt="" />
                 </div>
             </div>
-            <div className="p-24 flex flex-col gap-24">
+            <div className="pt-24  md:p-24 flex flex-col gap-24">
                 {/* Title & Basic Info */}
                 <div className="flex flex-col gap-24 relative">
                     <div className="flex flex-wrap justify-end items-center gap-16">
                         {canEdit && <Button size="sm" color="gray" href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>}
-                        <Button size="sm" variant='outline' color='gray' className='w-full md:w-auto hover:!text-red-500 hover:!border-red-200 hover:!bg-red-50' onClick={() => onVote()}>
+                        <Button size="sm" variant='outline' color='gray' className='hidden md:block hover:!text-red-500 hover:!border-red-200 hover:!bg-red-50' onClick={() => onVote()}>
                             <MdLocalFireDepartment />{<span className="align-middle w-[4ch]"> {numberFormatter(project.votes_count)}</span>}
                         </Button>
                     </div>
@@ -75,9 +75,12 @@ export default function AboutCard({ project }: Props) {
                         <a href={project.website} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project.title}</h3></a>
                         <p className="text-body4 text-gray-600">{project.tagline}</p>
                         <div>
-                            <span className="font-medium text-body4 text-gray-600">{project.category.icon} {project.category.title}</span>
+                            <span className="font-medium text-body5 text-gray-900">{project.category.icon} {project.category.title}</span>
                         </div>
                     </div>
+                    <Button size="sm" fullWidth variant='outline' color='gray' className='md:hidden hover:!text-red-500 hover:!border-red-200 hover:!bg-red-50' onClick={() => onVote()}>
+                        <MdLocalFireDepartment />{<span className="align-middle w-[4ch]"> {numberFormatter(project.votes_count)}</span>}
+                    </Button>
                 </div>
 
 

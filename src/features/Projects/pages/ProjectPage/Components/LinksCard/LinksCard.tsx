@@ -41,9 +41,9 @@ export default function LinksCard({ links }: Props) {
     ];
 
     return (
-        <Card>
-            <p className="text-body2 font-bold">🔗  Links</p>
-            <div className="mt-16">
+        <Card onlyMd>
+            <p className="text-body2 font-bold mb-16 hidden md:block">🔗  Links</p>
+            <div className="">
                 {linksList.length === 0 && <>
                     <p className="text-gray-700 text-body4">No links added</p>
                 </>}

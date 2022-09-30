@@ -60,7 +60,7 @@ export default function ProjectPage() {
                 }
                 <meta property="og:image" content={project.cover_image} />
             </Helmet>
-            <div className={`page-container`}
+            <div className={`page-container bg-white md:bg-inherit`}
             >
                 <div className={` ${styles.grid}`}
                 >{isMediumScreen ?
@@ -68,7 +68,6 @@ export default function ProjectPage() {
                         <aside>
                             <LinksCard links={project} />
                             <CapabilitiesCard capabilities={project.capabilities} />
-                            <OpenRolesCard recruit_roles={project.recruit_roles} />
                             <TournamentsCard tournaments={[]} />
                         </aside>
                         <main className="min-w-0">
@@ -77,7 +76,7 @@ export default function ProjectPage() {
                             <StoriesCard stories={[]} />
                         </main>
                         <aside className="min-w-0">
-                            <MakersCard members={project.members} />
+                            <MakersCard members={project.members} recruit_roles={project.recruit_roles} />
                             <SimilarProjectsCard id={project.id} />
                         </aside>
                     </>
@@ -87,10 +86,12 @@ export default function ProjectPage() {
                             <AboutCard project={project} />
                             <LinksCard links={project} />
                             <CapabilitiesCard capabilities={project.capabilities} />
-                            <TournamentsCard tournaments={[]} />
-                            <MakersCard members={project.members} />
-                            <OpenRolesCard recruit_roles={project.recruit_roles} />
-                            <StoriesCard stories={[]} />
+                            <hr className="bg-gray-100" />
+                            <MakersCard members={project.members} recruit_roles={project.recruit_roles} />
+                            <hr className="bg-gray-100" />
+                            <TournamentsCard onlyMd tournaments={[]} />
+                            <StoriesCard onlyMd stories={[]} />
+                            <SimilarProjectsCard id={project.id} />
                         </main>
                     </>
                     }</div>
