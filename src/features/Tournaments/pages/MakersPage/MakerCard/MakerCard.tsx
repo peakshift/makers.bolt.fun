@@ -62,10 +62,15 @@ export default function MakerCard({ maker, isMe }: Props) {
         <Card>
             <div className="flex flex-wrap gap-24 items-start">
                 <div className="shrink-0 w-64 md:w-80">
-                    <Avatar src={maker.user.avatar} width={'100%'}></Avatar>
+                    <Link to={createRoute({ type: "profile", id: maker.user.id, username: maker.user.name })}>
+                        <Avatar src={maker.user.avatar} width={'100%'}></Avatar>
+                    </Link>
                 </div>
                 <div className="flex flex-col gap-4 flex-1 overflow-hidden">
-                    <p className="text-body2 text-gray-900 font-bold overflow-hidden text-ellipsis">{maker.user.name}</p>
+
+                    <Link to={createRoute({ type: "profile", id: maker.user.id, username: maker.user.name })}>
+                        <p className="text-body2 text-gray-900 font-bold overflow-hidden text-ellipsis">{maker.user.name}</p>
+                    </Link>
                     {maker.user.jobTitle ? <p className="text-body4 text-gray-600 font-medium">{maker.user.jobTitle}</p>
                         :
                         <p className="text-body4 text-gray-400 font-medium">No job title</p>}
