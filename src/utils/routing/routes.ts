@@ -15,7 +15,7 @@ type RouteOptions =
         username?: string,
     }
     | {
-        type: "edit-story",
+        type: "write-story",
         id?: number,
     }
     | {
@@ -62,6 +62,10 @@ export function createRoute(options: RouteOptions) {
             + (!onlyId ? "-" : "")
             + `${options.id}`
     }
+
+    if (options.type === 'write-story')
+        return "/story/write?type=story"
+
     if ((options.type === "post" && options.postType.toLowerCase() === 'bounty')
         || options.type === "bounty")
         return `/blog/post/bounty/${options.id}`

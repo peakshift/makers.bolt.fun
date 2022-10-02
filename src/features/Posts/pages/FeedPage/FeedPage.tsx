@@ -91,7 +91,7 @@ export default function FeedPage() {
                         <div className="pb-16 md:overflow-y-scroll sticky-side-element">
                             <h1 className="text-h2 font-bolder mb-24">Discover</h1>
                             <Button
-                                href={PAGES_ROUTES.blog.writeStory}
+                                href={createRoute({ type: "write-story" })}
                                 color='primary'
                                 fullWidth
                             >

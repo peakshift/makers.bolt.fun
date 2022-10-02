@@ -8,6 +8,7 @@ import { NotificationsService } from "src/services/notifications.service";
 import { useAppDispatch } from "src/utils/hooks";
 import { useReduxEffect } from "src/utils/hooks/useReduxEffect";
 import { openModal } from "src/redux/features/modals.slice";
+import { createRoute } from "src/utils/routing";
 
 
 const CONFIRM_DELETE_STORY = createAction<{ confirmed?: boolean }>('DELETE_STORY_CONFIRMED')({})
@@ -31,7 +32,7 @@ export const useUpdateStory = (story: Story) => {
             cover_image: story.cover_image ? { id: null, name: null, url: story.cover_image } : null,
         }))
 
-        navigate("/blog/create-post?type=story")
+        navigate(createRoute({ type: "write-story" }))
     };
 
     const onConfirmDelete = useCallback(({ payload: { confirmed } }: typeof CONFIRM_DELETE_STORY) => {
