@@ -104,7 +104,7 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tempore quia 
 
 ### What important lessons did I learn?
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`,
-        tags: ['standup']
+        tags: ['standups']
     },
 }
 ]
