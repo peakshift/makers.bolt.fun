@@ -82,7 +82,7 @@ export default function ProjectListedModal({ onClose, direction, project, ...pro
                     color='primary'
                     fullWidth
                     newTab
-                    href={createRoute({ type: "edit-story" })}
+                    href={createRoute({ type: "write-story" })}
                 >✍️ Write a story</Button>
                 <Button
                     color='white'
