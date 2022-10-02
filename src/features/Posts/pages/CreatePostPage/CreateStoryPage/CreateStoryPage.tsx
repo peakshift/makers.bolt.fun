@@ -23,7 +23,7 @@ const schema = yup.object({
     title: yup.string().trim().required().min(10, 'Story title must be 2+ words').transform(v => v.replace(/(\r\n|\n|\r)/gm, "")),
     tags: yup.array().of(tagSchema).required().min(1, 'Add at least one tag'),
     body: yup.string().required("Write some content in the post").min(50, 'Post must contain at least 10+ words'),
-    cover_image: imageSchema.nullable(true),
+    cover_image: imageSchema.default(null).nullable(),
 }).required();
 
 

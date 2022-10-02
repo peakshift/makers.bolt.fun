@@ -1,12 +1,15 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 import Card from 'src/Components/Card/Card'
-import { IStoryFormInputs } from '../../CreateStoryPage/CreateStoryPage';
+import { useOfficialTagsQuery } from 'src/graphql';
+import { CreateStoryType } from '../../CreateStoryPage/CreateStoryPage';
 
 export default function TemplatesCard() {
 
 
-    const { formState: { isDirty }, reset } = useFormContext<IStoryFormInputs>();
+    const { formState: { isDirty }, reset } = useFormContext<CreateStoryType>();
+    const officalTags = useOfficialTagsQuery();
 
     const clickTemplate = (template: typeof templates[number]) => {
         if (!isDirty || window.confirm("Your current unsaved changes will be lost, are you sure you want to continue?")) {
@@ -15,15 +18,25 @@ export default function TemplatesCard() {
                 is_published: false,
                 title: template.value.title,
                 body: template.value.body,
+                tags: officalTags.data?.officialTags.filter(tag => template.value.tags.includes(tag.title)) ?? []
             })
         }
     }
+
+
 
     return (
         <Card>
             <p className="text-body2 font-bolder">Story templates</p>
             <ul className=''>
-                {templates.map(template =>
+                {officalTags.loading && Array(3).fill(0).map((_, idx) => <li key={idx} className='py-16 border-b-[1px] border-gray-200 last-of-type:border-b-0 last-of-type:pb-0  ' >
+                    <p
+                        className="hover:underline"                     >
+                        <Skeleton width="12ch" />
+                    </p>
+                    <p className="text-body5 text-gray-400 mt-4"><Skeleton width="25ch" /></p>
+                </li>)}
+                {!officalTags.loading && templates.map(template =>
                     <li key={template.id} className='py-16 border-b-[1px] border-gray-200 last-of-type:border-b-0 last-of-type:pb-0  ' >
                         <p
                             className="hover:underline"
@@ -54,7 +67,8 @@ I'm a [Your age] years old [Your job] who have been working on this field for [Y
 I usually like to [Your hobby] and I also love to participate in [Some activity you like]
 
 ### Why I joined this community?
-The main reason is because [Reason for joining]`
+The main reason is because [Reason for joining]`,
+        tags: ['introduction']
     },
 },
 {
@@ -71,8 +85,9 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam doloremque e
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tempore quia et dolore accusantium blanditiis odio, ab nihil. Expedita animi labore voluptates, officiis tenetur totam?
 
 ### A final thing in mind
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`
-    },
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`,
+        tags: ["product"]
+    }
 },
 {
     id: 3,
@@ -88,7 +103,8 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam doloremque e
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tempore quia et dolore accusantium blanditiis odio, ab nihil. Expedita animi labore voluptates, officiis tenetur totam?
 
 ### What important lessons did I learn?
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`,
+        tags: ['standup']
     },
 }
 ]
