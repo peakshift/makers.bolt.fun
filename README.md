@@ -32,9 +32,19 @@ We are using serverless functions to serve our GraphQl endpoint to the client ap
 
 ## Running locally
 
-First, you need to have a Postegre Database to store the data, then you need to put the connection string in an .env file in your project root directory.
-The connection string will be of the format:
-postgresql://username:password@server/database_name
+To run the project locally with your own local DB, you will need to first put a few env variables in an env file that should be created in /envs/server directory, named `local.env`
+
+The required variables that needs to be put there are:
+
+```
+NODE_ENV = "development"
+DATABASE_PROXY_URL = "YOUR DB CONNECTION STRING"
+JWT_SECRET = "SOME RANDOM JWT SECRET"
+LNURL_AUTH_HOST = "http://localhost:8888/dev/login"
+CLOUDFLARE_IMAGE_ACCOUNT_ID = "FOR UPLOADING IMAGES"
+CLOUDFLARE_IMAGE_API_KEY = "FOR UPLOADING IMAGES"
+CLOUDFLARE_IMAGE_ACCOUNT_HASH = "FOR UPLOADING IMAGES"
+```
 
 Then you need to run the migrations against your database.
 use the command:

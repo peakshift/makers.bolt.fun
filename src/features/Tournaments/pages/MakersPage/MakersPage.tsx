@@ -20,7 +20,7 @@ export default function MakersPage() {
                 {query.loading ?
                     <MakerCardSkeleton />
                     :
-                    query.data?.me ?
+                    (query.data?.me && !!query.data.tournamentParticipationInfo) ?
                         <MakerCard isMe maker={{ user: query.data.me as User, hacking_status: query.data.tournamentParticipationInfo?.hacking_status! }} />
                         : null
                 }
