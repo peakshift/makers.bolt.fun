@@ -16,6 +16,7 @@
     "errors"
     "preview-switch"
     "form"
+    "templates"
     "drafts";
 
   :global {
@@ -31,6 +32,9 @@
     #drafts {
       grid-area: drafts;
     }
+    #templates {
+      grid-area: templates;
+    }
   }
 
   @include gt-xl {
@@ -40,6 +44,7 @@
     grid-template-areas:
       "preview-switch preview-switch"
       "form errors"
+      "form templates"
       "form drafts"
       "form .";
 
