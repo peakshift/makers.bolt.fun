@@ -100,6 +100,7 @@ export default function ProjectPage() {
                             <hr className="bg-gray-100" />
                             <StoriesCard onlyMd stories={[]} />
                             <TournamentsCard onlyMd tournaments={[]} />
+                            <hr className="bg-gray-100" />
                             <SimilarProjectsCard id={project.id} />
                         </main>
                     </>
