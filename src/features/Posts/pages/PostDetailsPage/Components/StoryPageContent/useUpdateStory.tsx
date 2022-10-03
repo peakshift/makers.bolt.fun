@@ -30,6 +30,8 @@ export const useUpdateStory = (story: Story) => {
         dispatch(stageStory({
             ...story,
             cover_image: story.cover_image ? { id: null, name: null, url: story.cover_image } : null,
+            project: null,
+            // TODO: UPDATE WHEN API READY
         }))
 
         navigate(createRoute({ type: "write-story" }))

@@ -1,10 +1,10 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRef, useState } from "react";
-import { ErrorBoundary, withErrorBoundary } from "react-error-boundary";
+import { withErrorBoundary } from "react-error-boundary";
 import { FormProvider, NestedValue, Resolver, useForm } from "react-hook-form";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
-import { CreateStoryMutationVariables, Post_Type } from "src/graphql";
+import { Category, CreateStoryMutationVariables, MyProjectsQuery, Post_Type, Project } from "src/graphql";
 import { StorageService } from "src/services";
 import { useAppSelector } from "src/utils/hooks";
 import { Override } from "src/utils/interfaces";
@@ -28,17 +28,21 @@ const schema = yup.object({
 
 type ApiStoryInput = NonNullable<CreateStoryMutationVariables['data']>;
 
+type ProjectInput = Pick<Project, 'id' | 'title' | 'thumbnail_image'> & { category: Pick<Category, 'id' | 'title' | 'icon'> }
+
 export type IStoryFormInputs = {
     id: ApiStoryInput['id']
     title: ApiStoryInput['title']
     body: ApiStoryInput['body']
     cover_image: NestedValue<NonNullable<ApiStoryInput['cover_image']>> | null
     tags: NestedValue<ApiStoryInput['tags']>
+    project: NestedValue<ProjectInput> | null
     is_published: ApiStoryInput['is_published']
 }
 
 export type CreateStoryType = Override<IStoryFormInputs, {
     cover_image: ApiStoryInput['cover_image'],
+    project: ProjectInput | null
     tags: { title: string }[]
 }>
 

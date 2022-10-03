@@ -31,6 +31,7 @@ interface BaseUser {
   linkedin: String
   location: String
   name: String!
+  projects: [Project!]!
   role: String
   roles: [MakerRole!]!
   similar_makers: [User!]!
@@ -216,6 +217,7 @@ type MyProfile implements BaseUser {
   name: String!
   nostr_prv_key: String
   nostr_pub_key: String
+  projects: [Project!]!
   role: String
   roles: [MakerRole!]!
   similar_makers: [User!]!
@@ -409,6 +411,7 @@ input StoryInputType {
   cover_image: ImageInput
   id: Int
   is_published: Boolean
+  project_id: Int
   tags: [String!]!
   title: String!
 }
@@ -553,6 +556,7 @@ type User implements BaseUser {
   linkedin: String
   location: String
   name: String!
+  projects: [Project!]!
   role: String
   roles: [MakerRole!]!
   similar_makers: [User!]!

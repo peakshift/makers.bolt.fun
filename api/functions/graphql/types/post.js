@@ -128,6 +128,7 @@ const StoryInputType = inputObjectType({
         })
         t.nonNull.list.nonNull.string('tags');
         t.boolean('is_published')
+        t.int('project_id')
     }
 })
 

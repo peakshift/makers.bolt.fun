@@ -2,7 +2,7 @@
 import { useController } from "react-hook-form";
 // import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select'
-import { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
+import { OnChangeValue, StylesConfig, components, OptionProps, } from "react-select";
 import { OfficialTagsQuery, useOfficialTagsQuery } from "src/graphql";
 import React from "react";
 

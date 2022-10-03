@@ -14,6 +14,7 @@ import { StorageService } from 'src/services';
 import { useThrottledCallback } from '@react-hookz/web';
 import { CreateStoryType } from '../../CreateStoryPage/CreateStoryPage';
 import CoverImageInput from 'src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput';
+import TagProjectInput from '../TagProjectInput/TagProjectInput';
 
 interface Props {
     isUpdating?: boolean;
@@ -91,6 +92,7 @@ export default function StoryForm(props: Props) {
                     tags: data.tags.map(t => t.title),
                     is_published: publish_now,
                     cover_image: data.cover_image,
+                    project_id: data.project?.id,
                 },
             }
         })
@@ -168,6 +170,18 @@ export default function StoryForm(props: Props) {
                                         onChange={onChange}
                                         onBlur={onBlur}
                                     />
+                                )}
+                            />
+
+                            <Controller
+                                control={control}
+                                name="project"
+                                render={({ field: { onChange, value, onBlur } }) => (
+                                    <TagProjectInput
+                                        classes={{ container: 'mt-16' }}
+                                        value={value}
+                                        onChange={onChange}
+                                        onBlur={onBlur} />
                                 )}
                             />
 
