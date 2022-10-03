@@ -52,7 +52,7 @@ export default function StoriesCard({ stories, isOwner, onlyMd }: Props) {
                 </ul>}
             {stories.length === 0 &&
                 <div className="flex flex-col gap-16 mt-24">
-                    <p className="text-body3 text-gray-500 font-medium">
+                    <p className="text-body4 text-gray-600">
                         😐 No Stories Added Yet
                     </p>
                     {/* <p className="text-body5 text-gray-500">

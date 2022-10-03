@@ -40,7 +40,7 @@ export default function MakersCard({ members, recruit_roles }: Props) {
                 {recruit_roles.length === 0 && <>
                     <p className="text-gray-700 text-body4">No open roles for now</p>
                 </>}
-                <div className="flex flex-wrap gap-16">
+                <div className="flex flex-wrap gap-8">
                     {recruit_roles.map(role => <Badge key={role.id} size='sm'>{role.icon} {role.title}</Badge>)}
                 </div>
             </div>

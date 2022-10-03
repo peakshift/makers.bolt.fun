@@ -17,7 +17,7 @@ export default function CapabilitiesCard({ capabilities }: Props) {
                 {capabilities.length === 0 && <>
                     <p className="text-gray-700 text-body4">No capabilities added</p>
                 </>}
-                <div className="flex flex-wrap gap-16">
+                <div className="flex flex-wrap gap-8 md:gap-16">
                     {capabilities.map(cap => <Badge key={cap.id} size='sm'>{cap.icon} {cap.title}</Badge>)}
                 </div>
             </div>

@@ -22,7 +22,7 @@ export default function SimilarProjectsCard({ id }: Props) {
             <h3 className="text-body2 font-bolder">🚀 Similar projects</h3>
             <ul className='flex flex-col'>
                 {query.data?.similarProjects.map(project => {
-                    return <Link key={project.id} to={createRoute({ type: "project", tag: project.hashtag })} className="border-b py-16 last-of-type:border-b-0 last-of-type:pb-0">
+                    return <Link key={project.id} to={createRoute({ type: "project", tag: project.hashtag })} className="md:border-b py-16 last-of-type:border-b-0 last-of-type:pb-0">
                         <li className="flex items-center gap-12">
                             <img className='w-48 aspect-square rounded-12 border border-gray-100' alt='' src={project.thumbnail_image} />
                             <div className='overflow-hidden'>

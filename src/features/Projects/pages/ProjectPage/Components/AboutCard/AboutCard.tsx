@@ -10,6 +10,7 @@ import { setVoteAmount } from 'src/redux/features/vote.slice'
 import { numberFormatter } from 'src/utils/helperFunctions'
 import { useAppDispatch } from 'src/utils/hooks'
 import { createRoute } from 'src/utils/routing'
+import LinksCard from '../LinksCard/LinksCard'
 
 interface Props {
     project: Pick<ProjectDetailsQuery['getProject'],
@@ -25,6 +26,12 @@ interface Props {
         | "tagline"
         | "website"
         | "votes_count"
+        | 'discord'
+        | 'website'
+        | 'github'
+        | 'twitter'
+        | 'slack'
+        | 'telegram'
     >
 }
 
@@ -52,7 +59,7 @@ export default function AboutCard({ project }: Props) {
     return (
         <Card defaultPadding={false} onlyMd>
             {/* Cover Image */}
-            <div className="relative rounded-t-12 md:rounded-t-16 h-[120px] lg:h-[160px]">
+            <div className="hidden md:block relative rounded-t-12 md:rounded-t-16 h-[120px] lg:h-[160px]">
                 <img className="w-full h-full object-cover rounded-12 md:rounded-0 md:rounded-t-16" src={project.cover_image} alt="" />
                 <div className="absolute top-16 md:top-24 left-24 flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
                     {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
@@ -82,7 +89,9 @@ export default function AboutCard({ project }: Props) {
                         <MdLocalFireDepartment />{<span className="align-middle w-[4ch]"> {numberFormatter(project.votes_count)}</span>}
                     </Button>
                 </div>
-
+                <div className="md:hidden">
+                    <LinksCard links={project} />
+                </div>
 
                 {/* About */}
                 <div>

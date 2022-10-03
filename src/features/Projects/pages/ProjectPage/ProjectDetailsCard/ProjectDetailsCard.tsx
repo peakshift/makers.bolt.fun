@@ -120,14 +120,16 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             {/* Cover Image */}
             <div className="relative h-[120px] lg:h-[80px]">
                 <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
-                <div className="absolute top-16 md:top-24 left-24 flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
-                    {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
-                    {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
-                </div>
-                <div className="absolute top-16 md:top-24 right-24 flex gap-8">
-                    {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
-                        <Link className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={() => props.onClose?.()} to={createRoute({ type: "edit-project", id: project.id })}><FiEdit2 /></Link>}
-                    <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button>
+                <div className="absolute w-full px-16 md:px-24 top-16 md:top-24 flex justify-between items-center">
+                    <div className="flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
+                        {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
+                        {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
+                    </div>
+                    <div className="flex gap-8">
+                        {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
+                            <Link className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={() => props.onClose?.()} to={createRoute({ type: "edit-project", id: project.id })}><FiEdit2 /></Link>}
+                        <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button>
+                    </div>
                 </div>
             </div>
             <div className="p-24 flex flex-col gap-24">
@@ -248,7 +250,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         </div>
                     </div>}
 
-                <Button color='gray' fullWidth href={createRoute({ type: "project", tag: project.hashtag })} onClick={props.onClose}>View Project Details</Button>
+                <Button color='white' fullWidth href={createRoute({ type: "project", tag: project.hashtag })} onClick={props.onClose}>View project details</Button>
 
                 {/* <div className="text-center">
                     <h3 className="text-body4 font-regular">Are you the creator of this project</h3>
