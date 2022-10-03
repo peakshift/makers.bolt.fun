@@ -18,6 +18,9 @@ export default function PrizesSection({ prizes }: Props) {
               <img src={track.image} alt={`${track.title} track prize`} className='h-[64px]' />
               <h3 className="text-body2 text-gray-900 font-bolder">{track.title}</h3>
               <p className="text-body4 text-gray-500">{track.description}</p>
+              <div className="flex gap-8 mt-8">
+                <p className="text-body6 text-gray-500">Sponsored by </p> <img src={track.sponsor.logo} alt='sponsor logo' className='h-16' />
+              </div>
             </div>
             <div className={`md:text-right ${styles.prizes}`}>
               {/* One Prize */}
@@ -75,7 +78,7 @@ const data = {
     {
       id: 1,
       title: "Grand Champion",
-      description: "Our Grand Champion, a.k.a “The Legend of Lightning” will be the best in show, la créme de la créme. Every project entered in the tournament will be eligible for this award, no matter what track they choose.",
+      description: "The Legend of Lightning will be the best in show, la créme de la créme. Every project entered will be eligible for this award, no matter what track they choose.",
       image: "https://i.ibb.co/2gMLDmJ/grand-prize.png",
       prizes: [
         {
@@ -88,12 +91,15 @@ const data = {
           title: "Runners UP x2",
           amount: "0.5 BTC"
         }
-      ]
+      ],
+      sponsor: {
+        logo: "https://i.ibb.co/gTX30Rq/fulgur.png"
+      }
     },
     {
       id: 2,
       title: "Global Adoption Track",
-      description: "This prize track is aimed at solving issues surrounding the global adoption of bitcoin - focusing on scalability, and product market fit. Makers can let their imaginations run wild with either lightning or on-chain technology, as well as driving adoption either via online or locally based solutions.",
+      description: "Focusing on scalability and product market fit, this track allows makers to let their imaginations run wild with either lightning or on-chain technology.",
       image: "https://i.ibb.co/LnTQCv2/global-adoption-prize.png",
       prizes: [
         {
@@ -116,12 +122,15 @@ const data = {
           title: " Design",
           amount: "$1k"
         },
-      ]
+      ],
+      sponsor: {
+        logo: "https://i.ibb.co/gTX30Rq/fulgur.png"
+      }
     },
     {
       id: 3,
       title: "Building for Africa",
-      description: "With an estimated population of ~1.4bn inhabitants, Africa has poised itself as ripe for bitcoin adoption. In partnership with the African Bitcoin Conference 22, this track seeks to encourage makers to build solutions that solve local challenges & increase bitcoin adoption in Africa.",
+      description: "In partnership with ABC 22, this track seeks to encourage makers to build solutions that solve African challenges & increase bitcoin adoption by Africans.",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
       prizes: [
         {
@@ -144,7 +153,10 @@ const data = {
           title: " Design",
           amount: "$1k"
         },
-      ]
+      ],
+      sponsor: {
+        logo: "https://i.ibb.co/wRvRQ0h/Frame-251.png"
+      }
     },
   ]
 }
