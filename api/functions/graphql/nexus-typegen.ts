@@ -660,6 +660,7 @@ export interface NexusGenFieldTypes {
     excerpt: string; // String!
     id: number; // Int!
     is_published: boolean | null; // Boolean
+    project: NexusGenRootTypes['Project'] | null; // Project
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
@@ -1051,6 +1052,7 @@ export interface NexusGenFieldTypeNames {
     excerpt: 'String'
     id: 'Int'
     is_published: 'Boolean'
+    project: 'Project'
     tags: 'Tag'
     title: 'String'
     type: 'String'

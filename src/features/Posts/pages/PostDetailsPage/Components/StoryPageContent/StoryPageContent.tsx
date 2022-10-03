@@ -1,4 +1,4 @@
-import Header from "src/features/Posts/Components/PostCard/Header/Header"
+
 import { Story } from "src/features/Posts/types"
 import { marked } from 'marked';
 import styles from '../PageContent/styles.module.scss'
@@ -10,6 +10,7 @@ import { useUpdateStory } from './useUpdateStory'
 import { FaPen } from "react-icons/fa";
 import DOMPurify from 'dompurify';
 import Card from "src/Components/Card/Card";
+import PostPageHeader from "../PostPageHeader/PostPageHeader";
 
 
 interface Props {
@@ -29,6 +30,11 @@ export default function StoryPageContent({ story }: Props) {
         <>
             <div id="content" className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"> </div>
             <Card id="content" onlyMd className="relative max">
+                <PostPageHeader
+                    className="mb-16"
+                    author={story.author}
+                    project={story.project}
+                    date={story.createdAt} />
                 {story.cover_image &&
                     <img src={story.cover_image}
                         className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
@@ -52,7 +58,6 @@ export default function StoryPageContent({ story }: Props) {
                         </MenuItem>
                     </Menu>}
                     <h1 className="text-[42px] leading-[58px] font-bolder">{story.title}</h1>
-                    <Header size="lg" showTimeAgo={false} author={story.author} date={story.createdAt} />
                     {story.tags.length > 0 && <div className="flex flex-wrap gap-8">
                         {story.tags.map(tag => <Badge key={tag.id} size='sm'>
                             {tag.title}

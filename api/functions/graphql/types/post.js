@@ -114,6 +114,13 @@ const Story = objectType({
 
         });
 
+        t.field('project', {
+            type: "Project",
+            resolve(parent) {
+                return null
+            }
+        })
+
     },
 })
 

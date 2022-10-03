@@ -19,6 +19,12 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       type
       cover_image
       is_published
+      project {
+        id
+        title
+        thumbnail_image
+        hashtag
+      }
       # comments_count
       # comments {
       #   id

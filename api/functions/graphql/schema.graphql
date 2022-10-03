@@ -399,6 +399,7 @@ type Story implements PostBase {
   excerpt: String!
   id: Int!
   is_published: Boolean
+  project: Project
   tags: [Tag!]!
   title: String!
   type: String!
