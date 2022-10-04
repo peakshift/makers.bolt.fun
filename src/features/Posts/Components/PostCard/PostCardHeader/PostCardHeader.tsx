@@ -31,18 +31,18 @@ export default function PostCardHeader(props: Props) {
                 <Link to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
                     <Avatar width={24} src={props.author.avatar} />
                 </Link>
-                {props.project && <Link className='-ml-12' to={createRoute({ type: 'projects-page', })}>
+                {props.project && <Link className='-ml-12' to={createRoute({ type: "project", tag: props.project.hashtag })}>
                     <Avatar src={props.project.thumbnail_image} width={24} />
                 </Link>}
             </span>
             <span className='flex gap-4'>
                 <Link className='hover:underline' to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
-                    <p className="text-gray-900 text-body5 font-medium">{trimText(props.author.name, 30)}</p>
+                    <p className="text-gray-900 text-body5 font-medium">{trimText(props.author.name, 20)}</p>
                 </Link>
                 {props.project && <>
                     <span className="text-body5 text-gray-500 font-medium">for</span>
-                    <Link className='hover:underline' to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
-                        <p className="text-gray-900 text-body5 font-medium">{trimText(props.project.title, 30)}</p>
+                    <Link className='hover:underline' to={createRoute({ type: "project", tag: props.project.hashtag })}>
+                        <p className="text-gray-900 text-body5 font-medium">{trimText(props.project.title, 15)}</p>
                     </Link>
                 </>}
             </span>
