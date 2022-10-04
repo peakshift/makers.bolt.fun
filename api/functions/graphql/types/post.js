@@ -536,10 +536,12 @@ const createStory = extendType({
                                 cover_image: '',
                                 excerpt,
                                 is_published: was_published || is_published,
-                                project: {
+                                project: project_id ? {
                                     connect: {
                                         id: project_id,
-                                    }
+                                    },
+                                } : {
+                                    disconnect: true
                                 },
                                 tags: {
                                     connectOrCreate:
