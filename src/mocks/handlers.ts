@@ -104,11 +104,11 @@ export const handlers = [
 
     graphql.query<ProjectDetailsQuery, ProjectDetailsQueryVariables>('ProjectDetails', async (req, res, ctx) => {
         await delay()
-        const { projectId } = req.variables
+        const { projectId, projectTag } = req.variables
 
         return res(
             ctx.data({
-                getProject: getProject(projectId) as any
+                getProject: getProject(projectId, projectTag) as any
             })
         )
     }),

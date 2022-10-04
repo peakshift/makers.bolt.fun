@@ -1,8 +1,5 @@
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { ComponentProps } from 'react'
-import { NestedValue } from 'react-hook-form'
 import { FaChevronDown, FaRegTrashAlt, } from 'react-icons/fa';
-import UsersInput from 'src/Components/Inputs/UsersInput/UsersInput'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import { Team_Member_Role } from 'src/graphql';
 import { Value } from './TeamMembersInput'
