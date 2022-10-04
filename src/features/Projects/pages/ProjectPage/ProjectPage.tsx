@@ -70,7 +70,7 @@ export default function ProjectPage() {
                     <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image} alt="" />
                 </div>
             </div>
-            <div className={`content-container md:pt-32 bg-white md:bg-inherit`}
+            <div className={`content-container pb-32 md:pt-32 bg-white md:bg-inherit`}
             >
                 <div className={` ${styles.grid}`}
                 >{isMediumScreen ?

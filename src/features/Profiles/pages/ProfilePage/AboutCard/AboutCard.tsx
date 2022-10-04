@@ -100,11 +100,11 @@ export default function AboutCard({ user, isOwner }: Props) {
                             </a>
                                 :
                                 <CopyToClipboard
+                                    key={idx}
                                     text={link.value}
                                     onCopy={() => NotificationsService.info(" Copied to clipboard", { icon: "📋" })}
                                 >
                                     <button
-                                        key={idx}
                                         onClick={() => { }}
                                         className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
                                     >

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Badge from 'src/Components/Badge/Badge'
 import Card from 'src/Components/Card/Card'
 import Avatar from 'src/features/Profiles/Components/Avatar/Avatar'
+import { sortMembersByRole } from 'src/features/Projects/utils/helperFunctions'
 import { ProjectDetailsQuery } from 'src/graphql'
 import { createRoute } from 'src/utils/routing'
 
@@ -20,7 +21,7 @@ export default function MakersCard({ members, recruit_roles }: Props) {
             <div className="mt-16">
                 <div className="flex flex-wrap gap-8">
                     {members.length === 0 && <p className="text-body4 text-gray-500">Not listed</p>}
-                    {members.map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
+                    {sortMembersByRole(members).map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
                         <Avatar
                             width={40}
                             src={m.user.avatar}

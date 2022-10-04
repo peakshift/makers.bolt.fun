@@ -72,7 +72,6 @@ const BaseUser = interfaceType({
                 }).then(d => d.map(item => item.tournament))
             }
         })
-
         t.nonNull.list.nonNull.field('projects', {
             type: "Project",
             resolve: async (parent) => {

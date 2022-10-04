@@ -179,7 +179,7 @@ export const users: (User & MyProfile)[] = [{
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
     similar_makers,
-    projects,
+    projects: projects.slice(0, 3),
 },
 {
     id: 441,
@@ -219,7 +219,7 @@ export const users: (User & MyProfile)[] = [{
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
     similar_makers,
-    projects,
+    projects: projects.slice(0, 3),
 },
 {
     id: 422,
@@ -258,7 +258,7 @@ export const users: (User & MyProfile)[] = [{
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
     similar_makers,
-    projects,
+    projects: projects.slice(0, 3),
 },
 {
     id: 511,
@@ -297,7 +297,7 @@ export const users: (User & MyProfile)[] = [{
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
     similar_makers,
-    projects,
+    projects: projects.slice(0, 3),
 }]
 
 
