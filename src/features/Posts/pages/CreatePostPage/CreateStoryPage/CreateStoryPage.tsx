@@ -56,6 +56,7 @@ function CreateStoryPage() {
         story: state.staging.story || storageService.get()
     }))
 
+
     const formMethods = useForm<CreateStoryType>({
         resolver: yupResolver(schema) as Resolver<CreateStoryType>,
         shouldFocusError: false,
@@ -66,6 +67,7 @@ function CreateStoryPage() {
             tags: story?.tags ?? [],
             body: story?.body ?? '',
             is_published: story?.is_published ?? false,
+            project: story?.project,
         },
     });
 

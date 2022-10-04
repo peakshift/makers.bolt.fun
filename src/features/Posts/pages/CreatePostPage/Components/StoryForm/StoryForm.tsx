@@ -203,8 +203,8 @@ export default function StoryForm(props: Props) {
                         disabled={loading}
                     >
                         {props.isUpdating ?
-                            "Update" :
-                            "Publish"
+                            (loading ? "Updating..." : "Update") :
+                            (loading ? "Publishing..." : "Publish")
                         }
                     </Button>
                     {!props.isPublished &&
