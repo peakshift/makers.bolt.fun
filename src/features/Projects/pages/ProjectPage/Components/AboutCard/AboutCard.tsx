@@ -69,10 +69,10 @@ export default function AboutCard({ project }: Props) {
                     <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image} alt="" />
                 </div>
             </div>
-            <div className="pt-24  md:p-24 flex flex-col gap-24">
+            <div className="md:p-24 md:pt-0 flex flex-col gap-24">
                 {/* Title & Basic Info */}
                 <div className="flex flex-col gap-24 relative">
-                    <div className="flex flex-wrap justify-end items-center gap-16">
+                    <div className="flex flex-wrap justify-end items-center gap-16 min-h-[40px] mt-12">
                         {canEdit && <Button size="sm" color="gray" href={createRoute({ type: "edit-project", id: project.id })}>Edit Project</Button>}
                         <Button size="sm" variant='outline' color='gray' className='hidden md:block hover:!text-red-500 hover:!border-red-200 hover:!bg-red-50' onClick={() => onVote()}>
                             <MdLocalFireDepartment />{<span className="align-middle w-[4ch]"> {numberFormatter(project.votes_count)}</span>}
