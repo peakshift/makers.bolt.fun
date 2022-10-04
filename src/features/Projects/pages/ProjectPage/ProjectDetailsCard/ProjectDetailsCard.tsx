@@ -23,6 +23,7 @@ import Avatar from 'src/features/Profiles/Components/Avatar/Avatar';
 import { Link } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
 import { IoMdClose } from 'react-icons/io';
+import { sortMembersByRole } from 'src/features/Projects/utils/helperFunctions';
 
 
 interface Props extends ModalCard {
@@ -231,14 +232,14 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     </div>}
 
                 {project.members.length > 0 &&
-                    <div>
+                    <div className='relative'>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
-                            {project.members.map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
+                            {sortMembersByRole(project.members).map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
                                 <Avatar
                                     width={40}
                                     src={m.user.avatar}
-                                    renderTooltip={() => <div className='bg-white px-12 py-8 border border-gray-200 rounded-12 flex flex-wrap gap-12 shadow-lg'>
+                                    renderTooltip={() => <div className='bg-white px-12 py-8 border border-gray-200 rounded-12 flex flex-wrap gap-12 shadow-lg relative z-10'>
                                         <Avatar width={48} src={m.user.avatar} />
                                         <div className='overflow-hidden'>
                                             <p className={`text-black font-medium overflow-hidden text-ellipsis`}>{m.user.name}</p>

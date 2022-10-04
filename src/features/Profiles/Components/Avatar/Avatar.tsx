@@ -16,7 +16,9 @@ export default function Avatar({ src, alt, className, width = 40, renderTooltip 
         setTooltipRef,
         setTriggerRef,
         visible,
-    } = usePopperTooltip();
+    } = usePopperTooltip({
+
+    });
 
     return (
         <>
@@ -28,7 +30,7 @@ export default function Avatar({ src, alt, className, width = 40, renderTooltip 
                 (renderTooltip && visible) && (
                     <div
                         ref={setTooltipRef}
-                        {...getTooltipProps({ className: 'tooltip-container' })}
+                        {...getTooltipProps({ className: 'tooltip-container z-10' })}
                     >
                         <div {...getArrowProps({ className: 'tooltip-arrow' })} />
                         {renderTooltip()}
