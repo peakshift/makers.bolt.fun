@@ -48,6 +48,7 @@ export type BaseUser = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
   similar_makers: Array<User>;
@@ -325,6 +326,7 @@ export type MyProfile = BaseUser & {
   name: Scalars['String'];
   nostr_prv_key: Maybe<Scalars['String']>;
   nostr_pub_key: Maybe<Scalars['String']>;
+  projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
   similar_makers: Array<User>;
@@ -813,6 +815,7 @@ export type User = BaseUser & {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
   similar_makers: Array<User>;
@@ -1020,7 +1023,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -2282,6 +2285,17 @@ export const ProfileDocument = gql`
       thumbnail_image
       start_date
       end_date
+    }
+    projects {
+      id
+      hashtag
+      title
+      thumbnail_image
+      category {
+        id
+        icon
+        title
+      }
     }
     similar_makers {
       id

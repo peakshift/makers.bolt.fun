@@ -12,6 +12,7 @@ import SkillsCard from "./SkillsCard/SkillsCard"
 import TournamentsCard from "./TournamentsCard/TournamentsCard"
 import { MEDIA_QUERIES } from "src/utils/theme"
 import SimilarMakersCard from "./SimilarMakersCard/SimilarMakersCard"
+import MakerProjectsCard from "./MakerProjectsCard/MakerProjectsCard"
 
 export default function ProfilePage() {
 
@@ -65,6 +66,7 @@ export default function ProfilePage() {
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
                         </main>
                         <aside className="min-w-0">
+                            <MakerProjectsCard projects={profileQuery.data.profile.projects} isOwner={isOwner} />
                             <SimilarMakersCard makers={profileQuery.data.profile.similar_makers} />
                         </aside>
                     </>
@@ -74,6 +76,7 @@ export default function ProfilePage() {
                             <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
                             <RolesCard roles={profileQuery.data.profile.roles} isOwner={isOwner} />
                             <SkillsCard skills={profileQuery.data.profile.skills} isOwner={isOwner} />
+                            <MakerProjectsCard projects={profileQuery.data.profile.projects} isOwner={isOwner} />
                             <StoriesCard stories={profileQuery.data.profile.stories} isOwner={isOwner} />
                         </main>
                     </>

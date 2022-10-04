@@ -72,6 +72,19 @@ const BaseUser = interfaceType({
                 }).then(d => d.map(item => item.tournament))
             }
         })
+        t.nonNull.list.nonNull.field('projects', {
+            type: "Project",
+            resolve: async (parent) => {
+                return prisma.projectMember.findMany({
+                    where: {
+                        userId: parent.id
+                    },
+                    include: {
+                        project: true
+                    }
+                }).then(d => d.map(item => item.project))
+            }
+        })
         t.nonNull.list.nonNull.field('similar_makers', {
             type: "User",
             resolve(parent,) {

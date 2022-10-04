@@ -17,6 +17,17 @@ query profile($profileId: Int!) {
       start_date
       end_date
     }
+    projects {
+      id
+      hashtag
+      title
+      thumbnail_image
+      category {
+        id
+        icon
+        title
+      }
+    }
     similar_makers {
       id
       name

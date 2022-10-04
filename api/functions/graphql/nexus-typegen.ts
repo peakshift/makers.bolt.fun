@@ -548,6 +548,7 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     nostr_prv_key: string | null; // String
     nostr_pub_key: string | null; // String
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     similar_makers: NexusGenRootTypes['User'][]; // [User!]!
@@ -744,6 +745,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     similar_makers: NexusGenRootTypes['User'][]; // [User!]!
@@ -781,6 +783,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     similar_makers: NexusGenRootTypes['User'][]; // [User!]!
@@ -937,6 +940,7 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     nostr_prv_key: 'String'
     nostr_pub_key: 'String'
+    projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
     similar_makers: 'User'
@@ -1133,6 +1137,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
     similar_makers: 'User'
@@ -1170,6 +1175,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
     similar_makers: 'User'
