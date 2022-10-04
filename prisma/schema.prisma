@@ -162,6 +162,7 @@ model Project {
   members       ProjectMember[]
   recruit_roles ProjectRecruitRoles[]
   tournaments   TournamentProject[]
+  stories       Story[]
 }
 
 model ProjectRecruitRoles {
@@ -222,6 +223,9 @@ model Story {
   user_id Int?
 
   comments PostComment[] @relation("StoryComment")
+
+  project    Project? @relation(fields: [project_id], references: [id])
+  project_id Int?
 }
 
 model Question {
