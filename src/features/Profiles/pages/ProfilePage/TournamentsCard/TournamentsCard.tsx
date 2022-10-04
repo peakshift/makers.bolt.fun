@@ -13,12 +13,13 @@ interface Props {
         | 'end_date'
     >[]
     isOwner?: boolean;
+    onlyMd?: boolean;
 }
 
-export default function TournamentsCard({ tournaments, isOwner }: Props) {
+export default function TournamentsCard({ tournaments, isOwner, onlyMd }: Props) {
 
     return (
-        <Card>
+        <Card onlyMd={onlyMd}>
             <p className="text-body2 font-bold">🏆  Tournaments </p>
             <div className="mt-16">
                 {tournaments.length === 0 && <>

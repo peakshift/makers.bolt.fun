@@ -635,6 +635,7 @@ export interface NexusGenFieldTypes {
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     searchUsers: NexusGenRootTypes['User'][]; // [User!]!
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
+    similarProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     tournamentParticipationInfo: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
   }
   Question: { // field return type
@@ -1027,6 +1028,7 @@ export interface NexusGenFieldTypeNames {
     searchProjects: 'Project'
     searchUsers: 'User'
     similarMakers: 'User'
+    similarProjects: 'Project'
     tournamentParticipationInfo: 'ParticipationInfo'
   }
   Question: { // field return type name
@@ -1295,7 +1297,8 @@ export interface NexusGenArgTypes {
       type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
     }
     getProject: { // args
-      id: number; // Int!
+      id?: number | null; // Int
+      tag?: string | null; // String
     }
     getProjectsInTournament: { // args
       roleId?: number | null; // Int
@@ -1332,6 +1335,9 @@ export interface NexusGenArgTypes {
       value: string; // String!
     }
     similarMakers: { // args
+      id: number; // Int!
+    }
+    similarProjects: { // args
       id: number; // Int!
     }
     tournamentParticipationInfo: { // args

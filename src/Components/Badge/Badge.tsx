@@ -23,7 +23,7 @@ const badgrColor: UnionToObjectKeys<Props, 'color'> = {
 }
 
 const badgeSize: UnionToObjectKeys<Props, 'size'> = {
-    sm: "px-8 py-4 text-body6",
+    sm: "px-12 py-4 text-body5",
     md: "px-16 py-8 text-body4",
     lg: "px-24 py-12 text-body3"
 }

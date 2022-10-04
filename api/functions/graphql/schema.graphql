@@ -344,7 +344,7 @@ type Query {
   getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
-  getProject(id: Int!): Project!
+  getProject(id: Int, tag: String): Project!
   getProjectsInTournament(roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentProjectsResponse!
   getTournamentById(id: Int!): Tournament!
   getTournamentToRegister: [Tournament!]!
@@ -359,6 +359,7 @@ type Query {
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!
   similarMakers(id: Int!): [User!]!
+  similarProjects(id: Int!): [Project!]!
   tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
 }
 

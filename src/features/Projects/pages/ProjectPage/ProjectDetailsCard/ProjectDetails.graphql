@@ -1,5 +1,5 @@
-query ProjectDetails($projectId: Int!) {
-  getProject(id: $projectId) {
+query ProjectDetails($projectId: Int, $projectTag: String) {
+  getProject(id: $projectId, tag: $projectTag) {
     id
     title
     tagline
@@ -53,6 +53,20 @@ query ProjectDetails($projectId: Int!) {
       id
       title
       icon
+    }
+  }
+}
+
+query SimilarProjects($projectId: Int!) {
+  similarProjects(id: $projectId) {
+    id
+    title
+    hashtag
+    thumbnail_image
+    category {
+      id
+      icon
+      title
     }
   }
 }

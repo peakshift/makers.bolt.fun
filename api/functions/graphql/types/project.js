@@ -273,9 +273,11 @@ const getProject = extendType({
         t.nonNull.field('getProject', {
             type: "Project",
             args: {
-                id: nonNull(intArg())
+                id: intArg(),
+                tag: stringArg(),
             },
-            resolve(_, { id }) {
+            resolve(_, { id, tag }) {
+                if (tag) return prisma.project.findFirst({ where: { hashtag: tag } })
                 return prisma.project.findUnique({
                     where: { id }
                 })
@@ -434,6 +436,35 @@ const getLnurlDetailsForProject = extendType({
                     metadata: lnurlDetails.data.metadata,
                     commentAllowed: lnurlDetails.data.commentAllowed,
                 };
+            }
+        })
+    }
+})
+
+const similarProjects = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('similarProjects', {
+            type: "Project",
+            args: {
+                id: nonNull(intArg())
+            },
+            async resolve(parent, { id }, ctx) {
+                const currentProject = await prisma.project.findUnique({ where: { id }, select: { category_id: true } })
+
+                return prisma.project.findMany({
+                    where: {
+                        AND: {
+                            id: {
+                                not: id
+                            },
+                            category_id: {
+                                equals: currentProject.category_id
+                            }
+                        }
+                    },
+                    take: 5,
+                })
             }
         })
     }
@@ -1081,6 +1112,7 @@ module.exports = {
     getLnurlDetailsForProject,
     getAllCapabilities,
     checkValidProjectHashtag,
+    similarProjects,
 
     // Mutations
     createProject,
