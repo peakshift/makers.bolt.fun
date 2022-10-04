@@ -591,6 +591,7 @@ export interface NexusGenFieldTypes {
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
     slack: string | null; // String
+    stories: NexusGenRootTypes['Story'][]; // [Story!]!
     tagline: string; // String!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     telegram: string | null; // String
@@ -984,6 +985,7 @@ export interface NexusGenFieldTypeNames {
     recruit_roles: 'MakerRole'
     screenshots: 'String'
     slack: 'String'
+    stories: 'Story'
     tagline: 'String'
     tags: 'Tag'
     telegram: 'String'

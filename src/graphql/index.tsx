@@ -418,6 +418,7 @@ export type Project = {
   recruit_roles: Array<MakerRole>;
   screenshots: Array<Scalars['String']>;
   slack: Maybe<Scalars['String']>;
+  stories: Array<Story>;
   tagline: Scalars['String'];
   tags: Array<Tag>;
   telegram: Maybe<Scalars['String']>;
@@ -1094,7 +1095,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type SimilarProjectsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -2821,6 +2822,16 @@ export const ProjectDetailsDocument = gql`
       title
       icon
       level
+    }
+    stories {
+      id
+      title
+      createdAt
+      tags {
+        id
+        title
+        icon
+      }
     }
     capabilities {
       id

@@ -107,6 +107,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -143,6 +144,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -183,6 +185,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -219,6 +222,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -255,6 +259,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -291,6 +296,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -327,6 +333,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -363,6 +370,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -399,6 +407,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -436,6 +445,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -472,6 +482,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -512,6 +523,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -550,6 +562,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -589,6 +602,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -635,6 +649,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -673,6 +688,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -716,6 +732,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -767,6 +784,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -809,6 +827,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -845,6 +864,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -881,6 +901,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -917,6 +938,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -953,6 +975,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -989,6 +1012,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -1025,6 +1049,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -1061,6 +1086,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -1097,6 +1123,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -1133,6 +1160,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {
@@ -1169,6 +1197,7 @@ export let projects = [
         telegram: null,
         twitter: null,
         tournaments: [],
+        stories: [],
         tagline: "My project tagline",
         lnurl_callback_url: "",
         "category": {

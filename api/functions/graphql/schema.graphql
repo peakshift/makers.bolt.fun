@@ -301,6 +301,7 @@ type Project {
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   slack: String
+  stories: [Story!]!
   tagline: String!
   tags: [Tag!]!
   telegram: String
