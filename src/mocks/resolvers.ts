@@ -4,6 +4,7 @@ import { Chance } from "chance";
 import { tags } from "./data/tags";
 import { hackathons } from "./data/hackathon";
 import { shuffle } from "src/utils/helperFunctions";
+import { Nullable } from "remirror";
 
 const chance = new Chance()
 
@@ -32,8 +33,10 @@ export function newProjects() {
     return shuffle(MOCK_DATA.projects).slice(0, 10);
 }
 
-export function getProject(projectId: number) {
-    return MOCK_DATA.projects.find(p => p.id === projectId)!
+export function getProject(id: Nullable<number>, tag: Nullable<string>) {
+    if (id)
+        return MOCK_DATA.projects.find(p => p.id === id)
+    return MOCK_DATA.projects.find(p => p.hashtag === tag)
 }
 
 export function searchProjects(search: string) {
@@ -89,6 +92,10 @@ export function getAllMakersRoles() {
 export function getAllMakersSkills() {
     return MOCK_DATA['allMakersSkills']
 }
+export function searchUsers(value: string) {
+    return MOCK_DATA['users'].filter(u => u.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+}
+
 export function getMyDrafts(): Query['getMyDrafts'] {
     return MOCK_DATA['posts'].stories;
 }

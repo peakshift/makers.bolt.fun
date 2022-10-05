@@ -19,6 +19,7 @@ export const bannerData = {
   link: {
     content: "Register Now",
     url: createRoute({ type: "tournament", id: 1 }),
+    newTab: false
   },
 }
 
@@ -29,7 +30,8 @@ const headerLinks = [
     img: Assets.Images_ExploreHeader1,
     link: {
       content: "Submit project",
-      url: "https://form.jotform.com/220301236112030",
+      url: createRoute({ type: "edit-project" }),
+      newTab: false,
     },
   },
 ];
@@ -90,7 +92,7 @@ export default function Header() {
             <div className="max-w-[90%]">
               {headerLinks[1].title}
             </div>
-            <Button color="white" href={headerLinks[1].link.url} newTab className="mt-24">
+            <Button color="white" href={headerLinks[1].link.url} newTab={headerLinks[1].link.newTab ?? false} className="mt-24">
               {headerLinks[1].link.content}
             </Button>
           </div>

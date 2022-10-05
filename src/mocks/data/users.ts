@@ -2,6 +2,7 @@ import { Chance } from "chance";
 import { GenericMakerRole, MakerSkill, MyProfile, RoleLevelEnum, Tournament, User } from "src/graphql";
 import { randomItem, randomItems } from "src/utils/helperFunctions";
 import { posts } from "./posts";
+import { projects } from "./projects";
 import { getCoverImage, getAvatarImage } from "./utils";
 
 const chance = new Chance();
@@ -177,7 +178,8 @@ export const users: (User & MyProfile)[] = [{
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
-    similar_makers
+    similar_makers,
+    projects: projects.slice(0, 3),
 },
 {
     id: 441,
@@ -216,7 +218,8 @@ export const users: (User & MyProfile)[] = [{
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
-    similar_makers
+    similar_makers,
+    projects: projects.slice(0, 3),
 },
 {
     id: 422,
@@ -254,7 +257,8 @@ export const users: (User & MyProfile)[] = [{
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
-    similar_makers
+    similar_makers,
+    projects: projects.slice(0, 3),
 },
 {
     id: 511,
@@ -292,7 +296,8 @@ export const users: (User & MyProfile)[] = [{
     roles: randomItems(3, ...allMakersRoles).map(role => ({ ...role, level: randomItem(...Object.values(RoleLevelEnum)) })),
     skills: randomItems(7, ...allMakersSkills),
     tournaments,
-    similar_makers
+    similar_makers,
+    projects: projects.slice(0, 3),
 }]
 
 

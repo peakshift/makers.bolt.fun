@@ -69,7 +69,9 @@ async function main() {
 
     // await migrateOldImages();
 
-    await createCapabilities();
+    // await createCapabilities();
+
+    // await createHashtags();
 }
 
 async function migrateOldImages() {
@@ -238,7 +240,7 @@ async function migrateOldImages() {
     /**
      * Tournament
      **/
-     const tournaments = await prisma.tournament.findMany({
+    const tournaments = await prisma.tournament.findMany({
         select: {
             id: true,
             thumbnail_image: true,
@@ -263,7 +265,7 @@ async function migrateOldImages() {
     /**
      * TournamentPrize
      **/
-     const tournamentPrizes = await prisma.tournamentPrize.findMany({
+    const tournamentPrizes = await prisma.tournamentPrize.findMany({
         select: {
             id: true,
             image: true,
@@ -506,6 +508,24 @@ async function createCapabilities() {
     await prisma.capability.createMany({
         data: capabilities
     })
+}
+
+async function createHashtags() {
+    console.log("Creating Hashtags for projects");
+    const projects = await prisma.project.findMany({ select: { title: true, id: true } });
+    for (let i = 0; i < projects.length; i++) {
+        const project = projects[i];
+        await prisma.project.update({
+            where: { id: project.id },
+            data: {
+                hashtag: project.title.toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/[\s_-]+/g, '_')
+                    .replace(/^-+|-+$/g, '')
+            }
+        })
+    }
 }
 
 

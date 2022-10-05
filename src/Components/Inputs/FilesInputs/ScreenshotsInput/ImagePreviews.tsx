@@ -1,5 +1,5 @@
 import UploadPreview, { PreviewComponentProps, PreviewMethods } from '@rpldy/upload-preview'
-import { useAbortItem, useItemAbortListener, useItemCancelListener, useItemErrorListener, useItemProgressListener } from '@rpldy/uploady';
+import { useAbortItem, useItemAbortListener, useItemCancelListener, useItemErrorListener, useItemFinishListener, useItemProgressListener } from '@rpldy/uploady';
 import { useState } from 'react'
 import ScreenShotsThumbnail from './ScreenshotThumbnail'
 
@@ -20,14 +20,10 @@ function CustomImagePreview({ id, url }: PreviewComponentProps) {
     useItemProgressListener(item => {
         if (item.completed > progress) {
             setProgress(() => item.completed);
-
-            if (item.completed === 100) {
-                setItemState(STATES.DONE)
-            } else {
-                setItemState(STATES.PROGRESS)
-            }
         }
     }, id);
+
+    useItemFinishListener(() => setItemState(STATES.DONE), id)
 
 
 
@@ -41,7 +37,10 @@ function CustomImagePreview({ id, url }: PreviewComponentProps) {
     }, id);
 
     useItemErrorListener(item => {
+        console.log(item);
+
         setItemState(STATES.ERROR);
+        setTimeout(() => setItemState(STATES.CANCELLED), 2000)
     }, id);
 
     if (itemState === STATES.DONE || itemState === STATES.CANCELLED)

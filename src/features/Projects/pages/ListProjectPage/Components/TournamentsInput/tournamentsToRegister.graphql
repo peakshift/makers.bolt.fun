@@ -1,0 +1,6 @@
+query GetTournamentsToRegister {
+  getTournamentToRegister {
+    id
+    title
+  }
+}

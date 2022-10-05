@@ -7,6 +7,7 @@ import { PaymentStatus, useVote } from 'src/utils/hooks';
 import Confetti from "react-confetti";
 import { useWindowSize } from '@react-hookz/web';
 import { Vote_Item_Type } from 'src/graphql';
+import IconButton from 'src/Components/IconButton/IconButton';
 
 const defaultOptions = [
     { text: '100 sat', value: 100 },
@@ -17,6 +18,7 @@ const defaultOptions = [
 
 interface Props extends ModalCard {
     projectId: number;
+    title?: string;
     initVotes?: number;
 }
 
@@ -69,8 +71,12 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
             exit='exit'
             className="modal-card max-w-[343px] p-24 rounded-xl relative"
         >
-            <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
-            <h2 className='text-h5 font-bold'>Vote for this Project</h2>
+            <div className="flex items-start gap-12">
+                <h2 className='text-h5 font-bold'>Vote for {props.title ?? "project"}</h2>
+                <IconButton onClick={onClose} >
+                    <IoClose className='text-body2' />
+                </IconButton>
+            </div>
             <form onSubmit={requestPayment} className="mt-32 ">
                 <label className="block text-gray-700 text-body4 mb-2 ">
                     Enter Amount

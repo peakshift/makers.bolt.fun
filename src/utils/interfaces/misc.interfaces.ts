@@ -23,7 +23,7 @@ export type ControlledStateHandler<T, IsMulti extends boolean> = {
 }
 
 
-export type Override<A, B> = Omit<A, keyof B> & B;
+export type Override<A, B extends { [Key in keyof A]?: any }> = Omit<A, keyof B> & B;
 
 
 export type Image = string;

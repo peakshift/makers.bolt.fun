@@ -31,6 +31,7 @@ interface BaseUser {
   linkedin: String
   location: String
   name: String!
+  projects: [Project!]!
   role: String
   roles: [MakerRole!]!
   similar_makers: [User!]!
@@ -67,6 +68,12 @@ type BountyApplication {
   workplan: String!
 }
 
+type Capability {
+  icon: String!
+  id: Int!
+  title: String!
+}
+
 type Category {
   apps_count: Int!
   cover_image: String
@@ -75,6 +82,34 @@ type Category {
   project: [Project!]!
   title: String!
   votes_sum: Int!
+}
+
+input CreateProjectInput {
+  capabilities: [Int!]!
+  category_id: Int!
+  cover_image: ImageInput!
+  description: String!
+  discord: String
+  github: String
+  hashtag: String!
+  id: Int
+  launch_status: ProjectLaunchStatusEnum!
+  lightning_address: String
+  members: [TeamMemberInput!]!
+  recruit_roles: [Int!]!
+  screenshots: [ImageInput!]!
+  slack: String
+  tagline: String!
+  telegram: String
+  thumbnail_image: ImageInput!
+  title: String!
+  tournaments: [Int!]!
+  twitter: String
+  website: String!
+}
+
+type CreateProjectResponse {
+  project: Project!
 }
 
 """Date custom scalar type"""
@@ -152,12 +187,15 @@ input MakerSkillInput {
 type Mutation {
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
+  deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
   updateProfileRoles(data: ProfileRolesInput): MyProfile
+  updateProject(input: UpdateProjectInput): CreateProjectResponse
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
@@ -179,6 +217,7 @@ type MyProfile implements BaseUser {
   name: String!
   nostr_prv_key: String
   nostr_pub_key: String
+  projects: [Project!]!
   role: String
   roles: [MakerRole!]!
   similar_makers: [User!]!
@@ -246,24 +285,56 @@ input ProfileRolesInput {
 
 type Project {
   awards: [Award!]!
+  capabilities: [Capability!]!
   category: Category!
   cover_image: String!
   description: String!
+  discord: String
+  github: String
+  hashtag: String!
   id: Int!
+  launch_status: ProjectLaunchStatusEnum!
   lightning_address: String
   lnurl_callback_url: String
+  members: [ProjectMember!]!
+  permissions: [ProjectPermissionEnum!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
+  slack: String
+  stories: [Story!]!
+  tagline: String!
   tags: [Tag!]!
+  telegram: String
   thumbnail_image: String!
   title: String!
+  tournaments: [Tournament!]!
+  twitter: String
   votes_count: Int!
   website: String!
+}
+
+enum ProjectLaunchStatusEnum {
+  Launched
+  WIP
+}
+
+type ProjectMember {
+  role: TEAM_MEMBER_ROLE!
+  user: User!
+}
+
+enum ProjectPermissionEnum {
+  DeleteProject
+  UpdateAdmins
+  UpdateInfo
+  UpdateMembers
 }
 
 type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!
+  getAllCapabilities: [Capability!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!
   getAllMakersSkills: [MakerSkill!]!
@@ -274,9 +345,10 @@ type Query {
   getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
-  getProject(id: Int!): Project!
+  getProject(id: Int, tag: String): Project!
   getProjectsInTournament(roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentProjectsResponse!
   getTournamentById(id: Int!): Tournament!
+  getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: MyProfile
@@ -286,7 +358,9 @@ type Query {
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 10): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
+  searchUsers(value: String!): [User!]!
   similarMakers(id: Int!): [User!]!
+  similarProjects(id: Int!): [Project!]!
   tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
 }
 
@@ -327,6 +401,7 @@ type Story implements PostBase {
   excerpt: String!
   id: Int!
   is_published: Boolean
+  project: Project
   tags: [Tag!]!
   title: String!
   type: String!
@@ -339,8 +414,15 @@ input StoryInputType {
   cover_image: ImageInput
   id: Int
   is_published: Boolean
+  project_id: Int
   tags: [String!]!
   title: String!
+}
+
+enum TEAM_MEMBER_ROLE {
+  Admin
+  Maker
+  Owner
 }
 
 type Tag {
@@ -349,6 +431,11 @@ type Tag {
   id: Int!
   isOfficial: Boolean
   title: String!
+}
+
+input TeamMemberInput {
+  id: Int!
+  role: TEAM_MEMBER_ROLE!
 }
 
 type Tournament {
@@ -430,6 +517,30 @@ type TournamentProjectsResponse {
   projects: [Project!]!
 }
 
+input UpdateProjectInput {
+  capabilities: [Int!]!
+  category_id: Int!
+  cover_image: ImageInput!
+  description: String!
+  discord: String
+  github: String
+  hashtag: String!
+  id: Int
+  launch_status: ProjectLaunchStatusEnum!
+  lightning_address: String
+  members: [TeamMemberInput!]!
+  recruit_roles: [Int!]!
+  screenshots: [ImageInput!]!
+  slack: String
+  tagline: String!
+  telegram: String
+  thumbnail_image: ImageInput!
+  title: String!
+  tournaments: [Int!]!
+  twitter: String
+  website: String!
+}
+
 input UpdateTournamentRegistrationInput {
   email: String
   hacking_status: TournamentMakerHackingStatusEnum
@@ -448,6 +559,7 @@ type User implements BaseUser {
   linkedin: String
   location: String
   name: String!
+  projects: [Project!]!
   role: String
   roles: [MakerRole!]!
   similar_makers: [User!]!

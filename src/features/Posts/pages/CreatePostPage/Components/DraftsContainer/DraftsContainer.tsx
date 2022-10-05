@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import React, { useCallback, useState } from 'react'
 import { useFormContext } from 'react-hook-form';
 import Button from 'src/Components/Button/Button';
+import Card from 'src/Components/Card/Card';
 import LoadingPage from 'src/Components/LoadingPage/LoadingPage';
 import { isStory } from 'src/features/Posts/types';
 import { Post_Type, useDeleteStoryMutation, useGetMyDraftsQuery, usePostDetailsLazyQuery } from 'src/graphql'
@@ -95,11 +96,11 @@ export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
 
         <div id={id}>
             {(!myDraftsQuery.loading && myDraftsQuery.data?.getMyDrafts && myDraftsQuery.data.getMyDrafts.length > 0) &&
-                <div className="bg-white border-2 border-gray-200 rounded-16 p-16">
+                <Card>
                     <p className="text-body2 font-bolder mb-16">Saved Drafts</p>
                     <ul className=''>
                         {myDraftsQuery.data.getMyDrafts.map(draft =>
-                            <li key={draft.id} className='py-16 border-b-[1px] border-gray-200 last-of-type:border-b-0  ' >
+                            <li key={draft.id} className='py-16 border-b-[1px] border-gray-200 last-of-type:border-b-0 last-of-type:pb-0' >
                                 <p
                                     className="hover:underline"
                                     role={'button'}
@@ -113,7 +114,7 @@ export default function DraftsContainer({ id, type, onDraftLoad }: Props) {
                                 </div>
                             </li>)}
                     </ul>
-                </div>}
+                </Card>}
             {loading && <LoadingPage />}
         </div>
     )

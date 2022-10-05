@@ -137,6 +137,7 @@ model Project {
   github              String?
   telegram            String?
   slack               String?
+  contact_email       String?
   thumbnail_image     String?
   thumbnail_image_id  Int?         @unique
   thumbnail_image_rel HostedImage? @relation("Project_Thumbnail", fields: [thumbnail_image_id], references: [id])
@@ -161,6 +162,7 @@ model Project {
   members       ProjectMember[]
   recruit_roles ProjectRecruitRoles[]
   tournaments   TournamentProject[]
+  stories       Story[]
 }
 
 model ProjectRecruitRoles {
@@ -221,6 +223,9 @@ model Story {
   user_id Int?
 
   comments PostComment[] @relation("StoryComment")
+
+  project    Project? @relation(fields: [project_id], references: [id])
+  project_id Int?
 }
 
 model Question {

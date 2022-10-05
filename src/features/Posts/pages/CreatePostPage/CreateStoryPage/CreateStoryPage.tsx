@@ -1,10 +1,10 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRef, useState } from "react";
-import { ErrorBoundary, withErrorBoundary } from "react-error-boundary";
+import { withErrorBoundary } from "react-error-boundary";
 import { FormProvider, NestedValue, Resolver, useForm } from "react-hook-form";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
-import { CreateStoryMutationVariables, Post_Type } from "src/graphql";
+import { Category, CreateStoryMutationVariables, MyProjectsQuery, Post_Type, Project } from "src/graphql";
 import { StorageService } from "src/services";
 import { useAppSelector } from "src/utils/hooks";
 import { Override } from "src/utils/interfaces";
@@ -13,20 +13,23 @@ import * as yup from "yup";
 import DraftsContainer from "../Components/DraftsContainer/DraftsContainer";
 import ErrorsContainer from "../Components/ErrorsContainer/ErrorsContainer";
 import StoryForm from "../Components/StoryForm/StoryForm";
+import TemplatesCard from "../Components/TemplatesCard/TemplatesCard";
 import styles from './styles.module.scss'
 
 
 
 const schema = yup.object({
+    id: yup.number().transform(v => v <= 0 ? undefined : v).nullable(),
     title: yup.string().trim().required().min(10, 'Story title must be 2+ words').transform(v => v.replace(/(\r\n|\n|\r)/gm, "")),
     tags: yup.array().of(tagSchema).required().min(1, 'Add at least one tag'),
     body: yup.string().required("Write some content in the post").min(50, 'Post must contain at least 10+ words'),
-    cover_image: imageSchema.nullable(true),
-
+    cover_image: imageSchema.default(null).nullable(),
 }).required();
 
 
 type ApiStoryInput = NonNullable<CreateStoryMutationVariables['data']>;
+
+type ProjectInput = Pick<Project, 'id' | 'title' | 'thumbnail_image'> & { category: Pick<Category, 'id' | 'title' | 'icon'> }
 
 export type IStoryFormInputs = {
     id: ApiStoryInput['id']
@@ -34,11 +37,13 @@ export type IStoryFormInputs = {
     body: ApiStoryInput['body']
     cover_image: NestedValue<NonNullable<ApiStoryInput['cover_image']>> | null
     tags: NestedValue<ApiStoryInput['tags']>
+    project: NestedValue<ProjectInput> | null
     is_published: ApiStoryInput['is_published']
 }
 
 export type CreateStoryType = Override<IStoryFormInputs, {
     cover_image: ApiStoryInput['cover_image'],
+    project: ProjectInput | null
     tags: { title: string }[]
 }>
 
@@ -52,6 +57,7 @@ function CreateStoryPage() {
         story: state.staging.story || storageService.get()
     }))
 
+
     const formMethods = useForm<CreateStoryType>({
         resolver: yupResolver(schema) as Resolver<CreateStoryType>,
         shouldFocusError: false,
@@ -62,6 +68,7 @@ function CreateStoryPage() {
             tags: story?.tags ?? [],
             body: story?.body ?? '',
             is_published: story?.is_published ?? false,
+            project: story?.project,
         },
     });
 
@@ -86,7 +93,9 @@ function CreateStoryPage() {
                 />
 
                 <ErrorsContainer id='errors' ref={errorsContainerRef} />
-
+                <div id="templates" className="mb-24">
+                    <TemplatesCard />
+                </div>
                 <DraftsContainer id='drafts' type={Post_Type.Story} onDraftLoad={resetForm} />
 
             </div>

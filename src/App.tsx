@@ -11,7 +11,7 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
 import { Loadable, PAGES_ROUTES } from "./utils/routing";
-
+import ListProjectPage from "./features/Projects/pages/ListProjectPage/ListProjectPage";
 
 
 // Pages
@@ -22,6 +22,7 @@ const CreatePostPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "
 const HottestPage = Loadable(React.lazy(() => import( /* webpackChunkName: "hottest_page" */ "src/features/Projects/pages/HottestPage/HottestPage")))
 const CategoryPage = Loadable(React.lazy(() => import( /* webpackChunkName: "category_page" */ "src/features/Projects/pages/CategoryPage/CategoryPage")))
 const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage")))
+const ProjectPage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage")))
 
 const HackathonsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
 
@@ -98,6 +99,9 @@ function App() {
           <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
           <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />
           <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
+          <Route path={PAGES_ROUTES.projects.listProject} element={<ListProjectPage />} />
+          <Route path={PAGES_ROUTES.projects.projectPage} element={<ProjectPage />} />
+          <Route path={PAGES_ROUTES.projects.catchProject} element={<Navigate replace to={PAGES_ROUTES.projects.default} />} />
 
           <Route path={PAGES_ROUTES.blog.storyById} element={<PostDetailsPage postType='story' />} />
           <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />

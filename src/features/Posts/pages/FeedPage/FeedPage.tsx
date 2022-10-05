@@ -79,7 +79,7 @@ export default function FeedPage() {
                             filterChanged={setSortByFilter}
                         />
                     </div>
-                    <div id="content">
+                    <div id="content" className='pt-16 md:pt-0'>
                         <PostsList
                             isLoading={feedQuery.loading}
                             items={feedQuery.data?.getFeed}
@@ -88,22 +88,23 @@ export default function FeedPage() {
                         />
                     </div>
                     <aside id='categories' className='no-scrollbar'>
-                        <div className="pb-16 md:overflow-y-scroll sticky-side-element">
-                            <h1 className="text-h2 font-bolder mb-24">Discover</h1>
-                            <Button
-                                href={PAGES_ROUTES.blog.writeStory}
-                                color='primary'
-                                fullWidth
-                            >
-                                Write a story
-                            </Button>
-                            <div className="my-24"></div>
-                            <div className="my-24"></div>
-                            <PopularTagsFilter
-                                value={tagFilter}
-                                onChange={setTagFilter as any}
-                            />
-
+                        <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
+                            <h1 className={`${tagFilter && "hidden"} md:block text-h2 font-bolder order-1`}>Discover</h1>
+                            <div className='order-3 md:order-2'>
+                                <Button
+                                    href={createRoute({ type: "write-story" })}
+                                    color='primary'
+                                    fullWidth
+                                >
+                                    Write a story
+                                </Button>
+                            </div>
+                            <div className='order-2 md:order-3'>
+                                <PopularTagsFilter
+                                    value={tagFilter}
+                                    onChange={setTagFilter as any}
+                                />
+                            </div>
                         </div>
                     </aside>
                     <aside id='side' className='no-scrollbar'>

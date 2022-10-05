@@ -1,6 +1,6 @@
 
 import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMakersInTournament, getMyDrafts, getPostById, getProject, getTournamentById, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects } from './resolvers'
+import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMakersInTournament, getMyDrafts, getPostById, getProject, getTournamentById, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects, searchUsers } from './resolvers'
 import {
     NavCategoriesQuery,
     ExploreProjectsQuery,
@@ -29,6 +29,8 @@ import {
     MeQuery,
     ProfileQuery,
     GetMyDraftsQuery,
+    SearchUsersQuery,
+    SearchUsersQueryVariables,
     MyProfileAboutQuery,
     MyProfilePreferencesQuery,
     GetTournamentByIdQuery,
@@ -102,11 +104,11 @@ export const handlers = [
 
     graphql.query<ProjectDetailsQuery, ProjectDetailsQueryVariables>('ProjectDetails', async (req, res, ctx) => {
         await delay()
-        const { projectId } = req.variables
+        const { projectId, projectTag } = req.variables
 
         return res(
             ctx.data({
-                getProject: getProject(projectId) as any
+                getProject: getProject(projectId, projectTag) as any
             })
         )
     }),
@@ -262,6 +264,16 @@ export const handlers = [
         return res(
             ctx.data({
                 profile: profile()
+            })
+        )
+    }),
+
+
+    graphql.query<SearchUsersQuery, SearchUsersQueryVariables>('SearchUsers', async (req, res, ctx) => {
+        await delay()
+        return res(
+            ctx.data({
+                searchUsers: searchUsers(req.variables.value)
             })
         )
     }),

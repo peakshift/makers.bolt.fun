@@ -2,6 +2,7 @@ import { marked } from 'marked';
 import styles from 'src/features/Posts/pages/PostDetailsPage/Components/PageContent/styles.module.scss'
 import Badge from "src/Components/Badge/Badge";
 import { Post } from "src/graphql";
+import Card from 'src/Components/Card/Card';
 
 function isPost(type?: string): type is 'story' {
     return type === 'story'
@@ -31,8 +32,8 @@ export default function PreviewPostContent({ post, }: Props) {
 
 
     return (
-        <>
-            <div id="content" className="bg-white p-32 border-2 border-gray-200 rounded-16">
+        <div id="content">
+            <Card>
                 {coverImg &&
                     <img src={coverImg}
                         className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
@@ -48,10 +49,9 @@ export default function PreviewPostContent({ post, }: Props) {
 
                 <div className={`mt-42 ${styles.body}`} dangerouslySetInnerHTML={{ __html: marked.parse(post.body, {}) }}>
                 </div>
-            </div>
-            {/* <div id="comments" className="mt-10 comments_col">
-                <CommentsSection comments={story.comments} />
-            </div> */}
-        </>
+
+            </Card>
+
+        </div>
     )
 }

@@ -114,6 +114,13 @@ const Story = objectType({
 
         });
 
+        t.field('project', {
+            type: "Project",
+            resolve(parent) {
+                return prisma.story.findUnique({ where: { id: parent.id } }).project();
+            }
+        })
+
     },
 })
 
@@ -128,6 +135,7 @@ const StoryInputType = inputObjectType({
         })
         t.nonNull.list.nonNull.string('tags');
         t.boolean('is_published')
+        t.int('project_id')
     }
 })
 
@@ -421,7 +429,7 @@ const createStory = extendType({
             type: 'Story',
             args: { data: StoryInputType },
             async resolve(_root, args, ctx) {
-                const { id, title, body, cover_image, tags, is_published } = args.data;
+                const { id, title, body, project_id, cover_image, tags, is_published } = args.data;
                 const user = await getUserByPubKey(ctx.userPubKey);
 
                 // Do some validation
@@ -528,6 +536,13 @@ const createStory = extendType({
                                 cover_image: '',
                                 excerpt,
                                 is_published: was_published || is_published,
+                                project: project_id ? {
+                                    connect: {
+                                        id: project_id,
+                                    },
+                                } : {
+                                    disconnect: true
+                                },
                                 tags: {
                                     connectOrCreate:
                                         tags.map(tag => {
@@ -572,6 +587,11 @@ const createStory = extendType({
                                             }
                                         }
                                     })
+                            },
+                            project: {
+                                connect: {
+                                    id: project_id,
+                                }
                             },
                             user: {
                                 connect: {

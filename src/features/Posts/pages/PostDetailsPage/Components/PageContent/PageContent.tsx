@@ -1,4 +1,4 @@
-import { isBounty, isQuestion, isStory, Post } from "src/features/Posts/types"
+import { isBounty, isQuestion, isStory } from "src/features/Posts/types"
 import StoryPageContent from "../StoryPageContent/StoryPageContent";
 import BountyPageContent from "../BountyPageContent/BountyPageContent";
 import QuestionPageContent from "../QuestionPageContent/QuestionPageContent";
