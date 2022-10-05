@@ -34,10 +34,10 @@ export default function CoverImageInput(props: Props) {
                 wrapperClass='h-full'
                 render={({ img, isUploading, isDraggingOnWindow }) =>
                     <div className="w-full h-full group relative ">
-                        {!img && <div className={`w-full h-full flex flex-col justify-center items-center bg-gray-500 outline outline-2 outline-gray-200  ${props.rounded ?? 'rounded-12'}`}>
-                            <p className="text-center text-gray-100 text-body1 md:text-h1 mb-8"><FaImage /></p>
-                            <div className={`text-gray-100 text-center text-body4`}>
-                                Drop a <span className="font-bold">COVER IMAGE</span> here or  <br />  <span className="text-blue-300 underline">Click to browse</span>
+                        {!img && <div className={`w-full h-full flex flex-col justify-center items-center bg-gray-100 border-dashed border-2 border-gray-200  ${props.rounded ?? 'rounded-12'}`}>
+                            <p className="text-center text-gray-800 text-body1 md:text-h1 mb-8"><FaImage /></p>
+                            <div className={`text-gray-700 text-center text-body4`}>
+                                Drop a <span className="font-bold">COVER IMAGE</span> here or  <br />  <span className="text-blue-400 underline">Click to browse</span>
                             </div>
                         </div>}
                         {img && <>
@@ -45,10 +45,10 @@ export default function CoverImageInput(props: Props) {
                             {!isUploading &&
                                 <div className="flex flex-wrap gap-16 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
 
-                                    <button type='button' className='py-8 px-16 rounded-12 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 hover:bg-opacity-90 transition-opacity text-white text-h1'>
+                                    <button type='button' className='w-42 h-42 flex justify-center items-center rounded-full bg-gray-800 bg-opacity-60 opacity-0 group-hover:opacity-100 hover:bg-opacity-90 transition-opacity text-white text-body3'>
                                         <CgArrowsExchangeV />
                                     </button>
-                                    <button type='button' className='py-8 px-16 rounded-12 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 hover:bg-opacity-90 transition-opacity text-white text-h1' onClick={(e) => { e.stopPropagation(); props.onChange(null) }}>
+                                    <button type='button' className='w-42 h-42 flex justify-center items-center rounded-full bg-gray-800 bg-opacity-60 opacity-0 group-hover:opacity-100 hover:bg-opacity-90 transition-opacity text-white text-body3' onClick={(e) => { e.stopPropagation(); props.onChange(null) }}>
                                         <IoMdClose />
                                     </button>
                                 </div>

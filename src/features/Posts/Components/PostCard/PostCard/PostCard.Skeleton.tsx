@@ -5,7 +5,7 @@ import Card from "src/Components/Card/Card"
 export default function PostCardSkeleton() {
   return <div>
     <div className="flex gap-8 items-center mb-8">
-      <Skeleton circle width={24} height={24} />
+      <Skeleton circle width={32} height={32} />
       <span className='flex gap-4 mt-4'>
         <p className="text-gray-900 text-body5 font-medium"><Skeleton width="12ch" /></p>
       </span>

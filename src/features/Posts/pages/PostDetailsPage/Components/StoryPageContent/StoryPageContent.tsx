@@ -7,10 +7,13 @@ import IconButton from "src/Components/IconButton/IconButton";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useAppSelector } from "src/utils/hooks";
 import { useUpdateStory } from './useUpdateStory'
-import { FaPen } from "react-icons/fa";
 import DOMPurify from 'dompurify';
 import Card from "src/Components/Card/Card";
 import PostPageHeader from "../PostPageHeader/PostPageHeader";
+import { FiEdit2, FiLink } from "react-icons/fi";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { createRoute } from "src/utils/routing";
+import { NotificationsService } from "src/services";
 
 
 interface Props {
@@ -30,33 +33,46 @@ export default function StoryPageContent({ story }: Props) {
         <>
             <div id="content" className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"> </div>
             <Card id="content" onlyMd className="relative max">
-                <PostPageHeader
-                    className="mb-16"
-                    author={story.author}
-                    project={story.project}
-                    date={story.createdAt} />
+
+                <div className="flex justify-between items-center flex-wrap mb-16">
+                    <PostPageHeader
+                        author={story.author}
+                        project={story.project}
+                        date={story.createdAt} />
+                    <div className="shrink-0 text-gray-400">
+                        <CopyToClipboard
+                            text={createRoute({ type: "story", title: story.title, id: story.id })}
+                            onCopy={() => NotificationsService.info(" Copied share link to clipboard", { icon: "📋" })}
+                        >
+                            <IconButton>
+                                <FiLink />
+                            </IconButton>
+                        </CopyToClipboard>
+                        {curUser?.id === story.author.id && <Menu
+                            menuClassName='!p-8 !rounded-12'
+                            menuButton={<IconButton className="text-gray-400"><FiEdit2 /></IconButton>}>
+                            <MenuItem
+                                onClick={handleEdit}
+                                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                            >
+                                Edit story
+                            </MenuItem>
+                            <MenuItem
+                                onClick={handleDelete}
+                                className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                            >
+                                Delete
+                            </MenuItem>
+                        </Menu>}
+                    </div>
+                </div>
                 {story.cover_image &&
                     <img src={story.cover_image}
-                        className='w-full h-[120px] md:h-[240px] object-cover rounded-12 mb-16'
+                        className='w-full min-h-[120px] max-h-[320px] object-cover rounded-12 mb-16'
                         // className='w-full object-cover rounded-12 md:rounded-16 mb-16'
                         alt="" />}
                 <div className="flex flex-col gap-24 relative">
-                    {curUser?.id === story.author.id && <Menu
-                        menuClassName='!p-8 !rounded-12'
-                        menuButton={<IconButton className="absolute top-0 right-0 text-gray-400"><FaPen /></IconButton>}>
-                        <MenuItem
-                            onClick={handleEdit}
-                            className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                        >
-                            Edit story
-                        </MenuItem>
-                        <MenuItem
-                            onClick={handleDelete}
-                            className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                        >
-                            Delete
-                        </MenuItem>
-                    </Menu>}
+
                     <h1 className="text-[42px] leading-[58px] font-bolder">{story.title}</h1>
                     {story.tags.length > 0 && <div className="flex flex-wrap gap-8">
                         {story.tags.map(tag => <Badge key={tag.id} size='sm'>

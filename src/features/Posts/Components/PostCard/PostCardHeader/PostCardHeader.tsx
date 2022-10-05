@@ -17,10 +17,12 @@ export default function PostCardHeader(props: Props) {
 
 
     const dateToShow = () => {
-        const passedTime = dayjs().diff(props.date, 'hour');
-        if (passedTime === 0) return 'now';
-        if (passedTime < 24) return `${dayjs().diff(props.date, 'hour')}h ago`
-        return dayjs(props.date).format('MMMM DD');
+        const passedTimeHrs = dayjs().diff(props.date, 'hour');
+        const passedTimesDays = Math.ceil(passedTimeHrs / 24);
+        if (passedTimeHrs === 0) return 'now';
+        if (passedTimeHrs < 24) return `${dayjs().diff(props.date, 'hour')}h ago`
+        if (passedTimesDays < 29) return `${passedTimesDays} days`
+        return dayjs(props.date).format('DD MMM');
     }
 
     if (!props.author) return null
@@ -29,10 +31,10 @@ export default function PostCardHeader(props: Props) {
         <div className="flex gap-8 items-center mb-8">
             <span className='flex'>
                 <Link to={createRoute({ type: 'profile', id: props.author.id, username: props.author.name })}>
-                    <Avatar width={24} src={props.author.avatar} />
+                    <Avatar width={32} src={props.author.avatar} />
                 </Link>
                 {props.project && <Link className='-ml-12' to={createRoute({ type: "project", tag: props.project.hashtag })}>
-                    <Avatar src={props.project.thumbnail_image} width={24} />
+                    <Avatar src={props.project.thumbnail_image} width={32} />
                 </Link>}
             </span>
             <span className='flex gap-4'>

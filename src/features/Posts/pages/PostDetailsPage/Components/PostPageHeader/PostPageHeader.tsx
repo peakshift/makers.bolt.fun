@@ -15,12 +15,13 @@ interface Props {
 
 export default function PostPageHeader(props: Props) {
 
-
     const dateToShow = () => {
-        const passedTime = dayjs().diff(props.date, 'hour');
-        if (passedTime === 0) return 'now';
-        if (passedTime < 24) return `${dayjs().diff(props.date, 'hour')}h ago`
-        return dayjs(props.date).format('MMMM DD');
+        const passedTimeHrs = dayjs().diff(props.date, 'hour');
+        const passedTimesDays = Math.ceil(passedTimeHrs / 24);
+        if (passedTimeHrs === 0) return 'now';
+        if (passedTimeHrs < 24) return `${dayjs().diff(props.date, 'hour')}h ago`
+        if (passedTimesDays < 29) return `${passedTimesDays} days`
+        return dayjs(props.date).format('DD MMM');
     }
 
     if (!props.author) return null
@@ -47,7 +48,7 @@ export default function PostPageHeader(props: Props) {
                         </Link>
                     </>}
                 </span>
-                <p className="text-body5 text-gray-500 font-medium">Published {dateToShow()}</p>
+                <p className="text-body5 text-gray-500">Published {dateToShow()}</p>
             </div>
         </div>
     )
