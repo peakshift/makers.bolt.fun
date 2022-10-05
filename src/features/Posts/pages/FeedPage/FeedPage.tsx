@@ -89,7 +89,7 @@ export default function FeedPage() {
                     </div>
                     <aside id='categories' className='no-scrollbar'>
                         <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-                            <h1 className="text-h2 font-bolder order-1">Discover</h1>
+                            <h1 className={`${tagFilter && "hidden"} md:block text-h2 font-bolder order-1`}>Discover</h1>
                             <div className='order-3 md:order-2'>
                                 <Button
                                     href={createRoute({ type: "write-story" })}
