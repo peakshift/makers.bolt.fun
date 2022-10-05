@@ -3,9 +3,11 @@ import Select, { ValueContainerProps } from 'react-select';
 import { OnChangeValue, StylesConfig, components, OptionProps, MenuListProps } from "react-select";
 import { useMyProjectsQuery, MyProjectsQuery } from "src/graphql";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { createRoute } from "src/utils/routing"
 import { FiPlus } from 'react-icons/fi';
 import { IoMdClose } from 'react-icons/io';
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 type Project = NonNullable<MyProjectsQuery['me']>['projects'][number]
@@ -38,14 +40,20 @@ export default function TagProjectInput({
         props.onChange?.(newValue);
     }
 
-    if (!query.data?.me?.projects || query.data.me.projects.length === 0) return null
+    // if (!props.value && (!query.data?.me?.projects || query.data.me.projects.length === 0)) return null
 
     return (
         <div className={`${classes?.container}`}>
             <Select
+                isLoading={query.loading}
                 value={props.value}
-                options={query.data?.me?.projects ?? []}
+                options={query.data?.me?.projects}
                 placeholder={placeholder}
+                loadingMessage={() => "Loading your projects..."}
+                noOptionsMessage={() => <div>
+                    <div className='text-body1 mb-24'>🚀</div>
+                    <p>Looks like you don’t have any projects yet. You can <Link className='text-blue-500' to={createRoute({ type: "edit-project" })} >create a project here.</Link></p>
+                </div>}
                 onChange={handleChange as any}
                 components={{
                     MenuList,
@@ -53,6 +61,7 @@ export default function TagProjectInput({
                     ValueContainer,
                 }}
                 getOptionValue={o => o.id.toString()}
+                getOptionLabel={o => o.title}
                 onBlur={props.onBlur}
                 styles={colourStyles as any}
                 theme={(theme) => ({
@@ -79,7 +88,7 @@ const MenuList = ({
 }: MenuListProps<Project, false>) => {
     return (
         <components.MenuList {...props} className='!flex'  >
-            <p className='mb-8 font-medium'>Your projects ({props.options.length})</p>
+            {props.options.length > 0 && <p className='mb-8 font-medium'>Your projects ({props.options.length})</p>}
             {children}
         </components.MenuList>
     );
