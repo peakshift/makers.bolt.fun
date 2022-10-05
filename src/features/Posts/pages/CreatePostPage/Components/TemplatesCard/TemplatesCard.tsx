@@ -58,16 +58,32 @@ const templates = [{
     title: "👋  Maker intro",
     description: "Tell the community about yourself",
     value: {
-        title: "Hello!! I'm [Your Name]",
+        title: "Hi, I'm ___ 👋",
         body:
-            `### Who am I?
-I'm a [Your age] years old [Your job] who have been working on this field for [Years of experience] years.
+            `### About me 👋
+Tell the community about yourself, your hobbies, and interests...
 
-### What I love?
-I usually like to [Your hobby] and I also love to participate in [Some activity you like]
+#### How did you get into bitcoin?
+We've all been down the rabit hole, let's hear your side of things...
 
-### Why I joined this community?
-The main reason is because [Reason for joining]`,
+#### What's something that excites you about the space now?
+What's ignigniting your maker spark? Is it a new layer spec, event, or app? We want to hear about it...
+
+#### What's your spirit animal/star sign?
+It's important, ok...
+
+### My roles & skills 🦄
+Let everyone know what roles you usually take in your product teams, plus some of your top skills and levels...
+
+#### How can you help others?
+Those skills sound awesome, is there anything you could help other makers with in particular? I'm sure they'd return the favour...
+
+### What I'm currently working on 🧑‍💻
+Working on anything exciting? List your current projects here so other makers can check out your work...
+
+#### What can the BOLT.FUN community help you with right now?
+Is there anything you need help with? There are plenty of makers around ready to help you out...
+`,
         tags: ['introduction']
     },
 },
@@ -76,35 +92,43 @@ The main reason is because [Reason for joining]`,
     title: "🚀  Product launch / update",
     description: "Launch your product with a story",
     value: {
-        title: "[Your product's name] is Live now!!",
+        title: "Introducing ___ 🚀",
         body:
-            `### What is [Your product]??
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam doloremque eaque natus aperiam voluptas obcaecati qui dolores molestiae incidunt perspiciatis sed, illo odit. Voluptatum qui fugit quidem inventore illum veritatis.
+            `### Product feature/name 🚀
+What is the product/feature you are launching? Tell others a bit more about what you’ve been working on?
 
-### Another question goes here
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tempore quia et dolore accusantium blanditiis odio, ab nihil. Expedita animi labore voluptates, officiis tenetur totam?
+### Problems & Solutions 🚨
+What problems does this product/feature solve? Really show it off and convince makers why it’s so awesome...
 
-### A final thing in mind
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`,
-        tags: ["product"]
+### How was it built? 🛠
+Tell other makers about how you built this product/feature? What lightning specs, codebases, templates, packages, etc does it use? Maybe others can learn from your experience...
+
+### Blockers & Issues ✋
+Did you have any trouble building this product/feature? It’s good to share these details for others to learn from...
+
+### Try it out 🔗
+Got a link to your product/feature? Post it here for others to find...`,
+        tags: ["product", "activity"]
     }
 },
 {
     id: 3,
-    title: "🚦 My weekly PPPs",
+    title: "🚦 Weekly Report",
     description: "Let others know about your recent activity",
     value: {
-        title: "My weekly PPP on [Product's name]",
-        body:
-            `### What did I do this week?
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam doloremque eaque natus aperiam voluptas obcaecati qui dolores molestiae incidunt perspiciatis sed, illo odit. Voluptatum qui fugit quidem inventore illum veritatis.
+        title: "PPPs: Week ___ 🚀",
+        body: `### Plans 📆
+- Start writing your plans for next week here...
 
-### What challenges have I faced?
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tempore quia et dolore accusantium blanditiis odio, ab nihil. Expedita animi labore voluptates, officiis tenetur totam?
+### Progress ✅
+- Start writing your progress from last week here...
 
-### What important lessons did I learn?
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magnam doloremque quisquam dolore odio sit atque incidunt esse vel dolor laboriosam a, laudantium ut quia fuga placeat non maiores. Odio unde harum autem commodi, tempora corporis consequuntur? Aliquam, quaerat ex.`,
-        tags: ['standups']
+### Problems ✋
+
+- Start writing your problems and blockers from last week here...
+
+### Links 🔗
+- Reference your Github issues, notes, or anything else you might want to add...`, tags: ['activity']
     },
 }
 ]
