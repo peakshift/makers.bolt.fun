@@ -52,8 +52,9 @@ export default function TagsInput({
 
 
     const maxReached = value.length >= max;
+    const currentPlaceholder = props.placeholder ?? <div className="flex gap-8 items-center text-gray-500">
+        {maxReached ? '' : value.length > 0 ? "Add Another..." : placeholder} </div>
 
-    const currentPlaceholder = maxReached ? '' : value.length > 0 ? "Add Another..." : placeholder;
 
     const tagsOptions = !maxReached ? (officalTags.data?.officialTags ?? []).filter(t => !value.some((v) => v.title === t.title)).map(transformer.tagToOption) : [];
 
