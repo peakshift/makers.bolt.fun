@@ -40,6 +40,8 @@ export default function TagProjectInput({
         props.onChange?.(newValue);
     }
 
+    const isEmpty = query.data?.me?.projects.length === 0
+
     // if (!props.value && (!query.data?.me?.projects || query.data.me.projects.length === 0)) return null
 
     return (
@@ -50,10 +52,14 @@ export default function TagProjectInput({
                 options={query.data?.me?.projects}
                 placeholder={placeholder}
                 loadingMessage={() => "Loading your projects..."}
-                noOptionsMessage={() => <div>
-                    <div className='text-body1 mb-24'>🚀</div>
-                    <p>Looks like you don’t have any projects yet. You can <Link className='text-blue-500' to={createRoute({ type: "edit-project" })} >create a project here.</Link></p>
-                </div>}
+                noOptionsMessage={() =>
+                    isEmpty ?
+                        <div>
+                            <div className='text-body1 mb-24'>🚀</div>
+                            <p>Looks like you don’t have any projects yet. You can <Link className='text-blue-500' to={createRoute({ type: "edit-project" })} >create a project here.</Link></p>
+                        </div>
+                        :
+                        "No projects here"}
                 onChange={handleChange as any}
                 components={{
                     MenuList,
