@@ -13,16 +13,17 @@ import * as yup from "yup";
 import DraftsContainer from "../Components/DraftsContainer/DraftsContainer";
 import ErrorsContainer from "../Components/ErrorsContainer/ErrorsContainer";
 import StoryForm from "../Components/StoryForm/StoryForm";
+import TemplatesCard from "../Components/TemplatesCard/TemplatesCard";
 import styles from './styles.module.scss'
 
 
 
 const schema = yup.object({
+    id: yup.number().transform(v => v <= 0 ? undefined : v).nullable(),
     title: yup.string().trim().required().min(10, 'Story title must be 2+ words').transform(v => v.replace(/(\r\n|\n|\r)/gm, "")),
     tags: yup.array().of(tagSchema).required().min(1, 'Add at least one tag'),
     body: yup.string().required("Write some content in the post").min(50, 'Post must contain at least 10+ words'),
-    cover_image: imageSchema.nullable(true),
-
+    cover_image: imageSchema.default(null).nullable(),
 }).required();
 
 
@@ -86,7 +87,9 @@ function CreateStoryPage() {
                 />
 
                 <ErrorsContainer id='errors' ref={errorsContainerRef} />
-
+                <div id="templates" className="mb-24">
+                    <TemplatesCard />
+                </div>
                 <DraftsContainer id='drafts' type={Post_Type.Story} onDraftLoad={resetForm} />
 
             </div>

@@ -10,6 +10,7 @@ const ErrorsContainer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
     const { formState: { isValid, isSubmitted, errors } } = useFormContext<IStoryFormInputs>();
 
+
     const hasErrors = Object.values(errors).length > 0
 
     return (
