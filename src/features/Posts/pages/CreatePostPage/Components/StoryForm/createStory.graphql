@@ -12,6 +12,12 @@ mutation createStory($data: StoryInputType) {
     is_published
     type
     cover_image
+    project {
+      id
+      title
+      hashtag
+      thumbnail_image
+    }
     # comments_count
   }
 }

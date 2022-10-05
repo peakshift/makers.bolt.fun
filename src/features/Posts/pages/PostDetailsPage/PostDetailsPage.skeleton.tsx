@@ -1,18 +1,8 @@
 
-import { Helmet } from 'react-helmet'
-import { useParams } from 'react-router-dom'
-import LoadingPage from 'src/Components/LoadingPage/LoadingPage'
-import NotFoundPage from 'src/features/Shared/pages/NotFoundPage/NotFoundPage'
-import { usePostDetailsQuery } from 'src/graphql'
-import { capitalize } from 'src/utils/helperFunctions'
 import { useAppSelector, } from 'src/utils/hooks'
-import { PostCardSkeleton } from '../../Components/PostCard'
 import TrendingCard from '../../Components/TrendingCard/TrendingCard'
-import AuthorCard from './Components/AuthorCard/AuthorCard'
 import AuthorCardSkeleton from './Components/AuthorCard/AuthorCard.skeleton'
-import PageContent from './Components/PageContent/PageContent'
 import PageContentSkeleton from './Components/PageContent/PageContent.skeleton'
-import PostActions from './Components/PostActions/PostActions'
 import PostActionsSkeleton from './Components/PostActions/PostActions.skeleton'
 import styles from './styles.module.scss'
 

@@ -36,7 +36,7 @@
 .grid {
   display: grid;
   //   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 16px;
 
   & > * {
     min-width: 0;
@@ -44,8 +44,8 @@
 
   grid-template-areas:
     "title"
-    "sort-by"
     "categories"
+    "sort-by"
     "content";
 
   :global {
@@ -69,6 +69,7 @@
   }
 
   @media screen and (min-width: 768px) {
+    gap: 32px;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto 1fr;
 

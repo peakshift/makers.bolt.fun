@@ -90,6 +90,7 @@ export interface NexusGenInputs {
     cover_image?: NexusGenInputs['ImageInput'] | null; // ImageInput
     id?: number | null; // Int
     is_published?: boolean | null; // Boolean
+    project_id?: number | null; // Int
     tags: string[]; // [String!]!
     title: string; // String!
   }
@@ -590,6 +591,7 @@ export interface NexusGenFieldTypes {
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
     slack: string | null; // String
+    stories: NexusGenRootTypes['Story'][]; // [Story!]!
     tagline: string; // String!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     telegram: string | null; // String
@@ -660,6 +662,7 @@ export interface NexusGenFieldTypes {
     excerpt: string; // String!
     id: number; // Int!
     is_published: boolean | null; // Boolean
+    project: NexusGenRootTypes['Project'] | null; // Project
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
     type: string; // String!
@@ -982,6 +985,7 @@ export interface NexusGenFieldTypeNames {
     recruit_roles: 'MakerRole'
     screenshots: 'String'
     slack: 'String'
+    stories: 'Story'
     tagline: 'String'
     tags: 'Tag'
     telegram: 'String'
@@ -1052,6 +1056,7 @@ export interface NexusGenFieldTypeNames {
     excerpt: 'String'
     id: 'Int'
     is_published: 'Boolean'
+    project: 'Project'
     tags: 'Tag'
     title: 'String'
     type: 'String'

@@ -301,6 +301,7 @@ type Project {
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
   slack: String
+  stories: [Story!]!
   tagline: String!
   tags: [Tag!]!
   telegram: String
@@ -400,6 +401,7 @@ type Story implements PostBase {
   excerpt: String!
   id: Int!
   is_published: Boolean
+  project: Project
   tags: [Tag!]!
   title: String!
   type: String!
@@ -412,6 +414,7 @@ input StoryInputType {
   cover_image: ImageInput
   id: Int
   is_published: Boolean
+  project_id: Int
   tags: [String!]!
   title: String!
 }

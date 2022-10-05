@@ -9,7 +9,6 @@ import { MEDIA_QUERIES } from "src/utils/theme"
 import { setProject } from "src/redux/features/project.slice"
 import LinksCard from "./Components/LinksCard/LinksCard"
 import CapabilitiesCard from "./Components/CapabilitiesCard/CapabilitiesCard"
-import OpenRolesCard from "./Components/OpenRolesCard/OpenRolesCard"
 import TournamentsCard from "src/features/Profiles/pages/ProfilePage/TournamentsCard/TournamentsCard"
 import StoriesCard from "src/features/Profiles/pages/ProfilePage/StoriesCard/StoriesCard"
 import MakersCard from "./Components/MakersCard/MakersCard"
@@ -83,7 +82,7 @@ export default function ProjectPage() {
                         <main className="min-w-0">
 
                             <AboutCard project={project} />
-                            <StoriesCard stories={[]} />
+                            <StoriesCard stories={project.stories} />
                         </main>
                         <aside className="min-w-0">
                             <MakersCard members={project.members} recruit_roles={project.recruit_roles} />
@@ -98,7 +97,7 @@ export default function ProjectPage() {
                             <hr className="bg-gray-100" />
                             <MakersCard members={project.members} recruit_roles={project.recruit_roles} />
                             <hr className="bg-gray-100" />
-                            <StoriesCard onlyMd stories={[]} />
+                            <StoriesCard onlyMd stories={project.stories} />
                             <TournamentsCard onlyMd tournaments={[]} />
                             <hr className="bg-gray-100" />
                             <SimilarProjectsCard id={project.id} />

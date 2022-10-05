@@ -48,7 +48,16 @@ query ProjectDetails($projectId: Int, $projectTag: String) {
       icon
       level
     }
-
+    stories {
+      id
+      title
+      createdAt
+      tags {
+        id
+        title
+        icon
+      }
+    }
     capabilities {
       id
       title

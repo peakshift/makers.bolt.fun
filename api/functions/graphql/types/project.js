@@ -15,6 +15,7 @@ const { logError } = require('../../../utils/logger');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
 const { ImageInput } = require('./misc');
+const { Story } = require('./post');
 const { MakerRole } = require('./users');
 
 
@@ -109,6 +110,20 @@ const Project = objectType({
                         tournament: true
                     }
                 }).then(res => res.map(item => item.tournament))
+            }
+        })
+
+        t.nonNull.list.nonNull.field('stories', {
+            type: Story,
+            resolve: (parent) => {
+                return prisma.story.findMany({
+                    where: {
+                        project_id: parent.id,
+                    },
+                    orderBy: {
+                        createdAt: "desc"
+                    },
+                })
             }
         })
 
