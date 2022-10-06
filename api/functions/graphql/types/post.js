@@ -650,7 +650,9 @@ const deleteStory = extendType({
                 const coverImage = await prisma.hostedImage.findMany({
                     where: {
                         OR: [
-                            { id: oldPost.cover_image_id },
+                            ...(
+                                oldPost.cover_image_id &&
+                                { id: oldPost.cover_image_id }),
                             {
                                 id: {
                                     in: oldPost.body_image_ids
