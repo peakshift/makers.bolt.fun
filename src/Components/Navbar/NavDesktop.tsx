@@ -2,7 +2,6 @@ import { BsSearch } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useAppSelector, useCurrentSection } from "src/utils/hooks";
 import ASSETS from "src/assets";
-import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -13,7 +12,6 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import { FiChevronDown } from "react-icons/fi";
-import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import Button from "../Button/Button";
 
@@ -24,7 +22,7 @@ export default function NavDesktop() {
 
 
     const { curUser } = useAppSelector((state) => ({
-        curUser: state.user.me,
+        curUser: null,
     }));
 
 
@@ -164,83 +162,8 @@ export default function NavDesktop() {
                             : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
                         } */}
 
-                        {currentSection === 'apps' && <IconButton className='mr-16 self-center' onClick={openSearch}>
-                            <BsSearch className='scale-125 text-gray-400' />
-                        </IconButton>}
                     </motion.div>
-                    {curUser !== undefined &&
-                        (curUser ?
-                            <Menu
-                                align="end"
-                                offsetY={4}
-                                menuClassName='!p-8 !rounded-12'
-                                menuButton={<MenuButton ><Avatar src={curUser.avatar} width={40} /> </MenuButton>}>
-                                <MenuItem
-                                    href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
-                                    onClick={(e) => {
-                                        e.syntheticEvent.preventDefault();
-                                        navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
-                                    }}
-                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                                >
-                                    👾 Profile
-                                </MenuItem>
-                                <MenuItem
-                                    href="/edit-profile"
-                                    onClick={(e) => {
-                                        e.syntheticEvent.preventDefault();
-                                        navigate("/edit-profile");
-                                    }}
-                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                                >
-                                    ⚙️ Settings
-                                </MenuItem>
-                                <MenuItem
-                                    href="/logout"
-                                    onClick={(e) => {
-                                        e.syntheticEvent.preventDefault();
-                                        navigate("/logout");
-                                    }}
-                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
-                                >
-                                    👋 Logout
-                                </MenuItem>
-                            </Menu>
 
-                            :
-                            <Button size="sm" color="white" href="/login">
-                                Connect ⚡
-                            </Button>
-                        )
-                    }
-                    <div className="relative h-36">
-                        <motion.div
-                            initial={{
-                                opacity: 0,
-                                y: '0'
-                            }}
-                            animate={searchOpen ? {
-                                opacity: 1,
-                                y: '0',
-                                transition: { type: "spring", stiffness: 70 }
-
-                            } : {
-                                opacity: 0,
-                                y: '-120px',
-                                transition: {
-                                    ease: "easeIn"
-                                }
-                            }}
-                            className='absolute top-0 right-0 flex items-center h-full'
-                        >
-                            <Search
-                                width={326}
-                                isOpen={searchOpen}
-                                onClose={() => setSearchOpen(false)}
-                                onResultClick={() => setSearchOpen(false)}
-                            />
-                        </motion.div>
-                    </div>
 
                 </div>
             </div>

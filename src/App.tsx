@@ -5,35 +5,33 @@ import { Wallet_Service } from "./services";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
-import { useMeQuery } from "./graphql";
-import { setUser } from "./redux/features/user.slice";
+// import { setUser } from "./redux/features/user.slice";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
 import { Loadable, PAGES_ROUTES } from "./utils/routing";
-import ListProjectPage from "./features/Projects/pages/ListProjectPage/ListProjectPage";
 
 
 // Pages
-const FeedPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "feed_page" */ "./features/Posts/pages/FeedPage/FeedPage")))
-const PostDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "post_details_page" */ "./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
-const CreatePostPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "create_post_page" */ "./features/Posts/pages/CreatePostPage/CreatePostPage")))
+// const FeedPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "feed_page" */ "./features/Posts/pages/FeedPage/FeedPage")))
+// const PostDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "post_details_page" */ "./features/Posts/pages/PostDetailsPage/PostDetailsPage")))
+// const CreatePostPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "create_post_page" */ "./features/Posts/pages/CreatePostPage/CreatePostPage")))
 
-const HottestPage = Loadable(React.lazy(() => import( /* webpackChunkName: "hottest_page" */ "src/features/Projects/pages/HottestPage/HottestPage")))
-const CategoryPage = Loadable(React.lazy(() => import( /* webpackChunkName: "category_page" */ "src/features/Projects/pages/CategoryPage/CategoryPage")))
-const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage")))
-const ProjectPage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage")))
+// const HottestPage = Loadable(React.lazy(() => import( /* webpackChunkName: "hottest_page" */ "src/features/Projects/pages/HottestPage/HottestPage")))
+// const CategoryPage = Loadable(React.lazy(() => import( /* webpackChunkName: "category_page" */ "src/features/Projects/pages/CategoryPage/CategoryPage")))
+// const ProjectPage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage")))
 
-const HackathonsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
+// const HackathonsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage")))
 
-const TournamentDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage")))
+// const TournamentDetailsPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "hackathons_page" */ "./features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage")))
 
-const DonatePage = Loadable(React.lazy(() => import( /* webpackChunkName: "donate_page" */ "./features/Donations/pages/DonatePage/DonatePage")))
-const LoginPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "login_page" */ "./features/Auth/pages/LoginPage/LoginPage")))
-const LogoutPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "logout_page" */ "./features/Auth/pages/LogoutPage/LogoutPage")))
-const ProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "profile_page" */ "./features/Profiles/pages/ProfilePage/ProfilePage")))
-const EditProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "edit_profile_page" */ "./features/Profiles/pages/EditProfilePage/EditProfilePage")))
+// const DonatePage = Loadable(React.lazy(() => import( /* webpackChunkName: "donate_page" */ "./features/Donations/pages/DonatePage/DonatePage")))
+// const LoginPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "login_page" */ "./features/Auth/pages/LoginPage/LoginPage")))
+// const LogoutPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "logout_page" */ "./features/Auth/pages/LogoutPage/LogoutPage")))
+// const ProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "profile_page" */ "./features/Profiles/pages/ProfilePage/ProfilePage")))
+// const EditProfilePage = Loadable(React.lazy(() => import(  /* webpackChunkName: "edit_profile_page" */ "./features/Profiles/pages/EditProfilePage/EditProfilePage")))
 
+const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage/ExplorePage")))
 
 
 
@@ -45,14 +43,14 @@ function App() {
   const dispatch = useAppDispatch();
   useWrapperSetup()
 
-  useMeQuery({
-    onCompleted: (data) => {
-      dispatch(setUser(data.me))
-    },
-    onError: (error) => {
-      dispatch(setUser(null))
-    },
-  });
+  // useMeQuery({
+  //   onCompleted: (data) => {
+  //     dispatch(setUser(data.me))
+  //   },
+  //   onError: (error) => {
+  //     dispatch(setUser(null))
+  //   },
+  // });
 
   useEffect(() => {
     // if (typeof window.webln != "undefined") {
@@ -93,12 +91,12 @@ function App() {
     </Helmet>
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path={PAGES_ROUTES.blog.writeStory} element={<ProtectedRoute><CreatePostPage initType="story" /></ProtectedRoute>} />
+        {/* <Route path={PAGES_ROUTES.blog.writeStory} element={<ProtectedRoute><CreatePostPage initType="story" /></ProtectedRoute>} /> */}
 
         <Route element={<NavbarLayout />}>
-          <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
+          {/* <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
           <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />
-          <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
+        
           <Route path={PAGES_ROUTES.projects.listProject} element={<ListProjectPage />} />
           <Route path={PAGES_ROUTES.projects.projectPage} element={<ProjectPage />} />
           <Route path={PAGES_ROUTES.projects.catchProject} element={<Navigate replace to={PAGES_ROUTES.projects.default} />} />
@@ -117,9 +115,9 @@ function App() {
           <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
 
           <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
-          <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
-
-          <Route path="/" element={<Navigate replace to={PAGES_ROUTES.blog.feed} />} />
+          <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} /> */}
+          <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
+          <Route path="/" element={<Navigate replace to={PAGES_ROUTES.projects.default} />} />
         </Route>
 
       </Routes>

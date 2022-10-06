@@ -1,9 +1,0 @@
-mutation RegisterInTournament(
-  $tournamentId: Int!
-  $data: RegisterInTournamentInput
-) {
-  registerInTournament(tournament_id: $tournamentId, data: $data) {
-    id
-    in_tournament(id: $tournamentId)
-  }
-}

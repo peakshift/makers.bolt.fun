@@ -1,3 +1,0 @@
-query IsValidProjectHashtag($hashtag: String!, $projectId: Int) {
-  checkValidProjectHashtag(hashtag: $hashtag, projectId: $projectId)
-}

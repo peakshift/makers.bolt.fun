@@ -1,1 +1,0 @@
-export * from './pages/DonatePage/DonatePage'

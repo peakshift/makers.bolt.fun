@@ -38,18 +38,18 @@ export default function ImageToolButton({ classes }: Props) {
 
     const { activeCmd, cmd, tip, Icon } = cmdToBtn['img'];
     const onClick = () => {
-        dispatch(openModal({
-            Modal: "InsertImageModal",
-            props: {
-                callbackAction: {
-                    type: INSERT_IMAGE_ACTION.type,
-                    payload: {
-                        src: "",
-                        alt: ""
-                    }
-                }
-            }
-        }))
+        // dispatch(openModal({
+        //     Modal: "InsertImageModal",
+        //     props: {
+        //         callbackAction: {
+        //             type: INSERT_IMAGE_ACTION.type,
+        //             payload: {
+        //                 src: "",
+        //                 alt: ""
+        //             }
+        //         }
+        //     }
+        // }))
     }
 
     return (

@@ -4,7 +4,6 @@ import { BsChevronDown } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import Button from "../Button/Button";
 import ASSETS from "src/assets";
-import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
 import { FiMenu, } from "react-icons/fi";
@@ -13,8 +12,8 @@ import { useToggle } from "@react-hookz/web";
 import styles from './styles.module.css'
 import '@szhsin/react-menu/dist/index.css';
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
-import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
+import Avatar from "../Avatar/Avatar";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -59,7 +58,7 @@ export default function NavMobile() {
   const [communityOpen, toggleCommunityOpen] = useToggle(false)
 
   const { curUser } = useAppSelector((state) => ({
-    curUser: state.user.me,
+    curUser: null,
   }));
   const navigate = useNavigate()
 
@@ -90,7 +89,7 @@ export default function NavMobile() {
               </Link>
             </div>
 
-            <div className="flex-1 flex justify-end">
+            {/* <div className="flex-1 flex justify-end">
               {curUser ?
 
                 <Menu
@@ -134,7 +133,7 @@ export default function NavMobile() {
                   Connect ⚡
                 </Button>
 
-              }</div>
+              }</div> */}
 
           </div>
         </div>
@@ -154,7 +153,7 @@ export default function NavMobile() {
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
-            <Search onResultClick={() => toggleDrawerOpen(false)} />
+            {/* <Search onResultClick={() => toggleDrawerOpen(false)} /> */}
           </div>
           <ul className="flex flex-col py-16 gap-32 border-t">
 

@@ -1,0 +1,24 @@
+query ExplorePage($page: JSON, $pageSize: JSON) {
+  projects(_page: $page, _page_size: $pageSize) {
+    id
+    project
+    category
+    logo
+    yearFounded
+    websiteFunctionalLightningRelated
+    companyName
+    website
+    description
+    repository
+    status
+    dead
+    twitter
+    linkedIn
+    telegram
+    language
+    updatedAt
+    createdAt
+    discord
+    stars
+  }
+}

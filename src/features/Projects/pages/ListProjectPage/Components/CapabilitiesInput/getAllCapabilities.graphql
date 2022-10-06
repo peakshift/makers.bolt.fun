@@ -1,7 +1,0 @@
-query GetAllCapabilities {
-  getAllCapabilities {
-    id
-    title
-    icon
-  }
-}

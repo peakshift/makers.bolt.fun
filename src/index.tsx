@@ -5,14 +5,14 @@ import './styles/index.scss';
 import App from './App';
 
 
-if (process.env.REACT_APP_ENABLE_MOCKS) {
-  import(/* webpackChunkName: "mocks_server" */ './mocks/browser')
-    .then(({ worker }) => {
-      worker.start({
-        onUnhandledRequest: 'bypass'
-      })
-    })
-}
+// if (process.env.REACT_APP_ENABLE_MOCKS) {
+//   import(/* webpackChunkName: "mocks_server" */ './mocks/browser')
+//     .then(({ worker }) => {
+//       worker.start({
+//         onUnhandledRequest: 'bypass'
+//       })
+//     })
+// }
 
 
 const root = ReactDOM.createRoot(

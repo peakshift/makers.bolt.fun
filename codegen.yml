@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:8888/dev/graphql"
+schema: "https://api.baseql.com/airtable/graphql/app7wOLbDNm617R18"
 documents: "./src/**/*.{ts,graphql}"
 generates:
   src/graphql/index.tsx:

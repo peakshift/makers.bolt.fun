@@ -1,8 +1,0 @@
-query NavCategories {
-  allCategories {
-    id
-    title
-    icon
-    votes_sum
-  }
-}

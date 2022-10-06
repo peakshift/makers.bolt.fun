@@ -15,7 +15,8 @@ export default function ProtectedRoute({
     children,
 }: PropsWithChildren<Props>) {
 
-    const user = useAppSelector(state => state.user.me);
+    // const user = useAppSelector(state => state.user.me);
+    const user = null;
 
     const location = useLocation();
 

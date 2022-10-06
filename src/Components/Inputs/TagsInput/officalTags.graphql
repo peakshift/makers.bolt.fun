@@ -1,8 +1,0 @@
-query OfficialTags {
-  officialTags {
-    id
-    title
-    icon
-    description
-  }
-}

@@ -6,7 +6,6 @@ import { createReduxStore } from 'src/redux/store';
 import { useWrapperSetup } from '../Wrapper';
 import { ModifyArgs } from './utils';
 import Modal from 'src/Components/Modals/Modal/Modal';
-import { worker } from 'src/mocks/browser'
 import ReactTooltip from 'react-tooltip';
 import THEME from '../theme';
 
@@ -25,11 +24,11 @@ import { NotificationsService } from 'src/services';
 // Enable the Mocks Service Worker
 // -------------------------------------------
 
-if (process.env.STORYBOOK_ENABLE_MOCKS) {
-    worker.start({
-        onUnhandledRequest: 'bypass',
-    })
-}
+// if (process.env.STORYBOOK_ENABLE_MOCKS) {
+//     worker.start({
+//         onUnhandledRequest: 'bypass',
+//     })
+// }
 
 THEME.injectStyles()
 

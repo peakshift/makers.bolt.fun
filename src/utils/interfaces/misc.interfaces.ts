@@ -1,6 +1,3 @@
-import { Tag as ApiTag } from "src/graphql";
-
-export type Tag = ApiTag;
 
 
 export type ListComponentProps<T> = {

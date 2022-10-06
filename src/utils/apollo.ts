@@ -3,12 +3,15 @@ import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { CONSTS } from "src/utils";
 
-let apiClientUri = CONSTS.apiEndpoint + '/graphql';
+let apiClientUri = "https://api.baseql.com/airtable/graphql/app7wOLbDNm617R18";
 
 
 const httpLink = new HttpLink({
     uri: apiClientUri,
-    credentials: "include"
+    credentials: "include",
+    headers: {
+        'Authorization': 'Bearer NWU1YTNhNGItZWQ1ZC00NWQyLTk4M2ItNWRhZGViMGYxMjQ4'
+    },
 });
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {

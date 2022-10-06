@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Project } from "../../utils/interfaces";
+import { Projects as Project } from 'src/graphql'
 
 interface StoreState {
   openId: Project['id'] | null,
