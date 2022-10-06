@@ -100,11 +100,11 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             url: project.twitter
         },
         {
-            value: project.github,
-            text: project.github,
+            value: project.repository,
+            text: project.repository,
             icon: FiGithub,
             colors: "bg-pink-100 text-pink-600",
-            url: project.github
+            url: project.repository
         },
     ];
 
@@ -149,7 +149,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         <a href={project.website} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project.title}</h3></a>
                         <p className="text-body4 text-gray-600">{project.tagline}</p>
                         <div>
-                            <span className="font-medium text-body4 text-gray-600">{project.category.icon} {project.category.title}</span>
+                            <span className="font-medium text-body4 text-gray-600">{project.category} {project.category.title}</span>
                         </div>
                     </div>
                     <div className="flex-shrink-0 w-full md:w-auto  md:flex ml-auto gap-16 self-stretch">

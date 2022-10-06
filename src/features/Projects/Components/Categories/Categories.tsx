@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { CategoryList, useAllCategoriesQuery } from 'src/graphql';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useCarousel } from 'src/utils/hooks';
-import DynamicIcon from 'src/Components/DynamicIcon/DynamicIcon';
 import Skeleton from 'react-loading-skeleton';
 
 const colors = [

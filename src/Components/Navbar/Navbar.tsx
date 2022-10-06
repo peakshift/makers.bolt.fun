@@ -9,33 +9,7 @@ import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
 import { IoMdTrophy } from "react-icons/io";
 
 
-export const navLinks = [
-  { text: "Explore", url: "/", icon: MdHomeFilled, color: "text-primary-600" },
-  {
-    text: "Blog",
-    url: "/blog",
-    icon: MdComment,
-    color: "text-primary-600",
-  },
-  {
-    text: "Hackathons",
-    url: "/hackathons",
-    icon: IoMdTrophy,
-    color: "text-primary-600",
-  },
-  {
-    text: "Hottest",
-    url: "/hottest",
-    icon: MdLocalFireDepartment,
-    color: "text-primary-600",
-  },
-  // {
-  //   text: "Categories",
-  //   url: "/categories",
-  //   icon: IoExtensionPuzzle,
-  //   color: "text-primary-600",
-  // },
-];
+export const navLinks = [];
 
 
 export default function Navbar() {
@@ -65,11 +39,7 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 left-0 w-full z-[2010]">
-      {(isLargeScreen) ?
-        <NavDesktop />
-        :
-        <NavMobile />
-      }
+      <NavDesktop />
     </div>
   );
 }
