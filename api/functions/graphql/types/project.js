@@ -803,6 +803,20 @@ const updateProject = extendType({
                 // Do some validation
                 if (!user) throw new ApolloError('Not Authenticated')
 
+                // Check if hashtag is already used
+                const hashtagTaken = await prisma.project.findFirst({
+                    where: {
+                        hashtag,
+                        id: {
+                            not: id
+                        }
+                    }
+                })
+
+                if (hashtagTaken) throw new ApolloError("Hashtag already used by another project")
+
+
+
                 const project = await prisma.project.findFirst({
                     where: {
                         id,
