@@ -581,6 +581,15 @@ const createProject = extendType({
                 // Do some validation
                 if (!user) throw new ApolloError('Not Authenticated')
 
+
+                const hashtagTaken = await prisma.project.findFirst({
+                    where: {
+                        hashtag,
+                    }
+                })
+
+                if (hashtagTaken) throw new ApolloError("Hashtag already used by another project")
+
                 // Many Owners found. Throw an error
                 if (members.filter((m) => m.role === ROLE_OWNER).length > 1) {
                     throw new ApolloError('Only 1 owner can be defined.')
