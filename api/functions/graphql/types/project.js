@@ -673,39 +673,34 @@ const createProject = extendType({
                             },
                         },
                         members: {
-                            create: members.map((member) => {
-                                return {
-                                    role: member.role,
-                                    user: {
-                                        connect: {
-                                            id: member.userId,
-                                        },
-                                    },
-                                }
-                            }),
+                            createMany: {
+                                data: members.map((member) => {
+                                    return {
+                                        role: member.role,
+                                        userId: member.id,
+                                    }
+                                })
+                            },
                         },
                         recruit_roles: {
-                            create: recruit_roles.map((role) => {
-                                return {
-                                    level: 0,
-                                    role: {
-                                        connect: {
-                                            id: role,
-                                        },
-                                    },
-                                }
-                            }),
+                            createMany: {
+                                data: recruit_roles.map((role) => {
+                                    return {
+                                        level: 0,
+                                        roleId: role,
+                                    }
+                                }),
+                            }
+
                         },
                         tournaments: {
-                            create: tournaments.map((tournament) => {
-                                return {
-                                    tournament: {
-                                        connect: {
-                                            id: tournament,
-                                        },
-                                    },
-                                }
-                            }),
+                            createMany: {
+                                data: tournaments.map((tournament) => {
+                                    return {
+                                        tournament_id: tournament,
+                                    }
+                                }),
+                            }
                         },
                         capabilities: {
                             connect: capabilities.map((c) => {
@@ -835,23 +830,17 @@ const updateProject = extendType({
                     },
                 })
 
-                console.log(project.members, user.id);
-
-                console.log('1');
                 // Verifying current user is a member
                 if (!project.members.some((m) => m.userId === user.id)) {
                     throw new ApolloError("You don't have permission to update this project")
                 }
 
-                console.log('2');
                 // Maker can't change project info
                 if (project.members.find((m) => m.userId === user.id)?.role === ROLE_MAKER) {
                     throw new ApolloError("Makers can't change project info")
                 }
 
-                console.log('3');
                 let newMembers = []
-
                 // Admin can only change makers
                 if (project.members.find((m) => m.userId === user.id)?.role === ROLE_ADMIN) {
                     // Changing Makers
@@ -867,9 +856,7 @@ const updateProject = extendType({
                     // Curent user is Owner. Can change all users roles
                     newMembers = members
                 }
-                console.log("New Members:", newMembers);
 
-                console.log('4');
                 let imagesToDelete = []
                 let imagesToAdd = []
 
@@ -898,7 +885,7 @@ const updateProject = extendType({
                     imagesToDelete.push(project.cover_image_id)
                 }
 
-                console.log('5');
+
                 let thumbnailImageRel = {}
                 if (thumbnail_image.id) {
                     const thumbnailImage = await prisma.hostedImage.findFirst({
@@ -924,7 +911,7 @@ const updateProject = extendType({
                     imagesToDelete.push(project.thumbnail_image_id)
                 }
 
-                console.log('6');
+
                 let screenshots_ids = []
                 for (const screenshot of screenshots) {
                     if (screenshot.id) {
@@ -957,111 +944,102 @@ const updateProject = extendType({
                 const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !screenshots_ids.includes(x))
                 imagesToDelete = [...imagesToDelete, ...screenshotsIdsToDelete]
 
-                console.log('7');
-                const updatedProject = await prisma.project
-                    .update({
-                        where: {
-                            id,
-                        },
-                        data: {
-                            title,
-                            description,
-                            lightning_address,
-                            tagline,
-                            hashtag,
-                            website,
-                            discord,
-                            github,
-                            twitter,
-                            slack,
-                            telegram,
-                            launch_status,
 
-                            ...coverImageRel,
-                            ...thumbnailImageRel,
-                            screenshots_ids,
-
-                            category: {
-                                connect: {
-                                    id: category_id,
-                                },
-                            },
-                            members: {
-                                deleteMany: {},
-                                create: newMembers.map((member) => {
-                                    return {
-                                        role: member.role,
-                                        user: {
-                                            connect: {
-                                                id: member.id,
-                                            },
-                                        },
-                                    }
-                                }),
-                            },
-                            recruit_roles: {
-                                deleteMany: {},
-                                create: recruit_roles.map((role) => {
-                                    return {
-                                        level: 0,
-                                        role: {
-                                            connect: {
-                                                id: role,
-                                            },
-                                        },
-                                    }
-                                }),
-                            },
-                            tournaments: {
-                                deleteMany: {},
-                                create: tournaments.map((tournament) => {
-                                    return {
-                                        tournament: {
-                                            connect: {
-                                                id: tournament,
-                                            },
-                                        },
-                                    }
-                                }),
-                            },
-                            capabilities: {
-                                set: capabilities.map((c) => {
-                                    return {
-                                        id: c,
-                                    }
-                                }),
-                            },
-                        },
-                    })
-                    .catch((error) => {
-                        logError(error)
-                        throw new ApolloError('Unexpected error happened...')
-                    })
-
-                console.log('8');
-                if (imagesToAdd.length > 0) {
-                    await prisma.hostedImage
-                        .updateMany({
+                try {
+                    const updatedProject = await prisma.project
+                        .update({
                             where: {
-                                id: {
-                                    in: imagesToAdd,
-                                },
+                                id,
                             },
                             data: {
-                                is_used: true,
+                                title,
+                                description,
+                                lightning_address,
+                                tagline,
+                                hashtag,
+                                website,
+                                discord,
+                                github,
+                                twitter,
+                                slack,
+                                telegram,
+                                launch_status,
+
+                                ...coverImageRel,
+                                ...thumbnailImageRel,
+                                screenshots_ids,
+
+                                category: {
+                                    connect: {
+                                        id: category_id,
+                                    },
+                                },
+                                members: {
+                                    deleteMany: {},
+                                    createMany: {
+                                        data: newMembers.map((member) => {
+                                            return {
+                                                role: member.role,
+                                                userId: member.id
+                                            }
+                                        }),
+                                    }
+                                },
+                                recruit_roles: {
+                                    deleteMany: {},
+                                    createMany: {
+                                        data: recruit_roles.map((role) => {
+                                            return {
+                                                level: 0,
+                                                roleId: role
+                                            }
+                                        }),
+                                    }
+                                },
+                                tournaments: {
+                                    deleteMany: {},
+                                    createMany: {
+                                        data: tournaments.map((tournament) => {
+                                            return {
+                                                tournament_id: tournament,
+                                            }
+                                        }),
+                                    }
+                                },
+                                capabilities: {
+                                    set: capabilities.map((c) => {
+                                        return {
+                                            id: c,
+                                        }
+                                    }),
+                                },
                             },
                         })
-                        .catch((error) => {
-                            logError(error)
-                            throw new ApolloError('Unexpected error happened...')
-                        })
+
+                    if (imagesToAdd.length > 0) {
+                        await prisma.hostedImage
+                            .updateMany({
+                                where: {
+                                    id: {
+                                        in: imagesToAdd,
+                                    },
+                                },
+                                data: {
+                                    is_used: true,
+                                },
+                            })
+                            .catch((error) => {
+                                logError(error)
+                            })
+                    }
+
+                    await Promise.all(imagesToDelete.map(async (i) => await deleteImage(i)))
+
+                    return { project: updatedProject }
+                } catch (error) {
+                    logError(error)
+                    throw new ApolloError("Error while updating the project")
                 }
-
-                console.log('9');
-                imagesToDelete.map(async (i) => await deleteImage(i))
-
-                console.log('10');
-                return { project: updatedProject }
             },
         })
     },
