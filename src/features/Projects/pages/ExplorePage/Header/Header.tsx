@@ -13,7 +13,7 @@ type Props = {
 export default function Header(props: Props) {
 
 
-    let title = "Discover over 5,000 lightning projects"
+    let title = "Discover 1,592 lightning projects"
 
     if (props.category?.name) title = `${props.category.projectsCount} projects`;
 
