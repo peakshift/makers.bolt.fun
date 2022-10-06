@@ -867,6 +867,7 @@ const updateProject = extendType({
                     // Curent user is Owner. Can change all users roles
                     newMembers = members
                 }
+                console.log("New Members:", newMembers);
 
                 console.log('4');
                 let imagesToDelete = []
