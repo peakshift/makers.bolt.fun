@@ -1,0 +1,7 @@
+query AllCategories {
+  categoryList {
+    id
+    name
+    icon
+  }
+}

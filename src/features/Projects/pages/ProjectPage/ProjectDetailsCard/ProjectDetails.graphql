@@ -1,0 +1,31 @@
+query ProjectDetails($projectsId: String) {
+  projects(id: $projectsId) {
+    id
+    title
+    dead
+    createdAt
+    companyName
+    category
+    categoryList {
+      name
+    }
+    description
+    discord
+    endDate
+    twitter
+    updatedAt
+    watchers
+    website
+    yearFounded
+    telegram
+    subcategory
+    stars
+    repository
+    openSource
+    logo
+    linkedIn
+    license
+    language
+    forks
+  }
+}

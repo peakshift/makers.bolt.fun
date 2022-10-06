@@ -8,10 +8,6 @@ let apiClientUri = "https://api.baseql.com/airtable/graphql/app7wOLbDNm617R18";
 
 const httpLink = new HttpLink({
     uri: apiClientUri,
-    credentials: "include",
-    headers: {
-        'Authorization': 'Bearer NWU1YTNhNGItZWQ1ZC00NWQyLTk4M2ItNWRhZGViMGYxMjQ4'
-    },
 });
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {

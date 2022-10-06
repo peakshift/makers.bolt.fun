@@ -4,6 +4,7 @@ import { useExplorePageQuery } from 'src/graphql';
 import HeaderImage from './HeaderImage/HeaderImage';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
+import Categories from '../../Components/Categories/Categories';
 
 export default function ExplorePage() {
 
@@ -38,6 +39,7 @@ export default function ExplorePage() {
                     img={data?.getCategory.cover_image!}
                     apps_count={data?.getCategory.apps_count!}
                 /> */}
+                <Categories />
                 <div className="mt-40">
                     <ProjectsGrid
                         isLoading={loading}

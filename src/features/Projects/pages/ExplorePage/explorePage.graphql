@@ -1,7 +1,7 @@
 query ExplorePage($page: JSON, $pageSize: JSON) {
   projects(_page: $page, _page_size: $pageSize) {
     id
-    project
+    title
     category
     logo
     yearFounded

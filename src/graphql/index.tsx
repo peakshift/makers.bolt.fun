@@ -158,12 +158,12 @@ export type QueryProjectsArgs = {
   linkedIn: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
   openSource: InputMaybe<Scalars['String']>;
-  project: InputMaybe<Scalars['String']>;
   repository: InputMaybe<Scalars['String']>;
   stars: InputMaybe<Scalars['Float']>;
   status: InputMaybe<Scalars['String']>;
   subcategory: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   telegram: InputMaybe<Scalars['String']>;
+  title: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updatedAt: InputMaybe<Scalars['String']>;
   watchers: InputMaybe<Scalars['Float']>;
@@ -300,12 +300,12 @@ export type Projects = {
   linkedIn: Maybe<Scalars['String']>;
   logo: Maybe<Array<Maybe<Scalars['JSON']>>>;
   openSource: Maybe<Scalars['String']>;
-  project: Maybe<Scalars['String']>;
   repository: Maybe<Scalars['String']>;
   stars: Maybe<Scalars['Float']>;
   status: Maybe<Scalars['String']>;
   subcategory: Maybe<Array<Maybe<Scalars['String']>>>;
   telegram: Maybe<Scalars['String']>;
+  title: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   updatedAt: Maybe<Scalars['String']>;
   watchers: Maybe<Scalars['Float']>;
@@ -327,14 +327,10 @@ export type Tags = {
   projectProductFromFeatured: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-export type SearchProjectsQueryVariables = Exact<{
-  category: InputMaybe<Scalars['String']>;
-  pageSize: InputMaybe<Scalars['JSON']>;
-  page: InputMaybe<Scalars['JSON']>;
-}>;
+export type AllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SearchProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, project: string | null, category: string | null, subcategory: Array<string | null> | null, logo: Array<any | null> | null, yearFounded: number | null } | null> | null };
+export type AllCategoriesQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null } | null> | null };
 
 export type ExplorePageQueryVariables = Exact<{
   page: InputMaybe<Scalars['JSON']>;
@@ -342,56 +338,57 @@ export type ExplorePageQueryVariables = Exact<{
 }>;
 
 
-export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, project: string | null, category: string | null, logo: Array<any | null> | null, yearFounded: number | null, websiteFunctionalLightningRelated: string | null, companyName: string | null, website: string | null, description: string | null, repository: string | null, status: string | null, dead: boolean | null, twitter: string | null, linkedIn: string | null, telegram: string | null, language: string | null, updatedAt: string | null, createdAt: string | null, discord: string | null, stars: number | null } | null> | null };
+export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, category: string | null, logo: Array<any | null> | null, yearFounded: number | null, websiteFunctionalLightningRelated: string | null, companyName: string | null, website: string | null, description: string | null, repository: string | null, status: string | null, dead: boolean | null, twitter: string | null, linkedIn: string | null, telegram: string | null, language: string | null, updatedAt: string | null, createdAt: string | null, discord: string | null, stars: number | null } | null> | null };
+
+export type ProjectDetailsQueryVariables = Exact<{
+  projectsId: InputMaybe<Scalars['String']>;
+}>;
 
 
-export const SearchProjectsDocument = gql`
-    query SearchProjects($category: String, $pageSize: JSON, $page: JSON) {
-  projects(category: $category, _page_size: $pageSize, _page: $page) {
+export type ProjectDetailsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, dead: boolean | null, createdAt: string | null, companyName: string | null, category: string | null, description: string | null, discord: string | null, endDate: string | null, twitter: string | null, updatedAt: string | null, watchers: number | null, website: string | null, yearFounded: number | null, telegram: string | null, subcategory: Array<string | null> | null, stars: number | null, repository: string | null, openSource: string | null, logo: Array<any | null> | null, linkedIn: string | null, license: string | null, language: string | null, forks: number | null, categoryList: Array<{ __typename?: 'categoryList', name: string | null } | null> | null } | null> | null };
+
+
+export const AllCategoriesDocument = gql`
+    query AllCategories {
+  categoryList {
     id
-    project
-    category
-    subcategory
-    logo
-    yearFounded
+    name
+    icon
   }
 }
     `;
 
 /**
- * __useSearchProjectsQuery__
+ * __useAllCategoriesQuery__
  *
- * To run a query within a React component, call `useSearchProjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useSearchProjectsQuery({
+ * const { data, loading, error } = useAllCategoriesQuery({
  *   variables: {
- *      category: // value for 'category'
- *      pageSize: // value for 'pageSize'
- *      page: // value for 'page'
  *   },
  * });
  */
-export function useSearchProjectsQuery(baseOptions?: Apollo.QueryHookOptions<SearchProjectsQuery, SearchProjectsQueryVariables>) {
+export function useAllCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<AllCategoriesQuery, AllCategoriesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
+        return Apollo.useQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, options);
       }
-export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchProjectsQuery, SearchProjectsQueryVariables>) {
+export function useAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllCategoriesQuery, AllCategoriesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
+          return Apollo.useLazyQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, options);
         }
-export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
-export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
-export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export type AllCategoriesQueryHookResult = ReturnType<typeof useAllCategoriesQuery>;
+export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategoriesLazyQuery>;
+export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
 export const ExplorePageDocument = gql`
     query ExplorePage($page: JSON, $pageSize: JSON) {
   projects(_page: $page, _page_size: $pageSize) {
     id
-    project
+    title
     category
     logo
     yearFounded
@@ -442,3 +439,64 @@ export function useExplorePageLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ExplorePageQueryHookResult = ReturnType<typeof useExplorePageQuery>;
 export type ExplorePageLazyQueryHookResult = ReturnType<typeof useExplorePageLazyQuery>;
 export type ExplorePageQueryResult = Apollo.QueryResult<ExplorePageQuery, ExplorePageQueryVariables>;
+export const ProjectDetailsDocument = gql`
+    query ProjectDetails($projectsId: String) {
+  projects(id: $projectsId) {
+    id
+    title
+    dead
+    createdAt
+    companyName
+    category
+    categoryList {
+      name
+    }
+    description
+    discord
+    endDate
+    twitter
+    updatedAt
+    watchers
+    website
+    yearFounded
+    telegram
+    subcategory
+    stars
+    repository
+    openSource
+    logo
+    linkedIn
+    license
+    language
+    forks
+  }
+}
+    `;
+
+/**
+ * __useProjectDetailsQuery__
+ *
+ * To run a query within a React component, call `useProjectDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectDetailsQuery({
+ *   variables: {
+ *      projectsId: // value for 'projectsId'
+ *   },
+ * });
+ */
+export function useProjectDetailsQuery(baseOptions?: Apollo.QueryHookOptions<ProjectDetailsQuery, ProjectDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>(ProjectDetailsDocument, options);
+      }
+export function useProjectDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectDetailsQuery, ProjectDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>(ProjectDetailsDocument, options);
+        }
+export type ProjectDetailsQueryHookResult = ReturnType<typeof useProjectDetailsQuery>;
+export type ProjectDetailsLazyQueryHookResult = ReturnType<typeof useProjectDetailsLazyQuery>;
+export type ProjectDetailsQueryResult = Apollo.QueryResult<ProjectDetailsQuery, ProjectDetailsQueryVariables>;
