@@ -189,6 +189,33 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     </div>
                 </div>
 
+                    <div>
+                        <p className="text-body6 uppercase font-medium text-gray-400 mb-8">CAPABILITIES</p>
+                        <div className="flex flex-wrap gap-8">
+                            <Badge size='sm'>{dead}</Badge>
+                            <Badge size='sm'>{createdAt}</Badge>
+                            <Badge size='sm'>{companyName}</Badge>
+                            <Badge size='sm'>{description}</Badge>
+                            <Badge size='sm'>{endDate}</Badge>
+                            <Badge size='sm'>{updatedAt}</Badge>
+                            <Badge size='sm'>{watchers}</Badge>
+                            <Badge size='sm'>{yearFounded}</Badge>
+                            <Badge size='sm'>{subcategory}</Badge>
+                            <Badge size='sm'>{stars}</Badge>
+                            <Badge size='sm'>{discord}</Badge>
+                            <Badge size='sm'>{twitter}</Badge>
+                            <Badge size='sm'>{website}</Badge>
+                            <Badge size='sm'>{telegram}</Badge>
+                            <Badge size='sm'>{repository}</Badge>
+                            <Badge size='sm'>{openSource}</Badge>
+                            <Badge size='sm'>{logo}</Badge>
+                            <Badge size='sm'>{linkedIn}</Badge>
+                            <Badge size='sm'>{license}</Badge>
+                            <Badge size='sm'>{language}</Badge>
+                            <Badge size='sm'>{forks}</Badge>
+                        </div>
+                    </div>
+
                 {/*project.capabilities.length > 0 &&
                     <div>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">CAPABILITIES</p>
