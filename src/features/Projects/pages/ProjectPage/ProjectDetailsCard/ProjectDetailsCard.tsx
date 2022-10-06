@@ -258,8 +258,8 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
                 <Button color='white' fullWidth href={createRoute({ type: "project", tag: project.hashtag })} onClick={props.onClose}>View project details</Button>
 
-                {/* <div className="text-center">
-                    <h3 className="text-body4 font-regular">Are you the creator of this project</h3>
+                <div className="text-center">
+                    <h3 className="text-body4 font-regular">Want to suggest any changes to this project?</h3>
                     <Button
                         color='gray'
                         size='md'
@@ -268,7 +268,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         newTab
                     // onClick={onClaim}
                     >Claim 🖐</Button>
-                </div> */}
+                </div>
             </div>
         </div>
     )
