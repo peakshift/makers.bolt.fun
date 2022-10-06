@@ -13,8 +13,8 @@ const Template: ComponentStory<typeof ProjectDetailsCard> = (args) => <ProjectDe
 
 export const Default = Template.bind({});
 Default.args = {
-    projectId: 1,
-    isPageModal: true
+    // projectId: 1,
+    // isPageModal: true
 }
 
 
