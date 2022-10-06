@@ -678,7 +678,7 @@ const createProject = extendType({
                                     role: member.role,
                                     user: {
                                         connect: {
-                                            id: member.id,
+                                            id: member.userId,
                                         },
                                     },
                                 }
@@ -868,6 +868,7 @@ const updateProject = extendType({
                     newMembers = members
                 }
 
+                console.log('4');
                 let imagesToDelete = []
                 let imagesToAdd = []
 
@@ -896,6 +897,7 @@ const updateProject = extendType({
                     imagesToDelete.push(project.cover_image_id)
                 }
 
+                console.log('5');
                 let thumbnailImageRel = {}
                 if (thumbnail_image.id) {
                     const thumbnailImage = await prisma.hostedImage.findFirst({
@@ -921,6 +923,7 @@ const updateProject = extendType({
                     imagesToDelete.push(project.thumbnail_image_id)
                 }
 
+                console.log('6');
                 let screenshots_ids = []
                 for (const screenshot of screenshots) {
                     if (screenshot.id) {
@@ -953,6 +956,7 @@ const updateProject = extendType({
                 const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !screenshots_ids.includes(x))
                 imagesToDelete = [...imagesToDelete, ...screenshotsIdsToDelete]
 
+                console.log('7');
                 const updatedProject = await prisma.project
                     .update({
                         where: {
@@ -1033,6 +1037,7 @@ const updateProject = extendType({
                         throw new ApolloError('Unexpected error happened...')
                     })
 
+                console.log('8');
                 if (imagesToAdd.length > 0) {
                     await prisma.hostedImage
                         .updateMany({
@@ -1051,8 +1056,10 @@ const updateProject = extendType({
                         })
                 }
 
+                console.log('9');
                 imagesToDelete.map(async (i) => await deleteImage(i))
 
+                console.log('10');
                 return { project: updatedProject }
             },
         })
