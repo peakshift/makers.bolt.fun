@@ -2,7 +2,7 @@ useDotenv: true
 
 custom:
   serverless-offline:
-    httpPort: 8888
+    httpPort: 8080
     corsAllowHeaders: "*"
 
 plugins:
