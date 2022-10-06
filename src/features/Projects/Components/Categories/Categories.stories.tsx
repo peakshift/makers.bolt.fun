@@ -9,7 +9,7 @@ export default {
 
 } as ComponentMeta<typeof Categories>;
 
-const Template: ComponentStory<typeof Categories> = (args) => <Categories />;
+const Template: ComponentStory<typeof Categories> = (args) => <Categories {...args} />;
 
 export const Default = Template.bind({});
 
