@@ -126,12 +126,14 @@ export type QueryCategoryListArgs = {
   _order_by: InputMaybe<Scalars['JSON']>;
   _page: InputMaybe<Scalars['JSON']>;
   _page_size: InputMaybe<Scalars['JSON']>;
+  categoryId: InputMaybe<Scalars['String']>;
   data: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   description: InputMaybe<Scalars['String']>;
   icon: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   projectFromData: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  projectsCount: InputMaybe<Scalars['String']>;
 };
 
 
@@ -143,6 +145,7 @@ export type QueryProjectsArgs = {
   categories: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   categoriesCopy: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   category: InputMaybe<Scalars['String']>;
+  categoryId: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   categoryList: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   comment: InputMaybe<Scalars['String']>;
   companyName: InputMaybe<Scalars['String']>;
@@ -272,12 +275,14 @@ export type Categories = {
 
 export type CategoryList = {
   __typename?: 'categoryList';
+  categoryId: Maybe<Scalars['String']>;
   data: Maybe<Array<Maybe<Projects>>>;
   description: Maybe<Scalars['String']>;
   icon: Maybe<Scalars['String']>;
   id: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   projectFromData: Maybe<Array<Maybe<Scalars['String']>>>;
+  projectsCount: Maybe<Scalars['String']>;
 };
 
 export type Projects = {
@@ -285,6 +290,7 @@ export type Projects = {
   categories: Maybe<Array<Maybe<Categories>>>;
   categoriesCopy: Maybe<Array<Maybe<Tags>>>;
   category: Maybe<Scalars['String']>;
+  categoryId: Maybe<Array<Maybe<Scalars['String']>>>;
   categoryList: Maybe<Array<Maybe<CategoryList>>>;
   comment: Maybe<Scalars['String']>;
   companyName: Maybe<Scalars['String']>;
@@ -327,18 +333,21 @@ export type Tags = {
   projectProductFromFeatured: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-export type AllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllCategoriesQueryVariables = Exact<{
+  filter: InputMaybe<Scalars['JSON']>;
+}>;
 
 
-export type AllCategoriesQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null } | null> | null };
+export type AllCategoriesQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', projectsCount: string | null, id: string | null, name: string | null, description: string | null, icon: string | null } | null> | null };
 
 export type ExplorePageQueryVariables = Exact<{
+  filter: InputMaybe<Scalars['JSON']>;
   page: InputMaybe<Scalars['JSON']>;
   pageSize: InputMaybe<Scalars['JSON']>;
 }>;
 
 
-export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, category: string | null, logo: Array<any | null> | null, yearFounded: number | null, websiteFunctionalLightningRelated: string | null, companyName: string | null, website: string | null, description: string | null, repository: string | null, status: string | null, dead: boolean | null, twitter: string | null, linkedIn: string | null, telegram: string | null, language: string | null, updatedAt: string | null, createdAt: string | null, discord: string | null, stars: number | null } | null> | null };
+export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, category: string | null, logo: Array<any | null> | null, yearFounded: number | null, websiteFunctionalLightningRelated: string | null, companyName: string | null, website: string | null, description: string | null, repository: string | null, status: string | null, dead: boolean | null, twitter: string | null, linkedIn: string | null, telegram: string | null, language: string | null, updatedAt: string | null, createdAt: string | null, discord: string | null, stars: number | null, categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null } | null> | null } | null> | null };
 
 export type ProjectDetailsQueryVariables = Exact<{
   projectsId: InputMaybe<Scalars['String']>;
@@ -349,10 +358,12 @@ export type ProjectDetailsQuery = { __typename?: 'Query', projects: Array<{ __ty
 
 
 export const AllCategoriesDocument = gql`
-    query AllCategories {
-  categoryList {
+    query AllCategories($filter: JSON) {
+  categoryList(_filter: $filter) {
+    projectsCount
     id
     name
+    description
     icon
   }
 }
@@ -370,6 +381,7 @@ export const AllCategoriesDocument = gql`
  * @example
  * const { data, loading, error } = useAllCategoriesQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *   },
  * });
  */
@@ -385,8 +397,8 @@ export type AllCategoriesQueryHookResult = ReturnType<typeof useAllCategoriesQue
 export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategoriesLazyQuery>;
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
 export const ExplorePageDocument = gql`
-    query ExplorePage($page: JSON, $pageSize: JSON) {
-  projects(_page: $page, _page_size: $pageSize) {
+    query ExplorePage($filter: JSON, $page: JSON, $pageSize: JSON) {
+  projects(_filter: $filter, _page: $page, _page_size: $pageSize) {
     id
     title
     category
@@ -407,6 +419,10 @@ export const ExplorePageDocument = gql`
     createdAt
     discord
     stars
+    categoryList {
+      id
+      name
+    }
   }
 }
     `;
@@ -423,6 +439,7 @@ export const ExplorePageDocument = gql`
  * @example
  * const { data, loading, error } = useExplorePageQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *      page: // value for 'page'
  *      pageSize: // value for 'pageSize'
  *   },

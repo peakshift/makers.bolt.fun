@@ -1,18 +1,23 @@
 import { useParams, Navigate } from 'react-router-dom'
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { useExplorePageQuery } from 'src/graphql';
-import HeaderImage from './HeaderImage/HeaderImage';
+import HeaderImage from './Header/Header';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
-import Categories from '../../Components/Categories/Categories';
+import Categories, { Category } from '../../Components/Categories/Categories';
+import { useState } from 'react';
+import Header from './Header/Header';
 
 export default function ExplorePage() {
 
-
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const { data, loading, error } = useExplorePageQuery({
         variables: {
             page: 1,
             pageSize: 20,
+            filter: selectedCategory ? {
+                "categoryId": selectedCategory?.id
+            } : null
         }
     });
 
@@ -33,13 +38,10 @@ export default function ExplorePage() {
                 <meta property="og:title" content={`Lightning Landscape`} />
             </Helmet>
             <div className='page-container'>
-                {/* <HeaderImage
-                    isLoading={loading}
-                    title={data?.getCategory.title!}
-                    img={data?.getCategory.cover_image!}
-                    apps_count={data?.getCategory.apps_count!}
-                /> */}
-                <Categories />
+                <Header
+                    category={selectedCategory}
+                />
+                <Categories value={selectedCategory} onChange={v => setSelectedCategory(v)} />
                 <div className="mt-40">
                     <ProjectsGrid
                         isLoading={loading}

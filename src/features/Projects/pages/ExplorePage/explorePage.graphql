@@ -1,5 +1,5 @@
-query ExplorePage($page: JSON, $pageSize: JSON) {
-  projects(_page: $page, _page_size: $pageSize) {
+query ExplorePage($filter: JSON, $page: JSON, $pageSize: JSON) {
+  projects(_filter: $filter, _page: $page, _page_size: $pageSize) {
     id
     title
     category
@@ -20,5 +20,9 @@ query ExplorePage($page: JSON, $pageSize: JSON) {
     createdAt
     discord
     stars
+    categoryList {
+      id
+      name
+    }
   }
 }

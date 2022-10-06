@@ -15,13 +15,13 @@ export default function ProjectsGrid({ isLoading, projects }: Props) {
     const dispatch = useAppDispatch();
 
     const handleClick = (projectId: string) => {
-        // dispatch(openModal({
-        //     Modal: "ProjectDetailsCard",
-        //     isPageModal: true,
-        //     props: {
-        //         projectId
-        //     }
-        // }))
+        dispatch(openModal({
+            Modal: "ProjectDetailsCard",
+            isPageModal: true,
+            props: {
+                projectId
+            }
+        }))
     }
 
     return (

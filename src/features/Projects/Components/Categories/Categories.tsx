@@ -1,8 +1,10 @@
 
 import { useNavigate } from 'react-router-dom';
-import { useAllCategoriesQuery } from 'src/graphql';
+import { CategoryList, useAllCategoriesQuery } from 'src/graphql';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useCarousel } from 'src/utils/hooks';
+import DynamicIcon from 'src/Components/DynamicIcon/DynamicIcon';
+import Skeleton from 'react-loading-skeleton';
 
 const colors = [
     '#FDF2F8',
@@ -16,8 +18,14 @@ const colors = [
     '#FFF7ED',
     '#F1F5F9'
 ]
+export type Category = Pick<CategoryList, 'id' | 'name' | 'icon' | 'projectsCount'>
 
-export default function Categories() {
+interface Props {
+    value: Category | null
+    onChange?: (v: Category | null) => void
+}
+
+export default function Categories(props: Props) {
 
     const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({
         align: 'start', slidesToScroll: 2,
@@ -28,13 +36,13 @@ export default function Categories() {
 
 
     if (loading || !data)
-        return <div className="flex gap-12">
-            {Array(5).fill(0).map((_, idx) =>
+        return <div className="flex gap-32 border-b border-gray-200">
+            {Array(15).fill(0).map((_, idx) =>
                 <div
                     key={idx}
-                    className=' block p-16 rounded-16  bg-gray-100 active:scale-90 transition-transform'
+                    className='p-16 rounded-16'
                 >
-                    <span className="opacity-0">category</span>
+                    <Skeleton width="15ch" />
                 </div>
             )}
         </div>
@@ -44,14 +52,28 @@ export default function Categories() {
 
         <div className="relative group">
             <div className="overflow-hidden" ref={viewportRef}>
-                <div className="select-none w-full flex gap-16">
+                <div className="select-none w-full flex gap-32 border-b border-gray-200">
+                    <button
+                        onClick={() => {
+                            props.onChange?.(null)
+                        }}
+                        className={`
+                            flex flex-col font-medium py-16 min-w-max
+                            ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
+                            `}
+                    >All projects</button>
                     {data?.categoryList?.filter(c => c !== null).map((category, idx) =>
                         <button
                             key={category!.id}
-                            onClick={() => { }}
-                            className='min-w-max block p-16 rounded-16 hover:bg-gray-100 active:bg-gray-200 active:scale-90 transition-transform'
-                            style={{ backgroundColor: colors[idx % colors.length] }}
-                        >{category!.icon} {category!.name}</button>
+                            onClick={() => {
+                                const isSame = props.value?.id === category?.id;
+                                props.onChange?.(isSame ? null : category)
+                            }}
+                            className={`
+                            flex flex-col font-medium py-16 min-w-max
+                            ${props.value?.id === category?.id ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
+                            `}
+                        >{category!.name} ({category?.projectsCount!})</button>
                     )}
                 </div>
             </div>

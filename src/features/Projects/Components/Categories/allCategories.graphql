@@ -1,7 +1,9 @@
-query AllCategories {
-  categoryList {
+query AllCategories($filter: JSON) {
+  categoryList(_filter: $filter) {
+    projectsCount
     id
     name
+    description
     icon
   }
 }
