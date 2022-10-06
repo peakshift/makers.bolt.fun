@@ -588,10 +588,12 @@ const createStory = extendType({
                                         }
                                     })
                             },
-                            project: {
+                            project: project_id ? {
                                 connect: {
                                     id: project_id,
-                                }
+                                },
+                            } : {
+                                disconnect: true
                             },
                             user: {
                                 connect: {

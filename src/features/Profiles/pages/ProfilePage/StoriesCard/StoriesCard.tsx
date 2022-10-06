@@ -59,7 +59,7 @@ export default function StoriesCard({ stories, isOwner, onlyMd }: Props) {
                         The maker have not written any stories yet
                     </p> */}
                     {isOwner && <Button
-                        href='/blog/create-post'
+                        href={createRoute({ type: "write-story" })}
                         color='primary'
                     >
                         Write your first story
