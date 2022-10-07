@@ -5,9 +5,33 @@ const createGlobalModule = require('../utils/createGlobalModule');
 const createPrismaClient = () => {
     console.log("New Prisma Client");
     try {
-        return new PrismaClient({
-            log: ['query', 'error', 'info', 'warn']
-        });
+        const prisma = new PrismaClient({
+            log: [
+                {
+                    emit: 'event',
+                    level: 'query',
+                },
+                {
+                    emit: 'stdout',
+                    level: 'error',
+                },
+                {
+                    emit: 'stdout',
+                    level: 'info',
+                },
+                {
+                    emit: 'stdout',
+                    level: 'warn',
+                },
+            ],
+        })
+        prisma.$on('query', (e) => {
+            const timestamp = Date.now();
+            console.log(`%c${Math.floor(timestamp / 1000).toString().slice(-3)}`, 'background: #222; color: #bada55');
+            console.log('Query: ' + e.query.slice(0, 200))
+            // console.log('Params: ' + e.params)
+        })
+        return prisma;
     } catch (error) {
         console.log(error);
     }
