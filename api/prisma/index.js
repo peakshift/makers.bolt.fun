@@ -8,7 +8,7 @@ const createPrismaClient = () => {
         const prisma = new PrismaClient({
             log: [
                 {
-                    emit: 'event',
+                    emit: 'stdout',
                     level: 'query',
                 },
                 {
@@ -26,9 +26,9 @@ const createPrismaClient = () => {
             ],
         })
         prisma.$on('query', (e) => {
-            const timestamp = Date.now();
-            console.log(`%c${Math.floor(timestamp / 1000).toString().slice(-3)}`, 'background: #222; color: #bada55');
-            console.log('Query: ' + e.query.slice(0, 200))
+            // const timestamp = Date.now();
+            // console.log(`%c${Math.floor(timestamp / 1000).toString().slice(-3)}`, 'background: #222; color: #bada55');
+            console.log('Query: ' + e.query)
             // console.log('Params: ' + e.params)
         })
         return prisma;
