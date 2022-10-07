@@ -19,6 +19,7 @@ const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { ImageInput } = require('./misc');
 const { deleteImage } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
+const { includeRelationFields } = require('../../../utils/helpers');
 
 
 const POST_TYPE = enumType({
@@ -43,6 +44,9 @@ const Author = objectType({
         t.nonNull.string('name');
         t.nonNull.string('avatar', {
             async resolve(parent) {
+                if (parent.avatar_rel) {
+                    return resolveImgObjectToUrl(parent.avatar_rel);
+                }
                 return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
@@ -109,8 +113,9 @@ const Story = objectType({
         });
         t.nonNull.field('author', {
             type: "Author",
-            resolve: (parent) =>
-                prisma.story.findUnique({ where: { id: parent.id } }).user()
+            resolve: (parent) => {
+                return parent.user || prisma.story.findUnique({ where: { id: parent.id } }).user()
+            }
 
         });
 
@@ -248,7 +253,7 @@ const getFeed = extendType({
                     default: 0
                 })
             },
-            resolve(_, { take, skip, tag, sortBy, }) {
+            resolve(_, { take, skip, tag, sortBy, }, ctx, info) {
 
 
                 let orderBy = { createdAt: "desc" };
@@ -269,6 +274,13 @@ const getFeed = extendType({
                             },
                         }),
                         is_published: true,
+                    },
+                    include: {
+                        user: {
+                            include: {
+                                avatar_rel: true,
+                            }
+                        },
                     },
                     skip,
                     take,

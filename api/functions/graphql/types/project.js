@@ -17,10 +17,7 @@ const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./
 const { ImageInput } = require('./misc');
 const { Story } = require('./post');
 const { MakerRole } = require('./users');
-const {
-    parseResolveInfo,
-    simplifyParsedResolveInfoFragmentWithType
-} = require('graphql-parse-resolve-info');
+const { includeRelationFields } = require('../../../utils/helpers');
 
 
 const Project = objectType({
@@ -336,17 +333,6 @@ const allProjects = extendType({
     }
 })
 
-function includeRelationFields(infoObject, typeName, fields) {
-    const parsedResolveInfo = parseResolveInfo(infoObject)
-    const obj = parsedResolveInfo.fieldsByTypeName[typeName];
-    if (!obj) return {};
-    let res = {};
-    for (const [key, relation] of Object.entries(fields)) {
-        if (obj[key]) res[relation] = true;
-    }
-
-    return res;
-}
 
 const newProjects = extendType({
     type: "Query",

@@ -25,12 +25,12 @@ const createPrismaClient = () => {
                 },
             ],
         })
-        prisma.$on('query', (e) => {
-            // const timestamp = Date.now();
-            // console.log(`%c${Math.floor(timestamp / 1000).toString().slice(-3)}`, 'background: #222; color: #bada55');
-            console.log('Query: ' + e.query)
-            // console.log('Params: ' + e.params)
-        })
+        // prisma.$on('query', (e) => {
+        //     const timestamp = Date.now();
+        //     console.log(`%c${Math.floor(timestamp / 1000).toString().slice(-3)}`, 'background: #222; color: #bada55');
+        //     console.log(e.query)
+        //     // console.log('Params: ' + e.params)
+        // })
         return prisma;
     } catch (error) {
         console.log(error);
