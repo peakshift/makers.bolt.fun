@@ -235,7 +235,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     <div className='relative'>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
-                            {sortMembersByRole(project.members).map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
+                            {sortMembersByRole(project.members).map(m => <Link key={m.user.id} onClick={props.onClose} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
                                 <Avatar
                                     width={40}
                                     src={m.user.avatar}
