@@ -59,7 +59,7 @@ function removeExpiredHashes() {
 
 
 async function generateAuthUrl(options) {
-    const hostname = CONSTS.LNURL_AUTH_HOST_V2 ?? 'https://auth.bolt.fun/.netlify/functions/login';
+    const hostname = CONSTS.LNURL_AUTH_HOST ?? 'https://auth.bolt.fun/.netlify/functions/login';
     const secret = await generateK1();
     const hash = createHash(secret);
     await addHash(hash)
