@@ -69,10 +69,11 @@ const loginHandler = async (req, res) => {
         }
     }
 
+    let user;
 
     try {
         //Create user if not already existing
-        const user = await getUserByPubKey(key)
+        user = await getUserByPubKey(key)
         if (user === null) {
 
             // Check if user had a previous account using this wallet 
@@ -104,7 +105,7 @@ const loginHandler = async (req, res) => {
                     }
                 })
 
-                const createdUser = await prisma.user.create({
+                user = await prisma.user.create({
                     data: {
                         pubKey: key,
                         name: key,
@@ -112,12 +113,15 @@ const loginHandler = async (req, res) => {
                         nostr_prv_key,
                         nostr_pub_key,
                     },
+                    select: {
+                        id: true,
+                    }
                 })
                 await prisma.userKey.create({
                     data: {
                         key,
                         name: "My original wallet key",
-                        user_id: createdUser.id,
+                        user_id: user.id,
                     }
                 });
             }
@@ -131,7 +135,7 @@ const loginHandler = async (req, res) => {
         const hour = 3600000
         const maxAge = 30 * 24 * hour;
 
-        const authToken = await new jose.SignJWT({ pubKey: key })
+        const authToken = await new jose.SignJWT({ pubKey: key, userId: user.id })
             .setProtectedHeader({ alg: 'HS256' })
             .setIssuedAt()
             .setExpirationTime(maxAge)
