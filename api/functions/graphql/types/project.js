@@ -642,6 +642,9 @@ const createProject = extendType({
                 const hashtagTaken = await prisma.project.findFirst({
                     where: {
                         hashtag,
+                    },
+                    select: {
+                        hashtag: true,
                     }
                 })
 
@@ -662,11 +665,20 @@ const createProject = extendType({
                     }
                 }
 
-                const coverImage = await prisma.hostedImage.findFirst({
+
+                const hostedImages = await prisma.hostedImage.findMany({
                     where: {
-                        provider_image_id: cover_image.id,
+                        provider_image_id: {
+                            in: [cover_image.id, thumbnail_image.id, ...screenshots.map((s) => s.id)]
+                        },
                     },
+                    select: {
+                        id: true,
+                        provider_image_id: true,
+                    }
                 })
+
+                const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
 
                 const coverImageRel = coverImage
                     ? {
@@ -678,11 +690,7 @@ const createProject = extendType({
                     }
                     : {}
 
-                const thumbnailImage = await prisma.hostedImage.findFirst({
-                    where: {
-                        provider_image_id: thumbnail_image.id,
-                    },
-                })
+                const thumbnailImage = hostedImages.find(img => img.provider_image_id === thumbnail_image.id);
 
                 const thumbnailImageRel = thumbnailImage
                     ? {
@@ -694,16 +702,8 @@ const createProject = extendType({
                     }
                     : {}
 
-                const screenshots_ids = await prisma.hostedImage.findMany({
-                    where: {
-                        provider_image_id: {
-                            in: screenshots.map((s) => s.id),
-                        },
-                    },
-                    select: {
-                        id: true,
-                    },
-                })
+                const screenshots_ids = hostedImages.filter(img => screenshots.some(s => s.id === img.provider_image_id)).map(img => img.id);
+
 
                 const project = await prisma.project.create({
                     data: {
@@ -722,7 +722,7 @@ const createProject = extendType({
 
                         ...coverImageRel,
                         ...thumbnailImageRel,
-                        screenshots_ids: screenshots_ids.map((s) => s.id),
+                        screenshots_ids,
 
                         category: {
                             connect: {
@@ -766,14 +766,14 @@ const createProject = extendType({
                                 }
                             }),
                         },
-                    },
+                    }
                 })
 
                 await prisma.hostedImage
                     .updateMany({
                         where: {
                             id: {
-                                in: [coverImage.id, thumbnailImage.id, ...screenshots_ids.map((s) => s.id)],
+                                in: [coverImage.id, thumbnailImage.id, ...screenshots_ids],
                             },
                         },
                         data: {
