@@ -875,6 +875,9 @@ const updateProject = extendType({
                         id: {
                             not: id
                         }
+                    },
+                    select: {
+                        hashtag: true,
                     }
                 })
 
@@ -882,7 +885,7 @@ const updateProject = extendType({
 
 
 
-                const project = await prisma.project.findFirst({
+                const project = await prisma.project.findUnique({
                     where: {
                         id,
                     },
@@ -921,13 +924,30 @@ const updateProject = extendType({
                 let imagesToDelete = []
                 let imagesToAdd = []
 
-                let coverImageRel = {}
+
+                let imgsToFetch = [];
+                if (cover_image.id) imgsToFetch.push(cover_image.id);
+                if (thumbnail_image.id) imgsToFetch.push(thumbnail_image.id);
+                for (const screenshot of screenshots) {
+                    if (screenshot.id) imgsToFetch.push(screenshot.id);
+                }
+
+                const hostedImages = await prisma.hostedImage.findMany({
+                    where: {
+                        provider_image_id: {
+                            in: imgsToFetch
+                        }
+                    },
+                    select: {
+                        id: true,
+                        provider_image_id: true,
+                    }
+                });
+
+                let coverImageRel = {};
+
                 if (cover_image.id) {
-                    const coverImage = await prisma.hostedImage.findFirst({
-                        where: {
-                            provider_image_id: cover_image.id,
-                        },
-                    })
+                    const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
 
                     coverImageRel = coverImage
                         ? {
@@ -949,11 +969,8 @@ const updateProject = extendType({
 
                 let thumbnailImageRel = {}
                 if (thumbnail_image.id) {
-                    const thumbnailImage = await prisma.hostedImage.findFirst({
-                        where: {
-                            provider_image_id: thumbnail_image.id,
-                        },
-                    })
+                    const thumbnailImage = hostedImages.find(img => img.provider_image_id === thumbnail_image.id);
+
 
                     thumbnailImageRel = thumbnailImage
                         ? {
@@ -973,36 +990,36 @@ const updateProject = extendType({
                 }
 
 
-                let screenshots_ids = []
+                let final_screenshots_ids = [];
+
+                const oldScreenshots = await prisma.hostedImage.findMany({
+                    where: {
+                        url: {
+                            in: screenshots.filter(s => !s.id && s.url).map(s => s.url)
+                        }
+                    },
+                    select: {
+                        id: true,
+                        url: true,
+                    }
+                });
+
                 for (const screenshot of screenshots) {
                     if (screenshot.id) {
-                        const newScreenshot = await prisma.hostedImage.findFirst({
-                            where: {
-                                provider_image_id: screenshot.id,
-                            },
-                            select: {
-                                id: true,
-                            },
-                        })
+                        const newScreenshot = hostedImages.find(img => img.provider_image_id === screenshot.id);
+
                         if (newScreenshot) {
-                            screenshots_ids.push(newScreenshot.id)
+                            final_screenshots_ids.push(newScreenshot.id)
                             imagesToAdd.push(newScreenshot.id)
                         }
                     } else {
-                        const newScreenshot = await prisma.hostedImage.findFirst({
-                            where: {
-                                url: screenshot.url,
-                            },
-                            select: {
-                                id: true,
-                            },
-                        })
+                        const newScreenshot = oldScreenshots.find(s => s.url === screenshot.url)
                         if (newScreenshot) {
-                            screenshots_ids.push(newScreenshot.id)
+                            final_screenshots_ids.push(newScreenshot.id)
                         }
                     }
                 }
-                const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !screenshots_ids.includes(x))
+                const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !final_screenshots_ids.includes(x))
                 imagesToDelete = [...imagesToDelete, ...screenshotsIdsToDelete]
 
 
@@ -1028,7 +1045,7 @@ const updateProject = extendType({
 
                                 ...coverImageRel,
                                 ...thumbnailImageRel,
-                                screenshots_ids,
+                                screenshots_ids: final_screenshots_ids,
 
                                 category: {
                                     connect: {
@@ -1077,24 +1094,20 @@ const updateProject = extendType({
                             },
                         })
 
-                    if (imagesToAdd.length > 0) {
-                        await prisma.hostedImage
-                            .updateMany({
-                                where: {
-                                    id: {
-                                        in: imagesToAdd,
-                                    },
+                    await Promise.all([...imagesToDelete.map(async (i) => await deleteImage(i)), prisma.hostedImage
+                        .updateMany({
+                            where: {
+                                id: {
+                                    in: imagesToAdd,
                                 },
-                                data: {
-                                    is_used: true,
-                                },
-                            })
-                            .catch((error) => {
-                                logError(error)
-                            })
-                    }
-
-                    await Promise.all(imagesToDelete.map(async (i) => await deleteImage(i)))
+                            },
+                            data: {
+                                is_used: true,
+                            },
+                        })])
+                        .catch((error) => {
+                            logError(error)
+                        })
 
                     return { project: updatedProject }
                 } catch (error) {
