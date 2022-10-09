@@ -329,9 +329,9 @@ const getMyDrafts = extendType({
                 })
             },
             async resolve(parent, { type }, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new ApolloError("Not Authenticated");
 
                 if (type === 'Story')
@@ -442,10 +442,10 @@ const createStory = extendType({
             args: { data: StoryInputType },
             async resolve(_root, args, ctx) {
                 const { id, title, body, project_id, cover_image, tags, is_published } = args.data;
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new ApolloError("Not Authenticated");
 
                 let was_published = false;
@@ -636,9 +636,9 @@ const deleteStory = extendType({
             args: { id: nonNull(intArg()) },
             async resolve(_root, args, ctx) {
                 const { id } = args;
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new ApolloError("Not Authenticated");
 
 

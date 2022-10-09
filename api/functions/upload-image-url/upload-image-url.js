@@ -1,16 +1,14 @@
 const serverless = require('serverless-http')
 const { createExpressApp } = require('../../modules')
 const express = require('express')
-const extractKeyFromCookie = require('../../utils/extractKeyFromCookie')
-const { getUserByPubKey } = require('../../auth/utils/helperFuncs')
+const extractUserFromCookie = require('../../utils/extractUserFromCookie')
 const { getDirectUploadUrl } = require('../../services/imageUpload.service')
 const { prisma } = require('../../prisma')
 const { getUrlFromProvider } = require('../../utils/resolveImageUrl')
 
 const postUploadImageUrl = async (req, res) => {
 
-    const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
-    const user = await getUserByPubKey(userPubKey)
+    const user = await extractUserFromCookie(req.headers.cookie ?? req.headers.Cookie)
 
     if (!user) return res.status(401).json({ status: 'ERROR', reason: 'Not Authenticated' })
 

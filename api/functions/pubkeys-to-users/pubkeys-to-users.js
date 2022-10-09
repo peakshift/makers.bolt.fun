@@ -2,8 +2,6 @@
 const serverless = require('serverless-http');
 const { createExpressApp } = require('../../modules');
 const express = require('express');
-const extractKeyFromCookie = require('../../utils/extractKeyFromCookie');
-const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
 const { prisma } = require('../../prisma');
 
 

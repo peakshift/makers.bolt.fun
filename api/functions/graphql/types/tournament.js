@@ -255,7 +255,7 @@ const tournamentParticipationInfo = extendType({
             async resolve(_, args, ctx) {
 
                 const user = await getUserByPubKey(ctx.userPubKey);
-                if (!user)
+                if (!user?.id)
                     return null
 
 
@@ -284,7 +284,7 @@ const getMakersInTournament = extendType({
             },
             async resolve(_, args, ctx) {
 
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
 
 
                 let filters = [];
@@ -475,10 +475,10 @@ const registerInTournament = extendType({
                 tournament_id: nonNull(intArg())
             },
             async resolve(_root, { tournament_id, data: { email, hacking_status } }, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new Error("You have to login");
 
 
@@ -520,11 +520,11 @@ const updateTournamentRegistration = extendType({
                 tournament_id: nonNull(intArg())
             },
             async resolve(_root, { tournament_id, data: { email, hacking_status } }, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
 
                 // Do some validation
-                // if (!user)
-                //     throw new Error("You have to login");
+                if (!user?.id)
+                    throw new Error("You have to login");
 
 
                 // Email verification here:

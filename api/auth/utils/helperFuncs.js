@@ -10,7 +10,17 @@ const getUserByPubKey = (pubKey) => {
     }).user()
 }
 
+const getUserById = (id) => {
+    if (!id) return null;
+    return prisma.user.findUnique({
+        where: {
+            id
+        }
+    })
+}
+
 
 module.exports = {
     getUserByPubKey,
+    getUserById,
 }

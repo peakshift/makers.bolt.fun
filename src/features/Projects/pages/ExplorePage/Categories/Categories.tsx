@@ -29,7 +29,7 @@ export default function Categories() {
 
     if (loading || !data)
         return <div className="flex gap-12">
-            {Array(5).fill(0).map((_, idx) =>
+            {Array(10).fill(0).map((_, idx) =>
                 <div
                     key={idx}
                     className=' block p-16 rounded-16  bg-gray-100 active:scale-90 transition-transform'

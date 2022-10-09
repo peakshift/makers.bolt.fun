@@ -1,14 +1,14 @@
 const { ApolloServer } = require("apollo-server-lambda");
 const schema = require('./schema')
-const extractKeyFromCookie = require("../../utils/extractKeyFromCookie");
+const extractUserFromCookie = require("../../utils/extractUserFromCookie");
 
 
 
 const server = new ApolloServer({
   schema,
   context: async ({ event }) => {
-    const userPubKey = await extractKeyFromCookie(event.headers.cookie ?? event.headers.Cookie)
-    return { userPubKey }
+    const user = await extractUserFromCookie(event.headers.cookie ?? event.headers.Cookie)
+    return { user }
   },
 });
 

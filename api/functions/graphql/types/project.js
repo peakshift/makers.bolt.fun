@@ -8,7 +8,6 @@ const {
     enumType,
     inputObjectType,
 } = require('nexus');
-const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { prisma } = require('../../../prisma');
 const { deleteImage } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
@@ -98,7 +97,12 @@ const Project = objectType({
                         projectId: parent.id
                     },
                     include: {
-                        user: true
+                        user: {
+                            include: {
+                                avatar_rel: true,
+                            }
+                        },
+
                     }
                 })
             }
@@ -164,8 +168,8 @@ const Project = objectType({
         t.nonNull.list.nonNull.field('permissions', {
             type: ProjectPermissionEnum,
             resolve: async (parent, _, ctx) => {
-                const user = await getUserByPubKey(ctx.userPubKey)
-                if (!user) return [];
+                const user = ctx.user;
+                if (!user?.id) return [];
 
                 const role = (await prisma.projectMember.findUnique({ where: { projectId_userId: { projectId: parent.id, userId: user.id } } }))?.role;
 
@@ -633,10 +637,10 @@ const createProject = extendType({
                     tournaments,
                 } = args.input
 
-                const user = await getUserByPubKey(ctx.userPubKey)
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user) throw new ApolloError('Not Authenticated')
+                if (!user?.id) throw new ApolloError('Not Authenticated')
 
 
                 const hashtagTaken = await prisma.project.findFirst({
@@ -859,10 +863,10 @@ const updateProject = extendType({
                     tournaments,
                 } = args.input
 
-                const user = await getUserByPubKey(ctx.userPubKey)
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user) throw new ApolloError('Not Authenticated')
+                if (!user?.id) throw new ApolloError('Not Authenticated')
 
                 // Check if hashtag is already used
                 const hashtagTaken = await prisma.project.findFirst({
@@ -1110,10 +1114,10 @@ const deleteProject = extendType({
             args: { id: nonNull(intArg()) },
             async resolve(_root, args, ctx) {
                 const { id } = args
-                const user = await getUserByPubKey(ctx.userPubKey)
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user) throw new ApolloError('Not Authenticated')
+                if (!user?.id) throw new ApolloError('Not Authenticated')
 
                 const project = await prisma.project.findFirst({
                     where: { id },

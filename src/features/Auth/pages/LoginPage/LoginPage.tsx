@@ -148,9 +148,9 @@ export default function LoginPage() {
     else if (isLoggedIn)
         content = <div className="flex flex-col justify-center items-center">
             <h3 className="text-body4">
-                Hello: <span className="font-bold">@{trimText(meQuery.data?.me?.name, 10)}</span>
+                Hey there <span className="font-bold">@{trimText(meQuery.data?.me?.name, 10)}!!</span> 👋
             </h3>
-            <img src={meQuery.data?.me?.avatar} className='w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200' alt="" />
+            <img src={meQuery.data?.me?.avatar} className='w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200 mt-24' alt="" />
         </div>
 
     else
