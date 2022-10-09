@@ -84,7 +84,7 @@ Working on anything exciting? List your current projects here so other makers ca
 #### What can the BOLT.FUN community help you with right now?
 Is there anything you need help with? There are plenty of makers around ready to help you out...
 `,
-        tags: ['introduction']
+        tags: ['introductions']
     },
 },
 {

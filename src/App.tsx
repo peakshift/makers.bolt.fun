@@ -99,7 +99,7 @@ function App() {
           <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
           <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />
           <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
-          <Route path={PAGES_ROUTES.projects.listProject} element={<ListProjectPage />} />
+          <Route path={PAGES_ROUTES.projects.listProject} element={<ExplorePage />} />
           <Route path={PAGES_ROUTES.projects.projectPage} element={<ProjectPage />} />
           <Route path={PAGES_ROUTES.projects.catchProject} element={<Navigate replace to={PAGES_ROUTES.projects.default} />} />
 

@@ -127,9 +127,9 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
                     </div>
                     <div className="flex gap-8">
-                        {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
+                        {/* {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
                             <Link className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={() => props.onClose?.()} to={createRoute({ type: "edit-project", id: project.id })}><FiEdit2 /></Link>}
-                        <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button>
+                        <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button> */}
                     </div>
                 </div>
             </div>
@@ -235,7 +235,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     <div className='relative'>
                         <p className="text-body6 uppercase font-medium text-gray-400 mb-8">MAKERS</p>
                         <div className="flex flex-wrap gap-8">
-                            {sortMembersByRole(project.members).map(m => <Link key={m.user.id} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
+                            {sortMembersByRole(project.members).map(m => <Link key={m.user.id} onClick={props.onClose} to={createRoute({ type: "profile", id: m.user.id, username: m.user.name })}>
                                 <Avatar
                                     width={40}
                                     src={m.user.avatar}
