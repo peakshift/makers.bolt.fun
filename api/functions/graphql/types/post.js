@@ -601,8 +601,10 @@ const createStory = extendType({
                                     })
                             },
                             ...(project_id && {
-                                connect: {
-                                    id: project_id,
+                                project: {
+                                    connect: {
+                                        id: project_id
+                                    }
                                 }
                             }),
                             user: {
@@ -657,27 +659,23 @@ const deleteStory = extendType({
                     where: {
                         id
                     }
-                })
+                });
+
+                const imagesToDelete = oldPost.body_image_ids;
+                if (oldPost.cover_image_id) imagesToDelete.push(oldPost.cover_image_id)
 
                 const coverImage = await prisma.hostedImage.findMany({
                     where: {
-                        OR: [
-                            ...(
-                                oldPost.cover_image_id &&
-                                { id: oldPost.cover_image_id }),
-                            {
-                                id: {
-                                    in: oldPost.body_image_ids
-                                }
-                            }
-                        ]
+                        id: {
+                            in: imagesToDelete
+                        }
                     },
                     select: {
                         id: true,
                         provider_image_id: true
                     }
                 })
-                coverImage.map(async i => await deleteImage(i.id))
+                await Promise.all(coverImage.map(async i => deleteImage(i.id)))
 
                 return deletedPost
             }
