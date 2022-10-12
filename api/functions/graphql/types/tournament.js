@@ -8,7 +8,6 @@ const {
     inputObjectType,
     booleanArg,
 } = require('nexus');
-const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { prisma } = require('../../../prisma');
 const { paginationArgs, removeNulls } = require('./helpers');
@@ -254,7 +253,7 @@ const tournamentParticipationInfo = extendType({
             },
             async resolve(_, args, ctx) {
 
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
                 if (!user?.id)
                     return null
 
