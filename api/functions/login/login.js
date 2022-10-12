@@ -69,6 +69,7 @@ const loginHandler = async (req, res) => {
         }
     }
 
+    let user;
 
     let user;
 
@@ -114,6 +115,9 @@ const loginHandler = async (req, res) => {
                         nostr_prv_key,
                         nostr_pub_key,
                     },
+                    select: {
+                        id: true,
+                    }
                 })
                 await prisma.userKey.create({
                     data: {

@@ -36,9 +36,11 @@ const schema: yup.SchemaOf<IFormInputs> = yup.object({
                 try {
                     if (value) {
                         const [name, domain] = value.split("@");
-                        const lnurl = `https://${domain}/.well-known/lnurlp/${name}`;
+                        const lnurl = `https://api.codetabs.com/v1/proxy?quest=https://${domain}/.well-known/lnurlp/${name}`;
                         const res = await fetch(lnurl);
+
                         if (res.status === 200) return true;
+                        return false;
                     }
                     return true;
                 } catch (error) {
