@@ -127,9 +127,9 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                         {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
                     </div>
                     <div className="flex gap-8">
-                        {/* {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
+                        {project.permissions.includes(ProjectPermissionEnum.UpdateInfo) &&
                             <Link className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={() => props.onClose?.()} to={createRoute({ type: "edit-project", id: project.id })}><FiEdit2 /></Link>}
-                        <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button> */}
+                        <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button>
                     </div>
                 </div>
             </div>

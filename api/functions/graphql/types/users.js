@@ -234,13 +234,6 @@ const me = extendType({
             type: "MyProfile",
             async resolve(parent, args, context) {
                 const user = await getUserById(context.user?.id);
-                await new Promise((res,) => {
-                    setTimeout(() => {
-                        console.log("RESOLVED");
-                        res()
-                    }, 40000)
-                })
-
                 return user
             }
         })
