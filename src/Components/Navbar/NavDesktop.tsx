@@ -49,7 +49,7 @@ export default function NavDesktop() {
                     <ul className="flex gap-32 xl:gap-64">
                         <li className="relative">
                             <Link to={createRoute({ type: "tournament", id: 1 })} className='text-body4 font-bold hover:text-primary-600'>
-                                #LegendOfLightning
+                                #LegendsOfLightning
                             </Link>
                         </li>
                         <li className="relative">

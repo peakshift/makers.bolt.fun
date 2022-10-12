@@ -162,7 +162,7 @@ export default function NavMobile() {
                 to={createRoute({ type: "tournament", id: 1 })}
                 onClick={() => toggleDrawerOpen(false)}
                 className='text-body4 font-bold hover:text-primary-600'>
-                #LegendOfLightning
+                #LegendsOfLightning
               </Link>
             </li>
             <li className="relative">
