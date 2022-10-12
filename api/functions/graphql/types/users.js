@@ -233,7 +233,14 @@ const me = extendType({
         t.field('me', {
             type: "MyProfile",
             async resolve(parent, args, context) {
-                const user = await getUserById(context.user?.id)
+                const user = await getUserById(context.user?.id);
+                await new Promise((res,) => {
+                    setTimeout(() => {
+                        console.log("RESOLVED");
+                        res()
+                    }, 40000)
+                })
+
                 return user
             }
         })
