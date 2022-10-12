@@ -53,8 +53,8 @@ export default function NavDesktop() {
                             </Link>
                         </li>
                         <li className="relative">
-                            <Link to={'/hackathons'} className='text-body4 font-bold hover:text-primary-600'>
-                                Events
+                            <Link to={createRoute({ type: "tournament", id: 1 })} className='text-body4 font-bold hover:text-primary-600'>
+                                Tournament
                             </Link>
                         </li>
                         {/* <li>

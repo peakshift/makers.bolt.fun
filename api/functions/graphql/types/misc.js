@@ -1,5 +1,4 @@
-const { objectType, extendType, inputObjectType } = require("nexus");
-const { prisma } = require('../../../prisma');
+const { inputObjectType } = require("nexus");
 
 const ImageInput = inputObjectType({
     name: 'ImageInput',

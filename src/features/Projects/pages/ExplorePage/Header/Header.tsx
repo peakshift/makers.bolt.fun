@@ -92,9 +92,9 @@ export default function Header() {
             <div className="max-w-[90%]">
               {headerLinks[1].title}
             </div>
-            {/* <Button color="white" href={headerLinks[1].link.url} newTab={headerLinks[1].link.newTab ?? false} className="mt-24">
+            <Button color="white" href={headerLinks[1].link.url} newTab={headerLinks[1].link.newTab ?? false} className="mt-24">
               {headerLinks[1].link.content}
-            </Button> */}
+            </Button>
           </div>
         </div>
       </div>

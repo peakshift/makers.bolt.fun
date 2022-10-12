@@ -1,7 +1,7 @@
 
 const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, stringArg, interfaceType, list, enumType } = require("nexus");
-const { getUserByPubKey } = require("../../../auth/utils/helperFuncs");
+const { getUserById } = require("../../../auth/utils/helperFuncs");
 const { removeNulls } = require("./helpers");
 const { ImageInput } = require('./misc');
 const { Tournament } = require('./tournament');
@@ -18,6 +18,8 @@ const BaseUser = interfaceType({
         t.nonNull.string('name');
         t.nonNull.string('avatar', {
             async resolve(parent) {
+                if (parent.avatar_rel)
+                    return resolveImgObjectToUrl(parent.avatar_rel);
                 return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
@@ -218,7 +220,7 @@ const MyProfile = objectType({
                         createdAt: "asc"
                     }
                 })
-                    .then(keys => keys.map(k => ({ ...k, is_current: k.key === context.userPubKey })))
+                    .then(keys => keys.map(k => ({ ...k, is_current: k.key === context.user.pubKey })))
             }
         });
     }
@@ -231,7 +233,7 @@ const me = extendType({
         t.field('me', {
             type: "MyProfile",
             async resolve(parent, args, context) {
-                const user = await getUserByPubKey(context.userPubKey)
+                const user = await getUserById(context.user?.id);
                 return user
             }
         })
@@ -246,12 +248,7 @@ const profile = extendType({
             args: {
                 id: nonNull(intArg())
             },
-            async resolve(parent, { id }, ctx) {
-
-                const user = await getUserByPubKey(ctx.userPubKey)
-                let isMy = false;
-                if (user?.id === id) isMy = true;
-
+            async resolve(parent, { id }) {
                 return prisma.user.findUnique({ where: { id } })
             }
         })
@@ -332,10 +329,10 @@ const updateProfileDetails = extendType({
             type: 'MyProfile',
             args: { data: ProfileDetailsInput },
             async resolve(_root, args, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = await getUserById(ctx.user?.id);
 
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new Error("You have to login");
                 // TODO: validate new data
 
@@ -418,8 +415,8 @@ const updateUserPreferences = extendType({
             args: { userKeys: list(nonNull(UserKeyInputType)) },
             async resolve(_root, args, ctx) {
 
-                const user = await getUserByPubKey(ctx.userPubKey);
-                if (!user)
+                const user = ctx.user;
+                if (!user?.id)
                     throw new Error("You have to login");
 
 
@@ -511,10 +508,10 @@ const updateProfileRoles = extendType({
             type: 'MyProfile',
             args: { data: ProfileRolesInput },
             async resolve(_root, args, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new Error("You have to login");
 
                 await prisma.user.update({

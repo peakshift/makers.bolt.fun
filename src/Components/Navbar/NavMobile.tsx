@@ -157,7 +157,6 @@ export default function NavMobile() {
             <Search onResultClick={() => toggleDrawerOpen(false)} />
           </div>
           <ul className="flex flex-col py-16 gap-32 border-t">
-
             <li className="relative">
               <Link
                 to={'/projects'}
@@ -168,10 +167,10 @@ export default function NavMobile() {
             </li>
             <li className="relative">
               <Link
-                to={'/hackathons'}
+                to={createRoute({ type: "tournament", id: 1 })}
                 onClick={() => toggleDrawerOpen(false)}
                 className='text-body4 font-bold hover:text-primary-600'>
-                Events
+                Tournament
               </Link>
             </li>
             {/* <li>

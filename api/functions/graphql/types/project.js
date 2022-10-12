@@ -8,7 +8,6 @@ const {
     enumType,
     inputObjectType,
 } = require('nexus');
-const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { prisma } = require('../../../prisma');
 const { deleteImage } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
@@ -17,7 +16,7 @@ const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./
 const { ImageInput } = require('./misc');
 const { Story } = require('./post');
 const { MakerRole } = require('./users');
-
+const { includeRelationFields } = require('../../../utils/helpers');
 
 
 const Project = objectType({
@@ -31,11 +30,15 @@ const Project = objectType({
         t.nonNull.string('hashtag');
         t.nonNull.string('cover_image', {
             async resolve(parent) {
+                if (parent.cover_image_rel)
+                    return resolveImgObjectToUrl(parent.cover_image_rel);
                 return prisma.project.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.string('thumbnail_image', {
             async resolve(parent) {
+                if (parent.thumbnail_image_rel)
+                    return resolveImgObjectToUrl(parent.thumbnail_image_rel);
                 return prisma.project.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
             }
         });
@@ -68,21 +71,21 @@ const Project = objectType({
         t.nonNull.field('category', {
             type: "Category",
             resolve: (parent) => {
-                return prisma.project.findUnique({ where: { id: parent.id } }).category();
+                return parent.category || prisma.project.findUnique({ where: { id: parent.id } }).category();
             }
         });
 
         t.nonNull.list.nonNull.field('awards', {
             type: "Award",
             resolve: (parent) => {
-                return prisma.project.findUnique({ where: { id: parent.id } }).awards();
+                return parent.tags || prisma.project.findUnique({ where: { id: parent.id } }).awards();
             }
         });
 
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
             resolve: (parent) => {
-                return prisma.project.findUnique({ where: { id: parent.id } }).tags();
+                return parent.tags || prisma.project.findUnique({ where: { id: parent.id } }).tags();
             }
         })
 
@@ -94,7 +97,12 @@ const Project = objectType({
                         projectId: parent.id
                     },
                     include: {
-                        user: true
+                        user: {
+                            include: {
+                                avatar_rel: true,
+                            }
+                        },
+
                     }
                 })
             }
@@ -130,7 +138,7 @@ const Project = objectType({
         t.nonNull.list.nonNull.field('capabilities', {
             type: Capability,
             resolve: async (parent) => {
-                return prisma.project.findUnique({ where: { id: parent.id } }).capabilities()
+                return parent.capabilities || prisma.project.findUnique({ where: { id: parent.id } }).capabilities()
             }
         })
 
@@ -145,7 +153,8 @@ const Project = objectType({
                         recruit_roles: {
                             select: {
                                 role: true,
-                                level: true
+                                level: true,
+
                             }
                         },
                     }
@@ -159,8 +168,8 @@ const Project = objectType({
         t.nonNull.list.nonNull.field('permissions', {
             type: ProjectPermissionEnum,
             resolve: async (parent, _, ctx) => {
-                const user = await getUserByPubKey(ctx.userPubKey)
-                if (!user) return [];
+                const user = ctx.user;
+                if (!user?.id) return [];
 
                 const role = (await prisma.projectMember.findUnique({ where: { projectId_userId: { projectId: parent.id, userId: user.id } } }))?.role;
 
@@ -175,6 +184,15 @@ const Project = objectType({
         })
     }
 })
+
+const projectIncludes = info => includeRelationFields(info, "Project", {
+    "thumbnail_image": "thumbnail_image_rel",
+    "cover_image": "cover_image_rel",
+    "category": "category",
+    "tags": "tags",
+    "awards": "awards",
+    "capabilites": "capabilites",
+});
 
 const ROLE_OWNER = 'Owner'
 const ROLE_ADMIN = 'Admin'
@@ -291,10 +309,14 @@ const getProject = extendType({
                 id: intArg(),
                 tag: stringArg(),
             },
-            resolve(_, { id, tag }) {
-                if (tag) return prisma.project.findFirst({ where: { hashtag: tag } })
+            resolve(_, { id, tag }, ctx, info) {
+                if (tag) return prisma.project.findFirst({ where: { hashtag: tag } });
+
+                const includes = projectIncludes(info);
+
                 return prisma.project.findUnique({
-                    where: { id }
+                    where: { id },
+                    include: includes,
                 })
             }
         })
@@ -318,16 +340,21 @@ const allProjects = extendType({
     }
 })
 
+
 const newProjects = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.list.nonNull.field('newProjects', {
             type: "Project",
-            args: paginationArgs({ take: 50 }),
-            resolve(_, args) {
-                const take = args.take || 50;
+            args: paginationArgs({ take: 20 }),
+            resolve(_, args, __, info) {
+
+                const take = args.take || 20;
                 const skip = args.skip || 0;
+                const includes = projectIncludes(info);
+
                 return prisma.project.findMany({
+                    include: includes,
                     orderBy: { createdAt: "desc" },
                     skip,
                     take,
@@ -344,8 +371,10 @@ const hottestProjects = extendType({
         t.nonNull.list.nonNull.field('hottestProjects', {
             type: "Project",
             args: paginationArgs({ take: 50 }),
-            async resolve(_, { take, skip }) {
+            async resolve(_, { take, skip }, ctx, info) {
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
+                    include: includes,
                     orderBy: { votes_count: "desc" },
                     skip,
                     take,
@@ -365,7 +394,9 @@ const searchProjects = extendType({
                 ...paginationArgs({ take: 50 }),
                 search: nonNull(stringArg())
             },
-            async resolve(_, { take, skip, search }) {
+            async resolve(_, { take, skip, search }, ctx, info) {
+
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
                     where: {
                         OR: [{
@@ -380,6 +411,7 @@ const searchProjects = extendType({
                             },
                         }]
                     },
+                    include: includes,
                     skip,
                     take,
                 });
@@ -398,9 +430,11 @@ const projectsByCategory = extendType({
                 ...paginationArgs(),
                 category_id: nonNull(intArg())
             },
-            async resolve(_, { take, skip, category_id }) {
+            async resolve(_, { take, skip, category_id }, ctx, info) {
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
                     where: { category_id },
+                    include: includes,
                     orderBy: { votes_count: "desc" },
                     skip,
                     take,
@@ -464,9 +498,9 @@ const similarProjects = extendType({
             args: {
                 id: nonNull(intArg())
             },
-            async resolve(parent, { id }, ctx) {
+            async resolve(parent, { id }, ctx, info) {
                 const currentProject = await prisma.project.findUnique({ where: { id }, select: { category_id: true } })
-
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
                     where: {
                         AND: {
@@ -478,6 +512,7 @@ const similarProjects = extendType({
                             }
                         }
                     },
+                    include: includes,
                     take: 5,
                 })
             }
@@ -576,10 +611,22 @@ const createProject = extendType({
                     tournaments,
                 } = args.input
 
-                const user = await getUserByPubKey(ctx.userPubKey)
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user) throw new ApolloError('Not Authenticated')
+                if (!user?.id) throw new ApolloError('Not Authenticated')
+
+
+                const hashtagTaken = await prisma.project.findFirst({
+                    where: {
+                        hashtag,
+                    },
+                    select: {
+                        hashtag: true,
+                    }
+                })
+
+                if (hashtagTaken) throw new ApolloError("Hashtag already used by another project")
 
                 // Many Owners found. Throw an error
                 if (members.filter((m) => m.role === ROLE_OWNER).length > 1) {
@@ -596,11 +643,20 @@ const createProject = extendType({
                     }
                 }
 
-                const coverImage = await prisma.hostedImage.findFirst({
+
+                const hostedImages = await prisma.hostedImage.findMany({
                     where: {
-                        provider_image_id: cover_image.id,
+                        provider_image_id: {
+                            in: [cover_image.id, thumbnail_image.id, ...screenshots.map((s) => s.id)]
+                        },
                     },
+                    select: {
+                        id: true,
+                        provider_image_id: true,
+                    }
                 })
+
+                const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
 
                 const coverImageRel = coverImage
                     ? {
@@ -612,11 +668,7 @@ const createProject = extendType({
                     }
                     : {}
 
-                const thumbnailImage = await prisma.hostedImage.findFirst({
-                    where: {
-                        provider_image_id: thumbnail_image.id,
-                    },
-                })
+                const thumbnailImage = hostedImages.find(img => img.provider_image_id === thumbnail_image.id);
 
                 const thumbnailImageRel = thumbnailImage
                     ? {
@@ -628,16 +680,8 @@ const createProject = extendType({
                     }
                     : {}
 
-                const screenshots_ids = await prisma.hostedImage.findMany({
-                    where: {
-                        provider_image_id: {
-                            in: screenshots.map((s) => s.id),
-                        },
-                    },
-                    select: {
-                        id: true,
-                    },
-                })
+                const screenshots_ids = hostedImages.filter(img => screenshots.some(s => s.id === img.provider_image_id)).map(img => img.id);
+
 
                 const project = await prisma.project.create({
                     data: {
@@ -656,7 +700,7 @@ const createProject = extendType({
 
                         ...coverImageRel,
                         ...thumbnailImageRel,
-                        screenshots_ids: screenshots_ids.map((s) => s.id),
+                        screenshots_ids,
 
                         category: {
                             connect: {
@@ -664,39 +708,34 @@ const createProject = extendType({
                             },
                         },
                         members: {
-                            create: members.map((member) => {
-                                return {
-                                    role: member.role,
-                                    user: {
-                                        connect: {
-                                            id: member.id,
-                                        },
-                                    },
-                                }
-                            }),
+                            createMany: {
+                                data: members.map((member) => {
+                                    return {
+                                        role: member.role,
+                                        userId: member.id,
+                                    }
+                                })
+                            },
                         },
                         recruit_roles: {
-                            create: recruit_roles.map((role) => {
-                                return {
-                                    level: 0,
-                                    role: {
-                                        connect: {
-                                            id: role,
-                                        },
-                                    },
-                                }
-                            }),
+                            createMany: {
+                                data: recruit_roles.map((role) => {
+                                    return {
+                                        level: 0,
+                                        roleId: role,
+                                    }
+                                }),
+                            }
+
                         },
                         tournaments: {
-                            create: tournaments.map((tournament) => {
-                                return {
-                                    tournament: {
-                                        connect: {
-                                            id: tournament,
-                                        },
-                                    },
-                                }
-                            }),
+                            createMany: {
+                                data: tournaments.map((tournament) => {
+                                    return {
+                                        tournament_id: tournament,
+                                    }
+                                }),
+                            }
                         },
                         capabilities: {
                             connect: capabilities.map((c) => {
@@ -705,14 +744,14 @@ const createProject = extendType({
                                 }
                             }),
                         },
-                    },
+                    }
                 })
 
                 await prisma.hostedImage
                     .updateMany({
                         where: {
                             id: {
-                                in: [coverImage.id, thumbnailImage.id, ...screenshots_ids.map((s) => s.id)],
+                                in: [coverImage.id, thumbnailImage.id, ...screenshots_ids],
                             },
                         },
                         data: {
@@ -798,10 +837,10 @@ const updateProject = extendType({
                     tournaments,
                 } = args.input
 
-                const user = await getUserByPubKey(ctx.userPubKey)
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user) throw new ApolloError('Not Authenticated')
+                if (!user?.id) throw new ApolloError('Not Authenticated')
 
                 // Check if hashtag is already used
                 const hashtagTaken = await prisma.project.findFirst({
@@ -810,6 +849,9 @@ const updateProject = extendType({
                         id: {
                             not: id
                         }
+                    },
+                    select: {
+                        hashtag: true,
                     }
                 })
 
@@ -817,7 +859,7 @@ const updateProject = extendType({
 
 
 
-                const project = await prisma.project.findFirst({
+                const project = await prisma.project.findUnique({
                     where: {
                         id,
                     },
@@ -837,7 +879,6 @@ const updateProject = extendType({
                 }
 
                 let newMembers = []
-
                 // Admin can only change makers
                 if (project.members.find((m) => m.userId === user.id)?.role === ROLE_ADMIN) {
                     // Changing Makers
@@ -857,13 +898,30 @@ const updateProject = extendType({
                 let imagesToDelete = []
                 let imagesToAdd = []
 
-                let coverImageRel = {}
+
+                let imgsToFetch = [];
+                if (cover_image.id) imgsToFetch.push(cover_image.id);
+                if (thumbnail_image.id) imgsToFetch.push(thumbnail_image.id);
+                for (const screenshot of screenshots) {
+                    if (screenshot.id) imgsToFetch.push(screenshot.id);
+                }
+
+                const hostedImages = await prisma.hostedImage.findMany({
+                    where: {
+                        provider_image_id: {
+                            in: imgsToFetch
+                        }
+                    },
+                    select: {
+                        id: true,
+                        provider_image_id: true,
+                    }
+                });
+
+                let coverImageRel = {};
+
                 if (cover_image.id) {
-                    const coverImage = await prisma.hostedImage.findFirst({
-                        where: {
-                            provider_image_id: cover_image.id,
-                        },
-                    })
+                    const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
 
                     coverImageRel = coverImage
                         ? {
@@ -882,13 +940,11 @@ const updateProject = extendType({
                     imagesToDelete.push(project.cover_image_id)
                 }
 
+
                 let thumbnailImageRel = {}
                 if (thumbnail_image.id) {
-                    const thumbnailImage = await prisma.hostedImage.findFirst({
-                        where: {
-                            provider_image_id: thumbnail_image.id,
-                        },
-                    })
+                    const thumbnailImage = hostedImages.find(img => img.provider_image_id === thumbnail_image.id);
+
 
                     thumbnailImageRel = thumbnailImage
                         ? {
@@ -907,120 +963,112 @@ const updateProject = extendType({
                     imagesToDelete.push(project.thumbnail_image_id)
                 }
 
-                let screenshots_ids = []
+
+                let final_screenshots_ids = [];
+
+                const oldScreenshots = await prisma.hostedImage.findMany({
+                    where: {
+                        url: {
+                            in: screenshots.filter(s => !s.id && s.url).map(s => s.url)
+                        }
+                    },
+                    select: {
+                        id: true,
+                        url: true,
+                    }
+                });
+
                 for (const screenshot of screenshots) {
                     if (screenshot.id) {
-                        const newScreenshot = await prisma.hostedImage.findFirst({
-                            where: {
-                                provider_image_id: screenshot.id,
-                            },
-                            select: {
-                                id: true,
-                            },
-                        })
+                        const newScreenshot = hostedImages.find(img => img.provider_image_id === screenshot.id);
+
                         if (newScreenshot) {
-                            screenshots_ids.push(newScreenshot.id)
+                            final_screenshots_ids.push(newScreenshot.id)
                             imagesToAdd.push(newScreenshot.id)
                         }
                     } else {
-                        const newScreenshot = await prisma.hostedImage.findFirst({
-                            where: {
-                                url: screenshot.url,
-                            },
-                            select: {
-                                id: true,
-                            },
-                        })
+                        const newScreenshot = oldScreenshots.find(s => s.url === screenshot.url)
                         if (newScreenshot) {
-                            screenshots_ids.push(newScreenshot.id)
+                            final_screenshots_ids.push(newScreenshot.id)
                         }
                     }
                 }
-                const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !screenshots_ids.includes(x))
+                const screenshotsIdsToDelete = project.screenshots_ids.filter((x) => !final_screenshots_ids.includes(x))
                 imagesToDelete = [...imagesToDelete, ...screenshotsIdsToDelete]
 
-                const updatedProject = await prisma.project
-                    .update({
-                        where: {
-                            id,
-                        },
-                        data: {
-                            title,
-                            description,
-                            lightning_address,
-                            tagline,
-                            hashtag,
-                            website,
-                            discord,
-                            github,
-                            twitter,
-                            slack,
-                            telegram,
-                            launch_status,
 
-                            ...coverImageRel,
-                            ...thumbnailImageRel,
-                            screenshots_ids,
+                try {
+                    const updatedProject = await prisma.project
+                        .update({
+                            where: {
+                                id,
+                            },
+                            data: {
+                                title,
+                                description,
+                                lightning_address,
+                                tagline,
+                                hashtag,
+                                website,
+                                discord,
+                                github,
+                                twitter,
+                                slack,
+                                telegram,
+                                launch_status,
 
-                            category: {
-                                connect: {
-                                    id: category_id,
+                                ...coverImageRel,
+                                ...thumbnailImageRel,
+                                screenshots_ids: final_screenshots_ids,
+
+                                category: {
+                                    connect: {
+                                        id: category_id,
+                                    },
+                                },
+                                members: {
+                                    deleteMany: {},
+                                    createMany: {
+                                        data: newMembers.map((member) => {
+                                            return {
+                                                role: member.role,
+                                                userId: member.id
+                                            }
+                                        }),
+                                    }
+                                },
+                                recruit_roles: {
+                                    deleteMany: {},
+                                    createMany: {
+                                        data: recruit_roles.map((role) => {
+                                            return {
+                                                level: 0,
+                                                roleId: role
+                                            }
+                                        }),
+                                    }
+                                },
+                                tournaments: {
+                                    deleteMany: {},
+                                    createMany: {
+                                        data: tournaments.map((tournament) => {
+                                            return {
+                                                tournament_id: tournament,
+                                            }
+                                        }),
+                                    }
+                                },
+                                capabilities: {
+                                    set: capabilities.map((c) => {
+                                        return {
+                                            id: c,
+                                        }
+                                    }),
                                 },
                             },
-                            members: {
-                                deleteMany: {},
-                                create: newMembers.map((member) => {
-                                    return {
-                                        role: member.role,
-                                        user: {
-                                            connect: {
-                                                id: member.id,
-                                            },
-                                        },
-                                    }
-                                }),
-                            },
-                            recruit_roles: {
-                                deleteMany: {},
-                                create: recruit_roles.map((role) => {
-                                    return {
-                                        level: 0,
-                                        role: {
-                                            connect: {
-                                                id: role,
-                                            },
-                                        },
-                                    }
-                                }),
-                            },
-                            tournaments: {
-                                deleteMany: {},
-                                create: tournaments.map((tournament) => {
-                                    return {
-                                        tournament: {
-                                            connect: {
-                                                id: tournament,
-                                            },
-                                        },
-                                    }
-                                }),
-                            },
-                            capabilities: {
-                                set: capabilities.map((c) => {
-                                    return {
-                                        id: c,
-                                    }
-                                }),
-                            },
-                        },
-                    })
-                    .catch((error) => {
-                        logError(error)
-                        throw new ApolloError('Unexpected error happened...')
-                    })
+                        })
 
-                if (imagesToAdd.length > 0) {
-                    await prisma.hostedImage
+                    await Promise.all([...imagesToDelete.map(async (i) => await deleteImage(i)), prisma.hostedImage
                         .updateMany({
                             where: {
                                 id: {
@@ -1030,16 +1078,16 @@ const updateProject = extendType({
                             data: {
                                 is_used: true,
                             },
-                        })
+                        })])
                         .catch((error) => {
                             logError(error)
-                            throw new ApolloError('Unexpected error happened...')
                         })
+
+                    return { project: updatedProject }
+                } catch (error) {
+                    logError(error)
+                    throw new ApolloError("Error while updating the project")
                 }
-
-                imagesToDelete.map(async (i) => await deleteImage(i))
-
-                return { project: updatedProject }
             },
         })
     },
@@ -1053,10 +1101,10 @@ const deleteProject = extendType({
             args: { id: nonNull(intArg()) },
             async resolve(_root, args, ctx) {
                 const { id } = args
-                const user = await getUserByPubKey(ctx.userPubKey)
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user) throw new ApolloError('Not Authenticated')
+                if (!user?.id) throw new ApolloError('Not Authenticated')
 
                 const project = await prisma.project.findFirst({
                     where: { id },

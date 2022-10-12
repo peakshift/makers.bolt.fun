@@ -71,6 +71,8 @@ const loginHandler = async (req, res) => {
 
     let user;
 
+    let user;
+
     try {
         //Create user if not already existing
         user = await getUserByPubKey(key)

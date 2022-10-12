@@ -352,7 +352,7 @@ type Query {
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
   me: MyProfile
-  newProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  newProjects(skip: Int = 0, take: Int = 20): [Project!]!
   officialTags: [Tag!]!
   popularTags: [Tag!]!
   profile(id: Int!): User

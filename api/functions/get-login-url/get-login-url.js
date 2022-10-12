@@ -5,8 +5,8 @@ const { createExpressApp } = require('../../modules');
 const express = require('express');
 const jose = require('jose');
 const { JWT_SECRET } = require('../../utils/consts');
-const extractKeyFromCookie = require('../../utils/extractKeyFromCookie');
-const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
+const extractUserFromCookie = require('../../utils/extractUserFromCookie');
+const { getUserById } = require('../../auth/utils/helperFuncs');
 
 
 
@@ -20,8 +20,8 @@ const getLoginUrl = async (req, res) => {
 
         let user_token = null;
         if (action === 'link') {
-            const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
-            const user = await getUserByPubKey(userPubKey);
+            const userPayload = await extractUserFromCookie(req.headers.cookie ?? req.headers.Cookie)
+            const user = await getUserById(userPayload.id);
 
             if (!user)
                 return res.status(400).json({ status: 'ERROR', reason: 'Only authenticated user can request a linking URL' });

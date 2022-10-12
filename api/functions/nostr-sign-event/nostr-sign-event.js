@@ -2,16 +2,16 @@
 const serverless = require('serverless-http');
 const { createExpressApp } = require('../../modules');
 const express = require('express');
-const extractKeyFromCookie = require('../../utils/extractKeyFromCookie');
-const { getUserByPubKey } = require('../../auth/utils/helperFuncs');
+const extractUserFromCookie = require('../../utils/extractUserFromCookie');
+const { getUserById } = require('../../auth/utils/helperFuncs');
 const { generatePrivateKey, getPublicKey, signEvent: signNostrEvent } = require('../../utils/nostr-tools');
 const { prisma } = require('../../prisma');
 
 
 const signEvent = async (req, res) => {
     try {
-        const userPubKey = await extractKeyFromCookie(req.headers.cookie ?? req.headers.Cookie)
-        const user = await getUserByPubKey(userPubKey);
+        const userPayload = await extractUserFromCookie(req.headers.cookie ?? req.headers.Cookie)
+        const user = await getUserById(userPayload.id);
 
         if (!user)
             return res.status(401).json({ status: 'ERROR', reason: 'Not Authenticated' });

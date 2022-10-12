@@ -5,7 +5,10 @@ const createGlobalModule = require('../utils/createGlobalModule');
 const createPrismaClient = () => {
     console.log("New Prisma Client");
     try {
-        return new PrismaClient();
+        const prisma = new PrismaClient({
+            log: ['error']
+        })
+        return prisma;
     } catch (error) {
         console.log(error);
     }

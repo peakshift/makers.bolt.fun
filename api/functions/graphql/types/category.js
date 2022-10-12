@@ -1,3 +1,4 @@
+const { parseResolveInfo } = require('graphql-parse-resolve-info');
 const {
     intArg,
     objectType,
@@ -51,9 +52,25 @@ const allCategoriesQuery = extendType({
     definition(t) {
         t.nonNull.list.nonNull.field('allCategories', {
             type: "Category",
-            resolve: async () => {
+            resolve: async (_, __, ___, info) => {
+                const parsedResolveInfo = parseResolveInfo(info)
+                const includeProject = !!parsedResolveInfo.fieldsByTypeName?.Category?.project
+
+                const projectIncludes = {
+                    thumbnail_image_rel: !!parsedResolveInfo.fieldsByTypeName?.Category?.project?.fieldsByTypeName?.Project?.thumbnail_image,
+                    cover_image_rel: !!parsedResolveInfo.fieldsByTypeName?.Category?.project?.fieldsByTypeName?.Project?.cover_image,
+                    category: !!parsedResolveInfo.fieldsByTypeName?.Category?.project?.fieldsByTypeName?.Project?.category
+                }
+
                 const categories = await prisma.category.findMany({
                     include: {
+                        ...(includeProject && {
+                            project: {
+                                include: {
+                                    ...projectIncludes
+                                }
+                            }
+                        }),
                         _count: {
                             select: {
                                 project: true

@@ -71,13 +71,13 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
             exit='exit'
             className="modal-card max-w-[343px] p-24 rounded-xl relative"
         >
-            <div className="flex items-start gap-12">
-                <h2 className='text-h5 font-bold'>Vote for {props.title ?? "project"}</h2>
+            <div className="flex items-center justify-between gap-12">
+                <h2 className='text-h5 font-bold'>Tip this project</h2>
                 <IconButton onClick={onClose} >
                     <IoClose className='text-body2' />
                 </IconButton>
             </div>
-            <form onSubmit={requestPayment} className="mt-32 ">
+            <form onSubmit={requestPayment} className="mt-24 ">
                 <label className="block text-gray-700 text-body4 mb-2 ">
                     Enter Amount
                 </label>
@@ -106,18 +106,18 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                     )}
                 </div>
                 <p className="text-body6 mt-12 text-gray-500">1 sat = 1 vote</p>
-                <p className="text-body6 mt-12 text-gray-500"><strong>Where do these sats go?</strong> <br /> Claimed project votes go directly towards the maker's. Unclaimed project votes go towards BOLT.FUN's community pool.</p>
+                <p className="text-body6 mt-12 text-gray-500"><strong>Where do these sats go?</strong> <br /> Claimed project tips go directly towards the maker's. Unclaimed project votes go towards BOLT.FUN's community pool.</p>
                 {paymentStatus === PaymentStatus.FETCHING_PAYMENT_DETAILS && <p className="text-body6 mt-12 text-yellow-500">Please wait while we the fetch payment details.</p>}
                 {paymentStatus === PaymentStatus.NOT_PAID && <p className="text-body6 mt-12 text-red-500">You did not confirm the payment. Please try again.</p>}
                 {paymentStatus === PaymentStatus.PAID && <p className="text-body6 mt-12 text-green-500">The invoice was paid! Please wait while we confirm it.</p>}
                 {paymentStatus === PaymentStatus.AWAITING_PAYMENT && <p className="text-body6 mt-12 text-yellow-500">Waiting for your payment...</p>}
-                {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your vote</p>}
+                {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your tip!</p>}
                 <button
                     type='submit'
-                    className="btn btn-primary w-full mt-32"
+                    className="btn btn-primary w-full mt-24"
                     disabled={paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.NOT_PAID}
                 >
-                    {paymentStatus === PaymentStatus.DEFAULT || paymentStatus === PaymentStatus.NOT_PAID ? "Vote" : "Voting..."}
+                    {paymentStatus === PaymentStatus.DEFAULT || paymentStatus === PaymentStatus.NOT_PAID ? "Tip" : "Tipping..."}
                 </button>
             </form>
             {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <Confetti width={width} height={height} />}

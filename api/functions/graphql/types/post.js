@@ -12,7 +12,6 @@ const {
 } = require('nexus');
 const { paginationArgs } = require('./helpers');
 const { prisma } = require('../../../prisma');
-const { getUserByPubKey } = require('../../../auth/utils/helperFuncs');
 const { ApolloError } = require('apollo-server-lambda');
 const { marked } = require('marked');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
@@ -43,6 +42,9 @@ const Author = objectType({
         t.nonNull.string('name');
         t.nonNull.string('avatar', {
             async resolve(parent) {
+                if (parent.avatar_rel) {
+                    return resolveImgObjectToUrl(parent.avatar_rel);
+                }
                 return prisma.user.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
@@ -109,8 +111,9 @@ const Story = objectType({
         });
         t.nonNull.field('author', {
             type: "Author",
-            resolve: (parent) =>
-                prisma.story.findUnique({ where: { id: parent.id } }).user()
+            resolve: (parent) => {
+                return parent.user || prisma.story.findUnique({ where: { id: parent.id } }).user()
+            }
 
         });
 
@@ -123,6 +126,8 @@ const Story = objectType({
 
     },
 })
+
+
 
 const StoryInputType = inputObjectType({
     name: 'StoryInputType',
@@ -248,7 +253,7 @@ const getFeed = extendType({
                     default: 0
                 })
             },
-            resolve(_, { take, skip, tag, sortBy, }) {
+            resolve(_, { take, skip, tag, sortBy, }, ctx, info) {
 
 
                 let orderBy = { createdAt: "desc" };
@@ -269,6 +274,13 @@ const getFeed = extendType({
                             },
                         }),
                         is_published: true,
+                    },
+                    include: {
+                        user: {
+                            include: {
+                                avatar_rel: true,
+                            }
+                        },
                     },
                     skip,
                     take,
@@ -317,9 +329,9 @@ const getMyDrafts = extendType({
                 })
             },
             async resolve(parent, { type }, ctx) {
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new ApolloError("Not Authenticated");
 
                 if (type === 'Story')
@@ -430,10 +442,10 @@ const createStory = extendType({
             args: { data: StoryInputType },
             async resolve(_root, args, ctx) {
                 const { id, title, body, project_id, cover_image, tags, is_published } = args.data;
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
 
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new ApolloError("Not Authenticated");
 
                 let was_published = false;
@@ -589,8 +601,10 @@ const createStory = extendType({
                                     })
                             },
                             ...(project_id && {
-                                connect: {
-                                    id: project_id,
+                                project: {
+                                    connect: {
+                                        id: project_id
+                                    }
                                 }
                             }),
                             user: {
@@ -624,9 +638,9 @@ const deleteStory = extendType({
             args: { id: nonNull(intArg()) },
             async resolve(_root, args, ctx) {
                 const { id } = args;
-                const user = await getUserByPubKey(ctx.userPubKey);
+                const user = ctx.user;
                 // Do some validation
-                if (!user)
+                if (!user?.id)
                     throw new ApolloError("Not Authenticated");
 
 
@@ -645,27 +659,23 @@ const deleteStory = extendType({
                     where: {
                         id
                     }
-                })
+                });
+
+                const imagesToDelete = oldPost.body_image_ids;
+                if (oldPost.cover_image_id) imagesToDelete.push(oldPost.cover_image_id)
 
                 const coverImage = await prisma.hostedImage.findMany({
                     where: {
-                        OR: [
-                            ...(
-                                oldPost.cover_image_id &&
-                                { id: oldPost.cover_image_id }),
-                            {
-                                id: {
-                                    in: oldPost.body_image_ids
-                                }
-                            }
-                        ]
+                        id: {
+                            in: imagesToDelete
+                        }
                     },
                     select: {
                         id: true,
                         provider_image_id: true
                     }
                 })
-                coverImage.map(async i => await deleteImage(i.id))
+                await Promise.all(coverImage.map(async i => deleteImage(i.id)))
 
                 return deletedPost
             }
