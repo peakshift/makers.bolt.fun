@@ -77,7 +77,7 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                     <IoClose className='text-body2' />
                 </IconButton>
             </div>
-            <form onSubmit={requestPayment} className="mt-32 ">
+            <form onSubmit={requestPayment} className="mt-24 ">
                 <label className="block text-gray-700 text-body4 mb-2 ">
                     Enter Amount
                 </label>
@@ -114,7 +114,7 @@ export default function VoteCard({ onClose, direction, projectId, initVotes, ...
                 {paymentStatus === PaymentStatus.PAYMENT_CONFIRMED && <p className="text-body6 mt-12 text-green-500">Thanks for your tip!</p>}
                 <button
                     type='submit'
-                    className="btn btn-primary w-full mt-32"
+                    className="btn btn-primary w-full mt-24"
                     disabled={paymentStatus !== PaymentStatus.DEFAULT && paymentStatus !== PaymentStatus.NOT_PAID}
                 >
                     {paymentStatus === PaymentStatus.DEFAULT || paymentStatus === PaymentStatus.NOT_PAID ? "Tip" : "Tipping..."}
