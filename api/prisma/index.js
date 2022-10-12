@@ -6,30 +6,7 @@ const createPrismaClient = () => {
     console.log("New Prisma Client");
     try {
         const prisma = new PrismaClient({
-            log: [
-                {
-                    emit: 'event',
-                    level: 'query',
-                },
-                {
-                    emit: 'stdout',
-                    level: 'error',
-                },
-                {
-                    emit: 'stdout',
-                    level: 'info',
-                },
-                {
-                    emit: 'stdout',
-                    level: 'warn',
-                },
-            ],
-        })
-        prisma.$on('query', (e) => {
-            const timestamp = Date.now();
-            console.log(`%c${Math.floor(timestamp / 1000).toString().slice(-3)}`, 'background: #222; color: #bada55');
-            console.log(e.query)
-            // console.log('Params: ' + e.params)
+            log: ['error']
         })
         return prisma;
     } catch (error) {

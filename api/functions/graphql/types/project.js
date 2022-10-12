@@ -185,6 +185,15 @@ const Project = objectType({
     }
 })
 
+const projectIncludes = info => includeRelationFields(info, "Project", {
+    "thumbnail_image": "thumbnail_image_rel",
+    "cover_image": "cover_image_rel",
+    "category": "category",
+    "tags": "tags",
+    "awards": "awards",
+    "capabilites": "capabilites",
+});
+
 const ROLE_OWNER = 'Owner'
 const ROLE_ADMIN = 'Admin'
 const ROLE_MAKER = 'Maker'
@@ -301,19 +310,13 @@ const getProject = extendType({
                 tag: stringArg(),
             },
             resolve(_, { id, tag }, ctx, info) {
-                if (tag) return prisma.project.findFirst({ where: { hashtag: tag } })
+                if (tag) return prisma.project.findFirst({ where: { hashtag: tag } });
+
+                const includes = projectIncludes(info);
+
                 return prisma.project.findUnique({
                     where: { id },
-                    include: {
-                        ...includeRelationFields(info, "Project", {
-                            "thumbnail_image": "thumbnail_image_rel",
-                            "cover_image": "cover_image_rel",
-                            "category": "category",
-                            "tags": "tags",
-                            "awards": "awards",
-                            "capabilites": "capabilites",
-                        }),
-                    },
+                    include: includes,
                 })
             }
         })
@@ -348,15 +351,10 @@ const newProjects = extendType({
 
                 const take = args.take || 50;
                 const skip = args.skip || 0;
+                const includes = projectIncludes(info);
+
                 return prisma.project.findMany({
-                    include: {
-                        ...includeRelationFields(info, "Project", {
-                            "thumbnail_image": "thumbnail_image_rel",
-                            "cover_image": "cover_image_rel",
-                            "category": "category",
-                            "tags": "tags",
-                        }),
-                    },
+                    include: includes,
                     orderBy: { createdAt: "desc" },
                     skip,
                     take,
@@ -374,15 +372,9 @@ const hottestProjects = extendType({
             type: "Project",
             args: paginationArgs({ take: 50 }),
             async resolve(_, { take, skip }, ctx, info) {
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
-                    include: {
-                        ...includeRelationFields(info, "Project", {
-                            "thumbnail_image": "thumbnail_image_rel",
-                            "cover_image": "cover_image_rel",
-                            "category": "category",
-                            "tags": "tags",
-                        }),
-                    },
+                    include: includes,
                     orderBy: { votes_count: "desc" },
                     skip,
                     take,
@@ -403,6 +395,8 @@ const searchProjects = extendType({
                 search: nonNull(stringArg())
             },
             async resolve(_, { take, skip, search }, ctx, info) {
+
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
                     where: {
                         OR: [{
@@ -417,14 +411,7 @@ const searchProjects = extendType({
                             },
                         }]
                     },
-                    include: {
-                        ...includeRelationFields(info, "Project", {
-                            "thumbnail_image": "thumbnail_image_rel",
-                            "cover_image": "cover_image_rel",
-                            "category": "category",
-                            "tags": "tags",
-                        }),
-                    },
+                    include: includes,
                     skip,
                     take,
                 });
@@ -444,16 +431,10 @@ const projectsByCategory = extendType({
                 category_id: nonNull(intArg())
             },
             async resolve(_, { take, skip, category_id }, ctx, info) {
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
                     where: { category_id },
-                    include: {
-                        ...includeRelationFields(info, "Project", {
-                            "thumbnail_image": "thumbnail_image_rel",
-                            "cover_image": "cover_image_rel",
-                            "category": "category",
-                            "tags": "tags",
-                        }),
-                    },
+                    include: includes,
                     orderBy: { votes_count: "desc" },
                     skip,
                     take,
@@ -519,7 +500,7 @@ const similarProjects = extendType({
             },
             async resolve(parent, { id }, ctx, info) {
                 const currentProject = await prisma.project.findUnique({ where: { id }, select: { category_id: true } })
-
+                const includes = projectIncludes(info);
                 return prisma.project.findMany({
                     where: {
                         AND: {
@@ -531,14 +512,7 @@ const similarProjects = extendType({
                             }
                         }
                     },
-                    include: {
-                        ...includeRelationFields(info, "Project", {
-                            "thumbnail_image": "thumbnail_image_rel",
-                            "cover_image": "cover_image_rel",
-                            "category": "category",
-                            "tags": "tags",
-                        }),
-                    },
+                    include: includes,
                     take: 5,
                 })
             }
