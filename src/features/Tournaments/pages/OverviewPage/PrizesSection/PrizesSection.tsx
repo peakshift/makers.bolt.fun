@@ -100,7 +100,7 @@ const data = {
       id: 2,
       title: "Global Adoption Track",
       description: "Focusing on scalability and product market fit, this track allows makers to let their imaginations run wild with either lightning or on-chain technology.",
-      image: "https://i.ibb.co/ZTGg8wf/global-adoption-1.png",
+      image: "https://i.ibb.co/d4vxYXD/global-adoption-lg.png",
       prizes: [
         {
           id: 2,
