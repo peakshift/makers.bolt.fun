@@ -346,10 +346,10 @@ const newProjects = extendType({
     definition(t) {
         t.nonNull.list.nonNull.field('newProjects', {
             type: "Project",
-            args: paginationArgs({ take: 50 }),
+            args: paginationArgs({ take: 20 }),
             resolve(_, args, __, info) {
 
-                const take = args.take || 50;
+                const take = args.take || 20;
                 const skip = args.skip || 0;
                 const includes = projectIncludes(info);
 
