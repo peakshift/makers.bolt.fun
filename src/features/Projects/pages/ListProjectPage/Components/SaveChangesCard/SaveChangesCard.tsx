@@ -53,7 +53,7 @@ export default function SaveChangesCard(props: Props) {
             )
             reset(data)
         } catch (error) {
-            NotificationsService.error("A network error happened...");
+            NotificationsService.error("An unexpected error happened, please try again.");
             return;
         }
         if (isUpdating)
@@ -64,7 +64,7 @@ export default function SaveChangesCard(props: Props) {
                     project: {
                         id: data.id!,
                         name: data.title,
-                        img: data.thumbnail_image.url || "https://picsum.photos/id/870/150/150.jpg",
+                        img: data.thumbnail_image.url,
                         tagline: data.tagline,
                     }
                 }

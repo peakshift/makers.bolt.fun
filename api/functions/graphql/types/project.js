@@ -657,6 +657,7 @@ const createProject = extendType({
                 })
 
                 const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
+                if (true) throw new ApolloError("Cover image wasn't uploaded successfully, please try again")
 
                 const coverImageRel = coverImage
                     ? {
@@ -669,6 +670,7 @@ const createProject = extendType({
                     : {}
 
                 const thumbnailImage = hostedImages.find(img => img.provider_image_id === thumbnail_image.id);
+                if (!thumbnailImage) throw new ApolloError("Thumbnail image wasn't uploaded successfully, please try again")
 
                 const thumbnailImageRel = thumbnailImage
                     ? {
@@ -922,6 +924,7 @@ const updateProject = extendType({
 
                 if (cover_image.id) {
                     const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
+                    if (!coverImage) throw new ApolloError("Cover image wasn't uploaded successfully, please try again")
 
                     coverImageRel = coverImage
                         ? {
@@ -944,7 +947,7 @@ const updateProject = extendType({
                 let thumbnailImageRel = {}
                 if (thumbnail_image.id) {
                     const thumbnailImage = hostedImages.find(img => img.provider_image_id === thumbnail_image.id);
-
+                    if (!thumbnailImage) throw new ApolloError("Thumbnail image wasn't uploaded successfully, please try again")
 
                     thumbnailImageRel = thumbnailImage
                         ? {
