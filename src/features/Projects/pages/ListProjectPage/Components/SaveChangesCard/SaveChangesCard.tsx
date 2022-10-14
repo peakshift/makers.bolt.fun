@@ -12,6 +12,7 @@ import { useCreateProjectMutation, useUpdateProjectMutation, UpdateProjectInput 
 import { Navigate, useNavigate } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
 import { wrapLink } from 'src/utils/hoc';
+import { extractErrorMessage } from 'src/utils/helperFunctions';
 
 interface Props {
     currentTab: keyof typeof tabs
@@ -53,7 +54,7 @@ export default function SaveChangesCard(props: Props) {
             )
             reset(data)
         } catch (error) {
-            NotificationsService.error("An unexpected error happened, please try again.");
+            NotificationsService.error(extractErrorMessage(error) ?? "An unexpected error happened, please try again.");
             return;
         }
         if (isUpdating)

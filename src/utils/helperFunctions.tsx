@@ -187,3 +187,9 @@ export const getSpanDate = (_date1: string, _date2: string) => {
 export function removeArrayItemAtIndex<T>(arr: T[], indexToRemove: number) {
   return [...arr.slice(0, indexToRemove), ...arr.slice(indexToRemove + 1)]
 }
+
+export function extractErrorMessage(error: unknown) {
+  if (error && typeof error === 'object' && 'message' in error)
+    return (error as any).message
+  return null;
+}

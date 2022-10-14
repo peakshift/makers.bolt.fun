@@ -13,6 +13,7 @@ import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
 import { useApolloClient } from "@apollo/client";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 import { imageSchema } from "src/utils/validation";
+import { extractErrorMessage } from "src/utils/helperFunctions";
 
 interface Props {
 }
@@ -123,8 +124,8 @@ export default function BasicProfileInfoTab() {
                 }
             }
         })
-            .catch(() => {
-                toast.update(toastId, { render: "A network error happened", type: "error", ...NotificationsService.defaultOptions, isLoading: false });
+            .catch((error) => {
+                toast.update(toastId, { render: extractErrorMessage(error) ?? "A network error happened", type: "error", ...NotificationsService.defaultOptions, isLoading: false });
                 mutationStatus.reset()
             })
     };
