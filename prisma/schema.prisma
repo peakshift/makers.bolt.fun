@@ -339,6 +339,7 @@ model HostedImage {
   TournamentEvent_Image  TournamentEvent? @relation("TournamentEvent_Image")
 
   @@index([provider_image_id], type: Hash)
+  @@index([url], type: Hash)
 }
 
 // -----------------

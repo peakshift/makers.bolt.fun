@@ -459,7 +459,7 @@ const createStory = extendType({
 
                 try {
                     if (id) {
-                        const oldPost = await prisma.story.findFirst({
+                        const oldPost = await prisma.story.findUnique({
                             where: { id },
                             select: {
                                 user_id: true,
@@ -468,7 +468,11 @@ const createStory = extendType({
                                 body_image_ids: true
                             }
                         })
+
+                        if (!oldPost) throw new ApolloError("No post exist for this id")
+
                         was_published = oldPost.is_published;
+
                         if (user.id !== oldPost.user_id) throw new ApolloError("Not post author")
 
                         // Body images
