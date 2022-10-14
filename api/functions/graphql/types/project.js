@@ -657,7 +657,7 @@ const createProject = extendType({
                 })
 
                 const coverImage = hostedImages.find(img => img.provider_image_id === cover_image.id);
-                if (true) throw new ApolloError("Cover image wasn't uploaded successfully, please try again")
+                if (!coverImage) throw new ApolloError("Cover image wasn't uploaded successfully, please try again")
 
                 const coverImageRel = coverImage
                     ? {
