@@ -8,6 +8,14 @@ const createPrismaClient = () => {
         const prisma = new PrismaClient({
             log: ['error']
         })
+        prisma.$use(async (params, next) => {
+            const before = Date.now()
+            const result = await next(params)
+            const after = Date.now()
+
+            console.info(`Query took ${after - before}ms`)
+            return result
+        })
         return prisma;
     } catch (error) {
         console.log(error);
