@@ -16,7 +16,7 @@ const { ApolloError } = require('apollo-server-lambda');
 const { marked } = require('marked');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { ImageInput } = require('./misc');
-const { deleteImage } = require('../../../services/imageUpload.service');
+const { deleteImages } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
 
 
@@ -376,63 +376,49 @@ const getPostById = extendType({
     }
 })
 
-const addCoverImage = async (providerImageId) => {
-    const newCoverImage = await prisma.hostedImage.findFirst({
-        where: {
-            provider_image_id: providerImageId
-        }
-    })
+const getHostedImagesIdsFromBody = async (body, oldBodyImagesIds = []) => {
 
-    if (!newCoverImage) throw new ApolloError("New cover image not found")
-
-    await prisma.hostedImage.update({
-        where: {
-            id: newCoverImage.id
-        },
-        data: {
-            is_used: true
-        }
-    })
-
-    return newCoverImage
-}
-
-const getHostedImageIdsFromBody = async (body, oldBodyImagesIds = null) => {
-    let bodyImageIds = []
+    const imagesUrls = []
 
     const regex = /(?:!\[(.*?)\]\((.*?)\))/g
     let match;
     while ((match = regex.exec(body))) {
         const [, , value] = match
-
-        // Useful for old external images in case of duplicates. We need to be sure we are targeting an image from the good story.
-        const where = oldBodyImagesIds ? {
-            AND: [
-                { url: value },
-                { id: { in: oldBodyImagesIds } }
-            ]
-        } :
-            {
-                url: value,
-            }
-
-        const hostedImage = await prisma.hostedImage.findFirst({
-            where
-        })
-        if (hostedImage) {
-            bodyImageIds.push(hostedImage.id)
-            await prisma.hostedImage.update({
-                where: {
-                    id: hostedImage.id
-                },
-                data: {
-                    is_used: true
-                }
-            })
-        }
+        imagesUrls.push(value);
     }
-    return bodyImageIds
+
+    const hostedImages = await prisma.hostedImage.findMany({
+        where: {
+            AND: [
+                {
+                    url: {
+                        in: imagesUrls
+                    }
+                },
+                {
+                    OR: [
+                        {
+                            is_used: false
+                        },
+                        {
+                            id: { in: oldBodyImagesIds }
+                        }
+                    ]
+                }
+            ]
+        },
+        select: {
+            id: true,
+        }
+    })
+
+    const idsToDelete = oldBodyImagesIds.filter(imgId => !hostedImages.some(i => i.id === imgId))
+    return {
+        newImages: hostedImages.map(i => i.id),
+        imagesToDelete: idsToDelete,
+    }
 }
+
 
 const createStory = extendType({
     type: 'Mutation',
@@ -453,8 +439,10 @@ const createStory = extendType({
 
                 // TODO: validate post data
 
-                let coverImage = null
-                let bodyImageIds = []
+                let coverImage = null;
+                let newBodyImagesIds = []
+                let imagesToDelete = [];
+                let imagesToSave = [];
 
 
                 try {
@@ -464,8 +452,13 @@ const createStory = extendType({
                             select: {
                                 user_id: true,
                                 is_published: true,
-                                cover_image_id: true,
-                                body_image_ids: true
+                                body_image_ids: true,
+                                cover_image_rel: {
+                                    select: {
+                                        id: true,
+                                        provider_image_id: true
+                                    }
+                                }
                             }
                         })
 
@@ -476,42 +469,55 @@ const createStory = extendType({
                         if (user.id !== oldPost.user_id) throw new ApolloError("Not post author")
 
                         // Body images
-                        bodyImageIds = await getHostedImageIdsFromBody(body, oldPost.body_image_ids)
+                        const bodyImagesRes = await getHostedImagesIdsFromBody(body, oldPost.body_image_ids)
 
-                        // Old cover image is found
-                        if (oldPost.cover_image_id) {
-                            const oldCoverImage = await prisma.hostedImage.findFirst({
-                                where: {
-                                    id: oldPost.cover_image_id
-                                }
-                            })
+                        newBodyImagesIds = bodyImagesRes.newImages;
+                        imagesToDelete = bodyImagesRes.imagesToDelete;
+
+                        // Cover images changed
+                        if (cover_image?.id) {
+
+                            if (!!oldPost.cover_image_rel && cover_image.id !== oldPost.cover_image_rel.provider_image_id)
+                                imagesToDelete.push(oldPost.cover_image_rel.id)
 
                             // New cover image
-                            if (cover_image?.id && cover_image.id !== oldCoverImage?.provider_image_id) {
-                                await deleteImage(oldCoverImage.id)
-                                coverImage = await addCoverImage(cover_image.id)
-                            } else {
-                                coverImage = oldCoverImage
-                            }
-                        } else {
-                            // No old image found and new cover image
-                            if (cover_image?.id) {
-                                coverImage = await addCoverImage(cover_image.id)
-                            }
+                            coverImage = cover_image
+
                         }
 
-                        // Remove unused body images
-                        const unusedImagesIds = oldPost.body_image_ids.filter(x => !bodyImageIds.includes(x));
-                        unusedImagesIds.map(async i => await deleteImage(i))
+                    }
+                    else { // New Story
 
-                    } else {
-                        // Body images
-                        bodyImageIds = await getHostedImageIdsFromBody(body)
+                        const bodyImagesRes = await getHostedImagesIdsFromBody(body)
+
+                        newBodyImagesIds = bodyImagesRes.newImages;
 
                         // New story and new cover image
-                        if (cover_image?.id) {
-                            coverImage = await addCoverImage(cover_image.id)
-                        }
+                        if (cover_image?.id)
+                            coverImage = cover_image
+
+                    }
+
+                    let coverImageRel = {}
+
+                    if (coverImage?.id) {
+                        const hostedCoverImg = await prisma.hostedImage.findFirst({
+                            where: {
+                                provider_image_id: coverImage.id
+                            },
+                            select: {
+                                id: true,
+                            }
+                        })
+                        imagesToSave.push(hostedCoverImg.id)
+                        coverImageRel = {
+                            cover_image_rel: {
+                                connect:
+                                {
+                                    id: hostedCoverImg.id
+                                }
+                            }
+                        };
                     }
 
                     // Preprocess & insert
@@ -525,14 +531,9 @@ const createStory = extendType({
                         ;
 
 
-                    const coverImageRel = coverImage ? {
-                        cover_image_rel: {
-                            connect:
-                            {
-                                id: coverImage ? coverImage.id : null
-                            }
-                        }
-                    } : {}
+
+
+                    let createdStory = null;
 
                     if (id) {
                         await prisma.story.update({
@@ -543,8 +544,7 @@ const createStory = extendType({
                                 },
                             }
                         });
-
-                        return prisma.story.update({
+                        createdStory = await prisma.story.update({
                             where: { id },
                             data: {
                                 title,
@@ -573,7 +573,7 @@ const createStory = extendType({
                                             }
                                         })
                                 },
-                                body_image_ids: bodyImageIds,
+                                body_image_ids: newBodyImagesIds,
                                 ...coverImageRel
                             }
                         })
@@ -581,49 +581,62 @@ const createStory = extendType({
                                 logError(error)
                                 throw new ApolloError("Unexpected error happened...")
                             })
-                    }
-
-                    return prisma.story.create({
-                        data: {
-                            title,
-                            body,
-                            cover_image: '',
-                            excerpt,
-                            is_published,
-                            tags: {
-                                connectOrCreate:
-                                    tags.map(tag => {
-                                        tag = tag.toLowerCase().trim();
-                                        return {
-                                            where: {
-                                                title: tag,
-                                            },
-                                            create: {
-                                                title: tag
+                    } else
+                        createdStory = await prisma.story.create({
+                            data: {
+                                title,
+                                body,
+                                cover_image: '',
+                                excerpt,
+                                is_published,
+                                tags: {
+                                    connectOrCreate:
+                                        tags.map(tag => {
+                                            tag = tag.toLowerCase().trim();
+                                            return {
+                                                where: {
+                                                    title: tag,
+                                                },
+                                                create: {
+                                                    title: tag
+                                                }
                                             }
+                                        })
+                                },
+                                ...(project_id && {
+                                    project: {
+                                        connect: {
+                                            id: project_id
                                         }
-                                    })
-                            },
-                            ...(project_id && {
-                                project: {
-                                    connect: {
-                                        id: project_id
                                     }
-                                }
-                            }),
-                            user: {
-                                connect: {
-                                    id: user.id,
-                                }
-                            },
-                            body_image_ids: bodyImageIds,
-                            ...coverImageRel
+                                }),
+                                user: {
+                                    connect: {
+                                        id: user.id,
+                                    }
+                                },
+                                body_image_ids: newBodyImagesIds,
+                                ...coverImageRel
+                            }
+                        }).catch(error => {
+                            logError(error)
+                            throw new ApolloError("Unexpected error happened...")
+                        })
+
+                    await prisma.hostedImage.updateMany({
+                        where: {
+                            id: {
+                                in: [...imagesToSave, ...newBodyImagesIds]
+                            }
+                        },
+                        data: {
+                            is_used: true
                         }
-                    }).catch(error => {
-                        logError(error)
-                        throw new ApolloError("Unexpected error happened...")
                     })
 
+                    await deleteImages(imagesToDelete)
+
+                    return createdStory;
 
                 } catch (error) {
                     logError(error)
@@ -668,18 +681,7 @@ const deleteStory = extendType({
                 const imagesToDelete = oldPost.body_image_ids;
                 if (oldPost.cover_image_id) imagesToDelete.push(oldPost.cover_image_id)
 
-                const coverImage = await prisma.hostedImage.findMany({
-                    where: {
-                        id: {
-                            in: imagesToDelete
-                        }
-                    },
-                    select: {
-                        id: true,
-                        provider_image_id: true
-                    }
-                })
-                await Promise.all(coverImage.map(async i => deleteImage(i.id)))
+                await deleteImages(imagesToDelete)
 
                 return deletedPost
             }

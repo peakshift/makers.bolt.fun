@@ -15,6 +15,7 @@ import { useThrottledCallback } from '@react-hookz/web';
 import { CreateStoryType } from '../../CreateStoryPage/CreateStoryPage';
 import CoverImageInput from 'src/Components/Inputs/FilesInputs/CoverImageInput/CoverImageInput';
 import TagProjectInput from '../TagProjectInput/TagProjectInput';
+import { extractErrorMessage } from 'src/utils/helperFunctions';
 
 interface Props {
     isUpdating?: boolean;
@@ -75,7 +76,7 @@ export default function StoryForm(props: Props) {
             props.onSuccess?.(!!data.createStory?.is_published);
         },
         onError: (error) => {
-            NotificationsService.error('Unexpected error happened, please try again', { error })
+            NotificationsService.error(extractErrorMessage(error) ?? 'Unexpected error happened, please try again', { error })
             setLoading(false)
         },
         refetchQueries: ['GetMyDrafts']
