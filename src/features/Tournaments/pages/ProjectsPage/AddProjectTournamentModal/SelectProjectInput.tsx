@@ -18,7 +18,7 @@ type Props<T extends Record<string, any>, IsMulti extends boolean = boolean> = {
     menuPosition?: 'fixed' | 'absolute'
     className?: string,
     renderOption?: (option: OptionProps<T>) => JSX.Element
-    ValueContainer?: React.ComponentType<ValueContainerProps<any, IsMulti, GroupBase<any>>> | undefined
+    ValueContainer?: any | undefined
 } & ControlledStateHandler<T, IsMulti>
 
 

@@ -369,6 +369,11 @@ export interface NexusGenObjects {
     hasPrev?: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
   }
+  TournamentTrack: { // root type
+    icon: string; // String!
+    id: number; // Int!
+    title: string; // String!
+  }
   User: { // root type
     bio?: string | null; // String
     discord?: string | null; // String
@@ -692,6 +697,7 @@ export interface NexusGenFieldTypes {
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: string; // String!
     title: string; // String!
+    tracks: NexusGenRootTypes['TournamentTrack'][]; // [TournamentTrack!]!
     website: string; // String!
   }
   TournamentEvent: { // field return type
@@ -734,6 +740,11 @@ export interface NexusGenFieldTypes {
     hasNext: boolean | null; // Boolean
     hasPrev: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+  }
+  TournamentTrack: { // field return type
+    icon: string; // String!
+    id: number; // Int!
+    title: string; // String!
   }
   User: { // field return type
     avatar: string; // String!
@@ -1086,6 +1097,7 @@ export interface NexusGenFieldTypeNames {
     start_date: 'Date'
     thumbnail_image: 'String'
     title: 'String'
+    tracks: 'TournamentTrack'
     website: 'String'
   }
   TournamentEvent: { // field return type name
@@ -1128,6 +1140,11 @@ export interface NexusGenFieldTypeNames {
     hasNext: 'Boolean'
     hasPrev: 'Boolean'
     projects: 'Project'
+  }
+  TournamentTrack: { // field return type name
+    icon: 'String'
+    id: 'Int'
+    title: 'String'
   }
   User: { // field return type name
     avatar: 'String'

@@ -454,6 +454,7 @@ type Tournament {
   start_date: Date!
   thumbnail_image: String!
   title: String!
+  tracks: [TournamentTrack!]!
   website: String!
 }
 
@@ -515,6 +516,12 @@ type TournamentProjectsResponse {
   hasNext: Boolean
   hasPrev: Boolean
   projects: [Project!]!
+}
+
+type TournamentTrack {
+  icon: String!
+  id: Int!
+  title: String!
 }
 
 input UpdateProjectInput {

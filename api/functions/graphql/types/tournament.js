@@ -27,6 +27,15 @@ const TournamentPrize = objectType({
     }
 })
 
+const TournamentTrack = objectType({
+    name: 'TournamentTrack',
+    definition(t) {
+        t.nonNull.int('id')
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
+    }
+})
+
 const TournamentJudge = objectType({
     name: 'TournamentJudge',
     definition(t) {
@@ -144,6 +153,12 @@ const Tournament = objectType({
             }
         });
 
+        t.nonNull.list.nonNull.field('tracks', {
+            type: TournamentTrack,
+            resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).tracks()
+            }
+        });
         t.nonNull.list.nonNull.field('prizes', {
             type: TournamentPrize,
             resolve(parent) {

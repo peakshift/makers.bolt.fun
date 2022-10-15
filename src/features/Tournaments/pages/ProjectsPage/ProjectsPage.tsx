@@ -1,7 +1,10 @@
 import { useDebouncedState } from '@react-hookz/web';
 import { useState } from 'react'
 import { FiSearch } from 'react-icons/fi';
+import Button from 'src/Components/Button/Button';
 import { useGetProjectsInTournamentQuery } from 'src/graphql'
+import { openModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch } from 'src/utils/hooks';
 import { useTournament } from '../TournamentDetailsPage/TournamentDetailsContext';
 import ProjectCard from './ProjectCard/ProjectCard';
 import ProjectCardSkeleton from './ProjectCard/ProjectCard.Skeleton';
@@ -9,8 +12,8 @@ import ProjectCardSkeleton from './ProjectCard/ProjectCard.Skeleton';
 
 export default function ProjectsPage() {
 
-
-    const { tournamentDetails: { id } } = useTournament()
+    const dispatch = useAppDispatch();
+    const { tournamentDetails: { id, title, tracks } } = useTournament()
 
     const [searchFilter, setSearchFilter] = useState("");
     const [debouncedsearchFilter, setDebouncedSearchFilter] = useDebouncedState("", 500);
@@ -38,7 +41,14 @@ export default function ProjectsPage() {
 
     return (
         <div className='pb-42 flex flex-col gap-24'>
-            <h2 className='text-body1 font-bolder text-gray-900'>Projects {projectsCount && `(${projectsCount})`}</h2>
+            <div className="flex flex-wrap justify-between items-center gap-16">
+                <h2 className='text-body1 font-bolder text-gray-900'>Projects {projectsCount && `(${projectsCount})`}</h2>
+                <Button size='sm' color='primary' onClick={() => dispatch(openModal({
+                    Modal: "AddProjectTournamentModal",
+                    props: { tournament: { id, title, tracks } }
+                }))
+                }>Add your project</Button>
+            </div>
 
             <div className="input-wrapper relative">
                 <FiSearch className="self-center ml-16 flex-shrink-0 w-[20px] text-gray-400" />
