@@ -46,7 +46,7 @@ export default function ExtrasTab(props: Props) {
                 </div>
             </Card>
 
-            <Card>
+            {/* <Card>
                 <h2 className="text-body2 font-bolder">⚔️️  Tournaments</h2>
                 <p className="text-body4 font-light text-gray-600 mt-8">Is your application part of a tournament? If so, select the tournament(s) that apply and it will automatically be listed for you.</p>
                 <div className="mt-24">
@@ -62,7 +62,7 @@ export default function ExtrasTab(props: Props) {
                     />
                     {errors.tournaments && <p className='input-error'>{errors.tournaments?.message}</p>}
                 </div>
-            </Card>
+            </Card> */}
         </div>
     )
 }

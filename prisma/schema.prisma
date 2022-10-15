@@ -163,6 +163,8 @@ model Project {
   recruit_roles ProjectRecruitRoles[]
   tournaments   TournamentProject[]
   stories       Story[]
+
+  @@index([hashtag], type: Hash)
 }
 
 model ProjectRecruitRoles {
@@ -335,6 +337,9 @@ model HostedImage {
   TournamentPrize_Image  TournamentPrize? @relation("TournamentPrize_Image")
   TournamentJudge_Avatar TournamentJudge? @relation("TournamentJudge_Avatar")
   TournamentEvent_Image  TournamentEvent? @relation("TournamentEvent_Image")
+
+  @@index([provider_image_id], type: Hash)
+  @@index([url], type: Hash)
 }
 
 // -----------------

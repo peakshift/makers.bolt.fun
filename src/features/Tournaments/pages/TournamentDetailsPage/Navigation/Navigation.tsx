@@ -27,7 +27,7 @@ export default function Navigation() {
             path: "makers",
         },
         {
-            text: `Projects 🔒`,
+            text: `Projects (opens soon)`,
             path: "projects",
             isDisabled: true,
         },

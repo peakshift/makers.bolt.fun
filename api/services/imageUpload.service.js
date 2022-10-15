@@ -91,8 +91,56 @@ async function deleteImage(hostedImageId) {
     }
 }
 
+async function deleteImages(imagesIds) {
+    const hostedImages = await prisma.hostedImage.findMany({
+        where: {
+            id: {
+                in: imagesIds
+            }
+        },
+        select: {
+            id: true,
+            provider_image_id: true,
+        }
+    });
+
+    const imagesToDelete = [];
+    const imagesFailedDeletion = []
+
+    await Promise.all(hostedImages
+        .filter(img => !!img.provider_image_id)
+        .map(img => deleteImageFromProvider(img.provider_image_id)
+            .then(imagesToDelete.push(img.id))
+            .catch(err => {
+                console.log(err);
+                imagesFailedDeletion.push(img.id)
+            })))
+
+    await prisma.hostedImage.deleteMany({
+        where: {
+            id: {
+                in: imagesToDelete
+            }
+        }
+    })
+
+    if (imagesFailedDeletion.length > 0)
+        // Will be removed later by the scheduled job
+        await prisma.hostedImage.updateMany({
+            where: {
+                id: {
+                    in: imagesFailedDeletion
+                }
+            },
+            data: {
+                is_used: false
+            }
+        })
+}
+
 module.exports = {
     getDirectUploadUrl,
     deleteImage,
+    deleteImages,
     deleteImageFromProvider,
 }

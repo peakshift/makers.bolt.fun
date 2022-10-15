@@ -9,7 +9,7 @@ const {
     inputObjectType,
 } = require('nexus');
 const { prisma } = require('../../../prisma');
-const { deleteImage } = require('../../../services/imageUpload.service');
+const { deleteImages } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
@@ -1071,8 +1071,9 @@ const updateProject = extendType({
                             },
                         })
 
-                    await Promise.all([...imagesToDelete.map(async (i) => await deleteImage(i)), prisma.hostedImage
-                        .updateMany({
+                    await Promise.all([
+                        deleteImages(imagesToDelete),
+                        prisma.hostedImage.updateMany({
                             where: {
                                 id: {
                                     in: imagesToAdd,
@@ -1168,7 +1169,7 @@ const deleteProject = extendType({
                         id: true,
                     },
                 })
-                imagesToDelete.map(async (i) => await deleteImage(i.id))
+                await deleteImages(imagesToDelete)
 
                 return deletedProject
             },
