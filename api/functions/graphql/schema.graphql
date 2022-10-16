@@ -305,6 +305,7 @@ type Project {
   lightning_address: String
   lnurl_callback_url: String
   members: [ProjectMember!]!
+  members_count: Int!
   permissions: [ProjectPermissionEnum!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!

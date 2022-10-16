@@ -89,6 +89,23 @@ const Project = objectType({
             }
         })
 
+        t.nonNull.int("members_count", {
+            resolve: parent => {
+                return parent.members_count || prisma.project.findUnique({
+                    where: {
+                        id: parent.id,
+                    },
+                    select: {
+                        _count: {
+                            select: {
+                                members: true,
+                            }
+                        }
+                    }
+                }).then(item => item._count.members)
+            }
+        })
+
         t.nonNull.list.nonNull.field('members', {
             type: ProjectMember,
             resolve: (parent) => {

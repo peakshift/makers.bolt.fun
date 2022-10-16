@@ -604,6 +604,7 @@ export interface NexusGenFieldTypes {
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
     members: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
+    members_count: number; // Int!
     permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
@@ -1010,6 +1011,7 @@ export interface NexusGenFieldTypeNames {
     lightning_address: 'String'
     lnurl_callback_url: 'String'
     members: 'ProjectMember'
+    members_count: 'Int'
     permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
     screenshots: 'String'

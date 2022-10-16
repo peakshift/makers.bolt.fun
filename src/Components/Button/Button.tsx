@@ -11,7 +11,6 @@ type Props = {
     href?: string;
     newTab?: boolean;
     fullWidth?: boolean;
-    onClick?: () => void;
     className?: string
     loadingText?: string
     isLoading?: boolean;
@@ -75,7 +74,6 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
     href,
     newTab,
     className,
-    onClick,
     loadingText,
     isLoading,
     disableOnLoading = true,
@@ -92,19 +90,19 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
     ${disabled && 'opacity-90 pointer-events-none'}
     `;
 
+    const onClick = props.onClick;
 
-
-    const handleClick = () => {
+    const handleClick = (e: any) => {
         if (isLoading && disableOnLoading) return;
 
-        if (onClick) onClick();
+        if (onClick) onClick(e);
     }
 
     const btn = <button
         ref={ref}
         type='button'
         className={`${classes} ${className}`}
-        onClick={() => handleClick()}
+        onClick={(e) => handleClick(e)}
         disabled={disabled}
         {...props}
     >

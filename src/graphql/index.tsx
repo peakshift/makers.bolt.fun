@@ -427,6 +427,7 @@ export type Project = {
   lightning_address: Maybe<Scalars['String']>;
   lnurl_callback_url: Maybe<Scalars['String']>;
   members: Array<ProjectMember>;
+  members_count: Scalars['Int'];
   permissions: Array<ProjectPermissionEnum>;
   recruit_roles: Array<MakerRole>;
   screenshots: Array<Scalars['String']>;
@@ -1157,7 +1158,7 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
+export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
 
 export type UpdateTournamentRegistrationMutationVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -3069,6 +3070,7 @@ export const GetProjectsInTournamentDocument = gql`
       title
       description
       thumbnail_image
+      members_count
       category {
         id
         title

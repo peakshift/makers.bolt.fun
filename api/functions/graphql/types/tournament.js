@@ -292,6 +292,13 @@ const getUserParticipationInfo = async (user_id, tournament_id) => {
             prisma.tournamentProject.findMany({
                 where: {
                     tournament_id,
+                    project: {
+                        members: {
+                            some: {
+                                userId: user_id
+                            }
+                        }
+                    }
                 },
                 include: {
                     project: {
@@ -487,7 +494,7 @@ const getProjectsInTournament = extendType({
 
 
 
-                const projects = (await prisma.tournamentProject.findMany({
+                const projects = await prisma.tournamentProject.findMany({
                     where: {
                         tournament_id: args.tournamentId,
                         ...(filters.length > 0 && {
@@ -497,14 +504,20 @@ const getProjectsInTournament = extendType({
                         })
                     },
                     include: {
-                        project: true,
+                        project: {
+                            include: {
+                                _count: {
+                                    select: {
+                                        members: true,
+                                    }
+                                }
+                            }
+                        },
                     },
                     skip: args.skip,
                     take: args.take + 1,
-                })).map(item => item.project)
-
-                console.log();
-
+                })
+                    .then(res => res.map(item => ({ ...item.project, members_count: item.project._count.members })));
 
                 return {
                     hasNext: projects.length === args.take + 1,

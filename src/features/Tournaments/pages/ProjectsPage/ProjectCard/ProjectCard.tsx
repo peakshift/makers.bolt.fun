@@ -1,8 +1,6 @@
 import { GetProjectsInTournamentQuery, } from "src/graphql";
 import Card from 'src/Components/Card/Card';
-import Badge from 'src/Components/Badge/Badge';
 import Button from "src/Components/Button/Button"
-import { createRoute } from "src/utils/routing";
 import { useAppDispatch } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import { FaUsers } from "react-icons/fa";
@@ -41,7 +39,7 @@ export default function ProjectCard({ project }: Props) {
             <div className="mt-auto">
                 {/* <p className="text-body5 text-gray-900 font-medium mb-12">👾 Makers</p> */}
                 <p className="text-body5 text-gray-600 font-medium">
-                    <FaUsers className='text-body2 mr-4' /> <span className='align-middle'>6 makers</span>
+                    <FaUsers className='text-body2 mr-4' /> <span className='align-middle'>{project.members_count} makers</span>
                 </p>
             </div>
             <Button fullWidth color='white' onClick={openProject} className=''>View Details</Button>
