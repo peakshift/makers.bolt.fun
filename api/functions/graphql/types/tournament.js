@@ -11,6 +11,7 @@ const {
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { prisma } = require('../../../prisma');
 const { paginationArgs, removeNulls } = require('./helpers');
+const { ApolloError } = require('@apollo/client');
 
 
 
@@ -248,15 +249,68 @@ const getTournamentToRegister = extendType({
     }
 })
 
+const ProjectInTournament = objectType({
+    name: 'ProjectInTournament',
+    definition(t) {
+        t.field('track', {
+            type: TournamentTrack
+        })
+        t.nonNull.field('project', {
+            type: "Project"
+        })
+    }
+})
+
 const ParticipationInfo = objectType({
     name: "ParticipationInfo",
     definition(t) {
         t.nonNull.date('createdAt')
         t.nonNull.string('email')
         t.nonNull.field('hacking_status', { type: TournamentMakerHackingStatusEnum });
-
+        t.nonNull.list.nonNull.field('projects', {
+            type: ProjectInTournament
+        })
     }
 })
+
+const getUserParticipationInfo = async (user_id, tournament_id) => {
+    const [registerationData, projects] = await Promise.all(
+        [
+            prisma.tournamentParticipant.findUnique({
+                where: {
+                    tournament_id_user_id: {
+                        tournament_id,
+                        user_id
+                    }
+                },
+                select: {
+                    createdAt: true,
+                    email: true,
+                    hacking_status: true,
+                }
+            }),
+            prisma.tournamentProject.findMany({
+                where: {
+                    tournament_id,
+                },
+                include: {
+                    project: {
+                        include: {
+                            thumbnail_image_rel: true,
+                            category: true,
+                        }
+                    },
+                    track: true
+                }
+            })
+        ]
+    )
+
+    return {
+        ...registerationData,
+        projects,
+    }
+}
 
 const tournamentParticipationInfo = extendType({
     type: "Query",
@@ -272,13 +326,7 @@ const tournamentParticipationInfo = extendType({
                 if (!user?.id)
                     return null
 
-
-                return prisma.tournamentParticipant.findFirst({
-                    where: {
-                        user_id: user.id,
-                        tournament_id: args.tournamentId
-                    }
-                })
+                return getUserParticipationInfo(user.id, args.tournamentId)
             }
         })
     }
@@ -560,6 +608,69 @@ const updateTournamentRegistration = extendType({
 })
 
 
+const AddProjectToTournamentInput = inputObjectType({
+    name: 'AddProjectToTournamentInput',
+    definition(t) {
+        t.nonNull.int('project_id')
+        t.nonNull.int('tournament_id')
+        t.nonNull.int('track_id')
+    }
+})
+
+
+const addProjectToTournament = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('addProjectToTournament', {
+            type: ParticipationInfo,
+            args: {
+                input: AddProjectToTournamentInput
+            },
+            async resolve(_root, { input: { project_id, tournament_id, track_id } }, ctx) {
+                const user = ctx.user;
+
+                // Do some validation
+                if (!user?.id)
+                    throw new Error("You have to login");
+
+
+                const isMember = !!(await prisma.projectMember.findUnique({
+                    where: {
+                        projectId_userId: {
+                            projectId: project_id,
+                            userId: user.id
+                        }
+                    }
+                }))
+
+                if (!isMember)
+                    throw new ApolloError("You can only add a project you are a member in")
+
+                await prisma.tournamentProject.upsert({
+                    where: {
+                        tournament_id_project_id: {
+                            project_id,
+                            tournament_id,
+                        }
+                    },
+                    create: {
+                        project_id,
+                        tournament_id,
+                        track_id,
+                    },
+                    update: {
+                        track_id,
+                    }
+                })
+
+                return getUserParticipationInfo(user.id, tournament_id)
+
+            }
+        })
+    },
+})
+
+
 module.exports = {
     // Types 
     Tournament,
@@ -577,4 +688,5 @@ module.exports = {
     // Mutations
     registerInTournament,
     updateTournamentRegistration,
+    addProjectToTournament,
 }

@@ -55,20 +55,4 @@ query GetTournamentById($id: Int!) {
       }
     }
   }
-
-  tournamentParticipationInfo(tournamentId: $id) {
-    createdAt
-    hacking_status
-  }
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    twitter
-    linkedin
-    github
-
-    ...UserRolesSkills
-  }
 }

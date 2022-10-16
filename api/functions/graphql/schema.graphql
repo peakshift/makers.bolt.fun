@@ -2,6 +2,12 @@
 ### Do not make changes to this file directly
 
 
+input AddProjectToTournamentInput {
+  project_id: Int!
+  tournament_id: Int!
+  track_id: Int!
+}
+
 type Author {
   avatar: String!
   id: Int!
@@ -185,6 +191,7 @@ input MakerSkillInput {
 }
 
 type Mutation {
+  addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createProject(input: CreateProjectInput): CreateProjectResponse
@@ -239,6 +246,7 @@ type ParticipationInfo {
   createdAt: Date!
   email: String!
   hacking_status: TournamentMakerHackingStatusEnum!
+  projects: [ProjectInTournament!]!
 }
 
 union Post = Bounty | Question | Story
@@ -311,6 +319,11 @@ type Project {
   twitter: String
   votes_count: Int!
   website: String!
+}
+
+type ProjectInTournament {
+  project: Project!
+  track: TournamentTrack
 }
 
 enum ProjectLaunchStatusEnum {

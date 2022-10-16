@@ -28,6 +28,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AddProjectToTournamentInput: { // input type
+    project_id: number; // Int!
+    tournament_id: number; // Int!
+    track_id: number; // Int!
+  }
   CreateProjectInput: { // input type
     capabilities: number[]; // [Int!]!
     category_id: number; // Int!
@@ -265,6 +270,7 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+    projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // root type
     author: NexusGenRootTypes['Author']; // Author!
@@ -290,6 +296,10 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+  }
+  ProjectInTournament: { // root type
+    project: NexusGenRootTypes['Project']; // Project!
+    track?: NexusGenRootTypes['TournamentTrack'] | null; // TournamentTrack
   }
   ProjectMember: { // root type
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
@@ -523,6 +533,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Mutation: { // field return type
+    addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -569,6 +580,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+    projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -606,6 +618,10 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+  }
+  ProjectInTournament: { // field return type
+    project: NexusGenRootTypes['Project']; // Project!
+    track: NexusGenRootTypes['TournamentTrack'] | null; // TournamentTrack
   }
   ProjectMember: { // field return type
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
@@ -923,6 +939,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Mutation: { // field return type name
+    addProjectToTournament: 'ParticipationInfo'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
     createProject: 'CreateProjectResponse'
@@ -969,6 +986,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     email: 'String'
     hacking_status: 'TournamentMakerHackingStatusEnum'
+    projects: 'ProjectInTournament'
   }
   PostComment: { // field return type name
     author: 'Author'
@@ -1006,6 +1024,10 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
+  }
+  ProjectInTournament: { // field return type name
+    project: 'Project'
+    track: 'TournamentTrack'
   }
   ProjectMember: { // field return type name
     role: 'TEAM_MEMBER_ROLE'
@@ -1221,6 +1243,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addProjectToTournament: { // args
+      input?: NexusGenInputs['AddProjectToTournamentInput'] | null; // AddProjectToTournamentInput
+    }
     confirmDonation: { // args
       payment_request: string; // String!
       preimage: string; // String!

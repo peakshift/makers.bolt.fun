@@ -1,12 +1,17 @@
 import { motion } from 'framer-motion'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { IoClose } from 'react-icons/io5';
-import { MyProjectsQuery, Tournament, TournamentTrack, useMyProjectsQuery } from 'src/graphql';
+import { MyProjectsQuery, Tournament, TournamentTrack, useMyProjectsQuery, useAddProjectToTournamentMutation, MeTournamentDocument, GetProjectsInTournamentDocument } from 'src/graphql';
 import Button from 'src/Components/Button/Button';
 import BasicSelectInput from 'src/Components/Inputs/Selects/BasicSelectInput/BasicSelectInput';
 import React, { useState } from 'react';
 import InfoCard from "src/Components/InfoCard/InfoCard";
-import Select, { StylesConfig, components, OptionProps, ValueContainerProps } from "react-select";
+import { components, ValueContainerProps } from "react-select";
+import { NotificationsService } from 'src/services';
+import { extractErrorMessage } from 'src/utils/helperFunctions';
+import { replaceModal, Direction, } from 'src/redux/features/modals.slice';
+import { useAppDispatch } from 'src/utils/hooks';
+import { createRoute } from 'src/utils/routing';
 
 
 interface Props extends ModalCard {
@@ -20,8 +25,47 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedTrack, setSelectedTrack] = useState(tournament.tracks[0]);
 
+
+    const dispatch = useAppDispatch()
     const query = useMyProjectsQuery()
 
+    const [addProjectMutate, addProjectMutationsStatus] = useAddProjectToTournamentMutation({
+        onError: (error) => {
+            NotificationsService.error(extractErrorMessage(error) ?? 'Unexpected error happened, please try again', { error })
+        },
+        refetchQueries: [MeTournamentDocument]
+    });
+
+
+    const onSubmitProject = () => {
+
+        if (!selectedProject?.id || !selectedTrack.id)
+            return NotificationsService.warn("Select a project & track before submitting")
+
+        const project = { ...selectedProject };
+
+        addProjectMutate({
+            variables: {
+                input: {
+                    project_id: selectedProject.id,
+                    tournament_id: tournament.id,
+                    track_id: selectedTrack.id,
+                }
+            },
+            onCompleted: () => {
+                dispatch(replaceModal({
+                    Modal: "ProjectAddedModal",
+                    direction: Direction.NEXT,
+                    props: {
+                        project,
+                        tournament,
+                    }
+                }))
+            },
+            refetchQueries: [GetProjectsInTournamentDocument]
+        }).catch()
+
+    }
 
 
     return (
@@ -98,14 +142,14 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                 </div>}
 
                 {!!selectedProject ?
-                    <Button fullWidth color='primary'>Enter project to tournament </Button>
+                    <Button isLoading={addProjectMutationsStatus.loading} fullWidth color='primary' onClick={onSubmitProject}>{addProjectMutationsStatus.loading ? "Adding..." : "Enter project to tournament"}</Button>
                     :
                     <>
                         <div className="relative text-center">
                             <hr className="bg-gray-100 w-full absolute top-1/2 left-0 -translate-y-1/2" />
                             <span className="text-body6 text-gray-600 px-16 bg-white relative">OR</span>
                         </div>
-                        <Button fullWidth color='primary'>Create new project</Button>
+                        <Button fullWidth color='primary' href={createRoute({ type: "edit-profile" })} onClick={onClose}>Create new project</Button>
                     </>
                 }
             </div>
