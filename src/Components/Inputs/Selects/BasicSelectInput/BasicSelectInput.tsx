@@ -19,6 +19,7 @@ type Props<T extends Record<string, any>, IsMulti extends boolean = boolean> = {
     className?: string,
     renderOption?: (option: OptionProps<T>) => JSX.Element
     ValueContainer?: React.ComponentType<ValueContainerProps<any, IsMulti, GroupBase<any>>> | undefined
+    formatOption?: (data: T) => React.ReactNode
 } & ControlledStateHandler<T, IsMulti>
 
 
@@ -79,6 +80,7 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
     value,
     onChange,
     onBlur,
+    formatOption,
     renderOption,
     ValueContainer,
     ...props
@@ -98,13 +100,14 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
                 isLoading={props.isLoading}
                 getOptionLabel={o => o[labelField]}
                 getOptionValue={o => o[valueField]}
+                formatOptionLabel={formatOption}
                 menuPosition={menuPosition}
                 menuPlacement='bottom'
                 value={value as any}
                 onChange={v => onChange?.(v as any)}
                 onBlur={onBlur}
                 components={{
-                    Option: getOptionComponent(renderOption, labelField),
+                    Option: getOptionComponent(renderOption),
                     ...(ValueContainer && { ValueContainer })
                 }}
 
@@ -124,7 +127,7 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
     );
 }
 
-function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T>['renderOption'], labelField: Props<T>['labelField']) {
+function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T>['renderOption']) {
     const _render = renderOption ?? ((option) => <div
         className={`
     flex gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 cursor-pointer
@@ -134,7 +137,7 @@ function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T
                 option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"
             }
      `}>
-        {option.data[labelField]}
+        {option.children}
     </div>)
 
     return function OptionComponent(props: OptionProps<T>) {
