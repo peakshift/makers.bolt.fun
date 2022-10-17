@@ -71,9 +71,7 @@ async function main() {
 
     // await createCapabilities();
 
-    // await createHashtags();
-
-    await createTracks()
+    // await createHashtags(); 
 }
 
 async function migrateOldImages() {
@@ -530,21 +528,6 @@ async function createHashtags() {
     }
 }
 
-async function createTracks() {
-    await prisma.tournamentTrack.createMany({
-        data: [{
-            tournament_id: 1,
-            title: "Global Adoption",
-            icon: "🤝"
-        },
-        {
-            tournament_id: 1,
-            title: "Building for Africa",
-            icon: "🌍"
-        }
-        ]
-    })
-}
 
 main()
     .catch((e) => {
