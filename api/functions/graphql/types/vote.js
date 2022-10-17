@@ -132,7 +132,7 @@ const voteMutation = extendType({
             resolve: async (_, args) => {
 
                 const { item_id, item_type, amount_in_sat } = args;
-                const lightning_address = (await getLightningAddress(item_id, item_type)) ?? CONSTS.BOLT_FUN_LIGHTNING_ADDRESS;
+                const lightning_address = (await getLightningAddress(item_id, item_type)) || CONSTS.BOLT_FUN_LIGHTNING_ADDRESS;
                 const pr = await getPaymetRequestForItem(lightning_address, args.amount_in_sat);
                 const invoice = parsePaymentRequest({ request: pr });
 
