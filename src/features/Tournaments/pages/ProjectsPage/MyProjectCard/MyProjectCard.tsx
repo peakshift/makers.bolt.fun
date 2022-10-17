@@ -46,8 +46,16 @@ export default function MyProjectCard({ projectTournament: { project, track } }:
                 </div>
             </div>
             <hr className="bg-gray-200 my-24"></hr>
-            <p className="text-body5 text-gray-600">Track</p>
-            <p className="text-body4 text-gray-80">{track?.icon} {track?.title}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+                <div>
+                    <p className="text-body4 text-gray-80">{track?.icon} {track?.title}</p>
+                    <p className="text-body5 text-gray-600">Track</p>
+                </div>
+                <div>
+                    <p className="text-body4 text-gray-80">🔥 {project.votes_count}</p>
+                    <p className="text-body5 text-gray-600">Sats</p>
+                </div>
+            </div>
         </Card>
     )
 }

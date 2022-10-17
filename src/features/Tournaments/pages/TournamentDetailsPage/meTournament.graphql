@@ -9,7 +9,7 @@ query MeTournament($id: Int!) {
         tagline
         hashtag
         thumbnail_image
-        launch_status
+        votes_count
         category {
           id
           title
