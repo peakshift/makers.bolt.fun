@@ -9,7 +9,7 @@ const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { deleteImage } = require('../../../services/imageUpload.service');
 const { PrismaSelect } = require('@paljs/plugins');
 
-
+const { parseResolveInfo } = require('graphql-parse-resolve-info')
 
 
 const BaseUser = interfaceType({
@@ -234,10 +234,10 @@ const me = extendType({
         t.field('me', {
             type: "MyProfile",
             async resolve(parent, args, context, info) {
+                if (!context.user?.id) return null;
                 const select = new PrismaSelect(info, {
                     defaultFields: defaultPrismaSelectFields
-                }).value;
-                if (!context.user?.id) return null;
+                }).valueWithFilter('User');
                 return prisma.user.findUnique({
                     ...select,
                     where: {

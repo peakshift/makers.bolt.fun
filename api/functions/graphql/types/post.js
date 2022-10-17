@@ -93,6 +93,9 @@ const Story = objectType({
         });
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
+            resolve: (parent) => {
+                return parent.tags || prisma.story.findUnique({ where: { id: parent.id } }).tags()
+            }
         });
         t.nonNull.int('comments_count', {
             resolve: async (parent) => {

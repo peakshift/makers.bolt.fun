@@ -140,8 +140,14 @@ const Project = objectType({
 
         t.nonNull.list.nonNull.field('stories', {
             type: Story,
-            resolve: (parent) => {
+            resolve: (parent, args, ctx, info) => {
+
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueWithFilter('Story');
+
                 return prisma.story.findMany({
+                    ...select,
                     where: {
                         project_id: parent.id,
                     },
@@ -171,7 +177,6 @@ const Project = objectType({
                             select: {
                                 role: true,
                                 level: true,
-
                             }
                         },
                     }
@@ -320,17 +325,17 @@ const getProject = extendType({
                 id: intArg(),
                 tag: stringArg(),
             },
-            resolve(_, { id, tag }, ctx, info) {
+            async resolve(_, { id, tag }, ctx, info) {
                 if (tag) return prisma.project.findFirst({ where: { hashtag: tag } });
 
                 const select = new PrismaSelect(info, {
                     defaultFields: defaultPrismaSelectFields
                 }).value;
-
-                return prisma.project.findUnique({
+                const res = await prisma.project.findUnique({
                     ...select,
                     where: { id },
                 })
+                return res;
             }
         })
     }

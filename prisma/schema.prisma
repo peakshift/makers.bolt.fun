@@ -39,6 +39,7 @@ model Vote {
 // Users
 // -----------------
 
+/// @PrismaSelect.map([User, MyProfile])
 model User {
   id         Int          @id @default(autoincrement())
   pubKey     String?      @unique

@@ -496,7 +496,6 @@ const getProjectsInTournament = extendType({
                         }
                     ]
                 })
-                console.log(select);
 
                 const projects = await prisma.tournamentProject.findMany({
                     where: {

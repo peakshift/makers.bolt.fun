@@ -80,15 +80,21 @@ const defaultPrismaSelectFields = {
     Story: select => {
         let res = {};
         if (select.cover_image) res['cover_image_rel'] = true;
+        return res;
     },
     User: select => {
-        let res = {};
+        let res = { roles: undefined, };
         if (select.avatar) res['avatar_rel'] = true;
+        return res;
     },
+
     Project: select => {
-        let res = {};
+        let res = {
+            recruit_roles: undefined,
+        };
         if (select.cover_image) res['cover_image_rel'] = true;
         if (select.thumbnail_image) res['thumbnail_image_rel'] = true;
+        if (select.screenshots) res['screenshots_ids'] = true;
         return res;
     },
 
