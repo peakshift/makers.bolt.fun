@@ -459,7 +459,7 @@ const getProjectsInTournament = extendType({
                 tournamentId: nonNull(intArg()),
                 ...paginationArgs({ take: 10 }),
                 search: stringArg(),
-                roleId: intArg(),
+                trackId: intArg(),
             },
             async resolve(_, args) {
 
@@ -483,20 +483,12 @@ const getProjectsInTournament = extendType({
                     ]
                 })
 
-
-                // if (args.roleId) filters.push({
-                //     recruit_roles: {
-                //         some: {
-                //             roleId: args.roleId
-                //         }
-                //     }
-                // })
-
-
-
                 const projects = await prisma.tournamentProject.findMany({
                     where: {
                         tournament_id: args.tournamentId,
+                        ...(args.trackId && {
+                            track_id: args.trackId,
+                        }),
                         ...(filters.length > 0 && {
                             project: {
                                 AND: filters

@@ -90,7 +90,6 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
     return (
         <div className='w-full'>
             <Select
-
                 options={options}
                 placeholder={placeholder}
                 className={className}

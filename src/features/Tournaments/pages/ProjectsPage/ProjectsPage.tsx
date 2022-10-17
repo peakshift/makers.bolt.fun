@@ -1,16 +1,16 @@
 import { useDebouncedState } from '@react-hookz/web';
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FiSearch } from 'react-icons/fi';
 import Button from 'src/Components/Button/Button';
 import { useGetProjectsInTournamentQuery } from 'src/graphql'
 import { openModal } from 'src/redux/features/modals.slice';
-import { useAppDispatch } from 'src/utils/hooks';
+import { useAppDispatch, useCarousel } from 'src/utils/hooks';
 import { useTournament } from '../TournamentDetailsPage/TournamentDetailsContext';
 import MyProjectCard from './MyProjectCard/MyProjectCard';
 import ProjectCard from './ProjectCard/ProjectCard';
 import ProjectCardSkeleton from './ProjectCard/ProjectCard.Skeleton';
-import useEmblaCarousel from 'embla-carousel-react'
-import CustomDot from 'src/features/Projects/pages/ExplorePage/Header/CustomDot/CustomDot';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import BasicSelectInput from 'src/Components/Inputs/Selects/BasicSelectInput/BasicSelectInput';
 
 
 export default function ProjectsPage() {
@@ -20,31 +20,18 @@ export default function ProjectsPage() {
 
     const [searchFilter, setSearchFilter] = useState("");
     const [debouncedsearchFilter, setDebouncedSearchFilter] = useDebouncedState("", 500);
+    const [trackFilter, setTrackFilter] = useState<typeof tracks[number] | null>(null)
 
-    const [emblaRef, emblaApi] = useEmblaCarousel({
-        align: 'start',
+
+    const { viewportRef, scrollSnaps, selectedSnapIndex, canScrollNext, canScrollPrev, scrollSlides } = useCarousel({
+        align: "start"
     })
-
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-    const onSelect = useCallback(() => {
-        if (!emblaApi) return;
-        setSelectedIndex(emblaApi.selectedScrollSnap());
-    }, [emblaApi, setSelectedIndex]);
-
-    useEffect(() => {
-        if (!emblaApi) return;
-        onSelect();
-        setScrollSnaps(emblaApi.scrollSnapList());
-        emblaApi.on("select", onSelect);
-    }, [emblaApi, setScrollSnaps, onSelect]);
 
 
     const query = useGetProjectsInTournamentQuery({
         variables: {
             tournamentId: id,
-            roleId: null,
+            trackId: trackFilter?.id ?? null,
             search: debouncedsearchFilter,
             skip: 0,
             take: 200,
@@ -65,7 +52,7 @@ export default function ProjectsPage() {
             {!!myParticipationInfo?.projects.length &&
                 <div>
                     <div className="relative group">
-                        <div className="overflow-hidden" ref={emblaRef}>
+                        <div className="overflow-hidden" ref={viewportRef}>
                             <div className="w-full flex gap-16">
                                 {myParticipationInfo.projects.map(project => <div key={project.project.id} className="flex-[0_0_100%]">
                                     <MyProjectCard projectTournament={project} />
@@ -75,15 +62,21 @@ export default function ProjectsPage() {
                         </div>
                     </div>
 
-                    <div className="mt-24 flex justify-center gap-4 ">
+                    <div className="mt-24 flex justify-center items-center gap-4 ">
+                        <button className={`text-body4 mr-12 text-gray-400 ${canScrollPrev && 'opacity-100'} active:scale-90`} onClick={() => scrollSlides(-1)}>
+                            <FaChevronLeft />
+                        </button>
                         {scrollSnaps.map((_, index) => (
                             <div
                                 key={index}
                                 className={`
                                         rounded-full w-[8px] h-[8px]
-                                        ${index === selectedIndex ? "bg-gray-500" : "bg-gray-200"}
+                                        ${index === selectedSnapIndex ? "bg-gray-500" : "bg-gray-200"}
                                         `}></div>
                         ))}
+                        <button className={`text-body4 ml-12 text-gray-400 ${canScrollNext && 'opacity-100'} active:scale-90`} onClick={() => scrollSlides(1)}>
+                            <FaChevronRight />
+                        </button>
                     </div>
                 </div>
             }
@@ -97,17 +90,27 @@ export default function ProjectsPage() {
                 }>Add your project</Button>
             </div>
 
-            <div className="input-wrapper relative">
-                <FiSearch className="self-center ml-16 flex-shrink-0 w-[20px] text-gray-400" />
-                <input
-                    type='text'
-                    className="input-text"
-                    placeholder="Search"
-                    value={searchFilter}
-                    onChange={e => changeSearchFilter(e.target.value)}
-                />
-            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">
+                <div className="input-wrapper relative lg:col-span-2">
+                    <FiSearch className="self-center ml-16 flex-shrink-0 w-[20px] text-gray-400" />
+                    <input
+                        type='text'
+                        className="input-text"
+                        placeholder="Search"
+                        value={searchFilter}
+                        onChange={e => changeSearchFilter(e.target.value)}
+                    />
+                </div>
+                <BasicSelectInput
+                    isMulti={false}
+                    labelField='title'
+                    valueField='id'
+                    placeholder='All tracks'
+                    isClearable
+                    value={trackFilter}
+                    onChange={(v) => setTrackFilter(v)}
+                    options={tracks}
+                />
                 {query.loading ?
                     Array(9).fill(0).map((_, idx) => <ProjectCardSkeleton key={idx} />)
                     :

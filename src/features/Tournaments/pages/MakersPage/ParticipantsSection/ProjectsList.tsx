@@ -8,7 +8,7 @@ import ProjectCardSkeleton from '../ProjectCard/ProjectCard.Skeleton';
 interface Props {
     tournamentId: number
     searchFilter: string,
-    roleFilter: number | null
+    trackIdFilter: number | null
 }
 
 const ITEMS_PER_PAGE = 15;
@@ -22,7 +22,7 @@ export default function ProjectsList(props: Props) {
 
     const [queryFilter, setQueryFilter] = useState<GetProjectsInTournamentQueryVariables>({
         tournamentId: props.tournamentId,
-        roleId: props.roleFilter ?? null,
+        trackId: props.trackIdFilter ?? null,
         search: props.searchFilter ?? null,
         skip: ITEMS_PER_PAGE * page,
         take: ITEMS_PER_PAGE,
@@ -35,8 +35,8 @@ export default function ProjectsList(props: Props) {
 
     useEffect(() => {
         setPage(0);
-        setQueryFilter(f => ({ ...f, search: props.searchFilter, roleId: props.roleFilter, skip: 0 }))
-    }, [props.roleFilter, props.searchFilter]);
+        setQueryFilter(f => ({ ...f, search: props.searchFilter, roleId: props.trackIdFilter, skip: 0 }))
+    }, [props.trackIdFilter, props.searchFilter]);
 
 
 

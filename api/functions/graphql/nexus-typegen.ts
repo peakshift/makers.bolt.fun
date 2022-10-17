@@ -1347,11 +1347,11 @@ export interface NexusGenArgTypes {
       tag?: string | null; // String
     }
     getProjectsInTournament: { // args
-      roleId?: number | null; // Int
       search?: string | null; // String
       skip?: number | null; // Int
       take: number | null; // Int
       tournamentId: number; // Int!
+      trackId?: number | null; // Int
     }
     getTournamentById: { // args
       id: number; // Int!

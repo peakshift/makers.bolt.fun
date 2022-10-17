@@ -53,14 +53,14 @@ query GetProjectsInTournament(
   $tournamentId: Int!
   $take: Int
   $skip: Int
-  $roleId: Int
+  $trackId: Int
   $search: String
 ) {
   getProjectsInTournament(
     tournamentId: $tournamentId
     take: $take
     skip: $skip
-    roleId: $roleId
+    trackId: $trackId
     search: $search
   ) {
     hasNext

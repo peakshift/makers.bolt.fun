@@ -360,7 +360,7 @@ type Query {
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int, tag: String): Project!
-  getProjectsInTournament(roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentProjectsResponse!
+  getProjectsInTournament(search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!, trackId: Int): TournamentProjectsResponse!
   getTournamentById(id: Int!): Tournament!
   getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!

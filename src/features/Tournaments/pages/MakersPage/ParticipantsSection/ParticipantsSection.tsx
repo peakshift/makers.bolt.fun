@@ -76,7 +76,7 @@ export default function ParticipantsSection({ tournamentId }: Props) {
                 </button> */}
             </div>
         </div>
-        {curTab === 'projects' && <ProjectsList searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}
+        {curTab === 'projects' && <ProjectsList searchFilter={debouncedsearchFilter} trackIdFilter={null} tournamentId={tournamentId} />}
         {curTab !== 'projects' && <MakersList onlyLookingToTeam={curTab === 'makers-to-team'} searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}
     </>
     )
