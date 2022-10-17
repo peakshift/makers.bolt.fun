@@ -10,9 +10,9 @@ const {
 } = require('nexus');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { prisma } = require('../../../prisma');
-const { paginationArgs, removeNulls } = require('./helpers');
+const { paginationArgs, removeNulls, defaultPrismaSelectFields } = require('./helpers');
 const { ApolloError } = require('@apollo/client');
-
+const { PrismaSelect } = require('@paljs/plugins');
 
 
 const TournamentPrize = objectType({
@@ -22,7 +22,7 @@ const TournamentPrize = objectType({
         t.nonNull.string('amount');
         t.nonNull.string('image', {
             async resolve(parent) {
-                return prisma.tournamentPrize.findUnique({ where: { id: parent.id } }).image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.image_rel) || prisma.tournamentPrize.findUnique({ where: { id: parent.id } }).image_rel().then(resolveImgObjectToUrl)
             }
         });
     }
@@ -44,7 +44,7 @@ const TournamentJudge = objectType({
         t.nonNull.string('company');
         t.nonNull.string('avatar', {
             async resolve(parent) {
-                return prisma.tournamentJudge.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.avatar_rel) || prisma.tournamentJudge.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
     }
@@ -113,12 +113,12 @@ const Tournament = objectType({
         t.nonNull.string('description');
         t.nonNull.string('thumbnail_image', {
             async resolve(parent) {
-                return prisma.tournament.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.thumbnail_image_rel) || prisma.tournament.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.string('cover_image', {
             async resolve(parent) {
-                return prisma.tournament.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.cover_image_rel) || prisma.tournament.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.date('start_date');
@@ -218,10 +218,14 @@ const getTournamentById = extendType({
             args: {
                 id: nonNull(intArg()),
             },
-            resolve(_, { id }) {
+            resolve(_, { id }, ctx, info) {
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.tournament.findUnique({
-                    where: { id }
-                })
+                    where: { id },
+                    ...select
+                }).catch(console.log)
             }
         })
     }
@@ -461,9 +465,19 @@ const getProjectsInTournament = extendType({
                 search: stringArg(),
                 trackId: intArg(),
             },
-            async resolve(_, args) {
+            async resolve(_, args, ctx, info) {
 
-
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueOf('projects', 'Project', {
+                    select: {
+                        _count: {
+                            select: {
+                                members: true,
+                            }
+                        }
+                    }
+                });
                 let filters = [];
 
                 if (args.search) filters.push({
@@ -482,6 +496,7 @@ const getProjectsInTournament = extendType({
                         }
                     ]
                 })
+                console.log(select);
 
                 const projects = await prisma.tournamentProject.findMany({
                     where: {
@@ -497,13 +512,7 @@ const getProjectsInTournament = extendType({
                     },
                     include: {
                         project: {
-                            include: {
-                                _count: {
-                                    select: {
-                                        members: true,
-                                    }
-                                }
-                            }
+                            ...select
                         },
                     },
                     skip: args.skip,

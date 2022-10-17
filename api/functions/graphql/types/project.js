@@ -12,11 +12,11 @@ const { prisma } = require('../../../prisma');
 const { deleteImages } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
-const { paginationArgs, getLnurlDetails, lightningAddressToLnurl } = require('./helpers');
+const { paginationArgs, getLnurlDetails, lightningAddressToLnurl, defaultPrismaSelectFields } = require('./helpers');
 const { ImageInput } = require('./misc');
 const { Story } = require('./post');
 const { MakerRole } = require('./users');
-const { includeRelationFields } = require('../../../utils/helpers');
+const { PrismaSelect } = require('@paljs/plugins');
 
 
 const Project = objectType({
@@ -202,14 +202,8 @@ const Project = objectType({
     }
 })
 
-const projectIncludes = info => includeRelationFields(info, "Project", {
-    "thumbnail_image": "thumbnail_image_rel",
-    "cover_image": "cover_image_rel",
-    "category": "category",
-    "tags": "tags",
-    "awards": "awards",
-    "capabilites": "capabilites",
-});
+
+
 
 const ROLE_OWNER = 'Owner'
 const ROLE_ADMIN = 'Admin'
@@ -329,11 +323,13 @@ const getProject = extendType({
             resolve(_, { id, tag }, ctx, info) {
                 if (tag) return prisma.project.findFirst({ where: { hashtag: tag } });
 
-                const includes = projectIncludes(info);
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
 
                 return prisma.project.findUnique({
+                    ...select,
                     where: { id },
-                    include: includes,
                 })
             }
         })
@@ -368,10 +364,11 @@ const newProjects = extendType({
 
                 const take = args.take || 20;
                 const skip = args.skip || 0;
-                const includes = projectIncludes(info);
-
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.project.findMany({
-                    include: includes,
+                    ...select,
                     orderBy: { createdAt: "desc" },
                     skip,
                     take,
@@ -389,9 +386,11 @@ const hottestProjects = extendType({
             type: "Project",
             args: paginationArgs({ take: 50 }),
             async resolve(_, { take, skip }, ctx, info) {
-                const includes = projectIncludes(info);
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.project.findMany({
-                    include: includes,
+                    ...select,
                     orderBy: { votes_count: "desc" },
                     skip,
                     take,
@@ -413,8 +412,11 @@ const searchProjects = extendType({
             },
             async resolve(_, { take, skip, search }, ctx, info) {
 
-                const includes = projectIncludes(info);
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.project.findMany({
+                    ...select,
                     where: {
                         OR: [{
                             title: {
@@ -428,7 +430,6 @@ const searchProjects = extendType({
                             },
                         }]
                     },
-                    include: includes,
                     skip,
                     take,
                 });
@@ -448,10 +449,12 @@ const projectsByCategory = extendType({
                 category_id: nonNull(intArg())
             },
             async resolve(_, { take, skip, category_id }, ctx, info) {
-                const includes = projectIncludes(info);
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.project.findMany({
+                    ...select,
                     where: { category_id },
-                    include: includes,
                     orderBy: { votes_count: "desc" },
                     skip,
                     take,
@@ -517,8 +520,11 @@ const similarProjects = extendType({
             },
             async resolve(parent, { id }, ctx, info) {
                 const currentProject = await prisma.project.findUnique({ where: { id }, select: { category_id: true } })
-                const includes = projectIncludes(info);
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.project.findMany({
+                    ...select,
                     where: {
                         AND: {
                             id: {
@@ -529,7 +535,6 @@ const similarProjects = extendType({
                             }
                         }
                     },
-                    include: includes,
                     take: 5,
                 })
             }

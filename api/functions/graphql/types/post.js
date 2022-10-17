@@ -10,7 +10,7 @@ const {
     arg,
     inputObjectType,
 } = require('nexus');
-const { paginationArgs } = require('./helpers');
+const { paginationArgs, defaultPrismaSelectFields } = require('./helpers');
 const { prisma } = require('../../../prisma');
 const { ApolloError } = require('apollo-server-lambda');
 const { marked } = require('marked');
@@ -18,6 +18,7 @@ const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { ImageInput } = require('./misc');
 const { deleteImages } = require('../../../services/imageUpload.service');
 const { logError } = require('../../../utils/logger');
+const { PrismaSelect } = require('@paljs/plugins');
 
 
 const POST_TYPE = enumType({
@@ -83,7 +84,7 @@ const Story = objectType({
         });
         t.string('cover_image', {
             async resolve(parent) {
-                return prisma.story.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.cover_image_rel) || prisma.story.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.list.nonNull.field('comments', {
@@ -92,7 +93,6 @@ const Story = objectType({
         });
         t.nonNull.list.nonNull.field('tags', {
             type: "Tag",
-            resolve: (parent) => prisma.story.findUnique({ where: { id: parent.id } }).tags()
         });
         t.nonNull.int('comments_count', {
             resolve: async (parent) => {
@@ -119,9 +119,6 @@ const Story = objectType({
 
         t.field('project', {
             type: "Project",
-            resolve(parent) {
-                return prisma.story.findUnique({ where: { id: parent.id } }).project();
-            }
         })
 
     },
@@ -256,6 +253,10 @@ const getFeed = extendType({
             resolve(_, { take, skip, tag, sortBy, }, ctx, info) {
 
 
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueWithFilter("Story");
+
                 let orderBy = { createdAt: "desc" };
 
                 if (sortBy === 'popular')
@@ -264,6 +265,7 @@ const getFeed = extendType({
                     orderBy = { createdAt: "desc" };
 
                 return prisma.story.findMany({
+                    ...select,
                     orderBy: orderBy,
                     where: {
                         ...(tag && {
@@ -274,13 +276,6 @@ const getFeed = extendType({
                             },
                         }),
                         is_published: true,
-                    },
-                    include: {
-                        user: {
-                            include: {
-                                avatar_rel: true,
-                            }
-                        },
                     },
                     skip,
                     take,
@@ -298,10 +293,14 @@ const getTrendingPosts = extendType({
             type: "Post",
             args: {
             },
-            resolve() {
+            resolve(root, args, ctx, info) {
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueWithFilter("Story")
                 const now = new Date();
                 const lastWeekDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)
                 return prisma.story.findMany({
+                    ...select,
                     where: {
                         createdAt: {
                             gte: lastWeekDate
