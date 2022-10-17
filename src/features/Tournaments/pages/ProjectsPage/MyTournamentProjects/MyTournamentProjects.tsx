@@ -26,7 +26,7 @@ export default function MyTournamentProjects() {
                 </div>
             </div>
 
-            <div className="mt-24 flex justify-center items-center gap-4 ">
+            {myParticipationInfo.projects.length > 1 && <div className="mt-24 flex justify-center items-center gap-4 ">
                 <button className={`text-body4 mr-12 text-gray-400 ${canScrollPrev && 'opacity-100'} active:scale-90`} onClick={() => scrollSlides(-1)}>
                     <FaChevronLeft />
                 </button>
@@ -41,7 +41,7 @@ export default function MyTournamentProjects() {
                 <button className={`text-body4 ml-12 text-gray-400 ${canScrollNext && 'opacity-100'} active:scale-90`} onClick={() => scrollSlides(1)}>
                     <FaChevronRight />
                 </button>
-            </div>
+            </div>}
         </div>
     )
 }

@@ -14,7 +14,7 @@ import MyTournamentProjects from './MyTournamentProjects/MyTournamentProjects';
 export default function ProjectsPage() {
 
     const dispatch = useAppDispatch();
-    const { tournamentDetails: { id, title, tracks } } = useTournament()
+    const { tournamentDetails: { id, title, tracks }, myParticipationInfo } = useTournament()
     const isLoggedIn = useAppSelector(s => !!s.user.me)
 
     const [searchFilter, setSearchFilter] = useState("");
@@ -45,7 +45,7 @@ export default function ProjectsPage() {
 
     return (
         <div className='pb-42 flex flex-col gap-24'>
-            <MyTournamentProjects />
+            <MyTournamentProjects key={myParticipationInfo?.projects.length} />
 
             <div className="flex flex-wrap justify-between items-center gap-16">
                 <h2 className='text-body1 font-bolder text-gray-900'>Projects {projectsCount && `(${projectsCount})`}</h2>

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContainer/ModalsContainer'
 import { IoClose } from 'react-icons/io5';
-import { MyProjectsQuery, Tournament, TournamentTrack, useMyProjectsQuery, useAddProjectToTournamentMutation, MeTournamentDocument, GetProjectsInTournamentDocument } from 'src/graphql';
+import { MyProjectsQuery, Tournament, TournamentTrack, useMyProjectsQuery, useAddProjectToTournamentMutation, MeTournamentDocument, GetProjectsInTournamentDocument, GetTournamentByIdDocument } from 'src/graphql';
 import Button from 'src/Components/Button/Button';
 import BasicSelectInput from 'src/Components/Inputs/Selects/BasicSelectInput/BasicSelectInput';
 import React, { useState } from 'react';
@@ -62,7 +62,7 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                     }
                 }))
             },
-            refetchQueries: [GetProjectsInTournamentDocument]
+            refetchQueries: [GetProjectsInTournamentDocument, MeTournamentDocument, GetTournamentByIdDocument]
         }).catch()
 
     }
