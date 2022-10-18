@@ -108,8 +108,11 @@ const Project = objectType({
 
         t.nonNull.list.nonNull.field('members', {
             type: ProjectMember,
-            resolve: (parent) => {
-                return prisma.projectMember.findMany({
+            args: {
+                take: intArg(),
+            },
+            resolve: (parent, args) => {
+                return parent.members || prisma.projectMember.findMany({
                     where: {
                         projectId: parent.id
                     },
@@ -119,8 +122,8 @@ const Project = objectType({
                                 avatar_rel: true,
                             }
                         },
-
-                    }
+                    },
+                    take: args.take ?? undefined
                 })
             }
         })

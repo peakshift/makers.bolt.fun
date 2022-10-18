@@ -475,7 +475,8 @@ const getProjectsInTournament = extendType({
                             select: {
                                 members: true,
                             }
-                        }
+                        },
+
                     }
                 });
                 let filters = [];

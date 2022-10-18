@@ -13,6 +13,7 @@ type Props<T extends Record<string, any>, IsMulti extends boolean = boolean> = {
     disabled?: boolean
     isLoading?: boolean;
     isClearable?: boolean;
+    isSearchable?: boolean;
     control?: any,
     name?: string,
     menuPosition?: 'fixed' | 'absolute'
@@ -32,11 +33,13 @@ export const selectCustomStyle: StylesConfig = ({
         ...styles,
         padding: '5px 12px',
         borderRadius: 12,
+        borderColor: '#D0D5DD',
         // border: 'none',
         // boxShadow: 'none',
 
         ":hover": {
-            cursor: "pointer"
+            cursor: "pointer",
+            borderColor: '#98A2B3',
         },
         ":focus-within": {
             '--tw-border-opacity': '1',
@@ -75,6 +78,7 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
     isMulti,
     menuPosition,
     isClearable,
+    isSearchable,
     disabled,
     className,
     value,
@@ -97,6 +101,7 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
                 className={className}
                 isMulti={isMulti}
                 isClearable={isClearable}
+                isSearchable={isSearchable}
                 isLoading={props.isLoading}
                 getOptionLabel={o => o[labelField]}
                 getOptionValue={o => o[valueField]}

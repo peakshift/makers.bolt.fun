@@ -76,6 +76,12 @@ query GetProjectsInTournament(
         title
         icon
       }
+      members(take: 4) {
+        user {
+          id
+          avatar
+        }
+      }
 
       recruit_roles {
         id

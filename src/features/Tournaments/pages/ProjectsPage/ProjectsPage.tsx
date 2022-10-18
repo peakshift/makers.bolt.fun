@@ -48,14 +48,14 @@ export default function ProjectsPage() {
             <MyTournamentProjects key={myParticipationInfo?.projects.length} />
 
             <div className="flex flex-wrap justify-between items-center gap-16">
-                <h2 className='text-body1 font-bolder text-gray-900'>Projects {projectsCount && `(${projectsCount})`}</h2>
+                <h2 className='text-body1 font-bolder text-gray-900'>All projects {projectsCount && `(${projectsCount})`}</h2>
                 <Button
                     disabled={!isLoggedIn}
                     size='sm' color='primary' onClick={() => dispatch(openModal({
                         Modal: "AddProjectTournamentModal",
-                        props: { tournament: { id, title, tracks } }
+                        props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
                     }))
-                    }>{isLoggedIn ? "Add your project" : "Login to add project"}</Button>
+                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">

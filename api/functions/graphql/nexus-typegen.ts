@@ -1303,6 +1303,11 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
   }
+  Project: {
+    members: { // args
+      take?: number | null; // Int
+    }
+  }
   Query: {
     allProjects: { // args
       skip?: number | null; // Int

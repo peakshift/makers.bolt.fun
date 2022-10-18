@@ -24,7 +24,7 @@ export default function ProjectsFilters(props: Props) {
                 <input
                     type='text'
                     className="input-text"
-                    placeholder="Search"
+                    placeholder="Search projects by name"
                     value={props.searchValue}
                     onChange={e => props.onSearchChange(e.target.value)}
                 />

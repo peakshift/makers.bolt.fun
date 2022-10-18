@@ -15,12 +15,13 @@ import { createRoute } from 'src/utils/routing';
 
 
 interface Props extends ModalCard {
-    tournament: Pick<Tournament, 'id' | 'title' | 'tracks'>
+    tournament: Pick<Tournament, 'id' | 'title' | 'tracks'>,
+    myRegisteredProjectsIds: number[]
 }
 
 type Project = NonNullable<MyProjectsQuery['me']>['projects'][number]
 
-export default function AddProjectTournamentModal({ onClose, direction, tournament, ...props }: Props) {
+export default function AddProjectTournamentModal({ onClose, direction, tournament, myRegisteredProjectsIds, ...props }: Props) {
 
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedTrack, setSelectedTrack] = useState(tournament.tracks[0]);
@@ -83,20 +84,20 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
             </div>
             <hr className="bg-gray-200" />
             <div className='flex flex-col gap-24 p-24'>
-                <p className="text-body4 font-medium text-gray-600">Enter your project to #LegendsOfLightning for a chance to win <span className="font-bold text-gray-800">~$60k</span> in bitcoin prizes.</p>
+                <p className="text-body4 text-gray-600">Enter your project to #LegendsOfLightning for a chance to win <span className="font-bold text-gray-800">~$60k</span> in bitcoin prizes.</p>
 
                 <div>
                     <p className="text-body5 text-gray-700 font-medium mb-8">Select your project</p>
                     <BasicSelectInput
+                        isSearchable={false}
                         isMulti={false}
                         labelField='title'
                         valueField='id'
                         placeholder='Select a project'
-                        isClearable
                         menuPosition='fixed'
                         value={selectedProject}
                         onChange={v => setSelectedProject(v)}
-                        options={query.data?.me?.projects ?? []}
+                        options={query.data?.me?.projects.filter(p => !myRegisteredProjectsIds.includes(p.id)) ?? []}
                         ValueContainer={SelectProjectValueContainer}
                         renderOption={(option) => <div
                             className={`
@@ -104,9 +105,8 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                                     ${!(option.isSelected || option.isFocused) ?
                                     "hover:bg-gray-50"
                                     :
-                                    option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"
-                                }
-     `}>
+                                    option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"}
+                                    `}>
                             <img src={option.data.thumbnail_image} className='w-24 aspect-square rounded-full object-cover' alt="" />  {option.data.title}
                         </div>}
 
@@ -115,6 +115,7 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                 {!!selectedProject && <div>
                     <p className="text-body5 text-gray-700 font-medium mb-8">Select your project's track</p>
                     <BasicSelectInput
+                        isSearchable={false}
                         isMulti={false}
                         labelField='title'
                         valueField='id'
@@ -123,17 +124,18 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                         value={selectedTrack}
                         onChange={v => { if (v) setSelectedTrack(v) }}
                         options={tournament.tracks}
-                        renderOption={(option) => <div
-                            className={`
+                        renderOption={(option) => {
+                            return <div
+                                className={`
                                     flex items-center gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 cursor-pointer
                                     ${!(option.isSelected || option.isFocused) ?
-                                    "hover:bg-gray-50"
-                                    :
-                                    option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"
-                                }
+                                        "hover:bg-gray-50"
+                                        :
+                                        option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"}
                                 `}>
-                            {option.data.icon}  {option.data.title}
-                        </div>}
+                                {option.data.icon}  {option.data.title}
+                            </div>
+                        }}
                         ValueContainer={SelectTrackValueContainer}
                     />
                     <InfoCard className='mt-8'>
@@ -182,10 +184,12 @@ const SelectProjectValueContainer = ({ children, ...props }: ValueContainerProps
 const SelectTrackValueContainer = ({ children, ...props }: ValueContainerProps<TournamentTrack>) => {
 
     const { icon, title } = props.getValue()[0] ?? {};
+
+
     return (
         <components.ValueContainer {...props} className='!p-0 !flex !bg-transparent hover:!bg-transparent'>
             <span className='inline'  >{icon} {title}</span>
-            {React.cloneElement((children as any)[1])}
+            {React.Children.map(children, (child: any) => (child && [components.SingleValue].indexOf(child.type) === -1) ? child : null)}
         </components.ValueContainer>
     );
 }

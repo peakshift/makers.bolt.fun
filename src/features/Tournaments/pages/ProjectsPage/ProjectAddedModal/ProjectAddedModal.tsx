@@ -8,6 +8,7 @@ import { createRoute } from 'src/utils/routing';
 import Confetti from 'react-confetti'
 import { Portal } from 'src/Components/Portal/Portal';
 import { Project, Tournament } from 'src/graphql';
+import { Link } from 'react-router-dom';
 
 
 interface Props extends ModalCard {
@@ -71,12 +72,22 @@ export default function ProjectAddedModal({ onClose, direction, project, tournam
                     </div>
                 </div>
             </div>
-            <Button
-                color='primary'
-                fullWidth
-                newTab
-                href={createRoute({ type: "tournament", id: tournament.id, tab: "makers" })}
-            >🤝 Recruit your team</Button>
+            <div className="flex flex-col gap-12">
+                <Button
+                    color='primary'
+                    fullWidth
+                    newTab
+                    href={createRoute({ type: "write-story" })}
+                    onClick={onClose}
+                >🚦 Write your first update</Button>
+                <Link
+                    className='text-center bg-gray-100 hover:bg-gray-200 py-10 px-24 text-body4 border border-gray-300 rounded-lg'
+                    to={createRoute({ type: 'tournament', id: tournament.id, tab: 'makers' })}
+                    onClick={onClose}
+                    state={{ makersLookingToTeam: true }}>
+                    🤝 Recruit your team
+                </Link>
+            </div>
         </motion.div>
     )
 }

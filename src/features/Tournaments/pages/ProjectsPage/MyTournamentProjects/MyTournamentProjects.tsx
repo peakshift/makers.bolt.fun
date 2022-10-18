@@ -15,6 +15,7 @@ export default function MyTournamentProjects() {
 
     return (
         <div>
+            <h2 className='text-body1 font-bolder text-gray-900 mb-24'>My projects {myParticipationInfo.projects.length > 1 && `(${myParticipationInfo.projects.length})`}</h2>
             <div className="relative group">
                 <div className="overflow-hidden" ref={viewportRef}>
                     <div className="w-full flex gap-16">

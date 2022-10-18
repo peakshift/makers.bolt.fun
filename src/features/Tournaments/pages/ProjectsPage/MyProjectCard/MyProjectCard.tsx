@@ -33,7 +33,7 @@ export default function MyProjectCard({ projectTournament: { project, track } }:
         <Card>
             <div className="flex flex-wrap gap-24 items-start">
                 <img src={project.thumbnail_image} className='shrink-0 w-64 md:w-80 aspect-square rounded-12 border border-gray-100 object-cover' alt="" />
-                <div className="flex flex-col gap-4 flex-1 overflow-hidden">
+                <div className="flex flex-col gap-4 flex-1 overflow-hidden min-w-min">
                     <Link to={createRoute({ type: "project", tag: project.hashtag })}>
                         <p className="text-body2 text-gray-900 font-bold overflow-hidden text-ellipsis">{project.title}</p>
                     </Link>
@@ -46,7 +46,7 @@ export default function MyProjectCard({ projectTournament: { project, track } }:
                 </div>
             </div>
             <hr className="bg-gray-200 my-24"></hr>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
                 <div>
                     <p className="text-body4 text-gray-80">{track?.icon} {track?.title}</p>
                     <p className="text-body5 text-gray-600">Track</p>
