@@ -64,9 +64,11 @@ export default function ProjectsPage() {
     const currentProjectsCount = curTab === 'all-projects' ? !!query.data?.getProjectsInTournament.projects && query.data.getProjectsInTournament.projects.length : myFilteredProjects?.length
 
 
+    const isEmpty = allProjectsCount !== null && allProjectsCount === 0;
+
     return (
         <div className='pb-42 flex flex-col gap-24'>
-            <h2 className='text-body1 font-bolder text-gray-900'>Projects 🚀 {currentProjectsCount && `(${currentProjectsCount})`}</h2>
+            <h2 className='text-body1 font-bolder text-gray-900'>Projects 🚀 {!!currentProjectsCount && `(${currentProjectsCount})`}</h2>
 
             <div className="flex flex-wrap justify-between items-center gap-16">
                 <div className="select-none flex gap-8">
@@ -78,7 +80,7 @@ export default function ProjectsPage() {
                      `}
                         onClick={() => setCurTab('all-projects')}
                     >
-                        All projects {allProjectsCount && `(${allProjectsCount})`}
+                        All projects {!!allProjectsCount && `(${allProjectsCount})`}
                     </button>
                     <button
                         className={` 
@@ -121,13 +123,19 @@ export default function ProjectsPage() {
                         query.loading ?
                             Array(9).fill(0).map((_, idx) => <ProjectCardSkeleton key={idx} />)
                             :
-                            query.data?.getProjectsInTournament.projects.map(project =>
+                            (!isEmpty ? query.data?.getProjectsInTournament.projects.map(project =>
                                 <ProjectCard
                                     key={project.id}
                                     project={project}
-                                />)
+                                />) :
+                                <p className="flex py-48 flex-col text-body3 justify-center items-center text-gray-400 text-center col-[1/-1]">No projects added yet. Be the first & add your project now!</p>
+                            )
                         :
-                        <MyTournamentProjects key={myParticipationInfo?.projects.length} projects={myFilteredProjects ?? []} />
+                        (
+                            myParticipationInfo?.projects.length !== 0 ?
+                                <MyTournamentProjects key={myParticipationInfo?.projects.length} projects={myFilteredProjects ?? []} /> :
+                                <p className="flex py-48 flex-col text-body3 justify-center items-center text-gray-400 text-center col-[1/-1]">You haven't added any projects yet to this tournament.</p>
+                        )
                 }
             </div>
         </div>
