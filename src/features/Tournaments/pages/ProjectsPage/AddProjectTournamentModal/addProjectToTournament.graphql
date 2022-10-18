@@ -1,0 +1,24 @@
+mutation AddProjectToTournament($input: AddProjectToTournamentInput) {
+  addProjectToTournament(input: $input) {
+    projects {
+      track {
+        id
+        title
+        icon
+      }
+      project {
+        id
+        title
+        tagline
+        hashtag
+        thumbnail_image
+        launch_status
+        category {
+          id
+          title
+          icon
+        }
+      }
+    }
+  }
+}

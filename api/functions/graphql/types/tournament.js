@@ -10,8 +10,9 @@ const {
 } = require('nexus');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { prisma } = require('../../../prisma');
-const { paginationArgs, removeNulls } = require('./helpers');
-
+const { paginationArgs, removeNulls, defaultPrismaSelectFields } = require('./helpers');
+const { ApolloError } = require('@apollo/client');
+const { PrismaSelect } = require('@paljs/plugins');
 
 
 const TournamentPrize = objectType({
@@ -21,9 +22,18 @@ const TournamentPrize = objectType({
         t.nonNull.string('amount');
         t.nonNull.string('image', {
             async resolve(parent) {
-                return prisma.tournamentPrize.findUnique({ where: { id: parent.id } }).image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.image_rel) || prisma.tournamentPrize.findUnique({ where: { id: parent.id } }).image_rel().then(resolveImgObjectToUrl)
             }
         });
+    }
+})
+
+const TournamentTrack = objectType({
+    name: 'TournamentTrack',
+    definition(t) {
+        t.nonNull.int('id')
+        t.nonNull.string('title');
+        t.nonNull.string('icon');
     }
 })
 
@@ -34,7 +44,7 @@ const TournamentJudge = objectType({
         t.nonNull.string('company');
         t.nonNull.string('avatar', {
             async resolve(parent) {
-                return prisma.tournamentJudge.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.avatar_rel) || prisma.tournamentJudge.findUnique({ where: { id: parent.id } }).avatar_rel().then(resolveImgObjectToUrl)
             }
         });
     }
@@ -103,12 +113,12 @@ const Tournament = objectType({
         t.nonNull.string('description');
         t.nonNull.string('thumbnail_image', {
             async resolve(parent) {
-                return prisma.tournament.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.thumbnail_image_rel) || prisma.tournament.findUnique({ where: { id: parent.id } }).thumbnail_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.string('cover_image', {
             async resolve(parent) {
-                return prisma.tournament.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
+                return resolveImgObjectToUrl(parent.cover_image_rel) || prisma.tournament.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
         t.nonNull.date('start_date');
@@ -144,6 +154,12 @@ const Tournament = objectType({
             }
         });
 
+        t.nonNull.list.nonNull.field('tracks', {
+            type: TournamentTrack,
+            resolve(parent) {
+                return prisma.tournament.findUnique({ where: { id: parent.id } }).tracks()
+            }
+        });
         t.nonNull.list.nonNull.field('prizes', {
             type: TournamentPrize,
             resolve(parent) {
@@ -186,9 +202,9 @@ const TournamentMakersResponse = objectType({
 const TournamentProjectsResponse = objectType({
     name: 'TournamentProjectsResponse',
     definition(t) {
+        t.int('allItemsCount')
         t.boolean('hasNext');
         t.boolean('hasPrev');
-
         t.nonNull.list.nonNull.field('projects', { type: "Project" })
     }
 }
@@ -202,10 +218,14 @@ const getTournamentById = extendType({
             args: {
                 id: nonNull(intArg()),
             },
-            resolve(_, { id }) {
+            resolve(_, { id }, ctx, info) {
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
                 return prisma.tournament.findUnique({
-                    where: { id }
-                })
+                    where: { id },
+                    ...select
+                }).catch(console.log)
             }
         })
     }
@@ -233,15 +253,75 @@ const getTournamentToRegister = extendType({
     }
 })
 
+const ProjectInTournament = objectType({
+    name: 'ProjectInTournament',
+    definition(t) {
+        t.field('track', {
+            type: TournamentTrack
+        })
+        t.nonNull.field('project', {
+            type: "Project"
+        })
+    }
+})
+
 const ParticipationInfo = objectType({
     name: "ParticipationInfo",
     definition(t) {
         t.nonNull.date('createdAt')
         t.nonNull.string('email')
         t.nonNull.field('hacking_status', { type: TournamentMakerHackingStatusEnum });
-
+        t.nonNull.list.nonNull.field('projects', {
+            type: ProjectInTournament
+        })
     }
 })
+
+const getUserParticipationInfo = async (user_id, tournament_id) => {
+    const [registerationData, projects] = await Promise.all(
+        [
+            prisma.tournamentParticipant.findUnique({
+                where: {
+                    tournament_id_user_id: {
+                        tournament_id,
+                        user_id
+                    }
+                },
+                select: {
+                    createdAt: true,
+                    email: true,
+                    hacking_status: true,
+                }
+            }),
+            prisma.tournamentProject.findMany({
+                where: {
+                    tournament_id,
+                    project: {
+                        members: {
+                            some: {
+                                userId: user_id
+                            }
+                        }
+                    }
+                },
+                include: {
+                    project: {
+                        include: {
+                            thumbnail_image_rel: true,
+                            category: true,
+                        }
+                    },
+                    track: true
+                }
+            })
+        ]
+    )
+
+    return {
+        ...registerationData,
+        projects,
+    }
+}
 
 const tournamentParticipationInfo = extendType({
     type: "Query",
@@ -257,13 +337,7 @@ const tournamentParticipationInfo = extendType({
                 if (!user?.id)
                     return null
 
-
-                return prisma.tournamentParticipant.findFirst({
-                    where: {
-                        user_id: user.id,
-                        tournament_id: args.tournamentId
-                    }
-                })
+                return getUserParticipationInfo(user.id, args.tournamentId)
             }
         })
     }
@@ -389,11 +463,22 @@ const getProjectsInTournament = extendType({
                 tournamentId: nonNull(intArg()),
                 ...paginationArgs({ take: 10 }),
                 search: stringArg(),
-                roleId: intArg(),
+                trackId: intArg(),
             },
-            async resolve(_, args) {
+            async resolve(_, args, ctx, info) {
 
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueOf('projects', 'Project', {
+                    select: {
+                        _count: {
+                            select: {
+                                members: true,
+                            }
+                        },
 
+                    }
+                });
                 let filters = [];
 
                 if (args.search) filters.push({
@@ -413,37 +498,42 @@ const getProjectsInTournament = extendType({
                     ]
                 })
 
+                const where = {
+                    tournament_id: args.tournamentId,
+                    ...(args.trackId && {
+                        track_id: args.trackId,
+                    }),
+                    ...(filters.length > 0 && {
+                        project: {
+                            AND: filters
+                        }
+                    })
+                }
 
-                // if (args.roleId) filters.push({
-                //     recruit_roles: {
-                //         some: {
-                //             roleId: args.roleId
-                //         }
-                //     }
-                // })
 
 
-
-                const projects = (await prisma.tournamentProject.findMany({
-                    where: {
-                        tournament_id: args.tournamentId,
-                        ...(filters.length > 0 && {
+                const [projects, allProjectsCount] = await Promise.all([
+                    prisma.tournamentProject.findMany({
+                        where,
+                        include: {
                             project: {
-                                AND: filters
-                            }
-                        })
-                    },
-                    include: {
-                        project: true,
-                    },
-                    skip: args.skip,
-                    take: args.take + 1,
-                })).map(item => item.project)
+                                ...select
+                            },
+                        },
+                        skip: args.skip,
+                        take: args.take + 1,
+                    })
+                        .then(res => res.map(item => ({ ...item.project, members_count: item.project._count.members }))),
 
-                console.log();
+                    prisma.tournamentProject.aggregate({
+                        where,
+                        _count: true,
+                    }).then(res => res._count)
+                ])
 
 
                 return {
+                    allItemsCount: allProjectsCount,
                     hasNext: projects.length === args.take + 1,
                     hasPrev: args.skip !== 0,
                     projects: projects.slice(0, args.take)
@@ -545,6 +635,69 @@ const updateTournamentRegistration = extendType({
 })
 
 
+const AddProjectToTournamentInput = inputObjectType({
+    name: 'AddProjectToTournamentInput',
+    definition(t) {
+        t.nonNull.int('project_id')
+        t.nonNull.int('tournament_id')
+        t.nonNull.int('track_id')
+    }
+})
+
+
+const addProjectToTournament = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.field('addProjectToTournament', {
+            type: ParticipationInfo,
+            args: {
+                input: AddProjectToTournamentInput
+            },
+            async resolve(_root, { input: { project_id, tournament_id, track_id } }, ctx) {
+                const user = ctx.user;
+
+                // Do some validation
+                if (!user?.id)
+                    throw new Error("You have to login");
+
+
+                const isMember = !!(await prisma.projectMember.findUnique({
+                    where: {
+                        projectId_userId: {
+                            projectId: project_id,
+                            userId: user.id
+                        }
+                    }
+                }))
+
+                if (!isMember)
+                    throw new ApolloError("You can only add a project you are a member in")
+
+                await prisma.tournamentProject.upsert({
+                    where: {
+                        tournament_id_project_id: {
+                            project_id,
+                            tournament_id,
+                        }
+                    },
+                    create: {
+                        project_id,
+                        tournament_id,
+                        track_id,
+                    },
+                    update: {
+                        track_id,
+                    }
+                })
+
+                return getUserParticipationInfo(user.id, tournament_id)
+
+            }
+        })
+    },
+})
+
+
 module.exports = {
     // Types 
     Tournament,
@@ -562,4 +715,5 @@ module.exports = {
     // Mutations
     registerInTournament,
     updateTournamentRegistration,
+    addProjectToTournament,
 }

@@ -14,7 +14,8 @@ interface Props {
 
 export default function ProjectCard({ project }: Props) {
 
-    const showLookingFor = project.recruit_roles.length > 0;
+    // const showLookingFor = project.recruit_roles.length > 0;
+    const showLookingFor = false;
 
     const dispatch = useAppDispatch();
 
@@ -44,7 +45,7 @@ export default function ProjectCard({ project }: Props) {
             </div>
             {showLookingFor && <hr className="hidden md:block bg-gray-200 mt-24"></hr>}
             <p className="md:hidden mt-24 text-body5 text-gray-400 line-clamp-2 max-w-[60ch]">{project.description} </p>
-            {showLookingFor && <div className="mt-24">
+            {/* {showLookingFor && <div className="mt-24">
                 <p className="text-body5 text-gray-900 font-medium mb-12">👀 Looking for</p>
                 {project.recruit_roles.length ? <ul className="flex flex-wrap gap-8">
                     {project.recruit_roles.map(role => <li key={role.id}><Badge size='sm' className='!text-body5'>{role.icon} {role.title}</Badge> </li>)}
@@ -52,7 +53,7 @@ export default function ProjectCard({ project }: Props) {
                     :
                     null
                 }
-            </div>}
+            </div>} */}
             <Button fullWidth color='white' onClick={openProject} size='sm' className='mt-32 md:hidden'>View Details</Button>
         </Card>
     )

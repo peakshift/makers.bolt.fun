@@ -53,16 +53,17 @@ query GetProjectsInTournament(
   $tournamentId: Int!
   $take: Int
   $skip: Int
-  $roleId: Int
+  $trackId: Int
   $search: String
 ) {
   getProjectsInTournament(
     tournamentId: $tournamentId
     take: $take
     skip: $skip
-    roleId: $roleId
+    trackId: $trackId
     search: $search
   ) {
+    allItemsCount
     hasNext
     hasPrev
     projects {
@@ -70,18 +71,17 @@ query GetProjectsInTournament(
       title
       description
       thumbnail_image
-
+      members_count
       category {
         id
         title
         icon
       }
-
-      recruit_roles {
-        id
-        title
-        icon
-        level
+      members(take: 4) {
+        user {
+          id
+          avatar
+        }
       }
     }
   }

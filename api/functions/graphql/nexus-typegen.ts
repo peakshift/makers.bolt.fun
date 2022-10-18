@@ -28,6 +28,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AddProjectToTournamentInput: { // input type
+    project_id: number; // Int!
+    tournament_id: number; // Int!
+    track_id: number; // Int!
+  }
   CreateProjectInput: { // input type
     capabilities: number[]; // [Int!]!
     category_id: number; // Int!
@@ -265,6 +270,7 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+    projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // root type
     author: NexusGenRootTypes['Author']; // Author!
@@ -291,6 +297,10 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
     website: string; // String!
   }
+  ProjectInTournament: { // root type
+    project: NexusGenRootTypes['Project']; // Project!
+    track?: NexusGenRootTypes['TournamentTrack'] | null; // TournamentTrack
+  }
   ProjectMember: { // root type
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
     user: NexusGenRootTypes['User']; // User!
@@ -312,6 +322,7 @@ export interface NexusGenObjects {
     excerpt: string; // String!
     id: number; // Int!
     is_published?: boolean | null; // Boolean
+    project?: NexusGenRootTypes['Project'] | null; // Project
     title: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
@@ -365,9 +376,15 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   TournamentProjectsResponse: { // root type
+    allItemsCount?: number | null; // Int
     hasNext?: boolean | null; // Boolean
     hasPrev?: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+  }
+  TournamentTrack: { // root type
+    icon: string; // String!
+    id: number; // Int!
+    title: string; // String!
   }
   User: { // root type
     bio?: string | null; // String
@@ -518,6 +535,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Mutation: { // field return type
+    addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -564,6 +582,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+    projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -587,6 +606,7 @@ export interface NexusGenFieldTypes {
     lightning_address: string | null; // String
     lnurl_callback_url: string | null; // String
     members: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
+    members_count: number; // Int!
     permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
@@ -601,6 +621,10 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+  }
+  ProjectInTournament: { // field return type
+    project: NexusGenRootTypes['Project']; // Project!
+    track: NexusGenRootTypes['TournamentTrack'] | null; // TournamentTrack
   }
   ProjectMember: { // field return type
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
@@ -692,6 +716,7 @@ export interface NexusGenFieldTypes {
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: string; // String!
     title: string; // String!
+    tracks: NexusGenRootTypes['TournamentTrack'][]; // [TournamentTrack!]!
     website: string; // String!
   }
   TournamentEvent: { // field return type
@@ -731,9 +756,15 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   TournamentProjectsResponse: { // field return type
+    allItemsCount: number | null; // Int
     hasNext: boolean | null; // Boolean
     hasPrev: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+  }
+  TournamentTrack: { // field return type
+    icon: string; // String!
+    id: number; // Int!
+    title: string; // String!
   }
   User: { // field return type
     avatar: string; // String!
@@ -912,6 +943,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Mutation: { // field return type name
+    addProjectToTournament: 'ParticipationInfo'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
     createProject: 'CreateProjectResponse'
@@ -958,6 +990,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Date'
     email: 'String'
     hacking_status: 'TournamentMakerHackingStatusEnum'
+    projects: 'ProjectInTournament'
   }
   PostComment: { // field return type name
     author: 'Author'
@@ -981,6 +1014,7 @@ export interface NexusGenFieldTypeNames {
     lightning_address: 'String'
     lnurl_callback_url: 'String'
     members: 'ProjectMember'
+    members_count: 'Int'
     permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
     screenshots: 'String'
@@ -995,6 +1029,10 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
+  }
+  ProjectInTournament: { // field return type name
+    project: 'Project'
+    track: 'TournamentTrack'
   }
   ProjectMember: { // field return type name
     role: 'TEAM_MEMBER_ROLE'
@@ -1086,6 +1124,7 @@ export interface NexusGenFieldTypeNames {
     start_date: 'Date'
     thumbnail_image: 'String'
     title: 'String'
+    tracks: 'TournamentTrack'
     website: 'String'
   }
   TournamentEvent: { // field return type name
@@ -1125,9 +1164,15 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   TournamentProjectsResponse: { // field return type name
+    allItemsCount: 'Int'
     hasNext: 'Boolean'
     hasPrev: 'Boolean'
     projects: 'Project'
+  }
+  TournamentTrack: { // field return type name
+    icon: 'String'
+    id: 'Int'
+    title: 'String'
   }
   User: { // field return type name
     avatar: 'String'
@@ -1204,6 +1249,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addProjectToTournament: { // args
+      input?: NexusGenInputs['AddProjectToTournamentInput'] | null; // AddProjectToTournamentInput
+    }
     confirmDonation: { // args
       payment_request: string; // String!
       preimage: string; // String!
@@ -1258,6 +1306,11 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
   }
+  Project: {
+    members: { // args
+      take?: number | null; // Int
+    }
+  }
   Query: {
     allProjects: { // args
       skip?: number | null; // Int
@@ -1303,11 +1356,11 @@ export interface NexusGenArgTypes {
       tag?: string | null; // String
     }
     getProjectsInTournament: { // args
-      roleId?: number | null; // Int
       search?: string | null; // String
       skip?: number | null; // Int
       take: number | null; // Int
       tournamentId: number; // Int!
+      trackId?: number | null; // Int
     }
     getTournamentById: { // args
       id: number; // Int!

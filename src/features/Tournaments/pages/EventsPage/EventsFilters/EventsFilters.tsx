@@ -36,7 +36,6 @@ export default function EventsFilters(props: Props) {
                 value={props.eventValue ? { label: mapTypeToBadge[props.eventValue].text, value: props.eventValue } : null}
                 onChange={(v) => props.onEventChange(v ? v.value : null)}
                 options={options}
-
             />
         </>
     )

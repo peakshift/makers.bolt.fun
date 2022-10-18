@@ -2,6 +2,31 @@ query MeTournament($id: Int!) {
   tournamentParticipationInfo(tournamentId: $id) {
     createdAt
     hacking_status
+    projects {
+      project {
+        id
+        title
+        description
+        thumbnail_image
+        members_count
+        category {
+          id
+          title
+          icon
+        }
+        members(take: 4) {
+          user {
+            id
+            avatar
+          }
+        }
+      }
+      track {
+        id
+        title
+        icon
+      }
+    }
   }
   me {
     id

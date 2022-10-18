@@ -1,6 +1,6 @@
 
-import { useCallback } from "react";
-import Select, { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
+import React from "react";
+import Select, { StylesConfig, components, OptionProps, ValueContainerProps, GroupBase } from "react-select";
 import { ControlledStateHandler } from "src/utils/interfaces";
 
 
@@ -13,10 +13,14 @@ type Props<T extends Record<string, any>, IsMulti extends boolean = boolean> = {
     disabled?: boolean
     isLoading?: boolean;
     isClearable?: boolean;
+    isSearchable?: boolean;
     control?: any,
     name?: string,
+    menuPosition?: 'fixed' | 'absolute'
     className?: string,
     renderOption?: (option: OptionProps<T>) => JSX.Element
+    ValueContainer?: React.ComponentType<ValueContainerProps<any, IsMulti, GroupBase<any>>> | undefined
+    formatOption?: (data: T) => React.ReactNode
 } & ControlledStateHandler<T, IsMulti>
 
 
@@ -29,11 +33,13 @@ export const selectCustomStyle: StylesConfig = ({
         ...styles,
         padding: '5px 12px',
         borderRadius: 12,
+        borderColor: '#D0D5DD',
         // border: 'none',
         // boxShadow: 'none',
 
         ":hover": {
-            cursor: "pointer"
+            cursor: "pointer",
+            borderColor: '#98A2B3',
         },
         ":focus-within": {
             '--tw-border-opacity': '1',
@@ -64,20 +70,23 @@ export const selectCustomStyle: StylesConfig = ({
 })
 
 
-
 export default function BasicSelectInput<T extends Record<string, any>, IsMulti extends boolean>({
     options,
     labelField,
     valueField,
     placeholder = "Select Option...",
     isMulti,
+    menuPosition,
     isClearable,
+    isSearchable,
     disabled,
     className,
     value,
     onChange,
     onBlur,
+    formatOption,
     renderOption,
+    ValueContainer,
     ...props
 }: Props<T, IsMulti>) {
 
@@ -92,17 +101,19 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
                 className={className}
                 isMulti={isMulti}
                 isClearable={isClearable}
+                isSearchable={isSearchable}
                 isLoading={props.isLoading}
-
                 getOptionLabel={o => o[labelField]}
                 getOptionValue={o => o[valueField]}
-
+                formatOptionLabel={formatOption}
+                menuPosition={menuPosition}
+                menuPlacement='bottom'
                 value={value as any}
                 onChange={v => onChange?.(v as any)}
                 onBlur={onBlur}
                 components={{
-                    Option: getOptionComponent(renderOption, labelField),
-                    // ValueContainer: CustomValueContainer
+                    Option: getOptionComponent(renderOption),
+                    ...(ValueContainer && { ValueContainer })
                 }}
 
                 styles={selectCustomStyle as any}
@@ -121,7 +132,7 @@ export default function BasicSelectInput<T extends Record<string, any>, IsMulti 
     );
 }
 
-function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T>['renderOption'], labelField: Props<T>['labelField']) {
+function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T>['renderOption']) {
     const _render = renderOption ?? ((option) => <div
         className={`
     flex gap-16 my-4 px-16 py-12 rounded-12 text-gray-800 cursor-pointer
@@ -131,7 +142,7 @@ function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T
                 option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"
             }
      `}>
-        {option.data[labelField]}
+        {option.children}
     </div>)
 
     return function OptionComponent(props: OptionProps<T>) {
@@ -142,3 +153,5 @@ function getOptionComponent<T extends Record<string, any>>(renderOption: Props<T
         );
     };
 }
+
+

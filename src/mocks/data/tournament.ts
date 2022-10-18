@@ -231,4 +231,8 @@ Bitcoin development can seem scary for new developers coming in, but it doesn't 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`
         },
     ],
+    tracks: [
+        { id: 1, title: "Global Adoption", icon: "🤝" },
+        { id: 1, title: "Build for Africa", icon: "🌍" },
+    ]
 }]

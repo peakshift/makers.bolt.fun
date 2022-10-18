@@ -1,18 +1,17 @@
 
 import Header from './Header/Header'
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Navigate, Route, Routes, } from 'react-router-dom'
 import OverviewPage from '../OverviewPage/OverviewPage'
-import { Helmet } from 'react-helmet'
 import Navigation from './Navigation/Navigation'
 import EventsPage from '../EventsPage/EventsPage'
 import MakersPage from '../MakersPage/MakersPage'
 import ProjectsPage from '../ProjectsPage/ProjectsPage'
-import { GetTournamentByIdQuery } from 'src/graphql'
+import { MeTournamentQuery } from 'src/graphql'
 import TournamentDetailsContext from './TournamentDetailsContext'
 
 
 
-export type MeTournament = GetTournamentByIdQuery['me']
+export type MeTournament = MeTournamentQuery['me']
 
 export default function TournamentDetailsPage() {
 
