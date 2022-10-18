@@ -90,7 +90,7 @@ export default function ProjectsPage() {
                      `}
                         onClick={() => setCurTab('my-projects')}
                     >
-                        My Projects {myProjectsCount && `(${myProjectsCount})`}
+                        My Projects {!!myProjectsCount && `(${myProjectsCount})`}
                     </button>
                 </div>
                 <Button
