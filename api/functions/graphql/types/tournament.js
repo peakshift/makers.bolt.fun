@@ -165,7 +165,14 @@ const Tournament = objectType({
         t.nonNull.list.nonNull.field('events', {
             type: TournamentEvent,
             resolve(parent) {
-                return prisma.tournament.findUnique({ where: { id: parent.id } }).events()
+                return prisma.tournamentEvent.findMany({
+                    where: {
+                        tournament_id: parent.id
+                    },
+                    orderBy: {
+                        starts_at: "asc"
+                    }
+                })
             }
         });
     }
