@@ -527,6 +527,7 @@ type TournamentPrize {
 }
 
 type TournamentProjectsResponse {
+  allItemsCount: Int
   hasNext: Boolean
   hasPrev: Boolean
   projects: [Project!]!

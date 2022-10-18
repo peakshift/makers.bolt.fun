@@ -20,6 +20,8 @@ export default function ProjectsPage() {
     const [searchFilter, setSearchFilter] = useState("");
     const [debouncedsearchFilter, setDebouncedSearchFilter] = useDebouncedState("", 500);
     const [trackFilter, setTrackFilter] = useState<TrackFilterType | null>(null)
+    const [allProjectsCount, setAllProjectsCount] = useState<number | null>(null)
+    const [curTab, setCurTab] = useState<'all-projects' | 'my-projects'>('all-projects')
 
 
 
@@ -32,6 +34,9 @@ export default function ProjectsPage() {
             skip: 0,
             take: 200,
         },
+        onCompleted: (data) => {
+            if (!allProjectsCount || data.getProjectsInTournament.projects.length > allProjectsCount) setAllProjectsCount(data.getProjectsInTournament.allItemsCount);
+        }
     });
 
 
@@ -40,34 +45,89 @@ export default function ProjectsPage() {
         setDebouncedSearchFilter(new_value);
     }
 
-    const projectsCount = !!query.data?.getProjectsInTournament.projects && query.data.getProjectsInTournament.projects.length;
+    const myFilteredProjects = myParticipationInfo?.projects
+        .filter(p => {
+            if (!trackFilter) return true;
+            return p.track?.id === trackFilter.id
+        })
+        .filter(p => {
+            if (!searchFilter) return true;
+            const rgx = new RegExp(searchFilter, 'i')
+            return p.project.title.search(rgx) !== -1 || p.project.description.search(rgx) !== -1
+        })
+        .map(p => p.project);
+
+
+
+    const myProjectsCount = myParticipationInfo?.projects.length;
+
+    const currentProjectsCount = curTab === 'all-projects' ? !!query.data?.getProjectsInTournament.projects && query.data.getProjectsInTournament.projects.length : myFilteredProjects?.length
 
 
     return (
         <div className='pb-42 flex flex-col gap-24'>
-            <MyTournamentProjects key={myParticipationInfo?.projects.length} />
+            <h2 className='text-body1 font-bolder text-gray-900'>Projects 🚀 {currentProjectsCount && `(${currentProjectsCount})`}</h2>
 
             <div className="flex flex-wrap justify-between items-center gap-16">
-                <h2 className='text-body1 font-bolder text-gray-900'>All projects {projectsCount && `(${projectsCount})`}</h2>
+                <div className="select-none flex gap-8">
+                    <button
+                        className={` 
+                   min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${curTab === 'all-projects' ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}
+                     `}
+                        onClick={() => setCurTab('all-projects')}
+                    >
+                        All projects {allProjectsCount && `(${allProjectsCount})`}
+                    </button>
+                    <button
+                        className={` 
+                   min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${curTab === 'my-projects' ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}
+                     `}
+                        onClick={() => setCurTab('my-projects')}
+                    >
+                        My Projects {myProjectsCount && `(${myProjectsCount})`}
+                    </button>
+                </div>
                 <Button
                     disabled={!isLoggedIn}
-                    size='sm' color='primary' onClick={() => dispatch(openModal({
+                    size='sm'
+                    className='hidden md:block'
+                    color='primary'
+                    onClick={() => dispatch(openModal({
                         Modal: "AddProjectTournamentModal",
                         props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
                     }))
+
                     }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">
                 <ProjectsFilters searchValue={searchFilter} onSearchChange={changeSearchFilter} trackValue={trackFilter} onTrackChange={setTrackFilter} />
-                {query.loading ?
-                    Array(9).fill(0).map((_, idx) => <ProjectCardSkeleton key={idx} />)
-                    :
-                    query.data?.getProjectsInTournament.projects.map(project =>
-                        <ProjectCard
-                            key={project.id}
-                            project={project}
-                        />)
+                <Button
+                    disabled={!isLoggedIn}
+                    fullWidth
+                    className='md:hidden'
+                    color='primary'
+                    onClick={() => dispatch(openModal({
+                        Modal: "AddProjectTournamentModal",
+                        props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
+                    }))
+
+                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button>
+                {
+                    curTab === 'all-projects' ?
+                        query.loading ?
+                            Array(9).fill(0).map((_, idx) => <ProjectCardSkeleton key={idx} />)
+                            :
+                            query.data?.getProjectsInTournament.projects.map(project =>
+                                <ProjectCard
+                                    key={project.id}
+                                    project={project}
+                                />)
+                        :
+                        <MyTournamentProjects key={myParticipationInfo?.projects.length} projects={myFilteredProjects ?? []} />
                 }
             </div>
         </div>

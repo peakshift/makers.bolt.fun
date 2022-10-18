@@ -3,16 +3,17 @@ import Card from 'src/Components/Card/Card';
 import Button from "src/Components/Button/Button"
 import { useAppDispatch } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
-import { FaUsers } from "react-icons/fa";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { createRoute } from "src/utils/routing";
 
-type ProjectType = GetProjectsInTournamentQuery['getProjectsInTournament']['projects'][number]
+export type TournamentProjectCardType = GetProjectsInTournamentQuery['getProjectsInTournament']['projects'][number]
 
 interface Props {
-    project: ProjectType,
+    project: TournamentProjectCardType,
+    isOwner?: boolean;
 }
 
-export default function ProjectCard({ project }: Props) {
+export default function ProjectCard({ project, isOwner }: Props) {
 
 
     const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ export default function ProjectCard({ project }: Props) {
         }))
     }
 
+
     return (
         <Card className="flex flex-col gap-24">
             <div className="flex flex-wrap gap-24 items-start">
@@ -39,12 +41,17 @@ export default function ProjectCard({ project }: Props) {
             <p className=" text-body5 text-gray-400 line-clamp-2 max-w-[60ch]">{project.description} </p>
             <div className="mt-auto">
                 <p className="text-body5 text-gray-900 font-medium mb-12">👾 Makers</p>
-                <p className="text-body5 text-gray-600 flex mb-16">
-                    {project.members.map(({ user: { avatar: img } }, idx) => <div className='w-[18px] h-32 relative'><Avatar key={idx} src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
+                <div className="text-body5 text-gray-600 flex">
+                    {project.members.map(({ user: { avatar: img } }, idx) => <div key={idx} className='w-[18px] h-32 relative'><Avatar src={img} width={32} className='absolute top-0 left-0 min-w-[32px] !border-white' /></div>)}
                     {project.members_count > project.members.length && <span className='text-gray-400 font-medium self-center ml-24 '>+ {project.members_count - project.members.length} others</span>}
-                </p>
+                </div>
             </div>
-            <Button fullWidth size="sm" color='white' onClick={openProject} className=''>View Details</Button>
+            {
+                isOwner ?
+                    <Button fullWidth href={createRoute({ type: "write-story" })} size="sm" color='white' className=''>🚦 Post update</Button>
+                    :
+                    <Button fullWidth size="sm" color='white' onClick={openProject} className=''>View Details</Button>
+            }
         </Card>
     )
 }

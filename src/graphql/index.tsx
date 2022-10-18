@@ -796,6 +796,7 @@ export type TournamentPrize = {
 
 export type TournamentProjectsResponse = {
   __typename?: 'TournamentProjectsResponse';
+  allItemsCount: Maybe<Scalars['Int']>;
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
   projects: Array<Project>;
@@ -1163,7 +1164,7 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
+export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', allItemsCount: number | null, hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }> }> } };
 
 export type UpdateTournamentRegistrationMutationVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -1193,7 +1194,7 @@ export type MeTournamentQueryVariables = Exact<{
 }>;
 
 
-export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, tagline: string, hashtag: string, thumbnail_image: string, votes_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null } }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -3068,6 +3069,7 @@ export const GetProjectsInTournamentDocument = gql`
     trackId: $trackId
     search: $search
   ) {
+    allItemsCount
     hasNext
     hasPrev
     projects {
@@ -3086,12 +3088,6 @@ export const GetProjectsInTournamentDocument = gql`
           id
           avatar
         }
-      }
-      recruit_roles {
-        id
-        title
-        icon
-        level
       }
     }
   }
@@ -3261,14 +3257,19 @@ export const MeTournamentDocument = gql`
       project {
         id
         title
-        tagline
-        hashtag
+        description
         thumbnail_image
-        votes_count
+        members_count
         category {
           id
           title
           icon
+        }
+        members(take: 4) {
+          user {
+            id
+            avatar
+          }
         }
       }
       track {

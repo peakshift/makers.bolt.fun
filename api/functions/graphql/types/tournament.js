@@ -202,9 +202,9 @@ const TournamentMakersResponse = objectType({
 const TournamentProjectsResponse = objectType({
     name: 'TournamentProjectsResponse',
     definition(t) {
+        t.int('allItemsCount')
         t.boolean('hasNext');
         t.boolean('hasPrev');
-
         t.nonNull.list.nonNull.field('projects', { type: "Project" })
     }
 }
@@ -498,29 +498,42 @@ const getProjectsInTournament = extendType({
                     ]
                 })
 
-                const projects = await prisma.tournamentProject.findMany({
-                    where: {
-                        tournament_id: args.tournamentId,
-                        ...(args.trackId && {
-                            track_id: args.trackId,
-                        }),
-                        ...(filters.length > 0 && {
-                            project: {
-                                AND: filters
-                            }
-                        })
-                    },
-                    include: {
+                const where = {
+                    tournament_id: args.tournamentId,
+                    ...(args.trackId && {
+                        track_id: args.trackId,
+                    }),
+                    ...(filters.length > 0 && {
                         project: {
-                            ...select
+                            AND: filters
+                        }
+                    })
+                }
+
+
+
+                const [projects, allProjectsCount] = await Promise.all([
+                    prisma.tournamentProject.findMany({
+                        where,
+                        include: {
+                            project: {
+                                ...select
+                            },
                         },
-                    },
-                    skip: args.skip,
-                    take: args.take + 1,
-                })
-                    .then(res => res.map(item => ({ ...item.project, members_count: item.project._count.members })));
+                        skip: args.skip,
+                        take: args.take + 1,
+                    })
+                        .then(res => res.map(item => ({ ...item.project, members_count: item.project._count.members }))),
+
+                    prisma.tournamentProject.aggregate({
+                        where,
+                        _count: true,
+                    }).then(res => res._count)
+                ])
+
 
                 return {
+                    allItemsCount: allProjectsCount,
                     hasNext: projects.length === args.take + 1,
                     hasPrev: args.skip !== 0,
                     projects: projects.slice(0, args.take)

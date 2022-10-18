@@ -376,6 +376,7 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   TournamentProjectsResponse: { // root type
+    allItemsCount?: number | null; // Int
     hasNext?: boolean | null; // Boolean
     hasPrev?: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -755,6 +756,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   TournamentProjectsResponse: { // field return type
+    allItemsCount: number | null; // Int
     hasNext: boolean | null; // Boolean
     hasPrev: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -1162,6 +1164,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   TournamentProjectsResponse: { // field return type name
+    allItemsCount: 'Int'
     hasNext: 'Boolean'
     hasPrev: 'Boolean'
     projects: 'Project'

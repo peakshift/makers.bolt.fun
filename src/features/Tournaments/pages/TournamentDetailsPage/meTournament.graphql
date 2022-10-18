@@ -6,14 +6,19 @@ query MeTournament($id: Int!) {
       project {
         id
         title
-        tagline
-        hashtag
+        description
         thumbnail_image
-        votes_count
+        members_count
         category {
           id
           title
           icon
+        }
+        members(take: 4) {
+          user {
+            id
+            avatar
+          }
         }
       }
       track {

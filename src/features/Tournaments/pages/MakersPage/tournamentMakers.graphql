@@ -63,6 +63,7 @@ query GetProjectsInTournament(
     trackId: $trackId
     search: $search
   ) {
+    allItemsCount
     hasNext
     hasPrev
     projects {
@@ -81,13 +82,6 @@ query GetProjectsInTournament(
           id
           avatar
         }
-      }
-
-      recruit_roles {
-        id
-        title
-        icon
-        level
       }
     }
   }
