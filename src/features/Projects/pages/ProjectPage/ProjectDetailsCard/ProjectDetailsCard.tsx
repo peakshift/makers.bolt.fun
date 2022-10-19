@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
-import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
-import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch, useMediaQuery } from 'src/utils/hooks';
+import { openModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 // import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
-import { NotificationsService, Wallet_Service } from 'src/services'
-import { ProjectLaunchStatusEnum, ProjectPermissionEnum, useProjectDetailsQuery } from 'src/graphql';
+import { NotificationsService } from 'src/services'
+import { ProjectLaunchStatusEnum, ProjectPermissionEnum, useProjectDetailsModalQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
@@ -36,12 +36,9 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
 
 
-    const { isWalletConnected } = useAppSelector(state => ({
-        isWalletConnected: state.wallet.isConnected,
-    }));
     const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
-    const { data, loading, error } = useProjectDetailsQuery({
+    const { data, loading, error } = useProjectDetailsModalQuery({
         variables: { projectId: projectId!, projectTag: null },
         onCompleted: data => {
             dispatch(setProject(data.getProject))

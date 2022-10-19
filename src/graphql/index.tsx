@@ -1129,7 +1129,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type SimilarProjectsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -1137,6 +1137,14 @@ export type SimilarProjectsQueryVariables = Exact<{
 
 
 export type SimilarProjectsQuery = { __typename?: 'Query', similarProjects: Array<{ __typename?: 'Project', id: number, title: string, hashtag: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> };
+
+export type ProjectDetailsModalQueryVariables = Exact<{
+  projectId: InputMaybe<Scalars['Int']>;
+  projectTag: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2874,6 +2882,13 @@ export const ProjectDetailsDocument = gql`
         icon
       }
     }
+    tournaments {
+      id
+      title
+      thumbnail_image
+      start_date
+      end_date
+    }
     capabilities {
       id
       title
@@ -2954,6 +2969,88 @@ export function useSimilarProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type SimilarProjectsQueryHookResult = ReturnType<typeof useSimilarProjectsQuery>;
 export type SimilarProjectsLazyQueryHookResult = ReturnType<typeof useSimilarProjectsLazyQuery>;
 export type SimilarProjectsQueryResult = Apollo.QueryResult<SimilarProjectsQuery, SimilarProjectsQueryVariables>;
+export const ProjectDetailsModalDocument = gql`
+    query ProjectDetailsModal($projectId: Int, $projectTag: String) {
+  getProject(id: $projectId, tag: $projectTag) {
+    id
+    title
+    tagline
+    description
+    hashtag
+    cover_image
+    thumbnail_image
+    launch_status
+    twitter
+    discord
+    github
+    slack
+    telegram
+    screenshots
+    website
+    lightning_address
+    votes_count
+    category {
+      id
+      icon
+      title
+    }
+    permissions
+    members {
+      role
+      user {
+        id
+        name
+        jobTitle
+        avatar
+      }
+    }
+    tags {
+      id
+      title
+    }
+    recruit_roles {
+      id
+      title
+      icon
+      level
+    }
+    capabilities {
+      id
+      title
+      icon
+    }
+  }
+}
+    `;
+
+/**
+ * __useProjectDetailsModalQuery__
+ *
+ * To run a query within a React component, call `useProjectDetailsModalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectDetailsModalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectDetailsModalQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      projectTag: // value for 'projectTag'
+ *   },
+ * });
+ */
+export function useProjectDetailsModalQuery(baseOptions?: Apollo.QueryHookOptions<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>(ProjectDetailsModalDocument, options);
+      }
+export function useProjectDetailsModalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>(ProjectDetailsModalDocument, options);
+        }
+export type ProjectDetailsModalQueryHookResult = ReturnType<typeof useProjectDetailsModalQuery>;
+export type ProjectDetailsModalLazyQueryHookResult = ReturnType<typeof useProjectDetailsModalLazyQuery>;
+export type ProjectDetailsModalQueryResult = Apollo.QueryResult<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {

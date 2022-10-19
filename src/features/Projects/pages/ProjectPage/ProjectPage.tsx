@@ -77,7 +77,7 @@ export default function ProjectPage() {
                         <aside>
                             <LinksCard links={project} />
                             <CapabilitiesCard capabilities={project.capabilities} />
-                            <TournamentsCard tournaments={[]} />
+                            <TournamentsCard tournaments={project.tournaments} />
                         </aside>
                         <main className="min-w-0">
 
@@ -98,7 +98,7 @@ export default function ProjectPage() {
                             <MakersCard members={project.members} recruit_roles={project.recruit_roles} />
                             <hr className="bg-gray-100" />
                             <StoriesCard onlyMd stories={project.stories} />
-                            <TournamentsCard onlyMd tournaments={[]} />
+                            <TournamentsCard onlyMd tournaments={project.tournaments} />
                             <hr className="bg-gray-100" />
                             <SimilarProjectsCard id={project.id} />
                         </main>

@@ -322,7 +322,6 @@ export interface NexusGenObjects {
     excerpt: string; // String!
     id: number; // Int!
     is_published?: boolean | null; // Boolean
-    project?: NexusGenRootTypes['Project'] | null; // Project
     title: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
