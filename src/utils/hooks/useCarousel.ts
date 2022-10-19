@@ -6,11 +6,13 @@ export const useCarousel = (...props: Parameters<typeof useEmblaCarousel>) => {
     const [viewportRef, emblaApi] = useEmblaCarousel({ ...props[0], slidesToScroll: 1 });
     const [canScrollNext, setCanScrollNext] = useState(false);
     const [canScrollPrev, setCanScrollPrev] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return;
-
+        setSelectedIndex(emblaApi.selectedScrollSnap());
         setCanScrollNext(emblaApi.canScrollNext())
         setCanScrollPrev(emblaApi.canScrollPrev())
 
@@ -19,6 +21,7 @@ export const useCarousel = (...props: Parameters<typeof useEmblaCarousel>) => {
     useEffect(() => {
         if (!emblaApi) return;
         onSelect();
+        setScrollSnaps(emblaApi.scrollSnapList());
         emblaApi.on("select", onSelect);
     }, [emblaApi, onSelect]);
 
@@ -38,6 +41,8 @@ export const useCarousel = (...props: Parameters<typeof useEmblaCarousel>) => {
         isClickAllowed,
         scrollSlides,
         emblaApi,
+        scrollSnaps,
+        selectedSnapIndex: selectedIndex,
     }
 
 }

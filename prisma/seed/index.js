@@ -71,7 +71,7 @@ async function main() {
 
     // await createCapabilities();
 
-    // await createHashtags();
+    // await createHashtags(); 
 }
 
 async function migrateOldImages() {

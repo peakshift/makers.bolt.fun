@@ -297,12 +297,6 @@ export const handlers = [
             ctx.data({
                 getTournamentById: getTournamentById(12),
                 getMakersInTournament: getMakersInTournament({ roleId: null, search: null, skip: null, take: 4, tournamentId: 12, openToConnect: null }),
-                me: { ...me() },
-                tournamentParticipationInfo: {
-                    hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
-                    createdAt: new Date()
-                }
-
             })
         )
     }),
@@ -315,7 +309,8 @@ export const handlers = [
                 me: { ...me() },
                 tournamentParticipationInfo: {
                     hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    projects: []
                 }
             })
         )

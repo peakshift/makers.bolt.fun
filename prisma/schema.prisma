@@ -39,6 +39,7 @@ model Vote {
 // Users
 // -----------------
 
+/// @PrismaSelect.map([User, MyProfile])
 model User {
   id         Int          @id @default(autoincrement())
   pubKey     String?      @unique
@@ -362,6 +363,7 @@ model Tournament {
   votes_count         Int          @default(0)
 
   prizes       TournamentPrize[]
+  tracks       TournamentTrack[]
   judges       TournamentJudge[]
   faqs         TournamentFAQ[]
   events       TournamentEvent[]
@@ -379,6 +381,17 @@ model TournamentPrize {
 
   tournament    Tournament @relation(fields: [tournament_id], references: [id])
   tournament_id Int
+}
+
+model TournamentTrack {
+  id    Int    @id @default(autoincrement())
+  title String
+  icon  String
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+
+  projects TournamentProject[]
 }
 
 model TournamentJudge {
@@ -438,6 +451,9 @@ model TournamentProject {
   tournament_id Int
   project       Project    @relation(fields: [project_id], references: [id])
   project_id    Int
+
+  track_id Int?
+  track    TournamentTrack? @relation(fields: [track_id], references: [id])
 
   @@id([tournament_id, project_id])
 }

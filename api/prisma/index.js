@@ -13,7 +13,7 @@ const createPrismaClient = () => {
             const result = await next(params)
             const after = Date.now()
 
-            console.info(`Query took ${after - before}ms`)
+            // console.info(`Query took ${after - before}ms`)
             return result
         })
         return prisma;

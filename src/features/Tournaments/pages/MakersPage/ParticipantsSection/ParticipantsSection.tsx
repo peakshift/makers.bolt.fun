@@ -1,5 +1,6 @@
 import { useDebouncedState } from '@react-hookz/web';
 import { useState } from 'react'
+import { useLocation, useParams } from 'react-router-dom';
 import { GenericMakerRole } from 'src/graphql'
 import { useCarousel } from 'src/utils/hooks';
 import MakersFilters from '../MakersFilters/MakersFilters';
@@ -12,9 +13,10 @@ interface Props {
 export default function ParticipantsSection({ tournamentId }: Props) {
 
     const [searchFilter, setSearchFilter] = useState("");
+    const { state } = useLocation()
     const [debouncedsearchFilter, setDebouncedSearchFilter] = useDebouncedState("", 500);
     const [roleFilter, setRoleFilter] = useState<GenericMakerRole | null>(null);
-    const [curTab, setCurTab] = useState<'all-makers' | 'makers-to-team' | 'projects'>('all-makers')
+    const [curTab, setCurTab] = useState<'all-makers' | 'makers-to-team' | 'projects'>((state as any)?.makersLookingToTeam ? 'makers-to-team' : 'all-makers')
 
 
     const { viewportRef, } = useCarousel({
@@ -76,7 +78,7 @@ export default function ParticipantsSection({ tournamentId }: Props) {
                 </button> */}
             </div>
         </div>
-        {curTab === 'projects' && <ProjectsList searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}
+        {curTab === 'projects' && <ProjectsList searchFilter={debouncedsearchFilter} trackIdFilter={null} tournamentId={tournamentId} />}
         {curTab !== 'projects' && <MakersList onlyLookingToTeam={curTab === 'makers-to-team'} searchFilter={debouncedsearchFilter} roleFilter={roleFilter?.id ?? null} tournamentId={tournamentId} />}
     </>
     )

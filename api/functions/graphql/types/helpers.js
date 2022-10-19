@@ -76,11 +76,51 @@ const removeNulls = (obj) => {
     return res
 }
 
+const defaultPrismaSelectFields = {
+    Story: select => {
+        let res = {};
+        if (select.cover_image) res['cover_image_rel'] = true;
+        return res;
+    },
+    User: select => {
+        let res = { roles: undefined, };
+        if (select.avatar) res['avatar_rel'] = true;
+        return res;
+    },
+
+    Project: select => {
+        let res = {
+            recruit_roles: undefined,
+        };
+        if (select.cover_image) res['cover_image_rel'] = true;
+        if (select.thumbnail_image) res['thumbnail_image_rel'] = true;
+        if (select.screenshots) res['screenshots_ids'] = true;
+        return res;
+    },
+
+    Tournament: select => {
+        let res = {};
+        if (select.thumbnail_image) res['thumbnail_image_rel'] = true;
+        return res;
+    },
+    TournamentPrize: select => {
+        let res = {};
+        if (select.image) res['image_rel'] = true;
+        return res;
+    },
+    TournamentJudge: select => {
+        let res = {};
+        if (select.avatar) res['avatar_rel'] = true;
+        return res;
+    },
+}
+
 module.exports = {
     getPaymetRequestForItem,
     hexToUint8Array,
     lightningAddressToLnurl,
     getLnurlDetails,
     paginationArgs,
-    removeNulls
+    removeNulls,
+    defaultPrismaSelectFields,
 }

@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form"
 import Card from "src/Components/Card/Card";
 import { FaDiscord, FaSlack, FaTelegram } from "react-icons/fa";
-import { FiCamera, FiGithub, FiTwitter } from "react-icons/fi";
+import { FiGithub, FiTwitter } from "react-icons/fi";
 import CategoriesInput from "../CategoriesInput/CategoriesInput";
 import CapabilitiesInput from "../CapabilitiesInput/CapabilitiesInput";
 import { IListProjectForm } from "../FormContainer/FormContainer";
@@ -18,9 +18,11 @@ interface Props { }
 
 export default function ProjectDetailsTab(props: Props) {
 
-    const { register, formState: { errors, dirtyFields }, control, getValues, trigger } = useFormContext<IListProjectForm>();
+    const { register, formState: { errors, dirtyFields }, control, getValues, trigger, watch } = useFormContext<IListProjectForm>();
 
     const isUpdating = !!getValues('id');
+
+    const descriptionLength = watch('description').length
 
 
     return (
@@ -105,6 +107,7 @@ export default function ProjectDetailsTab(props: Props) {
                         rows={5}
                         placeholder='Provide a short description your product...'
                         {...register("description")}
+                        renderAfter={() => <p className="text-body6 font-medium text-gray-400 absolute top-full translate-y-8 right-0">{descriptionLength}/480</p>}
                     />
                     {errors.description && <p className="input-error">
                         {errors.description.message}

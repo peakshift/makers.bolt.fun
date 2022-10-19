@@ -72,7 +72,11 @@ const schema: yup.SchemaOf<IListProjectForm> = yup.object({
         }),
     website: yup.string().trim().url().required().label("project's link"),
     tagline: yup.string().trim().required("please provide a tagline").min(10),
-    description: yup.string().trim().required("please provide a description for your project").min(50, 'Write at least 10 words descriping your project'),
+    description: yup.string().trim()
+        .required("please provide a description for your project")
+        .min(50, 'write at least 10 words descriping your project')
+        .max(480, 'your description shouldn\'t exceed 480 characters')
+    ,
     lightning_address: yup
         .string()
         .test({

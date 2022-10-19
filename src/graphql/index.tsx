@@ -17,6 +17,12 @@ export type Scalars = {
   Date: any;
 };
 
+export type AddProjectToTournamentInput = {
+  project_id: Scalars['Int'];
+  tournament_id: Scalars['Int'];
+  track_id: Scalars['Int'];
+};
+
 export type Author = {
   __typename?: 'Author';
   avatar: Scalars['String'];
@@ -217,6 +223,7 @@ export type MakerSkillInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addProjectToTournament: Maybe<ParticipationInfo>;
   confirmDonation: Donation;
   confirmVote: Vote;
   createProject: Maybe<CreateProjectResponse>;
@@ -231,6 +238,11 @@ export type Mutation = {
   updateTournamentRegistration: Maybe<ParticipationInfo>;
   updateUserPreferences: MyProfile;
   vote: Vote;
+};
+
+
+export type MutationAddProjectToTournamentArgs = {
+  input: InputMaybe<AddProjectToTournamentInput>;
 };
 
 
@@ -354,6 +366,7 @@ export type ParticipationInfo = {
   createdAt: Scalars['Date'];
   email: Scalars['String'];
   hacking_status: TournamentMakerHackingStatusEnum;
+  projects: Array<ProjectInTournament>;
 };
 
 export type Post = Bounty | Question | Story;
@@ -414,6 +427,7 @@ export type Project = {
   lightning_address: Maybe<Scalars['String']>;
   lnurl_callback_url: Maybe<Scalars['String']>;
   members: Array<ProjectMember>;
+  members_count: Scalars['Int'];
   permissions: Array<ProjectPermissionEnum>;
   recruit_roles: Array<MakerRole>;
   screenshots: Array<Scalars['String']>;
@@ -428,6 +442,17 @@ export type Project = {
   twitter: Maybe<Scalars['String']>;
   votes_count: Scalars['Int'];
   website: Scalars['String'];
+};
+
+
+export type ProjectMembersArgs = {
+  take: InputMaybe<Scalars['Int']>;
+};
+
+export type ProjectInTournament = {
+  __typename?: 'ProjectInTournament';
+  project: Project;
+  track: Maybe<TournamentTrack>;
 };
 
 export enum ProjectLaunchStatusEnum {
@@ -548,11 +573,11 @@ export type QueryGetProjectArgs = {
 
 
 export type QueryGetProjectsInTournamentArgs = {
-  roleId: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   tournamentId: Scalars['Int'];
+  trackId: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -705,6 +730,7 @@ export type Tournament = {
   start_date: Scalars['Date'];
   thumbnail_image: Scalars['String'];
   title: Scalars['String'];
+  tracks: Array<TournamentTrack>;
   website: Scalars['String'];
 };
 
@@ -770,9 +796,17 @@ export type TournamentPrize = {
 
 export type TournamentProjectsResponse = {
   __typename?: 'TournamentProjectsResponse';
+  allItemsCount: Maybe<Scalars['Int']>;
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
   projects: Array<Project>;
+};
+
+export type TournamentTrack = {
+  __typename?: 'TournamentTrack';
+  icon: Scalars['String'];
+  id: Scalars['Int'];
+  title: Scalars['String'];
 };
 
 export type UpdateProjectInput = {
@@ -1125,12 +1159,12 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
   tournamentId: Scalars['Int'];
   take: InputMaybe<Scalars['Int']>;
   skip: InputMaybe<Scalars['Int']>;
-  roleId: InputMaybe<Scalars['Int']>;
+  trackId: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
+export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', allItemsCount: number | null, hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }> }> } };
 
 export type UpdateTournamentRegistrationMutationVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -1148,19 +1182,26 @@ export type RegisterInTournamentMutationVariables = Exact<{
 
 export type RegisterInTournamentMutation = { __typename?: 'Mutation', registerInTournament: { __typename?: 'User', id: number, in_tournament: boolean } | null };
 
+export type AddProjectToTournamentMutationVariables = Exact<{
+  input: InputMaybe<AddProjectToTournamentInput>;
+}>;
+
+
+export type AddProjectToTournamentMutation = { __typename?: 'Mutation', addProjectToTournament: { __typename?: 'ParticipationInfo', projects: Array<{ __typename?: 'ProjectInTournament', track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null, project: { __typename?: 'Project', id: number, title: string, tagline: string, hashtag: string, thumbnail_image: string, launch_status: ProjectLaunchStatusEnum, category: { __typename?: 'Category', id: number, title: string, icon: string | null } } }> } | null };
+
 export type MeTournamentQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> }, tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -3020,14 +3061,15 @@ export type GetMakersInTournamentQueryHookResult = ReturnType<typeof useGetMaker
 export type GetMakersInTournamentLazyQueryHookResult = ReturnType<typeof useGetMakersInTournamentLazyQuery>;
 export type GetMakersInTournamentQueryResult = Apollo.QueryResult<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>;
 export const GetProjectsInTournamentDocument = gql`
-    query GetProjectsInTournament($tournamentId: Int!, $take: Int, $skip: Int, $roleId: Int, $search: String) {
+    query GetProjectsInTournament($tournamentId: Int!, $take: Int, $skip: Int, $trackId: Int, $search: String) {
   getProjectsInTournament(
     tournamentId: $tournamentId
     take: $take
     skip: $skip
-    roleId: $roleId
+    trackId: $trackId
     search: $search
   ) {
+    allItemsCount
     hasNext
     hasPrev
     projects {
@@ -3035,16 +3077,17 @@ export const GetProjectsInTournamentDocument = gql`
       title
       description
       thumbnail_image
+      members_count
       category {
         id
         title
         icon
       }
-      recruit_roles {
-        id
-        title
-        icon
-        level
+      members(take: 4) {
+        user {
+          id
+          avatar
+        }
       }
     }
   }
@@ -3066,7 +3109,7 @@ export const GetProjectsInTournamentDocument = gql`
  *      tournamentId: // value for 'tournamentId'
  *      take: // value for 'take'
  *      skip: // value for 'skip'
- *      roleId: // value for 'roleId'
+ *      trackId: // value for 'trackId'
  *      search: // value for 'search'
  *   },
  * });
@@ -3153,11 +3196,88 @@ export function useRegisterInTournamentMutation(baseOptions?: Apollo.MutationHoo
 export type RegisterInTournamentMutationHookResult = ReturnType<typeof useRegisterInTournamentMutation>;
 export type RegisterInTournamentMutationResult = Apollo.MutationResult<RegisterInTournamentMutation>;
 export type RegisterInTournamentMutationOptions = Apollo.BaseMutationOptions<RegisterInTournamentMutation, RegisterInTournamentMutationVariables>;
+export const AddProjectToTournamentDocument = gql`
+    mutation AddProjectToTournament($input: AddProjectToTournamentInput) {
+  addProjectToTournament(input: $input) {
+    projects {
+      track {
+        id
+        title
+        icon
+      }
+      project {
+        id
+        title
+        tagline
+        hashtag
+        thumbnail_image
+        launch_status
+        category {
+          id
+          title
+          icon
+        }
+      }
+    }
+  }
+}
+    `;
+export type AddProjectToTournamentMutationFn = Apollo.MutationFunction<AddProjectToTournamentMutation, AddProjectToTournamentMutationVariables>;
+
+/**
+ * __useAddProjectToTournamentMutation__
+ *
+ * To run a mutation, you first call `useAddProjectToTournamentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddProjectToTournamentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addProjectToTournamentMutation, { data, loading, error }] = useAddProjectToTournamentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddProjectToTournamentMutation(baseOptions?: Apollo.MutationHookOptions<AddProjectToTournamentMutation, AddProjectToTournamentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddProjectToTournamentMutation, AddProjectToTournamentMutationVariables>(AddProjectToTournamentDocument, options);
+      }
+export type AddProjectToTournamentMutationHookResult = ReturnType<typeof useAddProjectToTournamentMutation>;
+export type AddProjectToTournamentMutationResult = Apollo.MutationResult<AddProjectToTournamentMutation>;
+export type AddProjectToTournamentMutationOptions = Apollo.BaseMutationOptions<AddProjectToTournamentMutation, AddProjectToTournamentMutationVariables>;
 export const MeTournamentDocument = gql`
     query MeTournament($id: Int!) {
   tournamentParticipationInfo(tournamentId: $id) {
     createdAt
     hacking_status
+    projects {
+      project {
+        id
+        title
+        description
+        thumbnail_image
+        members_count
+        category {
+          id
+          title
+          icon
+        }
+        members(take: 4) {
+          user {
+            id
+            avatar
+          }
+        }
+      }
+      track {
+        id
+        title
+        icon
+      }
+    }
   }
   me {
     id
@@ -3219,6 +3339,11 @@ export const GetTournamentByIdDocument = gql`
       amount
       image
     }
+    tracks {
+      id
+      title
+      icon
+    }
     judges {
       name
       company
@@ -3249,22 +3374,8 @@ export const GetTournamentByIdDocument = gql`
       }
     }
   }
-  tournamentParticipationInfo(tournamentId: $id) {
-    createdAt
-    hacking_status
-  }
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    twitter
-    linkedin
-    github
-    ...UserRolesSkills
-  }
 }
-    ${UserRolesSkillsFragmentDoc}`;
+    `;
 
 /**
  * __useGetTournamentByIdQuery__

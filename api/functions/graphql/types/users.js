@@ -2,13 +2,14 @@
 const { prisma } = require('../../../prisma');
 const { objectType, extendType, intArg, nonNull, inputObjectType, stringArg, interfaceType, list, enumType } = require("nexus");
 const { getUserById } = require("../../../auth/utils/helperFuncs");
-const { removeNulls } = require("./helpers");
+const { removeNulls, defaultPrismaSelectFields } = require("./helpers");
 const { ImageInput } = require('./misc');
 const { Tournament } = require('./tournament');
 const { resolveImgObjectToUrl } = require('../../../utils/resolveImageUrl');
 const { deleteImage } = require('../../../services/imageUpload.service');
+const { PrismaSelect } = require('@paljs/plugins');
 
-
+const { parseResolveInfo } = require('graphql-parse-resolve-info')
 
 
 const BaseUser = interfaceType({
@@ -232,9 +233,17 @@ const me = extendType({
     definition(t) {
         t.field('me', {
             type: "MyProfile",
-            async resolve(parent, args, context) {
-                const user = await getUserById(context.user?.id);
-                return user
+            async resolve(parent, args, context, info) {
+                if (!context.user?.id) return null;
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueWithFilter('User');
+                return prisma.user.findUnique({
+                    ...select,
+                    where: {
+                        id: context.user.id
+                    },
+                })
             }
         })
     }

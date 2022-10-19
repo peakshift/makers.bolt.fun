@@ -19,6 +19,11 @@ query GetTournamentById($id: Int!) {
       amount
       image
     }
+    tracks {
+      id
+      title
+      icon
+    }
     judges {
       name
       company
@@ -49,21 +54,5 @@ query GetTournamentById($id: Int!) {
         avatar
       }
     }
-  }
-
-  tournamentParticipationInfo(tournamentId: $id) {
-    createdAt
-    hacking_status
-  }
-  me {
-    id
-    name
-    avatar
-    jobTitle
-    twitter
-    linkedin
-    github
-
-    ...UserRolesSkills
   }
 }
