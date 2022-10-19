@@ -82,7 +82,7 @@ export default function ProjectsPage() {
                     >
                         All projects {!!allProjectsCount && `(${allProjectsCount})`}
                     </button>
-                    <button
+                    {!!myParticipationInfo && <button
                         className={` 
                    min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
                     active:scale-95 transition-transform
@@ -91,7 +91,7 @@ export default function ProjectsPage() {
                         onClick={() => setCurTab('my-projects')}
                     >
                         My Projects {!!myProjectsCount && `(${myProjectsCount})`}
-                    </button>
+                    </button>}
                 </div>
                 <Button
                     disabled={!isLoggedIn}
@@ -134,7 +134,7 @@ export default function ProjectsPage() {
                         (
                             myParticipationInfo?.projects.length !== 0 ?
                                 <MyTournamentProjects key={myParticipationInfo?.projects.length} projects={myFilteredProjects ?? []} /> :
-                                <p className="flex py-48 flex-col text-body3 justify-center items-center text-gray-400 text-center col-[1/-1]">You haven't added any projects yet to this tournament.</p>
+                                <p className="flex py-48 flex-col text-body3 justify-center items-center text-gray-400 text-center col-[1/-1]">Your tournament project(s) will show here. You currently do not have any projects entered</p>
                         )
                 }
             </div>
