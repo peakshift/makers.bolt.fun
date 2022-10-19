@@ -760,15 +760,15 @@ const createProject = extendType({
                             }
 
                         },
-                        tournaments: {
-                            createMany: {
-                                data: tournaments.map((tournament) => {
-                                    return {
-                                        tournament_id: tournament,
-                                    }
-                                }),
-                            }
-                        },
+                        // tournaments: {
+                        //     createMany: {
+                        //         data: tournaments.map((tournament) => {
+                        //             return {
+                        //                 tournament_id: tournament,
+                        //             }
+                        //         }),
+                        //     }
+                        // },
                         capabilities: {
                             connect: capabilities.map((c) => {
                                 return {
@@ -1077,16 +1077,6 @@ const updateProject = extendType({
                                             return {
                                                 level: 0,
                                                 roleId: role
-                                            }
-                                        }),
-                                    }
-                                },
-                                tournaments: {
-                                    deleteMany: {},
-                                    createMany: {
-                                        data: tournaments.map((tournament) => {
-                                            return {
-                                                tournament_id: tournament,
                                             }
                                         }),
                                     }
