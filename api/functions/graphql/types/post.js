@@ -122,6 +122,9 @@ const Story = objectType({
 
         t.field('project', {
             type: "Project",
+            resolve: (parent) => {
+                return parent.project || prisma.story.findUnique({ where: { id: parent.id } }).project()
+            }
         })
 
     },
@@ -362,10 +365,16 @@ const getPostById = extendType({
                     type: nonNull('POST_TYPE')
                 })
             },
-            resolve(_, { id, type }) {
+            resolve(_, { id, type }, ctx, info) {
+
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).valueWithFilter("Story");
+
                 if (type === 'Story')
                     return prisma.story.findUnique({
-                        where: { id }
+                        where: { id },
+                        ...select
                     }).then(asStoryType)
 
                 if (type === 'Question')
