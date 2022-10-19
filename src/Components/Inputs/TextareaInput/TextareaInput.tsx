@@ -4,9 +4,11 @@ type Props = {
     isError?: boolean;
     className?: string;
     inputClass?: string
+    renderBefore?: () => JSX.Element
+    renderAfter?: () => JSX.Element
 } & React.ComponentPropsWithoutRef<'textarea'>
 
-export default React.forwardRef<HTMLTextAreaElement, Props>(function TextareaInput({ className, inputClass, isError, ...props }, ref) {
+export default React.forwardRef<HTMLTextAreaElement, Props>(function TextareaInput({ className, inputClass, isError, renderBefore, renderAfter, ...props }, ref) {
 
     return (
         <div className={`
@@ -17,11 +19,13 @@ export default React.forwardRef<HTMLTextAreaElement, Props>(function TextareaInp
                 :
                 "border-gray-300 focus-within:border-primary-300 focus-within:outline-primary-400 focus-within:ring-primary-200"}
         ${className}`}>
+            {renderBefore?.()}
             <textarea
                 className={`input-text ${inputClass}`}
                 ref={ref}
                 {...props}
             />
+            {renderAfter?.()}
         </div>
     )
 })
