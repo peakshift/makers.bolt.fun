@@ -42,12 +42,14 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             projectsId: projectId!,
         },
         onCompleted: data => {
-            dispatch(setProject((data.projects?.[0] as any) ?? null))
+            dispatch(setProject((data.getProject?.[0] as any) ?? null))
         },
         onError: () => {
             dispatch(setProject(null));
         },
-        skip: !Boolean(projectId)
+        skip: !Boolean(projectId),
+        fetchPolicy: "no-cache"
+
     });
 
 
@@ -72,7 +74,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         return <ProjectCardSkeleton onClose={closeModal} direction={direction} isPageModal={props.isPageModal} />;
 
 
-    const project = data?.projects?.[0];
+    const project = data?.getProject?.[0];
 
     if (!project) return <p>404</p>
 
@@ -126,8 +128,8 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
                 {/* Title & Basic Info */}
                 <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 md:items-center relative">
-                    <div className="flex-shrink-0 w-[108px] h-[108px]">
-                        <img className="w-full h-full border-2 border-white rounded-24 object-cover" src={project?.logo?.[0]['thumbnails']['large'].url} alt="" />
+                    <div className="flex-shrink-0 w-[108px] h-[108px] border-2 border-gray-200 rounded-24 overflow-hidden ">
+                        <img className="w-full h-full object-cover" src={project?.logo?.[0]['thumbnails']['large'].url} alt="" />
                     </div>
                     <div className='flex flex-col gap-8 items-start justify-between'>
                         <a href={project?.website!} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project?.title}</h3></a>
@@ -173,26 +175,23 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     </div>
                 </div>
 
-                    <div>
-                        <p className="text-body6 uppercase font-medium text-gray-400 mb-8">DATA</p>
-                        <div className="flex flex-wrap gap-8">
-                            {project?.dead && <Badge size='sm'>{project.dead}</Badge>}
-                            {project?.createdAt && <Badge size='sm'>{project.createdAt}</Badge>}
-                            {project?.companyName && <Badge size='sm'>{project.companyName}</Badge>}
-                            {project?.endDate && <Badge size='sm'>{project.endDate}</Badge>}
-                            {project?.updatedAt && <Badge size='sm'>{project.updatedAt}</Badge>}
-                            {project?.watchers && <Badge size='sm'>{project.watchers}</Badge>}
-                            {project?.yearFounded && <Badge size='sm'>{project.yearFounded}</Badge>}
-                            {project?.subcategory && <Badge size='sm'>{project.subcategory}</Badge>}
-                            {project?.stars && <Badge size='sm'>{project.stars}</Badge>}
-                            {project?.repository && <Badge size='sm'>{project.repository}</Badge>}
-                            {project?.openSource && <Badge size='sm'>{project.openSource}</Badge>}
-                            {project?.linkedIn && <Badge size='sm'>{project.linkedIn}</Badge>}
-                            {project?.license && <Badge size='sm'>{project.license}</Badge>}
-                            {project?.language && <Badge size='sm'>{project.language}</Badge>}
-                            {project?.forks && <Badge size='sm'>{project.forks}</Badge>}
-                        </div>
+                <div>
+                    <p className="text-body6 uppercase font-medium text-gray-400 mb-8">DATA</p>
+                    <div className="flex flex-wrap gap-8">
+                        {project?.dead !== null && <Badge color='none' className='bg-red-100' size='sm'>Dead</Badge>}
+                        {project?.createdAt !== null && <Badge size='sm'>Created at: {new Date(project.createdAt).toLocaleDateString()}</Badge>}
+                        {project?.companyName !== null && <Badge size='sm'>Company Name: {project.companyName}</Badge>}
+                        {project?.endDate !== null && <Badge size='sm'>End date: {new Date(project.endDate).toLocaleDateString()}</Badge>}
+                        {project?.repository !== null && <Badge size='sm'><a href={project.repository} target='_blank' className='text-blue-500' rel="noreferrer">Repository</a> </Badge>}
+                        {project?.stars !== null && <Badge size='sm'>Stars: {project.stars}</Badge>}
+                        {project?.openSource !== null && <Badge size='sm'>Open source: {project.openSource}</Badge>}
+                        {project?.watchers !== null && <Badge size='sm'>Watchers: {project.watchers}</Badge>}
+                        {project?.forks !== null && <Badge size='sm'>Number of forks: {project.forks}</Badge>}
+                        {project?.license !== null && <Badge size='sm'>License: {project.license}</Badge>}
+                        {project?.language !== null && <Badge size='sm'>Language: {project.language}</Badge>}
+                        {project?.updatedAt !== null && <Badge size='sm'>Last updated at:{new Date(project.updatedAt).toLocaleDateString()}</Badge>}
                     </div>
+                </div>
 
                 <div className="text-center">
                     <h3 className="text-body4 font-regular">Want to suggest any changes to this project?</h3>

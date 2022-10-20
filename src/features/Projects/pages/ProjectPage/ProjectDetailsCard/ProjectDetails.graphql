@@ -1,5 +1,5 @@
 query ProjectDetails($projectsId: String) {
-  projects(id: $projectsId) {
+  getProject: projects(id: $projectsId) {
     id
     title
     dead

@@ -1,7 +1,6 @@
-import { useParams, Navigate } from 'react-router-dom'
+
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { useExplorePageQuery } from 'src/graphql';
-import HeaderImage from './Header/Header';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
 import Categories, { Category } from '../../Components/Categories/Categories';
@@ -13,36 +12,53 @@ import { openModal } from 'src/redux/features/modals.slice';
 import { createAction } from '@reduxjs/toolkit';
 import { useReduxEffect } from 'src/utils/hooks/useReduxEffect';
 import { NetworkStatus } from '@apollo/client';
-import { GoSettings } from 'react-icons/go'
 import { FiSliders } from 'react-icons/fi';
 import { ProjectsFilters } from './Filters/FiltersModal';
 
-const UPDATE_FILTERS_ACTION = createAction<{ categoriesIds?: string[], tagsIds?: string[], yearFounded?: string }>('PROJECTS_FILTERS_UPDATED')({})
+const UPDATE_FILTERS_ACTION = createAction<Partial<ProjectsFilters>>('PROJECTS_FILTERS_UPDATED')({})
+
+type QueryFilter = Partial<{
+    categoryId: string[] | null
+    tags: string[] | null
+    yearFounded: number | null
+    dead: boolean | null
+    license: string | null
+}>
 
 export default function ExplorePage() {
 
     const dispatch = useAppDispatch();
-    const [filters, setFilters] = useState<Partial<ProjectsFilters>>()
+    const [filters, setFilters] = useState<Partial<ProjectsFilters> | null>(null)
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
 
     const queryFilters = useMemo(() => {
-        let filter: any = {}
+        let filter: QueryFilter = {}
 
         if (!filters) return null;
 
         if (filters.categoriesIds && filters.categoriesIds?.length > 0)
-            filter['categoryId'] = filters.categoriesIds
+            filter.categoryId = filters.categoriesIds;
+
+        if (selectedCategory?.id) filter.categoryId = [selectedCategory?.id]
 
         if (filters.tagsIds && filters.tagsIds?.length > 0)
-            filter['tags'] = filters.tagsIds
+            filter.tags = filters.tagsIds
 
-        if (filters.yearFounded && filters.yearFounded !== "Any")
-            filter['yearFounded'] = Number(filters.yearFounded)
+        if (filters.yearFounded && filters.yearFounded !== 'any')
+            filter.yearFounded = Number(filters.yearFounded)
 
-        if (Object.keys(filter).length === 0) return null
+        if (filters.projectStatus && filters.projectStatus !== 'any')
+            filter.dead = filters.projectStatus === 'alive' ? false : true;
+
+
+        if (filters.projectLicense && filters.projectLicense !== 'any')
+            filter.license = filters.projectLicense
+
+        if (Object.keys(filter).length === 0)
+            return null
 
         return filter;
-    }, [filters])
+    }, [filters, selectedCategory?.id])
 
     const { data, networkStatus, error } = useExplorePageQuery({
         variables: {
@@ -55,11 +71,12 @@ export default function ExplorePage() {
 
 
 
-
-
     const onFiltersUpdated = useCallback(({ payload }: typeof UPDATE_FILTERS_ACTION) => {
         setSelectedCategory(null)
-        setFilters(payload);
+        if (Object.keys(payload).length === 0)
+            setFilters(null);
+        else
+            setFilters(payload);
     }, [])
 
     useReduxEffect(onFiltersUpdated, UPDATE_FILTERS_ACTION.type)
@@ -83,13 +100,8 @@ export default function ExplorePage() {
         }))
     }
 
-    const selectCategoryTab = (category?: Category | null) => {
-        if (!category?.id)
-            return;
+    const selectCategoryTab = (category: Category | null) => {
         setSelectedCategory(category);
-        setFilters({
-            categoriesIds: [category.id]
-        })
     }
 
     if (error) {
@@ -98,7 +110,6 @@ export default function ExplorePage() {
         </div>
     }
 
-    console.log(networkStatus, NetworkStatus.loading, NetworkStatus.refetch, NetworkStatus.setVariables);
 
     const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch || networkStatus === NetworkStatus.setVariables;
 
@@ -115,7 +126,14 @@ export default function ExplorePage() {
                 />
                 <div className="grid grid-cols-[1fr_auto] items-center gap-32">
                     <div className="min-w-0"><Categories value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
-                    <Button className='self-center' variant='outline' color='white' onClick={openFilters}><FiSliders className="scale-150 mr-8 text-primary-500" /> <span className='align-middle'>Filters</span></Button>
+                    <Button
+                        className={`self-center ${!!queryFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
+                        variant='outline'
+                        color='white'
+                        onClick={openFilters}>
+                        <FiSliders className="scale-150 mr-12" />
+                        <span className='align-middle'>Filters</span>
+                    </Button>
                 </div>
                 <div className="mt-40">
                     <ProjectsGrid

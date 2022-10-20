@@ -425,7 +425,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, dead: boolean | null, createdAt: string | null, companyName: string | null, category: string | null, description: string | null, discord: string | null, endDate: string | null, twitter: string | null, updatedAt: string | null, watchers: number | null, website: string | null, yearFounded: number | null, telegram: string | null, stars: number | null, repository: string | null, openSource: string | null, logo: Array<any | null> | null, linkedIn: string | null, license: string | null, language: string | null, forks: number | null, categoryList: Array<{ __typename?: 'categoryList', name: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null } | null> | null };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: Array<{ __typename?: 'projects', id: string | null, title: string | null, dead: boolean | null, createdAt: string | null, companyName: string | null, category: string | null, description: string | null, discord: string | null, endDate: string | null, twitter: string | null, updatedAt: string | null, watchers: number | null, website: string | null, yearFounded: number | null, telegram: string | null, stars: number | null, repository: string | null, openSource: string | null, logo: Array<any | null> | null, linkedIn: string | null, license: string | null, language: string | null, forks: number | null, categoryList: Array<{ __typename?: 'categoryList', name: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null } | null> | null };
 
 
 export const AllCategoriesDocument = gql`
@@ -570,7 +570,7 @@ export type ExplorePageLazyQueryHookResult = ReturnType<typeof useExplorePageLaz
 export type ExplorePageQueryResult = Apollo.QueryResult<ExplorePageQuery, ExplorePageQueryVariables>;
 export const ProjectDetailsDocument = gql`
     query ProjectDetails($projectsId: String) {
-  projects(id: $projectsId) {
+  getProject: projects(id: $projectsId) {
     id
     title
     dead

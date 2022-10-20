@@ -12,7 +12,7 @@ export default function ProjectCardMini({ project, onClick }: Props) {
 
     return (
         <div
-            className="py-16 select-none px-16 flex items-center gap-16 rounded-16  hover:bg-gray-100"
+            className="py-16 select-none px-16 flex items-center gap-16 rounded-16  hover:bg-gray-50 hover:outline outline-1 outline-gray-200"
             onKeyDown={e => {
                 e.key !== 'Enter' || onClick(project?.id!)
             }}
@@ -20,7 +20,7 @@ export default function ProjectCardMini({ project, onClick }: Props) {
             tabIndex={0}
             role='button'
         >
-            <img src={project?.logo?.[0]['thumbnails']['large'].url} alt={project?.title ?? ''} draggable="false" className="flex-shrink-0 w-64 h-64 object-cover bg-gray-200 border-0 rounded-full hover:cursor-pointer"></img>
+            <img src={project?.logo?.[0]['thumbnails']['large'].url} alt={project?.title ?? ''} draggable="false" className="flex-shrink-0 w-64 h-64 object-cover bg-gray-200 border border-gray-200 rounded-full hover:cursor-pointer"></img>
             <div className="justify-around items-start min-w-0 flex-1 hover:cursor-pointer"
             >
                 <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project?.title}</p>
