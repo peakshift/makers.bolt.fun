@@ -35,7 +35,7 @@ export default function Categories(props: Props) {
 
 
     if (loading || !data)
-        return <div className="flex gap-32 border-b border-gray-200">
+        return <div className="flex overflow-hidden gap-32 border-b border-gray-200">
             {Array(15).fill(0).map((_, idx) =>
                 <div
                     key={idx}
@@ -50,14 +50,14 @@ export default function Categories(props: Props) {
     return (
 
         <div className="relative group">
-            <div className="overflow-hidden" ref={viewportRef}>
-                <div className="select-none w-full flex gap-32 border-b border-gray-200">
+            <div className="overflow-hidden border-b border-gray-200" ref={viewportRef}>
+                <div className="select-none w-full flex gap-8">
                     <button
                         onClick={() => {
                             props.onChange?.(null)
                         }}
                         className={`
-                            flex flex-col font-medium py-16 min-w-max
+                            flex flex-col font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                     >All projects</button>
@@ -69,7 +69,7 @@ export default function Categories(props: Props) {
                                 props.onChange?.(isSame ? null : category)
                             }}
                             className={`
-                            flex flex-col font-medium py-16 min-w-max
+                            flex flex-col font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-8 py-16 min-w-max
                             ${props.value?.id === category?.id ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                         >{category!.name} ({category?.projectsCount!})</button>

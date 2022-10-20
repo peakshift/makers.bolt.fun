@@ -23,7 +23,9 @@ export type Query = {
   backup: Maybe<Array<Maybe<Backup>>>;
   categories: Maybe<Array<Maybe<Categories>>>;
   categoryList: Maybe<Array<Maybe<CategoryList>>>;
+  companies: Maybe<Array<Maybe<Companies>>>;
   projects: Maybe<Array<Maybe<Projects>>>;
+  stats: Maybe<Array<Maybe<Stats>>>;
   tags: Maybe<Array<Maybe<Tags>>>;
 };
 
@@ -137,6 +139,27 @@ export type QueryCategoryListArgs = {
 };
 
 
+export type QueryCompaniesArgs = {
+  _filter: InputMaybe<Scalars['JSON']>;
+  _order_by: InputMaybe<Scalars['JSON']>;
+  _page: InputMaybe<Scalars['JSON']>;
+  _page_size: InputMaybe<Scalars['JSON']>;
+  angelList: InputMaybe<Scalars['String']>;
+  assignee: InputMaybe<Scalars['String']>;
+  crunchbase: InputMaybe<Scalars['String']>;
+  description: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['String']>;
+  industry: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['String']>;
+  logo: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  name: InputMaybe<Scalars['String']>;
+  projects: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  status: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
+  website: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryProjectsArgs = {
   _filter: InputMaybe<Scalars['JSON']>;
   _order_by: InputMaybe<Scalars['JSON']>;
@@ -148,6 +171,7 @@ export type QueryProjectsArgs = {
   categoryId: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   categoryList: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   comment: InputMaybe<Scalars['String']>;
+  company: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   companyName: InputMaybe<Scalars['String']>;
   createdAt: InputMaybe<Scalars['String']>;
   dead: InputMaybe<Scalars['Boolean']>;
@@ -165,6 +189,7 @@ export type QueryProjectsArgs = {
   stars: InputMaybe<Scalars['Float']>;
   status: InputMaybe<Scalars['String']>;
   subcategory: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  tags: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   telegram: InputMaybe<Scalars['String']>;
   title: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
@@ -173,6 +198,17 @@ export type QueryProjectsArgs = {
   website: InputMaybe<Scalars['String']>;
   websiteFunctionalLightningRelated: InputMaybe<Scalars['String']>;
   yearFounded: InputMaybe<Scalars['Float']>;
+};
+
+
+export type QueryStatsArgs = {
+  _filter: InputMaybe<Scalars['JSON']>;
+  _order_by: InputMaybe<Scalars['JSON']>;
+  _page: InputMaybe<Scalars['JSON']>;
+  _page_size: InputMaybe<Scalars['JSON']>;
+  id: InputMaybe<Scalars['String']>;
+  stat: InputMaybe<Scalars['String']>;
+  totalProjects: InputMaybe<Scalars['String']>;
 };
 
 
@@ -190,6 +226,8 @@ export type QueryTagsArgs = {
   importedTableCopy2: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   name: InputMaybe<Scalars['String']>;
   projectProductFromFeatured: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  projects: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  projectsCount: InputMaybe<Scalars['String']>;
 };
 
 export type ApiTesting = {
@@ -285,6 +323,23 @@ export type CategoryList = {
   projectsCount: Maybe<Scalars['String']>;
 };
 
+export type Companies = {
+  __typename?: 'companies';
+  angelList: Maybe<Scalars['String']>;
+  assignee: Maybe<Scalars['String']>;
+  crunchbase: Maybe<Scalars['String']>;
+  description: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['String']>;
+  industry: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
+  logo: Maybe<Array<Maybe<Scalars['JSON']>>>;
+  name: Maybe<Scalars['String']>;
+  projects: Maybe<Array<Maybe<Projects>>>;
+  status: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
+  website: Maybe<Scalars['String']>;
+};
+
 export type Projects = {
   __typename?: 'projects';
   categories: Maybe<Array<Maybe<Categories>>>;
@@ -293,6 +348,7 @@ export type Projects = {
   categoryId: Maybe<Array<Maybe<Scalars['String']>>>;
   categoryList: Maybe<Array<Maybe<CategoryList>>>;
   comment: Maybe<Scalars['String']>;
+  company: Maybe<Array<Maybe<Companies>>>;
   companyName: Maybe<Scalars['String']>;
   createdAt: Maybe<Scalars['String']>;
   dead: Maybe<Scalars['Boolean']>;
@@ -310,6 +366,7 @@ export type Projects = {
   stars: Maybe<Scalars['Float']>;
   status: Maybe<Scalars['String']>;
   subcategory: Maybe<Array<Maybe<Scalars['String']>>>;
+  tags: Maybe<Array<Maybe<Tags>>>;
   telegram: Maybe<Scalars['String']>;
   title: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
@@ -318,6 +375,13 @@ export type Projects = {
   website: Maybe<Scalars['String']>;
   websiteFunctionalLightningRelated: Maybe<Scalars['String']>;
   yearFounded: Maybe<Scalars['Float']>;
+};
+
+export type Stats = {
+  __typename?: 'stats';
+  id: Maybe<Scalars['String']>;
+  stat: Maybe<Scalars['String']>;
+  totalProjects: Maybe<Scalars['String']>;
 };
 
 export type Tags = {
@@ -331,6 +395,8 @@ export type Tags = {
   importedTableCopy2: Maybe<Array<Maybe<Backup>>>;
   name: Maybe<Scalars['String']>;
   projectProductFromFeatured: Maybe<Array<Maybe<Scalars['String']>>>;
+  projects: Maybe<Array<Maybe<Projects>>>;
+  projectsCount: Maybe<Scalars['String']>;
 };
 
 export type AllCategoriesQueryVariables = Exact<{
@@ -339,6 +405,11 @@ export type AllCategoriesQueryVariables = Exact<{
 
 
 export type AllCategoriesQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', projectsCount: string | null, id: string | null, name: string | null, description: string | null, icon: string | null } | null> | null };
+
+export type GetFiltersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFiltersQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null };
 
 export type ExplorePageQueryVariables = Exact<{
   filter: InputMaybe<Scalars['JSON']>;
@@ -354,7 +425,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, dead: boolean | null, createdAt: string | null, companyName: string | null, category: string | null, description: string | null, discord: string | null, endDate: string | null, twitter: string | null, updatedAt: string | null, watchers: number | null, website: string | null, yearFounded: number | null, telegram: string | null, subcategory: Array<string | null> | null, stars: number | null, repository: string | null, openSource: string | null, logo: Array<any | null> | null, linkedIn: string | null, license: string | null, language: string | null, forks: number | null, categoryList: Array<{ __typename?: 'categoryList', name: string | null } | null> | null } | null> | null };
+export type ProjectDetailsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, dead: boolean | null, createdAt: string | null, companyName: string | null, category: string | null, description: string | null, discord: string | null, endDate: string | null, twitter: string | null, updatedAt: string | null, watchers: number | null, website: string | null, yearFounded: number | null, telegram: string | null, stars: number | null, repository: string | null, openSource: string | null, logo: Array<any | null> | null, linkedIn: string | null, license: string | null, language: string | null, forks: number | null, categoryList: Array<{ __typename?: 'categoryList', name: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null } | null> | null };
 
 
 export const AllCategoriesDocument = gql`
@@ -396,6 +467,47 @@ export function useAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type AllCategoriesQueryHookResult = ReturnType<typeof useAllCategoriesQuery>;
 export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategoriesLazyQuery>;
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
+export const GetFiltersDocument = gql`
+    query GetFilters {
+  categoryList {
+    id
+    name
+    icon
+  }
+  tags {
+    id
+    name
+    icon
+  }
+}
+    `;
+
+/**
+ * __useGetFiltersQuery__
+ *
+ * To run a query within a React component, call `useGetFiltersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFiltersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFiltersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFiltersQuery(baseOptions?: Apollo.QueryHookOptions<GetFiltersQuery, GetFiltersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFiltersQuery, GetFiltersQueryVariables>(GetFiltersDocument, options);
+      }
+export function useGetFiltersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFiltersQuery, GetFiltersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFiltersQuery, GetFiltersQueryVariables>(GetFiltersDocument, options);
+        }
+export type GetFiltersQueryHookResult = ReturnType<typeof useGetFiltersQuery>;
+export type GetFiltersLazyQueryHookResult = ReturnType<typeof useGetFiltersLazyQuery>;
+export type GetFiltersQueryResult = Apollo.QueryResult<GetFiltersQuery, GetFiltersQueryVariables>;
 export const ExplorePageDocument = gql`
     query ExplorePage($filter: JSON, $page: JSON, $pageSize: JSON) {
   projects(_filter: $filter, _page: $page, _page_size: $pageSize) {
@@ -477,7 +589,11 @@ export const ProjectDetailsDocument = gql`
     website
     yearFounded
     telegram
-    subcategory
+    tags {
+      id
+      name
+      icon
+    }
     stars
     repository
     openSource

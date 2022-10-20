@@ -1,0 +1,12 @@
+query GetFilters {
+  categoryList {
+    id
+    name
+    icon
+  }
+  tags {
+    id
+    name
+    icon
+  }
+}

@@ -12,7 +12,7 @@ export default function ProjectCardMini({ project, onClick }: Props) {
 
     return (
         <div
-            className="py-16 select-none px-16 flex items-center gap-16 border-2 border-gray-100 rounded-16  bg-white hover:bg-gray-50"
+            className="py-16 select-none px-16 flex items-center gap-16 rounded-16  hover:bg-gray-100"
             onKeyDown={e => {
                 e.key !== 'Enter' || onClick(project?.id!)
             }}

@@ -18,7 +18,11 @@ query ProjectDetails($projectsId: String) {
     website
     yearFounded
     telegram
-    subcategory
+    tags {
+      id
+      name
+      icon
+    }
     stars
     repository
     openSource

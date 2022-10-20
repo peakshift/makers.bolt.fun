@@ -15,6 +15,7 @@ import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
+import FiltersModal from "src/features/Projects/pages/ExplorePage/Filters/FiltersModal";
 // import { ConnectToMakerModal } from "src/features/Tournaments/pages/MakersPage/ConnectToMakerModal";
 // import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals"; 
 
@@ -30,6 +31,7 @@ export enum Direction {
 export const ALL_MODALS = {
   //Projects
   ProjectDetailsCard,
+  FiltersModal,
 
   // Auth
   Login_ScanningWalletCard,

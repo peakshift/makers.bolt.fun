@@ -30,7 +30,11 @@ export default function Modal({ onClose, children, ...props }: Props) {
         className=' '
         closeTimeoutMS={1000}
         onAfterClose={onAfterClose}
-        contentElement={(_props, children) => <div {..._props} className={`${_props.className} w-screen min-h-screen relative flex flex-col justify-center items-center md:py-64 md:px-16 inset-0`}>
+        contentElement={(_props, children) => <div {..._props} className={`
+        ${_props.className} 
+        w-screen min-h-screen relative flex flex-col justify-center items-center inset-0
+        ${!props.isPageModal && "md:py-64 md:px-16 "}
+        `}>
             <div
                 onClick={onClose}
                 className={`absolute w-full h-full top-0 left-0 bg-gray-300 bg-opacity-50 ${props.isPageModal && "hidden md:block"}`}
