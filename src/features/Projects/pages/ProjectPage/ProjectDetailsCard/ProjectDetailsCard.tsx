@@ -173,13 +173,26 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                     </div>
                 </div>
 
-                {/*project?.capabilities.length > 0 &&
                     <div>
-                        <p className="text-body6 uppercase font-medium text-gray-400 mb-8">CAPABILITIES</p>
+                        <p className="text-body6 uppercase font-medium text-gray-400 mb-8">DATA</p>
                         <div className="flex flex-wrap gap-8">
-                            {project?.capabilities.map(cap => <Badge key={cap.id} size='sm'>{cap.icon} {cap.title}</Badge>)}
+                            {project?.dead && <Badge size='sm'>{project.dead}</Badge>}
+                            {project?.createdAt && <Badge size='sm'>{project.createdAt}</Badge>}
+                            {project?.companyName && <Badge size='sm'>{project.companyName}</Badge>}
+                            {project?.endDate && <Badge size='sm'>{project.endDate}</Badge>}
+                            {project?.updatedAt && <Badge size='sm'>{project.updatedAt}</Badge>}
+                            {project?.watchers && <Badge size='sm'>{project.watchers}</Badge>}
+                            {project?.yearFounded && <Badge size='sm'>{project.yearFounded}</Badge>}
+                            {project?.subcategory && <Badge size='sm'>{project.subcategory}</Badge>}
+                            {project?.stars && <Badge size='sm'>{project.stars}</Badge>}
+                            {project?.repository && <Badge size='sm'>{project.repository}</Badge>}
+                            {project?.openSource && <Badge size='sm'>{project.openSource}</Badge>}
+                            {project?.linkedIn && <Badge size='sm'>{project.linkedIn}</Badge>}
+                            {project?.license && <Badge size='sm'>{project.license}</Badge>}
+                            {project?.language && <Badge size='sm'>{project.language}</Badge>}
+                            {project?.forks && <Badge size='sm'>{project.forks}</Badge>}
                         </div>
-                    </div>*/}
+                    </div>
 
                 <div className="text-center">
                     <h3 className="text-body4 font-regular">Want to suggest any changes to this project?</h3>
