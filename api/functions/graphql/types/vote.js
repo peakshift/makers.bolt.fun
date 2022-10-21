@@ -97,7 +97,7 @@ const getLightningAddress = async (item_id, item_type) => {
                     lightning_address: true
                 }
             }).then(data => data.lightning_address);
-        case "Comment":
+        case "PostComment":
             return prisma.postComment.findUnique({
                 where: { id: item_id }, include: {
                     user: {
