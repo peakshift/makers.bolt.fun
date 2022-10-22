@@ -77,15 +77,15 @@ function App() {
 
   return <div id="app" className='w-full'>
     <Helmet>
-      <title >makers.bolt.fun</title>
+      <title >Lightning Landscape</title>
       <meta
         name="description"
-        content="A lightning app directory made for and by the bitcoin community."
+        content="A directory for lightning startups, projects, and companies."
 
       />
       <meta
         property="og:title"
-        content="makers.bolt.fun"
+        content="Lightning Landscape"
 
       />
     </Helmet>
