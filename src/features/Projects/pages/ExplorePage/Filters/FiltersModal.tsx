@@ -224,9 +224,12 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
 
                     <div className="my-48"></div>
                     <div className='w-full bg-white content-container fixed bottom-0 left-0 py-24 border-t border-gray-200'>
-                        <div className="flex justify-end gap-16">
+                        <div className="flex justify-between gap-16">
                             <Button onClick={clearFilters}>Clear all</Button>
-                            <Button color='primary' onClick={applyFilters}>Apply filters</Button>
+                            <div className="flex gap-16">
+                                <Button onClick={onClose}>Cancel</Button>
+                                <Button color='primary' onClick={applyFilters}>Apply filters</Button>
+                            </div>
                         </div>
                     </div>
                 </div>

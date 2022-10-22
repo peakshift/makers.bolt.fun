@@ -14,12 +14,13 @@ import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { numberFormatter } from 'src/utils/helperFunctions';
 import { MEDIA_QUERIES } from 'src/utils/theme';
 import { FaDiscord, } from 'react-icons/fa';
-import { FiEdit2, FiGithub, FiGlobe, FiTwitter } from 'react-icons/fi';
+import { FiEdit2, FiEye, FiGithub, FiGlobe, FiStar, FiTwitter } from 'react-icons/fi';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import Badge from 'src/Components/Badge/Badge';
 import { Link } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
 import { IoMdClose } from 'react-icons/io';
+import { CgGitFork } from 'react-icons/cg';
 
 
 interface Props extends ModalCard {
@@ -178,23 +179,30 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                 <div>
                     <p className="text-body6 uppercase font-medium text-gray-400 mb-8">DATA</p>
                     <div className="flex flex-wrap gap-8">
-                        {project?.dead !== null && <Badge color='none' className='bg-red-100' size='sm'>Dead</Badge>}
-                        {project?.createdAt !== null && <Badge size='sm'>Created at: {new Date(project.createdAt).toLocaleDateString()}</Badge>}
-                        {project?.companyName !== null && <Badge size='sm'>Company Name: {project.companyName}</Badge>}
-                        {project?.endDate !== null && <Badge size='sm'>End date: {new Date(project.endDate).toLocaleDateString()}</Badge>}
-                        {project?.repository !== null && <Badge size='sm'><a href={project.repository} target='_blank' className='text-blue-500' rel="noreferrer">Repository</a> </Badge>}
-                        {project?.stars !== null && <Badge size='sm'>Stars: {project.stars}</Badge>}
-                        {project?.openSource !== null && <Badge size='sm'>Open source: {project.openSource}</Badge>}
-                        {project?.watchers !== null && <Badge size='sm'>Watchers: {project.watchers}</Badge>}
-                        {project?.forks !== null && <Badge size='sm'>Number of forks: {project.forks}</Badge>}
-                        {project?.license !== null && <Badge size='sm'>License: {project.license}</Badge>}
-                        {project?.language !== null && <Badge size='sm'>Language: {project.language}</Badge>}
-                        {project?.updatedAt !== null && <Badge size='sm'>Last updated at:{new Date(project.updatedAt).toLocaleDateString()}</Badge>}
+                        {project?.dead !== null && <Badge color='none' className='bg-red-100 text-gray-600' size='sm'>Dead</Badge>}
+                        {project?.createdAt !== null && <Badge size='sm' className='!text-gray-500'>Created at: <span className="font-bold text-gray-800">{new Date(project.createdAt).toLocaleDateString()}</span> </Badge>}
+                        {project?.companyName !== null && <Badge size='sm' className='!text-gray-500'>Company Name: <span className="font-bold text-gray-800">{project.companyName}</span> </Badge>}
+                        {project?.endDate !== null && <Badge size='sm' className='!text-gray-500'>End date: <span className="font-bold text-gray-800">{new Date(project.endDate).toLocaleDateString()}</span> </Badge>}
+                        {project?.openSource !== null && <Badge size='sm' className='!text-gray-500'>Open source: <span className="font-bold text-gray-800">{project.openSource ? "Yes" : "No"}</span> </Badge>}
+                        {project?.license !== null && <Badge size='sm' className='!text-gray-500'>License: <span className="font-bold text-gray-800">{project.license}</span> </Badge>}
+                        {project?.language !== null && <Badge size='sm' className='!text-gray-500'>Language: <span className="font-bold text-gray-800">{project.language}</span> </Badge>}
+                        {project?.updatedAt !== null && <Badge size='sm' className='!text-gray-500'>Last updated at: <span className="font-bold text-gray-800">{new Date(project.updatedAt).toLocaleDateString()}</span> </Badge>}
                     </div>
                 </div>
+                {!!project.repository && <div>
+                    <p className="text-body6 uppercase font-medium text-gray-400 mb-8">Repository</p>
+                    <a href={project.repository} target='_blank' className='text-blue-500' rel="noreferrer">{project.repository}</a>
+                    <div className="flex flex-wrap gap-16 text-gray-600 mt-8">
+                        <div className='flex gap-8 items-center'><FiStar /> {project.stars}</div>
+                        <div className='flex gap-8 items-center'><CgGitFork /> {project.forks}</div>
+                        <div className='flex gap-8 items-center'><FiEye /> {project.watchers}</div>
+                    </div>
+                </div>}
+
+                <hr className="bg-gray-100" />
 
                 <div className="text-center">
-                    <h3 className="text-body4 font-regular">Want to suggest any changes to this project?</h3>
+                    <h3 className="text-body4 text-body-600">Want to suggest any changes to this project?</h3>
                     <Button
                         color='gray'
                         size='md'

@@ -31,7 +31,6 @@ export default function Categories(props: Props) {
         containScroll: "trimSnaps",
     })
     const { data, loading } = useAllCategoriesQuery();
-    const navigate = useNavigate();
 
 
     if (loading || !data)
@@ -46,6 +45,7 @@ export default function Categories(props: Props) {
             )}
         </div>
 
+    const sortedByAppsCount = [...data.categoryList!].filter(v => !!v?.projectsCount).sort((a, b) => Number(b?.projectsCount!) - Number(a?.projectsCount!))
 
     return (
 
@@ -61,7 +61,7 @@ export default function Categories(props: Props) {
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                     >All projects</button>
-                    {data?.categoryList?.filter(c => c !== null).map((category, idx) =>
+                    {sortedByAppsCount.map((category, idx) =>
                         <button
                             key={category!.id}
                             onClick={() => {
