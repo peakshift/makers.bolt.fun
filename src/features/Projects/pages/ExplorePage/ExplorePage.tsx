@@ -31,33 +31,41 @@ export default function ExplorePage() {
     const [filters, setFilters] = useState<Partial<ProjectsFilters> | null>(null)
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
 
-    const queryFilters = useMemo(() => {
+    const { queryFilters, hasSearchFilters } = useMemo(() => {
         let filter: QueryFilter = {}
+        let hasSearchFilters = false;
 
-        if (!filters) return null;
-
-        if (filters.categoriesIds && filters.categoriesIds?.length > 0)
-            filter.categoryId = filters.categoriesIds;
-
+        if (filters?.categoriesIds && filters?.categoriesIds?.length > 0) {
+            filter.categoryId = filters?.categoriesIds;
+            hasSearchFilters = true;
+        }
         if (selectedCategory?.id) filter.categoryId = [selectedCategory?.id]
 
-        if (filters.tagsIds && filters.tagsIds?.length > 0)
-            filter.tags = filters.tagsIds
+        if (filters?.tagsIds && filters?.tagsIds?.length > 0) {
+            filter.tags = filters?.tagsIds
+            hasSearchFilters = true;
+        }
 
-        if (filters.yearFounded && filters.yearFounded !== 'any')
-            filter.yearFounded = Number(filters.yearFounded)
+        if (filters?.yearFounded && filters?.yearFounded !== 'any') {
+            filter.yearFounded = Number(filters?.yearFounded)
+            hasSearchFilters = true;
+        }
 
-        if (filters.projectStatus && filters.projectStatus !== 'any')
-            filter.dead = filters.projectStatus === 'alive' ? false : true;
+        if (filters?.projectStatus && filters?.projectStatus !== 'any') {
+            filter.dead = filters?.projectStatus === 'alive' ? false : true;
+            hasSearchFilters = true;
+        }
 
 
-        if (filters.projectLicense && filters.projectLicense !== 'any')
-            filter.license = filters.projectLicense
+        if (filters?.projectLicense && filters?.projectLicense !== 'any') {
+            filter.license = filters?.projectLicense
+            hasSearchFilters = true;
+        }
 
         if (Object.keys(filter).length === 0)
-            return null
+            return { queryFilters: null, hasSearchFilters }
 
-        return filter;
+        return { queryFilters: filter, hasSearchFilters };
     }, [filters, selectedCategory?.id])
 
     const { data, networkStatus, error } = useExplorePageQuery({
@@ -125,9 +133,9 @@ export default function ExplorePage() {
                     category={selectedCategory}
                 />
                 <div className="grid grid-cols-[1fr_auto] items-center gap-32">
-                    <div className="min-w-0"><Categories filtersActive={!!queryFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
+                    <div className="min-w-0"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
-                        className={`self-center ${!!queryFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
+                        className={`self-center ${hasSearchFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
                         variant='outline'
                         color='white'
                         onClick={openFilters}>
