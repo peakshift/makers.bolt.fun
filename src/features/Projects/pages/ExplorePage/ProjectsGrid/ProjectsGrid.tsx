@@ -31,6 +31,7 @@ export default function ProjectsGrid({ isLoading, projects }: Props) {
             gridGap: '24px',
         }}>
             {isLoading && Array(12).fill(0).map((_, idx) => <ProjectCardMiniSkeleton key={idx} />)}
+            {!isLoading && projects.length === 0 && <p className="text-center text-gray-400 py-48 text-body2 font-medium col-span-full">No results found here...</p>}
             {!isLoading && projects.map((project) => <ProjectCardMini key={project.id} project={project} onClick={handleClick} />)}
         </div>
     )

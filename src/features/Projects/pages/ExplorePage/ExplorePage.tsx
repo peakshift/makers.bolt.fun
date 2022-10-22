@@ -125,7 +125,7 @@ export default function ExplorePage() {
                     category={selectedCategory}
                 />
                 <div className="grid grid-cols-[1fr_auto] items-center gap-32">
-                    <div className="min-w-0"><Categories value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
+                    <div className="min-w-0"><Categories filtersActive={!!queryFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
                         className={`self-center ${!!queryFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
                         variant='outline'

@@ -20,6 +20,7 @@ const colors = [
 export type Category = Pick<CategoryList, 'id' | 'name' | 'icon' | 'projectsCount'>
 
 interface Props {
+    filtersActive?: boolean;
     value: Category | null
     onChange?: (v: Category | null) => void
 }
@@ -60,7 +61,7 @@ export default function Categories(props: Props) {
                             flex flex-col font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
-                    >All projects</button>
+                    >{props.filtersActive ? "Search results" : "All projects"}</button>
                     {sortedByAppsCount.map((category, idx) =>
                         <button
                             key={category!.id}
