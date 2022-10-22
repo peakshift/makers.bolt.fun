@@ -1,5 +1,5 @@
 {
-  "name": "makers-bolt-fun",
+  "name": "lightning-landscape",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -99,30 +99,13 @@
   },
   "scripts": {
     "client:dev-server": "env-cmd -f ./envs/client/dev-server.env react-scripts start",
-    "server:dev": "env-cmd -f ./envs/server/local.env  serverless offline",
     "client:preview-server": "env-cmd -f ./envs/client/preview-server.env react-scripts start",
-    "server:preview": "env-cmd -f ./envs/server/preview.env  serverless offline",
-    "client:prod-server": "env-cmd -f ./envs/client/prod-server.env react-scripts start",
-    "server:prod": "env-cmd -f ./envs/server/prod.env  serverless offline",
-    "client:mocks": "env-cmd -f ./envs/client/mock-server.env react-scripts start",
     "generate-graphql": "graphql-codegen",
-    "storybook": "env-cmd -f ./envs/client/preview-server.env start-storybook -p 6006 -s public",
-    "storybook:mocks": "env-cmd -f ./envs/client/mock-server.env start-storybook -p 6006 -s public",
     "build": "react-scripts build",
     "build:mocks": "env-cmd -f ./envs/client/mock-server.env react-scripts build",
-    "build-storybook": "env-cmd -f ./envs/client/preview-server.env build-storybook -s public",
-    "build-storybook:mocks": "env-cmd -f ./envs/client/mock-server.env build-storybook -s public",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "db:migrate-dev": "prisma migrate dev",
-    "db:migrate-deploy": "prisma migrate deploy",
-    "db:reset": "prisma migrate reset",
-    "db:seed": "prisma db seed",
-    "db:gui": "prisma studio",
     "netlify:start": "set NETLIFY=true&& netlify dev"
-  },
-  "prisma": {
-    "seed": "node prisma/seed/index.js"
   },
   "eslintConfig": {
     "extends": [
