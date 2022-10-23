@@ -54,7 +54,7 @@ export const apolloClient = new ApolloClient({
         typePolicies: {
             Query: {
                 fields: {
-                    getFeed: offsetLimitPagination(['sortBy', 'tag'])
+                    projects: offsetLimitPagination(['_filter'])
                 },
             },
         },
@@ -72,10 +72,11 @@ function offsetLimitPagination<T = Reference>(
             const merged = existing ? existing.slice(0) : [];
 
             if (args) {
-                // Assume an skip of 0 if args.skip omitted.
-                const { skip = 0 } = args;
+                // Assume an _page of 0 if args._page omitted.
+                const { _page = 1, _page_size = 20 } = args;
+                const offset = (_page - 1) * _page_size;
                 for (let i = 0; i < incoming.length; ++i) {
-                    merged[skip + i] = incoming[i];
+                    merged[offset + i] = incoming[i];
                 }
             } else {
                 // It's unusual (probably a mistake) for a paginated field not
