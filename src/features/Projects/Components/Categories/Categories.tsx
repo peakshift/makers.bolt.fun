@@ -48,8 +48,8 @@ export default function Categories(props: Props) {
 
     const sortedByAppsCount = [...data.categoryList!].filter(v => !!v?.projectsCount).sort((a, b) => Number(b?.projectsCount!) - Number(a?.projectsCount!))
 
-    return (
 
+    return (
         <div className="relative group">
             <div className="overflow-hidden border-b border-gray-200" ref={viewportRef}>
                 <div className="select-none w-full flex gap-8">
@@ -58,22 +58,26 @@ export default function Categories(props: Props) {
                             props.onChange?.(null)
                         }}
                         className={`
-                            flex flex-col font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
+                            text-center flex flex-wrap gap-8 flex-col justify-end font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                     >{props.filtersActive ? "Search results" : "All projects"}</button>
-                    {sortedByAppsCount.map((category, idx) =>
-                        <button
+                    {sortedByAppsCount.map((category, idx) => {
+                        if (category?.icon)
+                            console.log(category?.icon);
+
+                        return <button
                             key={category!.id}
                             onClick={() => {
                                 const isSame = props.value?.id === category?.id;
                                 props.onChange?.(isSame ? null : category)
                             }}
                             className={`
-                            flex flex-col font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-8 py-16 min-w-max
+                            text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-8 py-16 min-w-max
                             ${props.value?.id === category?.id ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
-                        >{category!.name} ({category?.projectsCount!})</button>
+                        ><i className={category?.icon ? `fa-regular fa-${category.icon}` : "fa-regular fa-circle-question"}></i>    <span className='w-full'>{category!.name} ({category?.projectsCount!})</span></button>
+                    }
                     )}
                 </div>
             </div>

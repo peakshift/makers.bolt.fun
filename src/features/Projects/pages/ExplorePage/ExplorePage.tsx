@@ -40,7 +40,6 @@ export default function ExplorePage() {
 
     useUpdateUrlWithFilters(filters)
 
-    // useQueryState(removeEmptyFitlers(filters ?? {}));
 
     const { queryFilters, hasSearchFilters } = useMemo(() => {
         let filter: QueryFilter = {}
@@ -88,7 +87,7 @@ export default function ExplorePage() {
         notifyOnNetworkStatusChange: true,
         onCompleted: data => {
             if ((data.projects?.length ?? 0) < PAGE_SIZE) setCanFetchMore(false);
-        }
+        },
     });
 
 
@@ -156,10 +155,10 @@ export default function ExplorePage() {
                 <title>{`Lightning Landscape`}</title>
                 <meta property="og:title" content={`Lightning Landscape`} />
             </Helmet>
-            <div className='page-container'>
-                <Header
-                    category={selectedCategory}
-                />
+            <Header
+                category={selectedCategory}
+            />
+            <div className="content-container mt-16">
                 <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16">
                     <div className="min-w-0 max-md:row-start-2"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
@@ -171,16 +170,16 @@ export default function ExplorePage() {
                         <span className='align-middle'>Filters</span>
                     </Button>
                 </div>
-                <div className="mt-40">
-                    <ProjectsGrid
-                        isLoading={isLoading}
-                        isLoadingMore={isLoadingMore}
-                        projects={data?.projects?.filter((p) => p !== null) as any[] ?? []}
-                    />
-                    {canLoadMore && <div className="flex justify-center mt-36">
-                        <Button onClick={clickFetchMore} color="gray"><HiOutlineChevronDoubleDown /> Load more</Button>
-                    </div>}
-                </div>
+            </div>
+            <div className="mt-40 page-container">
+                <ProjectsGrid
+                    isLoading={isLoading}
+                    isLoadingMore={isLoadingMore}
+                    projects={data?.projects?.filter((p) => p !== null) as any[] ?? []}
+                />
+                {canLoadMore && <div className="flex justify-center mt-36">
+                    <Button onClick={clickFetchMore} color="gray"><HiOutlineChevronDoubleDown /> Load more</Button>
+                </div>}
             </div>
         </>
     )
