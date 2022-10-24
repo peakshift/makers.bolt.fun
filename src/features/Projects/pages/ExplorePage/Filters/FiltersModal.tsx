@@ -3,12 +3,13 @@ import { ModalCard, modalCardVariants } from 'src/Components/Modals/ModalsContai
 import { motion } from 'framer-motion'
 import { IoClose } from 'react-icons/io5'
 import Button from 'src/Components/Button/Button'
-import { useAppDispatch } from 'src/utils/hooks'
+import { useAppDispatch, useMediaQuery } from 'src/utils/hooks'
 import { PayloadAction } from '@reduxjs/toolkit'
 import IconButton from 'src/Components/IconButton/IconButton'
 import { useGetFiltersQuery } from 'src/graphql'
 import Skeleton from 'react-loading-skeleton';
 import { random } from 'src/utils/helperFunctions';
+import { MEDIA_QUERIES } from 'src/utils/theme'
 
 interface Props extends ModalCard {
     initFilters?: Partial<ProjectsFilters>
@@ -48,6 +49,9 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
         else
             setCategoriesFilter([id]);
     }
+
+    const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
+
 
 
     const clickTag = (id: string) => {
@@ -223,12 +227,12 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                     </div>
 
                     <div className="my-48"></div>
-                    <div className='w-full bg-white content-container fixed bottom-0 left-0 py-24 border-t border-gray-200'>
+                    <div className='w-full bg-white content-container fixed z-10 bottom-0 left-0 py-24 border-t border-gray-200'>
                         <div className="flex justify-between gap-16">
-                            <Button onClick={clearFilters}>Clear all</Button>
+                            <Button size={isMdScreen ? 'md' : 'sm'} onClick={clearFilters}>Clear <span className="hidden md:inline">all</span></Button>
                             <div className="flex gap-16">
-                                <Button onClick={onClose}>Cancel</Button>
-                                <Button color='primary' onClick={applyFilters}>Apply filters</Button>
+                                <Button size={isMdScreen ? 'md' : 'sm'} onClick={onClose}>Cancel</Button>
+                                <Button size={isMdScreen ? 'md' : 'sm'} color='primary' onClick={applyFilters}>Apply <span className="hidden md:inline">filters</span></Button>
                             </div>
                         </div>
                     </div>

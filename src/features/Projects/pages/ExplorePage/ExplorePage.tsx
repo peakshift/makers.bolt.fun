@@ -4,7 +4,7 @@ import { useExplorePageQuery } from 'src/graphql';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
 import Categories, { Category } from '../../Components/Categories/Categories';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Header from './Header/Header';
 import Button from 'src/Components/Button/Button';
 import { useAppDispatch } from 'src/utils/hooks';
@@ -15,6 +15,7 @@ import { NetworkStatus } from '@apollo/client';
 import { FiSliders } from 'react-icons/fi';
 import { HiOutlineChevronDoubleDown } from 'react-icons/hi'
 import { ProjectsFilters } from './Filters/FiltersModal';
+import { getFiltersFromUrl, useUpdateUrlWithFilters } from './helpers';
 
 const UPDATE_FILTERS_ACTION = createAction<Partial<ProjectsFilters>>('PROJECTS_FILTERS_UPDATED')({})
 
@@ -32,10 +33,14 @@ const PAGE_SIZE = 20;
 export default function ExplorePage() {
 
     const dispatch = useAppDispatch();
-    const [filters, setFilters] = useState<Partial<ProjectsFilters> | null>(null)
+    const [filters, setFilters] = useState<Partial<ProjectsFilters> | null>(getFiltersFromUrl)
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const projectsLength = useRef<number>(0);
     const [canFetchMore, setCanFetchMore] = useState(true);
+
+    useUpdateUrlWithFilters(filters)
+
+    // useQueryState(removeEmptyFitlers(filters ?? {}));
 
     const { queryFilters, hasSearchFilters } = useMemo(() => {
         let filter: QueryFilter = {}
@@ -155,8 +160,8 @@ export default function ExplorePage() {
                 <Header
                     category={selectedCategory}
                 />
-                <div className="grid grid-cols-[1fr_auto] items-center gap-32">
-                    <div className="min-w-0"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
+                <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16">
+                    <div className="min-w-0 max-md:row-start-2"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
                         className={`self-center ${hasSearchFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
                         variant='outline'
