@@ -1,10 +1,13 @@
 import React from 'react'
 import { FiArrowLeft } from 'react-icons/fi'
+import { MdClose } from 'react-icons/md'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 import ASSETS from 'src/assets'
+import Badge from 'src/Components/Badge/Badge'
 import { Category } from 'src/features/Projects/Components/Categories/Categories'
 import { PAGES_ROUTES } from 'src/utils/routing'
+import { useProjectsFilters } from '../filters-context'
 
 type Props = {
     category: Category | null
@@ -16,6 +19,8 @@ export default function Header(props: Props) {
     let title = "Discover 1,592 lightning projects"
 
     if (props.category?.name) title = `${props.category.projectsCount} projects`;
+
+    const { filters, removeFilter } = useProjectsFilters();
 
 
     return (
@@ -37,6 +42,13 @@ export default function Header(props: Props) {
                 :
                 <p className="text-gray-600 font-medium text-body2">Explore a directory of lightning startups, projects, and companies</p>
             }
+            <div className="flex gap-8 flex-wrap mt-24">
+                {filters?.yearFounded && <Badge size='sm'>Founded in: <span className='font-bold'>{filters.yearFounded}</span> <button onClick={() => removeFilter("yearFounded")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
+                {filters?.projectStatus && <Badge size='sm'>Status: <span className='font-bold'>{filters?.projectStatus}</span> <button onClick={() => removeFilter("projectStatus")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
+                {filters?.projectLicense && <Badge size='sm'>License: <span className='font-bold'>{filters.projectLicense}</span> <button onClick={() => removeFilter("projectLicense")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
+                {filters?.categories && filters.categories.length > 0 && <Badge size='sm'>Category: <span className='font-bold'>{filters.categories[0].label}</span> <button onClick={() => removeFilter("categories")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
+                {filters?.tags && filters.tags.length > 0 && <Badge size='sm'>Tags: <span className='font-bold'>{filters.tags.map(t => t.label).join(', ')}</span> <button onClick={() => removeFilter("tags")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
+            </div>
         </div>
     )
 }

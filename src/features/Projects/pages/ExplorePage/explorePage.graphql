@@ -2,27 +2,11 @@ query ExplorePage($filter: JSON, $page: JSON, $pageSize: JSON) {
   projects(_filter: $filter, _page: $page, _page_size: $pageSize) {
     id
     title
-    category
     logo
-    yearFounded
-    websiteFunctionalLightningRelated
-    companyName
-    website
-    description
-    repository
-    status
-    dead
-    twitter
-    linkedIn
-    telegram
-    language
-    updatedAt
-    createdAt
-    discord
-    stars
-    categoryList {
+    tags {
       id
       name
+      icon
     }
   }
 }

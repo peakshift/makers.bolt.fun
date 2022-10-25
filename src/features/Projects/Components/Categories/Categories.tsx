@@ -27,7 +27,7 @@ interface Props {
 
 export default function Categories(props: Props) {
 
-    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev, isClickAllowed } = useCarousel({
+    const { viewportRef, scrollSlides, canScrollNext, canScrollPrev } = useCarousel({
         align: 'start', slidesToScroll: 2,
         containScroll: "trimSnaps",
     })
@@ -46,8 +46,6 @@ export default function Categories(props: Props) {
             )}
         </div>
 
-    const sortedByAppsCount = [...data.categoryList!].filter(v => !!v?.projectsCount).sort((a, b) => Number(b?.projectsCount!) - Number(a?.projectsCount!))
-
 
     return (
         <div className="relative group">
@@ -62,7 +60,7 @@ export default function Categories(props: Props) {
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                     >{props.filtersActive ? "Search results" : "All projects"}</button>
-                    {sortedByAppsCount.map((category, idx) => {
+                    {data.categoryList?.filter(v => !!v?.projectsCount && v.projectsCount !== '0').map((category, idx) => {
                         if (category?.icon)
                             console.log(category?.icon);
 

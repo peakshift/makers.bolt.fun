@@ -24,8 +24,8 @@ export interface IFormInputs {
 }
 
 export type ProjectsFilters = {
-    categoriesIds: string[]
-    tagsIds: string[]
+    categories: { id: string, label: string }[]
+    tags: { id: string, label: string }[]
     yearFounded: typeof yearsFoundedOptions[number]['value'],
     projectStatus: typeof projectStatusOptions[number]['value']
     projectLicense: typeof licensesOptions[number]['value']
@@ -37,28 +37,28 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
     const dispatch = useAppDispatch()
     const query = useGetFiltersQuery();
 
-    const [categoriesFilter, setCategoriesFilter] = useState<string[]>(initFilters?.categoriesIds ?? []);
-    const [tagsFilter, setTagsFilter] = useState<string[]>(initFilters?.tagsIds ?? []);
+    const [categoriesFilter, setCategoriesFilter] = useState(initFilters?.categories ?? []);
+    const [tagsFilter, setTagsFilter] = useState(initFilters?.tags ?? []);
     const [yearFoundedFilter, setYearFoundedFilter] = useState(initFilters?.yearFounded ?? "any");
     const [projectStatusFilter, setProjectStatusFilter] = useState(initFilters?.projectStatus ?? "any");
     const [projectLicenseFilter, setProjectLicenseFilter] = useState(initFilters?.projectLicense ?? "any");
 
-    const clickCategory = (id: string) => {
-        if (categoriesFilter.includes(id))
+    const clickCategory = (value: { id: string, label: string }) => {
+        if (categoriesFilter.some(v => v.id === value.id))
             setCategoriesFilter([]);
         else
-            setCategoriesFilter([id]);
+            setCategoriesFilter([value]);
     }
 
     const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
 
 
-    const clickTag = (id: string) => {
-        if (tagsFilter.includes(id))
-            setTagsFilter(tagsFilter.filter(v => v !== id));
+    const clickTag = (value: { id: string, label: string }) => {
+        if (tagsFilter.some(v => v.id === value.id))
+            setTagsFilter(tagsFilter.filter(v => v.id !== value.id));
         else
-            setTagsFilter([...tagsFilter, id]);
+            setTagsFilter([...tagsFilter, value]);
     }
 
     const createActionPayload = (filters: Partial<ProjectsFilters>) => {
@@ -73,8 +73,8 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
 
     const applyFilters = () => {
         dispatch(createActionPayload({
-            categoriesIds: categoriesFilter,
-            tagsIds: tagsFilter,
+            categories: categoriesFilter,
+            tags: tagsFilter,
             yearFounded: yearFoundedFilter,
             projectStatus: projectStatusFilter,
             projectLicense: projectLicenseFilter
@@ -84,7 +84,7 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
 
 
     const clearFilters = () => {
-        dispatch(dispatch(createActionPayload({ categoriesIds: [], tagsIds: [], yearFounded: 'any', projectStatus: 'any', projectLicense: "any" })))
+        dispatch(dispatch(createActionPayload({ categories: [], tags: [], yearFounded: 'any', projectStatus: 'any', projectLicense: "any" })))
         onClose?.();
     }
 
@@ -120,19 +120,18 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                                         className={`
                                                 px-12 py-8 border rounded-10 text-body5 font-medium
                                                 active:scale-95 transition-transform
-                                                ${!categoriesFilter.includes(category?.id!) ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
+                                                ${!categoriesFilter.some(f => f.id === category?.id!) ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
                                                 `}
-                                        onClick={() => clickCategory(category?.id!)}
-                                    >{category?.icon} {category?.name}
+                                        onClick={() => clickCategory({ id: category?.id!, label: category?.name! })}
+                                    >{category?.name}
                                     </button>
                                 </li>)}
                             {query.loading &&
                                 Array(10).fill(0).map((_, idx) => {
-
                                     return <div
                                         key={idx}
-                                        className={`px-12 py-8 border bg-gray-100 hover:bg-gray-200 border-gray-200 rounded-10 text-body5 font-medium`}
-                                    ><Skeleton width={`${Math.round(random(8, 15))}ch`} />
+                                        className={`px-12 py-8 border bg-gray-100 border-gray-200 rounded-10 text-body5 font-medium`}
+                                    ><Skeleton width="10ch" />
                                     </div>
                                 })}
                         </ul>
@@ -151,10 +150,10 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                                         className={`
                                                 px-12 py-8 border rounded-10 text-body5 font-medium
                                                 active:scale-95 transition-transform
-                                                ${!tagsFilter.includes(tag?.id!) ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
+                                                ${!tagsFilter.some(f => f.id === tag?.id!) ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
                                                 `}
-                                        onClick={() => clickTag(tag?.id!)}
-                                    >{tag?.icon} {tag?.name}
+                                        onClick={() => clickTag({ id: tag?.id!, label: tag?.name! })}
+                                    >{tag?.name}
                                     </button>
                                 </li>)}
                             {query.loading &&
@@ -162,8 +161,8 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
 
                                     return <div
                                         key={idx}
-                                        className={`px-12 py-8 border bg-gray-100 hover:bg-gray-200 border-gray-200 rounded-10 text-body5 font-medium`}
-                                    ><Skeleton width={`${Math.round(random(8, 15))}ch`} />
+                                        className={`px-12 py-8 border bg-gray-100 border-gray-200 rounded-10 text-body5 font-medium`}
+                                    ><Skeleton width="10ch" />
                                     </div>
                                 })}
                         </ul>

@@ -13,20 +13,20 @@ export function getFiltersFromUrl(): Partial<ProjectsFilters> {
 export function removeEmptyFitlers(filters: Partial<ProjectsFilters>): Partial<ProjectsFilters> {
     let res: Partial<ProjectsFilters> = {}
 
-    if (filters.yearFounded !== 'any')
+    if (filters.yearFounded && filters.yearFounded !== 'any')
         res.yearFounded = filters.yearFounded;
 
-    if (filters.projectLicense !== 'any')
+    if (filters.projectLicense && filters.projectLicense !== 'any')
         res.projectLicense = filters.projectLicense;
 
-    if (filters.projectStatus !== 'any')
+    if (filters.projectStatus && filters.projectStatus !== 'any')
         res.projectStatus = filters.projectStatus;
 
-    if (filters.categoriesIds && filters.categoriesIds?.length > 0)
-        res.categoriesIds = filters.categoriesIds;
+    if (filters.categories && filters.categories?.length > 0)
+        res.categories = filters.categories;
 
-    if (filters.tagsIds && filters.tagsIds?.length > 0)
-        res.tagsIds = filters.tagsIds;
+    if (filters.tags && filters.tags?.length > 0)
+        res.tags = filters.tags;
 
     return res;
 }
@@ -48,3 +48,4 @@ export const useUpdateUrlWithFilters = (state?: Partial<ProjectsFilters> | null)
     }, [location.pathname, location.search, navigate, state]);
 
 }
+

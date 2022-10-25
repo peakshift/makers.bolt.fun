@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { ComponentProps, ComponentType, Suspense } from "react";
+import React, { ComponentProps, ComponentType, PropsWithChildren, ReactElement, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { isNullOrUndefined } from "remirror";
 import axios from 'axios'
@@ -187,3 +187,13 @@ export const getSpanDate = (_date1: string, _date2: string) => {
 export function removeArrayItemAtIndex<T>(arr: T[], indexToRemove: number) {
   return [...arr.slice(0, indexToRemove), ...arr.slice(indexToRemove + 1)]
 }
+
+export function withBasicProvider
+  <TComponent extends React.ComponentType<any>>
+  (Provider: ComponentType<PropsWithChildren<any>>, Component: TComponent) {
+  return (props: ComponentProps<TComponent>) => (
+    <Provider>
+      <Component {...props} />
+    </Provider>
+  )
+};

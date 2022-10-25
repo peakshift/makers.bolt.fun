@@ -16,6 +16,8 @@ import { FiSliders } from 'react-icons/fi';
 import { HiOutlineChevronDoubleDown } from 'react-icons/hi'
 import { ProjectsFilters } from './Filters/FiltersModal';
 import { getFiltersFromUrl, useUpdateUrlWithFilters } from './helpers';
+import { withBasicProvider } from 'src/utils/helperFunctions';
+import { ProjectsFiltersProvider, useProjectsFilters } from './filters-context';
 
 const UPDATE_FILTERS_ACTION = createAction<Partial<ProjectsFilters>>('PROJECTS_FILTERS_UPDATED')({})
 
@@ -28,12 +30,14 @@ type QueryFilter = Partial<{
     license: string | null
 }>
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 28;
 
-export default function ExplorePage() {
+function ExplorePage() {
 
     const dispatch = useAppDispatch();
-    const [filters, setFilters] = useState<Partial<ProjectsFilters> | null>(getFiltersFromUrl)
+
+    const { filters, updateFilters } = useProjectsFilters();
+
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const projectsLength = useRef<number>(0);
     const [canFetchMore, setCanFetchMore] = useState(true);
@@ -45,29 +49,29 @@ export default function ExplorePage() {
         let filter: QueryFilter = {}
         let hasSearchFilters = false;
 
-        if (filters?.categoriesIds && filters?.categoriesIds?.length > 0) {
-            filter.categoryId = filters?.categoriesIds;
+        if (filters?.categories) {
+            filter.categoryId = filters?.categories.map(c => c.id);
             hasSearchFilters = true;
         }
         if (selectedCategory?.id) filter.categoryId = [selectedCategory?.id]
 
-        if (filters?.tagsIds && filters?.tagsIds?.length > 0) {
-            filter.tags = filters?.tagsIds
+        if (filters?.tags) {
+            filter.tags = filters?.tags.map(t => t.id)
             hasSearchFilters = true;
         }
 
-        if (filters?.yearFounded && filters?.yearFounded !== 'any') {
+        if (filters?.yearFounded) {
             filter.yearFounded = Number(filters?.yearFounded)
             hasSearchFilters = true;
         }
 
-        if (filters?.projectStatus && filters?.projectStatus !== 'any') {
+        if (filters?.projectStatus) {
             filter.dead = filters?.projectStatus === 'alive' ? false : true;
             hasSearchFilters = true;
         }
 
 
-        if (filters?.projectLicense && filters?.projectLicense !== 'any') {
+        if (filters?.projectLicense) {
             filter.license = filters?.projectLicense
             hasSearchFilters = true;
         }
@@ -97,12 +101,8 @@ export default function ExplorePage() {
     const onFiltersUpdated = useCallback(({ payload }: typeof UPDATE_FILTERS_ACTION) => {
         setSelectedCategory(null)
         setCanFetchMore(true);
-        if (Object.keys(payload).length === 0)
-            setFilters(null);
-        else
-            setFilters(payload);
-
-    }, [])
+        updateFilters(payload)
+    }, [updateFilters])
 
     useReduxEffect(onFiltersUpdated, UPDATE_FILTERS_ACTION.type)
 
@@ -184,3 +184,5 @@ export default function ExplorePage() {
         </>
     )
 }
+
+export default withBasicProvider(ProjectsFiltersProvider, ExplorePage);

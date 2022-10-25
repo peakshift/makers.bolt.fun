@@ -418,7 +418,7 @@ export type ExplorePageQueryVariables = Exact<{
 }>;
 
 
-export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, category: string | null, logo: Array<any | null> | null, yearFounded: number | null, websiteFunctionalLightningRelated: string | null, companyName: string | null, website: string | null, description: string | null, repository: string | null, status: string | null, dead: boolean | null, twitter: string | null, linkedIn: string | null, telegram: string | null, language: string | null, updatedAt: string | null, createdAt: string | null, discord: string | null, stars: number | null, categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null } | null> | null } | null> | null };
+export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, logo: Array<any | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null } | null> | null };
 
 export type ProjectDetailsQueryVariables = Exact<{
   projectsId: InputMaybe<Scalars['String']>;
@@ -513,27 +513,11 @@ export const ExplorePageDocument = gql`
   projects(_filter: $filter, _page: $page, _page_size: $pageSize) {
     id
     title
-    category
     logo
-    yearFounded
-    websiteFunctionalLightningRelated
-    companyName
-    website
-    description
-    repository
-    status
-    dead
-    twitter
-    linkedIn
-    telegram
-    language
-    updatedAt
-    createdAt
-    discord
-    stars
-    categoryList {
+    tags {
       id
       name
+      icon
     }
   }
 }
