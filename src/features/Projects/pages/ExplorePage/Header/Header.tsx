@@ -10,17 +10,25 @@ import { PAGES_ROUTES } from 'src/utils/routing'
 import { useProjectsFilters } from '../filters-context'
 
 type Props = {
-    category: Category | null
+    selectedCategry: Category | null
 }
 
 export default function Header(props: Props) {
 
 
-    let title = "Discover 1,592 lightning projects"
 
-    if (props.category?.name) title = `${props.category.projectsCount} projects`;
+    const { filters, filtersEmpty, removeFilter } = useProjectsFilters();
 
-    const { filters, removeFilter } = useProjectsFilters();
+    const onCategoryPage = !!props.selectedCategry?.name;
+    const onSearchPage = !onCategoryPage && !filtersEmpty
+
+
+    const title = onCategoryPage ? `${props.selectedCategry?.projectsCount} projects` :
+        filtersEmpty ? "Discover 1,592 lightning projects" : "Search results";
+
+    const subtitle = onCategoryPage ? props.selectedCategry?.name :
+        filtersEmpty ? "Explore a directory of lightning startups, projects, and companies"
+            : ""
 
 
     return (
@@ -37,18 +45,19 @@ export default function Header(props: Props) {
             <h1
                 className='text-primary-500 text-h1 font-medium'
             >{title}</h1>
-            {props.category?.name ?
-                <p className="text-gray-600 font-medium text-body1">{props.category?.name}</p>
-                :
-                <p className="text-gray-600 font-medium text-body2">Explore a directory of lightning startups, projects, and companies</p>
+            {subtitle &&
+                <p className="text-gray-600 font-medium text-body1">{subtitle}</p>
             }
-            <div className="flex gap-8 flex-wrap mt-24">
-                {filters?.yearFounded && <Badge size='sm'>Founded in: <span className='font-bold'>{filters.yearFounded}</span> <button onClick={() => removeFilter("yearFounded")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
-                {filters?.projectStatus && <Badge size='sm'>Status: <span className='font-bold'>{filters?.projectStatus}</span> <button onClick={() => removeFilter("projectStatus")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
-                {filters?.projectLicense && <Badge size='sm'>License: <span className='font-bold'>{filters.projectLicense}</span> <button onClick={() => removeFilter("projectLicense")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
-                {filters?.categories && filters.categories.length > 0 && <Badge size='sm'>Category: <span className='font-bold'>{filters.categories[0].label}</span> <button onClick={() => removeFilter("categories")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
-                {filters?.tags && filters.tags.length > 0 && <Badge size='sm'>Tags: <span className='font-bold'>{filters.tags.map(t => t.label).join(', ')}</span> <button onClick={() => removeFilter("tags")} className='ml-8 hover:scale-125'><MdClose /></button> </Badge>}
-            </div>
+            {onSearchPage && <div className=" ">
+                <p className="text-gray-500 font-medium text-body4 mb-24 text-center">filtered by</p>
+                <div className="flex gap-8 flex-wrap">
+                    {filters?.yearFounded && <Badge size='sm'>📆 Founded in <span className='font-bold text-gray-700'>{filters.yearFounded}</span> <button onClick={() => removeFilter("yearFounded")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
+                    {filters?.projectStatus && <Badge size='sm'>🌱 Status: <span className='font-bold text-gray-700'>{filters?.projectStatus}</span> <button onClick={() => removeFilter("projectStatus")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
+                    {filters?.projectLicense && <Badge size='sm'>💻 License: <span className='font-bold text-gray-700'>{filters.projectLicense}</span> <button onClick={() => removeFilter("projectLicense")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
+                    {filters?.categories && filters.categories.length > 0 && <Badge size='sm'>Category: <span className='font-bold text-gray-700'>{filters.categories[0].label}</span> <button onClick={() => removeFilter("categories")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
+                    {filters?.tags && filters.tags.length > 0 && <Badge size='sm'>Tags: <span className='font-bold text-gray-700'>{filters.tags.map(t => t.label).join(', ')}</span> <button onClick={() => removeFilter("tags")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
+                </div>
+            </div>}
         </div>
     )
 }

@@ -5,6 +5,7 @@ import { getFiltersFromUrl, removeEmptyFitlers } from "./helpers";
 
 interface State {
     filters: Partial<ProjectsFilters> | null,
+    filtersEmpty: boolean
     updateFilters: (value: Partial<ProjectsFilters>) => void,
     removeFilter: (filter: keyof ProjectsFilters) => void
 }
@@ -28,7 +29,9 @@ export const ProjectsFiltersProvider = (props: PropsWithChildren<Props>) => {
         setFilters(res);
     }, [filters]);
 
-    return <context.Provider value={{ filters, updateFilters, removeFilter }}>
+    const filtersEmpty = Object.keys(filters ?? {}).length === 0;
+
+    return <context.Provider value={{ filters, filtersEmpty, updateFilters, removeFilter }}>
         {props.children}
     </context.Provider>
 }

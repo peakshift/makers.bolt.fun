@@ -56,13 +56,11 @@ export default function Categories(props: Props) {
                             props.onChange?.(null)
                         }}
                         className={`
-                            text-center flex flex-wrap gap-8 flex-col justify-end font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
+                            text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
-                    >{props.filtersActive ? "Search results" : "All projects"}</button>
+                    ><i className={props.filtersActive ? "fa-solid fa-search" : "fa-solid fa-table-cells-large"}></i>    <span className='w-full'>{props.filtersActive ? "Search results" : "All projects"}</span></button>
                     {data.categoryList?.filter(v => !!v?.projectsCount && v.projectsCount !== '0').map((category, idx) => {
-                        if (category?.icon)
-                            console.log(category?.icon);
 
                         return <button
                             key={category!.id}
@@ -74,7 +72,7 @@ export default function Categories(props: Props) {
                             text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-8 py-16 min-w-max
                             ${props.value?.id === category?.id ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
-                        ><i className={category?.icon ? `fa-regular fa-${category.icon}` : "fa-regular fa-circle-question"}></i>    <span className='w-full'>{category!.name} ({category?.projectsCount!})</span></button>
+                        ><i className={category?.icon ? `fa-solid fa-${category.icon}` : "fa-regular fa-circle-question"}></i>    <span className='w-full'>{category!.name} ({category?.projectsCount!})</span></button>
                     }
                     )}
                 </div>

@@ -156,7 +156,7 @@ function ExplorePage() {
                 <meta property="og:title" content={`Lightning Landscape`} />
             </Helmet>
             <Header
-                category={selectedCategory}
+                selectedCategry={selectedCategory}
             />
             <div className="content-container mt-16">
                 <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16">
@@ -167,7 +167,7 @@ function ExplorePage() {
                         color='white'
                         onClick={openFilters}>
                         <FiSliders className="scale-150 mr-12" />
-                        <span className='align-middle'>Filters</span>
+                        <span className='align-middle'>Filter</span>
                     </Button>
                 </div>
             </div>
