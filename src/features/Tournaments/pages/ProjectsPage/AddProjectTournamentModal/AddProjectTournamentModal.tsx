@@ -151,7 +151,7 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                             <hr className="bg-gray-100 w-full absolute top-1/2 left-0 -translate-y-1/2" />
                             <span className="text-body6 text-gray-600 px-16 bg-white relative">OR</span>
                         </div>
-                        <Button fullWidth color='primary' href={createRoute({ type: "edit-profile" })} onClick={onClose}>Create new project</Button>
+                        <Button fullWidth color='primary' href={createRoute({ type: "edit-project" })} onClick={onClose}>Create new project</Button>
                     </>
                 }
             </div>
