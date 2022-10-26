@@ -32,7 +32,7 @@ export default function ProjectCard({ project, isOwner }: Props) {
     return (
         <Card className="flex flex-col gap-24">
             <div className="flex flex-wrap gap-24 items-start">
-                <img src={project.thumbnail_image} className='shrink-0 w-64 aspect-square rounded-12 object-cover outline outline-2 outline-gray-200' alt="" />
+                <img src={project.thumbnail_image!} className='shrink-0 w-64 aspect-square rounded-12 object-cover outline outline-2 outline-gray-200' alt="" />
                 <div className="flex flex-col gap-4 flex-1 overflow-hidden">
                     <p className="text-body2 text-gray-900 font-bold" role='button' onClick={openProject}>{project.title}</p>
                     <p className="text-body4 text-gray-600 font-medium">{project.category.icon} {project.category.title}</p>

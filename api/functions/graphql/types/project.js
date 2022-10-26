@@ -28,14 +28,14 @@ const Project = objectType({
         t.nonNull.string('website');
         t.nonNull.string('description');
         t.nonNull.string('hashtag');
-        t.nonNull.string('cover_image', {
+        t.string('cover_image', {
             async resolve(parent) {
                 if (parent.cover_image_rel)
                     return resolveImgObjectToUrl(parent.cover_image_rel);
                 return prisma.project.findUnique({ where: { id: parent.id } }).cover_image_rel().then(resolveImgObjectToUrl)
             }
         });
-        t.nonNull.string('thumbnail_image', {
+        t.string('thumbnail_image', {
             async resolve(parent) {
                 if (parent.thumbnail_image_rel)
                     return resolveImgObjectToUrl(parent.thumbnail_image_rel);

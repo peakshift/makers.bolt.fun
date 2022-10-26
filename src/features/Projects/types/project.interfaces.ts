@@ -24,11 +24,5 @@ export interface ProjectCategory {
     votes_sum: number;
 }
 
-export interface ProjectCard {
-    id: number;
-    title: string;
-    thumbnail_image: string;
-    category: Pick<ProjectCategory, 'id' | 'title'>;
-    votes_count: number;
-}
 
+export type ProjectCard = Pick<Project, 'id' | 'title' | 'thumbnail_image' | 'votes_count'> & { category: Pick<ProjectCategory, 'id' | 'title'> }

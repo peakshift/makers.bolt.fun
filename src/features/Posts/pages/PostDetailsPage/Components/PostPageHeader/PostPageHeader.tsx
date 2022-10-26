@@ -33,7 +33,7 @@ export default function PostPageHeader(props: Props) {
                     <Avatar width={48} src={props.author.avatar} />
                 </Link>
                 {props.project && <Link className='absolute bottom-0 right-0 translate-x-8' to={createRoute({ type: "project", tag: props.project.hashtag })}>
-                    <Avatar src={props.project.thumbnail_image} width={24} />
+                    <Avatar src={props.project.thumbnail_image!} width={24} />
                 </Link>}
             </div>
             <div className="flex flex-col gap-4">

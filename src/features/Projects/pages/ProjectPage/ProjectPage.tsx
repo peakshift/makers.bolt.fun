@@ -57,16 +57,16 @@ export default function ProjectPage() {
                 {project.lightning_address &&
                     <meta name="lightning" content={`lnurlp:${project.lightning_address}`} />
                 }
-                <meta property="og:image" content={project.cover_image} />
+                <meta property="og:image" content={project.cover_image!} />
             </Helmet>
             <div className="relative w-full md:hidden h-[120px]">
-                <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
+                <img className="w-full h-full object-cover" src={project.cover_image!} alt="" />
                 <div className="absolute top-16 md:top-24 left-24 flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
                     {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
                     {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
                 </div>
                 <div className="absolute left-24 bottom-0 translate-y-1/2 w-[108px] aspect-square">
-                    <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image} alt="" />
+                    <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image!} alt="" />
                 </div>
             </div>
             <div className={`content-container pb-32 md:pt-32 bg-white md:bg-inherit`}

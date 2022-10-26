@@ -23,7 +23,7 @@ export default function ProjectCardMini({ project, onClick }: Props) {
             tabIndex={0}
             role='button'
         >
-            <img src={project.thumbnail_image} alt={project.title} draggable="false" className="flex-shrink-0 w-64 h-64 bg-gray-200 border-0 rounded-full hover:cursor-pointer"></img>
+            <img src={project.thumbnail_image!} alt={project.title} draggable="false" className="flex-shrink-0 w-64 h-64 bg-gray-200 border-0 rounded-full hover:cursor-pointer"></img>
             <div className="justify-around items-start min-w-0 flex-1 hover:cursor-pointer"
             >
                 <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project.title}</p>

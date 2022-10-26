@@ -37,7 +37,7 @@ export default function ProjectAddedModal({ onClose, direction, project, tournam
             <IoClose className='absolute text-body2 top-24 right-24 hover:cursor-pointer' onClick={onClose} />
             <h2 className='text-h5 font-bold text-center'>Project added!</h2>
             <div className="flex flex-col gap-16 justify-center items-center my-24">
-                <Avatar src={project.thumbnail_image} width={80} />
+                <Avatar src={project.thumbnail_image!} width={80} />
                 <p className="text-body3 font-medium">{project.title}</p>
             </div>
             <p className="text-body4 font-light text-gray-600 mt-24 text-center">
