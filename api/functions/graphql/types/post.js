@@ -563,6 +563,7 @@ const createStory = extendType({
                                 cover_image: '',
                                 excerpt,
                                 is_published: was_published || is_published,
+                                createdAt: (!was_published && is_published) ? new Date() : undefined,
                                 project: project_id ? {
                                     connect: {
                                         id: project_id,
