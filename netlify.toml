@@ -12,6 +12,10 @@
 
 [[edge_functions]]
 path = "/story/*"
-function = "add-og-tags"
+function = "insert-og-tags-story"
+
+[[edge_functions]]
+path = "/project/*"
+function = "insert-og-tags-project"
 
  

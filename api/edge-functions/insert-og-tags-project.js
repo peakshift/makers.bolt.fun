@@ -3,25 +3,19 @@
 const handler = async (request, context) => {
 
     const url = new URL(request.url);
-    if (!url.pathname.startsWith('/story/')) {
+    if (!url.pathname.startsWith('/project/')) {
         return;
     }
 
-    const slug = url.pathname.slice(url.pathname.indexOf('/story/') + 7);
-
-    const id = Number(slug?.includes('--') ? slug.slice(slug.lastIndexOf('--') + 2) : undefined)
-
-    if (Number.isNaN(id)) return;
+    const tag = url.pathname.slice(url.pathname.indexOf('/project/') + 9);
 
     // Get the page content
     const response = await context.next();
     const page = await response.text();
 
-    const metaData = await fetch(url.origin + `/.netlify/functions/get-story-metadata?id=${id}`)
+    const metaData = await fetch(url.origin + `/.netlify/functions/get-object-metadata?projectTag=${tag}`)
         .then(res => res.json())
-        .catch(console.log);
-
-
+        .catch();
 
 
     const ogTitleRgx = /<meta +property="og:title" +content="([^"]+)" +data-react-helmet="true" *\/>/gm

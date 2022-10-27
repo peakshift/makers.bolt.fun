@@ -86,8 +86,8 @@ functions:
 
 
   upload-image-url:
-    handler: api/functions/get-story-metadata/get-story-metadata.handler
+    handler: api/functions/get-object-metadata/get-object-metadata.handler
     events:
       - http:
-          path: get-story-metadata
+          path: get-object-metadata
           method: get
