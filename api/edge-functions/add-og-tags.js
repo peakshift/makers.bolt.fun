@@ -25,18 +25,24 @@ const handler = async (request, context) => {
         .then(res => res.json())
         .catch(console.log);
 
-    console.log(metaData);
+
 
 
     // Search for the placeholder
     const regex = /"__META_DATA_PLACEHOLDER__"/;
 
+    const ogTitleRgx = /<meta +property="og:title" +content="([^"]+)" +data-react-helmet="true" *\/>/gm
+    const ogDescRgx = /<meta +property="og:description" +content="([^"]+)" +data-react-helmet="true" *\/>/gm
+    const ogImgRgx = /<meta +property="og:image" +content="([^"]+)" +data-react-helmet="true" *\/>/gm
+
 
 
     // Replace the content
     const updatedPage = page
-        .replace(regex, JSON.stringify(metaData));
-    console.log(updatedPage);
+        .replace(ogTitleRgx, `<meta property="og:title" content="${metaData.title}" data-react-helmet="true" />`)
+        .replace(ogDescRgx, `<meta property="og:description" content="${metaData.description}" data-react-helmet="true" />`)
+        .replace(ogImgRgx, `<meta property="og:image" content="${metaData.image}" data-react-helmet="true" />`)
+
     return new Response(updatedPage, response);
 };
 
