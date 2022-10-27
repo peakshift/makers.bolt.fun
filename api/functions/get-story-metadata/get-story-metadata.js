@@ -6,9 +6,6 @@ const { prisma } = require('../../prisma');
 const { resolveImgObjectToUrl } = require('../../utils/resolveImageUrl');
 
 
-
-
-
 const getStoryMetadata = async (req, res) => {
 
     const { id } = req.query;

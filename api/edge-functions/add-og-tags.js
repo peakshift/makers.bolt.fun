@@ -2,14 +2,10 @@
 
 const handler = async (request, context) => {
 
-    // Just return what was requested without transforming it, 
-    // unless we fnd the query parameter for this demo
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/story/')) {
         return;
     }
-
-    console.log(url);
 
     const slug = url.pathname.slice(url.pathname.indexOf('/story/') + 7);
 
@@ -27,9 +23,6 @@ const handler = async (request, context) => {
 
 
 
-
-    // Search for the placeholder
-    const regex = /"__META_DATA_PLACEHOLDER__"/;
 
     const ogTitleRgx = /<meta +property="og:title" +content="([^"]+)" +data-react-helmet="true" *\/>/gm
     const ogDescRgx = /<meta +property="og:description" +content="([^"]+)" +data-react-helmet="true" *\/>/gm
