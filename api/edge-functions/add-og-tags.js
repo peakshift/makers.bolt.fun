@@ -1,8 +1,4 @@
 
-// const { prisma } = require('../prisma')
-// const { resolveImgObjectToUrl } = require("../utils/resolveImageUrl")
-
-import { prisma } from "../prisma";
 
 const handler = async (request, context) => {
 
@@ -12,6 +8,8 @@ const handler = async (request, context) => {
     if (!url.pathname.startsWith('/story/')) {
         return;
     }
+
+    console.log(url);
 
     const slug = url.pathname.slice(url.pathname.indexOf('/story/') + 7);
 
@@ -23,22 +21,16 @@ const handler = async (request, context) => {
     const response = await context.next();
     const page = await response.text();
 
-    const storyData = await prisma.story.findUnique({
-        where: { id }, select: {
-            title: true,
-            excerpt: true,
-            cover_image_rel: true,
-        }
-    })
+    const metaData = await fetch(url.origin + `/.netlify/functions/get-story-metadata?id=${id}`)
+        .then(res => res.json())
+        .catch(console.log);
+
+    console.log(metaData);
+
 
     // Search for the placeholder
     const regex = /"__META_DATA_PLACEHOLDER__"/;
 
-    const metaData = {
-        title: storyData.title,
-        description: storyData.excerpt,
-        // image: resolveImgObjectToUrl(storyData.cover_image_rel),
-    }
 
 
     // Replace the content
