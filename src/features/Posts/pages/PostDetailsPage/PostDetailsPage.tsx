@@ -45,10 +45,9 @@ export default function PostDetailsPage(props: Props) {
 
     return (
         <>
-            {/* <Helmet>
+            <Helmet>
                 <title>{post.title}</title>
-                <meta property="og:title" content={post.title} />
-            </Helmet> */}
+            </Helmet>
             <ScrollToTop />
             <div
                 className={`page-container max-md:bg-white`}
