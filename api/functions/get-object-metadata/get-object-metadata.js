@@ -22,7 +22,7 @@ const getObjectMetadata = async (req, res) => {
             const project = await prisma.project.findFirst({ where: { hashtag: projectTag }, select: { title: true, description: true, cover_image_rel: true } })
             return res
                 .status(200)
-                .json({ title: project.title, description: project.excerpt, image: resolveImgObjectToUrl(project.cover_image_rel) });
+                .json({ title: project.title, description: project.description, image: resolveImgObjectToUrl(project.cover_image_rel) });
         }
 
         return res.status(400).send("No valid object identifier detected")
