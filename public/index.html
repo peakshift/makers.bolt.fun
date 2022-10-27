@@ -26,21 +26,6 @@
       content="A lightning app directory made for and by the bitcoin community."
       data-react-helmet="true"
     />
-    <meta
-      property="og:title"
-      content="makers.bolt.fun"
-      data-react-helmet="true"
-    />
-    <meta
-      property="og:description"
-      content="A lightning app directory made for and by the bitcoin community."
-      data-react-helmet="true"
-    />
-    <meta
-      property="og:image"
-      content="%PUBLIC_URL%/assets/images/og-thumbnail.jpg"
-      data-react-helmet="true"
-    />
     <script
       defer
       data-domain="makers.bolt.fun"
@@ -65,22 +50,29 @@
     -->
     <script>
       let metaData = "__META_DATA_PLACEHOLDER__";
-      if (typeof metaData === "object") {
-        if (metaData.title) {
-          document
-            .querySelector('meta[property="og:title"]')
-            .setAttribute("content", metaData.title);
-          document.title = metaData.title;
-        }
-        if (metaData.description)
-          document
-            .querySelector('meta[property="og:description"]')
-            .setAttribute("content", metaData.description);
-        if (metaData.image)
-          document
-            .querySelector('meta[property="og:image"]')
-            .setAttribute("content", metaData.image);
+      const metaDataDefault = {
+        title: "makers.bolt.fun",
+        description:
+          "A lightning app directory made for and by the bitcoin community.",
+        image: "%PUBLIC_URL%/assets/images/og-thumbnail.jpg",
+      };
+
+      if (typeof metaData === "object")
+        metaData = { ...metaDataDefault, ...metaData };
+      else metaData = metaDataDefault;
+
+      function createOGMetaTag(property, content) {
+        const meta = document.createElement("meta");
+        meta.setAttribute("property", property);
+        meta.setAttribute("content", content);
+        meta.setAttribute("data-react-helmet", "true");
+        document.getElementsByTagName("head")[0].appendChild(meta);
       }
+
+      document.title = metaData.title;
+      createOGMetaTag("og:title", metaData.title);
+      createOGMetaTag("og:description", metaData.description);
+      createOGMetaTag("og:image", metaData.image);
     </script>
   </body>
 </html>

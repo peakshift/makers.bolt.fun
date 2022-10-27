@@ -1,12 +1,7 @@
 
-const LnurlAuthService = require('../../auth/services/lnurlAuth.service')
 const serverless = require('serverless-http');
 const { createExpressApp } = require('../../modules');
 const express = require('express');
-const jose = require('jose');
-const { JWT_SECRET } = require('../../utils/consts');
-const extractUserFromCookie = require('../../utils/extractUserFromCookie');
-const { getUserById } = require('../../auth/utils/helperFuncs');
 const { prisma } = require('../../prisma');
 const { resolveImgObjectToUrl } = require('../../utils/resolveImageUrl');
 

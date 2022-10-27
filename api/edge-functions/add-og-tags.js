@@ -34,7 +34,8 @@ const handler = async (request, context) => {
 
 
     // Replace the content
-    const updatedPage = page.replace(regex, JSON.stringify(metaData));
+    const updatedPage = page
+        .replace(regex, JSON.stringify(metaData));
     console.log(updatedPage);
     return new Response(updatedPage, response);
 };
