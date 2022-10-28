@@ -31,10 +31,10 @@ const handler = async (request, context) => {
 
 
     // Replace the content
-    const updatedPage = page
-        .replace(ogTitleRgx, `<meta property="og:title" content="${metaData.title}" data-react-helmet="true" />`)
-        .replace(ogDescRgx, `<meta property="og:description" content="${metaData.description}" data-react-helmet="true" />`)
-        .replace(ogImgRgx, `<meta property="og:image" content="${metaData.image}" data-react-helmet="true" />`)
+    let updatedPage = page;
+    if (metaData.title) updatedPage = updatedPage.replace(ogTitleRgx, `<meta property="og:title" content="${metaData.title}" data-react-helmet="true" />`)
+    if (metaData.description) updatedPage = updatedPage.replace(ogDescRgx, `<meta property="og:description" content="${metaData.description}" data-react-helmet="true" />`)
+    if (metaData.image) updatedPage = updatedPage.replace(ogImgRgx, `<meta property="og:image" content="${metaData.image}" data-react-helmet="true" />`)
 
     return new Response(updatedPage, response);
 };
