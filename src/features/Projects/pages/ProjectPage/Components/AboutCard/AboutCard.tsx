@@ -66,7 +66,7 @@ export default function AboutCard({ project }: Props) {
                     {project.launch_status === ProjectLaunchStatusEnum.Wip && `🔧 WIP`}
                 </div>
                 <div className="absolute left-24 bottom-0 translate-y-1/2 w-[108px] aspect-square">
-                    <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image!} alt="" />
+                    <img className="w-full h-full border-2 bg-white border-white rounded-24" src={project.thumbnail_image!} alt="" />
                 </div>
             </div>
             <div className="md:p-24 md:pt-0 flex flex-col gap-24">
