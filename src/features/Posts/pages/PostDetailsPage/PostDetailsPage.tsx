@@ -47,7 +47,6 @@ export default function PostDetailsPage(props: Props) {
         <>
             <Helmet>
                 <title>{post.title}</title>
-                <meta property="og:title" content={post.title} />
             </Helmet>
             <ScrollToTop />
             <div
