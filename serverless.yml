@@ -83,3 +83,11 @@ functions:
       - http:
           path: upload-image-url
           method: post
+
+
+  upload-image-url:
+    handler: api/functions/get-object-metadata/get-object-metadata.handler
+    events:
+      - http:
+          path: get-object-metadata
+          method: get
