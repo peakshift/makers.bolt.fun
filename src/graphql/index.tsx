@@ -418,7 +418,7 @@ export type ExplorePageQueryVariables = Exact<{
 }>;
 
 
-export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, logo: Array<any | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null } | null> | null };
+export type ExplorePageQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'projects', id: string | null, title: string | null, logo: Array<any | null> | null, dead: boolean | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null } | null> | null };
 
 export type ProjectDetailsQueryVariables = Exact<{
   projectsId: InputMaybe<Scalars['String']>;
@@ -514,6 +514,7 @@ export const ExplorePageDocument = gql`
     id
     title
     logo
+    dead
     tags {
       id
       name

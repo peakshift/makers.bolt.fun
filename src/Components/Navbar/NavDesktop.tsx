@@ -44,9 +44,7 @@ export default function NavDesktop() {
                             <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
                         </h2>
                     </Link>
-                    <ul className="flex gap-32 xl:gap-64"></ul>
-
-                    <div className="flex-1"></div>
+                    <Button color="primary" size="sm" className="ml-auto">Submit project</Button>
 
                     <motion.div
                         animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}

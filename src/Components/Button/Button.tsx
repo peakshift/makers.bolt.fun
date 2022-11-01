@@ -83,7 +83,7 @@ const Button = React.forwardRef<any, Props>(({ color = 'white',
     ...props }, ref) => {
 
     let classes = `
-    inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center relative
+    inline-block font-sans rounded-12 font-regular hover:cursor-pointer text-center relative
     ${baseBtnStyles[variant]}
     ${btnPadding[size]}
     ${variant === 'fill' ? btnStylesFill[color] : btnStylesOutline[color]}

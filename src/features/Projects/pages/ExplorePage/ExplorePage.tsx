@@ -40,6 +40,7 @@ function ExplorePage() {
 
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const projectsLength = useRef<number>(0);
+    const [showDeadProjects, setShowDeadProjects] = useState(false)
     const [canFetchMore, setCanFetchMore] = useState(true);
 
     useUpdateUrlWithFilters(filters)
@@ -48,6 +49,8 @@ function ExplorePage() {
     const { queryFilters, hasSearchFilters } = useMemo(() => {
         let filter: QueryFilter = {}
         let hasSearchFilters = false;
+
+        const defaultFilters = {} as const;
 
         if (filters?.categories) {
             filter.categoryId = filters?.categories.map(c => c.id);
@@ -143,6 +146,8 @@ function ExplorePage() {
         </div>
     }
 
+    const deadProjectsCount = data?.projects?.filter(p => p?.dead).length;
+    const hasDeadProjectsFilter = filters?.projectStatus === 'dead';
 
     const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch || networkStatus === NetworkStatus.setVariables;
     const isLoadingMore = networkStatus === NetworkStatus.fetchMore;
@@ -171,11 +176,22 @@ function ExplorePage() {
                     </Button>
                 </div>
             </div>
-            <div className="mt-40 page-container">
+            <div className="mt-24 page-container">
+                <div className="flex justify-end mb-24">
+                    <label className='flex gap-16 items-center'>
+                        <input
+                            disabled={hasDeadProjectsFilter}
+                            checked={showDeadProjects}
+                            className='input-checkbox self-center'
+                            onChange={e => setShowDeadProjects(v => !v)}
+                            type="checkbox" />
+                        <span className={`text-body4 text-gray-800 ${hasDeadProjectsFilter && 'opacity-60'}`}>Show dead projects {deadProjectsCount !== undefined && `(${deadProjectsCount})`}</span>
+                    </label>
+                </div>
                 <ProjectsGrid
                     isLoading={isLoading}
                     isLoadingMore={isLoadingMore}
-                    projects={data?.projects?.filter((p) => p !== null) as any[] ?? []}
+                    projects={data?.projects?.filter((p) => p !== null && ((showDeadProjects ? true : !p.dead) || hasDeadProjectsFilter)) as any[] ?? []}
                 />
                 {canLoadMore && <div className="flex justify-center mt-36">
                     <Button onClick={clickFetchMore} color="gray"><HiOutlineChevronDoubleDown /> Load more</Button>

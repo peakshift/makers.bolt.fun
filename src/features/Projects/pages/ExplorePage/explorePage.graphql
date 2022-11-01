@@ -3,6 +3,7 @@ query ExplorePage($filter: JSON, $page: JSON, $pageSize: JSON) {
     id
     title
     logo
+    dead
     tags {
       id
       name

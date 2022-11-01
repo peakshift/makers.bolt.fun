@@ -25,5 +25,5 @@ export interface ProjectCategory {
 }
 
 
-export type ProjectCard = Pick<Projects, 'id' | 'title' | 'logo' | 'tags'>
+export type ProjectCard = Pick<Projects, 'id' | 'title' | 'logo' | 'tags' | "dead">
 

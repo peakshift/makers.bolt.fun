@@ -108,19 +108,21 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
             url: project?.repository
         },
     ];
+    const logo = project?.logo?.[0]['thumbnails']['large'].url ?? `https://avatars.dicebear.com/api/initials/${project.title}.svg`
+
 
     return (
         <div
             className={`modal-card max-w-[676px] ${(props.isPageModal && !isMdScreen) && '!rounded-0 w-full min-h-screen'}`}
         >
             {/* Cover Image */}
-            <div className="relative h-[120px] lg:h-[80px]">
+            <div className="relative h-[120px] lg:h-[80px] bg-gray-400">
                 {/* <img className="w-full h-full object-cover" src={project?.cover_image} alt="" /> */}
                 <div className="absolute w-full px-16 md:px-24 top-16 md:top-24 flex justify-between items-center">
-                    <div className="flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
-                        {project?.yearFounded && `Year founded ${project.yearFounded}`}
-                    </div>
-                    <div className="flex gap-8">
+                    {project?.yearFounded && <div className="flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
+                        {`Year founded ${project.yearFounded}`}
+                    </div>}
+                    <div className="flex gap-8 ml-auto">
                         <button className="w-32 h-32  bg-gray-800 bg-opacity-60 text-white rounded-full hover:bg-opacity-40 text-center flex flex-col justify-center items-center" onClick={closeModal}><IoMdClose className=' inline-block' /></button>
                     </div>
                 </div>
@@ -129,8 +131,8 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
                 {/* Title & Basic Info */}
                 <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 md:items-center relative">
-                    <div className="flex-shrink-0 w-[108px] h-[108px] border-2 border-gray-200 rounded-24 overflow-hidden ">
-                        <img className="w-full h-full object-cover" src={project?.logo?.[0]['thumbnails']['large'].url} alt="" />
+                    <div className="flex-shrink-0 w-[108px] h-[108px]">
+                        <img className="w-full h-full object-cover border-2 border-gray-200 rounded-24" src={logo} alt="" />
                     </div>
                     <div className='flex flex-col gap-8 items-start justify-between'>
                         <a href={project?.website!} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project?.title}</h3></a>
@@ -179,7 +181,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                 <div>
                     <p className="text-body6 uppercase font-medium text-gray-400 mb-8">DATA</p>
                     <div className="flex flex-wrap gap-8">
-                        {project?.dead !== null && <Badge color='none' className='bg-red-100 text-gray-600' size='sm'>Dead</Badge>}
+                        {project?.dead !== null && <Badge color='none' className='bg-red-100 text-gray-600' size='sm'>💀 Dead</Badge>}
                         {project?.createdAt !== null && <Badge size='sm' className='!text-gray-500'>Created at: <span className="font-bold text-gray-800">{new Date(project.createdAt).toLocaleDateString()}</span> </Badge>}
                         {project?.companyName !== null && <Badge size='sm' className='!text-gray-500'>Company Name: <span className="font-bold text-gray-800">{project.companyName}</span> </Badge>}
                         {project?.endDate !== null && <Badge size='sm' className='!text-gray-500'>End date: <span className="font-bold text-gray-800">{new Date(project.endDate).toLocaleDateString()}</span> </Badge>}
