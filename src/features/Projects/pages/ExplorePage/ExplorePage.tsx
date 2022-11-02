@@ -163,7 +163,7 @@ function ExplorePage() {
             <Header
                 selectedCategry={selectedCategory}
             />
-            <div className="content-container mt-16">
+            <div className="page-container">
                 <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16">
                     <div className="min-w-0 max-md:row-start-2"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
@@ -175,9 +175,7 @@ function ExplorePage() {
                         <span className='align-middle'>Filter</span>
                     </Button>
                 </div>
-            </div>
-            <div className="mt-24 page-container">
-                <div className="flex justify-end mb-24">
+                <div className="flex justify-end mb-12 md:mb-24 my-24">
                     <label className='flex gap-16 items-center'>
                         <input
                             disabled={hasDeadProjectsFilter}
