@@ -1,5 +1,5 @@
 query AllCategories($filter: JSON) {
-  categoryList(_filter: $filter) {
+  categoryList(isHidden: false, _filter: $filter) {
     projectsCount
     id
     name

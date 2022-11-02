@@ -1,7 +1,8 @@
 
+import { openModal } from "react-url-modal";
 import ProjectCardMini from "src/features/Projects/Components/ProjectCardMini/ProjectCardMini";
 import ProjectCardMiniSkeleton from 'src/features/Projects/Components/ProjectCardMini/ProjectCardMini.Skeleton';
-import { openModal } from 'src/redux/features/modals.slice';
+// import { openModal } from 'src/redux/features/modals.slice';
 import { useAppDispatch } from 'src/utils/hooks';
 import { ProjectCard } from 'src/utils/interfaces';
 
@@ -16,13 +17,19 @@ export default function ProjectsGrid({ isLoading, isLoadingMore, projects }: Pro
     const dispatch = useAppDispatch();
 
     const handleClick = (projectId: string) => {
-        dispatch(openModal({
-            Modal: "ProjectDetailsCard",
-            isPageModal: true,
-            props: {
+        // dispatch(openModal({
+        //     Modal: "ProjectDetailsCard",
+        //     isPageModal: true,
+        //     props: {
+        //         projectId
+        //     }
+        // }))
+        openModal({
+            name: "projectDetails",
+            params: {
                 projectId
             }
-        }))
+        })
     }
 
     return (

@@ -31,6 +31,18 @@ export function removeEmptyFitlers(filters: Partial<ProjectsFilters>): Partial<P
     return res;
 }
 
+const extractNonFiltersParams = (params?: Record<string, any> & Partial<ProjectsFilters>) => {
+    const filtersKeys: (keyof ProjectsFilters)[] = ['categories', 'projectLicense', 'tags', 'projectStatus', 'yearFounded'];
+    if (!params) return {};
+    let res: Record<string, any> = {};
+    for (const [key, value] of Object.entries(params)) {
+        if (filtersKeys.includes(key as any)) continue;
+        res[key] = value;
+    }
+    console.log(res);
+    return res;
+}
+
 
 export const useUpdateUrlWithFilters = (state?: Partial<ProjectsFilters> | null) => {
     const location = useLocation()
@@ -38,14 +50,21 @@ export const useUpdateUrlWithFilters = (state?: Partial<ProjectsFilters> | null)
 
     useEffect(() => {
 
+        const allParams = qs.parse(window.location.search.slice(1))
+        console.log(allParams);
+
+        const nonFiltersParams = extractNonFiltersParams(allParams);
+        const filtersParams = removeEmptyFitlers({ ...state } ?? {});
+
+
         const queryString = qs.stringify(
-            removeEmptyFitlers(state ?? {}),
+            { ...filtersParams, ...nonFiltersParams },
             { skipNulls: true }
         )
 
-        navigate(`${location.pathname}?${queryString}`, { replace: true });
+        navigate(`${window.location.pathname}?${queryString}`, { replace: true });
 
-    }, [location.pathname, location.search, navigate, state]);
+    }, [navigate, state]);
 
 }
 

@@ -9,13 +9,13 @@ import { setIsMobileScreen } from 'src/redux/features/ui.slice';
 import { isMobileScreen } from './helperFunctions';
 import ReactTooltip from 'react-tooltip';
 import { ToastContainer } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import THEME from './theme';
 import { NotificationsService } from 'src/services';
 import ErrorPage from 'src/Components/Errors/ErrorPage/ErrorPage';
 import { ErrorBoundary } from 'react-error-boundary';
+
 THEME.injectStyles();
 
 let basename = '/';
@@ -40,7 +40,6 @@ export const useWrapperSetup = () => {
 
     useResizeListener(resizeListener)
 }
-
 
 export default function Wrapper(props: any) {
 

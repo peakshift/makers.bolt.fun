@@ -133,6 +133,7 @@ export type QueryCategoryListArgs = {
   description: InputMaybe<Scalars['String']>;
   icon: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['String']>;
+  isHidden: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
   projectFromData: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   projectsCount: InputMaybe<Scalars['String']>;
@@ -318,6 +319,7 @@ export type CategoryList = {
   description: Maybe<Scalars['String']>;
   icon: Maybe<Scalars['String']>;
   id: Maybe<Scalars['String']>;
+  isHidden: Maybe<Scalars['Boolean']>;
   name: Maybe<Scalars['String']>;
   projectFromData: Maybe<Array<Maybe<Scalars['String']>>>;
   projectsCount: Maybe<Scalars['String']>;
@@ -430,7 +432,7 @@ export type ProjectDetailsQuery = { __typename?: 'Query', getProject: Array<{ __
 
 export const AllCategoriesDocument = gql`
     query AllCategories($filter: JSON) {
-  categoryList(_filter: $filter) {
+  categoryList(isHidden: false, _filter: $filter) {
     projectsCount
     id
     name

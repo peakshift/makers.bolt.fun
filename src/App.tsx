@@ -10,7 +10,10 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
 import { Loadable, PAGES_ROUTES } from "./utils/routing";
-
+import { URLModal } from "react-url-modal";
+import ProjectDetailsCard from 'src/features/Projects/pages/ProjectPage/ProjectDetailsCard/ProjectDetailsCard';
+import Modal from "./Components/Modals/Modal/Modal";
+import ReactModal from "react-modal";
 
 // Pages
 // const FeedPage = Loadable(React.lazy(() => import(  /* webpackChunkName: "feed_page" */ "./features/Posts/pages/FeedPage/FeedPage")))
@@ -33,6 +36,27 @@ import { Loadable, PAGES_ROUTES } from "./utils/routing";
 
 const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage/ExplorePage")))
 
+const ModalWrapper = ({ children, onClose, visible }: any) => {
+  return <ReactModal
+    isOpen={visible}
+    onRequestClose={onClose}
+    overlayClassName='fixed w-full inset-0 overflow-x-hidden z-[2020] no-scrollbar'
+    className=' '
+    closeTimeoutMS={1000}
+    contentElement={(_props, children) => <div {..._props} className={`
+        ${_props.className} 
+        w-screen min-h-screen relative flex flex-col justify-center items-center inset-0
+         `}>
+      <div
+        onClick={onClose}
+        className={`absolute w-full h-full top-0 left-0 bg-gray-300 bg-opacity-50`}
+      ></div>
+      {children}
+    </div>}
+  >
+    {children}
+  </ReactModal>
+}
 
 
 function App() {
@@ -89,6 +113,13 @@ function App() {
 
       />
     </Helmet>
+    <URLModal
+      adapter={null}
+      Wrapper={ModalWrapper}
+      modals={{
+        projectDetails: ProjectDetailsCard,
+      }}
+    />
     <Suspense fallback={<LoadingPage />}>
       <Routes>
         {/* <Route path={PAGES_ROUTES.blog.writeStory} element={<ProtectedRoute><CreatePostPage initType="story" /></ProtectedRoute>} /> */}

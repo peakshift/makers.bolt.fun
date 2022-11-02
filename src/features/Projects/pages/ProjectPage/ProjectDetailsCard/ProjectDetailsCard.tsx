@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
-import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
+import { Direction, openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
@@ -24,10 +24,13 @@ import { CgGitFork } from 'react-icons/cg';
 
 
 interface Props extends ModalCard {
-    projectId: string;
+    params: {
+        projectId: string;
+    }
+
 }
 
-export default function ProjectDetailsCard({ direction, projectId, ...props }: Props) {
+export default function ProjectDetailsCard({ params: { projectId }, ...props }: Props) {
 
     const dispatch = useAppDispatch();
     const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
@@ -64,7 +67,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
     if (error)
         return <div
-            className={`modal-card max-w-[768px] ${props.isPageModal && !isMdScreen && 'rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[768px] ${!isMdScreen && 'rounded-0 w-full min-h-screen'}`}
         >
             <div className="p-64">
                 <ErrorMessage type='fetching' message='Something Wrong happened while fetching project details, please try refreshing the page' />
@@ -72,7 +75,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         </div>
 
     if (loading)
-        return <ProjectCardSkeleton onClose={closeModal} direction={direction} isPageModal={props.isPageModal} />;
+        return <ProjectCardSkeleton onClose={closeModal} isPageModal={true} />;
 
 
     const project = data?.getProject?.[0];
@@ -113,7 +116,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
 
     return (
         <div
-            className={`modal-card max-w-[676px] ${(props.isPageModal && !isMdScreen) && '!rounded-0 w-full min-h-screen'}`}
+            className={`modal-card max-w-[676px] ${(!isMdScreen) && '!rounded-0 w-full min-h-screen'}`}
         >
             {/* Cover Image */}
             <div className="relative h-[120px] lg:h-[80px] bg-gray-400">
@@ -132,7 +135,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                 {/* Title & Basic Info */}
                 <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 md:items-center relative">
                     <div className="flex-shrink-0 w-[108px] h-[108px]">
-                        <img className="w-full h-full object-cover border-2 border-gray-200 rounded-24" src={logo} alt="" />
+                        <img className="w-full h-full object-cover border-2 bg-white border-gray-200 rounded-24" src={logo} alt="" />
                     </div>
                     <div className='flex flex-col gap-8 items-start justify-between'>
                         <a href={project?.website!} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project?.title}</h3></a>
