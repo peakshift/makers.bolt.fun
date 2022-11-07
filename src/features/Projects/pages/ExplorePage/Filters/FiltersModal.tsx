@@ -95,7 +95,7 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
             initial='initial'
             animate="animate"
             exit='exit'
-            className="modal-card p-24 min-h-screen !rounded-0 relative"
+            className="modal-card min-h-screen !rounded-0 relative"
         >
 
             <div className="page-container relative">
@@ -226,7 +226,7 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                     </div>
 
                     <div className="my-48"></div>
-                    <div className='w-full bg-white content-container fixed z-10 bottom-0 left-0 py-24 border-t border-gray-200'>
+                    <div className='content-container w-full bg-white content-container fixed z-10 bottom-0 left-0 py-24 border-t border-gray-200'>
                         <div className="flex justify-between gap-16">
                             <Button size={isMdScreen ? 'md' : 'sm'} onClick={clearFilters}>Clear <span className="hidden md:inline">all</span></Button>
                             <div className="flex gap-16">

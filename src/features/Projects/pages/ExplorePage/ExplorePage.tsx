@@ -129,6 +129,10 @@ function ExplorePage() {
     }
 
     const selectCategoryTab = (category: Category | null) => {
+        if (filters) {
+            const { categories, ...filtersWithoutCategory } = filters
+            updateFilters(filtersWithoutCategory)
+        }
         setSelectedCategory(category);
         setCanFetchMore(true);
     }
