@@ -6,7 +6,7 @@ import { Comment } from "../types";
 import { useDebouncedState } from "@react-hookz/web";
 import { Post_Type } from "src/graphql";
 
-const pool = relayPool();
+let pool = relayPool();
 
 const useComments = (config: {
     type: Post_Type,
@@ -16,34 +16,46 @@ const useComments = (config: {
     const commentsEventsTemp = useRef<Record<string, Required<NostrEvent>>>({})
     const [commentsEvents, setCommentsEvents] = useDebouncedState<Record<string, Required<NostrEvent>>>({}, 1000)
     const pendingResolvers = useRef<Record<string, () => void>>({});
+    const subscription = useRef<{ unsub: Function } | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ status: "Connecting", connectedRelaysCount: 0 })
     const filter = useMemo(() => `boltfun ${config.type}_comment ${config.id}` + (process.env.NODE_ENV === 'development' ? ' dev' : ""), [config.id, config.type])
+    const [commentsTree, setCommentsTree] = useState<Comment[]>([]);
 
-    const [commentsTree, setCommentsTree] = useState<Comment[]>([])
+
+    const connectToPool = useCallback(
+        () => {
+            if (subscription.current !== null)
+                subscription.current.unsub();
+            connect();
+            let sub = pool.sub({
+                filter: {
+                    "#r": [filter]
+                },
+                cb: async (event: Required<NostrEvent>) => {
+                    //Got a new event 
+                    if (!event.id) return;
+
+                    if (event.id in commentsEventsTemp.current) return;
+
+                    commentsEventsTemp.current[event.id] = event;
+
+                    setCommentsEvents({ ...commentsEventsTemp.current })
+                }
+            });
+            subscription.current = sub;
+        },
+        [filter, setCommentsEvents],
+    )
+
 
 
     useEffect(() => {
-        connect();
-        let sub = pool.sub({
-            filter: {
-                "#r": [filter]
-            },
-            cb: async (event: Required<NostrEvent>) => {
-                //Got a new event 
-                if (!event.id) return;
-
-                if (event.id in commentsEventsTemp.current) return;
-
-                commentsEventsTemp.current[event.id] = event;
-
-                setCommentsEvents({ ...commentsEventsTemp.current })
-            }
-        });
+        connectToPool();
 
         return () => {
-            sub.unsub();
+            subscription.current?.unsub();
         };
-    }, [filter, setCommentsEvents]);
+    }, [connectToPool]);
 
     useEffect(() => {
         (async () => {
@@ -125,12 +137,13 @@ const useComments = (config: {
     }, [filter]);
 
 
-    return { commentsTree, postComment, connectionStatus }
+    return { commentsTree, postComment, retryConnection: connectToPool, connectionStatus }
 }
 
 export default useComments;
 
 function connect() {
+    pool = relayPool();
     CONSTS.DEFAULT_RELAYS.forEach(url => {
         pool.addRelay(url, { read: true, write: true })
     })
