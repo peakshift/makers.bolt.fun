@@ -168,7 +168,7 @@ function ExplorePage() {
                 selectedCategry={selectedCategory}
             />
             <div className="page-container">
-                <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16">
+                <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16 mb-36">
                     <div className="min-w-0 max-md:row-start-2"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
                         className={`self-center ${hasSearchFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
@@ -177,9 +177,10 @@ function ExplorePage() {
                         onClick={openFilters}>
                         <FiSliders className="scale-150 mr-12" />
                         <span className='align-middle'>Filter</span>
+                        {hasSearchFilters && <span className='absolute bg-primary-600 text-body6 text-white w-24 aspect-square rounded-full top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center border-2 border-white items-center '>{Object.keys(filters ?? {}).length}</span>}
                     </Button>
                 </div>
-                <div className="flex justify-end mb-12 md:mb-24 my-24">
+                {/* <div className="flex justify-end mb-12 md:mb-24 my-24">
                     <label className='flex gap-16 items-center'>
                         <input
                             disabled={hasDeadProjectsFilter}
@@ -189,11 +190,11 @@ function ExplorePage() {
                             type="checkbox" />
                         <span className={`text-body4 text-gray-800 ${hasDeadProjectsFilter && 'opacity-60'}`}>Show dead projects {deadProjectsCount !== undefined && `(${deadProjectsCount})`}</span>
                     </label>
-                </div>
+                </div> */}
                 <ProjectsGrid
                     isLoading={isLoading}
                     isLoadingMore={isLoadingMore}
-                    projects={data?.projects?.filter((p) => p !== null && ((showDeadProjects ? true : !p.dead) || hasDeadProjectsFilter)) as any[] ?? []}
+                    projects={data?.projects?.filter((p) => p !== null) as any[] ?? []}
                 />
                 {canLoadMore && <div className="flex justify-center mt-36">
                     <Button onClick={clickFetchMore} color="gray"><HiOutlineChevronDoubleDown /> Load more</Button>

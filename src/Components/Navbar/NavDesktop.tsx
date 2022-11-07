@@ -14,6 +14,7 @@ import '@szhsin/react-menu/dist/index.css';
 import { FiChevronDown } from "react-icons/fi";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import Button from "../Button/Button";
+import { BiRocket } from "react-icons/bi";
 
 
 export default function NavDesktop() {
@@ -44,7 +45,7 @@ export default function NavDesktop() {
                             <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
                         </h2>
                     </Link>
-                    <Button color="primary" size="sm" className="ml-auto">Submit project</Button>
+                    <Button color="primary" size="sm" variant="text" className="ml-auto">Submit project <BiRocket /></Button>
 
                     <motion.div
                         animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}

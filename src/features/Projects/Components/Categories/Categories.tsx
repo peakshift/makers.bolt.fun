@@ -50,16 +50,16 @@ export default function Categories(props: Props) {
     return (
         <div className="relative group">
             <div className="overflow-hidden border-b border-gray-200" ref={viewportRef}>
-                <div className="select-none w-full flex gap-8">
+                <div className="select-none w-full flex gap-32">
                     <button
                         onClick={() => {
                             props.onChange?.(null)
                         }}
                         className={`
-                            text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-16 py-16 min-w-max
+                            text-body5 text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium py-16 min-w-max
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
-                    ><i className={props.filtersActive ? "fa-solid fa-search" : "fa-solid fa-table-cells-large"}></i>    <span className='w-full'>{props.filtersActive ? "Search results" : "All projects"}</span></button>
+                    ><i className="fa-solid fa-table-cells-large"></i>    <span className='w-full'>All Projects</span></button>
                     {data.categoryList?.filter(v => !!v?.projectsCount && v.projectsCount !== '0').map((category, idx) => {
 
                         return <button
@@ -69,7 +69,7 @@ export default function Categories(props: Props) {
                                 props.onChange?.(isSame ? null : category)
                             }}
                             className={`
-                            text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium hover:bg-gray-100 active:bg-gray-200 rounded-t-8 px-8 py-16 min-w-max
+                            text-body5 text-center flex flex-wrap gap-8 flex-col justify-end items-center font-medium  py-16 min-w-max
                             ${props.value?.id === category?.id ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                         ><i className={category?.icon ? `fa-solid fa-${category.icon}` : "fa-regular fa-circle-question"}></i>    <span className='w-full'>{category!.name} ({category?.projectsCount!})</span></button>

@@ -27,8 +27,8 @@ export default function ProjectCardMini({ project, onClick }: Props) {
             <img src={logo} alt={project?.title ?? ''} draggable="false" className="flex-shrink-0 w-64 h-64 object-cover bg-gray-200 border border-gray-200 rounded-full hover:cursor-pointer"></img>
             <div className="justify-around items-start min-w-0 flex-1 hover:cursor-pointer"
             >
-                <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project.dead && "💀 "}{project?.title}</p>
-                <p className="text-body5 text-gray-600 font-light my-[5px]">{tag?.name}</p>
+                <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">{project?.title}</p>
+                <p className="text-body5 text-gray-600 font-light mt-4"><span className={`scale-150 inline-block ${project.dead ? "text-red-500" : "text-green-400"}`}>•</span> {tag?.name}</p>
                 {/* <span className="chip-small bg-warning-50 text-yellow-700 font-light text-body5 py-[3px] px-10"> <MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {numberFormatter(project?.votes_count)} </span> */}
             </div>
             {/* <VoteButton votes={project?.votes_count} direction='vertical' dense onVote={vote}></VoteButton> */}

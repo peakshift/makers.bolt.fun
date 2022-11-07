@@ -1,5 +1,5 @@
 query GetFilters {
-  categoryList {
+  categoryList(isHidden: false) {
     id
     name
     icon

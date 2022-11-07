@@ -471,7 +471,7 @@ export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategorie
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
 export const GetFiltersDocument = gql`
     query GetFilters {
-  categoryList {
+  categoryList(isHidden: false) {
     id
     name
     icon
