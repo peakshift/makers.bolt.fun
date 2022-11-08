@@ -4,7 +4,7 @@ import { useExplorePageQuery } from 'src/graphql';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
 import Categories, { Category } from '../../Components/Categories/Categories';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Header from './Header/Header';
 import Button from 'src/Components/Button/Button';
 import { useAppDispatch } from 'src/utils/hooks';
@@ -98,11 +98,15 @@ function ExplorePage() {
 
 
     const onFiltersUpdated = useCallback(({ payload }: typeof UPDATE_FILTERS_ACTION) => {
-        setCanFetchMore(true);
         updateFilters(payload)
     }, [updateFilters])
 
-    useReduxEffect(onFiltersUpdated, UPDATE_FILTERS_ACTION.type)
+    useReduxEffect(onFiltersUpdated, UPDATE_FILTERS_ACTION.type);
+
+
+    useEffect(() => {
+        setCanFetchMore(true);
+    }, [filters])
 
 
     const openFilters = () => {
@@ -125,7 +129,6 @@ function ExplorePage() {
 
     const selectCategoryTab = (category: Category | null) => {
         updateFilters({ ...(filters ?? {}), categories: category ? [category] : undefined })
-        setCanFetchMore(true);
     }
 
     const clickFetchMore = () => {
