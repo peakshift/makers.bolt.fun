@@ -25,12 +25,13 @@ interface Props {
     initialContent?: string;
     placeholder?: string;
     avatar: string;
+    isDisconnected?: boolean;
     autoFocus?: boolean
     onSubmit?: (comment: string) => Promise<boolean>;
 }
 
 
-export default function AddComment({ initialContent, placeholder, avatar, autoFocus, onSubmit }: Props) {
+export default function AddComment({ initialContent, placeholder, avatar, autoFocus, onSubmit, isDisconnected }: Props) {
 
     const containerRef = useRef<HTMLDivElement>(null)
     const linkExtension = useMemo(() => {
@@ -120,9 +121,10 @@ export default function AddComment({ initialContent, placeholder, avatar, autoFo
                         onClick={submitComment}
                         color='primary'
                         className='ml-auto'
+                        disabled={isDisconnected}
                         isLoading={isLoading}
                     >
-                        Submit
+                        {isDisconnected ? "Waiting for connection..." : "Submit"}
                     </Button>
                 </div>
             </Remirror>
