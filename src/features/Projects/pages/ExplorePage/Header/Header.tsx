@@ -1,12 +1,7 @@
-import React from 'react'
-import { FiArrowLeft } from 'react-icons/fi'
+
 import { MdClose } from 'react-icons/md'
-import Skeleton from 'react-loading-skeleton'
-import { Link } from 'react-router-dom'
-import ASSETS from 'src/assets'
 import Badge from 'src/Components/Badge/Badge'
 import { Category } from 'src/features/Projects/Components/Categories/Categories'
-import { PAGES_ROUTES } from 'src/utils/routing'
 import { useProjectsFilters } from '../filters-context'
 
 type Props = {
@@ -23,16 +18,16 @@ export default function Header(props: Props) {
     const onSearchPage = !onCategoryPage && !filtersEmpty
 
 
-    const title = onCategoryPage ? `${props.selectedCategry?.projectsCount} projects` :
-        filtersEmpty ? "Discover 1,592 lightning projects" : "Search results";
+    const title = onCategoryPage ? `${props.selectedCategry?.name} projects` :
+        filtersEmpty ? "Discover 1,592 lightning projects" : "All lightning projects";
 
-    const subtitle = onCategoryPage ? props.selectedCategry?.name :
+    const subtitle = onCategoryPage ? "" :
         filtersEmpty ? "Explore a directory of lightning startups, projects, and companies"
             : ""
 
 
     return (
-        <div className='h-[280px] rounded-20 overflow-hidden relative flex flex-col justify-center items-center gap-8'>
+        <div className='h-[280px] rounded-20 overflow-hidden relative text-center flex flex-col justify-center items-center gap-8'>
             <img src="/assets/images/cover.png" alt="" className='absolute inset-0 opacity-20 w-full h-full object-cover z-[-1]' />
             {/* <div className='absolute inset-0 w-full h-full bg-gray-300 bg-opacity-50   z-[-1]' /> */}
             {/* <Link
@@ -53,11 +48,11 @@ export default function Header(props: Props) {
                     {!filtersEmpty && <div className=" ">
                         <p className="text-gray-500 font-medium text-body4 mb-8 mt-8 text-center">filtered by</p>
                         <div className="flex gap-8 flex-wrap">
+                            {filters?.categories && filters.categories.length > 0 && <Badge size='sm'>Category: <span className='font-bold text-gray-700'>{filters.categories[0].name}</span> <button onClick={() => removeFilter("categories")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
+                            {filters?.tags && filters.tags.length > 0 && <Badge size='sm'>🏷️ <span className='font-bold text-gray-700'>{filters.tags.map(t => t.label).join(', ')}</span> <button onClick={() => removeFilter("tags")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
                             {filters?.yearFounded && <Badge size='sm'>📆 Founded in <span className='font-bold text-gray-700'>{filters.yearFounded}</span> <button onClick={() => removeFilter("yearFounded")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
                             {filters?.projectStatus && <Badge size='sm'>🌱 Status: <span className='font-bold text-gray-700'>{filters?.projectStatus}</span> <button onClick={() => removeFilter("projectStatus")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
                             {filters?.projectLicense && <Badge size='sm'>💻 <span className='font-bold text-gray-700'>{filters.projectLicense}</span> <button onClick={() => removeFilter("projectLicense")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
-                            {filters?.categories && filters.categories.length > 0 && <Badge size='sm'>Category: <span className='font-bold text-gray-700'>{filters.categories[0].label}</span> <button onClick={() => removeFilter("categories")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
-                            {filters?.tags && filters.tags.length > 0 && <Badge size='sm'>🏷️ <span className='font-bold text-gray-700'>{filters.tags.map(t => t.label).join(', ')}</span> <button onClick={() => removeFilter("tags")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
                         </div>
                     </div>}
                 </div>

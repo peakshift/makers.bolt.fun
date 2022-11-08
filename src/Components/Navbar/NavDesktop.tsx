@@ -41,8 +41,9 @@ export default function NavDesktop() {
             <div className="content-container">
                 <div className="flex items-center">
                     <Link to="/">
-                        <h2 className="text-h5 font-bold mr-40 lg:mr-64">
-                            <img className='h-40' src={ASSETS.Logo} alt="Bolt fun logo" />
+                        <h2 className="text-body5 md:text-h5 font-bold mr-24 md:mr-40 lg:mr-64 flex items-center gap-16">
+                            <img className='h-40' src={ASSETS.LogoLight} alt="Lightning Landscape Logo" />
+                            <span className="font-extrabold">Lightning Landscape</span>
                         </h2>
                     </Link>
                     <Button color="primary" size="sm" variant="text" className="ml-auto">Submit project <BiRocket /></Button>

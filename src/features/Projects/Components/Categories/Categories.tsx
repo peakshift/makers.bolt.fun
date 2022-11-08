@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { CategoryList, useAllCategoriesQuery } from 'src/graphql';
+import { CategoryList, useAllCategoriesQuery, useGetFiltersQuery } from 'src/graphql';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useCarousel } from 'src/utils/hooks';
 import Skeleton from 'react-loading-skeleton';
@@ -31,7 +31,7 @@ export default function Categories(props: Props) {
         align: 'start', slidesToScroll: 2,
         containScroll: "trimSnaps",
     })
-    const { data, loading } = useAllCategoriesQuery();
+    const { data, loading } = useGetFiltersQuery();
 
 
     if (loading || !data)

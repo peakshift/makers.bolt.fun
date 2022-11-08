@@ -6,7 +6,7 @@ import Button from 'src/Components/Button/Button'
 import { useAppDispatch, useMediaQuery } from 'src/utils/hooks'
 import { PayloadAction } from '@reduxjs/toolkit'
 import IconButton from 'src/Components/IconButton/IconButton'
-import { useGetFiltersQuery } from 'src/graphql'
+import { GetFiltersQuery, useGetFiltersQuery } from 'src/graphql'
 import Skeleton from 'react-loading-skeleton';
 import { random } from 'src/utils/helperFunctions';
 import { MEDIA_QUERIES } from 'src/utils/theme'
@@ -17,14 +17,15 @@ interface Props extends ModalCard {
 }
 
 
-
 export interface IFormInputs {
     text: string,
     href: string,
 }
 
+type FilterCategory = NonNullable<NonNullable<GetFiltersQuery['categoryList']>[number]>
+
 export type ProjectsFilters = {
-    categories: { id: string, label: string }[]
+    categories: FilterCategory[]
     tags: { id: string, label: string }[]
     yearFounded: typeof yearsFoundedOptions[number]['value'],
     projectStatus: typeof projectStatusOptions[number]['value']
@@ -43,7 +44,7 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
     const [projectStatusFilter, setProjectStatusFilter] = useState(initFilters?.projectStatus ?? "any");
     const [projectLicenseFilter, setProjectLicenseFilter] = useState(initFilters?.projectLicense ?? "any");
 
-    const clickCategory = (value: { id: string, label: string }) => {
+    const clickCategory = (value: FilterCategory) => {
         if (categoriesFilter.some(v => v.id === value.id))
             setCategoriesFilter([]);
         else
@@ -122,8 +123,8 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                                                 active:scale-95 transition-transform
                                                 ${!categoriesFilter.some(f => f.id === category?.id!) ? "bg-gray-100 hover:bg-gray-200 border-gray-200" : "bg-primary-100 text-primary-600 border-primary-200"}
                                                 `}
-                                        onClick={() => clickCategory({ id: category?.id!, label: category?.name! })}
-                                    >{category?.name}
+                                        onClick={() => clickCategory(category!)}
+                                    >{category?.icon && <i className={`fa-solid fa-${category?.icon} mr-8 text-gray-700`}></i>} {category?.name}
                                     </button>
                                 </li>)}
                             {query.loading &&

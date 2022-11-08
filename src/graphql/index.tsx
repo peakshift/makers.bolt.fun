@@ -411,7 +411,7 @@ export type AllCategoriesQuery = { __typename?: 'Query', categoryList: Array<{ _
 export type GetFiltersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFiltersQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null };
+export type GetFiltersQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null, projectsCount: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null };
 
 export type ExplorePageQueryVariables = Exact<{
   filter: InputMaybe<Scalars['JSON']>;
@@ -475,6 +475,7 @@ export const GetFiltersDocument = gql`
     id
     name
     icon
+    projectsCount
   }
   tags {
     id
@@ -512,7 +513,12 @@ export type GetFiltersLazyQueryHookResult = ReturnType<typeof useGetFiltersLazyQ
 export type GetFiltersQueryResult = Apollo.QueryResult<GetFiltersQuery, GetFiltersQueryVariables>;
 export const ExplorePageDocument = gql`
     query ExplorePage($filter: JSON, $page: JSON, $pageSize: JSON) {
-  projects(_filter: $filter, _page: $page, _page_size: $pageSize) {
+  projects(
+    _order_by: ["dead", "title"]
+    _filter: $filter
+    _page: $page
+    _page_size: $pageSize
+  ) {
     id
     title
     logo

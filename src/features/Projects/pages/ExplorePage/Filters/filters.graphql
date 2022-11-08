@@ -3,6 +3,7 @@ query GetFilters {
     id
     name
     icon
+    projectsCount
   }
   tags {
     id

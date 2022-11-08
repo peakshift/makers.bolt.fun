@@ -4,7 +4,7 @@ import { useExplorePageQuery } from 'src/graphql';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import { Helmet } from "react-helmet";
 import Categories, { Category } from '../../Components/Categories/Categories';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import Header from './Header/Header';
 import Button from 'src/Components/Button/Button';
 import { useAppDispatch } from 'src/utils/hooks';
@@ -15,7 +15,7 @@ import { NetworkStatus } from '@apollo/client';
 import { FiSliders } from 'react-icons/fi';
 import { HiOutlineChevronDoubleDown } from 'react-icons/hi'
 import { ProjectsFilters } from './Filters/FiltersModal';
-import { getFiltersFromUrl, useUpdateUrlWithFilters } from './helpers';
+import { useUpdateUrlWithFilters } from './helpers';
 import { withBasicProvider } from 'src/utils/helperFunctions';
 import { ProjectsFiltersProvider, useProjectsFilters } from './filters-context';
 
@@ -35,12 +35,9 @@ const PAGE_SIZE = 28;
 function ExplorePage() {
 
     const dispatch = useAppDispatch();
-
     const { filters, updateFilters } = useProjectsFilters();
 
-    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const projectsLength = useRef<number>(0);
-    const [showDeadProjects, setShowDeadProjects] = useState(false)
     const [canFetchMore, setCanFetchMore] = useState(true);
 
     useUpdateUrlWithFilters(filters)
@@ -50,13 +47,12 @@ function ExplorePage() {
         let filter: QueryFilter = {}
         let hasSearchFilters = false;
 
-        const defaultFilters = {} as const;
 
         if (filters?.categories) {
-            filter.categoryId = filters?.categories.map(c => c.id);
+            filter.categoryId = filters?.categories.map(c => c.id!);
             hasSearchFilters = true;
         }
-        if (selectedCategory?.id) filter.categoryId = [selectedCategory?.id]
+
 
         if (filters?.tags) {
             filter.tags = filters?.tags.map(t => t.id)
@@ -83,7 +79,7 @@ function ExplorePage() {
             return { queryFilters: null, hasSearchFilters }
 
         return { queryFilters: filter, hasSearchFilters };
-    }, [filters, selectedCategory?.id])
+    }, [filters])
 
     const { data, networkStatus, error, fetchMore } = useExplorePageQuery({
         variables: {
@@ -102,7 +98,6 @@ function ExplorePage() {
 
 
     const onFiltersUpdated = useCallback(({ payload }: typeof UPDATE_FILTERS_ACTION) => {
-        setSelectedCategory(null)
         setCanFetchMore(true);
         updateFilters(payload)
     }, [updateFilters])
@@ -129,11 +124,7 @@ function ExplorePage() {
     }
 
     const selectCategoryTab = (category: Category | null) => {
-        if (filters) {
-            const { categories, ...filtersWithoutCategory } = filters
-            updateFilters(filtersWithoutCategory)
-        }
-        setSelectedCategory(category);
+        updateFilters({ ...(filters ?? {}), categories: category ? [category] : undefined })
         setCanFetchMore(true);
     }
 
@@ -150,9 +141,6 @@ function ExplorePage() {
         </div>
     }
 
-    const deadProjectsCount = data?.projects?.filter(p => p?.dead).length;
-    const hasDeadProjectsFilter = filters?.projectStatus === 'dead';
-
     const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch || networkStatus === NetworkStatus.setVariables;
     const isLoadingMore = networkStatus === NetworkStatus.fetchMore;
     const canLoadMore = !isLoading && !isLoadingMore && data?.projects && data.projects.length > 0 && canFetchMore;
@@ -165,11 +153,11 @@ function ExplorePage() {
                 <meta property="og:title" content={`Lightning Landscape`} />
             </Helmet>
             <Header
-                selectedCategry={selectedCategory}
+                selectedCategry={filters?.categories?.[0] ?? null}
             />
             <div className="page-container">
                 <div className="grid grid-cols-1  md:grid-cols-[1fr_auto] items-center gap-x-32 gap-y-16 mb-36">
-                    <div className="min-w-0 max-md:row-start-2"><Categories filtersActive={hasSearchFilters} value={selectedCategory} onChange={v => selectCategoryTab(v)} /></div>
+                    <div className="min-w-0 max-md:row-start-2"><Categories filtersActive={hasSearchFilters} value={filters?.categories?.[0] ?? null} onChange={v => selectCategoryTab(v)} /></div>
                     <Button
                         className={`self-center ${hasSearchFilters ? "!font-bold !bg-primary-50 !text-primary-600 !border-2 !border-primary-400" : "!text-gray-600"}`}
                         variant='outline'
