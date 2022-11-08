@@ -19,67 +19,16 @@ import { useUpdateUrlWithFilters } from './helpers';
 import { withBasicProvider } from 'src/utils/helperFunctions';
 import { ProjectsFiltersProvider, useProjectsFilters } from './filters-context';
 
-const UPDATE_FILTERS_ACTION = createAction<Partial<ProjectsFilters>>('PROJECTS_FILTERS_UPDATED')({})
-
-
-type QueryFilter = Partial<{
-    categoryId: string[] | null
-    tags: string[] | null
-    yearFounded: number | null
-    dead: boolean | null
-    license: string | null
-}>
-
-const PAGE_SIZE = 28;
 
 function ExplorePage() {
 
     const dispatch = useAppDispatch();
-    const { filters, updateFilters } = useProjectsFilters();
 
-    const projectsLength = useRef<number>(0);
     const [canFetchMore, setCanFetchMore] = useState(true);
 
+    const { filters, updateFilters } = useProjectsFilters();
     useUpdateUrlWithFilters(filters)
-
-
-    const { queryFilters, hasSearchFilters } = useMemo(() => {
-        let filter: QueryFilter = {}
-        let hasSearchFilters = false;
-
-
-        if (filters?.categories) {
-            filter.categoryId = filters?.categories.map(c => c.id!);
-            hasSearchFilters = true;
-        }
-
-
-        if (filters?.tags) {
-            filter.tags = filters?.tags.map(t => t.id)
-            hasSearchFilters = true;
-        }
-
-        if (filters?.yearFounded) {
-            filter.yearFounded = Number(filters?.yearFounded)
-            hasSearchFilters = true;
-        }
-
-        if (filters?.projectStatus) {
-            filter.dead = filters?.projectStatus === 'alive' ? false : true;
-            hasSearchFilters = true;
-        }
-
-
-        if (filters?.projectLicense) {
-            filter.license = filters?.projectLicense
-            hasSearchFilters = true;
-        }
-
-        if (Object.keys(filter).length === 0)
-            return { queryFilters: null, hasSearchFilters }
-
-        return { queryFilters: filter, hasSearchFilters };
-    }, [filters])
+    const { queryFilters, hasSearchFilters } = useMemo(() => createQueryFilters(filters), [filters])
 
     const { data, networkStatus, error, fetchMore } = useExplorePageQuery({
         variables: {
@@ -92,9 +41,6 @@ function ExplorePage() {
             if ((data.projects?.length ?? 0) < PAGE_SIZE) setCanFetchMore(false);
         },
     });
-
-
-    projectsLength.current = data?.projects?.length ?? 0;
 
 
     const onFiltersUpdated = useCallback(({ payload }: typeof UPDATE_FILTERS_ACTION) => {
@@ -171,17 +117,6 @@ function ExplorePage() {
                         {hasSearchFilters && <span className='absolute bg-primary-600 text-body6 text-white w-24 aspect-square rounded-full top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center border-2 border-white items-center '>{Object.keys(filters ?? {}).length}</span>}
                     </Button>
                 </div>
-                {/* <div className="flex justify-end mb-12 md:mb-24 my-24">
-                    <label className='flex gap-16 items-center'>
-                        <input
-                            disabled={hasDeadProjectsFilter}
-                            checked={showDeadProjects}
-                            className='input-checkbox self-center'
-                            onChange={e => setShowDeadProjects(v => !v)}
-                            type="checkbox" />
-                        <span className={`text-body4 text-gray-800 ${hasDeadProjectsFilter && 'opacity-60'}`}>Show dead projects {deadProjectsCount !== undefined && `(${deadProjectsCount})`}</span>
-                    </label>
-                </div> */}
                 <ProjectsGrid
                     isLoading={isLoading}
                     isLoadingMore={isLoadingMore}
@@ -196,3 +131,55 @@ function ExplorePage() {
 }
 
 export default withBasicProvider(ProjectsFiltersProvider, ExplorePage);
+
+
+const UPDATE_FILTERS_ACTION = createAction<Partial<ProjectsFilters>>('PROJECTS_FILTERS_UPDATED')({})
+
+const PAGE_SIZE = 28;
+
+type QueryFilter = Partial<{
+    categoryId: string[] | null
+    tags: string[] | null
+    yearFounded: number | null
+    dead: boolean | null
+    license: string | null
+}>
+
+
+const createQueryFilters = (filters: Partial<ProjectsFilters> | null) => {
+    let filter: QueryFilter = {}
+    let hasSearchFilters = false;
+
+
+    if (filters?.categories) {
+        filter.categoryId = filters?.categories.map(c => c.id!);
+        hasSearchFilters = true;
+    }
+
+
+    if (filters?.tags) {
+        filter.tags = filters?.tags.map(t => t.id)
+        hasSearchFilters = true;
+    }
+
+    if (filters?.yearFounded) {
+        filter.yearFounded = Number(filters?.yearFounded)
+        hasSearchFilters = true;
+    }
+
+    if (filters?.projectStatus) {
+        filter.dead = filters?.projectStatus === 'alive' ? false : true;
+        hasSearchFilters = true;
+    }
+
+
+    if (filters?.projectLicense) {
+        filter.license = filters?.projectLicense
+        hasSearchFilters = true;
+    }
+
+    if (Object.keys(filter).length === 0)
+        return { queryFilters: null, hasSearchFilters }
+
+    return { queryFilters: filter, hasSearchFilters };
+}

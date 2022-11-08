@@ -30,14 +30,6 @@ export default function Header(props: Props) {
     return (
         <div className='h-[280px] rounded-20 overflow-hidden relative text-center flex flex-col justify-center items-center gap-8'>
             <img src={ASSETS.CoverImage} alt="" className='absolute inset-0 opacity-100 w-full h-full object-cover object-bottom z-[-1]' />
-            {/* <div className='absolute inset-0 w-full h-full bg-gray-300 bg-opacity-50   z-[-1]' /> */}
-            {/* <Link
-                to={PAGES_ROUTES.projects.default}
-                className="
-              w-[48px] h-[48px] bg-white hover:bg-gray-200 
-              absolute top-24 left-24 md:top-1/2 md:left-40 md:-translate-y-1/2
-               rounded-full text-center flex justify-center items-center">
-                <FiArrowLeft className=' inline-block text-body2 lg:text-body1' /></Link> */}
             <div className="content-container">
                 <div className="flex flex-col justify-center items-center gap-8">
                     <h1

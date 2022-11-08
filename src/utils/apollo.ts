@@ -1,7 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache, from, Reference, FieldPolicy } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
-import { CONSTS } from "src/utils";
 
 let apiClientUri = "https://api.baseql.com/airtable/graphql/app7wOLbDNm617R18";
 
@@ -48,9 +47,6 @@ export const apolloClient = new ApolloClient({
         httpLink
     ]),
     cache: new InMemoryCache({
-        possibleTypes: {
-            BaseUser: ['User', 'MyProfile']
-        },
         typePolicies: {
             Query: {
                 fields: {
