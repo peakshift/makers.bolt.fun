@@ -19,12 +19,19 @@ export default function Header(props: Props) {
     const onSearchPage = !onCategoryPage && !filtersEmpty
 
 
-    const title = onCategoryPage ? `${props.selectedCategry?.name} projects` :
-        filtersEmpty ? "Discover 1,592 lightning projects" : "All lightning projects";
+    const currentHeader = onCategoryPage ? 'category' : (filtersEmpty ? "all-default" : "all-search");
 
-    const subtitle = onCategoryPage ? "" :
-        filtersEmpty ? "Explore a directory of lightning startups, projects, and companies"
-            : ""
+
+    const title = currentHeader === 'category' ? `${props.selectedCategry?.name} projects`
+        : currentHeader === 'all-default' ? "Everything lightning network in one place"
+            : currentHeader === 'all-search' ? "All lightning projects" : ""
+
+
+
+    const subtitle = currentHeader === 'category' ? ""
+        : currentHeader === 'all-default' ? "Use our searchable data platform to discover 1,542 lightning projects & companies"
+            : currentHeader === 'all-search' ? "" : ""
+
 
 
     return (
@@ -52,4 +59,9 @@ export default function Header(props: Props) {
             </div>
         </div>
     )
+}
+
+
+const mapTitle = {
+    'category': ""
 }

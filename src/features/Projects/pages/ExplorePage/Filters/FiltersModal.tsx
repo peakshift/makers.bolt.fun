@@ -110,7 +110,7 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                     <hr className="bg-gray-100" />
                     <div>
                         <h3 className="text-body2 font-bolder">🌈 Category</h3>
-                        <p className='text-gray-600 mt-8'>Select one or more tags to search from.</p>
+                        <p className='text-gray-600 mt-8'>Select a category to search from.</p>
                         <ul className="flex flex-wrap gap-16 mt-24">
                             {query.data?.categoryList
                                 ?.filter(c => !!(c && c.name))

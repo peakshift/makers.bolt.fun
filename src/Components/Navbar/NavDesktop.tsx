@@ -1,41 +1,13 @@
-import { BsSearch } from "react-icons/bs";
-import { motion } from "framer-motion";
-import { useAppSelector, useCurrentSection } from "src/utils/hooks";
-import ASSETS from "src/assets";
-import IconButton from "../IconButton/IconButton";
-import { Link, useNavigate } from "react-router-dom";
-import { ReactNode, useState } from "react";
-import {
-    Menu,
-    MenuItem,
-    MenuButton,
-} from '@szhsin/react-menu';
+import { Link, } from "react-router-dom";
+import { ReactNode, } from "react";
 import '@szhsin/react-menu/dist/index.css';
-import { FiChevronDown } from "react-icons/fi";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
-import Button from "../Button/Button";
-import { BiRocket } from "react-icons/bi";
+import { PAGES_ROUTES } from "src/utils/routing";
 
 interface Props {
     cta?: ReactNode
 }
 
 export default function NavDesktop(props: Props) {
-    const [searchOpen, setSearchOpen] = useState(false)
-
-
-    const { curUser } = useAppSelector((state) => ({
-        curUser: null,
-    }));
-
-
-    const openSearch = () => {
-        setSearchOpen(true);
-    };
-
-
-    const currentSection = useCurrentSection();
-    const navigate = useNavigate()
 
 
     return (
@@ -61,7 +33,7 @@ export default function NavDesktop(props: Props) {
                                 </defs>
                             </svg>
 
-                            <span className="hidden sm:inline text-body2 md:text-body1 font-extrabold">Lightning Landscape</span>
+                            <span className="hidden sm:inline text-body3 md:text-body2 font-extrabold">Lightning Landscape</span>
                         </h2>
                     </Link>
                     <ul className="ml-auto">

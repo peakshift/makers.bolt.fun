@@ -1,13 +1,8 @@
-
-import NavMobile from "./NavMobile";
-import { MdComment, MdHomeFilled, MdLocalFireDepartment } from "react-icons/md";
 import { useCallback, useEffect, } from "react";
 import { useAppDispatch, useCurrentSection, useMediaQuery, useResizeListener } from "src/utils/hooks";
 import { setNavHeight } from "src/redux/features/ui.slice";
 import NavDesktop from "./NavDesktop";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
-import { IoMdTrophy } from "react-icons/io";
-import Button from "../Button/Button";
 import { FiArrowRight } from "react-icons/fi";
 import { BiRocket } from "react-icons/bi";
 import { Link } from "react-router-dom";
