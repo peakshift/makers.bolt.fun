@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { createRoute } from 'src/utils/routing';
 import { IoMdClose } from 'react-icons/io';
 import { CgGitFork } from 'react-icons/cg';
+import { Helmet } from 'react-helmet';
 
 
 interface Props extends ModalCard {
@@ -118,6 +119,12 @@ export default function ProjectDetailsCard({ params: { projectId }, ...props }: 
         <div
             className={`modal-card max-w-[676px] ${(!isMdScreen) && '!rounded-0 w-full min-h-screen'}`}
         >
+            <Helmet>
+                <title>{project.title}</title>
+                <meta name="description" content={project.description!} />
+                <meta property="og:title" content={project.title!} />
+                <meta property="og:description" content={project.description!} />
+            </Helmet>
             {/* Cover Image */}
             <div className="relative h-[120px] lg:h-[80px] bg-gray-400">
                 {/* <img className="w-full h-full object-cover" src={project?.cover_image} alt="" /> */}
