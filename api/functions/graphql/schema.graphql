@@ -295,7 +295,7 @@ type Project {
   awards: [Award!]!
   capabilities: [Capability!]!
   category: Category!
-  cover_image: String!
+  cover_image: String
   description: String!
   discord: String
   github: String
@@ -314,7 +314,7 @@ type Project {
   tagline: String!
   tags: [Tag!]!
   telegram: String
-  thumbnail_image: String!
+  thumbnail_image: String
   title: String!
   tournaments: [Tournament!]!
   twitter: String

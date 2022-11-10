@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { MdLocalFireDepartment } from 'react-icons/md';
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
-import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
-import { openModal, scheduleModal } from 'src/redux/features/modals.slice';
+import { useAppDispatch, useMediaQuery } from 'src/utils/hooks';
+import { openModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 // import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
-import { NotificationsService, Wallet_Service } from 'src/services'
-import { ProjectLaunchStatusEnum, ProjectPermissionEnum, useProjectDetailsQuery } from 'src/graphql';
+import { NotificationsService } from 'src/services'
+import { ProjectLaunchStatusEnum, ProjectPermissionEnum, useProjectDetailsModalQuery } from 'src/graphql';
 import Lightbox from 'src/Components/Lightbox/Lightbox'
 import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
@@ -36,12 +36,9 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
     const [screenshotsOpen, setScreenshotsOpen] = useState(-1);
 
 
-    const { isWalletConnected } = useAppSelector(state => ({
-        isWalletConnected: state.wallet.isConnected,
-    }));
     const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium)
 
-    const { data, loading, error } = useProjectDetailsQuery({
+    const { data, loading, error } = useProjectDetailsModalQuery({
         variables: { projectId: projectId!, projectTag: null },
         onCompleted: data => {
             dispatch(setProject(data.getProject))
@@ -120,7 +117,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
         >
             {/* Cover Image */}
             <div className="relative h-[120px] lg:h-[80px]">
-                <img className="w-full h-full object-cover" src={project.cover_image} alt="" />
+                <img className="w-full h-full object-cover" src={project.cover_image!} alt="" />
                 <div className="absolute w-full px-16 md:px-24 top-16 md:top-24 flex justify-between items-center">
                     <div className="flex gap-8 bg-gray-800 bg-opacity-60 text-white rounded-48 py-4 px-12 text-body6 font-medium">
                         {project.launch_status === ProjectLaunchStatusEnum.Launched && `🚀 Launched`}
@@ -138,7 +135,7 @@ export default function ProjectDetailsCard({ direction, projectId, ...props }: P
                 {/* Title & Basic Info */}
                 <div className="flex flex-col mt-[-80px] md:flex-row md:mt-0 gap-24 md:items-center relative">
                     <div className="flex-shrink-0 w-[108px] h-[108px]">
-                        <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image} alt="" />
+                        <img className="w-full h-full border-2 border-white rounded-24" src={project.thumbnail_image!} alt="" />
                     </div>
                     <div className='flex flex-col gap-8 items-start justify-between'>
                         <a href={project.website} target='_blank' rel="noreferrer"><h3 className="text-body1 font-bold">{project.title}</h3></a>

@@ -161,8 +161,8 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
                     methods.reset({
                         id: data.id,
                         title: data.title,
-                        cover_image: { url: data.cover_image },
-                        thumbnail_image: { url: data.thumbnail_image },
+                        cover_image: data.cover_image ? { url: data.cover_image } : undefined,
+                        thumbnail_image: data.thumbnail_image ? { url: data.thumbnail_image } : undefined,
                         tagline: data.tagline,
                         website: data.website,
                         description: data.description,

@@ -1,7 +1,6 @@
 import 'remirror/styles/all.css';
 import styles from './styles.module.scss'
 import TurndownService from 'turndown'
-
 import javascript from 'refractor/lang/javascript';
 import typescript from 'refractor/lang/typescript';
 import {
@@ -25,9 +24,10 @@ import {
 } from 'remirror/extensions';
 import { ExtensionPriority, InvalidContentHandler } from 'remirror';
 import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import TextEditorComponents from 'src/Components/Inputs/TextEditor';
 import Toolbar from './Toolbar';
+import { uploadImage } from 'src/Components/Inputs/FilesInputs/upload-image';
 
 
 const turndownService = new TurndownService()
@@ -74,7 +74,12 @@ export default function ContentEditor({ placeholder, initialContent, name }: Pro
             new CodeBlockExtension({
                 supportedLanguages: [javascript, typescript]
             }),
-            new ImageExtension(),
+            new ImageExtension({
+                uploadHandler(files) {
+                    return files.map(file => () => uploadImage(file.file).then(data => ({ src: data.src, fileName: data.filename })))
+                },
+                enableResizing: false,
+            }),
             new IframeExtension(),
             // new TrailingNodeExtension(),
             // new TableExtension(),

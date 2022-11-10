@@ -10,19 +10,20 @@ import SortBy from './SortBy/SortBy'
 import styles from './styles.module.scss'
 import { Helmet } from "react-helmet";
 import Button from 'src/Components/Button/Button'
-import { FaDiscord } from 'react-icons/fa'
 import { FiArrowRight } from 'react-icons/fi'
 import { capitalize } from 'src/utils/helperFunctions'
 import { bannerData } from 'src/features/Projects/pages/ExplorePage/Header/Header'
-import { createRoute, PAGES_ROUTES } from 'src/utils/routing'
+import { createRoute } from 'src/utils/routing'
 import { Link } from 'react-router-dom'
-import { IoLocationOutline } from 'react-icons/io5'
+import { useAppDispatch, } from 'src/utils/hooks';
+import { stageStory } from 'src/redux/features/staging.slice'
 
 
 export default function FeedPage() {
 
     const [sortByFilter, setSortByFilter] = useState<string | null>('recent')
-    const [tagFilter, setTagFilter] = useState<FilterTag | null>(null)
+    const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
+    const dispatch = useAppDispatch()
 
 
     const feedQuery = useFeedQuery({
@@ -95,6 +96,7 @@ export default function FeedPage() {
                                     href={createRoute({ type: "write-story" })}
                                     color='primary'
                                     fullWidth
+                                    onClick={() => dispatch(stageStory(null))}
                                 >
                                     Write a story
                                 </Button>

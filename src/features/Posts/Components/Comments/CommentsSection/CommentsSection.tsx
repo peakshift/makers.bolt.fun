@@ -12,8 +12,6 @@ import { createRoute, PAGES_ROUTES } from 'src/utils/routing'
 import Preferences from 'src/services/preferences.service'
 import Card from 'src/Components/Card/Card';
 
-// const createWorker = createWorkerFactory(() => import('./comments.worker'));
-
 
 interface Props {
   type: Post_Type,
@@ -27,7 +25,7 @@ export default function CommentsSection({ type, id }: Props) {
   const [showTooltip, setShowTooltip] = useState(Preferences.get('showNostrCommentsTooltip'));
   const location = useLocation()
 
-  const { commentsTree, postComment, connectionStatus } = useComments({ type, id })
+  const { commentsTree, postComment, connectionStatus, retryConnection } = useComments({ type, id })
 
   const handleNewComment = async (content: string, parentId?: string) => {
     try {
@@ -50,7 +48,7 @@ export default function CommentsSection({ type, id }: Props) {
         <h6 className="text-body2 font-bolder">Discussion</h6>
         {connectionStatus.status === 'Connected' && <div className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connected to {connectionStatus.connectedRelaysCount} relays</span> 📡</div>}
         {connectionStatus.status === 'Connecting' && <div className="bg-amber-50 text-amber-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connecting to relays</span> ⌛</div>}
-        {connectionStatus.status === 'Not Connected' && <div className="bg-red-50 text-red-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Not connected</span> 📡</div>}
+        {connectionStatus.status === 'Not Connected' && <div className="bg-red-50 text-red-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Disconnected...</span> <button className='underline font-bold' onClick={() => retryConnection()}>reconnect</button></div>}
       </div>
 
       {showTooltip && <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-8 md:gap-12">
@@ -62,6 +60,7 @@ export default function CommentsSection({ type, id }: Props) {
       {<div className="mt-24 relative">
         <div className={!user ? "blur-[2px]" : ""}>
           <AddComment
+            isDisconnected={connectionStatus.status !== 'Connected'}
             placeholder='Leave a comment...'
             onSubmit={content => handleNewComment(content)}
             avatar={user?.avatar ?? 'https://avatars.dicebear.com/api/bottts/Default.svg'}

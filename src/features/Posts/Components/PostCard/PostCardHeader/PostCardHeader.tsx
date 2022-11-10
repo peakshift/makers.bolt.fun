@@ -34,7 +34,7 @@ export default function PostCardHeader(props: Props) {
                     <Avatar width={32} src={props.author.avatar} />
                 </Link>
                 {props.project && <Link className='-ml-12' to={createRoute({ type: "project", tag: props.project.hashtag })}>
-                    <Avatar src={props.project.thumbnail_image} width={32} />
+                    <Avatar src={props.project.thumbnail_image!} width={32} />
                 </Link>}
             </span>
             <span className='flex gap-4'>

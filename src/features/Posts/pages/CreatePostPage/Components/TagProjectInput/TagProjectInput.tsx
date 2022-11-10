@@ -112,7 +112,7 @@ const ValueContainer = ({
             {hasValue ?
                 <>
                     <div className="flex gap-8 items-center px-8 py-4 border border-gray-200 rounded-8">
-                        <Avatar width={32} src={value.thumbnail_image} /> <span className="text-body5 text-gray-900 font-medium">{value.title}</span> <IoMdClose
+                        <Avatar width={32} src={value.thumbnail_image!} /> <span className="text-body5 text-gray-900 font-medium">{value.title}</span> <IoMdClose
                             onMouseDown={e => e.stopPropagation()}
                             onClick={(e) => {
                                 (props.selectProps.onChange as any)(null);
@@ -133,7 +133,7 @@ const OptionComponent = (props: OptionProps<Project>) => {
     return (
         <>
             <components.Option {...props} >
-                <Avatar src={props.data.thumbnail_image} width={48} />
+                <Avatar src={props.data.thumbnail_image!} width={48} />
                 <div>
                     <p className="font-medium self-center">
                         {props.data.title}

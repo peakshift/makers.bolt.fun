@@ -41,7 +41,7 @@ export default function StoryPageContent({ story }: Props) {
                         date={story.createdAt} />
                     <div className="shrink-0 text-gray-400">
                         <CopyToClipboard
-                            text={createRoute({ type: "story", title: story.title, id: story.id })}
+                            text={window.location.origin + createRoute({ type: "story", title: story.title, id: story.id })}
                             onCopy={() => NotificationsService.info(" Copied share link to clipboard", { icon: "📋" })}
                         >
                             <IconButton>

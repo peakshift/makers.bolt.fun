@@ -32,7 +32,7 @@ export default function MyProjectCard({ projectTournament: { project, track } }:
     return (
         <Card>
             <div className="flex flex-wrap gap-24 items-start">
-                <img src={project.thumbnail_image} className='shrink-0 w-64 md:w-80 aspect-square rounded-12 border border-gray-100 object-cover' alt="" />
+                <img src={project.thumbnail_image!} className='shrink-0 w-64 md:w-80 aspect-square rounded-12 border border-gray-100 object-cover' alt="" />
                 <div className="flex flex-col gap-4 flex-1 overflow-hidden min-w-min">
                     <p className="text-body2 text-gray-900 font-bold overflow-hidden text-ellipsis">{project.title}</p>
                     <p className="text-body4 text-gray-600 font-medium">{project.category.icon} {project.category.title}</p>

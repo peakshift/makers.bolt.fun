@@ -25,7 +25,6 @@ export default function InsertImageModal({ onClose, direction, callbackAction, .
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        console.log(uploadedImage?.url);
 
         if (uploadedImage?.url) {
             // onInsert({ src: urlInput, alt: altInput })

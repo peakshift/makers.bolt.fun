@@ -322,7 +322,6 @@ export interface NexusGenObjects {
     excerpt: string; // String!
     id: number; // Int!
     is_published?: boolean | null; // Boolean
-    project?: NexusGenRootTypes['Project'] | null; // Project
     title: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
@@ -596,7 +595,7 @@ export interface NexusGenFieldTypes {
     awards: NexusGenRootTypes['Award'][]; // [Award!]!
     capabilities: NexusGenRootTypes['Capability'][]; // [Capability!]!
     category: NexusGenRootTypes['Category']; // Category!
-    cover_image: string; // String!
+    cover_image: string | null; // String
     description: string; // String!
     discord: string | null; // String
     github: string | null; // String
@@ -615,7 +614,7 @@ export interface NexusGenFieldTypes {
     tagline: string; // String!
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     telegram: string | null; // String
-    thumbnail_image: string; // String!
+    thumbnail_image: string | null; // String
     title: string; // String!
     tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String

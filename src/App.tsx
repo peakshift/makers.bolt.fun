@@ -78,23 +78,9 @@ function App() {
 
 
   return <div id="app" className='w-full'>
-    <Helmet>
-      <title >makers.bolt.fun</title>
-      <meta
-        name="description"
-        content="A lightning app directory made for and by the bitcoin community."
-
-      />
-      <meta
-        property="og:title"
-        content="makers.bolt.fun"
-
-      />
-    </Helmet>
     <Suspense fallback={<LoadingPage />}>
       <Routes>
         <Route path={PAGES_ROUTES.blog.writeStory} element={<ProtectedRoute><CreatePostPage initType="story" /></ProtectedRoute>} />
-
         <Route element={<NavbarLayout />}>
           <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
           <Route path={PAGES_ROUTES.projects.byCategoryId} element={<CategoryPage />} />

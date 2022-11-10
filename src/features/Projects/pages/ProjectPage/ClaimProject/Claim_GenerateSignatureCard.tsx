@@ -43,7 +43,7 @@ export default function Claim_GenerateSignatureCard({ onClose, direction, ...pro
             <h2 className='text-h5 font-bold'>Claim this project</h2>
             <div className="flex justify-center my-32">
                 <img
-                    src={image}
+                    src={image!}
                     className='w-80 h-80 object-cover rounded-2xl'
                     alt="" />
             </div>

@@ -25,7 +25,7 @@ export default function MakerProjectsCard({ projects, isOwner }: Props) {
                 {projects.map(project => {
                     return <Link key={project.id} to={createRoute({ type: "project", tag: project.hashtag })} className="md:border-b py-16 last-of-type:border-b-0 last-of-type:pb-0">
                         <li className="flex items-center gap-12">
-                            <img className='w-48 aspect-square rounded-12 border border-gray-100' alt='' src={project.thumbnail_image} />
+                            <img className='w-48 aspect-square rounded-12 border border-gray-100' alt='' src={project.thumbnail_image!} />
                             <div className='overflow-hidden'>
                                 <p className="text-body4 text-gray-800 font-medium whitespace-nowrap overflow-hidden text-ellipsis">{project.title}</p>
                                 <p className="text-body5 text-gray-500">{project.category.icon} {project.category.title}</p>

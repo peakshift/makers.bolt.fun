@@ -27,8 +27,6 @@ interface Props {
 const storageService = new StorageService<CreateStoryType>('story-edit');
 
 export default function StoryForm(props: Props) {
-
-
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { handleSubmit, control, register, trigger, getValues, watch, reset } = useFormContext<CreateStoryType>();
@@ -41,9 +39,11 @@ export default function StoryForm(props: Props) {
 
     const presistPost = useThrottledCallback((value) => storageService.set(value), [], 1000)
     useEffect(() => {
-        const subscription = watch(({ id, is_published, ...values }) => presistPost(values));
-        return () => subscription.unsubscribe();
-    }, [presistPost, watch]);
+        if (!props.isUpdating) {
+            const subscription = watch(({ id, is_published, ...values }) => presistPost(values));
+            return () => subscription.unsubscribe();
+        }
+    }, [presistPost, props.isUpdating, watch]);
 
     useEffect(() => {
         if (editMode)

@@ -107,7 +107,7 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                                     :
                                     option.isSelected ? "bg-gray-100 text-gray-800" : "bg-gray-50"}
                                     `}>
-                            <img src={option.data.thumbnail_image} className='w-24 aspect-square rounded-full object-cover' alt="" />  {option.data.title}
+                            <img src={option.data.thumbnail_image!} className='w-24 aspect-square rounded-full object-cover' alt="" />  {option.data.title}
                         </div>}
 
                     />
@@ -151,7 +151,7 @@ export default function AddProjectTournamentModal({ onClose, direction, tourname
                             <hr className="bg-gray-100 w-full absolute top-1/2 left-0 -translate-y-1/2" />
                             <span className="text-body6 text-gray-600 px-16 bg-white relative">OR</span>
                         </div>
-                        <Button fullWidth color='primary' href={createRoute({ type: "edit-profile" })} onClick={onClose}>Create new project</Button>
+                        <Button fullWidth color='primary' href={createRoute({ type: "edit-project" })} onClick={onClose}>Create new project</Button>
                     </>
                 }
             </div>
@@ -171,7 +171,7 @@ const SelectProjectValueContainer = ({ children, ...props }: ValueContainerProps
                                     flex items-center gap-12 my-4 rounded-12 text-gray-800 cursor-pointer`}>
                 {
                     title ?
-                        <> <img src={thumbnail_image} className='w-24 aspect-square rounded-full object-cover' alt="" />  {title} </>
+                        <> <img src={thumbnail_image!} className='w-24 aspect-square rounded-full object-cover' alt="" />  {title} </>
                         :
                         <> <div className='w-24 aspect-square rounded-full bg-gray-100 border border-gray-200' />  Select a project </>
                 }
