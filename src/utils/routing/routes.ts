@@ -108,35 +108,10 @@ export function createRoute(options: RouteOptions) {
 export const PAGES_ROUTES = {
     projects: {
         default: "/projects",
-        hottest: "/projects/hottest",
-        byCategoryId: "/projects/category/:id",
         listProject: "/projects/list-project",
-        projectPage: "/project/:tag",
         catchProject: '/project',
     },
-    blog: {
-        feed: "/feed",
-        postById: "/feed/post/:type/:id/*",
-        storyById: "/story/:slug",
-        writeStory: "/story/write",
-        createPost: "/story/create-post",
-        catchStory: '/story'
+    about: {
+        default: "/about",
     },
-    hackathons: {
-        default: "/hackathons"
-    },
-    donate: {
-        default: "/donate"
-    },
-    profile: {
-        editProfile: "/edit-profile/*",
-        byId: "/profile/:id/*",
-    },
-    tournament: {
-        byId: "/tournaments/:id/*",
-    },
-    auth: {
-        login: "/login",
-        logout: "/logout",
-    }
 }
