@@ -15,6 +15,10 @@ export default function Header() {
         <>
             <Helmet>
                 <title>{tournamentDetails.title} Tournament</title>
+                <meta property="og:title" content={`${tournamentDetails.title} Tournament`} />
+                <meta name="description" content={tournamentDetails.description} />
+                <meta property="og:description" content={tournamentDetails.description} />
+                <meta property="og:image" content={'https://i.ibb.co/3S35g6T/wide.jpg'} />
             </Helmet>
             <div className="w-full p-16 md:p-24 flex flex-col h-[280px] relative mb-[-1px]">
                 <img src={tournamentDetails.cover_image} className='absolute inset-0 h-full w-full object-cover object-center' alt="" />
