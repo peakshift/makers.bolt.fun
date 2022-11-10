@@ -84,8 +84,7 @@ functions:
           path: upload-image-url
           method: post
 
-
-  upload-image-url:
+  get-object-metadata:
     handler: api/functions/get-object-metadata/get-object-metadata.handler
     events:
       - http:
