@@ -18,6 +18,7 @@ import { ProjectsFilters } from './Filters/FiltersModal';
 import { useUpdateUrlWithFilters } from './helpers';
 import { withBasicProvider } from 'src/utils/helperFunctions';
 import { ProjectsFiltersProvider, useProjectsFilters } from './filters-context';
+import { setTheme } from 'src/redux/features/ui.slice';
 
 
 function ExplorePage() {
@@ -48,6 +49,10 @@ function ExplorePage() {
     }, [updateFilters])
 
     useReduxEffect(onFiltersUpdated, UPDATE_FILTERS_ACTION.type);
+
+    useEffect(() => {
+        dispatch(setTheme('light'))
+    }, [dispatch])
 
 
     useEffect(() => {

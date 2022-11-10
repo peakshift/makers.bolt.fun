@@ -1,5 +1,5 @@
 import { useCallback, useEffect, } from "react";
-import { useAppDispatch, useCurrentSection, useMediaQuery, useResizeListener } from "src/utils/hooks";
+import { useAppDispatch, useAppSelector, useCurrentSection, useMediaQuery, useResizeListener } from "src/utils/hooks";
 import { setNavHeight } from "src/redux/features/ui.slice";
 import NavDesktop from "./NavDesktop";
 import { MEDIA_QUERIES } from "src/utils/theme/media_queries";
@@ -15,6 +15,7 @@ export const navLinks = [];
 export default function Navbar() {
 
   const dispatch = useAppDispatch();
+  const theme = useAppSelector(state => state.ui.theme)
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge)
 
@@ -38,9 +39,8 @@ export default function Navbar() {
 
   const currentSection = useCurrentSection();
 
-  const darkNav = currentSection === 'about'
 
-  const CTA = darkNav ?
+  const CTA = currentSection === 'about' ?
     <Link to={PAGES_ROUTES.projects.default}
       className="font-bold text-center px-12 py-8 rounded-8 text-primary-400 hover:bg-primary-200 hover:bg-opacity-10"
     >Go explore <FiArrowRight className="ml-4" /></Link>
@@ -56,7 +56,7 @@ export default function Navbar() {
   return (
     <div className={`
     sticky top-0 left-0 w-full z-[2010] 
-    ${darkNav ? "bg-gray-900 text-white" : "bg-white text-gray-900"}
+    ${theme === 'dark' ? "bg-gray-900 text-white" : "bg-white text-gray-900"}
     `}>
       <NavDesktop cta={CTA} />
     </div>
