@@ -105,6 +105,8 @@ function ExplorePage() {
             <Helmet>
                 <title>{`Lightning Landscape`}</title>
                 <meta property="og:title" content={`Lightning Landscape`} />
+                <meta name="description" content='Everything lightning network in one place' />
+                <meta property="og:description" content='Everything lightning network in one place' />
             </Helmet>
             <Header
                 selectedCategry={filters?.categories?.[0] ?? null}
