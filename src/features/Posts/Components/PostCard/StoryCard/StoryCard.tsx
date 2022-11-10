@@ -50,7 +50,7 @@ export default function StoryCard({ story }: Props) {
                         <h2 className="text-h5 font-bolder">{story.title}</h2>
                     </Link>
                     <p className="text-body4 text-gray-600 mt-8">{story.excerpt}...</p>
-                    <div className="flex gap-8 mt-8">
+                    <div className="flex flex-wrap gap-8 mt-8">
                         {story.tags.map(tag => <Badge key={tag.id} size='sm'>
                             {tag.title}
                         </Badge>)}
