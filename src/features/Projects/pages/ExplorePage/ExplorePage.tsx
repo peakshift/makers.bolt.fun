@@ -2,9 +2,8 @@
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { useExplorePageQuery } from 'src/graphql';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
-import { Helmet } from "react-helmet";
 import Categories, { Category } from '../../Components/Categories/Categories';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Header from './Header/Header';
 import Button from 'src/Components/Button/Button';
 import { useAppDispatch } from 'src/utils/hooks';
@@ -19,6 +18,7 @@ import { useUpdateUrlWithFilters } from './helpers';
 import { withBasicProvider } from 'src/utils/helperFunctions';
 import { ProjectsFiltersProvider, useProjectsFilters } from './filters-context';
 import { setTheme } from 'src/redux/features/ui.slice';
+import OgTags from 'src/Components/OgTags/OgTags';
 
 
 function ExplorePage() {
@@ -102,12 +102,10 @@ function ExplorePage() {
 
     return (
         <>
-            <Helmet>
-                <title>{`Lightning Landscape`}</title>
-                <meta property="og:title" content={`Lightning Landscape`} />
-                <meta name="description" content='Everything lightning network in one place' />
-                <meta property="og:description" content='Everything lightning network in one place' />
-            </Helmet>
+            <OgTags
+                title="Lightning Landscape | Explore"
+                description="Everything lightning network in one place"
+            />
             <Header
                 selectedCategry={filters?.categories?.[0] ?? null}
             />

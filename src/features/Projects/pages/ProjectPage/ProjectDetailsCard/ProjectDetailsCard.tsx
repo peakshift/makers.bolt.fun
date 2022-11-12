@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
-import { MdLocalFireDepartment } from 'react-icons/md';
+import { useState } from 'react'
 import { ModalCard } from 'src/Components/Modals/ModalsContainer/ModalsContainer';
 import { useAppDispatch, useAppSelector, useMediaQuery } from 'src/utils/hooks';
-import { Direction, openModal, scheduleModal } from 'src/redux/features/modals.slice';
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
@@ -17,6 +15,7 @@ import Badge from 'src/Components/Badge/Badge';
 import { IoMdClose } from 'react-icons/io';
 import { CgGitFork } from 'react-icons/cg';
 import { Helmet } from 'react-helmet';
+import OgTags from 'src/Components/OgTags/OgTags';
 
 
 interface Props extends ModalCard {
@@ -120,6 +119,10 @@ export default function ProjectDetailsCard({ params: { projectId }, ...props }: 
                 <meta property="og:title" content={project.title!} />
                 <meta property="og:description" content={project.description!} />
             </Helmet>
+            <OgTags
+                title={project.title}
+                description={project.description}
+            />
             {/* Cover Image */}
             <div className="relative h-[120px] lg:h-[80px] bg-gray-400">
                 {/* <img className="w-full h-full object-cover" src={project?.cover_image} alt="" /> */}

@@ -3,12 +3,12 @@ import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContain
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
-import { Helmet } from "react-helmet";
 import { NavbarLayout } from "./utils/routing/layouts";
 import { Loadable, PAGES_ROUTES } from "./utils/routing";
 import { URLModal } from "react-url-modal";
 import ProjectDetailsCard from 'src/features/Projects/pages/ProjectPage/ProjectDetailsCard/ProjectDetailsCard';
 import ReactModal from "react-modal";
+import OgTags from "./Components/OgTags/OgTags";
 
 const ExplorePage = Loadable(React.lazy(() => import( /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage/ExplorePage")))
 const AboutPage = Loadable(React.lazy(() => import( /* webpackChunkName: "about_page" */ "src/features/About/AboutPage")))
@@ -52,19 +52,11 @@ function App() {
 
 
   return <div id="app" className='w-full'>
-    <Helmet>
-      <title >Lightning Landscape</title>
-      <meta
-        name="description"
-        content="A directory for lightning startups, projects, and companies."
-
-      />
-      <meta
-        property="og:title"
-        content="Lightning Landscape"
-
-      />
-    </Helmet>
+    <OgTags
+      title="Lightning Landscape"
+      description="A directory for lightning startups, projects, and companies."
+      image="https://www.lightning-landscape.net/assets/images/og-image.jpg"
+    />
     <URLModal
       adapter={null}
       Wrapper={ModalWrapper}
