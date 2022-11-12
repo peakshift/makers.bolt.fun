@@ -39,7 +39,6 @@ const extractNonFiltersParams = (params?: Record<string, any> & Partial<Projects
         if (filtersKeys.includes(key as any)) continue;
         res[key] = value;
     }
-    console.log(res);
     return res;
 }
 
@@ -51,7 +50,6 @@ export const useUpdateUrlWithFilters = (state?: Partial<ProjectsFilters> | null)
     useEffect(() => {
 
         const allParams = qs.parse(window.location.search.slice(1))
-        console.log(allParams);
 
         const nonFiltersParams = extractNonFiltersParams(allParams);
         const filtersParams = removeEmptyFitlers({ ...state } ?? {});

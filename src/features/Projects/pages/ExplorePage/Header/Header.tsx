@@ -42,15 +42,27 @@ export default function Header(props: Props) {
             <div style={{ height: navHeight + 'px' }}></div>
             <img src={ASSETS.CoverImage} alt="" className='absolute inset-0 opacity-100 w-full h-full object-cover object-bottom z-[-1]' />
             <div className="content-container">
-                <div className="flex flex-col justify-center items-center gap-8">
+                <div className="flex flex-col justify-center items-center gap-16">
                     <h1
                         className='text-primary-500 text-h1 font-medium'
                     >{title}</h1>
                     {subtitle &&
-                        <p className="text-body2 text-gray-600 font-medium">{subtitle}</p>
+                        <p className="text-body3 text-gray-900 font-medium">{subtitle}</p>
+                    }
+                    {currentHeader === 'all-default' && <>
+                        <p className="text-body6 font-bolder text-gray-800 uppercase mt-8">Brought to you by</p>
+                        <div className="flex flex-wrap gap-80">
+                            <a href="https://bolt.observer" target='_blank' rel="noreferrer" >
+                                <img src={ASSETS.BoltObserverLogoLight} className='h-32' alt="Bolt Observer Logo" />
+                            </a>
+                            <a href="https://peakshift.com" target='_blank' rel="noreferrer" >
+                                <img src={ASSETS.PeakshiftLogoLight} className='h-32' alt="Peakshift Logo" />
+                            </a>
+                        </div>
+                    </>
                     }
                     {!filtersEmpty && <div className=" ">
-                        <p className="text-gray-500 font-medium text-body4 mb-8 mt-8 text-center">filtered by</p>
+                        <p className="text-gray-900 font-medium text-body3 mb-8 text-center">Filtered by</p>
                         <div className="flex gap-8 flex-wrap">
                             {filters?.categories && filters.categories.length > 0 && <Badge size='sm'>{filters.categories[0]?.icon && <i className={`fa-solid fa-${filters.categories[0]?.icon} mr-4 text-gray-700`}></i>} <span className='font-bold text-gray-700'>{filters.categories[0].name}</span> <button onClick={() => removeFilter("categories")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}
                             {filters?.tags && filters.tags.length > 0 && <Badge size='sm'>🏷️ <span className='font-bold text-gray-700'>{filters.tags.map(t => t.label).join(', ')}</span> <button onClick={() => removeFilter("tags")} className='ml-4 text-gray-600 hover:scale-125'><MdClose /></button> </Badge>}

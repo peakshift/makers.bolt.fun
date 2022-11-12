@@ -1,5 +1,5 @@
-import BoltObserverLogo from '../assets/bolt-observer-logo.png';
-import PeakshiftLogo from '../assets/peakshift-logo.png';
+import ASSETS from "src/assets";
+
 
 export default function MadeBy() {
     return (
@@ -9,10 +9,10 @@ export default function MadeBy() {
             </p>
             <div className="flex flex-wrap gap-80 mt-24">
                 <a href="https://bolt.observer" target='_blank' rel="noreferrer" >
-                    <img src={BoltObserverLogo} className='h-48' alt="Bolt Observer Logo" />
+                    <img src={ASSETS.BoltObserverLogo} className='h-48' alt="Bolt Observer Logo" />
                 </a>
                 <a href="https://peakshift.com" target='_blank' rel="noreferrer" >
-                    <img src={PeakshiftLogo} className='h-48' alt="Peakshift Logo" />
+                    <img src={ASSETS.PeakshiftLogo} className='h-48' alt="Peakshift Logo" />
                 </a>
             </div>
         </div>

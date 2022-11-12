@@ -6,19 +6,14 @@ import { Direction, openModal, scheduleModal } from 'src/redux/features/modals.s
 import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
-import { NotificationsService, Wallet_Service } from 'src/services'
+import { NotificationsService } from 'src/services'
 import { useProjectDetailsQuery } from 'src/graphql';
-import Lightbox from 'src/Components/Lightbox/Lightbox'
-import linkifyHtml from 'linkify-html';
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
-import { numberFormatter } from 'src/utils/helperFunctions';
 import { MEDIA_QUERIES } from 'src/utils/theme';
 import { FaDiscord, } from 'react-icons/fa';
-import { FiEdit2, FiEye, FiGithub, FiGlobe, FiStar, FiTwitter } from 'react-icons/fi';
+import { FiEye, FiGithub, FiGlobe, FiStar, FiTwitter } from 'react-icons/fi';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import Badge from 'src/Components/Badge/Badge';
-import { Link } from 'react-router-dom';
-import { createRoute } from 'src/utils/routing';
 import { IoMdClose } from 'react-icons/io';
 import { CgGitFork } from 'react-icons/cg';
 import { Helmet } from 'react-helmet';
@@ -205,9 +200,9 @@ export default function ProjectDetailsCard({ params: { projectId }, ...props }: 
                     <p className="text-body6 uppercase font-medium text-gray-400 mb-8">Repository</p>
                     <a href={project.repository} target='_blank' className='text-blue-500' rel="noreferrer">{project.repository}</a>
                     <div className="flex flex-wrap gap-16 text-gray-600 mt-8">
-                        <div className='flex gap-8 items-center'><FiStar /> {project.stars}</div>
-                        <div className='flex gap-8 items-center'><CgGitFork /> {project.forks}</div>
-                        <div className='flex gap-8 items-center'><FiEye /> {project.watchers}</div>
+                        {!!project.stars && <div className='flex gap-8 items-center'><FiStar /> {project.stars}</div>}
+                        {!!project.forks && <div className='flex gap-8 items-center'><CgGitFork /> {project.forks}</div>}
+                        {!!project.watchers && <div className='flex gap-8 items-center'><FiEye /> {project.watchers}</div>}
                     </div>
                 </div>}
 
