@@ -453,7 +453,7 @@ const projectsByCategory = extendType({
         t.nonNull.list.nonNull.field('projectsByCategory', {
             type: "Project",
             args: {
-                ...paginationArgs(),
+                ...paginationArgs({ take: 60 }),
                 category_id: nonNull(intArg())
             },
             async resolve(_, { take, skip, category_id }, ctx, info) {
