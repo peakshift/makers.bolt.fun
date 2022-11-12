@@ -60,7 +60,7 @@ export default function Categories(props: Props) {
                             ${props.value === null ? "text-primary-500 border-b-2 border-primary-500" : "text-gray-500"} 
                             `}
                     ><i className="fa-solid fa-table-cells-large"></i>    <span className='w-full'>All Projects</span></button>
-                    {data.categoryList?.filter(v => !!v?.projectsCount && v.projectsCount !== '0').map((category, idx) => {
+                    {data.categoryList?.filter(v => !!v?.projectsCount && v.projectsCount !== '0' && !v.isHidden).map((category, idx) => {
 
                         return <button
                             key={category!.id}

@@ -1,6 +1,6 @@
 
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
-import { useExplorePageQuery } from 'src/graphql';
+import { useExplorePageQuery, useGetFiltersQuery } from 'src/graphql';
 import ProjectsGrid from './ProjectsGrid/ProjectsGrid';
 import Categories, { Category } from '../../Components/Categories/Categories';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -28,8 +28,19 @@ function ExplorePage() {
     const [canFetchMore, setCanFetchMore] = useState(true);
 
     const { filters, updateFilters } = useProjectsFilters();
+
     useUpdateUrlWithFilters(filters)
-    const { queryFilters, hasSearchFilters } = useMemo(() => createQueryFilters(filters), [filters])
+    const filtersQuery = useGetFiltersQuery();
+
+    const hiddenCategoriesIds = useMemo(() => {
+        if (filtersQuery.loading) return [];
+        return filtersQuery.data?.categoryList?.filter(c => c?.isHidden).map(c => c!.id!) ?? [];
+    }, [filtersQuery.data?.categoryList, filtersQuery.loading])
+
+    const { queryFilters, hasSearchFilters } = useMemo(() => createQueryFilters(filters, {
+        hiddenCategoriesIds
+    }), [filters, hiddenCategoriesIds])
+
 
     const { data, networkStatus, error, fetchMore } = useExplorePageQuery({
         variables: {
@@ -41,6 +52,7 @@ function ExplorePage() {
         onCompleted: data => {
             if ((data.projects?.length ?? 0) < PAGE_SIZE) setCanFetchMore(false);
         },
+        skip: filtersQuery.loading
     });
 
 
@@ -95,7 +107,7 @@ function ExplorePage() {
         </div>
     }
 
-    const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch || networkStatus === NetworkStatus.setVariables;
+    const isLoading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.refetch || networkStatus === NetworkStatus.setVariables || filtersQuery.loading;
     const isLoadingMore = networkStatus === NetworkStatus.fetchMore;
     const canLoadMore = !isLoading && !isLoadingMore && data?.projects && data.projects.length > 0 && canFetchMore;
 
@@ -143,7 +155,7 @@ const UPDATE_FILTERS_ACTION = createAction<Partial<ProjectsFilters>>('PROJECTS_F
 const PAGE_SIZE = 28;
 
 type QueryFilter = Partial<{
-    categoryId: string[] | null
+    categoryId: object | null
     tags: string[] | null
     yearFounded: number | null
     dead: boolean | null
@@ -151,14 +163,18 @@ type QueryFilter = Partial<{
 }>
 
 
-const createQueryFilters = (filters: Partial<ProjectsFilters> | null) => {
+const createQueryFilters = (filters: Partial<ProjectsFilters> | null, extraFilters: { hiddenCategoriesIds: string[] }) => {
     let filter: QueryFilter = {}
     let hasSearchFilters = false;
 
 
     if (filters?.categories) {
-        filter.categoryId = filters?.categories.map(c => c.id!);
+        filter.categoryId = filters?.categories.map(c => c.id!)
         hasSearchFilters = true;
+    } else {
+        filter.categoryId = {
+            _nin: extraFilters.hiddenCategoriesIds
+        };
     }
 
 

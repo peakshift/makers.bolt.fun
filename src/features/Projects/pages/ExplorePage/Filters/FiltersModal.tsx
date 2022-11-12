@@ -22,7 +22,9 @@ export interface IFormInputs {
     href: string,
 }
 
-type FilterCategory = NonNullable<NonNullable<GetFiltersQuery['categoryList']>[number]>
+type FilterCategory = Pick<
+    NonNullable<NonNullable<GetFiltersQuery['categoryList']>[number]>,
+    'id' | 'icon' | 'name' | 'projectsCount'>
 
 export type ProjectsFilters = {
     categories: FilterCategory[]
@@ -113,7 +115,7 @@ export default function FiltersModal({ onClose, direction, initFilters, callback
                         <p className='text-gray-600 mt-8'>Select a category to search from.</p>
                         <ul className="flex flex-wrap gap-16 mt-24">
                             {query.data?.categoryList
-                                ?.filter(c => !!(c && c.name))
+                                ?.filter(c => !!(c && c.name && !c.isHidden))
                                 .map(category => <li
                                     key={category?.id}
                                 >

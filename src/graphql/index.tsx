@@ -19,52 +19,14 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  apiTesting: Maybe<Array<Maybe<ApiTesting>>>;
   backup: Maybe<Array<Maybe<Backup>>>;
   categories: Maybe<Array<Maybe<Categories>>>;
   categoryList: Maybe<Array<Maybe<CategoryList>>>;
   companies: Maybe<Array<Maybe<Companies>>>;
+  funding: Maybe<Array<Maybe<Funding>>>;
   projects: Maybe<Array<Maybe<Projects>>>;
   stats: Maybe<Array<Maybe<Stats>>>;
   tags: Maybe<Array<Maybe<Tags>>>;
-};
-
-
-export type QueryApiTestingArgs = {
-  _filter: InputMaybe<Scalars['JSON']>;
-  _order_by: InputMaybe<Scalars['JSON']>;
-  _page: InputMaybe<Scalars['JSON']>;
-  _page_size: InputMaybe<Scalars['JSON']>;
-  assignedTo: InputMaybe<Scalars['String']>;
-  categories: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  categoriesCopy: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  category: InputMaybe<Scalars['String']>;
-  comment: InputMaybe<Scalars['String']>;
-  companyName: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['String']>;
-  dead: InputMaybe<Scalars['Boolean']>;
-  description: InputMaybe<Scalars['String']>;
-  endDate: InputMaybe<Scalars['String']>;
-  forks: InputMaybe<Scalars['Float']>;
-  id: InputMaybe<Scalars['String']>;
-  language: InputMaybe<Scalars['String']>;
-  license: InputMaybe<Scalars['String']>;
-  logo: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
-  openSource: InputMaybe<Scalars['String']>;
-  project: InputMaybe<Scalars['String']>;
-  repository: InputMaybe<Scalars['String']>;
-  socialDiscord: InputMaybe<Scalars['String']>;
-  socialLinkedIn: InputMaybe<Scalars['String']>;
-  socialTwitter: InputMaybe<Scalars['String']>;
-  stars: InputMaybe<Scalars['Float']>;
-  status: InputMaybe<Scalars['String']>;
-  subcategory: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  telegram: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['String']>;
-  watchers: InputMaybe<Scalars['Float']>;
-  website: InputMaybe<Scalars['String']>;
-  websiteFunctionalLightningRelated: InputMaybe<Scalars['String']>;
-  yearFounded: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -116,7 +78,7 @@ export type QueryCategoriesArgs = {
   featured: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   icon: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['String']>;
-  importedTableCopy: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  importedTableCopy: InputMaybe<Scalars['String']>;
   importedTableCopy2: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   name: InputMaybe<Scalars['String']>;
   projectProductFromFeatured: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -149,6 +111,9 @@ export type QueryCompaniesArgs = {
   assignee: InputMaybe<Scalars['String']>;
   crunchbase: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
+  employees: InputMaybe<Scalars['Float']>;
+  foundedDate: InputMaybe<Scalars['String']>;
+  funding: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id: InputMaybe<Scalars['String']>;
   industry: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
@@ -158,6 +123,22 @@ export type QueryCompaniesArgs = {
   status: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
   website: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryFundingArgs = {
+  _filter: InputMaybe<Scalars['JSON']>;
+  _order_by: InputMaybe<Scalars['JSON']>;
+  _page: InputMaybe<Scalars['JSON']>;
+  _page_size: InputMaybe<Scalars['JSON']>;
+  amount: InputMaybe<Scalars['Float']>;
+  announcedDate: InputMaybe<Scalars['String']>;
+  announcement: InputMaybe<Scalars['String']>;
+  company: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  id: InputMaybe<Scalars['String']>;
+  investors: InputMaybe<Scalars['String']>;
+  roundName: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 
@@ -178,7 +159,9 @@ export type QueryProjectsArgs = {
   dead: InputMaybe<Scalars['Boolean']>;
   description: InputMaybe<Scalars['String']>;
   discord: InputMaybe<Scalars['String']>;
+  editableFields: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   endDate: InputMaybe<Scalars['String']>;
+  fieldGroups: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   forks: InputMaybe<Scalars['Float']>;
   id: InputMaybe<Scalars['String']>;
   language: InputMaybe<Scalars['String']>;
@@ -223,46 +206,12 @@ export type QueryTagsArgs = {
   featured: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   icon: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['String']>;
-  importedTableCopy: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  importedTableCopy: InputMaybe<Scalars['String']>;
   importedTableCopy2: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   name: InputMaybe<Scalars['String']>;
   projectProductFromFeatured: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   projects: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   projectsCount: InputMaybe<Scalars['String']>;
-};
-
-export type ApiTesting = {
-  __typename?: 'apiTesting';
-  assignedTo: Maybe<Scalars['String']>;
-  categories: Maybe<Array<Maybe<Categories>>>;
-  categoriesCopy: Maybe<Array<Maybe<Tags>>>;
-  category: Maybe<Scalars['String']>;
-  comment: Maybe<Scalars['String']>;
-  companyName: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['String']>;
-  dead: Maybe<Scalars['Boolean']>;
-  description: Maybe<Scalars['String']>;
-  endDate: Maybe<Scalars['String']>;
-  forks: Maybe<Scalars['Float']>;
-  id: Maybe<Scalars['String']>;
-  language: Maybe<Scalars['String']>;
-  license: Maybe<Scalars['String']>;
-  logo: Maybe<Array<Maybe<Scalars['JSON']>>>;
-  openSource: Maybe<Scalars['String']>;
-  project: Maybe<Scalars['String']>;
-  repository: Maybe<Scalars['String']>;
-  socialDiscord: Maybe<Scalars['String']>;
-  socialLinkedIn: Maybe<Scalars['String']>;
-  socialTwitter: Maybe<Scalars['String']>;
-  stars: Maybe<Scalars['Float']>;
-  status: Maybe<Scalars['String']>;
-  subcategory: Maybe<Array<Maybe<Scalars['String']>>>;
-  telegram: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['String']>;
-  watchers: Maybe<Scalars['Float']>;
-  website: Maybe<Scalars['String']>;
-  websiteFunctionalLightningRelated: Maybe<Scalars['String']>;
-  yearFounded: Maybe<Scalars['Float']>;
 };
 
 export type Backup = {
@@ -306,7 +255,7 @@ export type Categories = {
   featured: Maybe<Array<Maybe<Projects>>>;
   icon: Maybe<Scalars['String']>;
   id: Maybe<Scalars['String']>;
-  importedTableCopy: Maybe<Array<Maybe<ApiTesting>>>;
+  importedTableCopy: Maybe<Scalars['String']>;
   importedTableCopy2: Maybe<Array<Maybe<Backup>>>;
   name: Maybe<Scalars['String']>;
   projectProductFromFeatured: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -331,6 +280,9 @@ export type Companies = {
   assignee: Maybe<Scalars['String']>;
   crunchbase: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
+  employees: Maybe<Scalars['Float']>;
+  foundedDate: Maybe<Scalars['String']>;
+  funding: Maybe<Array<Maybe<Funding>>>;
   id: Maybe<Scalars['String']>;
   industry: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
@@ -340,6 +292,18 @@ export type Companies = {
   status: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
+};
+
+export type Funding = {
+  __typename?: 'funding';
+  amount: Maybe<Scalars['Float']>;
+  announcedDate: Maybe<Scalars['String']>;
+  announcement: Maybe<Scalars['String']>;
+  company: Maybe<Array<Maybe<Companies>>>;
+  id: Maybe<Scalars['String']>;
+  investors: Maybe<Scalars['String']>;
+  roundName: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
 };
 
 export type Projects = {
@@ -356,7 +320,9 @@ export type Projects = {
   dead: Maybe<Scalars['Boolean']>;
   description: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
+  editableFields: Maybe<Array<Maybe<Scalars['String']>>>;
   endDate: Maybe<Scalars['String']>;
+  fieldGroups: Maybe<Array<Maybe<Scalars['String']>>>;
   forks: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['String']>;
   language: Maybe<Scalars['String']>;
@@ -393,7 +359,7 @@ export type Tags = {
   featured: Maybe<Array<Maybe<Projects>>>;
   icon: Maybe<Scalars['String']>;
   id: Maybe<Scalars['String']>;
-  importedTableCopy: Maybe<Array<Maybe<ApiTesting>>>;
+  importedTableCopy: Maybe<Scalars['String']>;
   importedTableCopy2: Maybe<Array<Maybe<Backup>>>;
   name: Maybe<Scalars['String']>;
   projectProductFromFeatured: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -411,7 +377,7 @@ export type AllCategoriesQuery = { __typename?: 'Query', categoryList: Array<{ _
 export type GetFiltersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFiltersQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null, projectsCount: string | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null };
+export type GetFiltersQuery = { __typename?: 'Query', categoryList: Array<{ __typename?: 'categoryList', id: string | null, name: string | null, icon: string | null, projectsCount: string | null, isHidden: boolean | null } | null> | null, tags: Array<{ __typename?: 'tags', id: string | null, name: string | null, icon: string | null } | null> | null };
 
 export type ExplorePageQueryVariables = Exact<{
   filter: InputMaybe<Scalars['JSON']>;
@@ -471,11 +437,12 @@ export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategorie
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
 export const GetFiltersDocument = gql`
     query GetFilters {
-  categoryList(isHidden: false) {
+  categoryList {
     id
     name
     icon
     projectsCount
+    isHidden
   }
   tags {
     id

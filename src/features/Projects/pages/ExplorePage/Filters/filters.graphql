@@ -1,9 +1,10 @@
 query GetFilters {
-  categoryList(isHidden: false) {
+  categoryList {
     id
     name
     icon
     projectsCount
+    isHidden
   }
   tags {
     id
