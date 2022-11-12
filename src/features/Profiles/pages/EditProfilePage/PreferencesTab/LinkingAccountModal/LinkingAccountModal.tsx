@@ -23,7 +23,7 @@ const useLnurlQuery = () => {
 
         let timeOut: NodeJS.Timeout;
         const doFetch = async () => {
-            const res = await fetchLnurlAuth();
+            const res = await fetchLnurlAuth({ action: "link" });
             if (!res?.encoded)
                 setError(true)
             else {

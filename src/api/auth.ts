@@ -1,9 +1,13 @@
 
 import { CONSTS } from "src/utils";
 
-export async function fetchLnurlAuth() {
-    const res = await fetch(CONSTS.apiEndpoint + '/get-login-url', {
-        credentials: 'include'
+export async function fetchLnurlAuth(options?: { action?: "link" }) {
+
+    const url = CONSTS.apiEndpoint + '/get-login-url'
+        + ((options?.action && options.action === 'link') ? `?action=link` : "")
+
+    const res = await fetch(url, {
+        credentials: 'include',
     })
     const data = await res.json()
     return data;
