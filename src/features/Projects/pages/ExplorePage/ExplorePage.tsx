@@ -156,7 +156,7 @@ const PAGE_SIZE = 28;
 
 type QueryFilter = Partial<{
     categoryId: object | null
-    tags: string[] | null
+    tagId: object | null
     yearFounded: number | null
     dead: boolean | null
     license: string | null
@@ -179,7 +179,9 @@ const createQueryFilters = (filters: Partial<ProjectsFilters> | null, extraFilte
 
 
     if (filters?.tags) {
-        filter.tags = filters?.tags.map(t => t.id)
+        filter.tagId = {
+            _in: filters?.tags.map(t => t.id)
+        }
         hasSearchFilters = true;
     }
 
