@@ -51,7 +51,7 @@ export default function Header(props: Props) {
                     }
                     {currentHeader === 'all-default' && <>
                         <p className="text-body6 font-bolder text-gray-800 uppercase mt-8">Brought to you by</p>
-                        <div className="flex flex-wrap gap-80">
+                        <div className="flex justify-center flex-wrap gap-x-80 gap-y-12">
                             <a href="https://bolt.observer" target='_blank' rel="noreferrer" className='hover:scale-110 active:scale-95 transition-transform' >
                                 <img src={ASSETS.BoltObserverLogoLight} className='h-32' alt="Bolt Observer Logo" />
                             </a>
