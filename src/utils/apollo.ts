@@ -2,7 +2,7 @@ import { ApolloClient, HttpLink, InMemoryCache, from, Reference, FieldPolicy } f
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 
-let apiClientUri = "https://api.baseql.com/airtable/graphql/app7wOLbDNm617R18";
+let apiClientUri = "https://lightning-landscape.stellate.sh";
 
 
 const httpLink = new HttpLink({

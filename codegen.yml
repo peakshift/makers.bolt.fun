@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://api.baseql.com/airtable/graphql/app7wOLbDNm617R18"
+schema: "https://lightning-landscape.stellate.sh"
 documents: "./src/**/*.{ts,graphql}"
 generates:
   src/graphql/index.tsx:
