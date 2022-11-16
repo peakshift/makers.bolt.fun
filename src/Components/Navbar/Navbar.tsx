@@ -66,7 +66,7 @@ export default function Navbar() {
       className="font-bold text-center px-12 py-8 rounded-8 text-primary-400 hover:bg-primary-200 hover:bg-opacity-10"
     >Go explore <FiArrowRight className="ml-4" /></Link>
     :
-    <a href="https://airtable.com"
+    <a href="https://airtable.com/shrlL6c8benYf86zB"
       target='_blank' rel="noreferrer"
       className="font-bold text-center px-12 py-8 rounded-8 text-primary-600 hover:bg-primary-200 hover:bg-opacity-10"
     >Submit project <BiRocket className="ml-4" /></a>

@@ -30,7 +30,7 @@ export default function Header(props: Props) {
 
 
     const subtitle = currentHeader === 'category' ? ""
-        : currentHeader === 'all-default' ? "Use our searchable data platform to discover 1,542 lightning projects & companies"
+        : currentHeader === 'all-default' ? "Use our searchable data platform to discover 1,400+ lightning projects & companies"
             : currentHeader === 'all-search' ? "" : ""
 
 
