@@ -93,7 +93,7 @@ export default function ProjectsPage() {
                         My Projects {!!myProjectsCount && `(${myProjectsCount})`}
                     </button>}
                 </div>
-                <Button
+<!--                 <Button
                     disabled={!isLoggedIn}
                     size='sm'
                     className='hidden md:block'
@@ -103,11 +103,11 @@ export default function ProjectsPage() {
                         props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
                     }))
 
-                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button>
+                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button> -->
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">
                 <ProjectsFilters searchValue={searchFilter} onSearchChange={changeSearchFilter} trackValue={trackFilter} onTrackChange={setTrackFilter} />
-                <Button
+<!--                 <Button
                     disabled={!isLoggedIn}
                     fullWidth
                     className='md:hidden'
@@ -117,7 +117,7 @@ export default function ProjectsPage() {
                         props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
                     }))
 
-                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button>
+                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button> -->
                 {
                     curTab === 'all-projects' ?
                         query.loading ?
