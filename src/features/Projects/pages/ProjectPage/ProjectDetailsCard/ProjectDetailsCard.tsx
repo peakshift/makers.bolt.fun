@@ -217,7 +217,7 @@ export default function ProjectDetailsCard({ params: { projectId }, ...props }: 
                         color='gray'
                         size='md'
                         className="my-16"
-                        href={`https://airtable.com/shr67F20KG9Gdok6d?prefill_app_name=${project?.title}&prefill_app_link=${project?.website}`}
+                        href={`https://airtable.com/shrlMIVAhkp5khCrs?prefill_Project=${project.id}`}
                         newTab
                     // onClick={onClaim}
                     >Request Edit 📝</Button>
