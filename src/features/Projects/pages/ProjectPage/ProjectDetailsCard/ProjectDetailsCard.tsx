@@ -5,7 +5,7 @@ import { setProject } from 'src/redux/features/project.slice';
 import Button from 'src/Components/Button/Button';
 import ProjectCardSkeleton from './ProjectDetailsCard.Skeleton'
 import { NotificationsService } from 'src/services'
-import { useProjectDetailsQuery } from 'src/graphql';
+import { ProjectDetailsQuery, Projects, useProjectDetailsQuery } from 'src/graphql';
 import ErrorMessage from 'src/Components/Errors/ErrorMessage/ErrorMessage';
 import { MEDIA_QUERIES } from 'src/utils/theme';
 import { FaDiscord, } from 'react-icons/fa';
@@ -16,14 +16,16 @@ import { IoMdClose } from 'react-icons/io';
 import { CgGitFork } from 'react-icons/cg';
 import { Helmet } from 'react-helmet';
 import OgTags from 'src/Components/OgTags/OgTags';
+import qs from 'qs'
 
 
 interface Props extends ModalCard {
     params: {
         projectId: string;
     }
-
 }
+
+type Project = NonNullable<ProjectDetailsQuery['getProject']>[number]
 
 export default function ProjectDetailsCard({ params: { projectId }, ...props }: Props) {
 
@@ -217,7 +219,7 @@ export default function ProjectDetailsCard({ params: { projectId }, ...props }: 
                         color='gray'
                         size='md'
                         className="my-16"
-                        href={`https://airtable.com/shrlMIVAhkp5khCrs?prefill_Project=${project.id}`}
+                        href={createEditUrl(project)}
                         newTab
                     // onClick={onClaim}
                     >Request Edit 📝</Button>
@@ -225,4 +227,32 @@ export default function ProjectDetailsCard({ params: { projectId }, ...props }: 
             </div>
         </div>
     )
+}
+
+
+function createEditUrl(project:Project){
+    const baseUrl = 'https://airtable.com/shrlMIVAhkp5khCrs';
+    
+    const params = {
+        "Project": project?.id,
+        "Title": project?.title,
+        "Description": project?.description,
+        "Website": project?.website,
+        "Category": project?.category,
+        "Year Founded": project?.yearFounded,
+        "Dead": project?.dead,
+        "Company": project?.companyName,
+        "Twitter":project?.twitter,
+        "Telegram":project?.telegram,
+        "Discord":project?.discord,
+        "LinkedIn":project?.linkedIn,
+        "Repository":project?.repository,
+        "License":project?.license,
+    }
+
+    const paramsWithPrefix = Object.entries(params).reduce((result,[key,value])=>{
+        return {...result,[`prefill_${key}`]:value}
+    },{})
+
+    return baseUrl + `?${qs.stringify(paramsWithPrefix)}`
 }
