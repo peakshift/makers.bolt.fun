@@ -2,20 +2,11 @@
 
 [build]
   functions = "api/functions" # netlify-lambda builds to this folder AND Netlify reads functions from here
-  edge_functions = "api/edge-functions" # netlify-lambda builds to this folder AND Netlify reads functions from here
 
 [dev]
   framework = "#static"
   functions = "api/functions" # netlify-lambda builds to this folder AND Netlify reads functions from here
   publish = "build" # create-react-app builds to this folder, Netlify should serve all these files statically
 
-
-[[edge_functions]]
-path = "/story/*"
-function = "insert-og-tags-story"
-
-[[edge_functions]]
-path = "/project/*"
-function = "insert-og-tags-project"
 
  
