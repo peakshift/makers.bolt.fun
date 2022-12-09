@@ -1,339 +1,410 @@
-
-import { graphql } from 'msw'
-import { allCategories, getAllHackathons, getAllMakersRoles, getAllMakersSkills, getCategory, getFeed, getMakersInTournament, getMyDrafts, getPostById, getProject, getTournamentById, getTrendingPosts, hottestProjects, me, newProjects, popularTags, profile, projectsByCategory, searchProjects, searchUsers } from './resolvers'
+import { graphql } from "msw";
 import {
-    NavCategoriesQuery,
-    ExploreProjectsQuery,
-    SearchProjectsQuery,
-    SearchProjectsQueryVariables,
-    CategoryPageQuery,
-    CategoryPageQueryVariables,
-    ProjectDetailsQuery,
-    ProjectDetailsQueryVariables,
-    HottestProjectsQuery,
-    HottestProjectsQueryVariables,
-    AllCategoriesQuery,
-    AllCategoriesQueryVariables,
-    FeedQuery,
-    PostDetailsQuery,
-    PostDetailsQueryVariables,
-    FeedQueryVariables,
-    TrendingPostsQuery,
-    PopularTagsQuery,
-    PopularTagsQueryVariables,
-    GetHackathonsQuery,
-    GetHackathonsQueryVariables,
-    OfficialTagsQuery,
-    OfficialTagsQueryVariables,
-    DonationsStatsQuery,
-    MeQuery,
-    ProfileQuery,
-    GetMyDraftsQuery,
-    SearchUsersQuery,
-    SearchUsersQueryVariables,
-    MyProfileAboutQuery,
-    MyProfilePreferencesQuery,
-    GetTournamentByIdQuery,
-    MyProfileRolesSkillsQuery,
-    GetAllRolesQuery,
-    GetMakersInTournamentQuery,
-    GetMakersInTournamentQueryVariables,
-    MeTournamentQuery,
-    TournamentMakerHackingStatusEnum,
-} from 'src/graphql'
+  allCategories,
+  getAllHackathons,
+  getAllMakersRoles,
+  getAllMakersSkills,
+  getCategory,
+  getFeed,
+  getMakersInTournament,
+  getMyDrafts,
+  getPostById,
+  getProject,
+  getTournamentById,
+  getTrendingPosts,
+  hottestProjects,
+  me,
+  newProjects,
+  popularTags,
+  profile,
+  projectsByCategory,
+  searchProjects,
+  searchUsers,
+} from "./resolvers";
+import {
+  NavCategoriesQuery,
+  ExploreProjectsQuery,
+  SearchProjectsQuery,
+  SearchProjectsQueryVariables,
+  CategoryPageQuery,
+  CategoryPageQueryVariables,
+  ProjectDetailsQuery,
+  ProjectDetailsQueryVariables,
+  HottestProjectsQuery,
+  HottestProjectsQueryVariables,
+  AllCategoriesQuery,
+  AllCategoriesQueryVariables,
+  FeedQuery,
+  PostDetailsQuery,
+  PostDetailsQueryVariables,
+  FeedQueryVariables,
+  TrendingPostsQuery,
+  PopularTagsQuery,
+  PopularTagsQueryVariables,
+  GetHackathonsQuery,
+  GetHackathonsQueryVariables,
+  OfficialTagsQuery,
+  OfficialTagsQueryVariables,
+  DonationsStatsQuery,
+  MeQuery,
+  ProfileQuery,
+  GetMyDraftsQuery,
+  SearchUsersQuery,
+  SearchUsersQueryVariables,
+  MyProfileAboutQuery,
+  MyProfilePreferencesQuery,
+  GetTournamentByIdQuery,
+  MyProfileRolesSkillsQuery,
+  GetAllRolesQuery,
+  GetMakersInTournamentQuery,
+  GetMakersInTournamentQueryVariables,
+  MeTournamentQuery,
+  TournamentMakerHackingStatusEnum,
+} from "src/graphql";
 
-const delay = (ms = 1000) => new Promise((res) => setTimeout(res, ms + Math.random() * 1000))
+const delay = (ms = 1000) =>
+  new Promise((res) => setTimeout(res, ms + Math.random() * 1000));
 
 export const handlers = [
+  graphql.query<NavCategoriesQuery>("NavCategories", async (req, res, ctx) => {
+    await delay();
 
-    graphql.query<NavCategoriesQuery>('NavCategories', async (req, res, ctx) => {
-        await delay()
+    return res(
+      ctx.data({
+        allCategories: allCategories(),
+      })
+    );
+  }),
 
-        return res(
-            ctx.data({
-                allCategories: allCategories()
-            })
-        )
-    }),
+  graphql.query<AllCategoriesQuery, AllCategoriesQueryVariables>(
+    "AllCategories",
+    async (req, res, ctx) => {
+      await delay();
 
-    graphql.query<AllCategoriesQuery, AllCategoriesQueryVariables>('AllCategories', async (req, res, ctx) => {
-        await delay()
+      return res(
+        ctx.data({
+          allCategories: allCategories(),
+        })
+      );
+    }
+  ),
 
-        return res(
-            ctx.data({
-                allCategories: allCategories()
-            })
-        )
-    }),
+  graphql.query<ExploreProjectsQuery>(
+    "ExploreProjects",
+    async (req, res, ctx) => {
+      await delay();
 
-    graphql.query<ExploreProjectsQuery>('ExploreProjects', async (req, res, ctx) => {
-        await delay()
+      return res(
+        ctx.data({
+          allCategories: allCategories(),
+          newProjects: newProjects(),
+          hottestProjects: hottestProjects(),
+        })
+      );
+    }
+  ),
 
-        return res(
-            ctx.data({
-                allCategories: allCategories(),
-                newProjects: newProjects(),
-                hottestProjects: hottestProjects()
-            })
-        )
-    }),
+  graphql.query<CategoryPageQuery, CategoryPageQueryVariables>(
+    "CategoryPage",
+    async (req, res, ctx) => {
+      await delay();
+      const { categoryId } = req.variables;
 
-    graphql.query<CategoryPageQuery, CategoryPageQueryVariables>('CategoryPage', async (req, res, ctx) => {
-        await delay()
-        const { categoryId } = req.variables
+      return res(
+        ctx.data({
+          projectsByCategory: projectsByCategory(categoryId),
+          getCategory: getCategory(categoryId)!,
+        })
+      );
+    }
+  ),
 
-        return res(
-            ctx.data({
-                projectsByCategory: projectsByCategory(categoryId),
-                getCategory: getCategory(categoryId)!
-            })
-        )
-    }),
+  graphql.query<SearchProjectsQuery, SearchProjectsQueryVariables>(
+    "SearchProjects",
+    async (req, res, ctx) => {
+      await delay();
+      const { search } = req.variables;
 
+      return res(
+        ctx.data({
+          searchProjects: searchProjects(search),
+        })
+      );
+    }
+  ),
 
-    graphql.query<SearchProjectsQuery, SearchProjectsQueryVariables>('SearchProjects', async (req, res, ctx) => {
-        await delay()
-        const { search } = req.variables
+  graphql.query<ProjectDetailsQuery, ProjectDetailsQueryVariables>(
+    "ProjectDetails",
+    async (req, res, ctx) => {
+      await delay();
+      const { projectId, projectTag } = req.variables;
 
-        return res(
-            ctx.data({
-                searchProjects: searchProjects(search),
-            })
-        )
-    }),
+      return res(
+        ctx.data({
+          getProject: getProject(projectId, projectTag) as any,
+        })
+      );
+    }
+  ),
 
-    graphql.query<ProjectDetailsQuery, ProjectDetailsQueryVariables>('ProjectDetails', async (req, res, ctx) => {
-        await delay()
-        const { projectId, projectTag } = req.variables
+  graphql.query<HottestProjectsQuery, HottestProjectsQueryVariables>(
+    "HottestProjects",
+    async (req, res, ctx) => {
+      await delay();
 
-        return res(
-            ctx.data({
-                getProject: getProject(projectId, projectTag) as any
-            })
-        )
-    }),
+      return res(
+        ctx.data({
+          hottestProjects: hottestProjects(),
+        })
+      );
+    }
+  ),
 
-    graphql.query<HottestProjectsQuery, HottestProjectsQueryVariables>('HottestProjects', async (req, res, ctx) => {
-        await delay()
+  graphql.query<PopularTagsQuery, PopularTagsQueryVariables>(
+    "PopularTags",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          popularTags: popularTags(),
+        })
+      );
+    }
+  ),
 
-        return res(
-            ctx.data({
-                hottestProjects: hottestProjects()
-            })
-        )
-    }),
+  graphql.query<OfficialTagsQuery, OfficialTagsQueryVariables>(
+    "OfficialTags",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          officialTags: popularTags(),
+        })
+      );
+    }
+  ),
 
-    graphql.query<PopularTagsQuery, PopularTagsQueryVariables>('PopularTags', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                popularTags: popularTags()
-            })
-        )
-    }),
+  graphql.query<FeedQuery, FeedQueryVariables>(
+    "Feed",
+    async (req, res, ctx) => {
+      await delay();
+      const { take, skip } = req.variables;
+      return res(
+        ctx.data({
+          getFeed: getFeed({ take, skip, sortBy: null, tag: null }),
+        })
+      );
+    }
+  ),
 
-    graphql.query<OfficialTagsQuery, OfficialTagsQueryVariables>('OfficialTags', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                officialTags: popularTags()
-            })
-        )
-    }),
+  graphql.query<PostDetailsQuery, PostDetailsQueryVariables>(
+    "PostDetails",
+    async (req, res, ctx) => {
+      await delay();
+      const { id, type } = req.variables;
 
+      return res(
+        ctx.data({
+          getPostById: getPostById({
+            id,
+            type,
+          }),
+        })
+      );
+    }
+  ),
 
-    graphql.query<FeedQuery, FeedQueryVariables>('Feed', async (req, res, ctx) => {
-        await delay()
-        const { take, skip } = req.variables;
-        return res(
-            ctx.data({
-                getFeed: getFeed({ take, skip, sortBy: null, tag: null })
-            })
-        )
-    }),
+  graphql.query<TrendingPostsQuery>("TrendingPosts", async (req, res, ctx) => {
+    await delay();
 
-    graphql.query<PostDetailsQuery, PostDetailsQueryVariables>('PostDetails', async (req, res, ctx) => {
-        await delay()
-        const { id, type } = req.variables
+    return res(
+      ctx.data({
+        getTrendingPosts: getTrendingPosts(),
+      })
+    );
+  }),
 
-        return res(
-            ctx.data({
-                getPostById: getPostById({
-                    id,
-                    type
-                })
-            })
-        )
-    }),
+  graphql.query<GetHackathonsQuery, GetHackathonsQueryVariables>(
+    "getHackathons",
+    async (req, res, ctx) => {
+      await delay();
 
+      return res(
+        ctx.data({
+          getAllHackathons: getAllHackathons(),
+        })
+      );
+    }
+  ),
 
-    graphql.query<TrendingPostsQuery>('TrendingPosts', async (req, res, ctx) => {
-        await delay()
+  graphql.query<DonationsStatsQuery>(
+    "DonationsStats",
+    async (req, res, ctx) => {
+      await delay();
 
-        return res(
-            ctx.data({
-                getTrendingPosts: getTrendingPosts()
-            })
-        )
-    }),
+      return res(
+        ctx.data({
+          getDonationsStats: {
+            applications: "32",
+            donations: "2600",
+            prizes: "$2.5k",
+            touranments: "1",
+          },
+        })
+      );
+    }
+  ),
 
+  graphql.query<MeQuery>("Me", async (req, res, ctx) => {
+    await delay();
+    return res(
+      ctx.data({
+        me: me(),
+      })
+    );
+  }),
 
-    graphql.query<GetHackathonsQuery, GetHackathonsQueryVariables>('getHackathons', async (req, res, ctx) => {
-        await delay()
+  graphql.query<MyProfileAboutQuery>(
+    "MyProfileAbout",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          me: me(),
+        })
+      );
+    }
+  ),
 
-        return res(
-            ctx.data({
-                getAllHackathons: getAllHackathons()
-            })
-        )
-    }),
+  graphql.query<MyProfileRolesSkillsQuery>(
+    "MyProfileRolesSkills",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          me: { ...me() },
+          getAllMakersRoles: getAllMakersRoles(),
+          getAllMakersSkills: getAllMakersSkills(),
+        })
+      );
+    }
+  ),
 
+  graphql.query<MyProfilePreferencesQuery>(
+    "MyProfilePreferences",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          me: me(),
+        })
+      );
+    }
+  ),
 
-    graphql.query<DonationsStatsQuery>('DonationsStats', async (req, res, ctx) => {
-        await delay()
+  graphql.query<MyProfileRolesSkillsQuery>(
+    "MyProfileRolesSkills",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          me: { ...me() },
+          getAllMakersRoles: getAllMakersRoles(),
+          getAllMakersSkills: getAllMakersSkills(),
+        })
+      );
+    }
+  ),
 
-        return res(
-            ctx.data({
-                getDonationsStats: {
-                    applications: '32',
-                    donations: '2600',
-                    prizes: "$2.5k",
-                    touranments: "1",
-                }
-            })
-        )
-    }),
+  graphql.query<ProfileQuery>("profile", async (req, res, ctx) => {
+    await delay();
 
-    graphql.query<MeQuery>('Me', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                me: me()
-            })
-        )
-    }),
+    return res(
+      ctx.data({
+        profile: profile(),
+      })
+    );
+  }),
 
+  graphql.query<SearchUsersQuery, SearchUsersQueryVariables>(
+    "SearchUsers",
+    async (req, res, ctx) => {
+      await delay();
+      return res(
+        ctx.data({
+          searchUsers: searchUsers(req.variables.value),
+        })
+      );
+    }
+  ),
 
-    graphql.query<MyProfileAboutQuery>('MyProfileAbout', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                me: me(),
-            })
-        )
-    }),
+  graphql.query<GetMyDraftsQuery>("GetMyDrafts", async (req, res, ctx) => {
+    await delay();
 
+    return res(
+      ctx.data({
+        getMyDrafts: getMyDrafts(),
+      })
+    );
+  }),
 
-    graphql.query<MyProfileRolesSkillsQuery>('MyProfileRolesSkills', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                me: { ...me() },
-                getAllMakersRoles: getAllMakersRoles(),
-                getAllMakersSkills: getAllMakersSkills(),
-            })
-        )
-    }),
+  graphql.query<GetTournamentByIdQuery>(
+    "GetTournamentById",
+    async (req, res, ctx) => {
+      await delay();
 
+      return res(
+        ctx.data({
+          getTournamentById: getTournamentById(12),
+          getMakersInTournament: getMakersInTournament({
+            roleId: null,
+            search: null,
+            skip: null,
+            take: 4,
+            tournamentId: 12,
+            openToConnect: null,
+          }),
+          getProjectsById: [],
+        })
+      );
+    }
+  ),
 
-    graphql.query<MyProfilePreferencesQuery>('MyProfilePreferences', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                me: me(),
-            })
-        )
-    }),
+  graphql.query<MeTournamentQuery>("MeTournament", async (req, res, ctx) => {
+    await delay();
 
+    return res(
+      ctx.data({
+        me: { ...me() },
+        tournamentParticipationInfo: {
+          hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
+          createdAt: new Date(),
+          projects: [],
+        },
+      })
+    );
+  }),
 
-    graphql.query<MyProfileRolesSkillsQuery>('MyProfileRolesSkills', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                me: { ...me() },
-                getAllMakersRoles: getAllMakersRoles(),
-                getAllMakersSkills: getAllMakersSkills(),
-            })
-        )
-    }),
+  graphql.query<
+    GetMakersInTournamentQuery,
+    GetMakersInTournamentQueryVariables
+  >("GetMakersInTournament", async (req, res, ctx) => {
+    await delay();
 
+    return res(
+      ctx.data({
+        getMakersInTournament: getMakersInTournament(req.variables),
+      })
+    );
+  }),
 
-    graphql.query<ProfileQuery>('profile', async (req, res, ctx) => {
-        await delay()
+  graphql.query<GetAllRolesQuery>("GetAllRoles", async (req, res, ctx) => {
+    await delay();
 
-        return res(
-            ctx.data({
-                profile: profile()
-            })
-        )
-    }),
-
-
-    graphql.query<SearchUsersQuery, SearchUsersQueryVariables>('SearchUsers', async (req, res, ctx) => {
-        await delay()
-        return res(
-            ctx.data({
-                searchUsers: searchUsers(req.variables.value)
-            })
-        )
-    }),
-
-    graphql.query<GetMyDraftsQuery>('GetMyDrafts', async (req, res, ctx) => {
-        await delay()
-
-        return res(
-            ctx.data({
-                getMyDrafts: getMyDrafts()
-            })
-        )
-    }),
-
-
-
-    graphql.query<GetTournamentByIdQuery>('GetTournamentById', async (req, res, ctx) => {
-        await delay()
-
-        return res(
-            ctx.data({
-                getTournamentById: getTournamentById(12),
-                getMakersInTournament: getMakersInTournament({ roleId: null, search: null, skip: null, take: 4, tournamentId: 12, openToConnect: null }),
-            })
-        )
-    }),
-
-    graphql.query<MeTournamentQuery>('MeTournament', async (req, res, ctx) => {
-        await delay()
-
-        return res(
-            ctx.data({
-                me: { ...me() },
-                tournamentParticipationInfo: {
-                    hacking_status: TournamentMakerHackingStatusEnum.OpenToConnect,
-                    createdAt: new Date(),
-                    projects: []
-                }
-            })
-        )
-    }),
-
-    graphql.query<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>('GetMakersInTournament', async (req, res, ctx) => {
-        await delay()
-
-        return res(
-            ctx.data({
-                getMakersInTournament: getMakersInTournament(req.variables),
-            })
-        )
-    }),
-
-    graphql.query<GetAllRolesQuery>('GetAllRoles', async (req, res, ctx) => {
-        await delay()
-
-        return res(
-            ctx.data({
-                getAllMakersRoles: getAllMakersRoles()
-            })
-        )
-    }),
-
-]
+    return res(
+      ctx.data({
+        getAllMakersRoles: getAllMakersRoles(),
+      })
+    );
+  }),
+];

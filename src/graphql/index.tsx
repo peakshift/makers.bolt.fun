@@ -490,6 +490,7 @@ export type Query = {
   getMyDrafts: Array<Post>;
   getPostById: Post;
   getProject: Project;
+  getProjectsById: Array<Project>;
   getProjectsInTournament: TournamentProjectsResponse;
   getTournamentById: Tournament;
   getTournamentToRegister: Array<Tournament>;
@@ -569,6 +570,11 @@ export type QueryGetPostByIdArgs = {
 export type QueryGetProjectArgs = {
   id: InputMaybe<Scalars['Int']>;
   tag: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetProjectsByIdArgs = {
+  ids: Array<Scalars['String']>;
 };
 
 
@@ -1206,10 +1212,11 @@ export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationI
 
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
+  winning_projects: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> }, getProjectsById: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, title: string, icon: string | null } }> };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -3417,7 +3424,7 @@ export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery
 export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
 export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetTournamentByIdDocument = gql`
-    query GetTournamentById($id: Int!) {
+    query GetTournamentById($id: Int!, $winning_projects: [String!]!) {
   getTournamentById(id: $id) {
     id
     title
@@ -3471,6 +3478,18 @@ export const GetTournamentByIdDocument = gql`
       }
     }
   }
+  getProjectsById(ids: $winning_projects) {
+    id
+    hashtag
+    title
+    tagline
+    thumbnail_image
+    category {
+      id
+      title
+      icon
+    }
+  }
 }
     `;
 
@@ -3487,6 +3506,7 @@ export const GetTournamentByIdDocument = gql`
  * const { data, loading, error } = useGetTournamentByIdQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      winning_projects: // value for 'winning_projects'
  *   },
  * });
  */
