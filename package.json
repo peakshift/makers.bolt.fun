@@ -114,6 +114,7 @@
     "build-storybook:mocks": "env-cmd -f ./envs/client/mock-server.env build-storybook -s public",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "db:generate": "prisma generate --data-proxy",
     "db:migrate-dev": "prisma migrate dev",
     "db:migrate-deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",

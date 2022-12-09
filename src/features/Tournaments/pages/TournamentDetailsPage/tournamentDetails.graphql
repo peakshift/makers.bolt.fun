@@ -1,4 +1,4 @@
-query GetTournamentById($id: Int!) {
+query GetTournamentById($id: Int!, $winning_projects: [String!]!) {
   getTournamentById(id: $id) {
     id
     title
@@ -53,6 +53,19 @@ query GetTournamentById($id: Int!) {
         id
         avatar
       }
+    }
+  }
+
+  getProjectsById(ids: $winning_projects) {
+    id
+    hashtag
+    title
+    tagline
+    thumbnail_image
+    category {
+      id
+      title
+      icon
     }
   }
 }

@@ -7,6 +7,7 @@ const {
     nonNull,
     enumType,
     inputObjectType,
+    list,
 } = require('nexus');
 const { prisma } = require('../../../prisma');
 const { deleteImages } = require('../../../services/imageUpload.service');
@@ -337,6 +338,32 @@ const getProject = extendType({
                 const res = await prisma.project.findUnique({
                     ...select,
                     where: { id },
+                })
+                return res;
+            }
+        })
+    }
+})
+
+const getProjectsById = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field('getProjectsById', {
+            type: "Project",
+            args: {
+                ids: nonNull(list(nonNull(stringArg()))),
+            },
+            async resolve(_, { ids  }, ctx, info) {
+                console.log(ids);
+                 
+                const select = new PrismaSelect(info, {
+                    defaultFields: defaultPrismaSelectFields
+                }).value;
+                const res = await prisma.project.findMany({
+                    ...select,
+                    where: { hashtag:{
+                        in:ids
+                    } },
                 })
                 return res;
             }
@@ -1205,6 +1232,7 @@ module.exports = {
     TEAM_MEMBER_ROLE,
     // Queries
     getProject,
+    getProjectsById,
     allProjects,
     newProjects,
     hottestProjects,
