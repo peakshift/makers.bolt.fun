@@ -7,6 +7,8 @@ import { formatHashtag, capitalize } from "src/utils/helperFunctions";
 import Card from "src/Components/Card/Card";
 import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
+import { useState } from "react";
+import Button from "src/Components/Button/Button";
 
 export type FilterTag = Pick<Tag, "id" | "title" | "icon">;
 
@@ -15,8 +17,12 @@ interface Props {
   onChange?: (newFilter: FilterTag | null) => void;
 }
 
+const MAX_SHOWED_TAGS = 10;
+
 export default function FeedTagsFilter({ value, onChange }: Props) {
   const tagsQuery = useFeedTagsQuery();
+
+  const [showingAll, setShowingAll] = useState(false);
 
   const filterClicked = (_newValue: FilterTag) => {
     const newValue = value?.id === _newValue.id ? null : _newValue;
@@ -49,11 +55,13 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                       </span>
                     </li>
                   ))
-              : tagsQuery.data?.officialTags.map((tag) => (
-                  <li key={tag.id}>
-                    <Link
-                      to={createRoute({ type: "tag-page", tag: tag.title })}
-                      className={`flex items-start rounded-8 cursor-pointer font-bold p-4
+              : tagsQuery.data?.officialTags
+                  .slice(0, showingAll ? -1 : MAX_SHOWED_TAGS)
+                  .map((tag) => (
+                    <li key={tag.id}>
+                      <Link
+                        to={createRoute({ type: "tag-page", tag: tag.title })}
+                        className={`flex items-start rounded-8 cursor-pointer font-bold p-4
                                  active:scale-95 transition-transform
                                 ${
                                   tag.id === selectedId
@@ -61,21 +69,33 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                                     : "hover:bg-gray-100"
                                 }
                                 `}
-                    >
-                      <span
-                        className={`${
-                          tag.id !== selectedId && "bg-gray-50"
-                        } rounded-8 w-40 h-40 text-center py-8`}
                       >
-                        {tag.icon}
-                      </span>
-                      <span className="self-center px-16">
-                        {capitalize(formatHashtag(tag.title))}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
+                        <span
+                          className={`${
+                            tag.id !== selectedId && "bg-gray-50"
+                          } rounded-8 w-40 h-40 text-center py-8`}
+                        >
+                          {tag.icon}
+                        </span>
+                        <span className="self-center px-16">
+                          {capitalize(formatHashtag(tag.title))}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
           </ul>
+          {tagsQuery.data &&
+            tagsQuery.data?.officialTags.length > MAX_SHOWED_TAGS && (
+              <Button
+                fullWidth
+                size="sm"
+                variant="text"
+                className="text-blue-400 mt-16"
+                onClick={() => setShowingAll((v) => !v)}
+              >
+                {showingAll ? "Show less" : "Show more"}
+              </Button>
+            )}
         </Card>
       ) : (
         <>
