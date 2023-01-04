@@ -1,0 +1,79 @@
+query GetTagInfo($tag: String) {
+  getTagInfo(tag: $tag) {
+    id
+    title
+    icon
+    description
+  }
+}
+
+query TagFeed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, tag: $tag) {
+    ... on Story {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+        join_date
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      comments_count
+      project {
+        id
+        title
+        thumbnail_image
+        hashtag
+      }
+    }
+    ... on Bounty {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+        join_date
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      deadline
+      reward_amount
+      applicants_count
+    }
+    ... on Question {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+        join_date
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+    }
+  }
+}

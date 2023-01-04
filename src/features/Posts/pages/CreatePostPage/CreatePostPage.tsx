@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { FiArrowLeft } from "react-icons/fi";
-import { useNavigate, useParams } from "react-router-dom";
-// import BountyForm from "./Components/BountyForm/BountyForm";
-// import QuestionForm from "./Components/QuestionForm/QuestionForm";
+import { useNavigate } from "react-router-dom"; 
 import CreateStoryPage from "./CreateStoryPage/CreateStoryPage";
 
 interface Props {

@@ -362,6 +362,7 @@ type Query {
   getProject(id: Int, tag: String): Project!
   getProjectsById(ids: [String!]!): [Project!]!
   getProjectsInTournament(search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!, trackId: Int): TournamentProjectsResponse!
+  getTagInfo(tag: String): Tag!
   getTournamentById(id: Int!): Tournament!
   getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!

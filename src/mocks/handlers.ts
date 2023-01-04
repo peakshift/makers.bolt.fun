@@ -39,8 +39,8 @@ import {
   PostDetailsQueryVariables,
   FeedQueryVariables,
   TrendingPostsQuery,
-  PopularTagsQuery,
-  PopularTagsQueryVariables,
+  FeedTagsQuery,
+  FeedTagsQueryVariables,
   GetHackathonsQuery,
   GetHackathonsQueryVariables,
   OfficialTagsQuery,
@@ -160,13 +160,13 @@ export const handlers = [
     }
   ),
 
-  graphql.query<PopularTagsQuery, PopularTagsQueryVariables>(
+  graphql.query<FeedTagsQuery, FeedTagsQueryVariables>(
     "PopularTags",
     async (req, res, ctx) => {
       await delay();
       return res(
         ctx.data({
-          popularTags: popularTags(),
+          officialTags: popularTags(),
         })
       );
     }
