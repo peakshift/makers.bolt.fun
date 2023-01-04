@@ -8,7 +8,7 @@ import styles from "./styles.module.scss";
 import { Helmet } from "react-helmet";
 import Button from "src/Components/Button/Button";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { capitalize } from "src/utils/helperFunctions";
+import { capitalize, formatHashtag } from "src/utils/helperFunctions";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import { Link, useLoaderData } from "react-router-dom";
 import { useAppDispatch } from "src/utils/hooks";
@@ -77,7 +77,8 @@ export default function TagPage() {
                 </IconButton>
               </Link>
               <h1 className="text-h2 font-bolder">
-                {loaderData.getTagInfo.icon} {loaderData.getTagInfo.title}
+                {loaderData.getTagInfo.icon}{" "}
+                {formatHashtag(loaderData.getTagInfo.title)}
               </h1>
               {loaderData.getTagInfo.description && (
                 <p>{loaderData.getTagInfo.description}</p>
