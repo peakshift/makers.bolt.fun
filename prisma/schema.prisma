@@ -35,6 +35,9 @@ model Vote {
   payment_hash    String?
   preimage        String?
   paid            Boolean @default(false)
+
+  user_id Int?
+  user    User? @relation(fields: [user_id], references: [id])
 }
 
 // -----------------
@@ -75,6 +78,7 @@ model User {
   roles          UsersOnWorkRoles[]
   projects       ProjectMember[]
   moderating     Tag[]
+  votes          Vote[]
 
   tournaments TournamentParticipant[]
 }
