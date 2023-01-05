@@ -6,7 +6,6 @@ import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
 import { useMeQuery } from "./graphql";
 import { setUser } from "./redux/features/user.slice";
-import { RootRouter } from "./utils/routing/rootRouter";
 import { Outlet } from "react-router-dom";
 import GlobalLoader from "./Components/GlobalLoader/GlobalLoader";
 

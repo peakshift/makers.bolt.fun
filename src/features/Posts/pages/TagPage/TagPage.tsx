@@ -68,7 +68,7 @@ export default function TagPage() {
           </div>
           <aside id="categories" className="no-scrollbar">
             <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-              <h1 className="text-h2 font-bolder">
+              <h1 className="text-body2 font-bolder">
                 {loaderData.getTagInfo.icon}{" "}
                 {formatHashtag(loaderData.getTagInfo.title)}
               </h1>
