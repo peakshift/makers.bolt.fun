@@ -68,14 +68,6 @@ export default function TagPage() {
           </div>
           <aside id="categories" className="no-scrollbar">
             <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-              <Link
-                to={PAGES_ROUTES.blog.feed}
-                className="self-start text-body2 text-gray-600"
-              >
-                <IconButton>
-                  <FiArrowLeft />
-                </IconButton>
-              </Link>
               <h1 className="text-h2 font-bolder">
                 {loaderData.getTagInfo.icon}{" "}
                 {formatHashtag(loaderData.getTagInfo.title)}
