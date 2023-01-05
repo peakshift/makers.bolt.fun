@@ -12,6 +12,8 @@ import { stageStory } from "src/redux/features/staging.slice";
 import { LoaderData } from "./tagPage.loader";
 import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import DOMPurify from "dompurify";
+import { marked } from "marked";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -68,9 +70,14 @@ export default function TagPage() {
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
                     DESCRIPTION
                   </p>
-                  <p className="text-gray-600">
-                    {loaderData.getTagInfo.long_description}
-                  </p>
+                  <div
+                    className={`text-gray-600 ${styles.tag_desc}`}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(
+                        marked.parse(loaderData.getTagInfo.long_description)
+                      ),
+                    }}
+                  ></div>
                 </div>
               )}
               {loaderData.getTagInfo.moderators.length > 0 && (
