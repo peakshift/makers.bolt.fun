@@ -134,7 +134,7 @@ const OptionComponent = (props: OptionProps<Option>) => {
           {props.data.icon}
         </div>
         <div>
-          <p className="font-medium self-center">#{props.data.label}</p>
+          <p className="font-medium self-center">{props.data.label}</p>
           <p className="text-body5 text-gray-500">{props.data.description}</p>
         </div>
       </components.Option>

@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import Slider from "src/Components/Slider/Slider";
 import { Tag, useFeedTagsQuery } from "src/graphql";
 import { MEDIA_QUERIES } from "src/utils/theme";
-import { formatHashtag, capitalize } from "src/utils/helperFunctions";
+import { formatHashtag } from "src/utils/helperFunctions";
 import Card from "src/Components/Card/Card";
 import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
@@ -78,7 +78,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                           {tag.icon}
                         </span>
                         <span className="self-center px-16">
-                          {capitalize(formatHashtag(tag.title))}
+                          {formatHashtag(tag.title)}
                         </span>
                       </Link>
                     </li>

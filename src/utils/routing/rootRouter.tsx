@@ -15,6 +15,7 @@ import { NavbarLayout } from "./layouts";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
+import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 
 const FeedPage = Loadable(
   React.lazy(
@@ -151,16 +152,7 @@ const EditProfilePage = Loadable(
 
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
-    <Route
-      element={<App />}
-      errorElement={
-        <h2>
-          Something wrong happened...
-          <br />
-          please refresh the page
-        </h2>
-      }
-    >
+    <Route element={<App />} errorElement={<ErrorPage />}>
       <Route
         path={PAGES_ROUTES.blog.writeStory}
         element={

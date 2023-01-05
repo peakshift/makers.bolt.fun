@@ -217,8 +217,7 @@ export function extractErrorMessage(error: unknown) {
   return null;
 }
 
-export function formatHashtag(_tag: string) {
-  let tag = capitalize(_tag) as string;
+export function formatHashtag(tag: string) {
   if (tag.startsWith("#")) return tag;
   return "#" + tag;
 }
