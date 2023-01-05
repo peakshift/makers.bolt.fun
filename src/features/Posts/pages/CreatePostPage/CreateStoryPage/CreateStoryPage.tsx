@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRef, useState } from "react";
 import { withErrorBoundary } from "react-error-boundary";
 import { FormProvider, NestedValue, Resolver, useForm } from "react-hook-form";
+import { Triangle } from "react-loader-spinner";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import {
   Category,
@@ -11,7 +12,7 @@ import {
   Project,
 } from "src/graphql";
 import { StorageService } from "src/services";
-import { useAppSelector } from "src/utils/hooks";
+import { useAppSelector, usePreload } from "src/utils/hooks";
 import { Override } from "src/utils/interfaces";
 import { imageSchema, tagSchema } from "src/utils/validation";
 import * as yup from "yup";
@@ -73,6 +74,7 @@ function CreateStoryPage() {
   const { story } = useAppSelector((state) => ({
     story: state.staging.story || storageService.get(),
   }));
+  const [storyCreated, setStoryCreated] = useState(false);
 
   const formMethods = useForm<CreateStoryType>({
     resolver: yupResolver(schema) as Resolver<CreateStoryType>,
@@ -93,6 +95,24 @@ function CreateStoryPage() {
 
   const resetForm = () => setFormKey((v) => v + 1);
 
+  usePreload("PostPage");
+
+  if (storyCreated)
+    return (
+      <div className="flex flex-col gap-24 min-h-screen justify-center items-center">
+        <Triangle
+          height="80"
+          width="80"
+          color="var(--primary)"
+          ariaLabel="triangle-loading"
+          visible={true}
+        />
+        <p className="text-body3 text-gray-600 font-bold">
+          Preparing your new story...
+        </p>
+      </div>
+    );
+
   return (
     <FormProvider {...formMethods}>
       <div className={styles.grid}>
@@ -100,7 +120,7 @@ function CreateStoryPage() {
           key={formKey}
           isPublished={!!story?.is_published}
           isUpdating={!!story?.id}
-          onSuccess={() => resetForm()}
+          onSuccess={() => setStoryCreated(true)}
           onValidationError={() =>
             errorsContainerRef.current.scrollIntoView({
               behavior: "smooth",
