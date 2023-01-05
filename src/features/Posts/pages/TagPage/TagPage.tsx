@@ -103,7 +103,12 @@ export default function TagPage() {
               )}
               <div className="order-3 md:order-2">
                 <Button
-                  href={createRoute({ type: "write-story" })}
+                  href={createRoute({
+                    type: "write-story",
+                    initData: {
+                      tags: [loaderData.getTagInfo.title],
+                    },
+                  })}
                   color="primary"
                   fullWidth
                   onClick={clickWriteStory}
