@@ -14,6 +14,7 @@ import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
+import { Fulgur } from "src/Components/Ads/Fulgur";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -71,10 +72,10 @@ export default function TagPage() {
               {loaderData.getTagInfo.long_description && (
                 <div className="hidden lg:block">
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
-                    DESCRIPTION
+                    Description
                   </p>
                   <div
-                    className={`text-gray-600 ${styles.tag_desc}`}
+                    className={`prose text-gray-600 ${styles.tag_desc}`}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(
                         marked.parse(loaderData.getTagInfo.long_description)
@@ -125,6 +126,7 @@ export default function TagPage() {
           <aside id="side" className="no-scrollbar">
             <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
               <TrendingCard />
+              <Fulgur />
               <a
                 href="https://discord.gg/HFqtxavb7x"
                 target="_blank"
