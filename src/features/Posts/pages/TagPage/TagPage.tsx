@@ -48,7 +48,10 @@ export default function TagPage() {
 
   return (
     <>
-      <OgTags title={`${capitalize(loaderData.getTagInfo.title)} Stories`} />
+      <OgTags
+        title={`${capitalize(loaderData.getTagInfo.title)} Stories`}
+        description={loaderData.getTagInfo.long_description}
+      />
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
           <div id="content" className="">
