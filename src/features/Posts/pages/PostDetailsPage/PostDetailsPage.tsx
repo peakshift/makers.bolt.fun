@@ -1,14 +1,12 @@
-import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
-import { Post_Type, usePostDetailsQuery } from "src/graphql";
+import { PostDetailsQuery, Post_Type } from "src/graphql";
 import { capitalize } from "src/utils/helperFunctions";
 import ScrollToTop from "src/utils/routing/scrollToTop";
 import TrendingCard from "src/features/Posts/Components/TrendingCard/TrendingCard";
 import AuthorCard from "./Components/AuthorCard/AuthorCard";
 import PageContent from "./Components/PageContent/PageContent";
 import PostActions from "./Components/PostActions/PostActions";
-import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
 import styles from "./styles.module.scss";
 import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
@@ -36,9 +34,6 @@ export default function PostDetailsPage(props: Props) {
 
   return (
     <>
-      <Helmet>
-        <title>{post.title}</title>
-      </Helmet>
       <OgTags title={post.title} description={post.body.slice(0, 50)} />
       <ScrollToTop />
       <div className={`page-container max-md:bg-white`}>
