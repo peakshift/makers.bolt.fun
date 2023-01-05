@@ -68,6 +68,9 @@ export default function ErrorCard() {
         <h2 className="text-h3">{title}</h2>
         <p className="text-body4 text-center text-gray-600">{desc}</p>
         <div className="flex flex-col gap-12">
+          <Button onClick={() => window.location.reload()} color="black">
+            Refresh Page
+          </Button>
           <a href="/" color="gray" className="">
             Back to homepage
           </a>
