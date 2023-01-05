@@ -142,7 +142,7 @@ export default function TagPage() {
                   <div className="relative flex flex-col gap-24">
                     <div className="flex flex-col gap-8 text-white">
                       <img
-                        src={"assets/icons/join-discord.svg"}
+                        src={"/assets/icons/join-discord.svg"}
                         className="h-48 max-w-full self-start"
                         alt=""
                       />
