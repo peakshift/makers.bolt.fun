@@ -331,6 +331,7 @@ export interface NexusGenObjects {
     icon?: string | null; // String
     id: number; // Int!
     isOfficial?: boolean | null; // Boolean
+    long_description?: string | null; // String
     title: string; // String!
   }
   Tournament: { // root type
@@ -699,6 +700,8 @@ export interface NexusGenFieldTypes {
     icon: string | null; // String
     id: number; // Int!
     isOfficial: boolean | null; // Boolean
+    long_description: string | null; // String
+    moderators: NexusGenRootTypes['User'][]; // [User!]!
     title: string; // String!
   }
   Tournament: { // field return type
@@ -1109,6 +1112,8 @@ export interface NexusGenFieldTypeNames {
     icon: 'String'
     id: 'Int'
     isOfficial: 'Boolean'
+    long_description: 'String'
+    moderators: 'User'
     title: 'String'
   }
   Tournament: { // field return type name

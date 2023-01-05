@@ -717,6 +717,8 @@ export type Tag = {
   icon: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   isOfficial: Maybe<Scalars['Boolean']>;
+  long_description: Maybe<Scalars['String']>;
+  moderators: Array<User>;
   title: Scalars['String'];
 };
 
@@ -1029,7 +1031,7 @@ export type GetTagInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, description: string | null } };
+export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, long_description: string | null, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
 
 export type TagFeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
@@ -2185,7 +2187,12 @@ export const GetTagInfoDocument = gql`
     id
     title
     icon
-    description
+    long_description
+    moderators {
+      id
+      name
+      avatar
+    }
   }
 }
     `;

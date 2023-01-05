@@ -12,16 +12,18 @@ generator client {
 // -----------------
 
 model Tag {
-  id          Int     @id @default(autoincrement())
-  title       String  @unique
-  icon        String?
-  description String?
-  isOfficial  Boolean @default(false)
+  id               Int     @id @default(autoincrement())
+  title            String  @unique
+  icon             String?
+  description      String?
+  long_description String?
+  isOfficial       Boolean @default(false)
 
   project    Project[]
   stories    Story[]
   questions  Question[]
   hackathons Hackathon[]
+  moderators User[]
 }
 
 model Vote {
@@ -72,6 +74,7 @@ model User {
   skills         Skill[]
   roles          UsersOnWorkRoles[]
   projects       ProjectMember[]
+  moderating     Tag[]
 
   tournaments TournamentParticipant[]
 }
