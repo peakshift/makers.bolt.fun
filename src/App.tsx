@@ -8,6 +8,7 @@ import { useMeQuery } from "./graphql";
 import { setUser } from "./redux/features/user.slice";
 import { Outlet } from "react-router-dom";
 import GlobalLoader from "./Components/GlobalLoader/GlobalLoader";
+import OgTags from "./Components/OgTags/OgTags";
 
 function App() {
   const { isWalletConnected } = useAppSelector((state) => ({
@@ -49,6 +50,11 @@ function App() {
 
   return (
     <div id="app" className="w-full">
+      <OgTags
+        title="makers.bolt.fun"
+        description="A lightning app directory made for and by the bitcoin community."
+        image="https://makers.bolt.fun/assets/images/og-thumbnail.jpg"
+      />
       <GlobalLoader />
       <Suspense fallback={<LoadingPage />}>
         <Outlet />
