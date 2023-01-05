@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet";
 import { useLoaderData } from "react-router-dom";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import { PostDetailsQuery, Post_Type } from "src/graphql";
@@ -11,6 +10,7 @@ import PostActions from "./Components/PostActions/PostActions";
 import styles from "./styles.module.scss";
 import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
+import OgTags from "src/Components/OgTags/OgTags";
 
 const CommentsSection = lazy(
   () =>
@@ -34,9 +34,7 @@ export default function PostDetailsPage(props: Props) {
 
   return (
     <>
-      <Helmet>
-        <title>{post.title}</title>
-      </Helmet>
+      <OgTags title={post.title} description={post.body.slice(0, 50)} />
       <ScrollToTop />
       <div className={`page-container max-md:bg-white`}>
         <div className={`grid w-full gap-32 ${styles.grid}`}>

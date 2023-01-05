@@ -13,6 +13,7 @@ import { FiEdit2, FiLink } from "react-icons/fi";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { createRoute } from "src/utils/routing";
 import { NotificationsService } from "src/services";
+import OgTags from "src/Components/OgTags/OgTags";
 import { formatHashtag } from "src/utils/helperFunctions";
 
 interface Props {
@@ -28,6 +29,11 @@ export default function StoryPageContent({ story }: Props) {
 
   return (
     <>
+      <OgTags
+        title={story.title}
+        description={story.body.slice(0, 50)}
+        image={story.cover_image}
+      />
       <div
         id="content"
         className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"
@@ -98,7 +104,7 @@ export default function StoryPageContent({ story }: Props) {
             <div className="flex flex-wrap gap-8">
               {story.tags.map((tag) => (
                 <Badge key={tag.id} size="sm">
-                  {formatHashtag(tag.title)}
+                  {tag.title}
                 </Badge>
               ))}
             </div>

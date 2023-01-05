@@ -1,20 +1,16 @@
-import { useUpdateEffect } from "@react-hookz/web";
-import { useState } from "react";
-import { useFeedQuery, useTagFeedQuery } from "src/graphql";
+import { useTagFeedQuery } from "src/graphql";
 import { useInfiniteQuery, usePreload } from "src/utils/hooks";
 import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
 import styles from "./styles.module.scss";
-import { Helmet } from "react-helmet";
 import Button from "src/Components/Button/Button";
-import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { capitalize, formatHashtag } from "src/utils/helperFunctions";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
-import { Link, useLoaderData } from "react-router-dom";
+import { createRoute } from "src/utils/routing";
+import { useLoaderData } from "react-router-dom";
 import { useAppDispatch } from "src/utils/hooks";
 import { stageStory } from "src/redux/features/staging.slice";
 import { LoaderData } from "./tagPage.loader";
-import IconButton from "src/Components/IconButton/IconButton";
+import OgTags from "src/Components/OgTags/OgTags";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -49,13 +45,7 @@ export default function TagPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{`${loaderData.getTagInfo.title} Stories`}</title>
-        <meta
-          property="og:title"
-          content={`${loaderData.getTagInfo.title} Stories`}
-        />
-      </Helmet>
+      <OgTags title={`${capitalize(loaderData.getTagInfo.title)} Stories`} />
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
           <div id="content" className="">

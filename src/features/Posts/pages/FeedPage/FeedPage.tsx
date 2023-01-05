@@ -4,20 +4,16 @@ import { useFeedQuery } from "src/graphql";
 import { useInfiniteQuery, usePreload } from "src/utils/hooks";
 import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
-import PopularTagsFilter, {
-  FilterTag,
-} from "./PopularTagsFilter/FeedTagsFilter";
+import FeedTagsFilter, { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
 import SortBy from "./SortBy/SortBy";
 import styles from "./styles.module.scss";
-import { Helmet } from "react-helmet";
 import Button from "src/Components/Button/Button";
 import { FiArrowRight } from "react-icons/fi";
 import { capitalize } from "src/utils/helperFunctions";
-import { bannerData } from "src/features/Projects/pages/ExplorePage/Header/Header";
 import { createRoute } from "src/utils/routing";
-import { Link } from "react-router-dom";
 import { useAppDispatch } from "src/utils/hooks";
 import { stageStory } from "src/redux/features/staging.slice";
+import OgTags from "src/Components/OgTags/OgTags";
 
 export default function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
@@ -42,10 +38,10 @@ export default function FeedPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{`Bolt.Fun`}</title>
-        <meta property="og:title" content={`Bolt.Fun`} />
-      </Helmet>
+      <OgTags
+        title="Bolt Fun"
+        description="A lightning app directory made for and by the bitcoin community."
+      />
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
           <div id="title">
@@ -100,7 +96,7 @@ export default function FeedPage() {
                 </Button>
               </div>
               <div className="order-2 md:order-3">
-                <PopularTagsFilter
+                <FeedTagsFilter
                   value={tagFilter}
                   onChange={setTagFilter as any}
                 />
