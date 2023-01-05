@@ -1,7 +1,0 @@
-query PopularTags {
-  popularTags {
-    id
-    title
-    icon
-  }
-}

@@ -492,6 +492,7 @@ export type Query = {
   getProject: Project;
   getProjectsById: Array<Project>;
   getProjectsInTournament: TournamentProjectsResponse;
+  getTagInfo: Tag;
   getTournamentById: Tournament;
   getTournamentToRegister: Array<Tournament>;
   getTrendingPosts: Array<Post>;
@@ -584,6 +585,11 @@ export type QueryGetProjectsInTournamentArgs = {
   take?: InputMaybe<Scalars['Int']>;
   tournamentId: Scalars['Int'];
   trackId: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetTagInfoArgs = {
+  tag: InputMaybe<Scalars['String']>;
 };
 
 
@@ -995,10 +1001,10 @@ export type MyProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MyProjectsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, projects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> } | null };
 
-export type PopularTagsQueryVariables = Exact<{ [key: string]: never; }>;
+export type FeedTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PopularTagsQuery = { __typename?: 'Query', popularTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> };
+export type FeedTagsQuery = { __typename?: 'Query', officialTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> };
 
 export type FeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
@@ -1017,6 +1023,23 @@ export type PostDetailsQueryVariables = Exact<{
 
 
 export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+
+export type GetTagInfoQueryVariables = Exact<{
+  tag: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, description: string | null } };
+
+export type TagFeedQueryVariables = Exact<{
+  take: InputMaybe<Scalars['Int']>;
+  skip: InputMaybe<Scalars['Int']>;
+  sortBy: InputMaybe<Scalars['String']>;
+  tag: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
 type UserBasicInfo_MyProfile_Fragment = { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
 
@@ -1906,9 +1929,9 @@ export function useMyProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type MyProjectsQueryHookResult = ReturnType<typeof useMyProjectsQuery>;
 export type MyProjectsLazyQueryHookResult = ReturnType<typeof useMyProjectsLazyQuery>;
 export type MyProjectsQueryResult = Apollo.QueryResult<MyProjectsQuery, MyProjectsQueryVariables>;
-export const PopularTagsDocument = gql`
-    query PopularTags {
-  popularTags {
+export const FeedTagsDocument = gql`
+    query FeedTags {
+  officialTags {
     id
     title
     icon
@@ -1917,31 +1940,31 @@ export const PopularTagsDocument = gql`
     `;
 
 /**
- * __usePopularTagsQuery__
+ * __useFeedTagsQuery__
  *
- * To run a query within a React component, call `usePopularTagsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePopularTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFeedTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeedTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePopularTagsQuery({
+ * const { data, loading, error } = useFeedTagsQuery({
  *   variables: {
  *   },
  * });
  */
-export function usePopularTagsQuery(baseOptions?: Apollo.QueryHookOptions<PopularTagsQuery, PopularTagsQueryVariables>) {
+export function useFeedTagsQuery(baseOptions?: Apollo.QueryHookOptions<FeedTagsQuery, FeedTagsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
+        return Apollo.useQuery<FeedTagsQuery, FeedTagsQueryVariables>(FeedTagsDocument, options);
       }
-export function usePopularTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PopularTagsQuery, PopularTagsQueryVariables>) {
+export function useFeedTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeedTagsQuery, FeedTagsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PopularTagsQuery, PopularTagsQueryVariables>(PopularTagsDocument, options);
+          return Apollo.useLazyQuery<FeedTagsQuery, FeedTagsQueryVariables>(FeedTagsDocument, options);
         }
-export type PopularTagsQueryHookResult = ReturnType<typeof usePopularTagsQuery>;
-export type PopularTagsLazyQueryHookResult = ReturnType<typeof usePopularTagsLazyQuery>;
-export type PopularTagsQueryResult = Apollo.QueryResult<PopularTagsQuery, PopularTagsQueryVariables>;
+export type FeedTagsQueryHookResult = ReturnType<typeof useFeedTagsQuery>;
+export type FeedTagsLazyQueryHookResult = ReturnType<typeof useFeedTagsLazyQuery>;
+export type FeedTagsQueryResult = Apollo.QueryResult<FeedTagsQuery, FeedTagsQueryVariables>;
 export const FeedDocument = gql`
     query Feed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
   getFeed(take: $take, skip: $skip, sortBy: $sortBy, tag: $tag) {
@@ -2156,6 +2179,147 @@ export function usePostDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type PostDetailsQueryHookResult = ReturnType<typeof usePostDetailsQuery>;
 export type PostDetailsLazyQueryHookResult = ReturnType<typeof usePostDetailsLazyQuery>;
 export type PostDetailsQueryResult = Apollo.QueryResult<PostDetailsQuery, PostDetailsQueryVariables>;
+export const GetTagInfoDocument = gql`
+    query GetTagInfo($tag: String) {
+  getTagInfo(tag: $tag) {
+    id
+    title
+    icon
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetTagInfoQuery__
+ *
+ * To run a query within a React component, call `useGetTagInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTagInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTagInfoQuery({
+ *   variables: {
+ *      tag: // value for 'tag'
+ *   },
+ * });
+ */
+export function useGetTagInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetTagInfoQuery, GetTagInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTagInfoQuery, GetTagInfoQueryVariables>(GetTagInfoDocument, options);
+      }
+export function useGetTagInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTagInfoQuery, GetTagInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTagInfoQuery, GetTagInfoQueryVariables>(GetTagInfoDocument, options);
+        }
+export type GetTagInfoQueryHookResult = ReturnType<typeof useGetTagInfoQuery>;
+export type GetTagInfoLazyQueryHookResult = ReturnType<typeof useGetTagInfoLazyQuery>;
+export type GetTagInfoQueryResult = Apollo.QueryResult<GetTagInfoQuery, GetTagInfoQueryVariables>;
+export const TagFeedDocument = gql`
+    query TagFeed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
+  getFeed(take: $take, skip: $skip, sortBy: $sortBy, tag: $tag) {
+    ... on Story {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+        join_date
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      comments_count
+      project {
+        id
+        title
+        thumbnail_image
+        hashtag
+      }
+    }
+    ... on Bounty {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+        join_date
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+      cover_image
+      deadline
+      reward_amount
+      applicants_count
+    }
+    ... on Question {
+      id
+      title
+      createdAt
+      author {
+        id
+        name
+        avatar
+        join_date
+      }
+      excerpt
+      tags {
+        id
+        title
+      }
+      votes_count
+      type
+    }
+  }
+}
+    `;
+
+/**
+ * __useTagFeedQuery__
+ *
+ * To run a query within a React component, call `useTagFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTagFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTagFeedQuery({
+ *   variables: {
+ *      take: // value for 'take'
+ *      skip: // value for 'skip'
+ *      sortBy: // value for 'sortBy'
+ *      tag: // value for 'tag'
+ *   },
+ * });
+ */
+export function useTagFeedQuery(baseOptions?: Apollo.QueryHookOptions<TagFeedQuery, TagFeedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TagFeedQuery, TagFeedQueryVariables>(TagFeedDocument, options);
+      }
+export function useTagFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TagFeedQuery, TagFeedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TagFeedQuery, TagFeedQueryVariables>(TagFeedDocument, options);
+        }
+export type TagFeedQueryHookResult = ReturnType<typeof useTagFeedQuery>;
+export type TagFeedLazyQueryHookResult = ReturnType<typeof useTagFeedLazyQuery>;
+export type TagFeedQueryResult = Apollo.QueryResult<TagFeedQuery, TagFeedQueryVariables>;
 export const MyProfileAboutDocument = gql`
     query MyProfileAbout {
   me {
