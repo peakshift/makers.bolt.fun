@@ -6,7 +6,7 @@ import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
 import PopularTagsFilter, {
   FilterTag,
-} from "./PopularTagsFilter/PopularTagsFilter";
+} from "./PopularTagsFilter/FeedTagsFilter";
 import SortBy from "./SortBy/SortBy";
 import styles from "./styles.module.scss";
 import { Helmet } from "react-helmet";

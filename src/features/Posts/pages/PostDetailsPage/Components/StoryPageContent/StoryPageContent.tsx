@@ -14,6 +14,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { createRoute } from "src/utils/routing";
 import { NotificationsService } from "src/services";
 import OgTags from "src/Components/OgTags/OgTags";
+import { formatHashtag } from "src/utils/helperFunctions";
 
 interface Props {
   story: Story;

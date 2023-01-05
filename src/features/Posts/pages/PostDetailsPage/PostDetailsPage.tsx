@@ -26,24 +26,11 @@ interface Props {
 }
 
 export default function PostDetailsPage(props: Props) {
-  const { slug } = useParams();
+  const loaderData = useLoaderData() as PostDetailsQuery;
+
   const type = capitalize(props.postType);
 
-  const id = Number(
-    slug?.includes("--") ? slug.slice(slug.lastIndexOf("--") + 2) : slug
-  );
-
-  const postDetailsQuery = usePostDetailsQuery({
-    variables: {
-      id,
-      type: type as any,
-    },
-    skip: isNaN(id),
-  });
-
-  if (postDetailsQuery.loading) return <PostDetailsPageSkeleton />;
-
-  const post = postDetailsQuery.data?.getPostById;
+  const post = loaderData.getPostById;
 
   if (!post) return <NotFoundPage />;
 

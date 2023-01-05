@@ -2,135 +2,12 @@ import React, { Suspense, useEffect } from "react";
 import ModalsContainer from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { useAppDispatch, useAppSelector } from "./utils/hooks";
 import { Wallet_Service } from "./services";
-import { Navigate, Route, Routes } from "react-router-dom";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
 import { useMeQuery } from "./graphql";
 import { setUser } from "./redux/features/user.slice";
-import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import { Helmet } from "react-helmet";
-import { NavbarLayout } from "./utils/routing/layouts";
-import { Loadable, PAGES_ROUTES } from "./utils/routing";
-import ListProjectPage from "./features/Projects/pages/ListProjectPage/ListProjectPage";
-import OgTags from "./Components/OgTags/OgTags";
-
-// Pages
-const FeedPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "feed_page" */ "./features/Posts/pages/FeedPage/FeedPage"
-      )
-  )
-);
-const PostDetailsPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "post_details_page" */ "./features/Posts/pages/PostDetailsPage/PostDetailsPage"
-      )
-  )
-);
-const CreatePostPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "create_post_page" */ "./features/Posts/pages/CreatePostPage/CreatePostPage"
-      )
-  )
-);
-
-const HottestPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "hottest_page" */ "src/features/Projects/pages/HottestPage/HottestPage"
-      )
-  )
-);
-const CategoryPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "category_page" */ "src/features/Projects/pages/CategoryPage/CategoryPage"
-      )
-  )
-);
-const ExplorePage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ExplorePage"
-      )
-  )
-);
-const ProjectPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage"
-      )
-  )
-);
-
-const HackathonsPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "hackathons_page" */ "./features/Hackathons/pages/HackathonsPage/HackathonsPage"
-      )
-  )
-);
-
-const TournamentDetailsPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "hackathons_page" */ "./features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage"
-      )
-  )
-);
-
-const DonatePage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "donate_page" */ "./features/Donations/pages/DonatePage/DonatePage"
-      )
-  )
-);
-const LoginPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "login_page" */ "./features/Auth/pages/LoginPage/LoginPage"
-      )
-  )
-);
-const LogoutPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "logout_page" */ "./features/Auth/pages/LogoutPage/LogoutPage"
-      )
-  )
-);
-const ProfilePage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "profile_page" */ "./features/Profiles/pages/ProfilePage/ProfilePage"
-      )
-  )
-);
-const EditProfilePage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "edit_profile_page" */ "./features/Profiles/pages/EditProfilePage/EditProfilePage"
-      )
-  )
-);
+import { Outlet } from "react-router-dom";
+import GlobalLoader from "./Components/GlobalLoader/GlobalLoader";
 
 function App() {
   const { isWalletConnected } = useAppSelector((state) => ({
@@ -172,87 +49,9 @@ function App() {
 
   return (
     <div id="app" className="w-full">
-      <OgTags
-        title="Bolt Fun"
-        description="A lightning app directory made for and by the bitcoin community."
-        image="https://makers.bolt.fun/assets/images/og-thumbnail.jpg"
-      />
+      <GlobalLoader />
       <Suspense fallback={<LoadingPage />}>
-        <Routes>
-          <Route
-            path={PAGES_ROUTES.blog.writeStory}
-            element={
-              <ProtectedRoute>
-                <CreatePostPage initType="story" />
-              </ProtectedRoute>
-            }
-          />
-          <Route element={<NavbarLayout />}>
-            <Route
-              path={PAGES_ROUTES.projects.hottest}
-              element={<HottestPage />}
-            />
-            <Route
-              path={PAGES_ROUTES.projects.byCategoryId}
-              element={<CategoryPage />}
-            />
-            <Route
-              path={PAGES_ROUTES.projects.default}
-              element={<ExplorePage />}
-            />
-            <Route
-              path={PAGES_ROUTES.projects.listProject}
-              element={<ListProjectPage />}
-            />
-            <Route
-              path={PAGES_ROUTES.projects.projectPage}
-              element={<ProjectPage />}
-            />
-            <Route
-              path={PAGES_ROUTES.projects.catchProject}
-              element={<Navigate replace to={PAGES_ROUTES.projects.default} />}
-            />
-
-            <Route
-              path={PAGES_ROUTES.blog.storyById}
-              element={<PostDetailsPage postType="story" />}
-            />
-            <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
-            <Route
-              path={PAGES_ROUTES.blog.catchStory}
-              element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
-            />
-
-            <Route
-              path={PAGES_ROUTES.hackathons.default}
-              element={<HackathonsPage />}
-            />
-
-            <Route
-              path={PAGES_ROUTES.tournament.byId}
-              element={<TournamentDetailsPage />}
-            />
-
-            <Route
-              path={PAGES_ROUTES.donate.default}
-              element={<DonatePage />}
-            />
-
-            <Route
-              path={PAGES_ROUTES.profile.editProfile}
-              element={<EditProfilePage />}
-            />
-            <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
-
-            <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
-            <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
-
-            <Route
-              path="/"
-              element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
-            />
-          </Route>
-        </Routes>
+        <Outlet />
       </Suspense>
       <ModalsContainer />
     </div>

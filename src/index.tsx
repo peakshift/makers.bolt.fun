@@ -1,28 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import Wrapper from './utils/Wrapper';
-import './styles/index.scss';
-import App from './App';
-
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Wrapper from "./utils/Wrapper";
+import "./styles/index.scss";
+import { RootRouter } from "./utils/routing/rootRouter";
 
 if (process.env.REACT_APP_ENABLE_MOCKS) {
-  import(/* webpackChunkName: "mocks_server" */ './mocks/browser')
-    .then(({ worker }) => {
+  import(/* webpackChunkName: "mocks_server" */ "./mocks/browser").then(
+    ({ worker }) => {
       worker.start({
-        onUnhandledRequest: 'bypass'
-      })
-    })
+        onUnhandledRequest: "bypass",
+      });
+    }
+  );
 }
 
-
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
     <Wrapper>
-      <App />
+      <RootRouter />
     </Wrapper>
   </React.StrictMode>
 );
-
