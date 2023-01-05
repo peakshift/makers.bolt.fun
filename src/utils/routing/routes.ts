@@ -20,7 +20,7 @@ type RouteOptions =
     }
   | {
       type: "write-story";
-      id?: number;
+      initData?: Record<string, any>;
     }
   | {
       type: "bounty";
@@ -74,7 +74,12 @@ export function createRoute(options: RouteOptions) {
     );
   }
 
-  if (options.type === "write-story") return "/story/write?type=story";
+  if (options.type === "write-story") {
+    const searchParams = new URLSearchParams({
+      ...options.initData,
+    }).toString();
+    return "/story/write?" + searchParams;
+  }
 
   if (options.type === "tag-page") return `/t/${options.tag}`;
 

@@ -71,8 +71,9 @@ export type CreateStoryType = Override<
 const storageService = new StorageService<CreateStoryType>("story-edit");
 
 function CreateStoryPage() {
-  const { story } = useAppSelector((state) => ({
-    story: state.staging.story || storageService.get(),
+  const { story: initStoryData } = useAppSelector((state) => ({
+    story: state.staging.story || getInitDataFromURL(),
+    //  || storageService.get(),
   }));
   const [storyCreated, setStoryCreated] = useState(false);
 
@@ -80,13 +81,13 @@ function CreateStoryPage() {
     resolver: yupResolver(schema) as Resolver<CreateStoryType>,
     shouldFocusError: false,
     defaultValues: {
-      id: story?.id ?? null,
-      title: story?.title ?? "",
-      cover_image: story?.cover_image,
-      tags: story?.tags ?? [],
-      body: story?.body ?? "",
-      is_published: story?.is_published ?? false,
-      project: story?.project,
+      id: initStoryData?.id ?? null,
+      title: initStoryData?.title ?? "",
+      cover_image: initStoryData?.cover_image,
+      tags: initStoryData?.tags ?? [],
+      body: initStoryData?.body ?? "",
+      is_published: initStoryData?.is_published ?? false,
+      project: initStoryData?.project,
     },
   });
 
@@ -118,8 +119,8 @@ function CreateStoryPage() {
       <div className={styles.grid}>
         <StoryForm
           key={formKey}
-          isPublished={!!story?.is_published}
-          isUpdating={!!story?.id}
+          isPublished={!!initStoryData?.is_published}
+          isUpdating={!!initStoryData?.id}
           onSuccess={() => setStoryCreated(true)}
           onValidationError={() =>
             errorsContainerRef.current.scrollIntoView({
@@ -150,3 +151,23 @@ export default withErrorBoundary(CreateStoryPage, {
     storageService.set({ ...storageService.get()!, cover_image: null as any });
   },
 });
+
+function getInitDataFromURL() {
+  const qs = window.location.search;
+  const urlParams = new URLSearchParams(qs);
+
+  const _tags = urlParams.get("tags");
+
+  // extract the other fields here & parse them if you want to support initializing
+  // the form data from the URL
+  // currently, only tags is needed
+  return {
+    id: undefined,
+    title: undefined,
+    body: "",
+    cover_image: undefined,
+    is_published: undefined,
+    project: undefined,
+    tags: _tags ? [{ title: _tags }] : undefined,
+  };
+}

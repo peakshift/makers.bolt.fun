@@ -8,7 +8,14 @@ const Tag = objectType({
     t.nonNull.string("title");
     t.string("icon");
     t.string("description");
+    t.string("long_description");
     t.boolean("isOfficial");
+
+    t.nonNull.list.nonNull.field("moderators", {
+      type: "User",
+      resolve: (parent) =>
+        prisma.tag.findUnique({ where: { id: parent.id } }).moderators(),
+    });
   },
 });
 
@@ -66,7 +73,6 @@ const getTagInfo = extendType({
           where: {
             title: tag,
           },
-          
         });
       },
     });
