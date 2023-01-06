@@ -74,7 +74,7 @@ export default function TagPage() {
                     DESCRIPTION
                   </p>
                   <div
-                    className={`text-gray-600 ${styles.tag_desc}`}
+                    className={`prose text-gray-600 ${styles.tag_desc}`}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(
                         marked.parse(loaderData.getTagInfo.long_description)
