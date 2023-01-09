@@ -1,6 +1,7 @@
 
 const DEFAULT_RELAYS = [
     'wss://nostr.drss.io',
+    'wss://nostr.swiss-enigma.ch',
     'wss://relay.damus.io',
 ];
 
