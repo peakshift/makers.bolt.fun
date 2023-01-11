@@ -702,6 +702,7 @@ export interface NexusGenFieldTypes {
     isOfficial: boolean | null; // Boolean
     long_description: string | null; // String
     moderators: NexusGenRootTypes['User'][]; // [User!]!
+    posts_count: number; // Int!
     title: string; // String!
   }
   Tournament: { // field return type
@@ -1114,6 +1115,7 @@ export interface NexusGenFieldTypeNames {
     isOfficial: 'Boolean'
     long_description: 'String'
     moderators: 'User'
+    posts_count: 'Int'
     title: 'String'
   }
   Tournament: { // field return type name

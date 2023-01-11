@@ -10,6 +10,18 @@ const Tag = objectType({
     t.string("description");
     t.string("long_description");
     t.boolean("isOfficial");
+    t.nonNull.int("posts_count", {
+      resolve: (parent) =>
+        prisma.story.count({
+          where: {
+            tags: {
+              some: {
+                id: parent.id,
+              },
+            },
+          },
+        }),
+    });
 
     t.nonNull.list.nonNull.field("moderators", {
       type: "User",

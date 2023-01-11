@@ -6,7 +6,7 @@ import { MEDIA_QUERIES } from "src/utils/theme";
 import { formatHashtag } from "src/utils/helperFunctions";
 import Card from "src/Components/Card/Card";
 import { Link } from "react-router-dom";
-import { createRoute } from "src/utils/routing";
+import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import { useState } from "react";
 import Button from "src/Components/Button/Button";
 
@@ -37,7 +37,17 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
     <div className="overflow-hidden">
       {isMdScreen ? (
         <Card>
-          <p className="text-body2 font-bolder text-black mb-16">🏷️ Tags</p>
+          <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
+            <p className="text-body2 font-bolder text-gray-900">🏷️ Tags</p>
+            <Button
+              variant="text"
+              color="primary"
+              size="sm"
+              href={PAGES_ROUTES.blog.allTopics}
+            >
+              See all
+            </Button>
+          </div>
           <ul className=" flex flex-col gap-16">
             {tagsQuery.loading
               ? Array(10)
@@ -113,19 +123,31 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                 ))}
             </ul>
           ) : (
-            <Slider>
-              {tagsQuery.data?.officialTags.map((tag) => (
-                <Link
-                  key={tag.id}
-                  to={createRoute({ type: "tag-page", tag: tag.title })}
-                  className={`${
-                    tag.id === selectedId ? "bg-gray-200" : "bg-gray-100"
-                  } py-12 px-16 rounded-8 text-body5`}
+            <>
+              <Slider>
+                {tagsQuery.data?.officialTags.map((tag) => (
+                  <Link
+                    key={tag.id}
+                    to={createRoute({ type: "tag-page", tag: tag.title })}
+                    className={`${
+                      tag.id === selectedId ? "bg-gray-200" : "bg-gray-100"
+                    } py-12 px-16 rounded-8 text-body5`}
+                  >
+                    {tag.icon} {formatHashtag(tag.title)}
+                  </Link>
+                ))}
+              </Slider>
+              <div className="flex justify-end mt-16">
+                <Button
+                  variant="text"
+                  color="primary"
+                  size="sm"
+                  href={PAGES_ROUTES.blog.allTopics}
                 >
-                  {tag.icon} {formatHashtag(tag.title)}
-                </Link>
-              ))}
-            </Slider>
+                  See all topics
+                </Button>
+              </div>
+            </>
           )}
         </>
       )}

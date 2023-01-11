@@ -719,6 +719,7 @@ export type Tag = {
   isOfficial: Maybe<Scalars['Boolean']>;
   long_description: Maybe<Scalars['String']>;
   moderators: Array<User>;
+  posts_count: Scalars['Int'];
   title: Scalars['String'];
 };
 
@@ -976,6 +977,11 @@ export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } }> };
+
+export type GetAllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllTopicsQuery = { __typename?: 'Query', officialTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null, posts_count: number, long_description: string | null }> };
 
 export type GetMyDraftsQueryVariables = Exact<{
   type: Post_Type;
@@ -1755,6 +1761,44 @@ export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
+export const GetAllTopicsDocument = gql`
+    query GetAllTopics {
+  officialTags {
+    id
+    title
+    icon
+    posts_count
+    long_description
+  }
+}
+    `;
+
+/**
+ * __useGetAllTopicsQuery__
+ *
+ * To run a query within a React component, call `useGetAllTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTopicsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTopicsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTopicsQuery, GetAllTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTopicsQuery, GetAllTopicsQueryVariables>(GetAllTopicsDocument, options);
+      }
+export function useGetAllTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTopicsQuery, GetAllTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTopicsQuery, GetAllTopicsQueryVariables>(GetAllTopicsDocument, options);
+        }
+export type GetAllTopicsQueryHookResult = ReturnType<typeof useGetAllTopicsQuery>;
+export type GetAllTopicsLazyQueryHookResult = ReturnType<typeof useGetAllTopicsLazyQuery>;
+export type GetAllTopicsQueryResult = Apollo.QueryResult<GetAllTopicsQuery, GetAllTopicsQueryVariables>;
 export const GetMyDraftsDocument = gql`
     query GetMyDrafts($type: POST_TYPE!) {
   getMyDrafts(type: $type) {

@@ -19,11 +19,12 @@ model Tag {
   long_description String?
   isOfficial       Boolean @default(false)
 
-  project    Project[]
-  stories    Story[]
-  questions  Question[]
-  hackathons Hackathon[]
-  moderators User[]
+  project      Project[]
+  stories      Story[]
+  questions    Question[]
+  hackathons   Hackathon[]
+  moderators   User[]
+  capabilities Capability[]
 }
 
 model Vote {
@@ -473,4 +474,5 @@ model Capability {
   title   String    @unique
   icon    String?
   project Project[]
+  tags    Tag[]
 }

@@ -448,6 +448,7 @@ type Tag {
   isOfficial: Boolean
   long_description: String
   moderators: [User!]!
+  posts_count: Int!
   title: String!
 }
 
