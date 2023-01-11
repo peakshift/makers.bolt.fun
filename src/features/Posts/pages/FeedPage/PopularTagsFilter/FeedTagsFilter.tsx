@@ -37,7 +37,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
     <div className="overflow-hidden">
       {isMdScreen ? (
         <div>
-          <p className="text-body2 font-bolder text-black mb-16">🏷️ Tags</p>
+          <p className="text-body2 font-bolder text-black mb-16">Topics</p>
           <ul className=" flex flex-col gap-16">
             {tagsQuery.loading
               ? Array(10)
