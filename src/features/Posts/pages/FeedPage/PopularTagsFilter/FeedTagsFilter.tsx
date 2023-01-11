@@ -38,12 +38,12 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
       {isMdScreen ? (
         <Card>
           <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
-            <p className="text-body2 font-bolder text-gray-900">🏷️ Tags</p>
+            <p className="text-body2 font-bolder text-gray-900">🏷️ Topics</p>
             <Button
               variant="text"
               color="primary"
               size="sm"
-              href={PAGES_ROUTES.blog.allTopics}
+              href={PAGES_ROUTES.blog.topicsPage}
             >
               See all
             </Button>
@@ -142,7 +142,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                   variant="text"
                   color="primary"
                   size="sm"
-                  href={PAGES_ROUTES.blog.allTopics}
+                  href={PAGES_ROUTES.blog.topicsPage}
                 >
                   See all topics
                 </Button>

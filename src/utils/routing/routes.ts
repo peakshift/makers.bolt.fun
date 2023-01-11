@@ -142,7 +142,7 @@ export const PAGES_ROUTES = {
     createPost: "/story/create-post",
     catchStory: "/story",
     tagPage: "/t/:tag",
-    allTopics: "/all-topics",
+    topicsPage: "/topics",
   },
   hackathons: {
     default: "/hackathons",

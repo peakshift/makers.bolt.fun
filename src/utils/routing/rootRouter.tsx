@@ -203,7 +203,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         />
 
         <Route
-          path={PAGES_ROUTES.blog.allTopics}
+          path={PAGES_ROUTES.blog.topicsPage}
           element={<AllTopicsPage />}
           loader={allTopicsPageLoader(queryClient)}
         />
