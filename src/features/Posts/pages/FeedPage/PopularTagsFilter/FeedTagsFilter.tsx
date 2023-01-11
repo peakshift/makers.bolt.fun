@@ -45,9 +45,9 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                   .map((_, idx) => (
                     <li
                       key={idx}
-                      className={`flex items-start rounded-8 font-bold`}
+                      className={`group flex items-start rounded-8 font-bold`}
                     >
-                      <span className="bg-gray-100 rounded-8 w-40 h-40 text-center py-8">
+                      <span className="bg-gray-50 rounded-8 w-40 h-40 text-center py-8">
                         {" "}
                       </span>
                       <span className="self-center px-8">
@@ -58,21 +58,21 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
               : tagsQuery.data?.officialTags
                   .slice(0, showingAll ? -1 : MAX_SHOWED_TAGS)
                   .map((tag) => (
-                    <li key={tag.id}>
+                    <li key={tag.id} className="group">
                       <Link
                         to={createRoute({ type: "tag-page", tag: tag.title })}
                         className={`flex items-start rounded-8 cursor-pointer font-bold
-                                 active:scale-95 transition-transform
+                                 active:scale-95 group-hover:bg-gray-100 transition-transform
                                 ${
                                   tag.id === selectedId
                                     ? "bg-gray-200"
-                                    : "hover:bg-gray-100"
+                                    : "group-hover:bg-gray-100"
                                 }
                                 `}
                       >
                         <span
                           className={`${
-                            tag.id !== selectedId && "bg-gray-100"
+                            tag.id !== selectedId && "bg-gray-50 group-hover:bg-gray-100"
                           } rounded-8 w-40 h-40 text-center py-8`}
                         >
                           {tag.icon}
