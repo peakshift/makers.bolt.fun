@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { UnionToObjectKeys } from "src/utils/types/utils";
 import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   color?: "primary" | "red" | "white" | "gray" | "black" | "none";
@@ -104,15 +105,8 @@ const Button = React.forwardRef<any, Props>(
       if (onClick) onClick(e);
     };
 
-    const btn = (
-      <button
-        ref={ref}
-        type="button"
-        className={`${classes} ${className}`}
-        onClick={(e) => handleClick(e)}
-        disabled={disabled}
-        {...props}
-      >
+    const btnContent = (
+      <>
         <span className={isLoading ? "opacity-0" : ""}>{children}</span>
         {isLoading && (
           <div className="text-body5 absolute inset-0 rounded-lg bg-inherit flex flex-col justify-center items-center">
@@ -121,19 +115,53 @@ const Button = React.forwardRef<any, Props>(
             )}
           </div>
         )}
-      </button>
+      </>
     );
 
     if (href && newTab)
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer">
-          {btn}
+        <a
+          href={href}
+          className={twMerge(
+            classes,
+            disabled && "opacity-75 pointer-events-none",
+            className
+          )}
+          onClick={(e) => handleClick(e)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {btnContent}
         </a>
       );
 
-    if (href) return <Link to={href}>{btn}</Link>;
+    if (href)
+      return (
+        <Link
+          to={href}
+          className={twMerge(
+            classes,
+            disabled && "opacity-75 pointer-events-none",
+            className
+          )}
+          onClick={(e) => handleClick(e)}
+        >
+          {btnContent}
+        </Link>
+      );
 
-    return btn;
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={twMerge(classes, className)}
+        onClick={(e) => handleClick(e)}
+        disabled={disabled}
+        {...props}
+      >
+        {btnContent}
+      </button>
+    );
   }
 );
 
