@@ -3,6 +3,14 @@ const { objectType, extendType, stringArg, intArg } = require("nexus");
 const { prisma } = require("../../../prisma");
 const { defaultPrismaSelectFields } = require("./helpers");
 
+const TagLink = objectType({
+  name: "TagLink",
+  definition(t) {
+    t.nonNull.string("name");
+    t.nonNull.string("url");
+  },
+});
+
 const Tag = objectType({
   name: "Tag",
   definition(t) {
@@ -11,6 +19,12 @@ const Tag = objectType({
     t.string("icon");
     t.string("description");
     t.string("long_description");
+    t.nonNull.list.nonNull.string("links", {
+      type: TagLink,
+      resolve: (parent) =>
+        prisma.tag.findUnique({ where: { id: parent.id } }).links(),
+    });
+    t.string("github");
     t.boolean("isOfficial");
     t.nonNull.int("posts_count", {
       resolve: (parent) =>

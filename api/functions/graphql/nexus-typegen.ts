@@ -328,11 +328,16 @@ export interface NexusGenObjects {
   }
   Tag: { // root type
     description?: string | null; // String
+    github?: string | null; // String
     icon?: string | null; // String
     id: number; // Int!
     isOfficial?: boolean | null; // Boolean
     long_description?: string | null; // String
     title: string; // String!
+  }
+  TagLink: { // root type
+    name: string; // String!
+    url: string; // String!
   }
   Tournament: { // root type
     description: string; // String!
@@ -698,13 +703,19 @@ export interface NexusGenFieldTypes {
   }
   Tag: { // field return type
     description: string | null; // String
+    github: string | null; // String
     icon: string | null; // String
     id: number; // Int!
     isOfficial: boolean | null; // Boolean
+    links: NexusGenRootTypes['TagLink'][]; // [TagLink!]!
     long_description: string | null; // String
     moderators: NexusGenRootTypes['User'][]; // [User!]!
     posts_count: number; // Int!
     title: string; // String!
+  }
+  TagLink: { // field return type
+    name: string; // String!
+    url: string; // String!
   }
   Tournament: { // field return type
     cover_image: string; // String!
@@ -1112,13 +1123,19 @@ export interface NexusGenFieldTypeNames {
   }
   Tag: { // field return type name
     description: 'String'
+    github: 'String'
     icon: 'String'
     id: 'Int'
     isOfficial: 'Boolean'
+    links: 'TagLink'
     long_description: 'String'
     moderators: 'User'
     posts_count: 'Int'
     title: 'String'
+  }
+  TagLink: { // field return type name
+    name: 'String'
+    url: 'String'
   }
   Tournament: { // field return type name
     cover_image: 'String'

@@ -722,13 +722,21 @@ export enum Team_Member_Role {
 export type Tag = {
   __typename?: 'Tag';
   description: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
   icon: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   isOfficial: Maybe<Scalars['Boolean']>;
+  links: Array<TagLink>;
   long_description: Maybe<Scalars['String']>;
   moderators: Array<User>;
   posts_count: Scalars['Int'];
   title: Scalars['String'];
+};
+
+export type TagLink = {
+  __typename?: 'TagLink';
+  name: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type TeamMemberInput = {
@@ -1053,7 +1061,7 @@ export type GetTagInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, long_description: string | null, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
+export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, long_description: string | null, links: Array<{ __typename?: 'TagLink', name: string, url: string }>, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
 
 export type TagFeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
@@ -2287,6 +2295,10 @@ export const GetTagInfoDocument = gql`
     title
     icon
     long_description
+    links {
+      name
+      url
+    }
     moderators {
       id
       name

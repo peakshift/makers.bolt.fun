@@ -4,6 +4,10 @@ query GetTagInfo($tag: String) {
     title
     icon
     long_description
+    links {
+      name
+      url
+    }
     moderators {
       id
       name

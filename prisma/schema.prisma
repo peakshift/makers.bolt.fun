@@ -25,6 +25,16 @@ model Tag {
   hackathons   Hackathon[]
   moderators   User[]
   capabilities Capability[]
+  links        TagLink[]
+}
+
+model TagLink {
+  id   Int    @id @default(autoincrement())
+  name String
+  url  String
+
+  tag_id Int?
+  tag    Tag? @relation(fields: [tag_id], references: [id])
 }
 
 model Vote {

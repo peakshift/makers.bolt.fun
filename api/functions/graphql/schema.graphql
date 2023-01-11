@@ -444,13 +444,20 @@ enum TEAM_MEMBER_ROLE {
 
 type Tag {
   description: String
+  github: String
   icon: String
   id: Int!
   isOfficial: Boolean
+  links: [TagLink!]!
   long_description: String
   moderators: [User!]!
   posts_count: Int!
   title: String!
+}
+
+type TagLink {
+  name: String!
+  url: String!
 }
 
 input TeamMemberInput {

@@ -15,6 +15,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
+import { FiLink } from "react-icons/fi";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -82,6 +83,26 @@ export default function TagPage() {
                       ),
                     }}
                   ></div>
+                </div>
+              )}
+              {loaderData.getTagInfo.links.length > 0 && (
+                <div className="hidden lg:block">
+                  <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
+                    LINKS
+                  </p>
+                  {loaderData.getTagInfo.links.map((link) => (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-8 text-gray-600 mb-8 last-of-type:mb-0"
+                    >
+                      <FiLink />{" "}
+                      <span className="hover:underline underline-offset-1 font-medium">
+                        {link.name}
+                      </span>
+                    </a>
+                  ))}
                 </div>
               )}
               {loaderData.getTagInfo.moderators.length > 0 && (
