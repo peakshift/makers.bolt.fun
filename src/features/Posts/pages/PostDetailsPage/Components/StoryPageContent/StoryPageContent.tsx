@@ -35,12 +35,6 @@ export default function StoryPageContent({ story }: Props) {
         description={story.body.slice(0, 50)}
         image={story.cover_image}
       />
-      <div
-        id="content"
-        className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"
-      >
-        {" "}
-      </div>
       <Card id="content" onlyMd className="relative max">
         <div className="flex justify-between items-center flex-wrap mb-16">
           <PostPageHeader
