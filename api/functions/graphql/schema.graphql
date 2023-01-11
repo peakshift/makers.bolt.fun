@@ -345,6 +345,7 @@ enum ProjectPermissionEnum {
 }
 
 type Query {
+  activeUsers(lastDays: Int = 30, tagId: Int, take: Int = 3): [User!]!
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!

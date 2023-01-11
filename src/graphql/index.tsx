@@ -475,6 +475,7 @@ export enum ProjectPermissionEnum {
 
 export type Query = {
   __typename?: 'Query';
+  activeUsers: Array<User>;
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   checkValidProjectHashtag: Scalars['Boolean'];
@@ -508,6 +509,13 @@ export type Query = {
   similarMakers: Array<User>;
   similarProjects: Array<Project>;
   tournamentParticipationInfo: Maybe<ParticipationInfo>;
+};
+
+
+export type QueryActiveUsersArgs = {
+  lastDays?: InputMaybe<Scalars['Int']>;
+  tagId: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -972,6 +980,14 @@ export type GetHackathonsQueryVariables = Exact<{
 
 
 export type GetHackathonsQuery = { __typename?: 'Query', getAllHackathons: Array<{ __typename?: 'Hackathon', id: number, title: string, description: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> };
+
+export type GetActiveUsersQueryVariables = Exact<{
+  tagId: InputMaybe<Scalars['Int']>;
+  lastDays: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetActiveUsersQuery = { __typename?: 'Query', activeUsers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> };
 
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1704,6 +1720,45 @@ export function useGetHackathonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetHackathonsQueryHookResult = ReturnType<typeof useGetHackathonsQuery>;
 export type GetHackathonsLazyQueryHookResult = ReturnType<typeof useGetHackathonsLazyQuery>;
 export type GetHackathonsQueryResult = Apollo.QueryResult<GetHackathonsQuery, GetHackathonsQueryVariables>;
+export const GetActiveUsersDocument = gql`
+    query GetActiveUsers($tagId: Int, $lastDays: Int) {
+  activeUsers(tagId: $tagId, lastDays: $lastDays) {
+    id
+    name
+    avatar
+    jobTitle
+  }
+}
+    `;
+
+/**
+ * __useGetActiveUsersQuery__
+ *
+ * To run a query within a React component, call `useGetActiveUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActiveUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActiveUsersQuery({
+ *   variables: {
+ *      tagId: // value for 'tagId'
+ *      lastDays: // value for 'lastDays'
+ *   },
+ * });
+ */
+export function useGetActiveUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetActiveUsersQuery, GetActiveUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActiveUsersQuery, GetActiveUsersQueryVariables>(GetActiveUsersDocument, options);
+      }
+export function useGetActiveUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActiveUsersQuery, GetActiveUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActiveUsersQuery, GetActiveUsersQueryVariables>(GetActiveUsersDocument, options);
+        }
+export type GetActiveUsersQueryHookResult = ReturnType<typeof useGetActiveUsersQuery>;
+export type GetActiveUsersLazyQueryHookResult = ReturnType<typeof useGetActiveUsersLazyQuery>;
+export type GetActiveUsersQueryResult = Apollo.QueryResult<GetActiveUsersQuery, GetActiveUsersQueryVariables>;
 export const TrendingPostsDocument = gql`
     query TrendingPosts {
   getTrendingPosts {

@@ -14,6 +14,7 @@ import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
+import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -124,6 +125,7 @@ export default function TagPage() {
           </aside>
           <aside id="side" className="no-scrollbar">
             <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
+              <ActiveUsers tagId={tagInfo.id} />
               <TrendingCard />
             </div>
           </aside>

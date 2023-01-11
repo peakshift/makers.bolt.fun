@@ -1,0 +1,8 @@
+query GetActiveUsers($tagId: Int, $lastDays: Int) {
+  activeUsers(tagId: $tagId, lastDays: $lastDays) {
+    id
+    name
+    avatar
+    jobTitle
+  }
+}

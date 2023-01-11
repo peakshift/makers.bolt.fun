@@ -631,6 +631,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
+    activeUsers: NexusGenRootTypes['User'][]; // [User!]!
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     checkValidProjectHashtag: boolean; // Boolean!
@@ -1044,6 +1045,7 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Query: { // field return type name
+    activeUsers: 'User'
     allCategories: 'Category'
     allProjects: 'Project'
     checkValidProjectHashtag: 'Boolean'
@@ -1322,6 +1324,11 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    activeUsers: { // args
+      lastDays: number | null; // Int
+      tagId?: number | null; // Int
+      take: number | null; // Int
+    }
     allProjects: { // args
       skip?: number | null; // Int
       take: number | null; // Int
