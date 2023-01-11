@@ -45,12 +45,12 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                   .map((_, idx) => (
                     <li
                       key={idx}
-                      className={`flex items-start rounded-8 font-bold p-4`}
+                      className={`flex items-start rounded-8 font-bold`}
                     >
-                      <span className="bg-gray-50 rounded-8 w-40 h-40 text-center py-8">
+                      <span className="bg-gray-100 rounded-8 w-40 h-40 text-center py-8">
                         {" "}
                       </span>
-                      <span className="self-center px-16">
+                      <span className="self-center px-8">
                         <Skeleton width={"7ch"} />
                       </span>
                     </li>
@@ -61,7 +61,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                     <li key={tag.id}>
                       <Link
                         to={createRoute({ type: "tag-page", tag: tag.title })}
-                        className={`flex items-start rounded-8 cursor-pointer font-bold p-4
+                        className={`flex items-start rounded-8 cursor-pointer font-bold
                                  active:scale-95 transition-transform
                                 ${
                                   tag.id === selectedId
@@ -72,12 +72,12 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                       >
                         <span
                           className={`${
-                            tag.id !== selectedId && "bg-gray-50"
+                            tag.id !== selectedId && "bg-gray-100"
                           } rounded-8 w-40 h-40 text-center py-8`}
                         >
                           {tag.icon}
                         </span>
-                        <span className="self-center px-16">
+                        <span className="self-center px-8">
                           {formatHashtag(tag.title)}
                         </span>
                       </Link>
