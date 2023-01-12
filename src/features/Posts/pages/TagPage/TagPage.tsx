@@ -66,11 +66,13 @@ export default function TagPage() {
             />
           </div>
           <aside id="categories" className="no-scrollbar">
-            <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-              <h1 className="text-body2 text-ellipsis overflow-hidden font-bolder">
-                {loaderData.getTagInfo.icon}{" "}
-                {formatHashtag(loaderData.getTagInfo.title)}
-              </h1>
+            <div className="sticky-side-element flex flex-col gap-16 md:gap-24 md:overflow-y-scroll">
+              <div>
+                <h1 className="text-body2 text-ellipsis overflow-hidden whitespace-nowrap font-bolder">
+                  {loaderData.getTagInfo.icon}{" "}
+                  {formatHashtag(loaderData.getTagInfo.title)}
+                </h1>
+              </div>
               {loaderData.getTagInfo.long_description && (
                 <div className="hidden lg:block">
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
