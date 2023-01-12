@@ -14,6 +14,9 @@ import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
+import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
+import { FiLink } from "react-icons/fi";
+import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -83,6 +86,36 @@ export default function TagPage() {
                   ></div>
                 </div>
               )}
+              {loaderData.getTagInfo.description && (
+                <div
+                  className={`prose text-gray-600 ${styles.tag_desc} lg:hidden`}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      marked.parse(loaderData.getTagInfo.description)
+                    ),
+                  }}
+                ></div>
+              )}
+              {loaderData.getTagInfo.links.length > 0 && (
+                <div className="hidden lg:block">
+                  <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
+                    LINKS
+                  </p>
+                  {loaderData.getTagInfo.links.map((link) => (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-8 text-gray-600 mb-8 last-of-type:mb-0"
+                    >
+                      <FiLink />{" "}
+                      <span className="hover:underline underline-offset-1 font-medium">
+                        {link.name}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              )}
               {loaderData.getTagInfo.moderators.length > 0 && (
                 <div className="hidden lg:block">
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-16">
@@ -116,7 +149,7 @@ export default function TagPage() {
                   fullWidth
                   onClick={clickWriteStory}
                 >
-                  Write a story
+                  Write a {formatHashtag(tagInfo.title)} story
                 </Button>
               </div>
               <div className="order-2 md:order-3"></div>
@@ -125,6 +158,8 @@ export default function TagPage() {
           <aside id="side" className="no-scrollbar">
             <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
               <TrendingCard />
+              <ActiveUsers tagId={tagInfo.id} />
+              <RecentProjects tagId={tagInfo.id} />
             </div>
           </aside>
         </div>

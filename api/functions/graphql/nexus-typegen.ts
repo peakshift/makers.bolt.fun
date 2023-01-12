@@ -328,11 +328,16 @@ export interface NexusGenObjects {
   }
   Tag: { // root type
     description?: string | null; // String
+    github?: string | null; // String
     icon?: string | null; // String
     id: number; // Int!
     isOfficial?: boolean | null; // Boolean
     long_description?: string | null; // String
     title: string; // String!
+  }
+  TagLink: { // root type
+    name: string; // String!
+    url: string; // String!
   }
   Tournament: { // root type
     description: string; // String!
@@ -631,6 +636,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
+    activeUsers: NexusGenRootTypes['User'][]; // [User!]!
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     checkValidProjectHashtag: boolean; // Boolean!
@@ -659,6 +665,7 @@ export interface NexusGenFieldTypes {
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
+    recentProjectsInTag: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     searchUsers: NexusGenRootTypes['User'][]; // [User!]!
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
@@ -697,12 +704,19 @@ export interface NexusGenFieldTypes {
   }
   Tag: { // field return type
     description: string | null; // String
+    github: string | null; // String
     icon: string | null; // String
     id: number; // Int!
     isOfficial: boolean | null; // Boolean
+    links: NexusGenRootTypes['TagLink'][]; // [TagLink!]!
     long_description: string | null; // String
     moderators: NexusGenRootTypes['User'][]; // [User!]!
+    posts_count: number; // Int!
     title: string; // String!
+  }
+  TagLink: { // field return type
+    name: string; // String!
+    url: string; // String!
   }
   Tournament: { // field return type
     cover_image: string; // String!
@@ -1043,6 +1057,7 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Query: { // field return type name
+    activeUsers: 'User'
     allCategories: 'Category'
     allProjects: 'Project'
     checkValidProjectHashtag: 'Boolean'
@@ -1071,6 +1086,7 @@ export interface NexusGenFieldTypeNames {
     popularTags: 'Tag'
     profile: 'User'
     projectsByCategory: 'Project'
+    recentProjectsInTag: 'Project'
     searchProjects: 'Project'
     searchUsers: 'User'
     similarMakers: 'User'
@@ -1109,12 +1125,19 @@ export interface NexusGenFieldTypeNames {
   }
   Tag: { // field return type name
     description: 'String'
+    github: 'String'
     icon: 'String'
     id: 'Int'
     isOfficial: 'Boolean'
+    links: 'TagLink'
     long_description: 'String'
     moderators: 'User'
+    posts_count: 'Int'
     title: 'String'
+  }
+  TagLink: { // field return type name
+    name: 'String'
+    url: 'String'
   }
   Tournament: { // field return type name
     cover_image: 'String'
@@ -1320,6 +1343,11 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    activeUsers: { // args
+      lastDays: number | null; // Int
+      tagId?: number | null; // Int
+      take: number | null; // Int
+    }
     allProjects: { // args
       skip?: number | null; // Int
       take: number | null; // Int
@@ -1393,6 +1421,10 @@ export interface NexusGenArgTypes {
     projectsByCategory: { // args
       category_id: number; // Int!
       skip?: number | null; // Int
+      take: number | null; // Int
+    }
+    recentProjectsInTag: { // args
+      tagId: number; // Int!
       take: number | null; // Int
     }
     searchProjects: { // args

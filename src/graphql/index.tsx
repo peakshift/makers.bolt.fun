@@ -475,6 +475,7 @@ export enum ProjectPermissionEnum {
 
 export type Query = {
   __typename?: 'Query';
+  activeUsers: Array<User>;
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   checkValidProjectHashtag: Scalars['Boolean'];
@@ -503,11 +504,19 @@ export type Query = {
   popularTags: Array<Tag>;
   profile: Maybe<User>;
   projectsByCategory: Array<Project>;
+  recentProjectsInTag: Array<Project>;
   searchProjects: Array<Project>;
   searchUsers: Array<User>;
   similarMakers: Array<User>;
   similarProjects: Array<Project>;
   tournamentParticipationInfo: Maybe<ParticipationInfo>;
+};
+
+
+export type QueryActiveUsersArgs = {
+  lastDays?: InputMaybe<Scalars['Int']>;
+  tagId: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -622,6 +631,12 @@ export type QueryProjectsByCategoryArgs = {
 };
 
 
+export type QueryRecentProjectsInTagArgs = {
+  tagId: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
 export type QuerySearchProjectsArgs = {
   search: Scalars['String'];
   skip?: InputMaybe<Scalars['Int']>;
@@ -714,12 +729,21 @@ export enum Team_Member_Role {
 export type Tag = {
   __typename?: 'Tag';
   description: Maybe<Scalars['String']>;
+  github: Maybe<Scalars['String']>;
   icon: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   isOfficial: Maybe<Scalars['Boolean']>;
+  links: Array<TagLink>;
   long_description: Maybe<Scalars['String']>;
   moderators: Array<User>;
+  posts_count: Scalars['Int'];
   title: Scalars['String'];
+};
+
+export type TagLink = {
+  __typename?: 'TagLink';
+  name: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type TeamMemberInput = {
@@ -972,10 +996,30 @@ export type GetHackathonsQueryVariables = Exact<{
 
 export type GetHackathonsQuery = { __typename?: 'Query', getAllHackathons: Array<{ __typename?: 'Hackathon', id: number, title: string, description: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }> };
 
+export type GetActiveUsersQueryVariables = Exact<{
+  tagId: InputMaybe<Scalars['Int']>;
+  lastDays: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetActiveUsersQuery = { __typename?: 'Query', activeUsers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> };
+
+export type RecentProjectsInTagQueryVariables = Exact<{
+  tagId: Scalars['Int'];
+}>;
+
+
+export type RecentProjectsInTagQuery = { __typename?: 'Query', recentProjectsInTag: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> };
+
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } }> };
+
+export type GetAllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllTopicsQuery = { __typename?: 'Query', officialTags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null, posts_count: number, long_description: string | null }> };
 
 export type GetMyDraftsQueryVariables = Exact<{
   type: Post_Type;
@@ -1031,7 +1075,7 @@ export type GetTagInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, long_description: string | null, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
+export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, description: string | null, long_description: string | null, links: Array<{ __typename?: 'TagLink', name: string, url: string }>, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
 
 export type TagFeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
@@ -1698,6 +1742,89 @@ export function useGetHackathonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetHackathonsQueryHookResult = ReturnType<typeof useGetHackathonsQuery>;
 export type GetHackathonsLazyQueryHookResult = ReturnType<typeof useGetHackathonsLazyQuery>;
 export type GetHackathonsQueryResult = Apollo.QueryResult<GetHackathonsQuery, GetHackathonsQueryVariables>;
+export const GetActiveUsersDocument = gql`
+    query GetActiveUsers($tagId: Int, $lastDays: Int) {
+  activeUsers(tagId: $tagId, lastDays: $lastDays) {
+    id
+    name
+    avatar
+    jobTitle
+  }
+}
+    `;
+
+/**
+ * __useGetActiveUsersQuery__
+ *
+ * To run a query within a React component, call `useGetActiveUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActiveUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActiveUsersQuery({
+ *   variables: {
+ *      tagId: // value for 'tagId'
+ *      lastDays: // value for 'lastDays'
+ *   },
+ * });
+ */
+export function useGetActiveUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetActiveUsersQuery, GetActiveUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActiveUsersQuery, GetActiveUsersQueryVariables>(GetActiveUsersDocument, options);
+      }
+export function useGetActiveUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActiveUsersQuery, GetActiveUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActiveUsersQuery, GetActiveUsersQueryVariables>(GetActiveUsersDocument, options);
+        }
+export type GetActiveUsersQueryHookResult = ReturnType<typeof useGetActiveUsersQuery>;
+export type GetActiveUsersLazyQueryHookResult = ReturnType<typeof useGetActiveUsersLazyQuery>;
+export type GetActiveUsersQueryResult = Apollo.QueryResult<GetActiveUsersQuery, GetActiveUsersQueryVariables>;
+export const RecentProjectsInTagDocument = gql`
+    query recentProjectsInTag($tagId: Int!) {
+  recentProjectsInTag(tagId: $tagId) {
+    id
+    title
+    thumbnail_image
+    hashtag
+    category {
+      id
+      icon
+      title
+    }
+    votes_count
+  }
+}
+    `;
+
+/**
+ * __useRecentProjectsInTagQuery__
+ *
+ * To run a query within a React component, call `useRecentProjectsInTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecentProjectsInTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecentProjectsInTagQuery({
+ *   variables: {
+ *      tagId: // value for 'tagId'
+ *   },
+ * });
+ */
+export function useRecentProjectsInTagQuery(baseOptions: Apollo.QueryHookOptions<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>(RecentProjectsInTagDocument, options);
+      }
+export function useRecentProjectsInTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>(RecentProjectsInTagDocument, options);
+        }
+export type RecentProjectsInTagQueryHookResult = ReturnType<typeof useRecentProjectsInTagQuery>;
+export type RecentProjectsInTagLazyQueryHookResult = ReturnType<typeof useRecentProjectsInTagLazyQuery>;
+export type RecentProjectsInTagQueryResult = Apollo.QueryResult<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>;
 export const TrendingPostsDocument = gql`
     query TrendingPosts {
   getTrendingPosts {
@@ -1755,6 +1882,44 @@ export function useTrendingPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrendingPostsQueryHookResult = ReturnType<typeof useTrendingPostsQuery>;
 export type TrendingPostsLazyQueryHookResult = ReturnType<typeof useTrendingPostsLazyQuery>;
 export type TrendingPostsQueryResult = Apollo.QueryResult<TrendingPostsQuery, TrendingPostsQueryVariables>;
+export const GetAllTopicsDocument = gql`
+    query GetAllTopics {
+  officialTags {
+    id
+    title
+    icon
+    posts_count
+    long_description
+  }
+}
+    `;
+
+/**
+ * __useGetAllTopicsQuery__
+ *
+ * To run a query within a React component, call `useGetAllTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTopicsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTopicsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTopicsQuery, GetAllTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTopicsQuery, GetAllTopicsQueryVariables>(GetAllTopicsDocument, options);
+      }
+export function useGetAllTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTopicsQuery, GetAllTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTopicsQuery, GetAllTopicsQueryVariables>(GetAllTopicsDocument, options);
+        }
+export type GetAllTopicsQueryHookResult = ReturnType<typeof useGetAllTopicsQuery>;
+export type GetAllTopicsLazyQueryHookResult = ReturnType<typeof useGetAllTopicsLazyQuery>;
+export type GetAllTopicsQueryResult = Apollo.QueryResult<GetAllTopicsQuery, GetAllTopicsQueryVariables>;
 export const GetMyDraftsDocument = gql`
     query GetMyDrafts($type: POST_TYPE!) {
   getMyDrafts(type: $type) {
@@ -2187,7 +2352,12 @@ export const GetTagInfoDocument = gql`
     id
     title
     icon
+    description
     long_description
+    links {
+      name
+      url
+    }
     moderators {
       id
       name
