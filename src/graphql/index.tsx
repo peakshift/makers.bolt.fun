@@ -504,6 +504,7 @@ export type Query = {
   popularTags: Array<Tag>;
   profile: Maybe<User>;
   projectsByCategory: Array<Project>;
+  recentProjectsInTag: Array<Project>;
   searchProjects: Array<Project>;
   searchUsers: Array<User>;
   similarMakers: Array<User>;
@@ -626,6 +627,12 @@ export type QueryProfileArgs = {
 export type QueryProjectsByCategoryArgs = {
   category_id: Scalars['Int'];
   skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryRecentProjectsInTagArgs = {
+  tagId: Scalars['Int'];
   take?: InputMaybe<Scalars['Int']>;
 };
 
@@ -997,6 +1004,13 @@ export type GetActiveUsersQueryVariables = Exact<{
 
 export type GetActiveUsersQuery = { __typename?: 'Query', activeUsers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> };
 
+export type RecentProjectsInTagQueryVariables = Exact<{
+  tagId: Scalars['Int'];
+}>;
+
+
+export type RecentProjectsInTagQuery = { __typename?: 'Query', recentProjectsInTag: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string, votes_count: number, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> };
+
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1061,7 +1075,7 @@ export type GetTagInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, long_description: string | null, links: Array<{ __typename?: 'TagLink', name: string, url: string }>, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
+export type GetTagInfoQuery = { __typename?: 'Query', getTagInfo: { __typename?: 'Tag', id: number, title: string, icon: string | null, description: string | null, long_description: string | null, links: Array<{ __typename?: 'TagLink', name: string, url: string }>, moderators: Array<{ __typename?: 'User', id: number, name: string, avatar: string }> } };
 
 export type TagFeedQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
@@ -1767,6 +1781,50 @@ export function useGetActiveUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetActiveUsersQueryHookResult = ReturnType<typeof useGetActiveUsersQuery>;
 export type GetActiveUsersLazyQueryHookResult = ReturnType<typeof useGetActiveUsersLazyQuery>;
 export type GetActiveUsersQueryResult = Apollo.QueryResult<GetActiveUsersQuery, GetActiveUsersQueryVariables>;
+export const RecentProjectsInTagDocument = gql`
+    query recentProjectsInTag($tagId: Int!) {
+  recentProjectsInTag(tagId: $tagId) {
+    id
+    title
+    thumbnail_image
+    hashtag
+    category {
+      id
+      icon
+      title
+    }
+    votes_count
+  }
+}
+    `;
+
+/**
+ * __useRecentProjectsInTagQuery__
+ *
+ * To run a query within a React component, call `useRecentProjectsInTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecentProjectsInTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecentProjectsInTagQuery({
+ *   variables: {
+ *      tagId: // value for 'tagId'
+ *   },
+ * });
+ */
+export function useRecentProjectsInTagQuery(baseOptions: Apollo.QueryHookOptions<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>(RecentProjectsInTagDocument, options);
+      }
+export function useRecentProjectsInTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>(RecentProjectsInTagDocument, options);
+        }
+export type RecentProjectsInTagQueryHookResult = ReturnType<typeof useRecentProjectsInTagQuery>;
+export type RecentProjectsInTagLazyQueryHookResult = ReturnType<typeof useRecentProjectsInTagLazyQuery>;
+export type RecentProjectsInTagQueryResult = Apollo.QueryResult<RecentProjectsInTagQuery, RecentProjectsInTagQueryVariables>;
 export const TrendingPostsDocument = gql`
     query TrendingPosts {
   getTrendingPosts {
@@ -2294,6 +2352,7 @@ export const GetTagInfoDocument = gql`
     id
     title
     icon
+    description
     long_description
     links {
       name

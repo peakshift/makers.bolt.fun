@@ -1,5 +1,5 @@
 const { PrismaSelect } = require("@paljs/plugins");
-const { objectType, extendType, stringArg, intArg } = require("nexus");
+const { objectType, extendType, stringArg, intArg, nonNull } = require("nexus");
 const { prisma } = require("../../../prisma");
 const { defaultPrismaSelectFields } = require("./helpers");
 
@@ -154,6 +154,58 @@ const activeUsers = extendType({
   },
 });
 
+const recentProjectsInTag = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.field("recentProjectsInTag", {
+      type: "Project",
+      args: {
+        tagId: nonNull(intArg()),
+        take: intArg({ default: 3 }),
+      },
+      resolve: async (_, { tagId, lastDays, take }, ctx, info) => {
+        const select = new PrismaSelect(info, {
+          defaultFields: defaultPrismaSelectFields,
+        }).valueWithFilter("Project");
+
+        const now = new Date();
+        const lastWeekDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - lastDays
+        );
+
+        // Select
+        return prisma.project.findMany({
+          ...select,
+          where: {
+            AND: [
+              {
+                capabilities: {
+                  some: {},
+                },
+              },
+              {
+                capabilities: {
+                  every: {
+                    tags: {
+                      some: {
+                        id: tagId,
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          orderBy: [{ createdAt: "desc" }],
+          take,
+        });
+      },
+    });
+  },
+});
+
 const getTagInfo = extendType({
   type: "Query",
   definition(t) {
@@ -181,4 +233,5 @@ module.exports = {
   officialTags,
   getTagInfo,
   activeUsers,
+  recentProjectsInTag,
 };

@@ -24,6 +24,8 @@ export default function ActiveUsers({ tagId }: Props) {
     2: "🥉",
   };
 
+  if (query.loading || query.data?.activeUsers.length === 0) return null;
+
   return (
     <Card onlyMd>
       <h3 className="text-body2 font-bolder">Most Active 🔥</h3>

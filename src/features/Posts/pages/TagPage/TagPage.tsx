@@ -16,6 +16,7 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
+import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 
 export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -85,6 +86,16 @@ export default function TagPage() {
                   ></div>
                 </div>
               )}
+              {loaderData.getTagInfo.description && (
+                <div
+                  className={`prose text-gray-600 ${styles.tag_desc} lg:hidden`}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      marked.parse(loaderData.getTagInfo.description)
+                    ),
+                  }}
+                ></div>
+              )}
               {loaderData.getTagInfo.links.length > 0 && (
                 <div className="hidden lg:block">
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
@@ -138,7 +149,7 @@ export default function TagPage() {
                   fullWidth
                   onClick={clickWriteStory}
                 >
-                  Write a story
+                  Write a {formatHashtag(tagInfo.title)} story
                 </Button>
               </div>
               <div className="order-2 md:order-3"></div>
@@ -146,8 +157,9 @@ export default function TagPage() {
           </aside>
           <aside id="side" className="no-scrollbar">
             <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
-              <ActiveUsers tagId={tagInfo.id} />
               <TrendingCard />
+              <ActiveUsers tagId={tagInfo.id} />
+              <RecentProjects tagId={tagInfo.id} />
             </div>
           </aside>
         </div>

@@ -665,6 +665,7 @@ export interface NexusGenFieldTypes {
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
+    recentProjectsInTag: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     searchUsers: NexusGenRootTypes['User'][]; // [User!]!
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
@@ -1085,6 +1086,7 @@ export interface NexusGenFieldTypeNames {
     popularTags: 'Tag'
     profile: 'User'
     projectsByCategory: 'Project'
+    recentProjectsInTag: 'Project'
     searchProjects: 'Project'
     searchUsers: 'User'
     similarMakers: 'User'
@@ -1419,6 +1421,10 @@ export interface NexusGenArgTypes {
     projectsByCategory: { // args
       category_id: number; // Int!
       skip?: number | null; // Int
+      take: number | null; // Int
+    }
+    recentProjectsInTag: { // args
+      tagId: number; // Int!
       take: number | null; // Int
     }
     searchProjects: { // args
