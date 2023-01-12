@@ -1,5 +1,5 @@
 import React from "react";
-import { FaDiscord, FaUsers } from "react-icons/fa";
+import { FaDiscord } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";

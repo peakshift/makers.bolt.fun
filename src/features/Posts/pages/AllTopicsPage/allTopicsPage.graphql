@@ -1,0 +1,9 @@
+query GetAllTopics {
+  officialTags {
+    id
+    title
+    icon
+    posts_count
+    long_description
+  }
+}

@@ -15,6 +15,7 @@ import { createRoute } from "src/utils/routing";
 import { NotificationsService } from "src/services";
 import OgTags from "src/Components/OgTags/OgTags";
 import { formatHashtag } from "src/utils/helperFunctions";
+import { Link } from "react-router-dom";
 
 interface Props {
   story: Story;
@@ -34,12 +35,6 @@ export default function StoryPageContent({ story }: Props) {
         description={story.body.slice(0, 50)}
         image={story.cover_image}
       />
-      <div
-        id="content"
-        className="bg-white md:p-32 md:border-2 border-gray-200 rounded-16 relative"
-      >
-        {" "}
-      </div>
       <Card id="content" onlyMd className="relative max">
         <div className="flex justify-between items-center flex-wrap mb-16">
           <PostPageHeader
@@ -103,9 +98,14 @@ export default function StoryPageContent({ story }: Props) {
           {story.tags.length > 0 && (
             <div className="flex flex-wrap gap-8">
               {story.tags.map((tag) => (
-                <Badge key={tag.id} size="sm">
-                  {tag.title}
-                </Badge>
+                <Link
+                  to={createRoute({ type: "tag-page", tag: tag.title })}
+                  key={tag.id}
+                >
+                  <Badge className="hover:bg-gray-200" size="sm">
+                    {formatHashtag(tag.title)}
+                  </Badge>
+                </Link>
               ))}
             </div>
           )}

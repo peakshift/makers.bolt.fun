@@ -16,6 +16,7 @@ import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
+import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 
 const FeedPage = Loadable(
   React.lazy(
@@ -46,6 +47,15 @@ const TagPage = Loadable(
     () =>
       import(
         /* webpackChunkName: "tag_page" */ "../../features/Posts/pages/TagPage/TagPage"
+      )
+  )
+);
+
+const AllTopicsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "tag_page" */ "../../features/Posts/pages/AllTopicsPage/AllTopicsPage"
       )
   )
 );
@@ -190,6 +200,12 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           path={PAGES_ROUTES.blog.tagPage}
           element={<TagPage />}
           loader={tagPageLoader(queryClient)}
+        />
+
+        <Route
+          path={PAGES_ROUTES.blog.topicsPage}
+          element={<AllTopicsPage />}
+          loader={allTopicsPageLoader(queryClient)}
         />
         <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
         <Route

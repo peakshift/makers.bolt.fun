@@ -74,9 +74,14 @@ export default function StoryCard({ story }: Props) {
           <p className="text-body4 text-gray-600 mt-8">{story.excerpt}...</p>
           <div className="flex flex-wrap gap-8 mt-8">
             {story.tags.map((tag) => (
-              <Badge key={tag.id} size="sm">
-                {formatHashtag(tag.title)}
-              </Badge>
+              <Link
+                to={createRoute({ type: "tag-page", tag: tag.title })}
+                key={tag.id}
+              >
+                <Badge className="hover:bg-gray-200" size="sm">
+                  {formatHashtag(tag.title)}
+                </Badge>
+              </Link>
             ))}
           </div>
 

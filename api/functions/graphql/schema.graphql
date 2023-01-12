@@ -345,6 +345,7 @@ enum ProjectPermissionEnum {
 }
 
 type Query {
+  activeUsers(lastDays: Int = 30, tagId: Int, take: Int = 3): [User!]!
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!
@@ -373,6 +374,7 @@ type Query {
   popularTags: [Tag!]!
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 60): [Project!]!
+  recentProjectsInTag(tagId: Int!, take: Int = 3): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!
   similarMakers(id: Int!): [User!]!
@@ -443,12 +445,20 @@ enum TEAM_MEMBER_ROLE {
 
 type Tag {
   description: String
+  github: String
   icon: String
   id: Int!
   isOfficial: Boolean
+  links: [TagLink!]!
   long_description: String
   moderators: [User!]!
+  posts_count: Int!
   title: String!
+}
+
+type TagLink {
+  name: String!
+  url: String!
 }
 
 input TeamMemberInput {
