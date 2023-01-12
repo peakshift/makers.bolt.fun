@@ -14,6 +14,7 @@ import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
+import { Fulgur } from "src/Components/Ads/Fulgur";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
@@ -76,7 +77,7 @@ export default function TagPage() {
               {loaderData.getTagInfo.long_description && (
                 <div className="hidden lg:block">
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
-                    DESCRIPTION
+                    Description
                   </p>
                   <div
                     className={`prose text-gray-600 ${styles.tag_desc}`}
@@ -162,6 +163,7 @@ export default function TagPage() {
               <TrendingCard />
               <ActiveUsers tagId={tagInfo.id} />
               <RecentProjects tagId={tagInfo.id} />
+              <Fulgur />
             </div>
           </aside>
         </div>
