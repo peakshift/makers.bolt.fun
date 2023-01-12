@@ -3,7 +3,12 @@ query GetTagInfo($tag: String) {
     id
     title
     icon
+    description
     long_description
+    links {
+      name
+      url
+    }
     moderators {
       id
       name

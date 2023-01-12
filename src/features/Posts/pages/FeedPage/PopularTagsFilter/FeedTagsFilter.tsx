@@ -6,7 +6,7 @@ import { MEDIA_QUERIES } from "src/utils/theme";
 import { formatHashtag } from "src/utils/helperFunctions";
 import Card from "src/Components/Card/Card";
 import { Link } from "react-router-dom";
-import { createRoute } from "src/utils/routing";
+import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import { useState } from "react";
 import Button from "src/Components/Button/Button";
 
@@ -36,8 +36,18 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
   return (
     <div className="overflow-hidden">
       {isMdScreen ? (
-        <Card>
-          <p className="text-body2 font-bolder text-black mb-16">🏷️ Tags</p>
+          <div>
+            <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
+            <p className="text-body2 font-bolder text-gray-900">🏷️ Topics</p>
+            <Button
+              variant="text"
+              color="primary"
+              size="sm"
+              href={PAGES_ROUTES.blog.topicsPage}
+            >
+              See all
+            </Button>
+          </div>
           <ul className=" flex flex-col gap-16">
             {tagsQuery.loading
               ? Array(10)
@@ -45,12 +55,12 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                   .map((_, idx) => (
                     <li
                       key={idx}
-                      className={`flex items-start rounded-8 font-bold p-4`}
+                      className={`group flex items-start rounded-8 font-bold`}
                     >
                       <span className="bg-gray-50 rounded-8 w-40 h-40 text-center py-8">
                         {" "}
                       </span>
-                      <span className="self-center px-16">
+                      <span className="self-center px-8">
                         <Skeleton width={"7ch"} />
                       </span>
                     </li>
@@ -58,26 +68,26 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
               : tagsQuery.data?.officialTags
                   .slice(0, showingAll ? -1 : MAX_SHOWED_TAGS)
                   .map((tag) => (
-                    <li key={tag.id}>
+                    <li key={tag.id} className="group">
                       <Link
                         to={createRoute({ type: "tag-page", tag: tag.title })}
-                        className={`flex items-start rounded-8 cursor-pointer font-bold p-4
-                                 active:scale-95 transition-transform
+                        className={`flex items-start rounded-8 cursor-pointer font-bold
+                                 active:scale-95 group-hover:bg-gray-100 transition-transform
                                 ${
                                   tag.id === selectedId
                                     ? "bg-gray-200"
-                                    : "hover:bg-gray-100"
+                                    : "group-hover:bg-gray-100"
                                 }
                                 `}
                       >
                         <span
                           className={`${
-                            tag.id !== selectedId && "bg-gray-50"
+                            tag.id !== selectedId && "bg-gray-50 group-hover:bg-gray-100"
                           } rounded-8 w-40 h-40 text-center py-8`}
                         >
                           {tag.icon}
                         </span>
-                        <span className="self-center px-16">
+                        <span className="self-center px-8">
                           {formatHashtag(tag.title)}
                         </span>
                       </Link>
@@ -96,7 +106,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                 {showingAll ? "Show less" : "Show more"}
               </Button>
             )}
-        </Card>
+        </div>
       ) : (
         <>
           {tagsQuery.loading ? (
@@ -113,19 +123,31 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                 ))}
             </ul>
           ) : (
-            <Slider>
-              {tagsQuery.data?.officialTags.map((tag) => (
-                <Link
-                  key={tag.id}
-                  to={createRoute({ type: "tag-page", tag: tag.title })}
-                  className={`${
-                    tag.id === selectedId ? "bg-gray-200" : "bg-gray-100"
-                  } py-12 px-16 rounded-8 text-body5`}
+            <>
+              <Slider>
+                {tagsQuery.data?.officialTags.map((tag) => (
+                  <Link
+                    key={tag.id}
+                    to={createRoute({ type: "tag-page", tag: tag.title })}
+                    className={`${
+                      tag.id === selectedId ? "bg-gray-200" : "bg-gray-100"
+                    } py-12 px-16 rounded-8 text-body5`}
+                  >
+                    {tag.icon} {formatHashtag(tag.title)}
+                  </Link>
+                ))}
+              </Slider>
+              <div className="flex justify-end mt-16">
+                <Button
+                  variant="text"
+                  color="primary"
+                  size="sm"
+                  href={PAGES_ROUTES.blog.topicsPage}
                 >
-                  {tag.icon} {formatHashtag(tag.title)}
-                </Link>
-              ))}
-            </Slider>
+                  See all topics
+                </Button>
+              </div>
+            </>
           )}
         </>
       )}

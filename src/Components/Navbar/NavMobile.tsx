@@ -1,20 +1,19 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { BsChevronDown } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import Button from "../Button/Button";
 import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
-import { FiMenu, } from "react-icons/fi";
+import { FiMenu } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
-import styles from './styles.module.css'
-import '@szhsin/react-menu/dist/index.css';
+import styles from "./styles.module.css";
+import "@szhsin/react-menu/dist/index.css";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
+import { createRoute } from "src/utils/routing";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -31,80 +30,114 @@ const navListVariants = {
 
 const categoriesListVariants = {
   open: {
-    opacity: 1, y: 0, display: 'block',
-    transition: { ease: 'easeOut' }
+    opacity: 1,
+    y: 0,
+    display: "block",
+    transition: { ease: "easeOut" },
   },
   closed: {
-    opacity: 0, y: -50,
+    opacity: 0,
+    y: -50,
     transition: {
       ease: "easeIn",
-      duration: .2
+      duration: 0.2,
     },
     transitionEnd: {
-      display: 'none'
-    }
-  }
-}
+      display: "none",
+    },
+  },
+};
 
 const listArrowVariants = {
   open: { rotate: 180 },
-  closed: { rotate: 0 }
-}
-
+  closed: { rotate: 0 },
+};
 
 export default function NavMobile() {
-
-
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
-  const [communityOpen, toggleCommunityOpen] = useToggle(false)
+  const [communityOpen, toggleCommunityOpen] = useToggle(false);
 
   const { curUser } = useAppSelector((state) => ({
     curUser: state.user.me,
   }));
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (drawerOpen) document.body.style.overflowY = "hidden";
     else document.body.style.overflowY = "initial";
   }, [drawerOpen]);
 
-
-
   return (
     <div className={`${styles.navMobile}`}>
       <nav className={`bg-white h-[67px] w-full py-16`}>
         <div className="content-container">
           <div className="flex justify-between items-center">
-
             <div className="flex-1 flex content-start">
-              <IconButton className='auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center' onClick={() => toggleDrawerOpen()}>
-                {!drawerOpen ? (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='menuHide' animate='menuShow'><FiMenu /></motion.div>)
-                  : (<motion.div key={drawerOpen ? 1 : 0} variants={navBtnVariant} initial='closeHide' animate='closeShow'><GrClose /></motion.div>)}
+              <IconButton
+                className="auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center"
+                onClick={() => toggleDrawerOpen()}
+              >
+                {!drawerOpen ? (
+                  <motion.div
+                    key={drawerOpen ? 1 : 0}
+                    variants={navBtnVariant}
+                    initial="menuHide"
+                    animate="menuShow"
+                  >
+                    <FiMenu />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={drawerOpen ? 1 : 0}
+                    variants={navBtnVariant}
+                    initial="closeHide"
+                    animate="closeShow"
+                  >
+                    <GrClose />
+                  </motion.div>
+                )}
               </IconButton>
-
             </div>
 
             <div className="flex-[2] flex justify-center">
               <Link to="/">
-                <img className='max-h-32' src={ASSETS.Logo} alt="Bolt fun logo" />
+                <img
+                  className="max-h-32"
+                  src={ASSETS.Logo}
+                  alt="Bolt fun logo"
+                />
               </Link>
             </div>
 
             <div className="flex-1 flex justify-end">
-              {curUser ?
-
+              {curUser ? (
                 <Menu
                   align="end"
                   offsetY={4}
-                  menuClassName='!p-8 !rounded-12'
-                  menuButton={<MenuButton ><Avatar src={curUser.avatar} width={32} /> </MenuButton>}>
+                  menuClassName="!p-8 !rounded-12"
+                  menuButton={
+                    <MenuButton>
+                      <Avatar src={curUser.avatar} width={32} />{" "}
+                    </MenuButton>
+                  }
+                >
                   <MenuItem
-                    href={createRoute({ type: 'profile', id: curUser.id, username: curUser.name })}
+                    href={createRoute({
+                      type: "profile",
+                      id: curUser.id,
+                      username: curUser.name,
+                    })}
                     onClick={(e) => {
                       e.syntheticEvent.preventDefault();
-                      navigate(createRoute({ type: 'profile', id: curUser.id, username: curUser.name }));
+                      navigate(
+                        createRoute({
+                          type: "profile",
+                          id: curUser.id,
+                          username: curUser.name,
+                        })
+                      );
                     }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
                   >
                     👾 Profile
                   </MenuItem>
@@ -114,7 +147,7 @@ export default function NavMobile() {
                       e.syntheticEvent.preventDefault();
                       navigate("/edit-profile");
                     }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
                   >
                     ⚙️ Settings
                   </MenuItem>
@@ -124,18 +157,22 @@ export default function NavMobile() {
                       e.syntheticEvent.preventDefault();
                       navigate("/logout");
                     }}
-                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
                   >
                     👋 Logout
                   </MenuItem>
                 </Menu>
-                :
-                <Button size="sm" color="none" className="!text-body5 whitespace-nowrap" href="/login">
+              ) : (
+                <Button
+                  size="sm"
+                  color="none"
+                  className="!text-body5 whitespace-nowrap"
+                  href="/login"
+                >
                   Connect ⚡
                 </Button>
-
-              }</div>
-
+              )}
+            </div>
           </div>
         </div>
       </nav>
@@ -150,7 +187,7 @@ export default function NavMobile() {
         <motion.div
           className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border px-16 flex flex-col"
           variants={navListVariants}
-          style={{ height: 'calc(100vh - 67px)' }}
+          style={{ height: "calc(100vh - 67px)" }}
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
@@ -159,9 +196,10 @@ export default function NavMobile() {
           <ul className="flex flex-col py-16 gap-32 border-t">
             <li className="relative">
               <Link
-                to={'/projects'}
+                to={"/projects"}
                 onClick={() => toggleDrawerOpen(false)}
-                className='text-body4 font-bold hover:text-primary-600'>
+                className="text-body4 font-bold hover:text-primary-600"
+              >
                 Projects
               </Link>
             </li>
@@ -169,7 +207,8 @@ export default function NavMobile() {
               <Link
                 to={createRoute({ type: "tournament", id: 1 })}
                 onClick={() => toggleDrawerOpen(false)}
-                className='text-body4 font-bold hover:text-primary-600'>
+                className="text-body4 font-bold hover:text-primary-600"
+              >
                 Tournament
               </Link>
             </li>
@@ -247,31 +286,34 @@ export default function NavMobile() {
             </li> */}
             <li className="relative">
               <a
-                href={'https://bolt.fun/guide/'}
+                href={"https://bolt.fun/guide/"}
                 target="_blank"
                 rel="noreferrer"
-                className='text-body4 font-bold hover:text-primary-600'
+                className="text-body4 font-bold hover:text-primary-600"
               >
                 Guide
               </a>
             </li>
             <li className="relative">
               <Link
-                to={'/donate'}
+                to={"/donate"}
                 onClick={() => toggleDrawerOpen(false)}
-                className='text-body4 font-bold hover:text-primary-600'>
+                className="text-body4 font-bold hover:text-primary-600"
+              >
                 Donate
               </Link>
             </li>
-            {curUser &&
+            {curUser && (
               <li className="relative">
                 <Link
-                  to={'/logout'}
+                  to={"/logout"}
                   onClick={() => toggleDrawerOpen(false)}
-                  className='text-body4 font-bold hover:text-primary-600'>
+                  className="text-body4 font-bold hover:text-primary-600"
+                >
                   Logout 👋
                 </Link>
-              </li>}
+              </li>
+            )}
           </ul>
           <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t pt-32 mt-auto">
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
@@ -298,7 +340,6 @@ export default function NavMobile() {
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
               <a href="/#">Cookies Settings</a>
             </li>
-
           </ul>
         </motion.div>
       </div>

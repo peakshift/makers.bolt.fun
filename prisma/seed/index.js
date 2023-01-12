@@ -62,7 +62,7 @@ async function main() {
   //   await createRoles();
   //   await createSkills();
   //   await createTournament();
-  // await migrateOldImages();
+  await migrateOldImages();
   //   await createCapabilities();
   // await createHashtags();
 }

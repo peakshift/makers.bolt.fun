@@ -19,6 +19,9 @@ const { ImageInput } = require("./misc");
 const { deleteImages } = require("../../../services/imageUpload.service");
 const { logError } = require("../../../utils/logger");
 const { PrismaSelect } = require("@paljs/plugins");
+const {
+  sendNewStoryNotification,
+} = require("../../../services/notifications.service");
 
 const POST_TYPE = enumType({
   name: "POST_TYPE",
@@ -621,6 +624,13 @@ const createStory = extendType({
                   body_image_ids: newBodyImagesIds,
                   ...coverImageRel,
                 },
+                include: {
+                  user: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
               })
               .catch((error) => {
                 logError(error);
@@ -638,7 +648,14 @@ const createStory = extendType({
             },
           });
 
+          console.log(createdStory);
           await deleteImages(imagesToDelete);
+
+          await sendNewStoryNotification({
+            title: createdStory.title,
+            id: createdStory.id,
+            authorName: createdStory.user.name.slice(0, 15),
+          }).catch();
 
           return createdStory;
         } catch (error) {
