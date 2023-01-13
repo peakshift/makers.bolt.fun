@@ -4,10 +4,8 @@ import Slider from "src/Components/Slider/Slider";
 import { Tag, useFeedTagsQuery } from "src/graphql";
 import { MEDIA_QUERIES } from "src/utils/theme";
 import { formatHashtag } from "src/utils/helperFunctions";
-import Card from "src/Components/Card/Card";
 import { Link } from "react-router-dom";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
-import { useState } from "react";
 import Button from "src/Components/Button/Button";
 
 export type FilterTag = Pick<Tag, "id" | "title" | "icon">;
@@ -22,22 +20,15 @@ const MAX_SHOWED_TAGS = 10;
 export default function FeedTagsFilter({ value, onChange }: Props) {
   const tagsQuery = useFeedTagsQuery();
 
-  const [showingAll, setShowingAll] = useState(false);
-
-  const filterClicked = (_newValue: FilterTag) => {
-    const newValue = value?.id === _newValue.id ? null : _newValue;
-    onChange?.(newValue);
-  };
-
   const selectedId = value?.id;
 
   const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium);
 
   return (
-    <div className="overflow-hidden">
+    <div className="">
       {isMdScreen ? (
-          <div>
-            <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
+        <div>
+          <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
             <p className="text-body2 font-bolder text-gray-900">🏷️ Topics</p>
             <Button
               variant="text"
@@ -66,7 +57,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                     </li>
                   ))
               : tagsQuery.data?.officialTags
-                  .slice(0, showingAll ? -1 : MAX_SHOWED_TAGS)
+                  .slice(0, MAX_SHOWED_TAGS)
                   .map((tag) => (
                     <li key={tag.id} className="group">
                       <Link
@@ -82,7 +73,8 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                       >
                         <span
                           className={`${
-                            tag.id !== selectedId && "bg-gray-50 group-hover:bg-gray-100"
+                            tag.id !== selectedId &&
+                            "bg-gray-50 group-hover:bg-gray-100"
                           } rounded-8 w-40 h-40 text-center py-8`}
                         >
                           {tag.icon}
@@ -94,18 +86,6 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                     </li>
                   ))}
           </ul>
-          {tagsQuery.data &&
-            tagsQuery.data?.officialTags.length > MAX_SHOWED_TAGS && (
-              <Button
-                fullWidth
-                size="sm"
-                variant="text"
-                className="text-blue-400 mt-16"
-                onClick={() => setShowingAll((v) => !v)}
-              >
-                {showingAll ? "Show less" : "Show more"}
-              </Button>
-            )}
         </div>
       ) : (
         <>
@@ -123,7 +103,17 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                 ))}
             </ul>
           ) : (
-            <>
+            <div className="relative">
+              <div className="absolute bottom-full -translate-y-16 right-0">
+                <Button
+                  variant="text"
+                  color="primary"
+                  size="sm"
+                  href={PAGES_ROUTES.blog.topicsPage}
+                >
+                  See all topics
+                </Button>
+              </div>
               <Slider>
                 {tagsQuery.data?.officialTags.map((tag) => (
                   <Link
@@ -137,17 +127,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                   </Link>
                 ))}
               </Slider>
-              <div className="flex justify-end mt-16">
-                <Button
-                  variant="text"
-                  color="primary"
-                  size="sm"
-                  href={PAGES_ROUTES.blog.topicsPage}
-                >
-                  See all topics
-                </Button>
-              </div>
-            </>
+            </div>
           )}
         </>
       )}
