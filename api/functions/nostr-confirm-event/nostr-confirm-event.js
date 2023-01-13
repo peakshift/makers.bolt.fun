@@ -76,7 +76,7 @@ const confirmEvent = async (req, res) => {
               storyId: story.id,
               storyTitle: story.title,
               authorName: user.name,
-            })
+            }).catch()
           ),
       ]);
     }
