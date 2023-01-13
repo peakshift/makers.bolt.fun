@@ -14,6 +14,7 @@ import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
+import { Fulgur } from "src/Components/Ads/Fulgur";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
@@ -66,15 +67,17 @@ export default function TagPage() {
             />
           </div>
           <aside id="categories" className="no-scrollbar">
-            <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-              <h1 className="text-body2 text-ellipsis overflow-hidden font-bolder">
-                {loaderData.getTagInfo.icon}{" "}
-                {formatHashtag(loaderData.getTagInfo.title)}
-              </h1>
+            <div className="sticky-side-element flex flex-col gap-16 md:gap-24 md:overflow-y-scroll">
+              <div>
+                <h1 className="text-body2 text-ellipsis overflow-hidden whitespace-nowrap font-bolder">
+                  {loaderData.getTagInfo.icon}{" "}
+                  {formatHashtag(loaderData.getTagInfo.title)}
+                </h1>
+              </div>
               {loaderData.getTagInfo.long_description && (
                 <div className="hidden lg:block">
                   <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
-                    DESCRIPTION
+                    Description
                   </p>
                   <div
                     className={`prose text-gray-600 ${styles.tag_desc}`}
@@ -160,6 +163,7 @@ export default function TagPage() {
               <TrendingCard />
               <ActiveUsers tagId={tagInfo.id} />
               <RecentProjects tagId={tagInfo.id} />
+              <Fulgur />
             </div>
           </aside>
         </div>
