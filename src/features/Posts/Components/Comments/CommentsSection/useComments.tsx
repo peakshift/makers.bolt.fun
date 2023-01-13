@@ -232,6 +232,8 @@ async function buildTree(events: Record<string, Required<NostrEvent>>) {
   const pubkeysSet = new Set<string>();
   sortedEvenets.forEach((e) => pubkeysSet.add(e.pubkey));
 
+  // TODO: Make sure that confirmation to the backend has been finished before requesting new extra data, otherwise, the extra data for the new comment might not be available
+
   // Make a request to api to get comments extra data
   const commentsExtraData = await getCommentsExtraData(Object.keys(events));
 
