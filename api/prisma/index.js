@@ -7,7 +7,7 @@ const createPrismaClient = () => {
   console.log("New Prisma Client");
   try {
     const prisma = new PrismaClient({
-      log: ["error", "query"],
+      log: ["error"],
     });
     prisma.$use(async (params, next) => {
       const before = Date.now();

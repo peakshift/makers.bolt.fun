@@ -27,6 +27,7 @@ function sendNotifications({ content }) {
 }
 
 function notifyDiscord({ content }) {
+  if (!CONSTS.DISCORD_NOTIFICATIONS_WEBHOOK_URL) return;
   return axios.post(CONSTS.DISCORD_NOTIFICATIONS_WEBHOOK_URL, { content });
 }
 

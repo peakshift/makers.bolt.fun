@@ -553,6 +553,8 @@ const createStory = extendType({
             .replace(/&quot;/g, '"');
           let createdStory = null;
 
+          let _promisesList = [];
+
           if (id) {
             await prisma.story.update({
               where: { id },
@@ -590,12 +592,19 @@ const createStory = extendType({
                   body_image_ids: newBodyImagesIds,
                   ...coverImageRel,
                 },
+                include: {
+                  user: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
               })
               .catch((error) => {
                 logError(error);
                 throw new ApolloError("Unexpected error happened...");
               });
-          } else
+          } else {
             createdStory = await prisma.story
               .create({
                 data: {
@@ -637,25 +646,30 @@ const createStory = extendType({
                 throw new ApolloError("Unexpected error happened...");
               });
 
-          await prisma.hostedImage.updateMany({
-            where: {
-              id: {
-                in: [...imagesToSave, ...newBodyImagesIds],
+            _promisesList.push(
+              sendNewStoryNotification({
+                title: createdStory.title,
+                id: createdStory.id,
+                authorName: createdStory.user.name.slice(0, 15),
+              }).catch(() => {})
+            );
+          }
+
+          _promisesList.push(
+            prisma.hostedImage.updateMany({
+              where: {
+                id: {
+                  in: [...imagesToSave, ...newBodyImagesIds],
+                },
               },
-            },
-            data: {
-              is_used: true,
-            },
-          });
+              data: {
+                is_used: true,
+              },
+            })
+          );
+          _promisesList.push(deleteImages(imagesToDelete));
 
-          console.log(createdStory);
-          await deleteImages(imagesToDelete);
-
-          await sendNewStoryNotification({
-            title: createdStory.title,
-            id: createdStory.id,
-            authorName: createdStory.user.name.slice(0, 15),
-          }).catch();
+          await Promise.all(_promisesList);
 
           return createdStory;
         } catch (error) {
