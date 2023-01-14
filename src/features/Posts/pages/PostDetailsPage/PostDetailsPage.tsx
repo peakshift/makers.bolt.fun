@@ -48,7 +48,7 @@ export default function PostDetailsPage(props: Props) {
                 <PostActions post={post} />
               </div>
             </aside>
-            <main className="flex flex-col gap-32">
+            <main className="flex flex-col gap-32 min-w-0">
               <PageContent post={post} />
               <Suspense
                 fallback={
