@@ -13,31 +13,13 @@ TODO
 export default function HangoutPage() {
   const me = useAppSelector((state) => state.user.me);
   const navigate = useNavigate();
-
-  /*
-    We need to set a full page layout where the video is close to
-    full height on medium - larger sizes so height: 100% needs
-    to be set on the component's parents all the way up to <html>
-  */
-  useEffect(()  => {
-    window.document.documentElement.classList.add('h-full');
-    window.document.body.classList.add('h-full');
-    window.document.getElementById('root')!.classList.add('h-full');
-    window.document.getElementById('app')!.classList.add('h-full');
-    return () => {
-      window.document.documentElement.classList.remove('h-full');
-      window.document.body.classList.remove('h-full');
-      window.document.getElementById('root')!.classList.remove('h-full');
-      window.document.getElementById('app')!.classList.remove('h-full');
-    };
-  });
   return (
     <>
       <OgTags
         title="Hangout on Bolt Fun"
         description="Talk to other makers live!"
       />
-      <div className="page-container h-full bg-primary-500">
+      <div className="page-container h-screen bg-primary-500">
         <div
           className="grid gap-24 grid-cols-1 lg:grid-cols-[1fr_4fr]"
         >
