@@ -180,6 +180,14 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           </ProtectedRoute>
         }
       />
+      <Route
+        path={PAGES_ROUTES.hangout.default}
+        element={
+          <ProtectedRoute>
+            <HangoutPage /> 
+          </ProtectedRoute>
+        }
+      />
       <Route element={<NavbarLayout />}>
         <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
         <Route
@@ -242,7 +250,6 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
-        <Route path={PAGES_ROUTES.hangout.default} element={<HangoutPage /> }/>
 
         <Route
           path="/"

@@ -53,8 +53,8 @@ export default function NavDesktop() {
                             </Link>
                         </li>
                         <li className="relative">
-                            <Link to={createRoute({ type: "hangout" })} className='text-body4 font-bold hover:text-primary-600'>
-                                Hangout
+                            <Link to={createRoute({ type: "hangout" })} className='text-body4 font-bold hover:text-primary-600 relative pr-4'>
+                                Hangout <span className="absolute -top-3 -right-36 font-medium text-xs leading-5 rounded text-red-600 bg-red-400/10 px-2 py-0.1">LIVE</span>
                             </Link>
                         </li>
                         <li>
