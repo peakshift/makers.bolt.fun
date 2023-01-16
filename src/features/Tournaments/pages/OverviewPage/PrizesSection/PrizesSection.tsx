@@ -21,6 +21,8 @@ export default function PrizesSection({ prizes }: Props) {
     return map;
   }, [winningProjects]);
 
+  console.log(projectsMap);
+
   return (
     <div>
       <h2 className="text-body1 font-bolder text-gray-900 mb-16">
@@ -86,6 +88,8 @@ const renderPrizes = (
     const project2 = projectsMap.get(prize2.project);
     const project3 = projectsMap.get(prize3.project);
 
+    if (!project1 || !project2 || !project3) return;
+
     return (
       <div className="flex flex-col md:justify-end flex-wrap gap-40">
         <div className="flex flex-col md:items-end">
@@ -104,6 +108,8 @@ const renderPrizes = (
   }
   if (prizes.length === 4) {
     const [prize1, ...restPrizes] = prizes;
+
+    if (!projectsMap.get(prize1.project!)) return;
 
     return (
       <div className="flex flex-col md:justify-end flex-wrap gap-40">

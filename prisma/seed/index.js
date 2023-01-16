@@ -13,7 +13,7 @@ const {
   capabilities,
 } = require("./data");
 const Chance = require("chance");
-const { getCoverImage, randomItems, random } = require("./helpers");
+const { getCoverImage, randomItems, random, randomItem } = require("./helpers");
 const { tournament: tournamentMock } = require("./data/tournament.seed");
 
 const chance = new Chance();
@@ -21,11 +21,18 @@ const chance = new Chance();
 const prisma = new PrismaClient();
 
 async function purge() {
-  await prisma.award.deleteMany();
-  await prisma.tag.deleteMany();
-  await prisma.vote.deleteMany();
-  await prisma.project.deleteMany();
-  await prisma.category.deleteMany();
+  const tablenames =
+    await prisma.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+  const tables = tablenames
+    .map(({ tablename }) => tablename)
+    .filter((name) => name !== "_prisma_migrations")
+    .map((name) => `"public"."${name}"`)
+    .join(", ");
+  try {
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`);
+  } catch (error) {
+    console.log({ error });
+  }
 }
 
 async function generateNostrKeys() {
@@ -52,19 +59,19 @@ async function generateNostrKeys() {
 
 async function main() {
   // console.log("Purging old data");
-  // await purge()
-  //   await createCategories();
-  //   await createTags();
-  //   await createProjects();
-  //   await createStories();
-  //   await createHackathons();
-  //   await fillUserKeysTable();
-  //   await createRoles();
-  //   await createSkills();
-  //   await createTournament();
+  await purge();
+  await createUsers();
+  await fillUserKeysTable();
+  await createCategories();
+  await createTags();
+  await createProjects();
+  await createStories();
+  await createHackathons();
+  await createRoles();
+  await createSkills();
+  await createTournament();
   await migrateOldImages();
-  //   await createCapabilities();
-  // await createHashtags();
+  await createCapabilities();
 }
 
 async function migrateOldImages() {
@@ -342,11 +349,33 @@ async function _updateObjectWithHostedImageId(prismaObject, objectId, data) {
   });
 }
 
+async function createUsers() {
+  console.log("Creating Users");
+
+  await prisma.user.createMany({
+    data: Array(5)
+      .fill(0)
+      .map((_, idx) => {
+        const nostr_prv_key = generatePrivateKey();
+        const nostr_pub_key = getPublicKey(nostr_prv_key);
+
+        return {
+          name: `User ${idx + 1}`,
+          jobTitle: "Software Developer",
+          avatar: `https://avatars.dicebear.com/api/bottts/${nostr_pub_key}.svg`,
+          nostr_prv_key,
+          nostr_pub_key,
+          lightning_address: "mtg@getalby.com",
+          pubKey: nostr_pub_key,
+        };
+      }),
+  });
+}
+
 async function createCategories() {
   console.log("Creating Categories");
   await prisma.category.createMany({
     data: categories.map((item) => ({
-      id: item.id,
       title: item.title,
       cover_image:
         "https://via.placeholder.com/1920x850.png?text=Category+Cover+Image",
@@ -359,9 +388,9 @@ async function createTags() {
   console.log("Creating Tags");
   await prisma.tag.createMany({
     data: tags.map((item) => ({
-      id: item.id,
       title: item.title,
       description: item.description,
+      long_description: item.description,
       isOfficial: item.isOfficial,
       icon: item.icon,
     })),
@@ -371,22 +400,54 @@ async function createTags() {
 async function createProjects() {
   console.log("Creating Projects");
 
+  const categories = await prisma.category.findMany({ select: { id: true } });
+  const capabilities = await prisma.capability.findMany({
+    select: { id: true },
+  });
+  const tags = await prisma.tag.findMany({ select: { id: true } });
+  const users = await prisma.user.findMany({ select: { id: true } });
+
   for (let i = 0; i < projects.length; i++) {
     const item = projects[i];
-    const { tags, ...feilds } = item;
+
+    const category_id = randomItem(categories).id;
+    const tags_ids = randomItems(random(2, 4), tags);
+    const users_ids = randomItems(random(2, 4), users);
+    const caps_ids = randomItems(random(3, 5), capabilities);
+
     await prisma.project.create({
       data: {
-        ...feilds,
-        tags: {
-          connect: tags.map((t) => ({
-            id: t.id,
-          })),
-        },
+        title: item.title,
+        hashtag: item.title
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, "")
+          .replace(/[\s_-]+/g, "_")
+          .replace(/^-+|-+$/g, ""),
+        website: item.website,
+        cover_image: item.cover_image,
+        thumbnail_image: item.thumbnail_image,
+        votes_count: item.votes_count,
+        lightning_address: item.lightning_address,
         description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
         screenshots: Array(4).fill(
           "https://via.placeholder.com/1280x729.png?text=Project+Screenshot"
         ),
+        tagline: "Lorem ipsum sortel",
+        category_id,
+        tags: {
+          connect: tags_ids,
+        },
+        members: {
+          create: users_ids.map(({ id }, idx) => ({
+            userId: id,
+            role: idx === 0 ? "Admin" : "Maker",
+          })),
+        },
+        capabilities: {
+          connect: caps_ids,
+        },
       },
     });
   }
@@ -395,10 +456,11 @@ async function createProjects() {
 async function createStories() {
   console.log("Creating Stories");
 
-  const user = await prisma.user.findFirst();
+  const users = await prisma.user.findMany({ select: { id: true } });
+  const tags = await prisma.tag.findMany({ select: { id: true } });
 
   for (let i = 0; i < 15; i++) {
-    const randomTags = randomItems(random(2, 5), tags);
+    const tags_ids = randomItems(random(2, 4), tags);
     await prisma.story.create({
       data: {
         body: chance.paragraph(),
@@ -406,11 +468,15 @@ async function createStories() {
         title: chance.sentence({ words: chance.integer({ min: 3, max: 7 }) }),
         cover_image: getCoverImage(),
         is_published: true,
-        tags: {
-          connect: randomTags.map((t) => ({ id: t.id })),
-        },
-        user_id: user.id,
         votes_count: Math.floor(random(10, 6600)),
+        tags: {
+          connect: tags_ids,
+        },
+        user: {
+          connect: {
+            id: randomItem(users).id,
+          },
+        },
       },
     });
   }
@@ -419,16 +485,16 @@ async function createStories() {
 async function createHackathons() {
   console.log("Creating Hackathons");
 
+  const tags = await prisma.tag.findMany({ select: { id: true } });
+
   for (let i = 0; i < hackathons.length; i++) {
     const item = hackathons[i];
-    const { tags, ...feilds } = item;
+    const tags_ids = randomItems(random(2, 4), tags);
     await prisma.hackathon.create({
       data: {
-        ...feilds,
+        ...item,
         tags: {
-          connect: tags.map((t) => ({
-            id: t.id,
-          })),
+          connect: tags_ids,
         },
         description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
