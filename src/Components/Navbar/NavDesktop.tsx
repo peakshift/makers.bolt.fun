@@ -53,57 +53,21 @@ export default function NavDesktop() {
                             </Link>
                         </li>
                         <li className="relative">
-                            <Link to={createRoute({ type: "tournament", id: 1 })} className='text-body4 font-bold hover:text-primary-600'>
-                                Tournament
+                            <Link to={createRoute({ type: "hangout" })} className='text-body4 font-bold hover:text-primary-600 relative pr-4'>
+                                Hangout <span className="absolute -top-3 -right-36 font-medium text-xs leading-5 rounded text-red-600 bg-red-400/10 px-2 py-0.1">LIVE</span>
                             </Link>
                         </li>
-                        {/* <li>
+                        <li>
                             <Menu
                                 offsetY={28}
                                 menuButton={
                                     <MenuButton
-                                        className='text-body4 font-bold hover:text-primary-600'>Community <FiChevronDown className="ml-8" />
+                                        className='text-body4 font-bold hover:text-primary-600'>Events <FiChevronDown className="ml-8" />
                                     </MenuButton>
                                 }
                                 menuClassName='!rounded-12 !p-8 !border-gray-200'
                                 menuStyle={{ border: '1px solid' }}
                             >
-                                <MenuItem
-                                    href={PAGES_ROUTES.blog.feed}
-                                    onClick={(e) => {
-                                        e.syntheticEvent.preventDefault();
-                                        navigate(PAGES_ROUTES.blog.feed);
-                                    }}
-                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 '
-                                >
-                                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                                         <span className="text-body2">✍🏼</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-body4 text-black font-medium">
-                                            Stories
-                                        </p>
-                                        <p className="text-body5 text-gray-600 mt-4">
-                                            Tales from the maker community
-                                        </p>
-                                    </div>
-                                </MenuItem>
-                                <MenuItem
-
-                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12 opacity-40'
-                                >
-                                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                                        <span className="text-body2">💬</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-body4 text-black font-medium">
-                                            Discussions
-                                        </p>
-                                        <p className="text-body5 text-gray-600 mt-4">
-                                            Coming soon
-                                        </p>
-                                    </div>
-                                </MenuItem>
                                 <MenuItem
                                     href="/hackathons"
                                     onClick={(e) => {
@@ -113,7 +77,7 @@ export default function NavDesktop() {
                                     className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
                                 >
                                     <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                                        <span className="text-body2">🏆</span>
+                                        <span className="text-body2">👩‍💻</span>
                                     </div>
                                     <div>
                                         <p className="text-body4 text-black font-medium">
@@ -124,8 +88,44 @@ export default function NavDesktop() {
                                         </p>
                                     </div>
                                 </MenuItem>
+                                <MenuItem
+                                    href="/tournaments/1"
+                                    onClick={(e) => {
+                                        e.syntheticEvent.preventDefault();
+                                        navigate("/tournaments/1/overview");
+                                    }}
+                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                                >
+                                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                                        <span className="text-body2">🏆</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-body4 text-black font-medium">
+                                            #LegendsOfLightning
+                                        </p>
+                                        <p className="text-body5 text-gray-600 mt-4">
+                                            In 2022 we put on the largest<br /> bitcoin hackathon.
+                                        </p>
+                                    </div>
+                                </MenuItem>
+                                <MenuItem
+                                    href="mailto:team@peakshift.com"
+                                    className='!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12'
+                                >
+                                    <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                                        <span className="text-body2">💬</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-body4 text-black font-medium">
+                                            Host a Hackathon
+                                        </p>
+                                        <p className="text-body5 text-gray-600 mt-4">
+                                            Need some help setting up your own?
+                                        </p>
+                                    </div>
+                                </MenuItem>
                             </Menu>
-                        </li> */}
+                        </li>
                         <li className="relative">
                             <a
                                 href={'https://bolt.fun/guide/'}
@@ -135,11 +135,6 @@ export default function NavDesktop() {
                             >
                                 Guide
                             </a>
-                        </li>
-                        <li className="relative">
-                            <Link to={'/donate'} className='text-body4 font-bold hover:text-primary-600'>
-                                Donate
-                            </Link>
                         </li>
                     </ul>
 
