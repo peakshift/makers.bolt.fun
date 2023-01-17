@@ -12,7 +12,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { capitalize } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
 import { useAppDispatch } from "src/utils/hooks";
-import { stageStory } from "src/redux/features/staging.slice";
+import { stageStoryEdit } from "src/redux/features/staging.slice";
 import OgTags from "src/Components/OgTags/OgTags";
 
 export default function FeedPage() {
@@ -90,7 +90,7 @@ export default function FeedPage() {
                   href={createRoute({ type: "write-story" })}
                   color="primary"
                   fullWidth
-                  onClick={() => dispatch(stageStory(null))}
+                  onClick={() => dispatch(stageStoryEdit(null))}
                 >
                   Write a story
                 </Button>
