@@ -55,6 +55,14 @@ functions:
       - http:
           path: nostr-sign-event
           method: post
+  nostr-sign-event-background:
+    handler: api/functions/nostr-sign-event-background/nostr-sign-event-background.handler
+    events:
+      - http:
+          path: nostr-sign-event-background
+          method: post
+
+          
 
   nostr-confirm-event:
     handler: api/functions/nostr-confirm-event/nostr-confirm-event.handler

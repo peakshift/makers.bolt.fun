@@ -1,6 +1,5 @@
 const { parseResolveInfo } = require("graphql-parse-resolve-info");
 
-
 /**
  * includeRelationFields
  * @param {object} infoObject the info object that is passed as the 4th parameter in a graphql resolver
@@ -9,19 +8,29 @@ const { parseResolveInfo } = require("graphql-parse-resolve-info");
  * @returns {object | undefined} an object that you can spread inside the `include` of a prisma query
  */
 function includeRelationFields(infoObject, typeName, fields) {
-    const parsedResolveInfo = parseResolveInfo(infoObject)
-    const obj = parsedResolveInfo.fieldsByTypeName[typeName];
-    if (!obj) return undefined;
-    let res = {};
-    for (const [key, relation] of Object.entries(fields)) {
-        if (obj[key]) res[relation] = true;
-    }
+  const parsedResolveInfo = parseResolveInfo(infoObject);
+  const obj = parsedResolveInfo.fieldsByTypeName[typeName];
+  if (!obj) return undefined;
+  let res = {};
+  for (const [key, relation] of Object.entries(fields)) {
+    if (obj[key]) res[relation] = true;
+  }
 
-    if (Object.keys(res).length === 0) return undefined
+  if (Object.keys(res).length === 0) return undefined;
 
-    return res;
+  return res;
+}
+
+function toSlug(str) {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 module.exports = {
-    includeRelationFields
-}
+  includeRelationFields,
+  toSlug,
+};
