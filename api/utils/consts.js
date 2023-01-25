@@ -1,24 +1,26 @@
-const BOLT_FUN_LIGHTNING_ADDRESS = "johns@getalby.com"; // #TODO, replace it by bolt-fun lightning address if there exist one
-const JWT_SECRET = process.env.JWT_SECRET;
-const LNURL_AUTH_HOST = process.env.LNURL_AUTH_HOST;
-const CLOUDFLARE_IMAGE_ACCOUNT_ID = process.env.CLOUDFLARE_IMAGE_ACCOUNT_ID;
-const CLOUDFLARE_IMAGE_API_KEY = process.env.CLOUDFLARE_IMAGE_API_KEY;
-const CLOUDFLARE_IMAGE_ACCOUNT_HASH = process.env.CLOUDFLARE_IMAGE_ACCOUNT_HASH;
-const DISCORD_NOTIFICATIONS_WEBHOOK_URL =
-  process.env.DISCORD_NOTIFICATIONS_WEBHOOK_URL;
-const BOLTFUN_NOSTR_PRIVATE_KEY = process.env.BOLTFUN_NOSTR_PRIVATE_KEY;
+const { envsafe, port, str } = require("envsafe");
 
-const CONSTS = {
-  JWT_SECRET,
-  LNURL_AUTH_HOST,
+const env = envsafe({
+  NODE_ENV: str({
+    devDefault: "development",
+    choices: ["development", "test", "production"],
+  }),
+  JWT_SECRET: str(),
+  LNURL_AUTH_HOST: str(),
+  REDIS_CONNECTION_URL: str(),
 
-  CLOUDFLARE_IMAGE_ACCOUNT_ID,
-  CLOUDFLARE_IMAGE_API_KEY,
-  CLOUDFLARE_IMAGE_ACCOUNT_HASH,
+  CLOUDFLARE_IMAGE_ACCOUNT_ID: str(),
+  CLOUDFLARE_IMAGE_API_KEY: str(),
+  CLOUDFLARE_IMAGE_ACCOUNT_HASH: str(),
 
-  BOLT_FUN_LIGHTNING_ADDRESS,
-  BOLTFUN_NOSTR_PRIVATE_KEY,
-  DISCORD_NOTIFICATIONS_WEBHOOK_URL,
-};
+  BOLT_FUN_LIGHTNING_ADDRESS: str({
+    devDefault: "johns@getalby.com",
+  }),
+  BOLTFUN_NOSTR_PRIVATE_KEY: str(),
+  DISCORD_NOTIFICATIONS_WEBHOOK_URL: str(),
 
-module.exports = CONSTS;
+  BF_QUEUES_SERVICE_USERNAME: str(),
+  BF_QUEUES_SERVICE_PASS: str(),
+});
+
+module.exports = env;

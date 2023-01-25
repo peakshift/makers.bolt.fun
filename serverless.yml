@@ -62,7 +62,19 @@ functions:
           path: nostr-sign-event-background
           method: post
 
-          
+  send-bullmq:
+    handler: api/functions/send-bullmq/send-bullmq.handler
+    events:
+      - http:
+          path: send-bullmq
+          method: get
+
+  on-job-success:
+    handler: api/functions/on-job-success/on-job-success.handler
+    events:
+      - http:
+          path: on-job-success
+          method: post
 
   nostr-confirm-event:
     handler: api/functions/nostr-confirm-event/nostr-confirm-event.handler

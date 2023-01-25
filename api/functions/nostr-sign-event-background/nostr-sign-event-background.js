@@ -13,13 +13,15 @@ const CONSTS = require("../../utils/consts");
 const { toSlug } = require("../../utils/helpers");
 require("websocket-polyfill");
 
+// TODO: Clean up to fix the timeout problem
+
 const RELAYS = [
   "wss://nostr-pub.wellorder.net",
   "wss://nostr1.tunnelsats.com",
-  //   "wss://relay.damus.io",
-  //   "wss://relayer.fiatjaf.com",
-  //   "wss://nostr-relay.wlvs.space",
-  //   "wss://nostr-01.bolt.observer",
+  "wss://nostr-relay.wlvs.space",
+  // "wss://relay.damus.io",
+  // "wss://relayer.fiatjaf.com",
+  // "wss://nostr-01.bolt.observer",
 ];
 
 const nostrSignEventHandler = async (req, res) => {
