@@ -1,5 +1,5 @@
 const { envsafe, str, url, bool } = require("envsafe");
-console.log(process.env.DEPLOY_PRIME_URL);
+console.log(process.env);
 const env = envsafe(
   {
     NODE_ENV: str({
