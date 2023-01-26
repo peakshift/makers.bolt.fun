@@ -1,4 +1,5 @@
 const { envsafe, str, url, bool } = require("envsafe");
+console.log(process.env.DEPLOY_PRIME_URL);
 const env = envsafe(
   {
     NODE_ENV: str({
@@ -25,7 +26,7 @@ const env = envsafe(
     CLOUDFLARE_IMAGE_ACCOUNT_HASH: str(),
 
     BOLT_FUN_LIGHTNING_ADDRESS: str({
-      devDefault: "johns@getalby.com",
+      default: "johns@getalby.com",
     }),
     DISCORD_NOTIFICATIONS_WEBHOOK_URL: str({
       allowEmpty: true,
