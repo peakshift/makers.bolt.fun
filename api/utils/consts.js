@@ -1,7 +1,8 @@
 const { envsafe, str, url, bool } = require("envsafe");
 
-const ON_NETLIFY =
-  process.env.NODE_ENV === "production" || process.env.NETLIFY_DEV;
+const ON_NETLIFY = process.env.NETLIFY;
+
+console.log(ON_NETLIFY);
 
 const env = envsafe(
   {
