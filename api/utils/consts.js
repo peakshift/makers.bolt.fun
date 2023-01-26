@@ -1,5 +1,8 @@
 const { envsafe, str, url, bool } = require("envsafe");
-console.log(process.env);
+
+const ON_NETLIFY =
+  process.env.NODE_ENV === "production" || process.env.NETLIFY_DEV;
+
 const env = envsafe(
   {
     NODE_ENV: str({
@@ -15,7 +18,7 @@ const env = envsafe(
       devDefault: process.env.URL ?? "http://localhost:8888",
     }),
     NETLIFY: bool({
-      devDefault: process.env.NETLIFY_DEV,
+      default: !!ON_NETLIFY,
     }),
     JWT_SECRET: str(),
     LNURL_AUTH_HOST: str(),

@@ -13,7 +13,7 @@
   package = "netlify-plugin-bundle-env"
   [plugins.inputs] 
     directories = ["./api/utils"]
-    include = ["NETLIFY", "DEPLOY_PRIME_URL"] 
+    include = ["DEPLOY_PRIME_URL"] 
     mask = false
 
  
