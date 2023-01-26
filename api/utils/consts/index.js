@@ -1,6 +1,6 @@
 const { envsafe, str, url, bool } = require("envsafe");
 
-const ON_NETLIFY = process.env.NETLIFY;
+const ON_NETLIFY = process.env.NETLIFY || process.env.NETLIFY_DEV;
 
 console.log(ON_NETLIFY);
 
