@@ -664,7 +664,7 @@ const createStory = extendType({
                 .createStoryRootEvent({
                   id: createdStory.id,
                   title: createdStory.title,
-                  url: `${env.URL}/story/${toSlug(createdStory.title)}--${
+                  url: `${env.SITE_URL}/story/${toSlug(createdStory.title)}--${
                     createdStory.id
                   }`,
                 })

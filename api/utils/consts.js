@@ -1,18 +1,22 @@
 const { envsafe, str, url, bool } = require("envsafe");
-console.log(process.env);
-console.log(process.env.DEPLOY_PRIME_URL);
+
 const env = envsafe(
   {
     NODE_ENV: str({
       devDefault: "development",
       choices: ["development", "test", "production"],
     }),
-    URL: url({
+    SITE_URL: url({
+      default: process.env.DEPLOY_PRIME_URL,
       devDefault: "http://localhost:3000",
     }),
-    SERVICE_URL: str({
-      default: process.env.DEPLOY_PRIME_URL,
-      devDefault: process.env.URL ?? "http://localhost:8888",
+    FUNCTIONS_URL: str({
+      default:
+        process.env.DEPLOY_PRIME_URL +
+        (process.env.NETLIFY ? "/.netlify/functions" : "/dev"),
+      devDefault:
+        (process.env.URL ?? "http://localhost:8888") +
+        (process.env.NETLIFY ? "/.netlify/functions" : "/dev"),
     }),
     NETLIFY: bool({
       default: false,
