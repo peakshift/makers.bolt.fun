@@ -1,13 +1,11 @@
 const { envsafe, str, url, bool } = require("envsafe");
-console.log(process.env);
 const env = envsafe(
   {
     NODE_ENV: str({
       devDefault: "development",
       choices: ["development", "test", "production"],
     }),
-    WEBSITE_URL: url({
-      default: process.env.DEPLOY_PRIME_URL ?? process.env.URL,
+    URL: url({
       devDefault: "http://localhost:3000",
     }),
     SERVICE_URL: str({
