@@ -12,7 +12,7 @@
 [[plugins]]
   package = "netlify-plugin-bundle-env"
   [plugins.inputs] 
-    directories = ["./api/utils"]
+    directories = ["./api/utils/consts"]
     include = ["NETLIFY", "DEPLOY_PRIME_URL"] 
     mask = false
 
