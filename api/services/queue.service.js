@@ -2,7 +2,7 @@ const { default: axios } = require("axios");
 const env = require("../utils/consts");
 
 const thisServiceApiBase = `${env.FUNCTIONS_URL}${
-  env.NETLIFY ? "/.netlify/functions" : "/dev"
+  env.ON_NETLIFY ? "/.netlify/functions" : "/dev"
 }`;
 
 function createStoryRootEvent({ id, title, url }) {
