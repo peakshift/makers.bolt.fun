@@ -664,9 +664,9 @@ const createStory = extendType({
                 .createStoryRootEvent({
                   id: createdStory.id,
                   title: createdStory.title,
-                  url: `${env.WEBSITE_URL}/story/${toSlug(
-                    createdStory.title
-                  )}--${createdStory.id}`,
+                  url: `${env.URL}/story/${toSlug(createdStory.title)}--${
+                    createdStory.id
+                  }`,
                 })
                 .catch((err) => {
                   console.log("Error happened while posting to queue service:");
