@@ -11,12 +11,8 @@ const env = envsafe(
       devDefault: "http://localhost:3000",
     }),
     FUNCTIONS_URL: str({
-      default:
-        process.env.DEPLOY_PRIME_URL +
-        (process.env.NETLIFY ? "/.netlify/functions" : "/dev"),
-      devDefault:
-        (process.env.URL ?? "http://localhost:8888") +
-        (process.env.NETLIFY ? "/.netlify/functions" : "/dev"),
+      default: process.env.DEPLOY_PRIME_URL,
+      devDefault: process.env.URL ?? "http://localhost:8888",
     }),
     NETLIFY: bool({
       default: false,
