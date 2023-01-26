@@ -15,7 +15,7 @@ const env = envsafe(
       devDefault: process.env.URL ?? "http://localhost:8888",
     }),
     NETLIFY: bool({
-      default: !!process.env.NETLIFY,
+      default: true,
       devDefault: process.env.NETLIFY_DEV,
     }),
     JWT_SECRET: str(),
