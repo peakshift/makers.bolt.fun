@@ -1,5 +1,5 @@
 const { envsafe, str, url, bool } = require("envsafe");
-console.log(process.env);
+
 const env = envsafe(
   {
     NODE_ENV: str({
@@ -11,15 +11,11 @@ const env = envsafe(
       devDefault: "http://localhost:3000",
     }),
     FUNCTIONS_URL: str({
-      default: `${process.env.DEPLOY_PRIME_URL}${
-        process.env.NETLIFY ? "/.netlify/functions" : "/dev"
-      }`,
-      devDefault: `${process.env.URL || "http://localhost:8888"}${
-        process.env.NETLIFY ? "/.netlify/functions" : "/dev"
-      }`,
+      default: process.env.DEPLOY_PRIME_URL,
+      devDefault: process.env.URL ?? "http://localhost:8888",
     }),
     NETLIFY: bool({
-      default: false,
+      default: process.env.NETLIFY,
       devDefault: process.env.NETLIFY_DEV,
     }),
     JWT_SECRET: str(),
