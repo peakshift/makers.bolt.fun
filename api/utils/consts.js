@@ -1,5 +1,5 @@
 const { envsafe, str, url, bool } = require("envsafe");
-
+console.log(process.env.NETLIFY);
 const env = envsafe(
   {
     NODE_ENV: str({
