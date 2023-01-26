@@ -34,6 +34,7 @@ const env = envsafe(
     }),
     DISCORD_NOTIFICATIONS_WEBHOOK_URL: str({
       allowEmpty: true,
+      default: "",
       devDefault: "",
     }),
 
