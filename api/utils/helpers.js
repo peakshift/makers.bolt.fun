@@ -30,7 +30,11 @@ function toSlug(str) {
     .replace(/^-+|-+$/g, "");
 }
 
+// Used to handle an issue caused by netlify-env-plugin
+const getEnvVarRuntime = (name) => process.env[name];
+
 module.exports = {
   includeRelationFields,
   toSlug,
+  getEnvVarRuntime,
 };
