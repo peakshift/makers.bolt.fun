@@ -9,5 +9,10 @@
   publish = "build" # create-react-app builds to this folder, Netlify should serve all these files statically
   envFiles = ["./envs/server/local.env"]  
 
+[[plugins]]
+  package = "netlify-plugin-bundle-env"
+  [plugins.inputs] 
+    include = ["DEPLOY_PRIME_URL"] 
+    mask = false
 
  
