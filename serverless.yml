@@ -24,24 +24,30 @@ functions:
       - http:
           path: graphql
           method: get
+
+  # Auth Functions
+  # ----------------------------
   get-login-url:
     handler: api/functions/get-login-url/get-login-url.handler
     events:
       - http:
           path: get-login-url
           method: get
+
   login:
     handler: api/functions/login/login.handler
     events:
       - http:
           path: login
           method: get
+
   logout:
     handler: api/functions/logout/logout.handler
     events:
       - http:
           path: logout
           method: get
+
   is-logged-in:
     handler: api/functions/is-logged-in/is-logged-in.handler
     events:
@@ -49,31 +55,13 @@ functions:
           path: is-logged-in
           method: get
 
+  # Nostr-Related Functions
+  # ----------------------------
   nostr-sign-event:
     handler: api/functions/nostr-sign-event/nostr-sign-event.handler
     events:
       - http:
           path: nostr-sign-event
-          method: post
-  nostr-sign-event-background:
-    handler: api/functions/nostr-sign-event-background/nostr-sign-event-background.handler
-    events:
-      - http:
-          path: nostr-sign-event-background
-          method: post
-
-  send-bullmq:
-    handler: api/functions/send-bullmq/send-bullmq.handler
-    events:
-      - http:
-          path: send-bullmq
-          method: get
-
-  on-job-success:
-    handler: api/functions/on-job-success/on-job-success.handler
-    events:
-      - http:
-          path: on-job-success
           method: post
 
   nostr-confirm-event:
@@ -97,16 +85,18 @@ functions:
           path: pubkeys-to-users
           method: post
 
+  # Nostr-Related Functions
+  # ----------------------------
+  on-job-success:
+    handler: api/functions/on-job-success/on-job-success.handler
+    events:
+      - http:
+          path: on-job-success
+          method: post
+
   upload-image-url:
     handler: api/functions/upload-image-url/upload-image-url.handler
     events:
       - http:
           path: upload-image-url
           method: post
-
-  get-object-metadata:
-    handler: api/functions/get-object-metadata/get-object-metadata.handler
-    events:
-      - http:
-          path: get-object-metadata
-          method: get

@@ -2,6 +2,7 @@ const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
 const CONSTS = require("../../utils/consts");
+const { prisma } = require("../../prisma");
 
 const onJobSuccess = async (req, res) => {
   const base64Token = Buffer.from(
@@ -12,7 +13,28 @@ const onJobSuccess = async (req, res) => {
   if (authToken !== base64Token)
     return res.status(401).send("Unauthorized Access");
 
-  // Extract Job Type
+  try {
+    const type = req.body.type;
+    if (type === "create-story-root-event") {
+      const { story_id, root_event_id } = req.body;
+      if (!story_id || !root_event_id)
+        return res
+          .status(400)
+          .send("story_id or root_event_id are not provided");
+
+      await prisma.story.update({
+        where: { id: Number(story_id) },
+        data: {
+          nostr_event_id: root_event_id,
+        },
+      });
+    } else {
+      return res.status(400).send("Unknown job type: ", type);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An unexpected error happened");
+  }
   // Exec job type specific logic
   res.status(200).send("OK");
 };

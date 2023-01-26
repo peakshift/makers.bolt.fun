@@ -22,6 +22,9 @@ const { PrismaSelect } = require("@paljs/plugins");
 const {
   sendNewStoryNotification,
 } = require("../../../services/notifications.service");
+const { queueService } = require("../../../services/queue.service");
+const { toSlug } = require("../../../utils/helpers");
+const env = require("../../../utils/consts");
 
 const POST_TYPE = enumType({
   name: "POST_TYPE",
@@ -651,7 +654,24 @@ const createStory = extendType({
                 title: createdStory.title,
                 id: createdStory.id,
                 authorName: createdStory.user.name.slice(0, 15),
-              }).catch(() => {})
+              }).catch((err) => {
+                console.log(
+                  "Error happened while sending new story notification:"
+                );
+                console.log(err);
+              }),
+              queueService
+                .createStoryRootEvent({
+                  id: createdStory.id,
+                  title: createdStory.title,
+                  url: `${env.WEBSITE_URL}/story/${toSlug(
+                    createdStory.title
+                  )}--${createdStory.id}`,
+                })
+                .catch((err) => {
+                  console.log("Error happened while posting to queue service:");
+                  console.log(err);
+                })
             );
           }
 
