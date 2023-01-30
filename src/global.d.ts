@@ -1,3 +1,4 @@
 declare interface Window {
-	webln: any;
+  webln: any;
+  nostr: any;
 }
