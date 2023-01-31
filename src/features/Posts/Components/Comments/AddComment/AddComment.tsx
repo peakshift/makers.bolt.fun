@@ -19,6 +19,8 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import Toolbar from "./Toolbar";
 import Button from "src/Components/Button/Button";
 import { InvalidContentHandler } from "remirror";
+import { useNostrComments } from "../CommentsWidget/useNostrComments";
+import { NotificationsService } from "src/services";
 
 interface Props {
   initialContent?: string;
@@ -27,7 +29,7 @@ interface Props {
   disabled?: boolean;
   isDisconnected?: boolean;
   autoFocus?: boolean;
-  onSubmit?: (comment: string, onSetteled?: (success: boolean) => void) => void;
+  onSubmit?: ReturnType<typeof useNostrComments>["publishEvent"];
   isPublishing?: boolean;
 }
 
@@ -41,6 +43,7 @@ export default function AddComment({
   isDisconnected,
   isPublishing,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const linkExtension = useMemo(() => {
     const extension = new LinkExtension({ autoLink: true });
@@ -96,13 +99,18 @@ export default function AddComment({
       });
   }, [autoFocus]);
 
-  const submitComment = () => {
-    onSubmit?.(valueRef.current, (success) => {
-      if (success)
-        manager.view.updateState(
-          manager.createState({ content: manager.createEmptyDoc() })
-        );
-    });
+  const submitComment = async () => {
+    setIsLoading(true);
+    try {
+      await onSubmit?.(valueRef.current);
+      manager.view.updateState(
+        manager.createState({ content: manager.createEmptyDoc() })
+      );
+    } catch (error) {
+      if (typeof error === "string") NotificationsService.error(error);
+      else console.log(error);
+    }
+    setIsLoading(false);
   };
 
   return (

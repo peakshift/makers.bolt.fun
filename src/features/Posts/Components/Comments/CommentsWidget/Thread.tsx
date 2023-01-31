@@ -10,15 +10,15 @@ import { useAppSelector } from "src/utils/hooks";
 import Button from "src/Components/Button/Button";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AddComment from "../AddComment/AddComment";
+import { useNostrComments } from "./useNostrComments";
 
 dayjs.extend(relativeTime);
 
 interface Props {
   thread: ThreadedEvent;
-  isRoot?: boolean;
-  canReply: boolean;
+  replyTo?: string;
   onClickedReply?: () => void;
-  onReply?: (text: string) => void;
+  publishEvent?: ReturnType<typeof useNostrComments>["publishEvent"];
   relays: string[];
   metadata: any;
 }
@@ -27,10 +27,9 @@ export default function Thread({
   thread,
   metadata,
   relays,
-  isRoot,
   onClickedReply,
-  onReply,
-  canReply,
+  publishEvent,
+  replyTo,
 }: Props) {
   const [replyOpen, setReplyOpen] = useState(false);
   const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(true);
@@ -51,6 +50,10 @@ export default function Thread({
     }
   }, [thread.replies.length, scrollToLatestReply]);
 
+  const isRoot = !replyTo;
+  // const canReply = !!isRoot;
+  const canReply = true;
+
   const clickReply = () => {
     if (isRoot) setReplyOpen(true);
     else onClickedReply?.();
@@ -58,7 +61,7 @@ export default function Thread({
 
   const handleReply = async (text: string) => {
     try {
-      await onReply?.(text);
+      await publishEvent?.(text, { replyTo: thread.id });
       toggleRepliesCollapsed(false);
       setReplyOpen(false);
       setScrollToLatestReply(true);
@@ -67,6 +70,8 @@ export default function Thread({
       return false;
     }
   };
+
+  const repliesSorted = [...thread.replies].reverse();
 
   return (
     <div>
@@ -108,14 +113,15 @@ export default function Thread({
             )}
             <div className="flex flex-col gap-16 w-full" ref={repliesContainer}>
               {!repliesCollapsed &&
-                thread.replies.map((subthread) => (
+                repliesSorted.map((subthread) => (
                   <Thread
                     key={subthread.id}
                     thread={subthread}
                     metadata={metadata}
                     relays={relays}
                     onClickedReply={clickReply}
-                    canReply={!!isRoot}
+                    replyTo={thread.id}
+                    publishEvent={publishEvent}
                   />
                 ))}
               {replyOpen && (
