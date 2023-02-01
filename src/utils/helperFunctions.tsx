@@ -212,8 +212,13 @@ export function removeArrayItemAtIndex<T>(arr: T[], indexToRemove: number) {
 }
 
 export function extractErrorMessage(error: unknown) {
-  if (error && typeof error === "object" && "message" in error)
-    return (error as any).message;
+  if (
+    error &&
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string"
+  )
+    return error.message;
   return null;
 }
 

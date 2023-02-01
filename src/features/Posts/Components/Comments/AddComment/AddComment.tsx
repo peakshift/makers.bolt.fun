@@ -25,23 +25,25 @@ import { NotificationsService } from "src/services";
 interface Props {
   initialContent?: string;
   placeholder?: string;
-  avatar: string;
   disabled?: boolean;
   isDisconnected?: boolean;
   autoFocus?: boolean;
   onSubmit?: ReturnType<typeof useNostrComments>["publishEvent"];
   isPublishing?: boolean;
+  avatar?: string;
+  userUrl?: string;
 }
 
 export default function AddComment({
   initialContent,
   placeholder,
-  avatar,
   autoFocus,
   onSubmit,
   disabled,
   isDisconnected,
   isPublishing,
+  avatar,
+  userUrl,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -130,7 +132,15 @@ export default function AddComment({
       >
         <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
           <div className="hidden sm:block mt-24 shrink-0">
-            <Avatar width={40} src={avatar} />
+            <a href={userUrl} target="_blank" rel="noreferrer">
+              <Avatar
+                width={40}
+                src={
+                  avatar ??
+                  `https://avatars.dicebear.com/api/identicon/default-avatar.svg`
+                }
+              />
+            </a>
           </div>
           <div className="flex-grow">
             <EditorComponent />

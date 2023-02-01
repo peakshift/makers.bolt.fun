@@ -1,52 +1,37 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import {
-  generatePrivateKey,
-  getPublicKey,
-  relayInit,
   getEventHash,
-  signEvent,
+  signEvent as nostrToolsSignEvent,
   nip05,
+  nip19,
 } from "nostr-tools";
 import { RelayPool } from "nostr-relaypool";
 
 import {
   normalizeURL,
   insertEventIntoDescendingList,
-  getName,
   computeThreads,
+  getName,
+  getImage,
 } from "./utils";
-// import {
-//   Container,
-//   InputSection,
-//   InputSectionRow2,
-//   InfoButton,
-//   PostButton,
-//   Notice,
-//   SvgInfo,
-//   Textarea,
-//   Info,
-// } from "./components";
-import Thread from "./Thread";
 import { CONSTS } from "src/utils";
-import { NostrToolsEvent } from "nostr-relaypool/event";
-import AddComment from "../AddComment/AddComment";
-import Card from "src/Components/Card/Card";
-import InfoCard from "src/Components/InfoCard/InfoCard";
-import { NotificationsService } from "src/services";
-import { getMyNostrConnection } from "./nostr-account";
+import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
+import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 
 interface HookProps {
+  publicKey?: string;
   rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
   pageUrl?: string;
 }
+
+export type NostrProfile = {
+  pubkey: string;
+  name: string;
+  image: string;
+  link: string;
+};
 
 export const useNostrComments = (props: HookProps) => {
   const relayPoolRef = useRef<RelayPool>(null!);
@@ -55,19 +40,15 @@ export const useNostrComments = (props: HookProps) => {
   );
   const [baseEventImmediate, setBaseEvent] = useState(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [privateKey, setPrivateKey] = useState<string>();
-  const [publicKey, setPublicKey] = useState<string>();
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
-  const [publishingEvent, setPublishingEvent] = useState(false);
   const [metadata, setMetadata] = useState<Record<string, NostrToolsEvent>>({});
   const baseEventRelay = useRef("");
   const metadataFetching = useRef<Record<string, boolean>>({});
   const [baseEvent] = useDebounce(baseEventImmediate, 1000);
   const [events] = useDebounce(eventsImmediate, 1000);
   const threads = useMemo(() => computeThreads(events), [events]);
-  const [myNostrAccount, setMyNostrAccount] = useState(() =>
-    getMyNostrConnection()
-  );
+
+  const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
 
   if (!relayPoolRef.current)
     relayPoolRef.current = new RelayPool(CONSTS.DEFAULT_RELAYS);
@@ -122,6 +103,22 @@ export const useNostrComments = (props: HookProps) => {
     fetchMetaDataRef.current(events.map((e) => e.pubkey));
   }, [events]);
 
+  useEffect(() => {
+    if (props.publicKey) fetchMetaDataRef.current([props.publicKey]);
+  }, [props.publicKey]);
+
+  useEffect(() => {
+    if (props.publicKey)
+      setMyProfile({
+        pubkey: props.publicKey,
+        name: getName(metadata, props.publicKey),
+        image:
+          getImage(metadata, props.publicKey) ??
+          `https://avatars.dicebear.com/api/identicon/${props.publicKey}.svg`,
+        link: "nostr:" + nip19.npubEncode(props.publicKey),
+      });
+  }, [metadata, props.publicKey]);
+
   // Try to fetch root-event id if not provided
 
   //   useEffect(() => {
@@ -149,25 +146,6 @@ export const useNostrComments = (props: HookProps) => {
   //     });
   //   }, []);
 
-  async function establishNostrKey() {
-    // check if they have a nip07 nostr extension
-    if (window.nostr) {
-      try {
-        // and if it has a key stored on it
-        setPublicKey(await window.nostr.getPublicKey());
-      } catch (err) {}
-    } else {
-      // otherwise use a key from localStorage or generate a new one
-      let privateKey = localStorage.getItem("nostrkey");
-      if (!privateKey || privateKey.match(/^[a-f0-9]{64}$/)) {
-        privateKey = generatePrivateKey();
-        localStorage.setItem("nostrkey", privateKey);
-      }
-      setPrivateKey(privateKey);
-      setPublicKey(getPublicKey(privateKey));
-    }
-  }
-
   async function fetchMetadata(pubkeys: readonly string[]) {
     let pubkeysToFetch = Array.from(
       new Set(
@@ -178,8 +156,6 @@ export const useNostrComments = (props: HookProps) => {
     pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
 
     const relaysUrls = Array.from(relayPoolRef.current.relayByUrl.keys());
-
-    relayPoolRef.current.getRelayStatuses();
 
     const unsub = relayPoolRef.current.subscribe(
       [{ kinds: [0], authors: pubkeysToFetch }],
@@ -227,10 +203,6 @@ export const useNostrComments = (props: HookProps) => {
         });
   }
 
-  async function handleSettingsClick() {
-    setIsInfoOpen(!isInfoOpen);
-  }
-
   const publishEvent = useCallback(
     async function publishEventAsync(
       content: string,
@@ -242,7 +214,7 @@ export const useNostrComments = (props: HookProps) => {
       if (options?.replyTo) tags.push(["e", options.replyTo!, "", "reply"]);
 
       let event: NostrToolsEvent = {
-        pubkey: publicKey!,
+        pubkey: props.publicKey!,
         created_at: Math.round(Date.now() / 1000),
         kind: 1,
         tags,
@@ -251,27 +223,10 @@ export const useNostrComments = (props: HookProps) => {
 
       console.log("event: ", event);
 
-      return new Promise(async (resolve, reject) => {
-        // if we have a private key that means it was generated locally and we don't have a nip07 extension
-        if (privateKey) {
-          event.id = getEventHash(event);
-          event.sig = signEvent(event, privateKey);
-        } else {
-          try {
-            event = await window.nostr.signEvent(event);
-          } catch (err) {
-            let reason;
-            if (err !== null && typeof err === "object" && "message" in err)
-              reason = `window.nostr.signEvent() has returned an error: ${err.message}`;
-            else
-              reason = `window.nostr.signEvent() has returned an unexpected error`;
-            console.log(err);
-            reject(reason);
-          }
-        }
+      event = await signEvent(event);
 
+      return new Promise(async (resolve, reject) => {
         const publishTimeout = setTimeout(() => {
-          setPublishingEvent(false);
           return reject(
             `failed to publish event ${event.id!.slice(0, 5)}… to any relay.`
           );
@@ -289,7 +244,6 @@ export const useNostrComments = (props: HookProps) => {
           relaysUrls,
           (event, afterEose, url) => {
             clearTimeout(publishTimeout);
-            setPublishingEvent(false);
             setEvents((events) => insertEventIntoDescendingList(events, event));
             return resolve(
               `event ${event.id.slice(0, 5)}… published to ${url}.`
@@ -298,7 +252,7 @@ export const useNostrComments = (props: HookProps) => {
         );
       });
     },
-    [privateKey, publicKey, relaysUrls, rootEventId]
+    [props.publicKey, relaysUrls, rootEventId]
   );
 
   function getRootEventId() {
@@ -314,10 +268,41 @@ export const useNostrComments = (props: HookProps) => {
 
   return {
     publishEvent,
-    publicKey,
     metadata,
     threads,
     relaysUrls,
-    myNostrAccount,
+    myProfile,
   };
 };
+
+async function signEvent(
+  event: NostrToolsEvent
+): Promise<NostrToolsEventWithId> {
+  const nostrConnectionStr = localStorage.getItem("nostr-connection");
+  if (!nostrConnectionStr)
+    throw new Error("You need to connect your nostr account first");
+
+  const nostrConnection = JSON.parse(
+    nostrConnectionStr
+  ) as NostrAccountConnection;
+  if (nostrConnection.type === "nostr-ext")
+    return window.nostr.signEvent(event);
+  else if (nostrConnection.type === "inputted-keys")
+    return {
+      ...event,
+      id: getEventHash(event),
+      sig: nostrToolsSignEvent(event, nostrConnection.prvkey),
+    };
+  else if (nostrConnection.type === "generated-keys")
+    return fetch(CONSTS.apiEndpoint + "/nostr-sign-event", {
+      method: "post",
+      body: JSON.stringify({ event }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => data.event);
+  else throw new Error("unknown connection type");
+}

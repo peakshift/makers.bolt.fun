@@ -1004,6 +1004,11 @@ export type GetActiveUsersQueryVariables = Exact<{
 
 export type GetActiveUsersQuery = { __typename?: 'Query', activeUsers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> };
 
+export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null } | null };
+
 export type RecentProjectsInTagQueryVariables = Exact<{
   tagId: Scalars['Int'];
 }>;
@@ -1781,6 +1786,42 @@ export function useGetActiveUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetActiveUsersQueryHookResult = ReturnType<typeof useGetActiveUsersQuery>;
 export type GetActiveUsersLazyQueryHookResult = ReturnType<typeof useGetActiveUsersLazyQuery>;
 export type GetActiveUsersQueryResult = Apollo.QueryResult<GetActiveUsersQuery, GetActiveUsersQueryVariables>;
+export const MyNostrKeysDocument = gql`
+    query MyNostrKeys {
+  me {
+    id
+    nostr_prv_key
+    nostr_pub_key
+  }
+}
+    `;
+
+/**
+ * __useMyNostrKeysQuery__
+ *
+ * To run a query within a React component, call `useMyNostrKeysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyNostrKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyNostrKeysQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyNostrKeysQuery(baseOptions?: Apollo.QueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
+      }
+export function useMyNostrKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
+        }
+export type MyNostrKeysQueryHookResult = ReturnType<typeof useMyNostrKeysQuery>;
+export type MyNostrKeysLazyQueryHookResult = ReturnType<typeof useMyNostrKeysLazyQuery>;
+export type MyNostrKeysQueryResult = Apollo.QueryResult<MyNostrKeysQuery, MyNostrKeysQueryVariables>;
 export const RecentProjectsInTagDocument = gql`
     query recentProjectsInTag($tagId: Int!) {
   recentProjectsInTag(tagId: $tagId) {

@@ -10,7 +10,7 @@ import { useAppSelector } from "src/utils/hooks";
 import Button from "src/Components/Button/Button";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AddComment from "../AddComment/AddComment";
-import { useNostrComments } from "./useNostrComments";
+import { NostrProfile, useNostrComments } from "./useNostrComments";
 
 dayjs.extend(relativeTime);
 
@@ -21,6 +21,7 @@ interface Props {
   publishEvent?: ReturnType<typeof useNostrComments>["publishEvent"];
   relays: string[];
   metadata: any;
+  myProfile: NostrProfile | null;
 }
 
 export default function Thread({
@@ -30,12 +31,12 @@ export default function Thread({
   onClickedReply,
   publishEvent,
   replyTo,
+  myProfile,
 }: Props) {
   const [replyOpen, setReplyOpen] = useState(false);
   const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(true);
   const [scrollToLatestReply, setScrollToLatestReply] = useState(true);
   const repliesContainer = useRef<HTMLDivElement>(null!);
-  const user = useAppSelector((s) => s.user.me);
 
   useEffect(() => {
     if (repliesCollapsed) setReplyOpen(false);
@@ -122,11 +123,13 @@ export default function Thread({
                     onClickedReply={clickReply}
                     replyTo={thread.id}
                     publishEvent={publishEvent}
+                    myProfile={myProfile}
                   />
                 ))}
               {replyOpen && (
                 <AddComment
-                  avatar={user?.avatar!}
+                  avatar={myProfile?.image}
+                  userUrl={myProfile?.link}
                   autoFocus
                   placeholder="Leave a reply..."
                   onSubmit={handleReply}

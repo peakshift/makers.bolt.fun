@@ -4,6 +4,9 @@ import AddComment from "../AddComment/AddComment";
 import Card from "src/Components/Card/Card";
 import { useNostrComments } from "./useNostrComments";
 import ConnectButton from "./components/ConnectButton/ConnectButton";
+import { useCallback, useState } from "react";
+import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
+import { getMyNostrConnection } from "./nostr-account";
 
 interface Props {
   rootEventId?: string;
@@ -14,16 +17,26 @@ export function CommentsWidgetRoot({
   rootEventId,
   url = normalizeURL(window.location.href),
 }: Props) {
-  const {
-    threads,
-    publicKey,
-    metadata,
-    publishEvent,
-    relaysUrls,
-    myNostrAccount,
-  } = useNostrComments({ rootEventId, pageUrl: url });
+  const [publicKey, setPublicKey] = useState(
+    () => getMyNostrConnection()?.pubkey
+  );
 
-  let selfName = publicKey && getName(metadata, publicKey);
+  const { threads, metadata, publishEvent, relaysUrls, myProfile } =
+    useNostrComments({
+      rootEventId,
+      pageUrl: url,
+      publicKey,
+    });
+
+  const onAccountConnected = useCallback(() => {
+    const connection = localStorage.getItem("nostr-connection");
+    if (connection) {
+      const connectionObj = JSON.parse(connection) as NostrAccountConnection;
+      setPublicKey(connectionObj.pubkey);
+    }
+  }, []);
+
+  let selfName = myProfile?.name;
 
   return (
     <>
@@ -48,12 +61,13 @@ export function CommentsWidgetRoot({
                 //   isDisconnected={connectionStatus.status !== 'Connected'}
                 placeholder="Leave a comment..."
                 onSubmit={publishEvent}
-                avatar={"https://avatars.dicebear.com/api/bottts/Default.svg"}
+                avatar={myProfile?.image}
+                userUrl={myProfile?.link}
               />
             </div>
-            {!myNostrAccount && (
+            {!publicKey && (
               <div className="absolute inset-0 bg-gray-400 bg-opacity-50 rounded-12 flex flex-col justify-center items-center">
-                <ConnectButton />
+                <ConnectButton onAccountConnected={onAccountConnected} />
               </div>
             )}
           </div>
@@ -62,6 +76,7 @@ export function CommentsWidgetRoot({
         <div className="flex flex-col gap-16 mt-32">
           {threads.map((thread) => (
             <Thread
+              myProfile={myProfile}
               key={thread.id}
               thread={thread}
               metadata={metadata}

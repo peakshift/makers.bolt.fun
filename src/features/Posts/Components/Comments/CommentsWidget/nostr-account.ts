@@ -1,19 +1,5 @@
 import { getPublicKey } from "nostr-tools";
-
-type NostrAccountConnection =
-  | {
-      type: "nostr-ext";
-      pubkey: string;
-    }
-  | {
-      type: "generated-keys";
-      pubkey: string;
-    }
-  | {
-      type: "inputted-keys";
-      pubkey: string;
-      prvkey: string;
-    };
+import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 
 export function getMyNostrConnection() {
   const storedNostrObject = localStorage.getItem("nostr-connection");
