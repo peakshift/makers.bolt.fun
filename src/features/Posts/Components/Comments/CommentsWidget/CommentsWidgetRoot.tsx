@@ -40,7 +40,7 @@ export function CommentsWidgetRoot({
 
   return (
     <>
-      <Card onlyMd>
+      <div>
         <div className="flex flex-wrap justify-between">
           <h6 className="text-body2 font-bolder">Discussion</h6>
           {/* {connectionStatus.status === 'Connected' && <div className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connected to {connectionStatus.connectedRelaysCount} relays</span> 📡</div>}
@@ -96,7 +96,7 @@ export function CommentsWidgetRoot({
             />
           ))} */}
         </div>
-      </Card>
+      </div>
     </>
   );
 }
