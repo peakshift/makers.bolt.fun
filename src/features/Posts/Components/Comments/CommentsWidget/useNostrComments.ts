@@ -39,7 +39,6 @@ export const useNostrComments = (props: HookProps) => {
     getRootEventId()
   );
   const [baseEventImmediate, setBaseEvent] = useState(null);
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
   const [metadata, setMetadata] = useState<Record<string, NostrToolsEvent>>({});
   const baseEventRelay = useRef("");
@@ -213,12 +212,17 @@ export const useNostrComments = (props: HookProps) => {
       tags.push(["e", rootEventId!, "", "root"]);
       if (options?.replyTo) tags.push(["e", options.replyTo!, "", "reply"]);
 
-      let event: NostrToolsEvent = {
+      let baseEvent: NostrToolsEvent = {
         pubkey: props.publicKey!,
         created_at: Math.round(Date.now() / 1000),
         kind: 1,
         tags,
         content,
+      };
+
+      let event: NostrToolsEventWithId = {
+        ...baseEvent,
+        id: getEventHash(baseEvent),
       };
 
       console.log("event: ", event);
@@ -276,7 +280,7 @@ export const useNostrComments = (props: HookProps) => {
 };
 
 async function signEvent(
-  event: NostrToolsEvent
+  event: NostrToolsEventWithId
 ): Promise<NostrToolsEventWithId> {
   const nostrConnectionStr = localStorage.getItem("nostr-connection");
   if (!nostrConnectionStr)
@@ -290,7 +294,6 @@ async function signEvent(
   else if (nostrConnection.type === "inputted-keys")
     return {
       ...event,
-      id: getEventHash(event),
       sig: nostrToolsSignEvent(event, nostrConnection.prvkey),
     };
   else if (nostrConnection.type === "generated-keys")
