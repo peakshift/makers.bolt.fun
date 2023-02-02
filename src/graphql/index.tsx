@@ -702,6 +702,7 @@ export type Story = PostBase & {
   excerpt: Scalars['String'];
   id: Scalars['Int'];
   is_published: Maybe<Scalars['Boolean']>;
+  nostr_event_id: Maybe<Scalars['String']>;
   project: Maybe<Project>;
   tags: Array<Tag>;
   title: Scalars['String'];
@@ -1073,7 +1074,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
 
 export type GetTagInfoQueryVariables = Exact<{
   tag: InputMaybe<Scalars['String']>;
@@ -2298,6 +2299,7 @@ export const PostDetailsDocument = gql`
       type
       cover_image
       is_published
+      nostr_event_id
       project {
         id
         title

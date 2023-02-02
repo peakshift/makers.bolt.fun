@@ -83,6 +83,7 @@ const Story = objectType({
   name: "Story",
   definition(t) {
     t.implements("PostBase");
+    t.string("nostr_event_id");
     t.nonNull.string("type", {
       resolve: () => t.typeName,
     });

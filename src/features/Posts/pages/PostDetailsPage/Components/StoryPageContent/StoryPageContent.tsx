@@ -129,7 +129,16 @@ export default function StoryPageContent({ story }: Props) {
       </Card>
       <div id="comments" className="mt-10 comments_col">
         {/* <CommentsSection comments={story.comments} /> */}
-        <CommentsWidgetRoot rootEventId="90676d7a26adaea0fd13c367dbbedf643215fa80b659173cb772ae54c621c5at" />
+        <CommentsWidgetRoot
+          rootEventId={
+            story.nostr_event_id ??
+            `${window.location.origin}${createRoute({
+              type: "story",
+              id: story.id,
+              title: story.title,
+            })}`
+          }
+        />
       </div>
     </>
   );

@@ -1,7 +1,6 @@
-import { normalizeURL, getName } from "./utils";
+import { normalizeURL } from "./utils";
 import Thread from "./Thread";
 import AddComment from "../AddComment/AddComment";
-import Card from "src/Components/Card/Card";
 import { useNostrComments } from "./useNostrComments";
 import ConnectButton from "./components/ConnectButton/ConnectButton";
 import { useCallback, useState } from "react";
