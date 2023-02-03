@@ -24,6 +24,7 @@ interface HookProps {
   rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
   pageUrl?: string;
+  relays: string[];
 }
 
 export type NostrProfile = {
@@ -46,11 +47,11 @@ export const useNostrComments = (props: HookProps) => {
   const [baseEvent] = useDebounce(baseEventImmediate, 1000);
   const [events] = useDebounce(eventsImmediate, 1000);
   const threads = useMemo(() => computeThreads(events), [events]);
+  const [relaysStatus, setRelaysStatus] = useState<[string, number][]>([]);
 
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
 
-  if (!relayPoolRef.current)
-    relayPoolRef.current = new RelayPool(CONSTS.DEFAULT_RELAYS);
+  if (!relayPoolRef.current) relayPoolRef.current = new RelayPool(props.relays);
 
   const relaysUrls = useMemo(
     () => Array.from(relayPoolRef.current.relayByUrl.keys()),
@@ -59,6 +60,19 @@ export const useNostrComments = (props: HookProps) => {
 
   const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
   fetchMetaDataRef.current = fetchMetadata;
+
+  useEffect(() => {
+    return () => {
+      relayPoolRef.current.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (relayPoolRef.current)
+      props.relays.forEach((relayUrl) => {
+        relayPoolRef.current.addOrGetRelay(relayUrl);
+      });
+  }, [props.relays]);
 
   useEffect(() => {
     const relayPool = relayPoolRef.current;
@@ -88,7 +102,7 @@ export const useNostrComments = (props: HookProps) => {
       }
     );
 
-    relayPool.onerror((err, relayUrl) => {
+    relayPool.onerror((relayUrl, err) => {
       console.log("RelayPool error", err, " from relay ", relayUrl);
     });
     relayPool.onnotice((relayUrl, notice) => {
@@ -117,6 +131,31 @@ export const useNostrComments = (props: HookProps) => {
         link: "nostr:" + nip19.npubEncode(props.publicKey),
       });
   }, [metadata, props.publicKey]);
+
+  useEffect(() => {
+    // First, close all the relays that are in the pool but not in the props anymore
+    const allCurrentRelays = Array.from(relayPoolRef.current.relayByUrl.keys());
+    for (const relay of allCurrentRelays) {
+      if (!props.relays.includes(relay)) {
+        relayPoolRef.current.relayByUrl.get(relay)?.close().catch();
+      }
+    }
+
+    props.relays.forEach((relayUrl) => {
+      relayPoolRef.current.addOrGetRelay(relayUrl).connect();
+    });
+  }, [props.relays]);
+
+  useEffect(() => {
+    const updateStatus = () => {
+      setRelaysStatus(relayPoolRef.current.getRelayStatuses());
+    };
+
+    const interval = setInterval(updateStatus, 5000);
+    updateStatus();
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Try to fetch root-event id if not provided
 
@@ -274,6 +313,7 @@ export const useNostrComments = (props: HookProps) => {
     publishEvent,
     metadata,
     threads,
+    relaysStatus,
     relaysUrls,
     myProfile,
   };

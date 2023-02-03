@@ -117,7 +117,7 @@ export default function AddComment({
 
   return (
     <div
-      className={`remirror-theme ${styles.wrapper} p-24 border-2 border-gray-200 rounded-12 md:rounded-16`}
+      className={`remirror-theme ${styles.wrapper} p-24 bg-white border-2 border-gray-200 rounded-12 md:rounded-16`}
       ref={containerRef}
     >
       <Remirror
