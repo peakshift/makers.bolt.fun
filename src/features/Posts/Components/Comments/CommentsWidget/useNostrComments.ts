@@ -35,7 +35,6 @@ export type NostrProfile = {
 };
 
 export const useNostrComments = (props: HookProps) => {
-  const relayPoolRef = useRef<RelayPool>(null!);
   const [rootEventId, setRootEventId] = useState<string | undefined>(() =>
     getRootEventId()
   );
@@ -48,9 +47,9 @@ export const useNostrComments = (props: HookProps) => {
   const [events] = useDebounce(eventsImmediate, 1000);
   const threads = useMemo(() => computeThreads(events), [events]);
   const [relaysStatus, setRelaysStatus] = useState<[string, number][]>([]);
-
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
 
+  const relayPoolRef = useRef<RelayPool>(null!);
   if (!relayPoolRef.current) relayPoolRef.current = new RelayPool(props.relays);
 
   const relaysUrls = useMemo(
