@@ -8,16 +8,18 @@ import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/Co
 import { getMyNostrConnection } from "./nostr-account";
 import { CONSTS } from "src/utils";
 import RelaysList from "./components/RelaysList/RelaysList";
+import { Puff } from "react-loader-spinner";
 
 interface Props {
   rootEventId?: string;
-  url?: string;
+  story: {
+    id: number;
+    nostr_event_id: string | null;
+    createdAt: string;
+  };
 }
 
-export function CommentsWidgetRoot({
-  rootEventId,
-  url = normalizeURL(window.location.href),
-}: Props) {
+export function CommentsWidgetRoot({ story }: Props) {
   const [myRelays, setMyRelays] = useState(() => getMyRelays());
   const [showRelays, setShowRelays] = useState(false);
 
@@ -32,9 +34,9 @@ export function CommentsWidgetRoot({
     relaysUrls,
     myProfile,
     relaysStatus,
+    loadingRootEvent,
   } = useNostrComments({
-    rootEventId,
-    pageUrl: url,
+    story,
     publicKey,
     relays: myRelays,
   });
@@ -48,8 +50,6 @@ export function CommentsWidgetRoot({
   };
 
   useEffect(() => {
-    console.log("SAVING TO LOCALSTORAGE");
-
     localStorage.setItem(
       "nostr-comments-pref-relays",
       JSON.stringify(myRelays)
@@ -68,6 +68,27 @@ export function CommentsWidgetRoot({
     (acc, cur) => (acc += cur[1] === WebSocket.OPEN ? 1 : 0),
     0
   );
+
+  if (loadingRootEvent)
+    return (
+      <div className="flex flex-col gap-16 items-center justify-center">
+        <Puff
+          height="80"
+          width="80"
+          radius={1}
+          color="var(--primary)"
+          ariaLabel="puff-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+        <p className="text-gray-600 font-bold text-center">
+          Searching for a Nostr Thread for this Story...
+          <br />
+          This may take a minute
+        </p>
+      </div>
+    );
 
   return (
     <>

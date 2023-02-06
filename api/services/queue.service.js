@@ -1,11 +1,11 @@
 const { default: axios } = require("axios");
 const env = require("../utils/consts");
 
-function createStoryRootEvent({ id, title, url }) {
+function createStoryRootEvent({ id, title, url, canonical_url }) {
   return axios.post(
     env.BF_QUEUES_SERVICE_URL + "/add-job/publish-story-to-nostr",
     {
-      story: { id, title, url },
+      story: { id, title, url, canonical_url },
       callback_url: env.FUNCTIONS_URL + "/on-job-success",
     },
     {

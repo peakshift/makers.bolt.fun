@@ -18,13 +18,19 @@ import {
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
+import { createRoute } from "src/utils/routing";
+import dayjs from "dayjs";
 
 interface HookProps {
   publicKey?: string;
   rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
-  pageUrl?: string;
   relays: string[];
+  story: {
+    id: number;
+    nostr_event_id: string | null;
+    createdAt: string;
+  };
 }
 
 export type NostrProfile = {
@@ -35,55 +41,41 @@ export type NostrProfile = {
 };
 
 export const useNostrComments = (props: HookProps) => {
-  const [rootEventId, setRootEventId] = useState<string | undefined>(() =>
-    getRootEventId()
-  );
-  const [baseEventImmediate, setBaseEvent] = useState(null);
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
   const [metadata, setMetadata] = useState<Record<string, NostrToolsEvent>>({});
-  const baseEventRelay = useRef("");
   const metadataFetching = useRef<Record<string, boolean>>({});
-  const [baseEvent] = useDebounce(baseEventImmediate, 1000);
   const [events] = useDebounce(eventsImmediate, 1000);
   const threads = useMemo(() => computeThreads(events), [events]);
-  const [relaysStatus, setRelaysStatus] = useState<[string, number][]>([]);
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
 
-  const relayPoolRef = useRef<RelayPool>(null!);
-  if (!relayPoolRef.current) relayPoolRef.current = new RelayPool(props.relays);
+  const { relayPool, relaysStatus } = useRelayPool({ relays: props.relays });
 
-  const relaysUrls = useMemo(
-    () => Array.from(relayPoolRef.current.relayByUrl.keys()),
-    []
-  );
+  const threadRootObject = useGetThreadRootObject({
+    relaysPool: relayPool,
+    story: { ...props.story },
+  });
+
+  const loadingRootEvent = !threadRootObject;
 
   const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
   fetchMetaDataRef.current = fetchMetadata;
 
   useEffect(() => {
-    return () => {
-      relayPoolRef.current.close();
-    };
-  }, []);
+    if (!threadRootObject) return;
+    if (!relayPool) return;
 
-  useEffect(() => {
-    if (relayPoolRef.current)
-      props.relays.forEach((relayUrl) => {
-        relayPoolRef.current.addOrGetRelay(relayUrl);
-      });
-  }, [props.relays]);
-
-  useEffect(() => {
-    const relayPool = relayPoolRef.current;
     const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-    if (!rootEventId) return;
+    const filter =
+      threadRootObject.type === "root-event"
+        ? { "#e": [threadRootObject.event_id] }
+        : { "#r": [threadRootObject.url] };
 
     let unsub = relayPool.subscribe(
       [
         {
           kinds: [1],
-          "#e": [rootEventId],
+          ...(filter as any),
         },
       ],
       relaysUrls,
@@ -109,15 +101,17 @@ export const useNostrComments = (props: HookProps) => {
     });
 
     return unsub;
-  }, [rootEventId]);
+  }, [relayPool, threadRootObject]);
 
   useEffect(() => {
-    fetchMetaDataRef.current(events.map((e) => e.pubkey));
-  }, [events]);
+    if (relayPool && events.length > 0)
+      fetchMetaDataRef.current(events.map((e) => e.pubkey));
+  }, [events, relayPool]);
 
   useEffect(() => {
-    if (props.publicKey) fetchMetaDataRef.current([props.publicKey]);
-  }, [props.publicKey]);
+    if (relayPool && props.publicKey)
+      fetchMetaDataRef.current([props.publicKey]);
+  }, [props.publicKey, relayPool]);
 
   useEffect(() => {
     if (props.publicKey)
@@ -131,59 +125,9 @@ export const useNostrComments = (props: HookProps) => {
       });
   }, [metadata, props.publicKey]);
 
-  useEffect(() => {
-    // First, close all the relays that are in the pool but not in the props anymore
-    const allCurrentRelays = Array.from(relayPoolRef.current.relayByUrl.keys());
-    for (const relay of allCurrentRelays) {
-      if (!props.relays.includes(relay)) {
-        relayPoolRef.current.relayByUrl.get(relay)?.close().catch();
-      }
-    }
-
-    props.relays.forEach((relayUrl) => {
-      relayPoolRef.current.addOrGetRelay(relayUrl).connect();
-    });
-  }, [props.relays]);
-
-  useEffect(() => {
-    const updateStatus = () => {
-      setRelaysStatus(relayPoolRef.current.getRelayStatuses());
-    };
-
-    const interval = setInterval(updateStatus, 5000);
-    updateStatus();
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Try to fetch root-event id if not provided
-
-  //   useEffect(() => {
-  //     connections.current.forEach(async (conn) => {
-  //       await conn.connect();
-
-  //       const sub = conn.sub([
-  //         {
-  //           "#r": [url],
-  //           kinds: [1],
-  //         },
-  //       ]);
-  //       sub.on("event", (event) => {
-  //         if (
-  //           !baseEventImmediate ||
-  //           baseEventImmediate.created_at < event.created_at
-  //         ) {
-  //           setBaseEvent(event);
-  //           baseEventRelay.current = conn.url;
-  //         }
-  //       });
-  //       sub.on("eose", () => {
-  //         sub.unsub();
-  //       });
-  //     });
-  //   }, []);
-
   async function fetchMetadata(pubkeys: readonly string[]) {
+    if (!relayPool) throw new Error("Relays Pool not initialized yet");
+
     let pubkeysToFetch = Array.from(
       new Set(
         pubkeys.filter((k) => !(k in metadata || k in metadataFetching.current))
@@ -192,9 +136,9 @@ export const useNostrComments = (props: HookProps) => {
 
     pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
 
-    const relaysUrls = Array.from(relayPoolRef.current.relayByUrl.keys());
+    const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-    const unsub = relayPoolRef.current.subscribe(
+    const unsub = relayPool.subscribe(
       [{ kinds: [0], authors: pubkeysToFetch }],
       relaysUrls,
       (event) => {
@@ -245,9 +189,18 @@ export const useNostrComments = (props: HookProps) => {
       content: string,
       options?: Partial<{ replyTo?: string }>
     ) {
+      if (!threadRootObject)
+        throw new Error("No Root Event Found for this post");
+      if (!relayPool) throw new Error("No relays pool");
+
+      const relaysUrls = Array.from(relayPool.relayByUrl.keys());
+
       let tags: string[][] = [];
 
-      tags.push(["e", rootEventId!, "", "root"]);
+      threadRootObject.type === "root-event"
+        ? tags.push(["e", threadRootObject.event_id, "", "root"])
+        : tags.push(["r", threadRootObject.url]);
+
       if (options?.replyTo) tags.push(["e", options.replyTo!, "", "reply"]);
 
       let baseEvent: NostrToolsEvent = {
@@ -276,8 +229,8 @@ export const useNostrComments = (props: HookProps) => {
 
         console.log("publishing...");
 
-        relayPoolRef.current.publish(event, relaysUrls);
-        relayPoolRef.current.subscribe(
+        relayPool.publish(event, relaysUrls);
+        relayPool.subscribe(
           [
             {
               ids: [event.id!],
@@ -294,27 +247,22 @@ export const useNostrComments = (props: HookProps) => {
         );
       });
     },
-    [props.publicKey, relaysUrls, rootEventId]
+    [props.publicKey, relayPool, threadRootObject]
   );
 
-  function getRootEventId() {
-    return (
-      props.rootEventId ??
-      (props.pageUrl && normalizeURL(props.pageUrl)) ??
-      document.querySelector<HTMLMetaElement>(
-        'meta[property="nostr-root-event-id"]'
-      )?.content ??
-      normalizeURL(window.location.href)
-    );
-  }
+  const getRelayUrls = useCallback(
+    () => Array.from(relayPool?.relayByUrl.keys() ?? []),
+    [relayPool?.relayByUrl]
+  );
 
   return {
     publishEvent,
     metadata,
     threads,
     relaysStatus,
-    relaysUrls,
+    relaysUrls: getRelayUrls(),
     myProfile,
+    loadingRootEvent,
   };
 };
 
@@ -348,3 +296,153 @@ async function signEvent(
       .then((data) => data.event);
   else throw new Error("unknown connection type");
 }
+
+const useGetThreadRootObject = (props: {
+  relaysPool: RelayPool | null;
+  story: HookProps["story"];
+}) => {
+  type Result =
+    | {
+        type: "root-event";
+        event_id: string;
+      }
+    | {
+        type: "url-fallback";
+        url: string;
+      };
+
+  const [threadRootObject, setThreadRootObject] = useState<Result | null>(null);
+
+  const [baseEventImmediate, setBaseEvent] =
+    useState<NostrToolsEventWithId | null>(null);
+  const [baseEvent] = useDebounce(baseEventImmediate, 1000);
+
+  useEffect(() => {
+    if (props.story.nostr_event_id) {
+      setThreadRootObject({
+        type: "root-event",
+        event_id: props.story.nostr_event_id,
+      });
+      return;
+    }
+  }, [props.story.nostr_event_id]);
+
+  useEffect(() => {
+    if (!props.relaysPool) return;
+
+    const relaysUrls = Array.from(props.relaysPool.relayByUrl.keys());
+    if (props.story.nostr_event_id) return;
+
+    const isStoryOlderThanOneDay =
+      dayjs(Date.now()).diff(props.story.createdAt, "hours") >= 24;
+
+    const fallbackObject = {
+      type: "url-fallback",
+      url: normalizeURL(
+        window.location.origin +
+          createRoute({ type: "story", id: props.story.id })
+      ),
+    } as const;
+
+    if (isStoryOlderThanOneDay) {
+      return setThreadRootObject(fallbackObject);
+    }
+
+    const unsub = props.relaysPool.subscribe(
+      [
+        {
+          kinds: [1],
+          "#r": [
+            normalizeURL(
+              window.location.origin +
+                createRoute({ type: "story", id: props.story.id })
+            ),
+          ],
+        },
+      ],
+      relaysUrls,
+      (event, afterEose, url) => {
+        setBaseEvent((curr) => {
+          if (!curr || curr.created_at < event.created_at) return event;
+          return curr;
+        });
+      }
+    );
+
+    const timeout = setTimeout(() => {
+      unsub();
+      // If the root object wasn't set yet, then use the fallback
+      setThreadRootObject((rootObj) => (!!rootObj ? rootObj : fallbackObject));
+    }, 0);
+
+    return () => {
+      clearTimeout(timeout);
+      unsub();
+    };
+  }, [
+    props.relaysPool,
+    props.story.createdAt,
+    props.story.id,
+    props.story.nostr_event_id,
+  ]);
+
+  useEffect(() => {
+    if (baseEvent)
+      setThreadRootObject({ type: "root-event", event_id: baseEvent.id });
+  }, [baseEvent]);
+
+  return threadRootObject;
+};
+
+const useRelayPool = ({ relays }: { relays: string[] }) => {
+  const [relayPool, setRelayPool] = useState<RelayPool | null>(null);
+  const [relaysStatus, setRelaysStatus] = useState<[string, number][]>([]);
+
+  useEffect(() => {
+    const pool = new RelayPool(relays);
+    setRelayPool(pool);
+    return () => {
+      pool.close();
+    };
+  }, [relays]);
+
+  useEffect(() => {
+    if (relayPool)
+      relays.forEach((relayUrl) => {
+        relayPool.addOrGetRelay(relayUrl);
+      });
+  }, [relayPool, relays]);
+
+  useEffect(() => {
+    if (!relayPool) return;
+    // First, close all the relays that are in the pool but not in the props anymore
+    const allCurrentRelays = Array.from(relayPool.relayByUrl.keys());
+    for (const relay of allCurrentRelays) {
+      if (!relays.includes(relay)) {
+        relayPool.relayByUrl.get(relay)?.close().catch();
+      }
+    }
+
+    relays.forEach((relayUrl) => {
+      relayPool.addOrGetRelay(relayUrl).connect();
+    });
+  }, [relayPool, relays]);
+
+  useEffect(() => {
+    if (!relayPool) return;
+
+    const updateStatus = () => {
+      setRelaysStatus(relayPool.getRelayStatuses());
+    };
+
+    const interval = setInterval(updateStatus, 5000);
+    updateStatus();
+
+    return () => clearInterval(interval);
+  }, [relayPool]);
+
+  return {
+    relayPool,
+    relaysStatus,
+  };
+};

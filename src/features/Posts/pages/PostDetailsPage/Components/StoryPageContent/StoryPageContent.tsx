@@ -130,14 +130,11 @@ export default function StoryPageContent({ story }: Props) {
       <div id="comments" className="mt-10 comments_col">
         {/* <CommentsSection comments={story.comments} /> */}
         <CommentsWidgetRoot
-          rootEventId={
-            story.nostr_event_id ??
-            `${window.location.origin}${createRoute({
-              type: "story",
-              id: story.id,
-              title: story.title,
-            })}`
-          }
+          story={{
+            id: story.id,
+            nostr_event_id: story.nostr_event_id,
+            createdAt: story.createdAt,
+          }}
         />
       </div>
     </>

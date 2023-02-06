@@ -7,7 +7,6 @@ export function normalizeURL(raw: string) {
     url.origin
       .replace("://m.", "://") // remove known 'mobile' subdomains
       .replace("://mobile.", "://")
-      .replace("http://", "https://") // default everything to https (maybe a terrible idea)
       .replace(
         /:\d+/,
         // remove 443 and 80 ports
