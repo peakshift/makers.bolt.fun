@@ -14,6 +14,8 @@ import {
   computeThreads,
   getName,
   getImage,
+  getAbout,
+  getProfileDataFromMetaData,
 } from "./utils";
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
@@ -37,7 +39,10 @@ export type NostrProfile = {
   pubkey: string;
   name: string;
   image: string;
+  about: string | null;
   link: string;
+  nip05?: string | null;
+  lightning_address?: string | null;
 };
 
 export const useNostrComments = (props: HookProps) => {
@@ -115,24 +120,26 @@ export const useNostrComments = (props: HookProps) => {
 
   useEffect(() => {
     if (props.publicKey)
-      setMyProfile({
-        pubkey: props.publicKey,
-        name: getName(metadata, props.publicKey),
-        image:
-          getImage(metadata, props.publicKey) ??
-          `https://avatars.dicebear.com/api/identicon/${props.publicKey}.svg`,
-        link: "nostr:" + nip19.npubEncode(props.publicKey),
-      });
+      setMyProfile(getProfileDataFromMetaData(metadata, props.publicKey));
   }, [metadata, props.publicKey]);
 
-  async function fetchMetadata(pubkeys: readonly string[]) {
+  async function fetchMetadata(
+    pubkeys: string[],
+    options?: { dont_fetch_existing?: boolean }
+  ) {
     if (!relayPool) throw new Error("Relays Pool not initialized yet");
 
-    let pubkeysToFetch = Array.from(
-      new Set(
-        pubkeys.filter((k) => !(k in metadata || k in metadataFetching.current))
-      )
-    );
+    const { dont_fetch_existing = true } = options ?? {};
+
+    let pubkeysToFetch = dont_fetch_existing
+      ? Array.from(
+          new Set(
+            pubkeys.filter(
+              (k) => !(k in metadata || k in metadataFetching.current)
+            )
+          )
+        )
+      : pubkeys;
 
     pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
 
@@ -250,6 +257,74 @@ export const useNostrComments = (props: HookProps) => {
     [props.publicKey, relayPool, threadRootObject]
   );
 
+  const publishMetadata = useCallback(
+    async function (profile: NostrProfile, options?: Partial<{}>) {
+      if (!relayPool) throw new Error("No relays pool");
+
+      const relaysUrls = Array.from(relayPool.relayByUrl.keys());
+
+      let baseEvent: NostrToolsEvent = {
+        pubkey: props.publicKey!,
+        created_at: Math.round(Date.now() / 1000),
+        kind: 0,
+        tags: [],
+        content: JSON.stringify({
+          name: profile.name,
+          picture: profile.image,
+          ...(profile.about && { about: profile.about }),
+          ...(profile.nip05 && { nip05: profile.nip05 }),
+          ...(profile.lightning_address && {
+            lud06: profile.lightning_address,
+          }),
+        }),
+      };
+
+      let event: NostrToolsEventWithId = {
+        ...baseEvent,
+        id: getEventHash(baseEvent),
+      };
+
+      console.log("event: ", event);
+
+      event = await signEvent(event);
+
+      let called_refetch_metadata = false;
+
+      return new Promise(async (resolve, reject) => {
+        const publishTimeout = setTimeout(() => {
+          return reject(
+            `failed to publish event ${event.id!.slice(0, 5)}… to any relay.`
+          );
+        }, 8000);
+
+        console.log("publishing...");
+
+        relayPool.publish(event, relaysUrls);
+        relayPool.subscribe(
+          [
+            {
+              ids: [event.id!],
+            },
+          ],
+          relaysUrls,
+          (event, afterEose, url) => {
+            clearTimeout(publishTimeout);
+            if (!called_refetch_metadata) {
+              fetchMetaDataRef.current([profile.pubkey], {
+                dont_fetch_existing: false,
+              });
+              called_refetch_metadata = true;
+            }
+            return resolve(
+              `event ${event.id.slice(0, 5)}… published to ${url}.`
+            );
+          }
+        );
+      });
+    },
+    [props.publicKey, relayPool]
+  );
+
   const getRelayUrls = useCallback(
     () => Array.from(relayPool?.relayByUrl.keys() ?? []),
     [relayPool?.relayByUrl]
@@ -257,6 +332,7 @@ export const useNostrComments = (props: HookProps) => {
 
   return {
     publishEvent,
+    publishMetadata,
     metadata,
     threads,
     relaysStatus,

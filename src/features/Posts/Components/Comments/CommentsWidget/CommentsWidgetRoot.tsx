@@ -1,7 +1,7 @@
 import { normalizeURL } from "./utils";
 import Thread from "./Thread";
 import AddComment from "../AddComment/AddComment";
-import { useNostrComments } from "./useNostrComments";
+import { NostrProfile, useNostrComments } from "./useNostrComments";
 import ConnectButton from "./components/ConnectButton/ConnectButton";
 import { useCallback, useEffect, useState } from "react";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
@@ -9,6 +9,11 @@ import { getMyNostrConnection } from "./nostr-account";
 import { CONSTS } from "src/utils";
 import RelaysList from "./components/RelaysList/RelaysList";
 import { Puff } from "react-loader-spinner";
+import { useAppDispatch } from "src/utils/hooks";
+import { openModal } from "src/redux/features/modals.slice";
+import { useReduxEffect } from "src/utils/hooks/useReduxEffect";
+import { createAction } from "@reduxjs/toolkit";
+import { FaCog } from "react-icons/fa";
 
 interface Props {
   rootEventId?: string;
@@ -18,8 +23,12 @@ interface Props {
     createdAt: string;
   };
 }
+const UPDATE_PROFILE_ACTION = createAction<{ profile_data: NostrProfile }>(
+  "NOSTR_PROFILE_UPDATED"
+)({} as any);
 
 export function CommentsWidgetRoot({ story }: Props) {
+  const dispatch = useAppDispatch();
   const [myRelays, setMyRelays] = useState(() => getMyRelays());
   const [showRelays, setShowRelays] = useState(false);
 
@@ -31,6 +40,7 @@ export function CommentsWidgetRoot({ story }: Props) {
     threads,
     metadata,
     publishEvent,
+    publishMetadata,
     relaysUrls,
     myProfile,
     relaysStatus,
@@ -56,6 +66,15 @@ export function CommentsWidgetRoot({ story }: Props) {
     );
   }, [myRelays]);
 
+  const onInsertImage = useCallback(
+    ({ payload: { profile_data } }: typeof UPDATE_PROFILE_ACTION) => {
+      publishMetadata(profile_data);
+    },
+    [publishMetadata]
+  );
+
+  useReduxEffect(onInsertImage, UPDATE_PROFILE_ACTION.type);
+
   const onAccountConnected = useCallback(() => {
     const connection = localStorage.getItem("nostr-connection");
     if (connection) {
@@ -68,6 +87,23 @@ export function CommentsWidgetRoot({ story }: Props) {
     (acc, cur) => (acc += cur[1] === WebSocket.OPEN ? 1 : 0),
     0
   );
+
+  const openUpdateProfile = () => {
+    dispatch(
+      openModal({
+        Modal: "UpdateNostrProfileModal",
+        props: {
+          profile: {
+            ...myProfile!,
+          },
+          callbackAction: {
+            type: UPDATE_PROFILE_ACTION.type,
+            payload: {} as any,
+          },
+        },
+      })
+    );
+  };
 
   if (loadingRootEvent)
     return (
@@ -93,15 +129,28 @@ export function CommentsWidgetRoot({ story }: Props) {
   return (
     <>
       <div>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex gap-12 flex-wrap justify-between">
           <h6 className="text-body2 font-bolder">Discussion</h6>
-          <button
-            onClick={() => setShowRelays((v) => !v)}
-            className="bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-600 text-body5 font-medium py-8 px-12 rounded-48"
-          >
-            📡 {showRelays ? "Hide" : "Show"} Relays ({connectedRelaysCount}/
-            {myRelays.length})
-          </button>
+          <div className="flex gap-12">
+            <button
+              className={`bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-medium py-8 px-12 rounded-48 ${
+                !myProfile && "pointer-events-none opacity-60"
+              }`}
+              onClick={openUpdateProfile}
+            >
+              <span className="text-gray-400">
+                <FaCog />
+              </span>{" "}
+              <span className="align-middle">Update My Profile</span>
+            </button>
+            <button
+              onClick={() => setShowRelays((v) => !v)}
+              className="bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-medium py-8 px-12 rounded-48"
+            >
+              📡 {showRelays ? "Hide" : "Show"} Relays ({connectedRelaysCount}/
+              {myRelays.length})
+            </button>
+          </div>
           {/* {connectionStatus.status === 'Connected' && <div className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connected to {connectionStatus.connectedRelaysCount} relays</span> 📡</div>}
       {connectionStatus.status === 'Connecting' && <div className="bg-amber-50 text-amber-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connecting to relays</span> ⌛</div>}
       {connectionStatus.status === 'Not Connected' && <div className="bg-red-50 text-red-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Disconnected...</span> <button className='underline font-bold' onClick={() => retryConnection()}>reconnect</button></div>} */}
@@ -132,7 +181,6 @@ export function CommentsWidgetRoot({ story }: Props) {
                 placeholder="Leave a comment..."
                 onSubmit={publishEvent}
                 avatar={myProfile?.image}
-                userUrl={myProfile?.link}
               />
             </div>
             {!publicKey && (

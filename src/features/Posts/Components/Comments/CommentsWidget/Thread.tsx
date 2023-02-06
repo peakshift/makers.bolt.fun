@@ -129,7 +129,6 @@ export default function Thread({
               {replyOpen && (
                 <AddComment
                   avatar={myProfile?.image}
-                  userUrl={myProfile?.link}
                   autoFocus
                   placeholder="Leave a reply..."
                   onSubmit={handleReply}

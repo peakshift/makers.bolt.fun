@@ -11,6 +11,7 @@ import Card from "src/Components/Card/Card";
 import { NostrToolsEvent } from "nostr-relaypool/event";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";
+import { trimText } from "src/utils/helperFunctions";
 
 interface Props {
   comment: NostrToolsEvent;
@@ -51,7 +52,9 @@ export default function CommentCard({
         </a>
         <div className="overflow-hidden">
           <a href={author.link} target="_blank" rel="noreferrer">
-            <p className="text-body5 text-gray-700">{author.name}</p>
+            <p className="text-body5 text-gray-700">
+              {trimText(author.name, 15)}
+            </p>
           </a>
           <p className={`text-body6 text-gray-600`}>
             {dayjs(comment.created_at * 1000).from(new Date())}

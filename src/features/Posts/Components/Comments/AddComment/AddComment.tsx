@@ -21,6 +21,9 @@ import Button from "src/Components/Button/Button";
 import { InvalidContentHandler } from "remirror";
 import { useNostrComments } from "../CommentsWidget/useNostrComments";
 import { NotificationsService } from "src/services";
+import { useAppDispatch } from "src/utils/hooks";
+import { openModal } from "src/redux/features/modals.slice";
+import { FaCog } from "react-icons/fa";
 
 interface Props {
   initialContent?: string;
@@ -31,7 +34,6 @@ interface Props {
   onSubmit?: ReturnType<typeof useNostrComments>["publishEvent"];
   isPublishing?: boolean;
   avatar?: string;
-  userUrl?: string;
 }
 
 export default function AddComment({
@@ -43,7 +45,6 @@ export default function AddComment({
   isDisconnected,
   isPublishing,
   avatar,
-  userUrl,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -117,7 +118,7 @@ export default function AddComment({
 
   return (
     <div
-      className={`remirror-theme ${styles.wrapper} p-24 bg-white border-2 border-gray-200 rounded-12 md:rounded-16`}
+      className={`remirror-theme ${styles.wrapper} p-24 relative bg-white border-2 border-gray-200 rounded-12 md:rounded-16`}
       ref={containerRef}
     >
       <Remirror
@@ -132,15 +133,13 @@ export default function AddComment({
       >
         <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
           <div className="hidden sm:block mt-24 shrink-0">
-            <a href={userUrl} target="_blank" rel="noreferrer">
-              <Avatar
-                width={40}
-                src={
-                  avatar ??
-                  `https://avatars.dicebear.com/api/identicon/default-avatar.svg`
-                }
-              />
-            </a>
+            <Avatar
+              width={40}
+              src={
+                avatar ??
+                `https://api.dicebear.com/5.x/initials/svg?backgroundColor=ebebeb`
+              }
+            />
           </div>
           <div className="flex-grow">
             <EditorComponent />

@@ -32,6 +32,7 @@ import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/
 
 import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
 import ConnectNostrAccountModal from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal/ConnectNostrAccountModal";
+import UpdateNostrProfileModal from "src/features/Posts/Components/Comments/CommentsWidget/components/UpdateNostrProfileModal/UpdateNostrProfileModal";
 
 export enum Direction {
   START,
@@ -76,7 +77,7 @@ export const ALL_MODALS = {
 
   // Nostr
   ConnectNostrAccountModal,
-
+  UpdateNostrProfileModal,
   // Text Editor Modals
   InsertImageModal,
   InsertVideoModal,

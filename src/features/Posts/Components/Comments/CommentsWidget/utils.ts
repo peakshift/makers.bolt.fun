@@ -1,5 +1,6 @@
 import { NostrToolsEvent } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
+import { NostrProfile } from "./useNostrComments";
 
 export function normalizeURL(raw: string) {
   let url = new URL(raw);
@@ -28,16 +29,50 @@ export function getName(metadata: Record<string, any>, pubkey: string): string {
     if (meta.name && meta.name.length) return meta.name;
   } else if (pubkey) {
     let npub = nip19.npubEncode(pubkey);
-    return `${npub.slice(0, 6)}…${npub.slice(-3)}`;
+    return npub;
   }
 
   return "_";
+}
+
+export function getProfileDataFromMetaData(
+  metadata: Record<string, any>,
+  pubkey: string
+) {
+  let meta = metadata[pubkey];
+  if (!meta) return null;
+
+  const name = getName(metadata, pubkey);
+  const image =
+    meta.picture && meta.picture.length ? (meta.picture as string) : null;
+  const about = meta.about && meta.about.length ? (meta.about as string) : null;
+  const nip05 = meta.nip05 && meta.nip05.length ? (meta.nip05 as string) : null;
+  const lud06 = meta.lud06 && meta.lud06.length ? (meta.lud06 as string) : null;
+
+  return {
+    name,
+    image,
+    about,
+    pubkey,
+    lightning_address: lud06,
+    nip05,
+    link: "nostr:" + nip19.npubEncode(pubkey),
+  } as NostrProfile;
 }
 
 export function getImage(metadata: Record<string, any>, pubkey: string) {
   let meta = metadata[pubkey];
   if (meta) {
     if (meta.picture && meta.picture.length) return meta.picture as string;
+  }
+
+  return null;
+}
+
+export function getAbout(metadata: Record<string, any>, pubkey: string) {
+  let meta = metadata[pubkey];
+  if (meta) {
+    if (meta.about && meta.about.length) return meta.about as string;
   }
 
   return null;
