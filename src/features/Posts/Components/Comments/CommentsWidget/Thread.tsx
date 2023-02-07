@@ -6,9 +6,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { getImage, getName, ThreadedEvent } from "./utils";
 import CommentCard from "../CommentCard/CommentCard";
 import { useToggle } from "@react-hookz/web";
-import { useAppSelector } from "src/utils/hooks";
-import Button from "src/Components/Button/Button";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AddComment from "../AddComment/AddComment";
 import { NostrProfile, useNostrComments } from "./useNostrComments";
 
@@ -34,8 +31,8 @@ export default function Thread({
   myProfile,
 }: Props) {
   const [replyOpen, setReplyOpen] = useState(false);
-  const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(true);
-  const [scrollToLatestReply, setScrollToLatestReply] = useState(true);
+  const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(false);
+  const [scrollToLatestReply, setScrollToLatestReply] = useState(false);
   const repliesContainer = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
@@ -91,7 +88,7 @@ export default function Thread({
         <div className="flex mt-16 gap-8 md:gap-20 pl-8">
           <div className="border-l-2 border-b-2 border-gray-200 w-16 md:w-24 h-40 rounded-bl-8 flex-shrink-0"></div>
           <div className="flex flex-col w-full gap-16">
-            {thread.replies.length > 0 && (
+            {/* {thread.replies.length > 0 && (
               <Button
                 color="none"
                 className="self-start mt-12 !px-0"
@@ -111,7 +108,7 @@ export default function Thread({
                   </span>
                 )}
               </Button>
-            )}
+            )} */}
             <div className="flex flex-col gap-16 w-full" ref={repliesContainer}>
               {!repliesCollapsed &&
                 repliesSorted.map((subthread) => (

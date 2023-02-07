@@ -18,7 +18,8 @@ import { NotificationsService } from "src/services";
 
 interface Props extends ModalCard {
   profile: NostrProfile;
-  callbackAction: PayloadAction<{ profile_data: NostrProfile }>;
+  updateInfoCallback: PayloadAction<{ profile_data: NostrProfile }>;
+  disconnectProfileCallback: PayloadAction<{}>;
 }
 interface IFormInputs {
   name: string;
@@ -39,10 +40,11 @@ const schema: yup.SchemaOf<IFormInputs> = yup
   .required();
 
 export default function UpdateNostrProfileModal({
-  callbackAction,
   onClose,
   direction,
   profile,
+  updateInfoCallback,
+  disconnectProfileCallback,
 }: Props) {
   const dispatch = useAppDispatch();
   const inputId = useId();
@@ -66,8 +68,14 @@ export default function UpdateNostrProfileModal({
 
   const profileImage = watch("image");
 
+  const onDisconnect = () => {
+    const action = Object.assign({}, disconnectProfileCallback);
+    dispatch(action);
+    onClose?.();
+  };
+
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    const action = Object.assign({}, callbackAction);
+    const action = Object.assign({}, updateInfoCallback);
     action.payload = {
       profile_data: {
         ...data,
@@ -195,11 +203,16 @@ export default function UpdateNostrProfileModal({
             <p className="input-error">{errors.lightning_address.message}</p>
           )}
         </div>
-        <div className="flex gap-16 justify-end mt-32">
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" color="primary">
-            Update Profile
+
+        <div className="flex gap-16 justify-between mt-32">
+          <Button size="sm" variant="text" color="red" onClick={onDisconnect}>
+            Disconnect this profile
           </Button>
+          <div className="flex gap-16 justify-end">
+            <Button size="sm" type="submit" color="primary">
+              Update Info
+            </Button>
+          </div>
         </div>
       </form>
     </motion.div>

@@ -1,4 +1,4 @@
-import { normalizeURL } from "./utils";
+import { getProfileDataFromMetaData, normalizeURL } from "./utils";
 import Thread from "./Thread";
 import AddComment from "../AddComment/AddComment";
 import { NostrProfile, useNostrComments } from "./useNostrComments";
@@ -26,11 +26,15 @@ interface Props {
 const UPDATE_PROFILE_ACTION = createAction<{ profile_data: NostrProfile }>(
   "NOSTR_PROFILE_UPDATED"
 )({} as any);
+const DISCONNECT_PROFILE_ACTION = createAction<{}>(
+  "NOSTR_PROFILE_DISCONNECTED"
+)({});
 
 export function CommentsWidgetRoot({ story }: Props) {
   const dispatch = useAppDispatch();
   const [myRelays, setMyRelays] = useState(() => getMyRelays());
   const [showRelays, setShowRelays] = useState(false);
+  const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
 
   const [publicKey, setPublicKey] = useState(
     () => getMyNostrConnection()?.pubkey
@@ -42,7 +46,6 @@ export function CommentsWidgetRoot({ story }: Props) {
     publishEvent,
     publishMetadata,
     relaysUrls,
-    myProfile,
     relaysStatus,
     loadingRootEvent,
   } = useNostrComments({
@@ -66,14 +69,27 @@ export function CommentsWidgetRoot({ story }: Props) {
     );
   }, [myRelays]);
 
-  const onInsertImage = useCallback(
+  useEffect(() => {
+    if (publicKey)
+      setMyProfile(getProfileDataFromMetaData(metadata, publicKey));
+  }, [metadata, publicKey]);
+
+  const onUpdateProfile = useCallback(
     ({ payload: { profile_data } }: typeof UPDATE_PROFILE_ACTION) => {
       publishMetadata(profile_data);
     },
     [publishMetadata]
   );
 
-  useReduxEffect(onInsertImage, UPDATE_PROFILE_ACTION.type);
+  useReduxEffect(onUpdateProfile, UPDATE_PROFILE_ACTION.type);
+
+  const onDisconnectProfile = useCallback(() => {
+    setMyProfile(null);
+    setPublicKey(undefined);
+    localStorage.removeItem("nostr-connection");
+  }, []);
+
+  useReduxEffect(onDisconnectProfile, DISCONNECT_PROFILE_ACTION.type);
 
   const onAccountConnected = useCallback(() => {
     const connection = localStorage.getItem("nostr-connection");
@@ -96,9 +112,13 @@ export function CommentsWidgetRoot({ story }: Props) {
           profile: {
             ...myProfile!,
           },
-          callbackAction: {
+          updateInfoCallback: {
             type: UPDATE_PROFILE_ACTION.type,
             payload: {} as any,
+          },
+          disconnectProfileCallback: {
+            type: DISCONNECT_PROFILE_ACTION.type,
+            payload: {},
           },
         },
       })
