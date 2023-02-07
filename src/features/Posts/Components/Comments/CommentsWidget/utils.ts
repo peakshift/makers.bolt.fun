@@ -38,9 +38,18 @@ export function getName(metadata: Record<string, any>, pubkey: string): string {
 export function getProfileDataFromMetaData(
   metadata: Record<string, any>,
   pubkey: string
-) {
+): NostrProfile {
   let meta = metadata[pubkey];
-  if (!meta) return null;
+  if (!meta)
+    return {
+      pubkey,
+      name: nip19.npubEncode(pubkey),
+      about: null,
+      image: `https://avatars.dicebear.com/api/identicon/${pubkey}.svg`,
+      lightning_address: null,
+      nip05: null,
+      link: "nostr:" + nip19.npubEncode(pubkey),
+    };
 
   const name = getName(metadata, pubkey);
   const image =

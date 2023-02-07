@@ -76,6 +76,7 @@ export const useGetThreadRootObject = (props: {
           if (!curr || curr.created_at < event.created_at) return event;
           return curr;
         });
+        clearTimeout(timeout);
       }
     );
 
@@ -83,7 +84,7 @@ export const useGetThreadRootObject = (props: {
       unsub();
       // If the root object wasn't set yet, then use the fallback
       setThreadRootObject((rootObj) => (!!rootObj ? rootObj : fallbackObject));
-    }, 0);
+    }, 10000);
 
     return () => {
       clearTimeout(timeout);

@@ -1,12 +1,6 @@
 import { marked } from "marked";
 import { BiComment } from "react-icons/bi";
-import VoteButton from "src/Components/VoteButton/VoteButton";
-import Header from "src/features/Posts/Components/PostCard/Header/Header";
-import { Comment } from "../types";
 import DOMPurify from "dompurify";
-import { Vote_Item_Type } from "src/graphql";
-import { useVote } from "src/utils/hooks";
-import { useState } from "react";
 import Card from "src/Components/Card/Card";
 import { NostrToolsEvent } from "nostr-relaypool/event";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
