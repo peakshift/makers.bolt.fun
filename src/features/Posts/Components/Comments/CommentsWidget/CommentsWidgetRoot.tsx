@@ -14,6 +14,11 @@ import { openModal } from "src/redux/features/modals.slice";
 import { useReduxEffect } from "src/utils/hooks/useReduxEffect";
 import { createAction } from "@reduxjs/toolkit";
 import { FaCog } from "react-icons/fa";
+import Preferences from "src/services/preferences.service";
+import { Link } from "react-router-dom";
+import { createRoute } from "src/utils/routing";
+import IconButton from "src/Components/IconButton/IconButton";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface Props {
   rootEventId?: string;
@@ -35,6 +40,9 @@ export function CommentsWidgetRoot({ story }: Props) {
   const [myRelays, setMyRelays] = useState(() => getMyRelays());
   const [showRelays, setShowRelays] = useState(false);
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
+  const [showLearnAboutNostrTooltip, setShowLearnAboutNostrTooltip] = useState(
+    false // Preferences.get("showNostrCommentsTooltip")
+  );
 
   const [publicKey, setPublicKey] = useState(
     () => getMyNostrConnection()?.pubkey
@@ -53,14 +61,6 @@ export function CommentsWidgetRoot({ story }: Props) {
     publicKey,
     relays: myRelays,
   });
-
-  const removeRelay = (urlToRemove: string) => {
-    setMyRelays((cur) => cur.filter((url) => url !== urlToRemove));
-  };
-
-  const addRelay = (newUrl: string) => {
-    if (!myRelays.includes(newUrl)) setMyRelays([...myRelays, newUrl]);
-  };
 
   useEffect(() => {
     localStorage.setItem(
@@ -91,6 +91,19 @@ export function CommentsWidgetRoot({ story }: Props) {
 
   useReduxEffect(onDisconnectProfile, DISCONNECT_PROFILE_ACTION.type);
 
+  const removeRelay = (urlToRemove: string) => {
+    setMyRelays((cur) => cur.filter((url) => url !== urlToRemove));
+  };
+
+  const addRelay = (newUrl: string) => {
+    if (!myRelays.includes(newUrl)) setMyRelays([...myRelays, newUrl]);
+  };
+
+  const closeTooltip = () => {
+    Preferences.update("showNostrCommentsTooltip", false);
+    setShowLearnAboutNostrTooltip(false);
+  };
+
   const onAccountConnected = useCallback(() => {
     const connection = localStorage.getItem("nostr-connection");
     if (connection) {
@@ -98,11 +111,6 @@ export function CommentsWidgetRoot({ story }: Props) {
       setPublicKey(connectionObj.pubkey);
     }
   }, []);
-
-  const connectedRelaysCount = relaysStatus.reduce(
-    (acc, cur) => (acc += cur[1] === WebSocket.OPEN ? 1 : 0),
-    0
-  );
 
   const openUpdateProfile = () => {
     dispatch(
@@ -124,6 +132,11 @@ export function CommentsWidgetRoot({ story }: Props) {
       })
     );
   };
+
+  const connectedRelaysCount = relaysStatus.reduce(
+    (acc, cur) => (acc += cur[1] === WebSocket.OPEN ? 1 : 0),
+    0
+  );
 
   if (loadingRootEvent)
     return (
@@ -153,7 +166,7 @@ export function CommentsWidgetRoot({ story }: Props) {
           <h6 className="text-body2 font-bolder">Discussion</h6>
           <div className="flex gap-12">
             <button
-              className={`bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-medium py-8 px-12 rounded-48 ${
+              className={`bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-bold py-8 px-12 rounded-12 ${
                 !myProfile && "pointer-events-none opacity-60"
               }`}
               onClick={openUpdateProfile}
@@ -165,7 +178,7 @@ export function CommentsWidgetRoot({ story }: Props) {
             </button>
             <button
               onClick={() => setShowRelays((v) => !v)}
-              className="bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-medium py-8 px-12 rounded-48"
+              className="bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-bold py-8 px-12 rounded-12"
             >
               📡 {showRelays ? "Hide" : "Show"} Relays ({connectedRelaysCount}/
               {myRelays.length})
@@ -176,11 +189,28 @@ export function CommentsWidgetRoot({ story }: Props) {
       {connectionStatus.status === 'Not Connected' && <div className="bg-red-50 text-red-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Disconnected...</span> <button className='underline font-bold' onClick={() => retryConnection()}>reconnect</button></div>} */}
         </div>
 
-        {/* {showTooltip && <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-8 md:gap-12">
-      <span>💬</span>
-      <p className="text-body4 font-medium">Learn about <Link to={createRoute({ type: "story", title: "Comments Powered By Nostr", id: 54 })} className='underline'>how your data is stored</Link> with Nostr comments and relays</p>
-      <IconButton className='shrink-0 self-start' onClick={closeTooltip}><AiOutlineClose className='text-gray-600' /></IconButton>
-    </div>} */}
+        {showLearnAboutNostrTooltip && (
+          <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-8 md:gap-12">
+            <span>💬</span>
+            <p className="text-body4 font-medium">
+              Learn about{" "}
+              <Link
+                to={createRoute({
+                  type: "story",
+                  title: "Comments Powered By Nostr",
+                  id: 54,
+                })}
+                className="underline"
+              >
+                how your data is stored
+              </Link>{" "}
+              with Nostr comments and relays
+            </p>
+            <IconButton className="shrink-0 self-start" onClick={closeTooltip}>
+              <AiOutlineClose className="text-gray-600" />
+            </IconButton>
+          </div>
+        )}
 
         {showRelays && (
           <div className="mt-16">
