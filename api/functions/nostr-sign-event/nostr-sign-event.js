@@ -40,9 +40,8 @@ const signEvent = async (req, res) => {
       });
     }
 
-    const { id, content, tags, kind = 1 } = req.body.event;
+    const { content, tags, kind = 1 } = req.body.event;
     const event = {
-      id,
       kind,
       pubkey,
       content,

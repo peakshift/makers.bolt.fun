@@ -60,24 +60,6 @@ export function getProfileDataFromMetaData(
   } as NostrProfile;
 }
 
-export function getImage(metadata: Record<string, any>, pubkey: string) {
-  let meta = metadata[pubkey];
-  if (meta) {
-    if (meta.picture && meta.picture.length) return meta.picture as string;
-  }
-
-  return null;
-}
-
-export function getAbout(metadata: Record<string, any>, pubkey: string) {
-  let meta = metadata[pubkey];
-  if (meta) {
-    if (meta.about && meta.about.length) return meta.about as string;
-  }
-
-  return null;
-}
-
 export function insertEventIntoDescendingList(
   sortedArray: NostrToolsEvent[],
   event: NostrToolsEvent

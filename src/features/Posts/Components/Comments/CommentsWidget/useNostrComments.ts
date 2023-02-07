@@ -4,26 +4,14 @@ import {
   getEventHash,
   signEvent as nostrToolsSignEvent,
   nip05,
-  nip19,
 } from "nostr-tools";
-import { RelayPool } from "nostr-relaypool";
-
-import {
-  normalizeURL,
-  insertEventIntoDescendingList,
-  computeThreads,
-  getName,
-  getImage,
-  getAbout,
-  getProfileDataFromMetaData,
-} from "./utils";
+import { insertEventIntoDescendingList, computeThreads } from "./utils";
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { createRoute } from "src/utils/routing";
-import dayjs from "dayjs";
-
-interface HookProps {
+import { useRelayPool } from "./hooks/use-relays-pool";
+import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
+export interface Props {
   publicKey?: string;
   rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
@@ -45,15 +33,19 @@ export type NostrProfile = {
   lightning_address?: string | null;
 };
 
-export const useNostrComments = (props: HookProps) => {
+export const useNostrComments = (props: Props) => {
+  const { relayPool, relaysStatus } = useRelayPool({ relays: props.relays });
+
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
+  const [events] = useDebounce(eventsImmediate, 1000);
+
   const [metadata, setMetadata] = useState<Record<string, NostrToolsEvent>>({});
   const metadataFetching = useRef<Record<string, boolean>>({});
-  const [events] = useDebounce(eventsImmediate, 1000);
-  const threads = useMemo(() => computeThreads(events), [events]);
-  const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
 
-  const { relayPool, relaysStatus } = useRelayPool({ relays: props.relays });
+  const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
+  fetchMetaDataRef.current = fetchMetadata;
+
+  const threads = useMemo(() => computeThreads(events), [events]);
 
   const threadRootObject = useGetThreadRootObject({
     relaysPool: relayPool,
@@ -62,51 +54,50 @@ export const useNostrComments = (props: HookProps) => {
 
   const loadingRootEvent = !threadRootObject;
 
-  const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
-  fetchMetaDataRef.current = fetchMetadata;
+  useEffect(
+    function subscribeToEvents() {
+      if (!threadRootObject) return;
+      if (!relayPool) return;
 
-  useEffect(() => {
-    if (!threadRootObject) return;
-    if (!relayPool) return;
+      const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-    const relaysUrls = Array.from(relayPool.relayByUrl.keys());
+      const filter =
+        threadRootObject.type === "root-event"
+          ? { "#e": [threadRootObject.event_id] }
+          : { "#r": [threadRootObject.url] };
 
-    const filter =
-      threadRootObject.type === "root-event"
-        ? { "#e": [threadRootObject.event_id] }
-        : { "#r": [threadRootObject.url] };
-
-    let unsub = relayPool.subscribe(
-      [
-        {
-          kinds: [1],
-          ...(filter as any),
+      let unsub = relayPool.subscribe(
+        [
+          {
+            kinds: [1],
+            ...(filter as any),
+          },
+        ],
+        relaysUrls,
+        // onEvent:
+        (event, isAfterEose, relayURL) => {
+          setEvents((events) => insertEventIntoDescendingList(events, event));
         },
-      ],
-      relaysUrls,
-      // onEvent:
-      (event, isAfterEose, relayURL) => {
-        setEvents((events) => insertEventIntoDescendingList(events, event));
-        // fetchMetaDataRef.current(event.pubkey);
-        // console.log(event, isAfterEose, relayURL);
-      },
-      undefined, // maxDelayMs
-      // onEose:
-      (events, relayURL) => {
-        // console.log("EOSE");
-        // console.log(events, relayURL);
-      }
-    );
+        undefined, // maxDelayMs
+        // onEose:
+        (events, relayURL) => {
+          // console.log("EOSE");
+        }
+      );
 
-    relayPool.onerror((relayUrl, err) => {
-      console.log("RelayPool error", err, " from relay ", relayUrl);
-    });
-    relayPool.onnotice((relayUrl, notice) => {
-      console.log("RelayPool notice", notice, " from relay ", relayUrl);
-    });
+      relayPool.onerror((relayUrl, err) => {
+        console.log("RelayPool error", err, " from relay ", relayUrl);
+      });
+      relayPool.onnotice((relayUrl, notice) => {
+        console.log("RelayPool notice", notice, " from relay ", relayUrl);
+      });
 
-    return unsub;
-  }, [relayPool, threadRootObject]);
+      return () => {
+        unsub();
+      };
+    },
+    [relayPool, threadRootObject]
+  );
 
   useEffect(() => {
     if (relayPool && events.length > 0)
@@ -118,20 +109,15 @@ export const useNostrComments = (props: HookProps) => {
       fetchMetaDataRef.current([props.publicKey]);
   }, [props.publicKey, relayPool]);
 
-  useEffect(() => {
-    if (props.publicKey)
-      setMyProfile(getProfileDataFromMetaData(metadata, props.publicKey));
-  }, [metadata, props.publicKey]);
-
   async function fetchMetadata(
     pubkeys: string[],
-    options?: { dont_fetch_existing?: boolean }
+    options?: { skip_existing_keys?: boolean }
   ) {
     if (!relayPool) throw new Error("Relays Pool not initialized yet");
 
-    const { dont_fetch_existing = true } = options ?? {};
+    const { skip_existing_keys = true } = options ?? {};
 
-    let pubkeysToFetch = dont_fetch_existing
+    let pubkeysToFetch = skip_existing_keys
       ? Array.from(
           new Set(
             pubkeys.filter(
@@ -192,10 +178,7 @@ export const useNostrComments = (props: HookProps) => {
   }
 
   const publishEvent = useCallback(
-    async function publishEventAsync(
-      content: string,
-      options?: Partial<{ replyTo?: string }>
-    ) {
+    async (content: string, options?: Partial<{ replyTo?: string }>) => {
       if (!threadRootObject)
         throw new Error("No Root Event Found for this post");
       if (!relayPool) throw new Error("No relays pool");
@@ -218,26 +201,25 @@ export const useNostrComments = (props: HookProps) => {
         content,
       };
 
-      let event: NostrToolsEventWithId = {
-        ...baseEvent,
-        id: getEventHash(baseEvent),
-      };
+      const signedEvent = await signEvent(baseEvent);
 
-      console.log("event: ", event);
-
-      event = await signEvent(event);
+      const event = {
+        ...signedEvent,
+        id: getEventHash(signedEvent),
+      } as NostrToolsEventWithId;
 
       return new Promise(async (resolve, reject) => {
+        console.log("publishing...");
+
         const publishTimeout = setTimeout(() => {
           return reject(
             `failed to publish event ${event.id!.slice(0, 5)}… to any relay.`
           );
         }, 8000);
 
-        console.log("publishing...");
-
         relayPool.publish(event, relaysUrls);
-        relayPool.subscribe(
+
+        const unsub = relayPool.subscribe(
           [
             {
               ids: [event.id!],
@@ -247,6 +229,7 @@ export const useNostrComments = (props: HookProps) => {
           (event, afterEose, url) => {
             clearTimeout(publishTimeout);
             setEvents((events) => insertEventIntoDescendingList(events, event));
+            unsub();
             return resolve(
               `event ${event.id.slice(0, 5)}… published to ${url}.`
             );
@@ -279,14 +262,12 @@ export const useNostrComments = (props: HookProps) => {
         }),
       };
 
-      let event: NostrToolsEventWithId = {
-        ...baseEvent,
-        id: getEventHash(baseEvent),
-      };
+      const signedEvent = await signEvent(baseEvent);
 
-      console.log("event: ", event);
-
-      event = await signEvent(event);
+      const event = {
+        ...signedEvent,
+        id: getEventHash(signedEvent),
+      } as NostrToolsEventWithId;
 
       let called_refetch_metadata = false;
 
@@ -311,7 +292,7 @@ export const useNostrComments = (props: HookProps) => {
             clearTimeout(publishTimeout);
             if (!called_refetch_metadata) {
               fetchMetaDataRef.current([profile.pubkey], {
-                dont_fetch_existing: false,
+                skip_existing_keys: false,
               });
               called_refetch_metadata = true;
             }
@@ -337,14 +318,11 @@ export const useNostrComments = (props: HookProps) => {
     threads,
     relaysStatus,
     relaysUrls: getRelayUrls(),
-    myProfile,
     loadingRootEvent,
   };
 };
 
-async function signEvent(
-  event: NostrToolsEventWithId
-): Promise<NostrToolsEventWithId> {
+async function signEvent(event: NostrToolsEvent): Promise<NostrToolsEvent> {
   const nostrConnectionStr = localStorage.getItem("nostr-connection");
   if (!nostrConnectionStr)
     throw new Error("You need to connect your nostr account first");
@@ -372,153 +350,3 @@ async function signEvent(
       .then((data) => data.event);
   else throw new Error("unknown connection type");
 }
-
-const useGetThreadRootObject = (props: {
-  relaysPool: RelayPool | null;
-  story: HookProps["story"];
-}) => {
-  type Result =
-    | {
-        type: "root-event";
-        event_id: string;
-      }
-    | {
-        type: "url-fallback";
-        url: string;
-      };
-
-  const [threadRootObject, setThreadRootObject] = useState<Result | null>(null);
-
-  const [baseEventImmediate, setBaseEvent] =
-    useState<NostrToolsEventWithId | null>(null);
-  const [baseEvent] = useDebounce(baseEventImmediate, 1000);
-
-  useEffect(() => {
-    if (props.story.nostr_event_id) {
-      setThreadRootObject({
-        type: "root-event",
-        event_id: props.story.nostr_event_id,
-      });
-      return;
-    }
-  }, [props.story.nostr_event_id]);
-
-  useEffect(() => {
-    if (!props.relaysPool) return;
-
-    const relaysUrls = Array.from(props.relaysPool.relayByUrl.keys());
-    if (props.story.nostr_event_id) return;
-
-    const isStoryOlderThanOneDay =
-      dayjs(Date.now()).diff(props.story.createdAt, "hours") >= 24;
-
-    const fallbackObject = {
-      type: "url-fallback",
-      url: normalizeURL(
-        window.location.origin +
-          createRoute({ type: "story", id: props.story.id })
-      ),
-    } as const;
-
-    if (isStoryOlderThanOneDay) {
-      return setThreadRootObject(fallbackObject);
-    }
-
-    const unsub = props.relaysPool.subscribe(
-      [
-        {
-          kinds: [1],
-          "#r": [
-            normalizeURL(
-              window.location.origin +
-                createRoute({ type: "story", id: props.story.id })
-            ),
-          ],
-        },
-      ],
-      relaysUrls,
-      (event, afterEose, url) => {
-        setBaseEvent((curr) => {
-          if (!curr || curr.created_at < event.created_at) return event;
-          return curr;
-        });
-      }
-    );
-
-    const timeout = setTimeout(() => {
-      unsub();
-      // If the root object wasn't set yet, then use the fallback
-      setThreadRootObject((rootObj) => (!!rootObj ? rootObj : fallbackObject));
-    }, 0);
-
-    return () => {
-      clearTimeout(timeout);
-      unsub();
-    };
-  }, [
-    props.relaysPool,
-    props.story.createdAt,
-    props.story.id,
-    props.story.nostr_event_id,
-  ]);
-
-  useEffect(() => {
-    if (baseEvent)
-      setThreadRootObject({ type: "root-event", event_id: baseEvent.id });
-  }, [baseEvent]);
-
-  return threadRootObject;
-};
-
-const useRelayPool = ({ relays }: { relays: string[] }) => {
-  const [relayPool, setRelayPool] = useState<RelayPool | null>(null);
-  const [relaysStatus, setRelaysStatus] = useState<[string, number][]>([]);
-
-  useEffect(() => {
-    const pool = new RelayPool(relays);
-    setRelayPool(pool);
-    return () => {
-      pool.close();
-    };
-  }, [relays]);
-
-  useEffect(() => {
-    if (relayPool)
-      relays.forEach((relayUrl) => {
-        relayPool.addOrGetRelay(relayUrl);
-      });
-  }, [relayPool, relays]);
-
-  useEffect(() => {
-    if (!relayPool) return;
-    // First, close all the relays that are in the pool but not in the props anymore
-    const allCurrentRelays = Array.from(relayPool.relayByUrl.keys());
-    for (const relay of allCurrentRelays) {
-      if (!relays.includes(relay)) {
-        relayPool.relayByUrl.get(relay)?.close().catch();
-      }
-    }
-
-    relays.forEach((relayUrl) => {
-      relayPool.addOrGetRelay(relayUrl).connect();
-    });
-  }, [relayPool, relays]);
-
-  useEffect(() => {
-    if (!relayPool) return;
-
-    const updateStatus = () => {
-      setRelaysStatus(relayPool.getRelayStatuses());
-    };
-
-    const interval = setInterval(updateStatus, 5000);
-    updateStatus();
-
-    return () => clearInterval(interval);
-  }, [relayPool]);
-
-  return {
-    relayPool,
-    relaysStatus,
-  };
-};

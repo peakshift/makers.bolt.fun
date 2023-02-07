@@ -1,4 +1,4 @@
-import { getProfileDataFromMetaData, normalizeURL } from "./utils";
+import { getProfileDataFromMetaData } from "./utils";
 import Thread from "./Thread";
 import AddComment from "../AddComment/AddComment";
 import { NostrProfile, useNostrComments } from "./useNostrComments";

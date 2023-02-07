@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { nip19 } from "nostr-tools";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { getImage, getName, ThreadedEvent } from "./utils";
+import { getProfileDataFromMetaData, ThreadedEvent } from "./utils";
 import CommentCard from "../CommentCard/CommentCard";
 import { useToggle } from "@react-hookz/web";
 import AddComment from "../AddComment/AddComment";
@@ -77,12 +76,7 @@ export default function Thread({
         canReply={canReply}
         comment={thread}
         onReply={clickReply}
-        author={{
-          pubkey: thread.pubkey,
-          name: getName(metadata, thread.pubkey),
-          image: getImage(metadata, thread.pubkey),
-          link: "nostr:" + nip19.npubEncode(thread.pubkey),
-        }}
+        author={getProfileDataFromMetaData(metadata, thread.pubkey)!}
       />
       {(thread.replies.length > 0 || replyOpen) && (
         <div className="flex mt-16 gap-8 md:gap-20 pl-8">
