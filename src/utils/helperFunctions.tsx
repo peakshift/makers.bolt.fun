@@ -16,7 +16,7 @@ export function randomItems(cnt: number, ...args: any[]) {
   return shuffle(args).slice(0, cnt);
 }
 
-export function isMobileScreen() {
+export function isMobileDevice() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   );

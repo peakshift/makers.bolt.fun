@@ -11,6 +11,7 @@ import { nip19 } from "nostr-tools";
 import { FiLink } from "react-icons/fi";
 import { usePopperTooltip } from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
+import { useAppSelector } from "src/utils/hooks";
 
 interface Props {
   comment: NostrToolsEventWithId;
@@ -44,11 +45,17 @@ export default function CommentCard({
   //       itemType: Vote_Item_Type.PostComment,
   //   });
 
+  const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
+
   return (
     <Card className="relative">
       <div className="flex gap-8">
         <a
-          href={author.link}
+          href={
+            isMobile
+              ? `nostr:${nip19.npubEncode(comment.pubkey)}`
+              : `https://www.nostr.guru/p/${comment.pubkey}`
+          }
           target="_blank"
           rel="noreferrer"
           className="shrink-0"
@@ -72,7 +79,11 @@ export default function CommentCard({
           </p>
         </div>
         <a
-          href={`nostr:${nip19.noteEncode(comment.id)}`}
+          href={
+            isMobile
+              ? `nostr:${nip19.noteEncode(comment.id)}`
+              : `https://www.nostr.guru/e/${comment.id}`
+          }
           target="_blank"
           rel="noreferrer"
           className="ml-auto text-gray-400"
@@ -110,14 +121,15 @@ export default function CommentCard({
           hideVotesCoun
           onVote={vote}
          /> */}
-        {canReply && (
-          <button
-            className="text-gray-600 font-medium hover:bg-gray-100 py-8 px-12 rounded-8"
-            onClick={onReply}
-          >
-            <BiComment /> <span className="align-middle text-body5">Reply</span>
-          </button>
-        )}
+
+        <button
+          className={`text-gray-600 font-medium hover:bg-gray-100 py-8 px-12 rounded-8 ${
+            !canReply && "pointer-events-none opacity-60"
+          }`}
+          onClick={onReply}
+        >
+          <BiComment /> <span className="align-middle text-body5">Reply</span>
+        </button>
       </div>
     </Card>
   );

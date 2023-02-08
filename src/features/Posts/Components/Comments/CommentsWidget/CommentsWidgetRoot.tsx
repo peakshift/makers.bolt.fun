@@ -41,7 +41,7 @@ export function CommentsWidgetRoot({ story }: Props) {
   const [showRelays, setShowRelays] = useState(false);
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
   const [showLearnAboutNostrTooltip, setShowLearnAboutNostrTooltip] = useState(
-    false // Preferences.get("showNostrCommentsTooltip")
+    Preferences.get("showNostrCommentsTooltip")
   );
 
   const [publicKey, setPublicKey] = useState(
@@ -174,7 +174,7 @@ export function CommentsWidgetRoot({ story }: Props) {
               <span className="text-gray-400">
                 <FaCog />
               </span>{" "}
-              <span className="align-middle">Update My Profile</span>
+              <span className="align-middle">Profile Settings</span>
             </button>
             <button
               onClick={() => setShowRelays((v) => !v)}
@@ -192,22 +192,21 @@ export function CommentsWidgetRoot({ story }: Props) {
         {showLearnAboutNostrTooltip && (
           <div className="bg-gray-900 text-white p-16 rounded-12 my-24 flex items-center justify-between gap-8 md:gap-12">
             <span>💬</span>
-            <p className="text-body4 font-medium">
-              Learn about{" "}
-              <Link
-                to={createRoute({
-                  type: "story",
-                  title: "Comments Powered By Nostr",
-                  id: 54,
-                })}
+            <p className="text-body4 text-center">
+              Our commenting system uses Nostr under the hood.
+              <br />
+              You could learn more about it{" "}
+              <a
+                href="https://github.com/nostr-protocol/nostr"
+                target="_blank"
                 className="underline"
+                rel="noreferrer"
               >
-                how your data is stored
-              </Link>{" "}
-              with Nostr comments and relays
+                here.
+              </a>
             </p>
             <IconButton className="shrink-0 self-start" onClick={closeTooltip}>
-              <AiOutlineClose className="text-gray-600" />
+              <AiOutlineClose className="text-gray-300" />
             </IconButton>
           </div>
         )}

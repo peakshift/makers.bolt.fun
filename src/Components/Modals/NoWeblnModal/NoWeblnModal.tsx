@@ -14,7 +14,7 @@ export default function NoWeblnModal({
   direction,
   ...props
 }: ModalCard) {
-  const isMobile = useAppSelector((s) => s.ui.isMobileScreen);
+  const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
 
   let content: JSX.Element;
 

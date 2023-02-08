@@ -2,15 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface StoreState {
   navHeight: number;
-  isMobileScreen: boolean;
+  isMobileDevice: boolean;
 }
 
 const initialState = {
   navHeight: 0,
-  isMobileScreen: /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || window.innerWidth < 480,
+  isMobileDevice:
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ||
+    window.innerWidth < 480,
 } as StoreState;
-
-
 
 export const uiSlice = createSlice({
   name: "ui",
@@ -19,12 +19,12 @@ export const uiSlice = createSlice({
     setNavHeight(state, action: PayloadAction<number>) {
       state.navHeight = action.payload;
     },
-    setIsMobileScreen(state, action: PayloadAction<boolean>) {
-      state.isMobileScreen = action.payload;
+    setIsMobileDevice(state, action: PayloadAction<boolean>) {
+      state.isMobileDevice = action.payload;
     },
   },
 });
 
-export const { setNavHeight, setIsMobileScreen } = uiSlice.actions;
+export const { setNavHeight, setIsMobileDevice } = uiSlice.actions;
 
 export default uiSlice.reducer;

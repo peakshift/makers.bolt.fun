@@ -114,7 +114,7 @@ export default function UpdateNostrProfileModal({
       >
         <div>
           <label htmlFor={`${inputId}-name`} className="text-body5 font-bold">
-            Your Name
+            Your Nostr Username
           </label>
           <div className="input-wrapper mt-8 relative">
             <input

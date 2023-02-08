@@ -49,7 +49,7 @@ export default function Thread({
 
   const isRoot = !replyTo;
   // const canReply = !!isRoot;
-  const canReply = true;
+  const canReply = !!myProfile;
 
   const clickReply = () => {
     if (isRoot) setReplyOpen(true);
