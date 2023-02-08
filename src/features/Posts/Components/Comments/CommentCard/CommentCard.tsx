@@ -2,13 +2,18 @@ import { marked } from "marked";
 import { BiComment } from "react-icons/bi";
 import DOMPurify from "dompurify";
 import Card from "src/Components/Card/Card";
-import { NostrToolsEvent } from "nostr-relaypool/event";
+import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";
 import { trimText } from "src/utils/helperFunctions";
+import IconButton from "src/Components/IconButton/IconButton";
+import { nip19 } from "nostr-tools";
+import { FiLink } from "react-icons/fi";
+import { usePopperTooltip } from "react-popper-tooltip";
+import "react-popper-tooltip/dist/styles.css";
 
 interface Props {
-  comment: NostrToolsEvent;
+  comment: NostrToolsEventWithId;
   canReply?: boolean;
   onReply?: () => void;
   author: {
@@ -25,6 +30,13 @@ export default function CommentCard({
   onReply,
   author,
 }: Props) {
+  const {
+    getArrowProps,
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+    visible,
+  } = usePopperTooltip();
   // const [votesCount, setVotesCount] = useState(comment.votes_count);
 
   //   const { vote } = useVote({
@@ -33,9 +45,14 @@ export default function CommentCard({
   //   });
 
   return (
-    <Card>
+    <Card className="relative">
       <div className="flex gap-8">
-        <a href={author.link} target="_blank" rel="noreferrer">
+        <a
+          href={author.link}
+          target="_blank"
+          rel="noreferrer"
+          className="shrink-0"
+        >
           <Avatar
             width={32}
             src={
@@ -54,6 +71,32 @@ export default function CommentCard({
             {dayjs(comment.created_at * 1000).from(new Date())}
           </p>
         </div>
+        <a
+          href={`nostr:${nip19.noteEncode(comment.id)}`}
+          target="_blank"
+          rel="noreferrer"
+          className="ml-auto text-gray-400"
+        >
+          <IconButton ref={setTriggerRef}>
+            <FiLink />
+          </IconButton>
+        </a>
+        {visible && (
+          <div
+            ref={setTooltipRef}
+            {...getTooltipProps({
+              className:
+                "tooltip-container !bg-gray-900 !text-white text-body5 !rounded-8",
+            })}
+          >
+            <div
+              {...getArrowProps({
+                className: "tooltip-arrow",
+              })}
+            />
+            note link on nostr
+          </div>
+        )}
       </div>
       <div
         className="text-body4 mt-16 whitespace-pre-line break-words"

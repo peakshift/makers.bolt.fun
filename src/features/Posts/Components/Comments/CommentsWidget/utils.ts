@@ -1,4 +1,4 @@
-import { NostrToolsEvent } from "nostr-relaypool/event";
+import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
 import { NostrProfile } from "./useNostrComments";
 
@@ -114,7 +114,9 @@ export function insertEventIntoDescendingList(
   return sortedArray;
 }
 
-export type ThreadedEvent = NostrToolsEvent & { replies: ThreadedEvent[] };
+export type ThreadedEvent = NostrToolsEventWithId & {
+  replies: ThreadedEvent[];
+};
 
 export function computeThreads(events: readonly NostrToolsEvent[]) {
   let threadableEvents = events.map((event) => ({
