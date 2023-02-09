@@ -37,7 +37,9 @@ const DISCONNECT_PROFILE_ACTION = createAction<{}>(
 
 export function CommentsWidgetRoot({ story }: Props) {
   const dispatch = useAppDispatch();
-  const [myRelays, setMyRelays] = useState(() => getMyRelays());
+  const [myRelays, setMyRelays] = useState<string[]>(
+    Preferences.get("nostr_relays_to_connect_to")
+  );
   const [showRelays, setShowRelays] = useState(false);
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
   const [showLearnAboutNostrTooltip, setShowLearnAboutNostrTooltip] = useState(
@@ -63,13 +65,6 @@ export function CommentsWidgetRoot({ story }: Props) {
   });
 
   useEffect(() => {
-    localStorage.setItem(
-      "nostr-comments-pref-relays",
-      JSON.stringify(myRelays)
-    );
-  }, [myRelays]);
-
-  useEffect(() => {
     if (publicKey)
       setMyProfile(getProfileDataFromMetaData(metadata, publicKey));
   }, [metadata, publicKey]);
@@ -90,14 +85,6 @@ export function CommentsWidgetRoot({ story }: Props) {
   }, []);
 
   useReduxEffect(onDisconnectProfile, DISCONNECT_PROFILE_ACTION.type);
-
-  const removeRelay = (urlToRemove: string) => {
-    setMyRelays((cur) => cur.filter((url) => url !== urlToRemove));
-  };
-
-  const addRelay = (newUrl: string) => {
-    if (!myRelays.includes(newUrl)) setMyRelays([...myRelays, newUrl]);
-  };
 
   const closeTooltip = () => {
     Preferences.update("showNostrCommentsTooltip", false);
@@ -133,8 +120,8 @@ export function CommentsWidgetRoot({ story }: Props) {
     );
   };
 
-  const connectedRelaysCount = relaysStatus.reduce(
-    (acc, cur) => (acc += cur[1] === WebSocket.OPEN ? 1 : 0),
+  const connectedRelaysCount = Array.from(relaysStatus.values()).reduce(
+    (acc, cur) => (acc += cur === WebSocket.OPEN ? 1 : 0),
     0
   );
 
@@ -211,17 +198,12 @@ export function CommentsWidgetRoot({ story }: Props) {
           </div>
         )}
 
-        {showRelays && (
-          <div className="mt-16">
-            <RelaysList
-              onAddNewRelay={addRelay}
-              onRemoveRelay={removeRelay}
-              relays={relaysStatus.filter((relay) =>
-                myRelays.includes(relay[0])
-              )}
-            />
-          </div>
-        )}
+        <div className={`mt-16 ${!showRelays && "hidden"}`}>
+          <RelaysList
+            onRelaysChange={setMyRelays}
+            relaysConnectionStatus={relaysStatus}
+          />
+        </div>
         {
           <div className="mt-24 relative">
             <div className={!true ? "blur-[2px]" : ""}>
@@ -265,10 +247,4 @@ export function CommentsWidgetRoot({ story }: Props) {
       </div>
     </>
   );
-}
-
-function getMyRelays() {
-  const preferedRelays = localStorage.getItem("nostr-comments-pref-relays");
-  if (preferedRelays) return JSON.parse(preferedRelays) as string[];
-  return CONSTS.DEFAULT_RELAYS;
 }

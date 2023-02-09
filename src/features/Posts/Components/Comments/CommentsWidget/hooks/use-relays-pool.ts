@@ -3,15 +3,17 @@ import { useEffect, useState } from "react";
 
 export const useRelayPool = ({ relays }: { relays: string[] }) => {
   const [relayPool, setRelayPool] = useState<RelayPool | null>(null);
-  const [relaysStatus, setRelaysStatus] = useState<[string, number][]>([]);
+  const [relaysStatus, setRelaysStatus] = useState<Map<string, number>>(
+    new Map()
+  );
 
   useEffect(() => {
-    const pool = new RelayPool(relays);
+    const pool = new RelayPool();
     setRelayPool(pool);
     return () => {
       pool.close();
     };
-  }, [relays]);
+  }, []);
 
   useEffect(() => {
     if (relayPool)
@@ -39,7 +41,7 @@ export const useRelayPool = ({ relays }: { relays: string[] }) => {
     if (!relayPool) return;
 
     const updateStatus = () => {
-      setRelaysStatus(relayPool.getRelayStatuses());
+      setRelaysStatus(new Map(relayPool.getRelayStatuses()));
     };
 
     const interval = setInterval(updateStatus, 5000);

@@ -1,43 +1,82 @@
-import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { FaPlus, FaUndo } from "react-icons/fa";
 import Button from "src/Components/Button/Button";
+import Preferences from "src/services/preferences.service";
+import { CONSTS } from "src/utils";
 
 interface Props {
-  relays: [url: string, status: number][];
-  onRemoveRelay?: (relayUrl: string) => void;
-  onAddNewRelay?: (relayUrl: string) => void;
+  relaysConnectionStatus?: Map<string, number>;
+  onRelaysChange?: (relays: string[]) => void;
 }
 
 export default function RelaysList(props: Props) {
   const [newRelayInput, setNewRelayInput] = useState("");
+  const [myRelays, setMyRelays] = useState(() =>
+    Preferences.get("nostr_relays_to_connect_to")
+  );
+
+  const onRelaysChangeRef = useRef<Props["onRelaysChange"]>();
+
+  useLayoutEffect(() => {
+    onRelaysChangeRef.current = props.onRelaysChange;
+  });
+
+  useEffect(() => {
+    Preferences.update("nostr_relays_to_connect_to", myRelays);
+    onRelaysChangeRef.current?.(myRelays);
+  }, [myRelays]);
+
+  const removeRelay = (urlToRemove: string) => {
+    setMyRelays((cur) => cur.filter((url) => url !== urlToRemove));
+  };
+
+  const addRelay = (newUrl: string) => {
+    if (!myRelays.includes(newUrl)) setMyRelays([...myRelays, newUrl]);
+  };
+
+  const restoreDefaultRelays = () => {
+    setMyRelays([
+      ...myRelays,
+      ...CONSTS.DEFAULT_RELAYS.filter((relay) => !myRelays.includes(relay)),
+    ]);
+  };
 
   return (
     <ul className="flex flex-col gap-8 bg-gray-100 p-16 rounded">
-      {props.relays
-        .map(([url, status]) => ({
-          url,
-          isOpen: status === WebSocket.OPEN,
-          isClosed: status === WebSocket.CLOSED || status === WebSocket.CLOSING,
-          isConnecting: status === WebSocket.CONNECTING,
-        }))
-        .map(({ url, isConnecting, isClosed, isOpen }) => (
+      {myRelays
+        .map((url) => {
+          const status = props.relaysConnectionStatus?.get(url);
+          return {
+            url,
+            hasStatus: status !== undefined,
+            isOpen: status === WebSocket.OPEN,
+            isClosed:
+              status === WebSocket.CLOSED || status === WebSocket.CLOSING,
+            isConnecting: status === WebSocket.CONNECTING,
+          };
+        })
+        .map(({ url, hasStatus, isConnecting, isClosed, isOpen }) => (
           <li
             key={url}
-            className="md:flex gap-8 flex-wrap items-center px-12 py-8 rounded-4"
+            className="md:flex gap-8 flex-wrap items-center py-8 rounded-4"
           >
-            <span className={`text-body3 ${isConnecting && "animate-spin"}`}>
-              {isOpen && "✅"} {isConnecting && "⏳"} {isClosed && "⛔"}
-            </span>{" "}
+            {hasStatus && (
+              <span className={`text-body3 ${isConnecting && "animate-spin"}`}>
+                {isOpen && "✅"} {isConnecting && "⏳"} {isClosed && "⛔"}{" "}
+              </span>
+            )}
             {url}
             <br />
-            <Button
-              variant="text"
-              size="sm"
-              color="red"
-              onClick={() => props.onRemoveRelay?.(url)}
-            >
-              Remove
-            </Button>
+            {myRelays.length > 1 && (
+              <Button
+                variant="text"
+                size="sm"
+                color="red"
+                onClick={() => removeRelay(url)}
+              >
+                Remove
+              </Button>
+            )}
           </li>
         ))}
       <li className="">
@@ -54,7 +93,7 @@ export default function RelaysList(props: Props) {
           </div>
           <Button
             onClick={() => {
-              props.onAddNewRelay?.(newRelayInput);
+              addRelay(newRelayInput);
               setNewRelayInput("");
             }}
             color="gray"
@@ -65,6 +104,12 @@ export default function RelaysList(props: Props) {
             <span className="align-middle">Add Relay</span>
           </Button>
         </div>
+      </li>
+      <hr className="my-16" />
+      <li>
+        <Button color="gray" size="sm" onClick={() => restoreDefaultRelays()}>
+          <FaUndo /> Restore Default Relays
+        </Button>
       </li>
     </ul>
   );
