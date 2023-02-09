@@ -30,7 +30,7 @@ export default function TagPage() {
         >
           {tagsSortedByPostCount.map((tag) => (
             <Card key={tag.id} className="flex flex-col gap-16">
-              <span className="rounded-8 bg-gray-100 w-40 h-40 text-center py-8">
+              <span className="text-h1">
                 {tag.icon}
               </span>
               <div className="flex flex-col gap-8">
@@ -45,7 +45,7 @@ export default function TagPage() {
                 </p>
               </div>
               <Button
-                color="white"
+                color="gray"
                 size="sm"
                 href={createRoute({ type: "tag-page", tag: tag.title })}
               >

@@ -160,6 +160,15 @@ const EditProfilePage = Loadable(
   )
 );
 
+const HangoutPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "hangout_page" */ "../../features/Hangout/HangoutPage"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -168,6 +177,14 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         element={
           <ProtectedRoute>
             <CreatePostPage initType="story" />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PAGES_ROUTES.hangout.default}
+        element={
+          <ProtectedRoute>
+            <HangoutPage /> 
           </ProtectedRoute>
         }
       />

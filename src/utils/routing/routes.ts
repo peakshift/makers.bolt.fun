@@ -43,6 +43,9 @@ type RouteOptions =
       type: "projects-page";
     }
   | {
+      type: "hangout";
+    }
+  | {
       type: "project";
       tag: string;
     }
@@ -115,6 +118,8 @@ export function createRoute(options: RouteOptions) {
       `/tournaments/${options.id}` + (options.tab ? `/${options.tab}` : "")
     );
 
+  if (options.type === "hangout") return "/hangout";
+
   if (options.type === "projects-page") return "/projects";
 
   if (options.type === "project") return `/project/${options.tag}`;
@@ -133,6 +138,9 @@ export const PAGES_ROUTES = {
     listProject: "/projects/list-project",
     projectPage: "/project/:tag",
     catchProject: "/project",
+  },
+  hangout: {
+    default: "/hangout",
   },
   blog: {
     feed: "/feed",
