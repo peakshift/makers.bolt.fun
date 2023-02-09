@@ -1,0 +1,14 @@
+query GetTournamentWinningProjects($winning_projects: [String!]!) {
+  getProjectsById(ids: $winning_projects) {
+    id
+    hashtag
+    title
+    tagline
+    thumbnail_image
+    category {
+      id
+      title
+      icon
+    }
+  }
+}
