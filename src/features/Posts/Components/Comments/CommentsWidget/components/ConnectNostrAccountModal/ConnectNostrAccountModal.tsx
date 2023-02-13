@@ -5,7 +5,7 @@ import {
 } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { IoClose } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
-import { useAppDispatch } from "src/utils/hooks";
+import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { useState } from "react";
 import { NotificationsService } from "src/services";
 import { useMyNostrKeysQuery } from "src/graphql";
@@ -15,6 +15,8 @@ import { getPublicKey, nip19 } from "nostr-tools";
 import Skeleton from "react-loading-skeleton";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { Link } from "react-router-dom";
+import { PAGES_ROUTES } from "src/utils/routing";
 
 export type NostrAccountConnection =
   | {
@@ -40,7 +42,11 @@ export default function ConnectNostrAccountModal({
   onClose,
   direction,
 }: Props) {
-  const myGeneratedKeysQuery = useMyNostrKeysQuery();
+  const isLoggedIn = useAppSelector((s) => !!s.user.me?.id);
+
+  const myGeneratedKeysQuery = useMyNostrKeysQuery({
+    skip: !isLoggedIn,
+  });
 
   const dispatch = useAppDispatch();
   const [prvkeyInput, setPrvkeyInput] = useState("");
@@ -141,79 +147,109 @@ export default function ConnectNostrAccountModal({
             <div className="text-gray-600 flex flex-col gap-12">
               <p>This is the easiest way to get started.</p>
               <p>
-                We generate a pair of private/public keys for you & store them
-                in our Database.
+                When you login to your bolt.fun account, we generate a pair of
+                private/public keys for you & store them in our Database.
               </p>
               <p>
-                Whenever you want to publish an event, we sign it server-side &
-                give it back to you.
+                Whenever you wist to publish an event later, we sign it
+                server-side & give it back to you.
               </p>
             </div>
-            <p className="text-gray-600">
-              You can view your generated keys here in case you want to copy
-              them & use them on other nostr clients
-            </p>
 
-            {myGeneratedKeysQuery.loading && (
-              <div className="flex flex-col gap-12">
-                <p className="text-body5 mb-0">
-                  <Skeleton width="24ch" />
+            {isLoggedIn && (
+              <>
+                <p className="text-gray-600">
+                  You can view your generated keys here in case you want to copy
+                  them & use them on other nostr clients
                 </p>
-                <Skeleton width="100%" height={40} />
-                <p className="text-body5 mb-0">
-                  <Skeleton width="24ch" />
-                </p>
-                <Skeleton width="100%" height={40} />
-              </div>
-            )}
-            {!myGeneratedKeysQuery.loading && myGeneratedKeysQuery.data?.me && (
-              <div className="flex flex-col gap-8">
-                <div>
-                  <p className="text-body5 font-bold">Your Nostr Private Key</p>
-                  <div className="input-wrapper mt-8 relative">
-                    <input
-                      type={"password"}
-                      className="input-text"
-                      defaultValue={
-                        myGeneratedKeysQuery.data?.me.nostr_prv_key!
-                      }
-                      readOnly
-                    />
+                {myGeneratedKeysQuery.loading && (
+                  <div className="flex flex-col gap-12">
+                    <p className="text-body5 mb-0">
+                      <Skeleton width="24ch" />
+                    </p>
+                    <Skeleton width="100%" height={40} />
+                    <p className="text-body5 mb-0">
+                      <Skeleton width="24ch" />
+                    </p>
+                    <Skeleton width="100%" height={40} />
+                  </div>
+                )}
+                {!myGeneratedKeysQuery.loading &&
+                  myGeneratedKeysQuery.data?.me && (
+                    <div className="flex flex-col gap-8">
+                      <div>
+                        <p className="text-body5 font-bold">
+                          Your Nostr Private Key
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                          <input
+                            type={"password"}
+                            className="input-text"
+                            defaultValue={
+                              myGeneratedKeysQuery.data?.me.nostr_prv_key!
+                            }
+                            readOnly
+                          />
 
-                    <CopyToClipboard
-                      text={myGeneratedKeysQuery.data?.me.nostr_prv_key!}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-body5 font-bold">Your Nostr Public Key</p>
-                  <div className="input-wrapper mt-8 relative">
-                    <input
-                      type="text"
-                      className="input-text"
-                      defaultValue={
-                        myGeneratedKeysQuery.data?.me.nostr_pub_key!!
-                      }
-                      readOnly
-                    />
-                    <CopyToClipboard
-                      text={myGeneratedKeysQuery.data?.me.nostr_pub_key! ?? ""}
-                    />
-                  </div>
-                </div>
-              </div>
+                          <CopyToClipboard
+                            text={myGeneratedKeysQuery.data?.me.nostr_prv_key!}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-body5 font-bold">
+                          Your Nostr Public Key
+                        </p>
+                        <div className="input-wrapper mt-8 relative">
+                          <input
+                            type="text"
+                            className="input-text"
+                            defaultValue={
+                              myGeneratedKeysQuery.data?.me.nostr_pub_key!!
+                            }
+                            readOnly
+                          />
+                          <CopyToClipboard
+                            text={
+                              myGeneratedKeysQuery.data?.me.nostr_pub_key! ?? ""
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                <p className="text-body5 text-gray-600">
+                  You can also view these keys later in your profile settings
+                  page.
+                </p>
+              </>
             )}
-            <p className="text-body5 text-gray-600">
-              You can also view these keys later in your profile settings page.
-            </p>
+            {!isLoggedIn && (
+              <>
+                <p className="text-gray-500 font-bold">
+                  You need to{" "}
+                  <Link
+                    className="underline text-blue-400"
+                    to={PAGES_ROUTES.auth.login}
+                    state={{ from: window.location.pathname }}
+                    onClick={onClose}
+                  >
+                    login
+                  </Link>{" "}
+                  to your bolt.fun account first.
+                </p>
+              </>
+            )}
             <Button
-              disabled={!myGeneratedKeysQuery.data?.me?.nostr_prv_key}
+              disabled={
+                !isLoggedIn || !myGeneratedKeysQuery.data?.me?.nostr_prv_key
+              }
               fullWidth
               color="primary"
               className="mt-8"
               onClick={connect}
             >
-              Continue
+              Use Generated Keys
             </Button>
           </div>
         )}
