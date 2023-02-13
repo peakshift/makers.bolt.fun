@@ -320,71 +320,37 @@ export default function ConnectNostrAccountModal({
         {activeTab === "inputted" && (
           <div className="flex flex-col gap-16">
             <h4 className="text-body3 font-bold text-gray-900">
-              Input your Own Keys{" "}
-              <span className="text-body4 text-gray-500 font-regular">
-                (Not recommended ⚠️)
-              </span>
+              Enter Your Private Key
             </h4>
             <p className="text-gray-600">
-              You enter your{" "}
-              <span className="font-bold">nostr private key</span> & we keep it
-              stored only in your browser's{" "}
-              <span className="font-bold">local storage</span>.
-              <br />
-              <br />
-              This option exists only for the case where you have connected a
-              nostr extension on your desktop, & you want to be able to post
-              comments from your mobile using the same private key (where
-              there's no extension).
-              <br />
-              <br />
-              Before going with this approach, please understand the{" "}
+              This option is{" "}
               <a
                 href="https://www.horangi.com/blog/misuse-of-local-storage"
                 target="_blank"
                 rel="noreferrer"
                 className="underline text-blue-400"
               >
-                risks
+                not safe
               </a>{" "}
-              associated.
+              & you should try to avoid entering your private keys on any
+              website to keep them from being leaked.
               <br />
               <br />
-              This option will likely be removed once a better alternative for
-              mobile browsers appears
-              <br /> (something like{" "}
+              This unsafe option existed to allow users to use their extension's
+              keys on their mobile devices, where there is no extensions.
+              <br />
+              <br />
+              But hopefully, better and safe solutions like{" "}
               <a
-                href="https://makers.bolt.fun/story/nostr-connect--575"
+                href="https://github.com/nostr-connect/nostrum"
                 target="_blank"
                 rel="noreferrer"
                 className="underline text-blue-400"
               >
                 nostr-connect
               </a>{" "}
-              maybe).
+              should solve this problem soon!
             </p>
-            <div>
-              <p className="text-body5 font-bold">Your Private Key</p>
-              <div className="input-wrapper mt-8 relative">
-                <input
-                  type={"text"}
-                  className="input-text"
-                  value={prvkeyInput}
-                  onChange={(e) => setPrvkeyInput(e.target.value)}
-                />
-              </div>
-            </div>
-            <Button
-              fullWidth
-              color="primary"
-              disabled={!isValidPrivateKey(prvkeyInput)}
-              className="mt-8"
-              onClick={connect}
-            >
-              {isValidPrivateKey(prvkeyInput)
-                ? "Continue"
-                : "Enter a valid private key"}
-            </Button>
           </div>
         )}
       </div>
