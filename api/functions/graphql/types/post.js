@@ -669,6 +669,7 @@ const createStory = extendType({
                   url: `${env.SITE_URL}/story/${toSlug(createdStory.title)}--${
                     createdStory.id
                   }`,
+                  author_name: createdStory.user.name,
                 })
                 .catch((err) => {
                   console.log("Error happened while posting to queue service:");
