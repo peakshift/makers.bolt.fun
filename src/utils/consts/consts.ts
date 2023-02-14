@@ -1,4 +1,5 @@
 const DEFAULT_RELAYS = [
+  "wss://nproxy.zerologin.co",
   "wss://nostr.drss.io",
   "wss://nostr.swiss-enigma.ch",
   "wss://relay.damus.io",
