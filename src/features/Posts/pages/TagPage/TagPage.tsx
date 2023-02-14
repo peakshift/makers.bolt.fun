@@ -38,19 +38,6 @@ export default function TagPage() {
 
   usePreload("PostPage");
 
-  const clickWriteStory = () => {
-    dispatch(
-      stageStory({
-        tags: [
-          {
-            id: tagInfo.id,
-            title: tagInfo.title,
-          },
-        ],
-      })
-    );
-  };
-
   const topicTitle = tagInfo.title.toLowerCase();
 
   return (
