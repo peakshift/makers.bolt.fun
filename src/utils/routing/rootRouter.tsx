@@ -17,6 +17,7 @@ import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
+import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 
 const FeedPage = Loadable(
   React.lazy(
@@ -224,7 +225,11 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           element={<AllTopicsPage />}
           loader={allTopicsPageLoader(queryClient)}
         />
-        <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
+        <Route
+          path={PAGES_ROUTES.blog.feed}
+          element={<FeedPage />}
+          loader={feedPageLoader(queryClient)}
+        />
         <Route
           path={PAGES_ROUTES.blog.catchStory}
           element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}

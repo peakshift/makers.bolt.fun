@@ -7,8 +7,6 @@ import Button from "src/Components/Button/Button";
 import { capitalize, formatHashtag } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
 import { Link, useLoaderData } from "react-router-dom";
-import { useAppDispatch } from "src/utils/hooks";
-import { stageStory } from "src/redux/features/staging.slice";
 import { LoaderData } from "./tagPage.loader";
 import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -27,7 +25,6 @@ export default function TagPage() {
   const loaderData = useLoaderData() as LoaderData;
 
   const tagInfo = loaderData.getTagInfo;
-  const dispatch = useAppDispatch();
 
   const feedQuery = useTagFeedQuery({
     variables: {
@@ -193,7 +190,6 @@ export default function TagPage() {
                   })}
                   color="primary"
                   fullWidth
-                  onClick={clickWriteStory}
                 >
                   Write a {formatHashtag(tagInfo.title)} story
                 </Button>

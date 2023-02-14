@@ -6,7 +6,10 @@ import ContentEditor from "../ContentEditor/ContentEditor";
 import { useCreateStoryMutation } from "src/graphql";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "src/utils/hooks";
-import { stageStory } from "src/redux/features/staging.slice";
+import {
+  stageStoryPreview,
+  unstageStoryPreview,
+} from "src/redux/features/staging.slice";
 import { NotificationsService } from "src/services/notifications.service";
 import { createRoute } from "src/utils/routing";
 import PreviewPostCard from "../PreviewPostCard/PreviewPostCard";
@@ -22,9 +25,8 @@ interface Props {
   isPublished?: boolean;
   onSuccess?: (isDraft: boolean) => void;
   onValidationError?: () => void;
+  storageService: StorageService<CreateStoryType>;
 }
-
-const storageService = new StorageService<CreateStoryType>("story-edit");
 
 export default function StoryForm(props: Props) {
   const dispatch = useAppDispatch();
@@ -37,7 +39,7 @@ export default function StoryForm(props: Props) {
   const titleInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const presistPost = useThrottledCallback(
-    (value) => storageService.set(value),
+    (value) => props.storageService.set(value),
     [],
     1000
   );
@@ -69,7 +71,7 @@ export default function StoryForm(props: Props) {
 
     if (isValid) {
       const data = getValues();
-      dispatch(stageStory(data));
+      dispatch(stageStoryPreview(data));
       setEditMode(false);
     } else {
       clickSubmit(false)(); // I'm doing this so that the react-hook-form attaches onChange listener to inputs validation
@@ -79,9 +81,9 @@ export default function StoryForm(props: Props) {
   const [createStory] = useCreateStoryMutation({
     onCompleted: (data) => {
       reset();
-      storageService.clear();
+      props.storageService.clear();
       setLoading(false);
-      dispatch(stageStory(null));
+      dispatch(unstageStoryPreview());
       if (data.createStory?.is_published)
         navigate(
           createRoute({
