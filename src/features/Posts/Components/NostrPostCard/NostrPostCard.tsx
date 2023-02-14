@@ -137,8 +137,8 @@ export default function NostrPostCard({ post, author }: Props) {
           <p className="text-body4 text-gray-600">{contentWithoutImg}</p>
         </Link>
         <div className="flex flex-wrap gap-8 mt-8">
-          {tags.map((tag) => (
-            <Badge className="hover:bg-gray-200" size="sm">
+          {tags.map((tag, idx) => (
+            <Badge key={idx} className="hover:bg-gray-200" size="sm">
               {formatHashtag(tag)}
             </Badge>
           ))}
