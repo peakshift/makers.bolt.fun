@@ -18,8 +18,12 @@ import { Fulgur } from "src/Components/Ads/Fulgur";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
+import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
+import { useState } from "react";
 
 export default function TagPage() {
+  const [selectedFeed, setSelectedFeed] =
+    useState<"bolt-fun" | "nostr">("bolt-fun");
   const loaderData = useLoaderData() as LoaderData;
 
   const tagInfo = loaderData.getTagInfo;
@@ -50,6 +54,8 @@ export default function TagPage() {
     );
   };
 
+  const topicTitle = tagInfo.title.toLowerCase();
+
   return (
     <>
       <OgTags
@@ -59,12 +65,49 @@ export default function TagPage() {
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
           <div id="content" className="">
-            <PostsList
-              isLoading={feedQuery.loading}
-              items={feedQuery.data?.getFeed}
-              isFetching={isFetchingMore}
-              onReachedBottom={fetchMore}
-            />
+            {hasTagsList(topicTitle) && (
+              <ul className="flex gap-8 mb-16">
+                <li
+                  className={` 
+                  text-primary-600 rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${
+                      selectedFeed === "bolt-fun"
+                        ? "bg-primary-100"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                  onClick={() => setSelectedFeed("bolt-fun")}
+                  role="button"
+                >
+                  Bolt.Fun Feed
+                </li>
+                <li
+                  className={` 
+                  text-primary-600 rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${
+                      selectedFeed === "nostr"
+                        ? "bg-primary-100"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                  onClick={() => setSelectedFeed("nostr")}
+                  role="button"
+                >
+                  Nostr Feed
+                </li>
+              </ul>
+            )}
+            {hasTagsList(topicTitle) && selectedFeed === "nostr" && (
+              <NostrFeed topic={topicTitle} />
+            )}
+            {selectedFeed === "bolt-fun" && (
+              <PostsList
+                isLoading={feedQuery.loading}
+                items={feedQuery.data?.getFeed}
+                isFetching={isFetchingMore}
+                onReachedBottom={fetchMore}
+              />
+            )}
           </div>
           <aside id="categories" className="no-scrollbar">
             <div className="sticky-side-element flex flex-col gap-16 md:gap-24 md:overflow-y-scroll">

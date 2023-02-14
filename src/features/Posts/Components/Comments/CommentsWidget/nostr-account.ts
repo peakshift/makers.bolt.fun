@@ -1,4 +1,4 @@
-import { getPublicKey,nip19 } from "nostr-tools";
+import { getPublicKey } from "nostr-tools";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 
 export function getMyNostrConnection() {

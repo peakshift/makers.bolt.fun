@@ -5,12 +5,17 @@ import {
   signEvent as nostrToolsSignEvent,
   nip05,
 } from "nostr-tools";
-import { insertEventIntoDescendingList, computeThreads } from "./utils";
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { useRelayPool } from "./hooks/use-relays-pool";
+import { useRelayPool, useRelaysPoolStatus } from "src/utils/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
+import {
+  insertEventIntoDescendingList,
+  computeThreads,
+} from "src/utils/nostr/helpers";
+import { NostrProfile } from "src/utils/nostr";
+
 export interface Props {
   publicKey?: string;
   rootEventId?: string;
@@ -23,18 +28,9 @@ export interface Props {
   };
 }
 
-export type NostrProfile = {
-  pubkey: string;
-  name: string;
-  image: string;
-  about: string | null;
-  link: string;
-  nip05?: string | null;
-  lightning_address?: string | null;
-};
-
 export const useNostrComments = (props: Props) => {
-  const { relayPool, relaysStatus } = useRelayPool({ relays: props.relays });
+  const { relayPool } = useRelayPool({ relays: props.relays });
+  const { relaysStatus } = useRelaysPoolStatus(relayPool);
 
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);

@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 
 export const useRelayPool = ({ relays }: { relays: string[] }) => {
   const [relayPool, setRelayPool] = useState<RelayPool | null>(null);
-  const [relaysStatus, setRelaysStatus] = useState<Map<string, number>>(
-    new Map()
-  );
 
   useEffect(() => {
     const pool = new RelayPool();
@@ -37,6 +34,16 @@ export const useRelayPool = ({ relays }: { relays: string[] }) => {
     });
   }, [relayPool, relays]);
 
+  return {
+    relayPool,
+  };
+};
+
+export const useRelaysPoolStatus = (relayPool: RelayPool | null) => {
+  const [relaysStatus, setRelaysStatus] = useState<Map<string, number>>(
+    new Map()
+  );
+
   useEffect(() => {
     if (!relayPool) return;
 
@@ -51,7 +58,6 @@ export const useRelayPool = ({ relays }: { relays: string[] }) => {
   }, [relayPool]);
 
   return {
-    relayPool,
     relaysStatus,
   };
 };

@@ -1,6 +1,6 @@
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
-import { NostrProfile } from "./useNostrComments";
+import { NostrProfile } from "./types";
 
 export function normalizeURL(raw: string) {
   let url = new URL(raw);
@@ -69,10 +69,9 @@ export function getProfileDataFromMetaData(
   } as NostrProfile;
 }
 
-export function insertEventIntoDescendingList(
-  sortedArray: NostrToolsEvent[],
-  event: NostrToolsEvent
-) {
+export function insertEventIntoDescendingList<
+  T extends NostrToolsEvent | NostrToolsEventWithId
+>(sortedArray: T[], event: T) {
   let start = 0;
   let end = sortedArray.length - 1;
   let midPoint;

@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 import { RelayPool } from "nostr-relaypool";
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { useEffect, useState } from "react";
+import { normalizeURL } from "src/utils/nostr/helpers";
 import { createRoute } from "src/utils/routing";
 import { useDebounce } from "use-debounce";
 import { Props } from "../useNostrComments";
-import { normalizeURL } from "../utils";
 
 export const useGetThreadRootObject = (props: {
   relaysPool: RelayPool | null;

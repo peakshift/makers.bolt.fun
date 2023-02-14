@@ -1,12 +1,10 @@
-import { getProfileDataFromMetaData } from "./utils";
 import Thread from "./Thread";
 import AddComment from "../AddComment/AddComment";
-import { NostrProfile, useNostrComments } from "./useNostrComments";
+import { useNostrComments } from "./useNostrComments";
 import ConnectButton from "./components/ConnectButton/ConnectButton";
 import { useCallback, useEffect, useState } from "react";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 import { getMyNostrConnection } from "./nostr-account";
-import { CONSTS } from "src/utils";
 import RelaysList from "./components/RelaysList/RelaysList";
 import { Puff } from "react-loader-spinner";
 import { useAppDispatch } from "src/utils/hooks";
@@ -15,10 +13,10 @@ import { useReduxEffect } from "src/utils/hooks/useReduxEffect";
 import { createAction } from "@reduxjs/toolkit";
 import { FaCog } from "react-icons/fa";
 import Preferences from "src/services/preferences.service";
-import { Link } from "react-router-dom";
-import { createRoute } from "src/utils/routing";
 import IconButton from "src/Components/IconButton/IconButton";
 import { AiOutlineClose } from "react-icons/ai";
+import { NostrProfile } from "src/utils/nostr";
+import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
 
 interface Props {
   rootEventId?: string;

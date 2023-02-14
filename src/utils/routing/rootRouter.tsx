@@ -184,7 +184,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         path={PAGES_ROUTES.hangout.default}
         element={
           <ProtectedRoute>
-            <HangoutPage /> 
+            <HangoutPage />
           </ProtectedRoute>
         }
       />

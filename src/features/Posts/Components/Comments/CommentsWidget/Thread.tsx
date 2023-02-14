@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { getProfileDataFromMetaData, ThreadedEvent } from "./utils";
 import CommentCard from "../CommentCard/CommentCard";
 import { useToggle } from "@react-hookz/web";
 import AddComment from "../AddComment/AddComment";
-import { NostrProfile, useNostrComments } from "./useNostrComments";
+import { useNostrComments } from "./useNostrComments";
+import {
+  getProfileDataFromMetaData,
+  ThreadedEvent,
+} from "src/utils/nostr/helpers";
+import { NostrProfile } from "src/utils/nostr";
 
 dayjs.extend(relativeTime);
 
