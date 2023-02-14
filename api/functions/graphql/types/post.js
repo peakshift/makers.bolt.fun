@@ -670,6 +670,7 @@ const createStory = extendType({
                     createdStory.id
                   }`,
                   author_name: createdStory.user.name,
+                  tags,
                 })
                 .catch((err) => {
                   console.log("Error happened while posting to queue service:");
