@@ -9,6 +9,7 @@ import { useRelayPool } from "./use-relays-pool";
 interface Props {
   filters: Filter[];
   publicKey?: string;
+  sortEvents?: boolean;
 }
 
 export const useNostrQuery = (props: Props) => {
@@ -40,7 +41,11 @@ export const useNostrQuery = (props: Props) => {
         relaysUrls,
         // onEvent:
         (event, isAfterEose, relayURL) => {
-          setEvents((events) => insertEventIntoDescendingList(events, event));
+          setEvents((events) =>
+            props.sortEvents
+              ? insertEventIntoDescendingList(events, event)
+              : [...events, event]
+          );
         },
         undefined, // maxDelayMs
         // onEose:
@@ -60,7 +65,7 @@ export const useNostrQuery = (props: Props) => {
         unsub();
       };
     },
-    [props.filters, relayPool]
+    [props.filters, props.sortEvents, relayPool]
   );
 
   useEffect(() => {
@@ -155,6 +160,7 @@ export const useNostrQuery = (props: Props) => {
     () => Array.from(relayPool?.relayByUrl.keys() ?? []),
     [relayPool?.relayByUrl]
   );
+  console.log(events);
 
   return {
     isEmpty,

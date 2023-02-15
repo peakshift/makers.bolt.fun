@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 import Button from "src/Components/Button/Button";
 import { capitalize, formatHashtag } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import { LoaderData } from "./tagPage.loader";
 import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -17,12 +17,10 @@ import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
-import { useState } from "react";
 import { RelayPoolProvider } from "src/utils/nostr";
 
 export default function TagPage() {
-  const [selectedFeed, setSelectedFeed] =
-    useState<"bolt-fun" | "nostr">("bolt-fun");
+  const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });
   const loaderData = useLoaderData() as LoaderData;
 
   const tagInfo = loaderData.getTagInfo;
@@ -40,6 +38,8 @@ export default function TagPage() {
   usePreload("PostPage");
 
   const topicTitle = tagInfo.title.toLowerCase();
+
+  const selectedFeed = searchParams.get("feed") ?? "bolt-fun";
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function TagPage() {
                         ? "bg-primary-100"
                         : "bg-gray-100 hover:bg-gray-200"
                     }`}
-                  onClick={() => setSelectedFeed("bolt-fun")}
+                  onClick={() => setSearchParams({ feed: "bolt-fun" })}
                   role="button"
                 >
                   Bolt.Fun Feed
@@ -75,7 +75,7 @@ export default function TagPage() {
                         ? "bg-primary-100"
                         : "bg-gray-100 hover:bg-gray-200"
                     }`}
-                  onClick={() => setSelectedFeed("nostr")}
+                  onClick={() => setSearchParams({ feed: "nostr" })}
                   role="button"
                 >
                   Nostr Feed

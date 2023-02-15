@@ -1,14 +1,10 @@
-import { useLoaderData, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
-import { PostDetailsQuery, Post_Type } from "src/graphql";
-import { capitalize } from "src/utils/helperFunctions";
 import ScrollToTop from "src/utils/routing/scrollToTop";
 import TrendingCard from "src/features/Posts/Components/TrendingCard/TrendingCard";
-import AuthorCard from "./Components/AuthorCard/AuthorCard";
 import PageContent from "./Components/PageContent/PageContent";
 import PostActions from "./Components/PostActions/PostActions";
-import styles from "./styles.module.scss";
-import { lazy, Suspense } from "react";
+import { Suspense, useMemo } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
@@ -34,8 +30,10 @@ interface Props {}
 function BaseNostrPostDetailsPage(props: Props) {
   const params = useParams();
 
+  const filters = useMemo(() => [{ ids: [params.id ?? ""] }], [params.id]);
+
   const { events, isEmpty, metadata } = useNostrQuery({
-    filters: [{ ids: [params.id ?? ""] }],
+    filters,
   });
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge);
