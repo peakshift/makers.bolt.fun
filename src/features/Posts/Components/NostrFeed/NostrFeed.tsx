@@ -1,4 +1,5 @@
-import { Filter } from "nostr-tools";
+import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
+import { Filter, Kind } from "nostr-tools";
 import { useMemo } from "react";
 import { useNostrQuery } from "src/utils/nostr";
 import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
@@ -11,7 +12,7 @@ type Props = {
 
 export const toipcsToFilters = {
   nostr: {
-    hashtags: ["nostrdesign", "nostrhackweek"],
+    hashtags: ["nostr", "nostrdesign", "nostrhackweek"],
     pubkey: [
       "369061c9a1ee258d28d123f35f913968884d52c4928ab7bd5a4544fcfd48f3f3",
     ],

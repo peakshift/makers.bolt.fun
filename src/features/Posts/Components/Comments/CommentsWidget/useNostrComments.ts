@@ -8,7 +8,7 @@ import {
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { useRelayPool, useRelaysPoolStatus } from "src/utils/nostr";
+import { useRelayPool } from "src/utils/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
@@ -20,7 +20,6 @@ export interface Props {
   publicKey?: string;
   rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
-  relays: string[];
   story: {
     id: number;
     nostr_event_id: string | null;
@@ -29,8 +28,7 @@ export interface Props {
 }
 
 export const useNostrComments = (props: Props) => {
-  const { relayPool } = useRelayPool({ relays: props.relays });
-  const { relaysStatus } = useRelaysPoolStatus(relayPool);
+  const { relayPool } = useRelayPool();
 
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
@@ -312,7 +310,6 @@ export const useNostrComments = (props: Props) => {
     publishMetadata,
     metadata,
     threads,
-    relaysStatus,
     relaysUrls: getRelayUrls(),
     loadingRootEvent,
   };

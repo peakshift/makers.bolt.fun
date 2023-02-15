@@ -15,7 +15,11 @@ import { FaCog } from "react-icons/fa";
 import Preferences from "src/services/preferences.service";
 import IconButton from "src/Components/IconButton/IconButton";
 import { AiOutlineClose } from "react-icons/ai";
-import { NostrProfile } from "src/utils/nostr";
+import {
+  NostrProfile,
+  useRelayPool,
+  useRelayPoolStatus,
+} from "src/utils/nostr";
 import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
 
 interface Props {
@@ -33,11 +37,11 @@ const DISCONNECT_PROFILE_ACTION = createAction<{}>(
   "NOSTR_PROFILE_DISCONNECTED"
 )({});
 
-export function CommentsWidgetRoot({ story }: Props) {
+export default function CommentsWidgetRoot({ story }: Props) {
+  const { relayPool, updateRelays } = useRelayPool();
+  const { relaysStatus } = useRelayPoolStatus(relayPool);
+
   const dispatch = useAppDispatch();
-  const [myRelays, setMyRelays] = useState<string[]>(
-    Preferences.get("nostr_relays_to_connect_to")
-  );
   const [showRelays, setShowRelays] = useState(false);
   const [myProfile, setMyProfile] = useState<NostrProfile | null>(null);
   const [showLearnAboutNostrTooltip, setShowLearnAboutNostrTooltip] = useState(
@@ -54,12 +58,10 @@ export function CommentsWidgetRoot({ story }: Props) {
     publishEvent,
     publishMetadata,
     relaysUrls,
-    relaysStatus,
     loadingRootEvent,
   } = useNostrComments({
     story,
     publicKey,
-    relays: myRelays,
   });
 
   useEffect(() => {
@@ -165,8 +167,7 @@ export function CommentsWidgetRoot({ story }: Props) {
               onClick={() => setShowRelays((v) => !v)}
               className="bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-bold py-8 px-12 rounded-12"
             >
-              📡 {showRelays ? "Hide" : "Show"} Relays ({connectedRelaysCount}/
-              {myRelays.length})
+              📡 {showRelays ? "Hide" : "Show"} Relays
             </button>
           </div>
           {/* {connectionStatus.status === 'Connected' && <div className="bg-green-50 text-green-500 text-body5 font-medium py-4 px-12 rounded-48"> &#8226; <span className="hidden md:inline">Connected to {connectionStatus.connectedRelaysCount} relays</span> 📡</div>}
@@ -198,7 +199,7 @@ export function CommentsWidgetRoot({ story }: Props) {
 
         <div className={`mt-16 ${!showRelays && "hidden"}`}>
           <RelaysList
-            onRelaysChange={setMyRelays}
+            onRelaysChange={updateRelays}
             relaysConnectionStatus={relaysStatus}
           />
         </div>

@@ -18,6 +18,7 @@ import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
 import { useState } from "react";
+import { RelayPoolProvider } from "src/utils/nostr";
 
 export default function TagPage() {
   const [selectedFeed, setSelectedFeed] =
@@ -82,7 +83,9 @@ export default function TagPage() {
               </ul>
             )}
             {hasTagsList(topicTitle) && selectedFeed === "nostr" && (
-              <NostrFeed topic={topicTitle} />
+              <RelayPoolProvider>
+                <NostrFeed topic={topicTitle} />
+              </RelayPoolProvider>
             )}
             {selectedFeed === "bolt-fun" && (
               <PostsList

@@ -1,13 +1,10 @@
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { Filter, nip05 } from "nostr-tools";
 import { useCallback, useEffect, useRef, useState } from "react";
-import Preferences from "src/services/preferences.service";
 import { insertEventIntoDescendingList } from "src/utils/nostr/helpers";
 import { useDebounce } from "use-debounce";
 import { NostrMetadata } from "./types";
 import { useRelayPool } from "./use-relays-pool";
-
-const prefRelays = Preferences.get("nostr_relays_to_connect_to");
 
 interface Props {
   filters: Filter[];
@@ -15,7 +12,7 @@ interface Props {
 }
 
 export const useNostrQuery = (props: Props) => {
-  const { relayPool } = useRelayPool({ relays: prefRelays });
+  const { relayPool } = useRelayPool();
 
   const [eventsImmediate, setEvents] = useState<NostrToolsEventWithId[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
@@ -80,7 +77,6 @@ export const useNostrQuery = (props: Props) => {
     if (events.length === 0) {
       const timeout = setTimeout(() => {
         setIsEmpty(true);
-        alert("EMPTY");
       }, 20000);
       return () => clearTimeout(timeout);
     }

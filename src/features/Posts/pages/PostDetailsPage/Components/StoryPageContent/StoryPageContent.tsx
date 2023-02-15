@@ -16,7 +16,16 @@ import { NotificationsService } from "src/services";
 import OgTags from "src/Components/OgTags/OgTags";
 import { formatHashtag } from "src/utils/helperFunctions";
 import { Link } from "react-router-dom";
-import { CommentsWidgetRoot } from "src/features/Posts/Components/Comments/CommentsWidget/CommentsWidgetRoot";
+import { lazy, Suspense } from "react";
+import { RotatingLines } from "react-loader-spinner";
+import { RelayPoolProvider } from "src/utils/nostr";
+
+const CommentsWidgetRoot = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments/CommentsWidget/CommentsWidgetRoot"
+    )
+);
 
 interface Props {
   story: Story;
@@ -139,14 +148,23 @@ export default function StoryPageContent({ story }: Props) {
         ></div>
       </Card>
       <div id="comments" className="mt-10 comments_col">
-        {/* <CommentsSection comments={story.comments} /> */}
-        <CommentsWidgetRoot
-          story={{
-            id: story.id,
-            nostr_event_id: story.nostr_event_id,
-            createdAt: story.createdAt,
-          }}
-        />
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-32">
+              <RotatingLines strokeColor="#ddd" width="64" />
+            </div>
+          }
+        >
+          <RelayPoolProvider>
+            <CommentsWidgetRoot
+              story={{
+                id: story.id,
+                nostr_event_id: story.nostr_event_id,
+                createdAt: story.createdAt,
+              }}
+            />
+          </RelayPoolProvider>
+        </Suspense>
       </div>
     </>
   );

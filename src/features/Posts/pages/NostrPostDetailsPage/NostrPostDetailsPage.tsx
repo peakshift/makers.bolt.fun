@@ -1,0 +1,112 @@
+import { useLoaderData, useParams } from "react-router-dom";
+import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
+import { PostDetailsQuery, Post_Type } from "src/graphql";
+import { capitalize } from "src/utils/helperFunctions";
+import ScrollToTop from "src/utils/routing/scrollToTop";
+import TrendingCard from "src/features/Posts/Components/TrendingCard/TrendingCard";
+import AuthorCard from "./Components/AuthorCard/AuthorCard";
+import PageContent from "./Components/PageContent/PageContent";
+import PostActions from "./Components/PostActions/PostActions";
+import styles from "./styles.module.scss";
+import { lazy, Suspense } from "react";
+import { RotatingLines } from "react-loader-spinner";
+import OgTags from "src/Components/OgTags/OgTags";
+import { useMediaQuery } from "src/utils/hooks";
+import { MEDIA_QUERIES } from "src/utils/theme";
+import { RelayPoolProvider, useNostrQuery } from "src/utils/nostr";
+import { extractArticleFields } from "../../Components/NostrPostCard/NostrPostCard";
+import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
+
+dayjs.extend(relativeTime);
+
+// const CommentsSection = lazy(
+//   () =>
+//     import(
+//       /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"
+//     )
+// );
+
+interface Props {}
+
+function BaseNostrPostDetailsPage(props: Props) {
+  const params = useParams();
+
+  const { events, isEmpty, metadata } = useNostrQuery({
+    filters: [{ ids: [params.id ?? ""] }],
+  });
+
+  const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge);
+
+  if (isEmpty) return <NotFoundPage />;
+
+  if (events.length === 0) return <PostDetailsPageSkeleton />;
+
+  const post = events[0];
+  const articleFields = extractArticleFields(post);
+
+  const author = getProfileDataFromMetaData(metadata, post.pubkey);
+
+  return (
+    <>
+      <OgTags
+        title={articleFields.title ?? post.content.slice(0, 25)}
+        description={articleFields.summary ?? post.content.slice(0, 50)}
+      />
+      <ScrollToTop />
+      <div className={`page-container max-md:bg-white`}>
+        {isLargeScreen ? (
+          <div className="grid w-full grid-cols-[116px_1fr_calc(min(30%,326px))] gap-32">
+            <aside className="no-scrollbar fill-container">
+              <PostActions />
+            </aside>
+            <main className="flex flex-col gap-32 min-w-0">
+              <PageContent
+                author={author}
+                post={post}
+                articleFields={articleFields}
+              />
+              <Suspense
+                fallback={
+                  <div className="flex justify-center py-32">
+                    <RotatingLines strokeColor="#ddd" width="64" />
+                  </div>
+                }
+              >
+                {/* <CommentsSection id={post.id} type={type as Post_Type} /> */}
+              </Suspense>
+            </main>
+            <aside className="no-scrollbar min-w-0">
+              <div className="flex flex-col gap-32 overflow-y-auto sticky-side-element">
+                {/* <AuthorCard author={post.author} /> */}
+                <TrendingCard />
+              </div>
+            </aside>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-32">
+            <PageContent
+              author={author}
+              post={post}
+              articleFields={articleFields}
+            />
+            <PostActions />
+            {/* <AuthorCard author={post.author} /> */}
+
+            <TrendingCard />
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default function NostrPostDetailsPage() {
+  return (
+    <RelayPoolProvider>
+      <BaseNostrPostDetailsPage />
+    </RelayPoolProvider>
+  );
+}
