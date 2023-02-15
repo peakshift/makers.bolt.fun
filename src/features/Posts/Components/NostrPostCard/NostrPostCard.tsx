@@ -1,20 +1,12 @@
-import { Story } from "src/features/Posts/types";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "src/utils/hooks";
 import Badge from "src/Components/Badge/Badge";
 import { createRoute } from "src/utils/routing";
-import { BiComment } from "react-icons/bi";
 import Card from "src/Components/Card/Card";
-import {
-  formatHashtag,
-  isMobileDevice,
-  trimText,
-} from "src/utils/helperFunctions";
+import { formatHashtag, trimText } from "src/utils/helperFunctions";
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrProfile } from "src/utils/nostr";
-import IconButton from "src/Components/IconButton/IconButton";
-import { FiLink } from "react-icons/fi";
-import { Kind, nip19 } from "nostr-tools";
+import { nip19 } from "nostr-tools";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";
 import { usePopperTooltip } from "react-popper-tooltip";

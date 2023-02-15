@@ -160,7 +160,6 @@ export const useNostrQuery = (props: Props) => {
     () => Array.from(relayPool?.relayByUrl.keys() ?? []),
     [relayPool?.relayByUrl]
   );
-  console.log(events);
 
   return {
     isEmpty,

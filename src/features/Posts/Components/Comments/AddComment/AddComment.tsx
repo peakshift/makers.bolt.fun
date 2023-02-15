@@ -21,9 +21,6 @@ import Button from "src/Components/Button/Button";
 import { InvalidContentHandler } from "remirror";
 import { useNostrComments } from "../CommentsWidget/useNostrComments";
 import { NotificationsService } from "src/services";
-import { useAppDispatch } from "src/utils/hooks";
-import { openModal } from "src/redux/features/modals.slice";
-import { FaCog } from "react-icons/fa";
 
 interface Props {
   initialContent?: string;
@@ -34,6 +31,7 @@ interface Props {
   onSubmit?: ReturnType<typeof useNostrComments>["publishEvent"];
   isPublishing?: boolean;
   avatar?: string;
+  pubkey?: string;
 }
 
 export default function AddComment({
@@ -45,6 +43,7 @@ export default function AddComment({
   isDisconnected,
   isPublishing,
   avatar,
+  pubkey,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -133,13 +132,19 @@ export default function AddComment({
       >
         <div className="flex gap-16 items-start pb-24 border-b border-gray-200 focus-within:border-primary-500">
           <div className="hidden sm:block mt-24 shrink-0">
-            <Avatar
-              width={40}
-              src={
-                avatar ??
-                `https://api.dicebear.com/5.x/initials/svg?backgroundColor=ebebeb`
-              }
-            />
+            <a
+              href={pubkey ? `https://www.nostr.guru/p/${pubkey}` : "#"}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Avatar
+                width={40}
+                src={
+                  avatar ??
+                  `https://api.dicebear.com/5.x/initials/svg?backgroundColor=ebebeb`
+                }
+              />
+            </a>
           </div>
           <div className="flex-grow">
             <EditorComponent />

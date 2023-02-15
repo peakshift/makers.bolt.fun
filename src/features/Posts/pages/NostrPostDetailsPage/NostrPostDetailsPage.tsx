@@ -15,6 +15,8 @@ import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
+import { NostrToolsEvent } from "nostr-relaypool/event";
+import { nip19 } from "nostr-tools";
 
 dayjs.extend(relativeTime);
 
@@ -42,7 +44,7 @@ function BaseNostrPostDetailsPage(props: Props) {
 
   if (events.length === 0) return <PostDetailsPageSkeleton />;
 
-  const post = events[0];
+  const post = { ...events[0], content: replaceMentionsWithLinks(events[0]) };
   const articleFields = extractArticleFields(post);
 
   const author = getProfileDataFromMetaData(metadata, post.pubkey);
@@ -107,4 +109,25 @@ export default function NostrPostDetailsPage() {
       <BaseNostrPostDetailsPage />
     </RelayPoolProvider>
   );
+}
+
+export function replaceMentionsWithLinks(event: NostrToolsEvent) {
+  return event.content.replace(/#\[([0-9]+)\]/g, (...params) => {
+    const group1 = params[1];
+    const match = params[0];
+    if (!Number.isInteger(Number(group1)) || !event.tags[Number(group1)])
+      return match;
+
+    if (event.tags[Number(group1)][0] === "p") {
+      const pubkey = event.tags[Number(group1)][1];
+      const npub = nip19.npubEncode(pubkey);
+      return `[${npub.slice(0, 8)}...](https://www.nostr.guru/p/${pubkey})`;
+    }
+    if (event.tags[Number(group1)][0] === "e") {
+      const eventId = event.tags[Number(group1)][1];
+      const note = nip19.noteEncode(eventId);
+      return `[${note.slice(0, 8)}...](https://www.nostr.guru/e/${eventId})`;
+    }
+    return match;
+  });
 }

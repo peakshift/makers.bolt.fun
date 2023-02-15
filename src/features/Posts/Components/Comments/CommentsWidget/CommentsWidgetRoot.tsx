@@ -161,7 +161,7 @@ export default function CommentsWidgetRoot({ story }: Props) {
               <span className="text-gray-400">
                 <FaCog />
               </span>{" "}
-              <span className="align-middle">Profile Settings</span>
+              <span className="align-middle">Nostr Profile Settings</span>
             </button>
             <button
               onClick={() => setShowRelays((v) => !v)}
@@ -211,6 +211,7 @@ export default function CommentsWidgetRoot({ story }: Props) {
                 placeholder="Leave a comment..."
                 onSubmit={publishEvent}
                 avatar={myProfile?.image}
+                pubkey={myProfile?.pubkey}
               />
             </div>
             {!publicKey && (

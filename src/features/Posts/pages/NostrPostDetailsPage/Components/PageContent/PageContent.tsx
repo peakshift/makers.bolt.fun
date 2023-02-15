@@ -56,7 +56,11 @@ export default function PageContent({ author, post, articleFields }: Props) {
               />
             </a>
             <div className="overflow-hidden">
-              <a href={author?.link} target="_blank" rel="noreferrer">
+              <a
+                href={`https://www.nostr.guru/p/${post.pubkey}`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <p className="text-body5 text-gray-700">
                   {trimText(author?.name, 15)}
                 </p>
