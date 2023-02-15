@@ -84,16 +84,17 @@ export default function RegisterCard({
             {isRegistered ? "Registered!" : "Register Now"}
           </Button>
         )}
-        <Button
-          color={"gray"}
-          href={"https://discord.gg/HFqtxavb7x"}
-          newTab
-          fullWidth
-          className="mt-8 !text-primary-500"
-        >
-          <FaDiscord />{" "}
-          <span className="align-middle ml-4">Join the Discord</span>
-        </Button>
+        {
+          <Button
+            color={"gray"}
+            href={"https://discord.gg/HFqtxavb7x"}
+            newTab
+            fullWidth
+            className="mt-8 !text-primary-500"
+          >
+            <span className="align-middle ml-4">Join the chat</span>
+          </Button>
+        }
       </div>
       {isRegistrationOpen && (
         <div>
