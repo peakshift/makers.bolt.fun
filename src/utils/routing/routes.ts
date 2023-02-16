@@ -19,6 +19,10 @@ type RouteOptions =
       username?: string;
     }
   | {
+      type: "nostr-story";
+      id: string;
+    }
+  | {
       type: "write-story";
       initData?: Record<string, any>;
     }
@@ -41,6 +45,9 @@ type RouteOptions =
     }
   | {
       type: "projects-page";
+    }
+  | {
+      type: "hangout";
     }
   | {
       type: "project";
@@ -72,6 +79,10 @@ export function createRoute(options: RouteOptions) {
       (!onlyId ? "-" : "") +
       `${options.id}`
     );
+  }
+
+  if (options.type === "nostr-story") {
+    return "/nostr-story/" + options.id;
   }
 
   if (options.type === "write-story") {
@@ -115,6 +126,8 @@ export function createRoute(options: RouteOptions) {
       `/tournaments/${options.id}` + (options.tab ? `/${options.tab}` : "")
     );
 
+  if (options.type === "hangout") return "/hangout";
+
   if (options.type === "projects-page") return "/projects";
 
   if (options.type === "project") return `/project/${options.tag}`;
@@ -134,6 +147,9 @@ export const PAGES_ROUTES = {
     projectPage: "/project/:tag",
     catchProject: "/project",
   },
+  hangout: {
+    default: "/hangout",
+  },
   blog: {
     feed: "/feed",
     postById: "/feed/post/:type/:id/*",
@@ -141,6 +157,7 @@ export const PAGES_ROUTES = {
     writeStory: "/story/write",
     createPost: "/story/create-post",
     catchStory: "/story",
+    nostrStoryById: "/nostr-story/:id",
     tagPage: "/t/:tag",
     topicsPage: "/topics",
   },

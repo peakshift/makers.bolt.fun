@@ -14,12 +14,12 @@ import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
 import { MEDIA_QUERIES } from "src/utils/theme";
 
-const CommentsSection = lazy(
-  () =>
-    import(
-      /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"
-    )
-);
+// const CommentsSection = lazy(
+//   () =>
+//     import(
+//       /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"
+//     )
+// );
 
 interface Props {
   postType: "story" | "bounty" | "question";
@@ -57,7 +57,7 @@ export default function PostDetailsPage(props: Props) {
                   </div>
                 }
               >
-                <CommentsSection id={post.id} type={type as Post_Type} />
+                {/* <CommentsSection id={post.id} type={type as Post_Type} /> */}
               </Suspense>
             </main>
             <aside className="no-scrollbar min-w-0">
@@ -79,7 +79,7 @@ export default function PostDetailsPage(props: Props) {
                 </div>
               }
             >
-              <CommentsSection id={post.id} type={type as Post_Type} />
+              {/* <CommentsSection id={post.id} type={type as Post_Type} /> */}
             </Suspense>
             <TrendingCard />
           </div>

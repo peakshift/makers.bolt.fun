@@ -19,6 +19,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
       type
       cover_image
       is_published
+      nostr_event_id
       project {
         id
         title

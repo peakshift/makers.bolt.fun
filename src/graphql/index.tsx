@@ -702,6 +702,7 @@ export type Story = PostBase & {
   excerpt: Scalars['String'];
   id: Scalars['Int'];
   is_published: Maybe<Scalars['Boolean']>;
+  nostr_event_id: Maybe<Scalars['String']>;
   project: Maybe<Project>;
   tags: Array<Tag>;
   title: Scalars['String'];
@@ -1004,6 +1005,11 @@ export type GetActiveUsersQueryVariables = Exact<{
 
 export type GetActiveUsersQuery = { __typename?: 'Query', activeUsers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> };
 
+export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null } | null };
+
 export type RecentProjectsInTagQueryVariables = Exact<{
   tagId: Scalars['Int'];
 }>;
@@ -1068,7 +1074,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
 
 export type GetTagInfoQueryVariables = Exact<{
   tag: InputMaybe<Scalars['String']>;
@@ -1108,7 +1114,7 @@ export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfil
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, is_current: boolean }> } | null };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
@@ -1781,6 +1787,42 @@ export function useGetActiveUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetActiveUsersQueryHookResult = ReturnType<typeof useGetActiveUsersQuery>;
 export type GetActiveUsersLazyQueryHookResult = ReturnType<typeof useGetActiveUsersLazyQuery>;
 export type GetActiveUsersQueryResult = Apollo.QueryResult<GetActiveUsersQuery, GetActiveUsersQueryVariables>;
+export const MyNostrKeysDocument = gql`
+    query MyNostrKeys {
+  me {
+    id
+    nostr_prv_key
+    nostr_pub_key
+  }
+}
+    `;
+
+/**
+ * __useMyNostrKeysQuery__
+ *
+ * To run a query within a React component, call `useMyNostrKeysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyNostrKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyNostrKeysQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyNostrKeysQuery(baseOptions?: Apollo.QueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
+      }
+export function useMyNostrKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
+        }
+export type MyNostrKeysQueryHookResult = ReturnType<typeof useMyNostrKeysQuery>;
+export type MyNostrKeysLazyQueryHookResult = ReturnType<typeof useMyNostrKeysLazyQuery>;
+export type MyNostrKeysQueryResult = Apollo.QueryResult<MyNostrKeysQuery, MyNostrKeysQueryVariables>;
 export const RecentProjectsInTagDocument = gql`
     query recentProjectsInTag($tagId: Int!) {
   recentProjectsInTag(tagId: $tagId) {
@@ -2257,6 +2299,7 @@ export const PostDetailsDocument = gql`
       type
       cover_image
       is_published
+      nostr_event_id
       project {
         id
         title
@@ -2573,6 +2616,7 @@ export const MyProfilePreferencesDocument = gql`
     walletsKeys {
       key
       name
+      createdAt
       is_current
     }
     nostr_prv_key

@@ -322,6 +322,7 @@ export interface NexusGenObjects {
     excerpt: string; // String!
     id: number; // Int!
     is_published?: boolean | null; // Boolean
+    nostr_event_id?: string | null; // String
     title: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
     votes_count: number; // Int!
@@ -695,6 +696,7 @@ export interface NexusGenFieldTypes {
     excerpt: string; // String!
     id: number; // Int!
     is_published: boolean | null; // Boolean
+    nostr_event_id: string | null; // String
     project: NexusGenRootTypes['Project'] | null; // Project
     tags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     title: string; // String!
@@ -1116,6 +1118,7 @@ export interface NexusGenFieldTypeNames {
     excerpt: 'String'
     id: 'Int'
     is_published: 'Boolean'
+    nostr_event_id: 'String'
     project: 'Project'
     tags: 'Tag'
     title: 'String'
