@@ -37,7 +37,7 @@ export const topicToNpubs = {
 };
 
 export function getFilters(topic: keyof typeof toipcsToFilters): Filter[] {
-  const baseFilter = { kinds: [30023], limit: 100 };
+  const baseFilter = { kinds: [1, 30023], limit: 100 };
 
   let filters: Filter[] = [];
   if (toipcsToFilters[topic].hashtags)
