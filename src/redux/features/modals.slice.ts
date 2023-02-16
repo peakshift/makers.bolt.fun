@@ -1,12 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Login_ScanningWalletCard, Login_ExternalWalletCard, Login_NativeWalletCard, Login_SuccessCard } from "src/Components/Modals/Login";
+import {
+  Login_ScanningWalletCard,
+  Login_ExternalWalletCard,
+  Login_NativeWalletCard,
+  Login_SuccessCard,
+} from "src/Components/Modals/Login";
 import { ProjectDetailsCard } from "src/features/Projects/pages/ProjectPage/ProjectDetailsCard";
 import { ProjectListedModal } from "src/features/Projects/pages/ListProjectPage/Components/ProjectListedModal";
 import VoteCard from "src/features/Projects/pages/ProjectPage/VoteCard/VoteCard";
-import { InsertVideoModal } from 'src/Components/Inputs/TextEditor/InsertVideoModal'
-import { InsertLinkModal } from 'src/Components/Inputs/TextEditor/InsertLinkModal'
+import { InsertVideoModal } from "src/Components/Inputs/TextEditor/InsertVideoModal";
+import { InsertLinkModal } from "src/Components/Inputs/TextEditor/InsertLinkModal";
 
-import { Claim_FundWithdrawCard, Claim_CopySignatureCard, Claim_GenerateSignatureCard, Claim_SubmittedCard } from "src/features/Projects/pages/ProjectPage/ClaimProject";
+import {
+  Claim_FundWithdrawCard,
+  Claim_CopySignatureCard,
+  Claim_GenerateSignatureCard,
+  Claim_SubmittedCard,
+} from "src/features/Projects/pages/ProjectPage/ClaimProject";
 import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
 import { RemoveWalletKeyModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveWalletKeyModal";
@@ -20,8 +30,9 @@ import { AddProjectTournamentModal } from "src/features/Tournaments/pages/Projec
 import { ProjectAddedModal } from "src/features/Tournaments/pages/ProjectsPage/ProjectAddedModal";
 import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals";
 
-
 import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
+import ConnectNostrAccountModal from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal/ConnectNostrAccountModal";
+import UpdateNostrProfileModal from "src/features/Posts/Components/Comments/CommentsWidget/components/UpdateNostrProfileModal/UpdateNostrProfileModal";
 
 export enum Direction {
   START,
@@ -29,8 +40,6 @@ export enum Direction {
   PREVIOUS,
   EXIT,
 }
-
-
 
 export const ALL_MODALS = {
   //Projects
@@ -65,35 +74,38 @@ export const ALL_MODALS = {
   // User Wallets Keys
   LinkingAccountModal,
   RemoveWalletKeyModal,
+
+  // Nostr
+  ConnectNostrAccountModal,
+  UpdateNostrProfileModal,
   // Text Editor Modals
   InsertImageModal,
   InsertVideoModal,
   InsertLinkModal,
-}
+};
 
-type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>
+type ExcludeBaseModalProps<U> = Omit<U, keyof ModalCard>;
 
-type ModalProps<M extends keyof typeof ALL_MODALS> = ExcludeBaseModalProps<ComponentProps<typeof ALL_MODALS[M]>>
+type ModalProps<M extends keyof typeof ALL_MODALS> = ExcludeBaseModalProps<
+  ComponentProps<typeof ALL_MODALS[M]>
+>;
 
 type NonNullableObject<T> = {
-  [K in keyof T]-?: NonNullable<T[K]>
-}
+  [K in keyof T]-?: NonNullable<T[K]>;
+};
 
-type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> = U extends any ?
-  {} extends NonNullableObject<ModalProps<U>> ?
-  { Modal: U, isPageModal?: boolean, }
-  :
-  { Modal: U, isPageModal?: boolean, props: ModalProps<U> }
-  :
-  never;
-
-
+type ModalAction<U extends keyof typeof ALL_MODALS = keyof typeof ALL_MODALS> =
+  U extends any
+    ? {} extends NonNullableObject<ModalProps<U>>
+      ? { Modal: U; isPageModal?: boolean }
+      : { Modal: U; isPageModal?: boolean; props: ModalProps<U> }
+    : never;
 
 interface ModalObject {
-  id: string
-  Modal: ModalAction['Modal'],
+  id: string;
+  Modal: ModalAction["Modal"];
   props?: any;
-  isOpen: boolean
+  isOpen: boolean;
 }
 
 interface StoreState {
@@ -144,25 +156,21 @@ export const modalSlice = createSlice({
       state.toOpenLater = null;
     },
 
-    openModal(
-      state,
-      action: PayloadAction<ModalAction>
-    ) {
+    openModal(state, action: PayloadAction<ModalAction>) {
       state.direction = Direction.START;
       state.isOpen = true;
 
       let props: any = {};
       props.isPageModal = action.payload.isPageModal;
 
-      if ('props' in action.payload)
-        props = { ...props, ...action.payload.props }
-
+      if ("props" in action.payload)
+        props = { ...props, ...action.payload.props };
 
       state.openModals.push({
         id: generateId(),
         Modal: action.payload.Modal,
         props,
-        isOpen: true
+        isOpen: true,
       });
     },
 
@@ -173,11 +181,10 @@ export const modalSlice = createSlice({
       state.direction = action.payload.direction;
       state.openModals[state.openModals.length - 1].isOpen = false;
 
-
       let props: any = {};
-      props.isPageModal = action.payload.Modal === 'ProjectDetailsCard';
-      if ('props' in action.payload)
-        props = { ...props, ...action.payload.props }
+      props.isPageModal = action.payload.Modal === "ProjectDetailsCard";
+      if ("props" in action.payload)
+        props = { ...props, ...action.payload.props };
 
       state.openModals.push({
         id: generateId(),
@@ -190,17 +197,18 @@ export const modalSlice = createSlice({
     closeModal(state) {
       state.direction = Direction.EXIT;
       state.openModals[state.openModals.length - 1].isOpen = false;
-      state.isOpen = Boolean(state.openModals.filter(modal => modal.isOpen).length);
+      state.isOpen = Boolean(
+        state.openModals.filter((modal) => modal.isOpen).length
+      );
     },
 
     removeClosedModal(state, action: PayloadAction<string>) {
-      state.openModals = state.openModals.filter(m => m.id !== action.payload)
-
-    }
+      state.openModals = state.openModals.filter(
+        (m) => m.id !== action.payload
+      );
+    },
   },
 });
-
-
 
 export const {
   closeModal,
@@ -210,8 +218,7 @@ export const {
   scheduleModal,
   openSceduledModal,
   removeScheduledModal,
-  removeClosedModal
+  removeClosedModal,
 } = modalSlice.actions;
-
 
 export default modalSlice.reducer;

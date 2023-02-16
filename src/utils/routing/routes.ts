@@ -19,6 +19,10 @@ type RouteOptions =
       username?: string;
     }
   | {
+      type: "nostr-story";
+      id: string;
+    }
+  | {
       type: "write-story";
       initData?: Record<string, any>;
     }
@@ -75,6 +79,10 @@ export function createRoute(options: RouteOptions) {
       (!onlyId ? "-" : "") +
       `${options.id}`
     );
+  }
+
+  if (options.type === "nostr-story") {
+    return "/note/" + options.id;
   }
 
   if (options.type === "write-story") {
@@ -149,6 +157,7 @@ export const PAGES_ROUTES = {
     writeStory: "/story/write",
     createPost: "/story/create-post",
     catchStory: "/story",
+    nostrStoryById: "/note/:id",
     tagPage: "/t/:tag",
     topicsPage: "/topics",
   },

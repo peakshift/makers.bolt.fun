@@ -17,6 +17,7 @@ import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
+import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 
 const FeedPage = Loadable(
   React.lazy(
@@ -31,6 +32,14 @@ const PostDetailsPage = Loadable(
     () =>
       import(
         /* webpackChunkName: "post_details_page" */ "../../features/Posts/pages/PostDetailsPage/PostDetailsPage"
+      )
+  )
+);
+const NostrPostDetailsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "post_details_page" */ "../../features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage"
       )
   )
 );
@@ -184,7 +193,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         path={PAGES_ROUTES.hangout.default}
         element={
           <ProtectedRoute>
-            <HangoutPage /> 
+            <HangoutPage />
           </ProtectedRoute>
         }
       />
@@ -207,7 +216,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           path={PAGES_ROUTES.projects.catchProject}
           element={<Navigate replace to={PAGES_ROUTES.projects.default} />}
         />
-
+        <Route
+          path={PAGES_ROUTES.blog.nostrStoryById}
+          element={<NostrPostDetailsPage />}
+        />
         <Route
           path={PAGES_ROUTES.blog.storyById}
           element={<PostDetailsPage postType="story" />}
@@ -224,7 +236,11 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           element={<AllTopicsPage />}
           loader={allTopicsPageLoader(queryClient)}
         />
-        <Route path={PAGES_ROUTES.blog.feed} element={<FeedPage />} />
+        <Route
+          path={PAGES_ROUTES.blog.feed}
+          element={<FeedPage />}
+          loader={feedPageLoader(queryClient)}
+        />
         <Route
           path={PAGES_ROUTES.blog.catchStory}
           element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}

@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { withErrorBoundary } from "react-error-boundary";
 import { FormProvider, NestedValue, Resolver, useForm } from "react-hook-form";
 import { Triangle } from "react-loader-spinner";
@@ -7,12 +7,12 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import {
   Category,
   CreateStoryMutationVariables,
-  MyProjectsQuery,
   Post_Type,
   Project,
 } from "src/graphql";
+import { unstageStoryEdit } from "src/redux/features/staging.slice";
 import { StorageService } from "src/services";
-import { useAppSelector, usePreload } from "src/utils/hooks";
+import { useAppDispatch, useAppSelector, usePreload } from "src/utils/hooks";
 import { Override } from "src/utils/interfaces";
 import { imageSchema, tagSchema } from "src/utils/validation";
 import * as yup from "yup";
@@ -68,35 +68,58 @@ export type CreateStoryType = Override<
   }
 >;
 
-const storageService = new StorageService<CreateStoryType>("story-edit");
-
 function CreateStoryPage() {
-  const { story: initStoryData } = useAppSelector((state) => ({
-    story: state.staging.story || getInitDataFromURL(),
-    //  || storageService.get(),
+  const dispatch = useAppDispatch();
+
+  const dataInUrl = getInitDataFromURL();
+
+  const [storageService] = useState(
+    () =>
+      new StorageService<CreateStoryType>(
+        "story-edit" +
+          (dataInUrl.tags ? `-${dataInUrl.tags?.[0].title}` : "default")
+      )
+  );
+
+  const dataInLocalStorage = storageService.get();
+
+  const { stagedStoryEdit, stagedStoryPreview } = useAppSelector((state) => ({
+    stagedStoryEdit: state.staging.storyEdit,
+    stagedStoryPreview: state.staging.storyPreview,
   }));
+
+  const [isEditing] = useState(!!stagedStoryEdit?.id);
+
+  const initFormData =
+    stagedStoryPreview ||
+    (isEditing ? stagedStoryEdit : { ...dataInLocalStorage, ...dataInUrl });
+
   const [storyCreated, setStoryCreated] = useState(false);
 
   const formMethods = useForm<CreateStoryType>({
     resolver: yupResolver(schema) as Resolver<CreateStoryType>,
     shouldFocusError: false,
     defaultValues: {
-      id: initStoryData?.id ?? null,
-      title: initStoryData?.title ?? "",
-      cover_image: initStoryData?.cover_image,
-      tags: initStoryData?.tags ?? [],
-      body: initStoryData?.body ?? "",
-      is_published: initStoryData?.is_published ?? false,
-      project: initStoryData?.project,
+      id: initFormData?.id ?? null,
+      title: initFormData?.title ?? "",
+      cover_image: initFormData?.cover_image,
+      tags: initFormData?.tags ?? [],
+      body: initFormData?.body ?? "",
+      is_published: initFormData?.is_published ?? false,
+      project: initFormData?.project,
     },
   });
 
   const errorsContainerRef = useRef<HTMLDivElement>(null!);
   const [formKey, setFormKey] = useState(1);
 
-  const resetForm = () => setFormKey((v) => v + 1);
-
   usePreload("PostPage");
+
+  useEffect(() => {
+    dispatch(unstageStoryEdit());
+  }, [dispatch]);
+
+  const resetForm = () => setFormKey((v) => v + 1);
 
   if (storyCreated)
     return (
@@ -119,8 +142,8 @@ function CreateStoryPage() {
       <div className={styles.grid}>
         <StoryForm
           key={formKey}
-          isPublished={!!initStoryData?.is_published}
-          isUpdating={!!initStoryData?.id}
+          isPublished={!!initFormData?.is_published}
+          isUpdating={!!initFormData?.id}
           onSuccess={() => setStoryCreated(true)}
           onValidationError={() =>
             errorsContainerRef.current.scrollIntoView({
@@ -128,6 +151,7 @@ function CreateStoryPage() {
               block: "center",
             })
           }
+          storageService={storageService}
         />
 
         <ErrorsContainer id="errors" ref={errorsContainerRef} />
@@ -148,7 +172,7 @@ function CreateStoryPage() {
 export default withErrorBoundary(CreateStoryPage, {
   FallbackComponent: ErrorPage,
   onError: () => {
-    storageService.set({ ...storageService.get()!, cover_image: null as any });
+    // storageService.set({ ...storageService.get()!, cover_image: null as any });
   },
 });
 
@@ -162,12 +186,6 @@ function getInitDataFromURL() {
   // the form data from the URL
   // currently, only tags is needed
   return {
-    id: undefined,
-    title: undefined,
-    body: "",
-    cover_image: undefined,
-    is_published: undefined,
-    project: undefined,
-    tags: _tags ? [{ title: _tags }] : undefined,
-  };
+    ...(_tags && { tags: [{ title: _tags }] }),
+  } as Partial<CreateStoryType>;
 }

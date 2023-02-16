@@ -10,7 +10,7 @@ import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import { FiChevronDown } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
+import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 
 export default function NavDesktop() {

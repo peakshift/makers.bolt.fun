@@ -110,68 +110,73 @@ export default function NavMobile() {
             </div>
 
             <div className="flex-1 flex justify-end">
-              {curUser ? (
-                <Menu
-                  align="end"
-                  offsetY={4}
-                  menuClassName="!p-8 !rounded-12"
-                  menuButton={
-                    <MenuButton>
-                      <Avatar src={curUser.avatar} width={32} />{" "}
-                    </MenuButton>
-                  }
-                >
-                  <MenuItem
-                    href={createRoute({
-                      type: "profile",
-                      id: curUser.id,
-                      username: curUser.name,
-                    })}
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate(
-                        createRoute({
-                          type: "profile",
-                          id: curUser.id,
-                          username: curUser.name,
-                        })
-                      );
-                    }}
-                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+              {curUser !== undefined &&
+                (curUser ? (
+                  <Menu
+                    align="end"
+                    offsetY={4}
+                    menuClassName="!p-8 !rounded-12"
+                    menuButton={
+                      <MenuButton>
+                        <Avatar src={curUser.avatar} width={32} />{" "}
+                      </MenuButton>
+                    }
                   >
-                    👾 Profile
-                  </MenuItem>
-                  <MenuItem
-                    href="/edit-profile"
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate("/edit-profile");
-                    }}
-                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    <MenuItem
+                      href={createRoute({
+                        type: "profile",
+                        id: curUser.id,
+                        username: curUser.name,
+                      })}
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate(
+                          createRoute({
+                            type: "profile",
+                            id: curUser.id,
+                            username: curUser.name,
+                          })
+                        );
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      👾 Profile
+                    </MenuItem>
+                    <MenuItem
+                      href="/edit-profile"
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/edit-profile");
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      ⚙️ Settings
+                    </MenuItem>
+                    <MenuItem
+                      href="/logout"
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/logout");
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      👋 Logout
+                    </MenuItem>
+                  </Menu>
+                ) : (
+                  <Link
+                    to={PAGES_ROUTES.auth.login}
+                    state={{ from: window.location.pathname }}
                   >
-                    ⚙️ Settings
-                  </MenuItem>
-                  <MenuItem
-                    href="/logout"
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate("/logout");
-                    }}
-                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                  >
-                    👋 Logout
-                  </MenuItem>
-                </Menu>
-              ) : (
-                <Button
-                  size="sm"
-                  color="none"
-                  className="!text-body5 whitespace-nowrap"
-                  href="/login"
-                >
-                  Connect ⚡
-                </Button>
-              )}
+                    <Button
+                      size="sm"
+                      color="none"
+                      className="!text-body5 whitespace-nowrap"
+                    >
+                      Connect ⚡
+                    </Button>
+                  </Link>
+                ))}
             </div>
           </div>
         </div>
