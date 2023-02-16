@@ -8,13 +8,13 @@ import {
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { useRelayPool } from "src/utils/nostr";
+import { useRelayPool } from "src/lib/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
   computeThreads,
-} from "src/utils/nostr/helpers";
-import { NostrProfile } from "src/utils/nostr";
+} from "src/lib/nostr/helpers";
+import { NostrProfile } from "src/lib/nostr";
 
 export interface Props {
   publicKey?: string;

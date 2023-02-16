@@ -17,7 +17,7 @@ import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
-import { RelayPoolProvider } from "src/utils/nostr";
+import { RelayPoolProvider } from "src/lib/nostr";
 
 export default function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });

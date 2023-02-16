@@ -18,7 +18,7 @@ import { formatHashtag } from "src/utils/helperFunctions";
 import { Link } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
-import { RelayPoolProvider } from "src/utils/nostr";
+import { RelayPoolProvider } from "src/lib/nostr";
 
 const CommentsWidgetRoot = lazy(
   () =>

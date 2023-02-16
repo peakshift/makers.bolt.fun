@@ -15,12 +15,8 @@ import { FaCog } from "react-icons/fa";
 import Preferences from "src/services/preferences.service";
 import IconButton from "src/Components/IconButton/IconButton";
 import { AiOutlineClose } from "react-icons/ai";
-import {
-  NostrProfile,
-  useRelayPool,
-  useRelayPoolStatus,
-} from "src/utils/nostr";
-import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
+import { NostrProfile, useRelayPool, useRelayPoolStatus } from "src/lib/nostr";
+import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 
 interface Props {
   rootEventId?: string;

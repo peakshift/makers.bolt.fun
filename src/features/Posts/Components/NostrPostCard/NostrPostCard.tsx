@@ -5,7 +5,7 @@ import { createRoute } from "src/utils/routing";
 import Card from "src/Components/Card/Card";
 import { formatHashtag, trimText } from "src/utils/helperFunctions";
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
-import { NostrProfile } from "src/utils/nostr";
+import { NostrProfile } from "src/lib/nostr";
 import { nip19 } from "nostr-tools";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";

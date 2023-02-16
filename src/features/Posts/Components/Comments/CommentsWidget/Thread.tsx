@@ -9,8 +9,8 @@ import { useNostrComments } from "./useNostrComments";
 import {
   getProfileDataFromMetaData,
   ThreadedEvent,
-} from "src/utils/nostr/helpers";
-import { NostrProfile } from "src/utils/nostr";
+} from "src/lib/nostr/helpers";
+import { NostrProfile } from "src/lib/nostr";
 
 dayjs.extend(relativeTime);
 
