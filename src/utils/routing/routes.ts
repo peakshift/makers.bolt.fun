@@ -82,7 +82,7 @@ export function createRoute(options: RouteOptions) {
   }
 
   if (options.type === "nostr-story") {
-    return "/nostr-story/" + options.id;
+    return "/note/" + options.id;
   }
 
   if (options.type === "write-story") {
@@ -157,7 +157,7 @@ export const PAGES_ROUTES = {
     writeStory: "/story/write",
     createPost: "/story/create-post",
     catchStory: "/story",
-    nostrStoryById: "/nostr-story/:id",
+    nostrStoryById: "/note/:id",
     tagPage: "/t/:tag",
     topicsPage: "/topics",
   },
