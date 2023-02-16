@@ -16,7 +16,7 @@ export function randomItems(cnt: number, ...args: any[]) {
   return shuffle(args).slice(0, cnt);
 }
 
-export function isMobileScreen() {
+export function isMobileDevice() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   );
@@ -212,8 +212,13 @@ export function removeArrayItemAtIndex<T>(arr: T[], indexToRemove: number) {
 }
 
 export function extractErrorMessage(error: unknown) {
-  if (error && typeof error === "object" && "message" in error)
-    return (error as any).message;
+  if (
+    error &&
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string"
+  )
+    return error.message;
   return null;
 }
 

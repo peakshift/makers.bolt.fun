@@ -6,9 +6,7 @@ import styles from "./styles.module.scss";
 import Button from "src/Components/Button/Button";
 import { capitalize, formatHashtag } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
-import { Link, useLoaderData } from "react-router-dom";
-import { useAppDispatch } from "src/utils/hooks";
-import { stageStory } from "src/redux/features/staging.slice";
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import { LoaderData } from "./tagPage.loader";
 import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -18,12 +16,14 @@ import { Fulgur } from "src/Components/Ads/Fulgur";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
 import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
+import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
+import { RelayPoolProvider } from "src/lib/nostr";
 
 export default function TagPage() {
+  const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });
   const loaderData = useLoaderData() as LoaderData;
 
   const tagInfo = loaderData.getTagInfo;
-  const dispatch = useAppDispatch();
 
   const feedQuery = useTagFeedQuery({
     variables: {
@@ -37,18 +37,9 @@ export default function TagPage() {
 
   usePreload("PostPage");
 
-  const clickWriteStory = () => {
-    dispatch(
-      stageStory({
-        tags: [
-          {
-            id: tagInfo.id,
-            title: tagInfo.title,
-          },
-        ],
-      })
-    );
-  };
+  const topicTitle = tagInfo.title.toLowerCase();
+
+  const selectedFeed = searchParams.get("feed") ?? "bolt-fun";
 
   return (
     <>
@@ -59,12 +50,51 @@ export default function TagPage() {
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
           <div id="content" className="">
-            <PostsList
-              isLoading={feedQuery.loading}
-              items={feedQuery.data?.getFeed}
-              isFetching={isFetchingMore}
-              onReachedBottom={fetchMore}
-            />
+            {hasTagsList(topicTitle) && (
+              <ul className="flex gap-8 mb-16">
+                <li
+                  className={` 
+                  text-primary-600 rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${
+                      selectedFeed === "bolt-fun"
+                        ? "bg-primary-100"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                  onClick={() => setSearchParams({ feed: "bolt-fun" })}
+                  role="button"
+                >
+                  Bolt.Fun Feed
+                </li>
+                <li
+                  className={` 
+                  text-primary-600 rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
+                    active:scale-95 transition-transform
+                    ${
+                      selectedFeed === "nostr"
+                        ? "bg-primary-100"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                  onClick={() => setSearchParams({ feed: "nostr" })}
+                  role="button"
+                >
+                  Nostr Feed
+                </li>
+              </ul>
+            )}
+            {hasTagsList(topicTitle) && selectedFeed === "nostr" && (
+              <RelayPoolProvider>
+                <NostrFeed topic={topicTitle} />
+              </RelayPoolProvider>
+            )}
+            {selectedFeed === "bolt-fun" && (
+              <PostsList
+                isLoading={feedQuery.loading}
+                items={feedQuery.data?.getFeed}
+                isFetching={isFetchingMore}
+                onReachedBottom={fetchMore}
+              />
+            )}
           </div>
           <aside id="categories" className="no-scrollbar">
             <div className="sticky-side-element flex flex-col gap-16 md:gap-24 md:overflow-y-scroll">
@@ -150,7 +180,6 @@ export default function TagPage() {
                   })}
                   color="primary"
                   fullWidth
-                  onClick={clickWriteStory}
                 >
                   Write a {formatHashtag(tagInfo.title)} story
                 </Button>

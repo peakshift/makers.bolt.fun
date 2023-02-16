@@ -30,16 +30,14 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
         <div>
           <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
             <p className="text-body2 font-bolder text-gray-900">🏷️ Topics</p>
-            <Button
-              variant="text"
-              color="primary"
-              size="sm"
-              href={PAGES_ROUTES.blog.topicsPage}
-            >
-              See all
-            </Button>
+
+            <Link to={PAGES_ROUTES.blog.topicsPage}>
+              <Button variant="text" color="primary" size="sm">
+                See All
+              </Button>
+            </Link>
           </div>
-          <ul className=" flex flex-col gap-16">
+          <ul className="flex flex-col gap-16 mb-16">
             {tagsQuery.loading
               ? Array(10)
                   .fill(0)

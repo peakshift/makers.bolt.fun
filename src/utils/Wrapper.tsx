@@ -5,8 +5,8 @@ import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "./apollo";
 import { useAppDispatch, useResizeListener } from "./hooks";
 import { useCallback, useLayoutEffect } from "react";
-import { setIsMobileScreen } from "src/redux/features/ui.slice";
-import { isMobileScreen } from "./helperFunctions";
+import { setIsMobileDevice } from "src/redux/features/ui.slice";
+import { isMobileDevice } from "./helperFunctions";
 import ReactTooltip from "react-tooltip";
 import { ToastContainer } from "react-toastify";
 
@@ -33,7 +33,7 @@ export const useWrapperSetup = () => {
   }, []);
 
   const resizeListener = useCallback(() => {
-    dispatch(setIsMobileScreen(isMobileScreen()));
+    dispatch(setIsMobileDevice(isMobileDevice()));
   }, [dispatch]);
 
   useResizeListener(resizeListener);
