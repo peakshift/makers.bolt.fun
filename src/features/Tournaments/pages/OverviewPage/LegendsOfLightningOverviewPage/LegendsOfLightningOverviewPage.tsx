@@ -7,7 +7,7 @@ import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
-import { partners, tracksAndPrizes } from "./tournament-data";
+import { partners, tracksAndPrizes, chat } from "./tournament-data";
 
 export default function LegendsOfLightningOverviewPage() {
   const { tournamentDetails, makers, myParticipationInfo } = useTournament();
@@ -39,6 +39,7 @@ export default function LegendsOfLightningOverviewPage() {
             avatars={makers.map((m) => m.user.avatar)}
             isRegistered={!!myParticipationInfo}
             partners={partners}
+            chat={chat}
           />
         </div>
         <PrizesSection tracks={tracksAndPrizes} />

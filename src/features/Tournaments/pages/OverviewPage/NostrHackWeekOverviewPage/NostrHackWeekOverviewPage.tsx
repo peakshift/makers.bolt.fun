@@ -7,7 +7,7 @@ import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
-import { partners, tracksAndPrizes } from "./tournament-data";
+import { partners, tracksAndPrizes, chat } from "./tournament-data";
 
 export default function NostrHackWeekOverviewPage() {
   const { tournamentDetails, makers, myParticipationInfo } = useTournament();
@@ -40,6 +40,7 @@ export default function NostrHackWeekOverviewPage() {
             isRegistered={!!myParticipationInfo}
             isRegistrationOpen
             partners={partners}
+            chat={chat}
           />
         </div>
         <PrizesSection tracks={tracksAndPrizes} />

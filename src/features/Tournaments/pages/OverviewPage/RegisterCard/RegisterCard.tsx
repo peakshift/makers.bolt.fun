@@ -16,6 +16,7 @@ interface Props {
   isRegistered: boolean;
   isRegistrationOpen?: boolean;
   partners: { link: string; image: string; isPrimary?: boolean }[];
+  chat: { type: string; link: string; }
 }
 
 export default function RegisterCard({
@@ -25,6 +26,7 @@ export default function RegisterCard({
   isRegistered,
   isRegistrationOpen,
   partners,
+  chat,
 }: Props) {
   const counter = useCountdown(start_date);
   const { id: tournamentId } = useParams();
@@ -84,17 +86,15 @@ export default function RegisterCard({
             {isRegistered ? "Registered!" : "Register Now"}
           </Button>
         )}
-        {
-          <Button
-            color={"gray"}
-            href={"https://discord.gg/HFqtxavb7x"}
-            newTab
-            fullWidth
-            className="mt-8 !text-primary-500"
-          >
-            <span className="align-middle ml-4">Join the chat</span>
-          </Button>
-        }
+        <Button
+          color={"gray"}
+          href={chat.link}
+          newTab
+          fullWidth
+          className="mt-8 !text-primary-500"
+        >
+          <span className="align-middle ml-4">Join the chat</span>
+        </Button>
       </div>
       {isRegistrationOpen && (
         <div>
