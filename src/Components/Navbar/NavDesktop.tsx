@@ -80,7 +80,7 @@ export default function NavDesktop() {
                     e.syntheticEvent.preventDefault();
                     navigate("/tournaments/2/overview");
                   }}
-                  className="!p-16 font-medium flex gap-16 bg-orange-200 hover:bg-orange-300 !rounded-12"
+                  className="!p-16 font-medium flex gap-16 bg-orange-50 hover:bg-orange-100 !rounded-12"
                 >
                   <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
                     <span className="text-body2">🦩</span>
@@ -93,7 +93,27 @@ export default function NavDesktop() {
                       </span>
                     </p>
                     <p className="text-body5 text-gray-600 mt-4">
-                      Design & Build cool things with the protocol!
+                      Design & Build cool social things!
+                    </p>
+                  </div>
+                </MenuItem>
+                <MenuItem
+                  href="/hackathons"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/hackathons");
+                  }}
+                  className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                >
+                  <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                    <span className="text-body2">👩‍💻</span>
+                  </div>
+                  <div>
+                    <p className="text-body4 text-black font-medium">
+                      Upcoming Hackathons
+                    </p>
+                    <p className="text-body5 text-gray-600 mt-4">
+                      Take part in hackathons & tournaments
                     </p>
                   </div>
                 </MenuItem>
@@ -115,26 +135,6 @@ export default function NavDesktop() {
                     <p className="text-body5 text-gray-600 mt-4">
                       In 2022 we put on the largest
                       <br /> bitcoin hackathon.
-                    </p>
-                  </div>
-                </MenuItem>
-                <MenuItem
-                  href="/hackathons"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/hackathons");
-                  }}
-                  className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                >
-                  <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                    <span className="text-body2">👩‍💻</span>
-                  </div>
-                  <div>
-                    <p className="text-body4 text-black font-medium">
-                      Hackathons
-                    </p>
-                    <p className="text-body5 text-gray-600 mt-4">
-                      Take part in hackathons & tournaments
                     </p>
                   </div>
                 </MenuItem>

@@ -243,6 +243,26 @@ export default function NavMobile() {
                 >
                   <div className="flex flex-col gap-24 pt-16">
                     <Link
+                      to="/tournaments/2"
+                      onClick={() => toggleDrawerOpen(false)}
+                      className="font-medium flex gap-16 !rounded-12"
+                    >
+                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                        <span className="text-body2 shrink-0">🦩</span>
+                      </div>
+                      <div>
+                        <p className="text-body4 text-black font-medium">
+                        Nostr Hack & Design Week{" "}
+                        <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
+                          Hot! 🔥
+                        </span>
+                        </p>
+                        <p className="text-body5 font-normal text-gray-600 mt-4">
+                          Design & Build cool social things!
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
                       to="/hackathons"
                       onClick={() => toggleDrawerOpen(false)}
                       className="font-medium flex gap-16 !rounded-12"
@@ -252,7 +272,7 @@ export default function NavMobile() {
                       </div>
                       <div>
                         <p className="text-body4 text-black font-medium">
-                          Hackathons
+                        Upcoming Hackathons
                         </p>
                         <p className="text-body5 font-normal text-gray-600 mt-4">
                           Take part in hackathons & tournaments
