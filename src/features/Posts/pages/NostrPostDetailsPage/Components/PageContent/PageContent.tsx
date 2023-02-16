@@ -147,7 +147,6 @@ export default function PageContent({ author, post, articleFields }: Props) {
         >
           <CommentsWidgetRoot
             story={{
-              id: -1,
               nostr_event_id: post.id,
               createdAt: new Date(post.created_at).toString(),
             }}

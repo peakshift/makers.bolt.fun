@@ -13,15 +13,17 @@ import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
   computeThreads,
+  normalizeURL,
 } from "src/lib/nostr/helpers";
 import { NostrProfile } from "src/lib/nostr";
+import { createRoute } from "src/utils/routing";
 
 export interface Props {
   publicKey?: string;
   rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
   story: {
-    id: number;
+    id?: number;
     nostr_event_id: string | null;
     createdAt: string;
   };
@@ -181,9 +183,17 @@ export const useNostrComments = (props: Props) => {
 
       let tags: string[][] = [];
 
-      threadRootObject.type === "root-event"
-        ? tags.push(["e", threadRootObject.event_id, "", "root"])
-        : tags.push(["r", threadRootObject.url]);
+      if (threadRootObject.type === "root-event") {
+        tags.push(["e", threadRootObject.event_id, "", "root"]);
+        if (props.story.id)
+          tags.push([
+            "r",
+            normalizeURL(
+              window.location.origin +
+                createRoute({ type: "story", id: props.story.id })
+            ),
+          ]);
+      } else tags.push(["r", threadRootObject.url]);
 
       if (options?.replyTo) tags.push(["e", options.replyTo!, "", "reply"]);
 

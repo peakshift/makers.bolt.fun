@@ -50,7 +50,7 @@ export const useGetThreadRootObject = (props: {
       type: "url-fallback",
       url: normalizeURL(
         window.location.origin +
-          createRoute({ type: "story", id: props.story.id })
+          createRoute({ type: "story", id: props.story.id ?? -1 })
       ),
     } as const;
 
@@ -65,7 +65,7 @@ export const useGetThreadRootObject = (props: {
           "#r": [
             normalizeURL(
               window.location.origin +
-                createRoute({ type: "story", id: props.story.id })
+                createRoute({ type: "story", id: props.story.id ?? -1 })
             ),
           ],
         },
