@@ -1,19 +1,15 @@
 import { TrackAndPrizes } from "../PrizesSection/PrizesSection";
 
 export const chat = {
-  channel: "telegram",
+  type: "telegram",
   link: "https://t.me/nostrdesign"
 }
 
 export const partners = [
   {
-    link: "https://peakshift.com/",
+    link: "https://twitter.com/peakshift/",
     image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/4b9b49b6-efe7-4004-06f4-67d6efad8d00/public",
     isPrimary: true,
-  },
-  {
-    link: "https://www.afrobitcoin.org/",
-    image: "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
   },
 ];
 

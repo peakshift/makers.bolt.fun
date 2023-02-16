@@ -1,5 +1,10 @@
 import { TrackAndPrizes } from "../PrizesSection/PrizesSection";
 
+export const chat = {
+  type: "discord",
+  link: "https://discord.gg/HFqtxavb7x"
+}
+
 export const partners = [
   {
     link: "https://fulgur.ventures/",
