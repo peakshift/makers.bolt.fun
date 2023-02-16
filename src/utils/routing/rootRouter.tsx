@@ -35,6 +35,14 @@ const PostDetailsPage = Loadable(
       )
   )
 );
+const NostrPostDetailsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "post_details_page" */ "../../features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage"
+      )
+  )
+);
 const CreatePostPage = Loadable(
   React.lazy(
     () =>
@@ -208,7 +216,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           path={PAGES_ROUTES.projects.catchProject}
           element={<Navigate replace to={PAGES_ROUTES.projects.default} />}
         />
-
+        <Route
+          path={PAGES_ROUTES.blog.nostrStoryById}
+          element={<NostrPostDetailsPage />}
+        />
         <Route
           path={PAGES_ROUTES.blog.storyById}
           element={<PostDetailsPage postType="story" />}

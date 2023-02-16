@@ -9,13 +9,23 @@ import { useUpdateStory } from "./useUpdateStory";
 import DOMPurify from "dompurify";
 import Card from "src/Components/Card/Card";
 import PostPageHeader from "../PostPageHeader/PostPageHeader";
-import { FiEdit2, FiLink } from "react-icons/fi";
+import { FiEdit2, FiLink, FiShare2 } from "react-icons/fi";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { createRoute } from "src/utils/routing";
 import { NotificationsService } from "src/services";
 import OgTags from "src/Components/OgTags/OgTags";
 import { formatHashtag } from "src/utils/helperFunctions";
 import { Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { RotatingLines } from "react-loader-spinner";
+import { RelayPoolProvider } from "src/lib/nostr";
+
+const CommentsWidgetRoot = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments/CommentsWidget/CommentsWidgetRoot"
+    )
+);
 
 interface Props {
   story: Story;
@@ -43,6 +53,17 @@ export default function StoryPageContent({ story }: Props) {
             date={story.createdAt}
           />
           <div className="shrink-0 text-gray-400">
+            {story.nostr_event_id && (
+              <a
+                href={`https://www.nostr.guru/e/${story.nostr_event_id}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <IconButton>
+                  <FiLink />
+                </IconButton>
+              </a>
+            )}
             <CopyToClipboard
               text={
                 window.location.origin +
@@ -55,7 +76,7 @@ export default function StoryPageContent({ story }: Props) {
               }
             >
               <IconButton>
-                <FiLink />
+                <FiShare2 />
               </IconButton>
             </CopyToClipboard>
             {curUser?.id === story.author.id && (
@@ -126,9 +147,25 @@ export default function StoryPageContent({ story }: Props) {
           }}
         ></div>
       </Card>
-      {/* <div id="comments" className="mt-10 comments_col">
-                <CommentsSection comments={story.comments} />
-            </div> */}
+      <div id="comments" className="mt-10 comments_col">
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-32">
+              <RotatingLines strokeColor="#ddd" width="64" />
+            </div>
+          }
+        >
+          <RelayPoolProvider>
+            <CommentsWidgetRoot
+              story={{
+                id: story.id,
+                nostr_event_id: story.nostr_event_id,
+                createdAt: story.createdAt,
+              }}
+            />
+          </RelayPoolProvider>
+        </Suspense>
+      </div>
     </>
   );
 }

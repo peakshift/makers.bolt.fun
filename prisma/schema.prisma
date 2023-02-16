@@ -237,6 +237,7 @@ model Story {
   cover_image_rel HostedImage? @relation("Story_CoverImage", fields: [cover_image_id], references: [id])
   votes_count     Int          @default(0)
   is_published    Boolean      @default(true)
+  nostr_event_id  String?
 
   tags Tag[]
 

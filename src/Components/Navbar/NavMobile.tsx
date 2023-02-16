@@ -110,68 +110,73 @@ export default function NavMobile() {
             </div>
 
             <div className="flex-1 flex justify-end">
-              {curUser ? (
-                <Menu
-                  align="end"
-                  offsetY={4}
-                  menuClassName="!p-8 !rounded-12"
-                  menuButton={
-                    <MenuButton>
-                      <Avatar src={curUser.avatar} width={32} />{" "}
-                    </MenuButton>
-                  }
-                >
-                  <MenuItem
-                    href={createRoute({
-                      type: "profile",
-                      id: curUser.id,
-                      username: curUser.name,
-                    })}
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate(
-                        createRoute({
-                          type: "profile",
-                          id: curUser.id,
-                          username: curUser.name,
-                        })
-                      );
-                    }}
-                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+              {curUser !== undefined &&
+                (curUser ? (
+                  <Menu
+                    align="end"
+                    offsetY={4}
+                    menuClassName="!p-8 !rounded-12"
+                    menuButton={
+                      <MenuButton>
+                        <Avatar src={curUser.avatar} width={32} />{" "}
+                      </MenuButton>
+                    }
                   >
-                    👾 Profile
-                  </MenuItem>
-                  <MenuItem
-                    href="/edit-profile"
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate("/edit-profile");
-                    }}
-                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    <MenuItem
+                      href={createRoute({
+                        type: "profile",
+                        id: curUser.id,
+                        username: curUser.name,
+                      })}
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate(
+                          createRoute({
+                            type: "profile",
+                            id: curUser.id,
+                            username: curUser.name,
+                          })
+                        );
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      👾 Profile
+                    </MenuItem>
+                    <MenuItem
+                      href="/edit-profile"
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/edit-profile");
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      ⚙️ Settings
+                    </MenuItem>
+                    <MenuItem
+                      href="/logout"
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/logout");
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      👋 Logout
+                    </MenuItem>
+                  </Menu>
+                ) : (
+                  <Link
+                    to={PAGES_ROUTES.auth.login}
+                    state={{ from: window.location.pathname }}
                   >
-                    ⚙️ Settings
-                  </MenuItem>
-                  <MenuItem
-                    href="/logout"
-                    onClick={(e) => {
-                      e.syntheticEvent.preventDefault();
-                      navigate("/logout");
-                    }}
-                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                  >
-                    👋 Logout
-                  </MenuItem>
-                </Menu>
-              ) : (
-                <Button
-                  size="sm"
-                  color="none"
-                  className="!text-body5 whitespace-nowrap"
-                  href="/login"
-                >
-                  Connect ⚡
-                </Button>
-              )}
+                    <Button
+                      size="sm"
+                      color="none"
+                      className="!text-body5 whitespace-nowrap"
+                    >
+                      Connect ⚡
+                    </Button>
+                  </Link>
+                ))}
             </div>
           </div>
         </div>
@@ -204,84 +209,90 @@ export default function NavMobile() {
               </Link>
             </li>
             <li className="relative">
-              <a
-                className="text-body4 font-bold hover:text-primary-600"
-              >
-                Hangout <span className="font-medium text-xs leading-5 rounded text-red-600 bg-red-400/10 px-2 py-0.1">Use on desktop</span>
+              <a className="text-body4 font-bold hover:text-primary-600">
+                Hangout{" "}
+                <span className="font-medium text-xs leading-5 rounded text-red-600 bg-red-400/10 px-2 py-0.1">
+                  Use on desktop
+                </span>
               </a>
             </li>
             <li>
               <button
-                className='text-body4 font-bold hover:text-primary-600 w-full flex justify-between'
+                className="text-body4 font-bold hover:text-primary-600 w-full flex justify-between"
                 onClick={() => toggleEventsOpen()}
-              >Events
+              >
+                Events
                 <motion.span
                   variants={listArrowVariants}
-                  initial={'closed'}
-                  animate={eventsOpen ? 'open' : 'closed'}
-                  className="ml-auto">
+                  initial={"closed"}
+                  animate={eventsOpen ? "open" : "closed"}
+                  className="ml-auto"
+                >
                   <GrFormDown className=" text-gray-400" />
                 </motion.span>
               </button>
-              {<motion.div
-                variants={categoriesListVariants}
-                initial={'closed'}
-                animate={eventsOpen ? 'open' : 'closed'}
-              >
-                <div className='flex flex-col gap-24 pt-16'    >
-                  <Link
-                    to="/hackathons"
-                    onClick={() => toggleDrawerOpen(false)}
-                    className='font-medium flex gap-16 !rounded-12'
-                  >
-                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2 shrink-0">👩‍💻</span>
-                    </div>
-                    <div>
-                      <p className="text-body4 text-black font-medium">
-                        Hackathons
-                      </p>
-                      <p className="text-body5 font-normal text-gray-600 mt-4">
-                        Take part in hackathons & tournaments
-                      </p>
-                    </div>
-                  </Link>
-                  <Link
-                    to="/tournaments/1"
-                    onClick={() => toggleDrawerOpen(false)}
-                    className='font-medium flex gap-16 !rounded-12 '
-                  >
-                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2 shrink-0">🏆</span>
-                    </div>
-                    <div>
-                      <p className="text-body4 text-black font-medium">
-                        #LegendsOfLightning
-                      </p>
-                      <p className="text-body5 font-normal text-gray-600 mt-4">
-                        In 2022 we put on the largest<br /> bitcoin hackathon.
-                      </p>
-                    </div>
-                  </Link>
-                  <a
-                    href="mailto:team@peakshift.com"
-                    onClick={() => toggleDrawerOpen(false)}
-                    className='font-medium flex gap-16 !rounded-12'
-                  >
-                    <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                      <span className="text-body2 shrink-0">💬</span>
-                    </div>
-                    <div>
-                      <p className="text-body4 text-black font-medium">
-                        Host a Hackathon
-                      </p>
-                      <p className="text-body5 font-normal text-gray-600 mt-4">
-                        Need some help setting up your own?
-                      </p>
-                    </div>
-                  </a>
-                </div>
-              </motion.div>}
+              {
+                <motion.div
+                  variants={categoriesListVariants}
+                  initial={"closed"}
+                  animate={eventsOpen ? "open" : "closed"}
+                >
+                  <div className="flex flex-col gap-24 pt-16">
+                    <Link
+                      to="/hackathons"
+                      onClick={() => toggleDrawerOpen(false)}
+                      className="font-medium flex gap-16 !rounded-12"
+                    >
+                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                        <span className="text-body2 shrink-0">👩‍💻</span>
+                      </div>
+                      <div>
+                        <p className="text-body4 text-black font-medium">
+                          Hackathons
+                        </p>
+                        <p className="text-body5 font-normal text-gray-600 mt-4">
+                          Take part in hackathons & tournaments
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/tournaments/1"
+                      onClick={() => toggleDrawerOpen(false)}
+                      className="font-medium flex gap-16 !rounded-12 "
+                    >
+                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                        <span className="text-body2 shrink-0">🏆</span>
+                      </div>
+                      <div>
+                        <p className="text-body4 text-black font-medium">
+                          #LegendsOfLightning
+                        </p>
+                        <p className="text-body5 font-normal text-gray-600 mt-4">
+                          In 2022 we put on the largest
+                          <br /> bitcoin hackathon.
+                        </p>
+                      </div>
+                    </Link>
+                    <a
+                      href="mailto:team@peakshift.com"
+                      onClick={() => toggleDrawerOpen(false)}
+                      className="font-medium flex gap-16 !rounded-12"
+                    >
+                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                        <span className="text-body2 shrink-0">💬</span>
+                      </div>
+                      <div>
+                        <p className="text-body4 text-black font-medium">
+                          Host a Hackathon
+                        </p>
+                        <p className="text-body5 font-normal text-gray-600 mt-4">
+                          Need some help setting up your own?
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+                </motion.div>
+              }
             </li>
             <li className="relative">
               <a
