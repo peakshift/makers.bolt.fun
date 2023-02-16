@@ -80,9 +80,9 @@ export default function NavDesktop() {
                     e.syntheticEvent.preventDefault();
                     navigate("/tournaments/2/overview");
                   }}
-                  className="!p-16 font-medium flex gap-16 bg-orange-50 hover:bg-orange-100 !rounded-12"
+                  className="!p-16 font-medium flex gap-16 group bg-pink-100 hover:bg-purple-100 border-2 border-pink-200 hover:border-purple-200 !rounded-12"
                 >
-                  <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                  <div className="group-hover:border-purple-200 bg-white border border-pink-200 w-48 h-48 rounded-full flex justify-center items-center">
                     <span className="text-body2">🦩</span>
                   </div>
                   <div>

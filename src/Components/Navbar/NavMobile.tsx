@@ -245,9 +245,9 @@ export default function NavMobile() {
                     <Link
                       to="/tournaments/2"
                       onClick={() => toggleDrawerOpen(false)}
-                      className="font-medium flex gap-16 !rounded-12"
+                      className="font-medium flex gap-16 !rounded-12 p-8 group bg-pink-100 hover:bg-purple-100 border-2 border-pink-200 hover:border-purple-200"
                     >
-                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
+                      <div className="shrink-0 bg-white border border-pink-200 group-hover:border-purple-200 w-48 h-48 rounded-full flex justify-center items-center">
                         <span className="text-body2 shrink-0">🦩</span>
                       </div>
                       <div>
