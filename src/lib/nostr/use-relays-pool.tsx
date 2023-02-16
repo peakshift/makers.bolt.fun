@@ -23,7 +23,7 @@ export const RelayPoolProvider = (props: PropsWithChildren<{}>) => {
 
   useEffect(() => {
     const pool = GlobalRelayPool.initPool(
-      Preferences.get("nostr_relays_to_connect_to") ?? CONSTS.DEFAULT_RELAYS
+      Preferences.get("nostr_relays_to_connect_to")
     );
     setRelayPool(pool);
     return () => {

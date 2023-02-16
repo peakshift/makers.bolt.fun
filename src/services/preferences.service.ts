@@ -18,7 +18,7 @@ export default class Preferences {
   static init() {
     const str = localStorage.getItem("preferences");
     if (!str) this.preferencesObject = defaultPrefernces;
-    else this.preferencesObject = JSON.parse(str);
+    else this.preferencesObject = { ...defaultPrefernces, ...JSON.parse(str) };
   }
 
   static update<T extends keyof PreferencesType>(
