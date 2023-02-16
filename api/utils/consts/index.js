@@ -25,7 +25,9 @@ const env = envsafe(
       default: !!ON_NETLIFY,
     }),
     JWT_SECRET: str(),
-    LNURL_AUTH_HOST: str(),
+    LNURL_AUTH_HOST: str({
+      default: "https://auth.bolt.fun/.netlify/functions/login",
+    }),
 
     CLOUDFLARE_IMAGE_ACCOUNT_ID: str(),
     CLOUDFLARE_IMAGE_API_KEY: str(),
