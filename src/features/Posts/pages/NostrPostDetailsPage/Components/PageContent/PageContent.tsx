@@ -14,7 +14,7 @@ import styles from "./styles.module.scss";
 import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { NostrProfile } from "src/utils/nostr";
+import { NostrProfile } from "src/lib/nostr";
 import dayjs from "dayjs";
 
 interface Props {

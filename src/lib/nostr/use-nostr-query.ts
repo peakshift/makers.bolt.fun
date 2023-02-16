@@ -1,7 +1,7 @@
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { Filter, nip05 } from "nostr-tools";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { insertEventIntoDescendingList } from "src/utils/nostr/helpers";
+import { insertEventIntoDescendingList } from "src/lib/nostr/helpers";
 import { useDebounce } from "use-debounce";
 import { NostrMetadata } from "./types";
 import { useRelayPool } from "./use-relays-pool";

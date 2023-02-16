@@ -14,7 +14,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { nip19 } from "nostr-tools";
 import { useAppDispatch } from "src/utils/hooks";
 import { NotificationsService } from "src/services";
-import { NostrProfile } from "src/utils/nostr";
+import { NostrProfile } from "src/lib/nostr";
 
 interface Props extends ModalCard {
   profile: NostrProfile;

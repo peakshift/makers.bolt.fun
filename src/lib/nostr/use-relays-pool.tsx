@@ -8,7 +8,8 @@ import {
   useState,
 } from "react";
 import Preferences from "src/services/preferences.service";
-import CONSTS from "../consts/consts";
+import { CONSTS } from "src/utils";
+import { GlobalRelayPool } from "./GlobalRelayPool";
 
 interface State {
   relayPool: RelayPool | null;
@@ -21,12 +22,12 @@ export const RelayPoolProvider = (props: PropsWithChildren<{}>) => {
   const [relayPool, setRelayPool] = useState<RelayPool | null>(null);
 
   useEffect(() => {
-    const pool = new RelayPool(
+    const pool = GlobalRelayPool.initPool(
       Preferences.get("nostr_relays_to_connect_to") ?? CONSTS.DEFAULT_RELAYS
     );
     setRelayPool(pool);
     return () => {
-      pool.close();
+      GlobalRelayPool.closeAfterDelay();
     };
   }, []);
 

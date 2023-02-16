@@ -1,8 +1,7 @@
-import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { Filter, Kind } from "nostr-tools";
 import { useMemo } from "react";
-import { useNostrQuery } from "src/utils/nostr";
-import { getProfileDataFromMetaData } from "src/utils/nostr/helpers";
+import { useNostrQuery } from "src/lib/nostr";
+import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 import NostrPostCard from "../NostrPostCard/NostrPostCard";
 import { PostCardSkeleton } from "../PostCard";
 
@@ -18,7 +17,7 @@ export const toipcsToFilters = {
     ],
   },
   "bitcoin-design": {
-    hashtags: ["bitcoin-design"],
+    hashtags: ["bitcoin"],
     pubkey: [
       "8c29b321d0f3c61343882ea49623e84771690cd0566e40b90f08e5d34336aaa0",
     ],
@@ -38,7 +37,7 @@ export const topicToNpubs = {
 };
 
 export function getFilters(topic: keyof typeof toipcsToFilters): Filter[] {
-  const baseFilter = { kinds: [1, 30023], limit: 100 };
+  const baseFilter = { kinds: [30023], limit: 100 };
 
   let filters: Filter[] = [];
   if (toipcsToFilters[topic].hashtags)
