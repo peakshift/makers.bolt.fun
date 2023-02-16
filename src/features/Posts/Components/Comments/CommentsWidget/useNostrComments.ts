@@ -181,7 +181,7 @@ export const useNostrComments = (props: Props) => {
 
       const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-      let tags: string[][] = [];
+      let tags: string[][] = [["client", "makers.bolt.fun"]];
 
       if (threadRootObject.type === "root-event") {
         tags.push(["e", threadRootObject.event_id, "", "root"]);
@@ -241,7 +241,7 @@ export const useNostrComments = (props: Props) => {
         );
       });
     },
-    [props.publicKey, relayPool, threadRootObject]
+    [props.publicKey, props.story.id, relayPool, threadRootObject]
   );
 
   const publishMetadata = useCallback(

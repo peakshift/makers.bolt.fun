@@ -67,7 +67,7 @@ export default function RelaysList(props: Props) {
             )}
             {url}
             <br />
-            {myRelays.length > 1 && url !== "wss://nostr.bolt.fun" && (
+            {myRelays.length > 1 && !url.startsWith("wss://nostr.bolt.fun") && (
               <Button
                 variant="text"
                 size="sm"

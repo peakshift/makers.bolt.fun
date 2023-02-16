@@ -1,10 +1,10 @@
 const DEFAULT_RELAYS = [
-  "wss://nproxy.zerologin.co",
+  "wss://nostr.bolt.fun",
+  "wss://nostr-pub.wellorder.net",
   "wss://nostr.drss.io",
   "wss://nostr.swiss-enigma.ch",
   "wss://relay.damus.io",
-  "wss://nostr-relay.untethr.me",
-  "wss://nostr-pub.wellorder.net",
+  "wss://nproxy.zerologin.co",
 ];
 
 const CONSTS = {
