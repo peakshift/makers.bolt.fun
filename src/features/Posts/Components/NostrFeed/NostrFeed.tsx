@@ -11,15 +11,16 @@ type Props = {
 
 export const toipcsToFilters = {
   nostr: {
-    hashtags: ["nostr", "nostrdesign", "nostrhackweek"],
+    hashtags: ["nostrdesign", "nostrhackweek"],
     pubkey: [
       "369061c9a1ee258d28d123f35f913968884d52c4928ab7bd5a4544fcfd48f3f3",
     ],
   },
   "bitcoin-design": {
-    hashtags: ["bitcoin"],
+    hashtags: ["BitcoinDesign"],
     pubkey: [
       "8c29b321d0f3c61343882ea49623e84771690cd0566e40b90f08e5d34336aaa0",
+      "b731e7fbde5c192d793ff520a6ec91f6965f5d8fa1b64e12171089a65e540525",
     ],
   },
 };
