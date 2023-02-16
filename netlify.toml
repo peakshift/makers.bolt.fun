@@ -7,6 +7,13 @@
   framework = "#static"
   functions = "api/functions" # netlify-lambda builds to this folder AND Netlify reads functions from here
   publish = "build" # create-react-app builds to this folder, Netlify should serve all these files statically
+  envFiles = ["./envs/server/local.env"]  
 
+[[plugins]]
+  package = "netlify-plugin-bundle-env"
+  [plugins.inputs] 
+    directories = ["./api/utils/consts"]
+    include = ["NETLIFY", "DEPLOY_PRIME_URL"] 
+    mask = false
 
  
