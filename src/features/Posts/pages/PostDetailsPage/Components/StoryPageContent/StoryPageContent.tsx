@@ -68,7 +68,11 @@ function StoryPageContent({ story }: Props) {
             <CopyToClipboard
               text={
                 window.location.origin +
-                createRoute({ type: "story", title: story.title, id: story.id })
+                createRoute({
+                  type: "story",
+                  title: story.title,
+                  id: story.id,
+                })
               }
               onCopy={() =>
                 NotificationsService.info(" Copied share link to clipboard", {
@@ -156,15 +160,13 @@ function StoryPageContent({ story }: Props) {
             </div>
           }
         >
-          <RelayPoolProvider>
-            <CommentsWidgetRoot
-              story={{
-                id: story.id,
-                nostr_event_id: story.nostr_event_id,
-                createdAt: story.createdAt,
-              }}
-            />
-          </RelayPoolProvider>
+          <CommentsWidgetRoot
+            story={{
+              id: story.id,
+              nostr_event_id: story.nostr_event_id,
+              createdAt: story.createdAt,
+            }}
+          />
         </Suspense>
       </div>
     </>

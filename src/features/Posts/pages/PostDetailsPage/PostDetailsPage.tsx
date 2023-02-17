@@ -50,15 +50,6 @@ export default function PostDetailsPage(props: Props) {
             </aside>
             <main className="flex flex-col gap-32 min-w-0">
               <PageContent post={post} />
-              <Suspense
-                fallback={
-                  <div className="flex justify-center py-32">
-                    <RotatingLines strokeColor="#ddd" width="64" />
-                  </div>
-                }
-              >
-                {/* <CommentsSection id={post.id} type={type as Post_Type} /> */}
-              </Suspense>
             </main>
             <aside className="no-scrollbar min-w-0">
               <div className="flex flex-col gap-32 overflow-y-auto sticky-side-element">
@@ -72,15 +63,6 @@ export default function PostDetailsPage(props: Props) {
             <PageContent post={post} />
             <PostActions post={post} />
             <AuthorCard author={post.author} />
-            <Suspense
-              fallback={
-                <div className="flex justify-center py-32">
-                  <RotatingLines strokeColor="#ddd" width="64" />
-                </div>
-              }
-            >
-              {/* <CommentsSection id={post.id} type={type as Post_Type} /> */}
-            </Suspense>
             <TrendingCard />
           </div>
         )}

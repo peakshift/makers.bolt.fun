@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useUpdateEffect } from "@react-hookz/web";
+import { useLayoutEffect, useRef, useState } from "react";
 import { FaPlus, FaUndo } from "react-icons/fa";
 import Button from "src/Components/Button/Button";
 import Preferences from "src/services/preferences.service";
@@ -21,7 +22,7 @@ export default function RelaysList(props: Props) {
     onRelaysChangeRef.current = props.onRelaysChange;
   });
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     Preferences.update("nostr_relays_to_connect_to", myRelays);
     onRelaysChangeRef.current?.(myRelays);
   }, [myRelays]);
