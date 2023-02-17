@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { RelayPoolProvider } from "src/lib/nostr";
+import { withProviders } from "src/utils/hoc";
 
 const CommentsWidgetRoot = lazy(
   () =>
@@ -31,7 +32,7 @@ interface Props {
   story: Story;
 }
 
-export default function StoryPageContent({ story }: Props) {
+function StoryPageContent({ story }: Props) {
   const { curUser } = useAppSelector((state) => ({
     curUser: state.user.me,
   }));
@@ -169,3 +170,5 @@ export default function StoryPageContent({ story }: Props) {
     </>
   );
 }
+
+export default withProviders(RelayPoolProvider)(StoryPageContent);

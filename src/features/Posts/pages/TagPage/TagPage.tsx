@@ -83,9 +83,7 @@ export default function TagPage() {
               </ul>
             )}
             {hasTagsList(topicTitle) && selectedFeed === "nostr" && (
-              <RelayPoolProvider>
-                <NostrFeed topic={topicTitle} />
-              </RelayPoolProvider>
+              <NostrFeed topic={topicTitle} />
             )}
             {selectedFeed === "bolt-fun" && (
               <PostsList

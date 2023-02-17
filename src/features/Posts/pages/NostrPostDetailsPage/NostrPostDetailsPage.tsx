@@ -17,19 +17,13 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
 import { NostrToolsEvent } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
+import { withProviders } from "src/utils/hoc";
 
 dayjs.extend(relativeTime);
 
-// const CommentsSection = lazy(
-//   () =>
-//     import(
-//       /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"
-//     )
-// );
-
 interface Props {}
 
-function BaseNostrPostDetailsPage(props: Props) {
+function NostrPostDetailsPage(props: Props) {
   const params = useParams();
 
   const filters = useMemo(() => [{ ids: [params.id ?? ""] }], [params.id]);
@@ -103,14 +97,6 @@ function BaseNostrPostDetailsPage(props: Props) {
   );
 }
 
-export default function NostrPostDetailsPage() {
-  return (
-    <RelayPoolProvider>
-      <BaseNostrPostDetailsPage />
-    </RelayPoolProvider>
-  );
-}
-
 export function replaceMentionsWithLinks(event: NostrToolsEvent) {
   return event.content.replace(/#\[([0-9]+)\]/g, (...params) => {
     const group1 = params[1];
@@ -131,3 +117,5 @@ export function replaceMentionsWithLinks(event: NostrToolsEvent) {
     return match;
   });
 }
+
+export default withProviders(RelayPoolProvider)(NostrPostDetailsPage);
