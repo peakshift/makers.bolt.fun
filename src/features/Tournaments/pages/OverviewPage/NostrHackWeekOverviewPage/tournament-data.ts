@@ -7,13 +7,23 @@ export const chat = {
 
 export const partners = [
   {
-    link: "https://twitter.com/peakshift/",
-    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2e55f932-c9a6-4c9f-adce-83c0eca2a100/public",
+    link: "https://spiral.xyz/",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/c17e480c-a698-4758-e777-cb06c2e89500/public",
     isPrimary: true,
   },
   {
     link: "https://getalby.com/",
     image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/19ad3cc8-5d88-403e-bd3c-7c38cea2b000/public",
+    isPrimary: true,
+  },
+  {
+    link: "https://twitter.com/peakshift/",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2e55f932-c9a6-4c9f-adce-83c0eca2a100/public",
+    isPrimary: true,
+  },
+  {
+    link: "https://www.bradmills.ca/",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/bf4a4ead-7fd5-4414-8348-d286c2340000/public",
     isPrimary: true,
   },
 ];
