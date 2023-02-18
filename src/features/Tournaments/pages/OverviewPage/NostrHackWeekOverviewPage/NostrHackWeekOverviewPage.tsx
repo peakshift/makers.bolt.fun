@@ -45,6 +45,11 @@ export default function NostrHackWeekOverviewPage() {
         </div>
         <PrizesSection tracks={tracksAndPrizes} />
         <JudgesSection judges={tournamentDetails.judges} />
+      </Card>
+      <Card
+        onlyMd
+        className="flex flex-col gap-42 bg-white max-md:-mx-16 max-md:-mt-24 px-16 mt-16 mb-80"
+      >
         <FAQsSection faqs={tournamentDetails.faqs} />
       </Card>
     </>

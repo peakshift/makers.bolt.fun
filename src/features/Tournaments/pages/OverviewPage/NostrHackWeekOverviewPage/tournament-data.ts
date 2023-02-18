@@ -8,6 +8,19 @@ export const chat = {
 export const partners = [
   {
     link: "https://twitter.com/peakshift/",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2e55f932-c9a6-4c9f-adce-83c0eca2a100/public",
+    isPrimary: true,
+  },
+  {
+    link: "https://getalby.com/",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/19ad3cc8-5d88-403e-bd3c-7c38cea2b000/public",
+    isPrimary: true,
+  },
+];
+
+export const communityPartners = [
+  {
+    link: "https://www.satsx.dev/",
     image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/4b9b49b6-efe7-4004-06f4-67d6efad8d00/public",
     isPrimary: true,
   },
@@ -18,7 +31,7 @@ export const tracksAndPrizes = [
     id: 1,
     title: "Building Nostr applications, and tools",
     description:
-      "Found a problem that needs solving and want to build it? This track focuses on functional applications of Nostr, new global or community clients, developer tools or services. Extra points for good UX/DevEx !",
+      "Found a problem that needs solving and want to build it? This track focuses on functional applications of Nostr, new global or community clients, developer tools or services. Extra points for good UX/DevEx and bitcoin integration!",
     image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/4596d328-310c-41a6-068c-37de4784d900/public",
     prizes: [
       {
