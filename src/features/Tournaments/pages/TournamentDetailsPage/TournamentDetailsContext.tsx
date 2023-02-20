@@ -8,14 +8,12 @@ import {
   useGetTournamentByIdQuery,
   useMeTournamentQuery,
 } from "src/graphql";
-import { getWinnersIds } from "../OverviewPage/PrizesSection/PrizesSection";
 
 interface ITournamentDetails {
   makers: GetTournamentByIdQuery["getMakersInTournament"]["makers"];
   me: MeTournamentQuery["me"];
   tournamentDetails: GetTournamentByIdQuery["getTournamentById"];
   myParticipationInfo: MeTournamentQuery["tournamentParticipationInfo"];
-  winningProjects: GetTournamentByIdQuery["getProjectsById"];
 }
 
 const Ctx = createContext<ITournamentDetails>(null!);
@@ -28,7 +26,6 @@ export default function TournamentDetailsContext({
   const tournaemntQuery = useGetTournamentByIdQuery({
     variables: {
       id: Number(id)!,
-      winning_projects: getWinnersIds(),
     },
     skip: !id,
   });
@@ -47,7 +44,6 @@ export default function TournamentDetailsContext({
   const {
     getMakersInTournament: makers,
     getTournamentById: tournamentDetails,
-    getProjectsById: winningProjects,
   } = tournaemntQuery.data;
   const { me = null, tournamentParticipationInfo: myParticipationInfo = null } =
     myParticipationInfoQuery.data ?? {};
@@ -58,7 +54,6 @@ export default function TournamentDetailsContext({
         makers: makers.makers,
         me,
         tournamentDetails,
-        winningProjects,
         myParticipationInfo,
       }}
     >

@@ -80,14 +80,15 @@ export const useVote = (params: Params) => {
                   try {
                     const { item_id, item_type, amount_in_sat } =
                       data!.confirmVote;
-                    const { votes_count } =
-                      (cache.readFragment({
-                        id: `${item_type}:${item_id}`,
-                        fragment: gql`
+                    const { votes_count } = cache.readFragment<{
+                      votes_count: number;
+                    }>({
+                      id: `${item_type}:${item_id}`,
+                      fragment: gql`
                                             fragment My${item_type} on ${item_type} {
                                             votes_count
                                         }`,
-                      }) as { votes_count: number }) ?? {};
+                    }) ?? { votes_count: 0 };
                     cache.writeFragment({
                       id: `${item_type}:${item_id}`,
                       fragment: gql`
