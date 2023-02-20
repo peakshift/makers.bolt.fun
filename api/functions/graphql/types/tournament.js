@@ -219,7 +219,8 @@ const Tournament = objectType({
       resolve(parent) {
         return prisma.tournament
           .findUnique({ where: { id: parent.id } })
-          .faqs();
+          .faqs()
+          .then((faqs) => [...faqs].sort((faq1, faq2) => faq1.id - faq2.id));
       },
     });
     t.nonNull.list.nonNull.field("events", {
