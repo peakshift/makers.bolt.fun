@@ -7,8 +7,13 @@ export const chat = {
 
 export const partners = [
   {
+    link: "https://wolfnyc.com",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/64bd8c50-35fd-4e16-ffbe-3a22adaf7600/public",
+    isPrimary: true,
+  },
+  {
     link: "https://spiral.xyz/",
-    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/c17e480c-a698-4758-e777-cb06c2e89500/public",
+    image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/be64459d-7ead-4094-19f1-9ebd1a003200/public",
     isPrimary: true,
   },
   {

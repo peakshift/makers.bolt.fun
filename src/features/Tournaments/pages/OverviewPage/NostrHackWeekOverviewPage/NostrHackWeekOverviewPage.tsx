@@ -57,7 +57,7 @@ export default function NostrHackWeekOverviewPage() {
         className="flex flex-col gap-42 bg-white max-md:-mx-16 max-md:-mt-24 px-16 mt-16 mb-80"
       >
         <h2 className='text-body1 font-bolder text-gray-900 mb-4'>Community Partners</h2>
-        <p>...</p>
+        <p><img className="w-full" src="https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/632c24ae-a49f-41e6-a431-871fbb8ff500/public" /></p>
       </Card>
     </>
   );
