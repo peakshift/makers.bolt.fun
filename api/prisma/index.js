@@ -1,14 +1,12 @@
-const { PrismaClient } = process.env.PRISMA_GENERATE_DATAPROXY
-  ? require("@prisma/client/edge")
-  : require("@prisma/client");
+const { PrismaClient } = require("@prisma/client");
 const createGlobalModule = require("../utils/createGlobalModule");
+const { default: useAccelerate } = require("@prisma/extension-accelerate");
 
 const createPrismaClient = () => {
   console.log("New Prisma Client");
   try {
-    const prisma = new PrismaClient({
-      log: ["error"],
-    });
+    const prisma = new PrismaClient().$extends(useAccelerate);
+    console.log(prisma);
     prisma.$use(async (params, next) => {
       const before = Date.now();
       const result = await next(params);
@@ -19,6 +17,7 @@ const createPrismaClient = () => {
     });
     return prisma;
   } catch (error) {
+    console.log("ERROR IN CREATING PRISMA CLIENT");
     console.log(error);
   }
 };

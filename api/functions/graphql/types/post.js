@@ -270,7 +270,7 @@ const getFeed = extendType({
           default: 0,
         }),
       },
-      resolve(_, { take, skip, tag, sortBy }, ctx, info) {
+      async resolve(_, { take, skip, tag, sortBy }, ctx, info) {
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).valueWithFilter("Story");
@@ -279,8 +279,9 @@ const getFeed = extendType({
 
         if (sortBy === "popular") orderBy = { votes_count: "desc" };
         else if (sortBy === "newest") orderBy = { createdAt: "desc" };
+        const startTime = Date.now();
 
-        return prisma.story
+        const data = await prisma.story
           .findMany({
             ...select,
             orderBy: orderBy,
@@ -296,8 +297,12 @@ const getFeed = extendType({
             },
             skip,
             take,
+            cacheStrategy: { swr: 60, ttl: 60 },
           })
           .then(asStoryType);
+        console.log("Request took:", Date.now() - startTime, "ms");
+
+        return data;
       },
     });
   },
