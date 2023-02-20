@@ -52,17 +52,17 @@ export const tracksAndPrizes = [
       {
         id: 1,
         title: " 1st",
-        amount: "???",
+        amount: "6,125,431 Sats ",
       },
       {
         id: 2,
         title: " 2nd",
-        amount: "???",
+        amount: "4,079,537 Sats ",
       },
       {
         id: 3,
         title: " 3rd",
-        amount: "???",
+        amount: "2,045,894 Sats",
       },
     ],
   },
@@ -74,19 +74,19 @@ export const tracksAndPrizes = [
     image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/6f13ffa2-a3f4-404c-f75b-77411b9e1400/public",
     prizes: [
       {
-        id: 5,
+        id: 4,
         title: " 1st",
-        amount: "???",
+        amount: "6,125,431 Sats ",
+      },
+      {
+        id: 5,
+        title: " 2nd",
+        amount: "4,079,537 Sats ",
       },
       {
         id: 6,
-        title: " 2nd",
-        amount: "???",
-      },
-      {
-        id: 7,
         title: " 3rd",
-        amount: "???",
+        amount: "2,045,894 Sats",
       },
     ],
   },
