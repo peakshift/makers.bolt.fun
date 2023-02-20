@@ -29,7 +29,7 @@ export default function ProfilePage() {
     ),
   }));
 
-  const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium);
+  const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMinMedium);
 
   if (profileQuery.loading) return <LoadingPage />;
 

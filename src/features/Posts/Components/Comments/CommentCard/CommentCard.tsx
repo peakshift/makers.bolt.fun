@@ -12,6 +12,7 @@ import { FiLink } from "react-icons/fi";
 import { usePopperTooltip } from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
 import { useAppSelector } from "src/utils/hooks";
+import { replaceMentionsWithLinks } from "src/features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage";
 
 interface Props {
   comment: NostrToolsEventWithId;
@@ -110,12 +111,14 @@ export default function CommentCard({
         )}
       </div>
       <div
-        className="text-body4 mt-16 whitespace-pre-line break-words"
+        className="text-body4 mt-16 whitespace-pre-line break-words [&_a]:text-blue-400 [&_a]:underline"
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(marked.parse(comment.content)),
+          __html: DOMPurify.sanitize(
+            marked.parse(replaceMentionsWithLinks(comment))
+          ),
         }}
       ></div>
-      <div className="flex gap-24 mt-16 items-center">
+      <div className="flex gap-24 items-center">
         {/* <VoteButton
           votes={-1}
           hideVotesCoun

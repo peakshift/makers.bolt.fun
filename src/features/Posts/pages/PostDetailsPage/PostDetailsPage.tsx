@@ -32,7 +32,7 @@ export default function PostDetailsPage(props: Props) {
 
   const post = loaderData.getPostById;
 
-  const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge);
+  const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isMinLarge);
 
   if (!post) return <NotFoundPage />;
 

@@ -11,6 +11,8 @@ import {
   ThreadedEvent,
 } from "src/lib/nostr/helpers";
 import { NostrProfile } from "src/lib/nostr";
+import { useMediaQuery } from "src/utils/hooks";
+import { MEDIA_QUERIES } from "src/utils/theme";
 
 dayjs.extend(relativeTime);
 
@@ -22,7 +24,10 @@ interface Props {
   relays: string[];
   metadata: any;
   myProfile: NostrProfile | null;
+  currentDepth?: number;
 }
+
+const MAX_REPLIES_DEPTH = 3;
 
 export default function Thread({
   thread,
@@ -32,11 +37,14 @@ export default function Thread({
   publishEvent,
   replyTo,
   myProfile,
+  currentDepth = 0,
 }: Props) {
   const [replyOpen, setReplyOpen] = useState(false);
   const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(false);
   const [scrollToLatestReply, setScrollToLatestReply] = useState(false);
   const repliesContainer = useRef<HTMLDivElement>(null!);
+
+  const isSmallScreen = useMediaQuery(MEDIA_QUERIES.isMaxSmall);
 
   useEffect(() => {
     if (repliesCollapsed) setReplyOpen(false);
@@ -83,8 +91,10 @@ export default function Thread({
         author={getProfileDataFromMetaData(metadata, thread.pubkey)!}
       />
       {(thread.replies.length > 0 || replyOpen) && (
-        <div className="flex mt-16 gap-8 md:gap-20 pl-8">
-          <div className="border-l-2 border-b-2 border-gray-200 w-16 md:w-24 h-40 rounded-bl-8 flex-shrink-0"></div>
+        <div className="flex mt-16 gap-8 ">
+          {(!isSmallScreen || currentDepth < MAX_REPLIES_DEPTH) && (
+            <div className="ml-8 border-l-2 border-b-2 border-gray-200 w-16 md:w-24 h-40 rounded-bl-8 flex-shrink-0"></div>
+          )}
           <div className="flex flex-col w-full gap-16">
             {/* {thread.replies.length > 0 && (
               <Button
@@ -111,6 +121,7 @@ export default function Thread({
               {!repliesCollapsed &&
                 repliesSorted.map((subthread) => (
                   <Thread
+                    currentDepth={currentDepth + 1}
                     key={subthread.id}
                     thread={subthread}
                     metadata={metadata}

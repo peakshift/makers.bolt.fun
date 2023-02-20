@@ -50,7 +50,7 @@ export default function Header() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     breakpoints: {
-      [MEDIA_QUERIES.isMedium]: {
+      [MEDIA_QUERIES.isMinMedium]: {
         draggable: false,
       },
     },

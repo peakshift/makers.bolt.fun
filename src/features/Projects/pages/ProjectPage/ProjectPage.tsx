@@ -32,7 +32,7 @@ export default function ProjectPage() {
     skip: !Boolean(tag),
   });
 
-  const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMedium);
+  const isMediumScreen = useMediaQuery(MEDIA_QUERIES.isMinMedium);
 
   if (loading) return <LoadingPage />;
 

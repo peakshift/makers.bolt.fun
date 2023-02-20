@@ -22,7 +22,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
 
   const selectedId = value?.id;
 
-  const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMedium);
+  const isMdScreen = useMediaQuery(MEDIA_QUERIES.isMinMedium);
 
   return (
     <div className="">

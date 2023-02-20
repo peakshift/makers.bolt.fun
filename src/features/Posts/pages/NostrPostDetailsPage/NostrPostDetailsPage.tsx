@@ -32,7 +32,7 @@ function NostrPostDetailsPage(props: Props) {
     filters,
   });
 
-  const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isLarge);
+  const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isMinLarge);
 
   if (isEmpty) return <NotFoundPage />;
 
@@ -107,7 +107,9 @@ export function replaceMentionsWithLinks(event: NostrToolsEvent) {
     if (event.tags[Number(group1)][0] === "p") {
       const pubkey = event.tags[Number(group1)][1];
       const npub = nip19.npubEncode(pubkey);
-      return `[${npub.slice(0, 8)}...](https://www.nostr.guru/p/${pubkey})`;
+      return `[${npub.slice(0, 9)}...${npub.slice(
+        -5
+      )}](https://www.nostr.guru/p/${pubkey})`;
     }
     if (event.tags[Number(group1)][0] === "e") {
       const eventId = event.tags[Number(group1)][1];
