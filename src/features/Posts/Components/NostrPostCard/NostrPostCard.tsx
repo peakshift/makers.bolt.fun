@@ -148,8 +148,7 @@ export default function NostrPostCard({ post, author }: Props) {
 
 export function extractArticleFields(event: NostrToolsEventWithId) {
   const title = event.tags.find((t) => t[0] === "title")?.[1];
-  const summary =
-    event.tags.find((t) => t[0] === "summary")?.[1] ?? event.content;
+  const summary = event.tags.find((t) => t[0] === "summary")?.[1];
   let image = event.tags.find((t) => t[0] === "image")?.[1];
   let content = event.content;
   const tags = event.tags.filter((t) => t[0] === "t").map((t) => t[1]);

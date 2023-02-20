@@ -124,7 +124,7 @@ export default function PageContent({ author, post, articleFields }: Props) {
         <div
           className={`${styles.body} break-words`}
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(marked.parse(post.content)),
+            __html: DOMPurify.sanitize(marked.parse(articleFields.content)),
           }}
         ></div>
         {articleFields.tags.length > 0 && (
