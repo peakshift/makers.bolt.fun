@@ -33,10 +33,10 @@ const onJobSuccess = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send("An unexpected error happened");
+    return res.status(500).send("An unexpected error happened");
   }
   // Exec job type specific logic
-  res.status(200).send("OK");
+  return res.status(200).send("OK");
 };
 
 let app;
