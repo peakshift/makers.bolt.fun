@@ -10,7 +10,7 @@ const env = envsafe(
       choices: ["development", "test", "production"],
     }),
     SITE_URL: url({
-      default: process.env.DEPLOY_PRIME_URL,
+      default: process.env.URL,
       devDefault: "http://localhost:3000",
     }),
     FUNCTIONS_URL: str({
