@@ -1,55 +1,84 @@
-/**
- * These hooks re-implement the now removed useBlocker and usePrompt hooks in 'react-router-dom'.
- * Thanks for the idea @piecyk https://github.com/remix-run/react-router/issues/8139#issuecomment-953816315
- * Source: https://github.com/remix-run/react-router/commit/256cad70d3fd4500b1abcfea66f3ee622fb90874#diff-b60f1a2d4276b2a605c05e19816634111de2e8a4186fe9dd7de8e344b65ed4d3L344-L381
- */
-import { useContext, useEffect, useCallback } from "react";
-import { UNSAFE_NavigationContext as NavigationContext } from "react-router-dom";
-/**
- * Blocks all navigation attempts. This is useful for preventing the page from
- * changing until some condition is met, like saving form data.
- *
- * @param  blocker
- * @param  when
- * @see https://reactrouter.com/api/useBlocker
- */
-export function useBlocker(blocker: any, when = true) {
-  const { navigator } = useContext(NavigationContext);
+import { useMountEffect } from "@react-hookz/web";
+import { useCallback, useEffect } from "react";
+import {
+  useBeforeUnload,
+  unstable_useBlocker as useBlocker,
+  unstable_Blocker as Blocker,
+  unstable_BlockerFunction as BlockerFunction,
+} from "react-router-dom";
 
+// You can abstract `useBlocker` to use the browser's `window.confirm` dialog to
+// determine whether or not the user should navigate within the current origin.
+// `useBlocker` can also be used in conjunction with `useBeforeUnload` to
+// prevent navigation away from the current origin.
+//
+// IMPORTANT: There are edge cases with this behavior in which React Router
+// cannot reliably access the correct location in the history stack. In such
+// cases the user may attempt to stay on the page but the app navigates anyway,
+// or the app may stay on the correct page but the browser's history stack gets
+// out of whack. You should test your own implementation thoroughly to make sure
+// the tradeoffs are right for your users.
+export function usePrompt(when: boolean | BlockerFunction): Blocker {
+  const blocker = useBlocker(when);
   useEffect(() => {
-    if (!when) return;
+    // Reset if when is updated to false
+    if (blocker.state === "blocked" && !when) {
+      blocker.reset();
+    }
+  }, [blocker, when]);
 
-    const unblock = (navigator as any).block((tx: any) => {
-      const autoUnblockingTx = {
-        ...tx,
-        retry() {
-          // Automatically unblock the transition so it can play all the way
-          // through before retrying it. TODO: Figure out how to re-enable
-          // this block if the transition is cancelled for some reason.
-          unblock();
-          tx.retry();
-        },
-      };
+  useBeforeUnload(
+    useCallback(
+      (event) => {
+        if (when) {
+          event.preventDefault();
+          // eslint-disable-next-line no-param-reassign
+          event.returnValue = "Changes that you made may not be saved.";
+        }
+      },
+      [when]
+    ),
+    { capture: true }
+  );
 
-      blocker(autoUnblockingTx);
-    });
-
-    return unblock;
-  }, [navigator, blocker, when]);
+  return blocker;
 }
-/**
- * Prompts the user with an Alert before they leave the current screen.
- *
- * @param  message
- * @param  when
- */
-export function usePrompt(message: string, when = true) {
-  // const blocker = useCallback(
-  //     (tx: any) => {
-  //         // eslint-disable-next-line no-alert
-  //         if (window.confirm(message)) tx.retry();
-  //     },
-  //     [message]
-  // );
-  // useBlocker(blocker, when);
+
+declare interface InitialStateType {
+  isActive: boolean;
+  onConfirm(): void;
+  resetConfirmation(): void;
 }
+
+export const useConfirm = (
+  when: boolean | BlockerFunction
+): InitialStateType => {
+  const blocker = usePrompt(when);
+
+  const resetConfirmation = () => {
+    if (blocker.state === "blocked") blocker.reset();
+  };
+
+  const onConfirm = () => {
+    if (blocker.state === "blocked") setTimeout(blocker.proceed, 0);
+  };
+
+  return {
+    isActive: blocker.state === "blocked",
+    onConfirm,
+    resetConfirmation,
+  };
+};
+
+export const useWindowPrompt = (
+  when: boolean | BlockerFunction,
+  message: string = "You have some unsaved changes on this page, are you sure you want to leave?"
+) => {
+  const { isActive, onConfirm, resetConfirmation } = useConfirm(when);
+  useEffect(() => {
+    if (isActive) {
+      if (window.confirm(message)) onConfirm();
+      else resetConfirmation();
+    }
+  }, [isActive, message, onConfirm, resetConfirmation]);
+};

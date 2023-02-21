@@ -13,6 +13,7 @@ import { usePopperTooltip } from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
 import { useAppSelector } from "src/utils/hooks";
 import { replaceMentionsWithLinks } from "src/features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage";
+import { extractImageFromContent } from "src/lib/nostr/helpers";
 
 interface Props {
   comment: NostrToolsEventWithId;
@@ -47,6 +48,12 @@ export default function CommentCard({
   //   });
 
   const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
+
+  const { image, content } = extractImageFromContent(comment.content);
+  const contentWithMentionsLinks = replaceMentionsWithLinks(
+    content,
+    comment.tags
+  );
 
   return (
     <Card className="relative">
@@ -110,12 +117,15 @@ export default function CommentCard({
           </div>
         )}
       </div>
+      {image && (
+        <div>
+          <img src={image} alt="" className="max-h-[50vh]" />
+        </div>
+      )}
       <div
         className="text-body4 mt-16 whitespace-pre-line break-words [&_a]:text-blue-400 [&_a]:underline"
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(
-            marked.parse(replaceMentionsWithLinks(comment))
-          ),
+          __html: DOMPurify.sanitize(marked.parse(contentWithMentionsLinks)),
         }}
       ></div>
       <div className="flex gap-24 items-center">

@@ -8,7 +8,7 @@ import {
 import { NotificationsService } from "src/services/notifications.service";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, usePrompt } from "src/utils/hooks";
+import { useAppDispatch, useWindowPrompt } from "src/utils/hooks";
 import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
 import Card from "src/Components/Card/Card";
@@ -20,6 +20,8 @@ import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInp
 import { imageSchema } from "src/utils/validation";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import axios from "axios";
+import ReactRouterPrompt from "src/Components/ReactRouterPrompt/ReactRouterPrompt";
+import WindowConfirm from "src/Components/WindowConfirm/WindowConfirm";
 
 interface Props {}
 
@@ -66,7 +68,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup
 export default function BasicProfileInfoTab() {
   const {
     register,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields },
     handleSubmit,
     reset,
     control,
@@ -85,10 +87,8 @@ export default function BasicProfileInfoTab() {
   const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
 
   const dispatch = useAppDispatch();
-  usePrompt(
-    "You may have some unsaved changes. You still want to leave?",
-    isDirty
-  );
+
+  useWindowPrompt(isDirty);
 
   if (profileQuery.loading) return <UpdateProfileAboutTabSkeleton />;
 
@@ -162,7 +162,11 @@ export default function BasicProfileInfoTab() {
         <div className="p-16 md:p-24 mt-64">
           <form onSubmit={handleSubmit(onSubmit)}>
             <p className="text-body5 font-medium">Name</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.name && `bg-primary-50`
+              }`}
+            >
               <input
                 autoFocus
                 type="text"
@@ -175,7 +179,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.name.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Bio</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.bio && `bg-primary-50`
+              }`}
+            >
               <textarea
                 rows={4}
                 className="input-text"
@@ -185,7 +193,11 @@ export default function BasicProfileInfoTab() {
             </div>
             {errors.bio && <p className="input-error">{errors.bio.message}</p>}
             <p className="text-body5 mt-16 font-medium">Job Title</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.jobTitle && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -197,7 +209,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.jobTitle.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Location</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.location && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -209,7 +225,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.location.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Email</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.email && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -226,7 +246,11 @@ export default function BasicProfileInfoTab() {
             </p>
 
             <p className="text-body5 mt-16 font-medium">Twitter handle</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.twitter && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -238,7 +262,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.twitter.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Discord username</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.discord && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -250,7 +278,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.discord.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Github username</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.github && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -262,7 +294,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.github.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Linkedin</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.linkedin && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -274,7 +310,11 @@ export default function BasicProfileInfoTab() {
               <p className="input-error">{errors.linkedin.message}</p>
             )}
             <p className="text-body5 mt-16 font-medium">Your website</p>
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.website && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"
@@ -287,7 +327,11 @@ export default function BasicProfileInfoTab() {
             )}
             <p className="text-body5 mt-16 font-medium">Lightning address</p>
 
-            <div className="input-wrapper mt-8 relative">
+            <div
+              className={`input-wrapper mt-8 relative ${
+                dirtyFields.lightning_address && `bg-primary-50`
+              }`}
+            >
               <input
                 type="text"
                 className="input-text"

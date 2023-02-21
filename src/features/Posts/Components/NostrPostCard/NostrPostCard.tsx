@@ -12,6 +12,10 @@ import dayjs from "dayjs";
 import { usePopperTooltip } from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
 import relativeTime from "dayjs/plugin/relativeTime";
+import {
+  extractArticleFields,
+  extractImageFromContent,
+} from "src/lib/nostr/helpers";
 
 dayjs.extend(relativeTime);
 
@@ -19,8 +23,6 @@ interface Props {
   post: NostrToolsEventWithId;
   author: NostrProfile | null;
 }
-
-const EXTRACT_IMAGE_FROM_CONTENT_REGEX = /https?:\/\/(\S+?(?:jpe?g|png|gif))$/i;
 
 export default function NostrPostCard({ post, author }: Props) {
   const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
@@ -34,6 +36,12 @@ export default function NostrPostCard({ post, author }: Props) {
   } = usePopperTooltip();
 
   const articleFields = extractArticleFields(post);
+
+  const { image: contentImage, content } = extractImageFromContent(
+    post.content
+  );
+
+  const coverImage = articleFields.image || contentImage;
 
   return (
     <div>
@@ -104,7 +112,7 @@ export default function NostrPostCard({ post, author }: Props) {
       </div>
       <Card className="overflow-hidden mt-8 flex flex-col gap-12">
         <Link to={createRoute({ type: "nostr-story", id: post.id })}>
-          {articleFields.image && (
+          {coverImage && (
             // <Link
             //   className="mb-16 block"
             //   to={createRoute({
@@ -115,7 +123,7 @@ export default function NostrPostCard({ post, author }: Props) {
             //   })}
             // >
             <img
-              src={articleFields.image}
+              src={coverImage}
               className="w-full max-h-[50vh] object-cover rounded-8 mb-16"
               alt=""
               loading="lazy"
@@ -126,7 +134,7 @@ export default function NostrPostCard({ post, author }: Props) {
             <h2 className="text-h5 font-bolder">{articleFields.title}</h2>
           )}
           <p className="text-body4 text-gray-600 line-clamp-4">
-            {articleFields.summary ?? articleFields.content}
+            {articleFields.summary ?? content}
           </p>
         </Link>
         <div className="flex flex-wrap gap-8 mt-8">
@@ -144,26 +152,4 @@ export default function NostrPostCard({ post, author }: Props) {
       </Card>
     </div>
   );
-}
-
-export function extractArticleFields(event: NostrToolsEventWithId) {
-  const title = event.tags.find((t) => t[0] === "title")?.[1];
-  const summary = event.tags.find((t) => t[0] === "summary")?.[1];
-  let image = event.tags.find((t) => t[0] === "image")?.[1];
-  let content = event.content;
-  const tags = event.tags.filter((t) => t[0] === "t").map((t) => t[1]);
-
-  if (!image) {
-    const imgIdx = event.content.search(EXTRACT_IMAGE_FROM_CONTENT_REGEX);
-    image = imgIdx !== -1 ? event.content.slice(imgIdx) : undefined;
-    content = imgIdx !== -1 ? event.content.slice(0, imgIdx) : event.content;
-  }
-
-  return {
-    title,
-    image,
-    summary,
-    content,
-    tags,
-  };
 }

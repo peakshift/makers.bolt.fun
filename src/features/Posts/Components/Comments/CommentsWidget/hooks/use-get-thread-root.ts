@@ -3,6 +3,7 @@ import { RelayPool } from "nostr-relaypool";
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { useEffect, useState } from "react";
 import { normalizeURL } from "src/lib/nostr/helpers";
+import { CONSTS } from "src/utils";
 import { createRoute } from "src/utils/routing";
 import { useDebounce } from "use-debounce";
 import { Props } from "../useNostrComments";
@@ -49,7 +50,7 @@ export const useGetThreadRootObject = (props: {
     const fallbackObject = {
       type: "url-fallback",
       url: normalizeURL(
-        window.location.origin +
+        `https://makers.bolt.fun` +
           createRoute({ type: "story", id: props.story.id ?? -1 })
       ),
     } as const;
@@ -64,7 +65,7 @@ export const useGetThreadRootObject = (props: {
           kinds: [1],
           "#r": [
             normalizeURL(
-              window.location.origin +
+              `https://makers.bolt.fun` +
                 createRoute({ type: "story", id: props.story.id ?? -1 })
             ),
           ],
@@ -72,6 +73,7 @@ export const useGetThreadRootObject = (props: {
       ],
       relaysUrls,
       (event, afterEose, url) => {
+        if (!isValidRootStoryEvent(event)) return;
         setBaseEvent((curr) => {
           if (!curr || curr.created_at < event.created_at) return event;
           return curr;
@@ -104,3 +106,16 @@ export const useGetThreadRootObject = (props: {
 
   return threadRootObject;
 };
+
+function isValidRootStoryEvent(event: NostrToolsEventWithId) {
+  if (event.pubkey !== CONSTS.BF_NOSTR_PUBKEY) return false;
+  if (event.tags.some((tag) => tag[0] === "e")) return false;
+  if (
+    !event.tags.some(
+      (tag) => tag[0] === "client" && tag[1] === "makers.bolt.fun"
+    )
+  )
+    return false;
+
+  return true;
+}

@@ -1,5 +1,4 @@
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
-import { extractArticleFields } from "src/features/Posts/Components/NostrPostCard/NostrPostCard";
 import Card from "src/Components/Card/Card";
 import IconButton from "src/Components/IconButton/IconButton";
 import { FiLink, FiShare2 } from "react-icons/fi";
@@ -16,6 +15,7 @@ import { RotatingLines } from "react-loader-spinner";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { NostrProfile } from "src/lib/nostr";
 import dayjs from "dayjs";
+import { extractArticleFields } from "src/lib/nostr/helpers";
 
 interface Props {
   author: NostrProfile;
@@ -124,7 +124,7 @@ export default function PageContent({ author, post, articleFields }: Props) {
         <div
           className={`${styles.body} break-words`}
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(marked.parse(articleFields.content)),
+            __html: DOMPurify.sanitize(marked.parse(post.content)),
           }}
         ></div>
         {articleFields.tags.length > 0 && (

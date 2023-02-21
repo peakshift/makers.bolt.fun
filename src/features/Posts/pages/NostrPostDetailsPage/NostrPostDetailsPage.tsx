@@ -10,8 +10,10 @@ import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
 import { MEDIA_QUERIES } from "src/utils/theme";
 import { RelayPoolProvider, useNostrQuery } from "src/lib/nostr";
-import { extractArticleFields } from "../../Components/NostrPostCard/NostrPostCard";
-import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
+import {
+  extractArticleFields,
+  getProfileDataFromMetaData,
+} from "src/lib/nostr/helpers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
@@ -38,9 +40,11 @@ function NostrPostDetailsPage(props: Props) {
 
   if (events.length === 0) return <PostDetailsPageSkeleton />;
 
-  const post = { ...events[0], content: replaceMentionsWithLinks(events[0]) };
+  const post = {
+    ...events[0],
+    content: replaceMentionsWithLinks(events[0].content, events[0].tags),
+  };
   const articleFields = extractArticleFields(post);
-
   const author = getProfileDataFromMetaData(metadata, post.pubkey);
 
   return (
@@ -97,22 +101,22 @@ function NostrPostDetailsPage(props: Props) {
   );
 }
 
-export function replaceMentionsWithLinks(event: NostrToolsEvent) {
-  return event.content.replace(/#\[([0-9]+)\]/g, (...params) => {
+export function replaceMentionsWithLinks(content: string, tags: string[][]) {
+  return content.replace(/#\[([0-9]+)\]/g, (...params) => {
     const group1 = params[1];
     const match = params[0];
-    if (!Number.isInteger(Number(group1)) || !event.tags[Number(group1)])
+    if (!Number.isInteger(Number(group1)) || !tags[Number(group1)])
       return match;
 
-    if (event.tags[Number(group1)][0] === "p") {
-      const pubkey = event.tags[Number(group1)][1];
+    if (tags[Number(group1)][0] === "p") {
+      const pubkey = tags[Number(group1)][1];
       const npub = nip19.npubEncode(pubkey);
       return `[${npub.slice(0, 9)}...${npub.slice(
         -5
       )}](https://www.nostr.guru/p/${pubkey})`;
     }
-    if (event.tags[Number(group1)][0] === "e") {
-      const eventId = event.tags[Number(group1)][1];
+    if (tags[Number(group1)][0] === "e") {
+      const eventId = tags[Number(group1)][1];
       const note = nip19.noteEncode(eventId);
       return `[${note.slice(0, 8)}...](https://www.nostr.guru/e/${eventId})`;
     }

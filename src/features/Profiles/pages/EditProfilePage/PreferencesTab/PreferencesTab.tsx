@@ -59,11 +59,6 @@ export default function PreferencesTab() {
   });
   const [mutate, mutationStatus] = useUpdateUserPreferencesMutation();
 
-  usePrompt(
-    "You may have some unsaved changes. You still want to leave?",
-    isDirty
-  );
-
   if (query.networkStatus === NetworkStatus.loading)
     return <PreferencesTabSkeleton />;
 
