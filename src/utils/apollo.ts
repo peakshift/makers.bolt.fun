@@ -10,33 +10,15 @@ import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { CONSTS } from "src/utils";
 
-let apiClientUri = CONSTS.apiEndpoint + "/graphql";
+const graphqlApiURI = CONSTS.apiEndpoint + "/graphql";
 
-const cacheUri = "https://cache.bolt.fun";
-
-const OPERATIONS_TO_CACHE = [
-  "Feed",
-  "FeedTags",
-  "TrendingPosts",
-
-  "GetTournamentById",
-
-  "ExploreProjects",
-  "AllCategories",
-  "CategoryPage",
-  "GetAllRoles",
-  "ProjectDetailsModal",
-  "ProjectDetails",
-  "SimilarProjects",
-];
+const cacheApiURI = "https://cache.bolt.fun";
 
 const httpLink = new HttpLink({
-  uri: (operation) => {
-    // if (window.location.hostname !== "makers.bolt.fun") return apiClientUri;
-    return cacheUri;
-    if (OPERATIONS_TO_CACHE.includes(operation.operationName)) return cacheUri;
-    else return apiClientUri;
-  },
+  uri:
+    window.location.hostname !== "makers.bolt.fun"
+      ? graphqlApiURI
+      : cacheApiURI,
   credentials: "include",
 });
 
