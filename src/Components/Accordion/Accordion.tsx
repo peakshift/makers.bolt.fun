@@ -28,7 +28,7 @@ interface Props {
 export default function Accordion({ items, classes }: Props) {
     return (
         <AccordionContainer allowZeroExpanded allowMultipleExpanded>
-            {items.map((item, idx) => <AccordionItem key={item.id ?? idx} className={` border-b ${classes?.item}`}>
+            {items.map((item, idx) => <AccordionItem key={item.id ?? idx} className={` border-b last:border-b-0 ${classes?.item}`}>
                 <AccordionItemHeading>
                     <AccordionItemButton
                         className={`py-20 flex items-center text-body2 font-bolder ${classes?.heading}`}

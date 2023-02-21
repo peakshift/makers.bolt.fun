@@ -1,7 +1,6 @@
 // @ts-nocheck
-
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { relayPool } from "nostr-tools";
+// import { relayPool } from "nostr-tools";
 import { Nullable } from "remirror";
 import { CONSTS } from "src/utils";
 import { Comment } from "../types";

@@ -1263,6 +1263,13 @@ export type UpdateTournamentRegistrationMutationVariables = Exact<{
 
 export type UpdateTournamentRegistrationMutation = { __typename?: 'Mutation', updateTournamentRegistration: { __typename?: 'ParticipationInfo', createdAt: any, email: string, hacking_status: TournamentMakerHackingStatusEnum } | null };
 
+export type GetTournamentWinningProjectsQueryVariables = Exact<{
+  winning_projects: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type GetTournamentWinningProjectsQuery = { __typename?: 'Query', getProjectsById: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, title: string, icon: string | null } }> };
+
 export type RegisterInTournamentMutationVariables = Exact<{
   tournamentId: Scalars['Int'];
   data: InputMaybe<RegisterInTournamentInput>;
@@ -1287,11 +1294,10 @@ export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationI
 
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
-  winning_projects: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> }, getProjectsById: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, title: string, icon: string | null } }> };
+export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -3650,6 +3656,50 @@ export function useUpdateTournamentRegistrationMutation(baseOptions?: Apollo.Mut
 export type UpdateTournamentRegistrationMutationHookResult = ReturnType<typeof useUpdateTournamentRegistrationMutation>;
 export type UpdateTournamentRegistrationMutationResult = Apollo.MutationResult<UpdateTournamentRegistrationMutation>;
 export type UpdateTournamentRegistrationMutationOptions = Apollo.BaseMutationOptions<UpdateTournamentRegistrationMutation, UpdateTournamentRegistrationMutationVariables>;
+export const GetTournamentWinningProjectsDocument = gql`
+    query GetTournamentWinningProjects($winning_projects: [String!]!) {
+  getProjectsById(ids: $winning_projects) {
+    id
+    hashtag
+    title
+    tagline
+    thumbnail_image
+    category {
+      id
+      title
+      icon
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTournamentWinningProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetTournamentWinningProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTournamentWinningProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTournamentWinningProjectsQuery({
+ *   variables: {
+ *      winning_projects: // value for 'winning_projects'
+ *   },
+ * });
+ */
+export function useGetTournamentWinningProjectsQuery(baseOptions: Apollo.QueryHookOptions<GetTournamentWinningProjectsQuery, GetTournamentWinningProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTournamentWinningProjectsQuery, GetTournamentWinningProjectsQueryVariables>(GetTournamentWinningProjectsDocument, options);
+      }
+export function useGetTournamentWinningProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTournamentWinningProjectsQuery, GetTournamentWinningProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTournamentWinningProjectsQuery, GetTournamentWinningProjectsQueryVariables>(GetTournamentWinningProjectsDocument, options);
+        }
+export type GetTournamentWinningProjectsQueryHookResult = ReturnType<typeof useGetTournamentWinningProjectsQuery>;
+export type GetTournamentWinningProjectsLazyQueryHookResult = ReturnType<typeof useGetTournamentWinningProjectsLazyQuery>;
+export type GetTournamentWinningProjectsQueryResult = Apollo.QueryResult<GetTournamentWinningProjectsQuery, GetTournamentWinningProjectsQueryVariables>;
 export const RegisterInTournamentDocument = gql`
     mutation RegisterInTournament($tournamentId: Int!, $data: RegisterInTournamentInput) {
   registerInTournament(tournament_id: $tournamentId, data: $data) {
@@ -3809,7 +3859,7 @@ export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery
 export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
 export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetTournamentByIdDocument = gql`
-    query GetTournamentById($id: Int!, $winning_projects: [String!]!) {
+    query GetTournamentById($id: Int!) {
   getTournamentById(id: $id) {
     id
     title
@@ -3863,18 +3913,6 @@ export const GetTournamentByIdDocument = gql`
       }
     }
   }
-  getProjectsById(ids: $winning_projects) {
-    id
-    hashtag
-    title
-    tagline
-    thumbnail_image
-    category {
-      id
-      title
-      icon
-    }
-  }
 }
     `;
 
@@ -3891,7 +3929,6 @@ export const GetTournamentByIdDocument = gql`
  * const { data, loading, error } = useGetTournamentByIdQuery({
  *   variables: {
  *      id: // value for 'id'
- *      winning_projects: // value for 'winning_projects'
  *   },
  * });
  */

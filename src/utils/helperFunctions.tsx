@@ -198,7 +198,7 @@ export const getSpanDate = (_date1: string, _date2: string) => {
       "Do MMM"
     )}`;
 
-  const isSameDay = date1.getDay() === date2.getDay();
+  const isSameDay = date1.getDate() === date2.getDate();
   if (!isSameDay)
     return `${dayjs(_date1).format("Do")} - ${dayjs(_date2).format("Do MMM")}`;
   // Same Day

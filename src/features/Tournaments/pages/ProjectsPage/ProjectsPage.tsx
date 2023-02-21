@@ -9,10 +9,13 @@ import ProjectsFilters, {
   TrackFilterType,
 } from "./ProjectsFilters/ProjectsFilters";
 import MyTournamentProjects from "./MyTournamentProjects/MyTournamentProjects";
+import Button from "src/Components/Button/Button";
+import { openModal } from "src/redux/features/modals.slice";
 
 export default function ProjectsPage() {
+  const dispatch = useAppDispatch();
   const {
-    tournamentDetails: { id, title, tracks },
+    tournamentDetails: { id, title, tracks, end_date },
     myParticipationInfo,
   } = useTournament();
   const isLoggedIn = useAppSelector((s) => !!s.user.me);
@@ -74,6 +77,8 @@ export default function ProjectsPage() {
 
   const isEmpty = allProjectsCount !== null && allProjectsCount === 0;
 
+  const isSubmissionsClosed = new Date(end_date) < new Date();
+
   return (
     <div className="pb-42 flex flex-col gap-24">
       <h2 className="text-body1 font-bolder text-gray-900">
@@ -113,17 +118,29 @@ export default function ProjectsPage() {
             </button>
           )}
         </div>
-        {/* <Button
-                    disabled={!isLoggedIn}
-                    size='sm'
-                    className='hidden md:block'
-                    color='primary'
-                    onClick={() => dispatch(openModal({
-                        Modal: "AddProjectTournamentModal",
-                        props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
-                    }))
-
-                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button> */}
+        {!isSubmissionsClosed && (
+          <Button
+            disabled={!isLoggedIn}
+            size="sm"
+            className="hidden md:block"
+            color="primary"
+            onClick={() =>
+              dispatch(
+                openModal({
+                  Modal: "AddProjectTournamentModal",
+                  props: {
+                    tournament: { id, title, tracks },
+                    myRegisteredProjectsIds:
+                      myParticipationInfo?.projects.map((p) => p.project.id) ??
+                      [],
+                  },
+                })
+              )
+            }
+          >
+            {isLoggedIn ? "+ Add project" : "Login to add project"}
+          </Button>
+        )}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">
         <ProjectsFilters
@@ -132,17 +149,29 @@ export default function ProjectsPage() {
           trackValue={trackFilter}
           onTrackChange={setTrackFilter}
         />
-        {/* <Button
-                    disabled={!isLoggedIn}
-                    fullWidth
-                    className='md:hidden'
-                    color='primary'
-                    onClick={() => dispatch(openModal({
-                        Modal: "AddProjectTournamentModal",
-                        props: { tournament: { id, title, tracks }, myRegisteredProjectsIds: myParticipationInfo?.projects.map(p => p.project.id) ?? [] }
-                    }))
-
-                    }>{isLoggedIn ? "+ Add project" : "Login to add project"}</Button>  */}
+        {!isSubmissionsClosed && (
+          <Button
+            disabled={!isLoggedIn}
+            fullWidth
+            className="md:hidden"
+            color="primary"
+            onClick={() =>
+              dispatch(
+                openModal({
+                  Modal: "AddProjectTournamentModal",
+                  props: {
+                    tournament: { id, title, tracks },
+                    myRegisteredProjectsIds:
+                      myParticipationInfo?.projects.map((p) => p.project.id) ??
+                      [],
+                  },
+                })
+              )
+            }
+          >
+            {isLoggedIn ? "+ Add project" : "Login to add project"}
+          </Button>
+        )}
         {curTab === "all-projects" ? (
           query.loading ? (
             Array(9)

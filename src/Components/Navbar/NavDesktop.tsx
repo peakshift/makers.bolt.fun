@@ -10,7 +10,7 @@ import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import { FiChevronDown } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
+import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 
 export default function NavDesktop() {
@@ -61,12 +61,42 @@ export default function NavDesktop() {
                 offsetY={28}
                 menuButton={
                   <MenuButton className="text-body4 font-bold hover:text-primary-600">
-                    Events <FiChevronDown className="ml-8" />
+                    <div className="flex items-center">
+                      {" "}
+                      Events
+                      <sup className="text-red-500 text-body2 block animate-pulse">
+                        &#8226;
+                      </sup>{" "}
+                      <FiChevronDown className="ml-8" />{" "}
+                    </div>
                   </MenuButton>
                 }
                 menuClassName="!rounded-12 !p-8 !border-gray-200"
                 menuStyle={{ border: "1px solid" }}
               >
+                <MenuItem
+                  href="/tournaments/2"
+                  onClick={(e) => {
+                    e.syntheticEvent.preventDefault();
+                    navigate("/tournaments/2/overview");
+                  }}
+                  className="!p-16 font-medium flex gap-16 group bg-pink-100 hover:bg-purple-100 border-2 border-pink-200 hover:border-purple-200 !rounded-12"
+                >
+                  <div className="group-hover:border-purple-200 bg-white border border-pink-200 w-48 h-48 rounded-full flex justify-center items-center">
+                    <span className="text-body2">🦩</span>
+                  </div>
+                  <div>
+                    <p className="text-body4 text-black font-medium">
+                      Nostr Hack & Design Week{" "}
+                      <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
+                        Hot! 🔥
+                      </span>
+                    </p>
+                    <p className="text-body5 text-gray-600 mt-4">
+                      Design & Build cool social things!
+                    </p>
+                  </div>
+                </MenuItem>
                 <MenuItem
                   href="/hackathons"
                   onClick={(e) => {
@@ -80,7 +110,7 @@ export default function NavDesktop() {
                   </div>
                   <div>
                     <p className="text-body4 text-black font-medium">
-                      Hackathons
+                      Upcoming Hackathons
                     </p>
                     <p className="text-body5 text-gray-600 mt-4">
                       Take part in hackathons & tournaments
@@ -218,14 +248,9 @@ export default function NavDesktop() {
                 </MenuItem>
               </Menu>
             ) : (
-              <Link
-                to={PAGES_ROUTES.auth.login}
-                state={{ from: window.location.pathname }}
-              >
-                <Button size="sm" color="white">
-                  Connect ⚡
-                </Button>
-              </Link>
+              <Button size="sm" color="white" href="/login">
+                Connect ⚡
+              </Button>
             ))}
           <div className="relative h-36">
             <motion.div
