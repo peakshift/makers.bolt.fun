@@ -7,7 +7,7 @@ const env = envsafe(
   {
     NODE_ENV: str({
       devDefault: "development",
-      choices: ["development", "test", "production"],
+      choices: ["development", "staging", "test", "production"],
     }),
     SITE_URL: url({
       default: process.env.URL,

@@ -12,7 +12,7 @@ import { CONSTS } from "src/utils";
 
 let apiClientUri = CONSTS.apiEndpoint + "/graphql";
 
-const cacheUri = "https://boltfun.stellate.sh";
+const cacheUri = "https://cache.bolt.fun";
 
 const OPERATIONS_TO_CACHE = [
   "Feed",
@@ -32,8 +32,8 @@ const OPERATIONS_TO_CACHE = [
 
 const httpLink = new HttpLink({
   uri: (operation) => {
-    if (window.location.hostname !== "makers.bolt.fun") return apiClientUri;
-
+    // if (window.location.hostname !== "makers.bolt.fun") return apiClientUri;
+    return cacheUri;
     if (OPERATIONS_TO_CACHE.includes(operation.operationName)) return cacheUri;
     else return apiClientUri;
   },
