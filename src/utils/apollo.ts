@@ -11,18 +11,31 @@ import { RetryLink } from "@apollo/client/link/retry";
 import { CONSTS } from "src/utils";
 
 let apiClientUri = CONSTS.apiEndpoint + "/graphql";
-// let apiClientUri = "https://stellate.co/dashboard/peakshift";
 
 const cacheUri = "https://boltfun.stellate.sh";
 
+const OPERATIONS_TO_CACHE = [
+  "Feed",
+  "FeedTags",
+  "TrendingPosts",
+
+  "GetTournamentById",
+
+  "ExploreProjects",
+  "AllCategories",
+  "CategoryPage",
+  "GetAllRoles",
+  "ProjectDetailsModal",
+  "ProjectDetails",
+  "SimilarProjects",
+];
+
 const httpLink = new HttpLink({
   uri: (operation) => {
-    return apiClientUri;
-    // const queriesToCache = ["Feed", "FeedTags"];
-    // console.log(operation);
+    if (window.location.hostname !== "makers.bolt.fun") return apiClientUri;
 
-    // if (queriesToCache.includes(operation.operationName)) return cacheUri;
-    // else return apiClientUri;
+    if (OPERATIONS_TO_CACHE.includes(operation.operationName)) return cacheUri;
+    else return apiClientUri;
   },
   credentials: "include",
 });
