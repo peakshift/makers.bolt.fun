@@ -101,7 +101,7 @@ const schema: yup.SchemaOf<IListProjectForm> = yup
           try {
             if (value) {
               const [name, domain] = value.split("@");
-              const lnurl = `https://api.codetabs.com/v1/proxy?quest=https://${domain}/.well-known/lnurlp/${name}`;
+              const lnurl = `https://cors-here.peakshift.workers.dev/?url=https://${domain}/.well-known/lnurlp/${name}`;
               const res = await fetch(lnurl);
               if (res.status === 200) return true;
               return false;

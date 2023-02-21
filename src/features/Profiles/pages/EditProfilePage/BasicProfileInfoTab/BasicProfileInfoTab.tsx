@@ -20,8 +20,6 @@ import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInp
 import { imageSchema } from "src/utils/validation";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import axios from "axios";
-import ReactRouterPrompt from "src/Components/ReactRouterPrompt/ReactRouterPrompt";
-import WindowConfirm from "src/Components/WindowConfirm/WindowConfirm";
 
 interface Props {}
 
@@ -44,7 +42,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup
           try {
             if (value) {
               const [name, domain] = value.split("@");
-              const lnurl = `https://${domain}/.well-known/lnurlp/${name}`;
+              const lnurl = `https://cors-here.peakshift.workers.dev/?url=https://${domain}/.well-known/lnurlp/${name}`;
               const res = await axios.get(lnurl);
 
               if (res.status === 200) return true;
