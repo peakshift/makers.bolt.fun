@@ -101,7 +101,7 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                 ))}
             </ul>
           ) : (
-            <div className="relative">
+            <div className="relative overflow-hidden">
               <div className="absolute bottom-full -translate-y-16 right-0">
                 <Button
                   variant="text"
