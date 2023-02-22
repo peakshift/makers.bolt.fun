@@ -24,32 +24,32 @@ const isLoggedInHandler = async (req, res) => {
       lnurlAuthService.removeHash(hash).catch();
       lnurlAuthService.removeExpiredHashes().catch();
 
-      const _res = res.status(200).clearCookie("login_session", {
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
+      const cookieConfig =
+        env.SITE_URL === "https://makers.bolt.fun"
+          ? {
+              maxAge: 3600000 * 24 * 30,
+              secure: true,
+              httpOnly: true,
+              domain: `.bolt.fun`,
+            }
+          : {
+              maxAge: 3600000 * 24 * 30,
+              secure: true,
+              httpOnly: true,
+              sameSite: "none",
+            };
 
-      if (env.SITE_URL === "https://makers.bolt.fun")
-        _res.cookie("Authorization", authToken, {
-          maxAge: 3600000 * 24 * 30,
-          secure: true,
-          httpOnly: true,
-          domain: `.bolt.fun`,
-        });
-      else
-        _res.cookie("Authorization", authToken, {
-          maxAge: 3600000 * 24 * 30,
+      return res
+        .status(200)
+        .clearCookie("login_session", {
           secure: true,
           httpOnly: true,
           sameSite: "none",
-        });
-
-      return _res.json({
-        logged_in: true,
-      });
+        })
+        .cookie("Authorization", authToken, cookieConfig)
+        .json({ logged_in: true });
     } else {
-      res.json({
+      return res.json({
         logged_in: false,
       });
     }
