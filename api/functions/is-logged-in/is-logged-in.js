@@ -22,7 +22,7 @@ const isLoggedInHandler = async (req, res) => {
 
       if (!authToken) return res.json({ logged_in: false });
 
-      await Promise.allSettled([
+      Promise.allSettled([
         lnurlAuthService.removeHash(hash),
         lnurlAuthService.removeExpiredHashes(),
       ]);
