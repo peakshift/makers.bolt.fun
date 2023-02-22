@@ -42,22 +42,24 @@ const isLoggedInHandler = async (req, res) => {
               sameSite: "none",
             };
       console.log(authToken, cookieConfig);
-      res
-        .status(200)
-        // .clearCookie("login_session", {
-        //   secure: true,
-        //   httpOnly: true,
-        //   sameSite: "none",
-        // })
-        .cookie("Authorization", authToken, cookieConfig)
-        .json({ logged_in: true });
+      return (
+        res
+          .status(200)
+          // .clearCookie("login_session", {
+          //   secure: true,
+          //   httpOnly: true,
+          //   sameSite: "none",
+          // })
+          .cookie("Authorization", authToken, cookieConfig)
+          .json({ logged_in: true })
+      );
     } else {
       return res.json({
         logged_in: false,
       });
     }
   } catch (error) {
-    res.json({
+    return res.json({
       logged_in: false,
     });
   }
