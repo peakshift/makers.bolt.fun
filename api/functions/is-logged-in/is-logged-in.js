@@ -28,7 +28,7 @@ const isLoggedInHandler = async (req, res) => {
       ]);
 
       const cookieConfig =
-        env.SITE_URL !== "https://makers.bolt.fun"
+        env.SITE_URL === "https://makers.bolt.fun"
           ? {
               maxAge: 3600000 * 24 * 30,
               secure: true,
@@ -42,18 +42,11 @@ const isLoggedInHandler = async (req, res) => {
               sameSite: "none",
             };
       console.log(authToken, cookieConfig);
-      return (
-        res
-          .status(200)
-          // .clearCookie("login_session", {
-          //   secure: true,
-          //   httpOnly: true,
-          //   sameSite: "none",
-          // })
-          .set("Cache-Control", "no-store")
-          .cookie("Authorization", authToken, cookieConfig)
-          .json({ logged_in: true })
-      );
+      return res
+        .status(200)
+        .set("Cache-Control", "no-store")
+        .cookie("Authorization", authToken, cookieConfig)
+        .json({ logged_in: true });
     } else {
       return res.json({
         logged_in: false,
