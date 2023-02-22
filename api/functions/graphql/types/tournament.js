@@ -626,8 +626,20 @@ const registerInTournament = extendType({
         // ....
         // ....
 
-        return (
-          await prisma.tournamentParticipant.create({
+        const alreadyRegistered = await prisma.tournamentParticipant.findFirst({
+          where: {
+            tournament_id,
+            user_id: user.id,
+          },
+          include: {
+            user: true,
+          },
+        });
+
+        if (alreadyRegistered) return alreadyRegistered.user;
+
+        return prisma.tournamentParticipant
+          .create({
             data: {
               tournament_id,
               user_id: user.id,
@@ -638,7 +650,7 @@ const registerInTournament = extendType({
               user: true,
             },
           })
-        ).user;
+          .then((data) => data.user);
       },
     });
   },
