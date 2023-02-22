@@ -41,7 +41,6 @@ const isLoggedInHandler = async (req, res) => {
               httpOnly: true,
               sameSite: "none",
             };
-      console.log(authToken, cookieConfig);
       return res
         .status(200)
         .set("Cache-Control", "no-store")
