@@ -40,17 +40,15 @@ const isLoggedInHandler = async (req, res) => {
               sameSite: "none",
             };
       console.log(authToken, cookieConfig);
-      console.log(
-        res
-          .status(200)
-          .clearCookie("login_session", {
-            secure: true,
-            httpOnly: true,
-            sameSite: "none",
-          })
-          .cookie("Authorization", authToken, cookieConfig)
-          .json({ logged_in: true })
-      );
+      res
+        .status(200)
+        .clearCookie("login_session", {
+          secure: true,
+          httpOnly: true,
+          sameSite: "none",
+        })
+        .cookie("Authorization", authToken, cookieConfig)
+        .json({ logged_in: true });
     } else {
       return res.json({
         logged_in: false,
