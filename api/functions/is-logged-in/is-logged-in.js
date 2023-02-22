@@ -28,7 +28,7 @@ const isLoggedInHandler = async (req, res) => {
       ]);
 
       const cookieConfig =
-        env.SITE_URL === "https://makers.bolt.fun"
+        env.SITE_URL !== "https://makers.bolt.fun"
           ? {
               maxAge: 3600000 * 24 * 30,
               secure: true,
