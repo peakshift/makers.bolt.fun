@@ -85,7 +85,7 @@ async function getAuthTokenByHash(hash) {
       value: hash,
     },
   });
-  return data.sid;
+  return data?.sid;
 }
 
 function associateTokenToHash(hash, token) {

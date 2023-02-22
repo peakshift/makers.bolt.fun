@@ -20,10 +20,12 @@ const isLoggedInHandler = async (req, res) => {
       const hash = payload.hash;
       const authToken = await lnurlAuthService.getAuthTokenByHash(hash);
 
-      lnurlAuthService.removeHash(hash).catch();
-      lnurlAuthService.removeExpiredHashes().catch();
+      if (!authToken) return res.json({ logged_in: false });
 
-      if (!authToken) throw new Error("Not logged in yet");
+      await Promise.allSettled([
+        lnurlAuthService.removeHash(hash),
+        lnurlAuthService.removeExpiredHashes(),
+      ]);
 
       const cookieConfig =
         env.SITE_URL === "https://makers.bolt.fun"
