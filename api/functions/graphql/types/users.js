@@ -17,6 +17,8 @@ const { Tournament } = require("./tournament");
 const { resolveImgObjectToUrl } = require("../../../utils/resolveImageUrl");
 const { deleteImage } = require("../../../services/imageUpload.service");
 const { PrismaSelect } = require("@paljs/plugins");
+const { default: axios } = require("axios");
+const env = require("../../../utils/consts");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -386,6 +388,11 @@ const updateProfileDetails = extendType({
             await deleteImage(user.avatar_id);
           }
         }
+        if (env.CACHE_PURGE_TOKEN)
+          invalidateUserCache(user.id).catch((err) => {
+            console.log("Error while invalidating cache");
+            console.log(err);
+          });
 
         // Preprocess & insert
         return prisma.user.update({
@@ -405,6 +412,20 @@ const updateProfileDetails = extendType({
     });
   },
 });
+
+function invalidateUserCache(id) {
+  return axios.post(
+    "https://admin.stellate.co/boltfun",
+    { query: `mutation { purgeUser(id: [${id}]) }` },
+    {
+      headers: {
+        // and specify the Content-Type
+        "Content-Type": "application/json",
+        "stellate-token": env.CACHE_PURGE_TOKEN,
+      },
+    }
+  );
+}
 
 const WalletKey = objectType({
   name: "WalletKey",

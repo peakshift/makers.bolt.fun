@@ -28,6 +28,10 @@ const env = envsafe(
     LNURL_AUTH_HOST: str({
       default: "https://auth.bolt.fun/.netlify/functions/login",
     }),
+    CACHE_PURGE_TOKEN: str({
+      allowEmpty: true,
+      default: "",
+    }),
 
     CLOUDFLARE_IMAGE_ACCOUNT_ID: str(),
     CLOUDFLARE_IMAGE_API_KEY: str(),
