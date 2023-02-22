@@ -44,11 +44,11 @@ const isLoggedInHandler = async (req, res) => {
       console.log(authToken, cookieConfig);
       res
         .status(200)
-        .clearCookie("login_session", {
-          secure: true,
-          httpOnly: true,
-          sameSite: "none",
-        })
+        // .clearCookie("login_session", {
+        //   secure: true,
+        //   httpOnly: true,
+        //   sameSite: "none",
+        // })
         .cookie("Authorization", authToken, cookieConfig)
         .json({ logged_in: true });
     } else {
