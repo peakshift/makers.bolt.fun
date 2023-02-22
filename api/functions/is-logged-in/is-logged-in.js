@@ -19,10 +19,11 @@ const isLoggedInHandler = async (req, res) => {
       );
       const hash = payload.hash;
       const authToken = await lnurlAuthService.getAuthTokenByHash(hash);
-      if (!authToken) throw new Error("Not logged in yet");
 
       lnurlAuthService.removeHash(hash).catch();
       lnurlAuthService.removeExpiredHashes().catch();
+
+      if (!authToken) throw new Error("Not logged in yet");
 
       const cookieConfig =
         env.SITE_URL === "https://makers.bolt.fun"
@@ -38,16 +39,18 @@ const isLoggedInHandler = async (req, res) => {
               httpOnly: true,
               sameSite: "none",
             };
-
-      return res
-        .status(200)
-        .clearCookie("login_session", {
-          secure: true,
-          httpOnly: true,
-          sameSite: "none",
-        })
-        .cookie("Authorization", authToken, cookieConfig)
-        .json({ logged_in: true });
+      console.log(authToken, cookieConfig);
+      console.log(
+        res
+          .status(200)
+          .clearCookie("login_session", {
+            secure: true,
+            httpOnly: true,
+            sameSite: "none",
+          })
+          .cookie("Authorization", authToken, cookieConfig)
+          .json({ logged_in: true })
+      );
     } else {
       return res.json({
         logged_in: false,
