@@ -50,6 +50,7 @@ const isLoggedInHandler = async (req, res) => {
           //   httpOnly: true,
           //   sameSite: "none",
           // })
+          .set("Cache-Control", "no-store")
           .cookie("Authorization", authToken, cookieConfig)
           .json({ logged_in: true })
       );
