@@ -1,7 +1,7 @@
 import { useUpdateEffect } from "@react-hookz/web";
 import { useState } from "react";
 import { useFeedQuery } from "src/graphql";
-import { useInfiniteQuery, usePreload } from "src/utils/hooks";
+import { useAppSelector, useInfiniteQuery, usePreload } from "src/utils/hooks";
 import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
 import FeedTagsFilter, { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
@@ -14,11 +14,14 @@ import { createRoute } from "src/utils/routing";
 import { useAppDispatch } from "src/utils/hooks";
 import { stageStoryEdit } from "src/redux/features/staging.slice";
 import OgTags from "src/Components/OgTags/OgTags";
+import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
+import dayjs from "dayjs";
 
 export default function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
   const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
   const dispatch = useAppDispatch();
+  const userJoinDate = useAppSelector((s) => s.user.me?.join_date);
 
   const feedQuery = useFeedQuery({
     variables: {
@@ -35,6 +38,9 @@ export default function FeedPage() {
   useUpdateEffect(variablesChanged, [sortByFilter, tagFilter]);
 
   usePreload("PostPage");
+
+  const isNewUser =
+    userJoinDate && dayjs(Date.now()).diff(userJoinDate, "hours") <= 24;
 
   return (
     <>
@@ -68,7 +74,8 @@ export default function FeedPage() {
           <div id="sort-by">
             <SortBy filterChanged={setSortByFilter} />
           </div>
-          <div id="content" className="pt-16 md:pt-0">
+          <div id="content" className="pt-16 md:pt-0 flex flex-col gap-24">
+            {(isNewUser || true) && <WelcomeNewMaker />}
             <PostsList
               isLoading={feedQuery.loading}
               items={feedQuery.data?.getFeed}

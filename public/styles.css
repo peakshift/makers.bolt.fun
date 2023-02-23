@@ -15,22 +15,26 @@
 
 .loading-app img {
   width: min(80%, 250px);
-  animation: fadeInOut 3s ease-in-out infinite alternate;
+  animation: fadeInOut 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite
+    alternate;
 }
 
 @keyframes fadeInOut {
   0% {
-    opacity: 1;
-    /* transform: rotate(0deg); */
+    opacity: 0.3;
+    transform: scale(0.95);
+    /* transform: rotate(360deg); */
   }
 
   80% {
     opacity: 1;
+    transform: scale(1);
     /* transform: rotate(0deg); */
   }
 
   100% {
-    opacity: 0;
+    opacity: 1;
+    transform: scale(1.1) rotate(-4deg);
     /* transform: rotate(360deg); */
   }
 }

@@ -4,12 +4,14 @@ type PreferencesType = {
   showNostrCommentsTooltip: boolean;
   themeMode: "light" | "dark";
   nostr_relays_to_connect_to: string[];
+  hide_welcome_message: boolean;
 };
 
 const defaultPrefernces: PreferencesType = {
   showNostrCommentsTooltip: true,
   themeMode: "light",
   nostr_relays_to_connect_to: CONSTS.DEFAULT_RELAYS,
+  hide_welcome_message: false,
 };
 
 export default class Preferences {

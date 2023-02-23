@@ -21,31 +21,22 @@ function App() {
   useMeQuery({
     onCompleted: (data) => {
       dispatch(setUser(data.me));
+      hideLoadingScreen();
     },
     onError: (error) => {
       dispatch(setUser(null));
+      hideLoadingScreen();
     },
   });
 
   useEffect(() => {
-    // if (typeof window.webln != "undefined") {
-    //   alert('hi')
-    //   window.webln.enable().then((res: any) => {
-    //     dispatch(connectWallet(window.webln));
-    //     console.log("called:webln.enable()", res);
-    //   }).catch((err: any) => {
-    //     console.log("error:webln.enable()", err);
-    //   });
-    // }
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       Wallet_Service.init();
     }, 2000);
 
-    const loadingAppPanel = document.querySelector(".loading-app");
-    loadingAppPanel?.classList.add("removed");
-    setTimeout(() => {
-      loadingAppPanel?.remove();
-    }, 800);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (
@@ -62,6 +53,14 @@ function App() {
       <ModalsContainer />
     </div>
   );
+}
+
+function hideLoadingScreen() {
+  const loadingAppPanel = document.querySelector(".loading-app");
+  loadingAppPanel?.classList.add("removed");
+  setTimeout(() => {
+    loadingAppPanel?.remove();
+  }, 800);
 }
 
 export default App;

@@ -16,7 +16,11 @@ import THEME from "./theme";
 import { NotificationsService } from "src/services";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { ErrorBoundary } from "react-error-boundary";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+
 THEME.injectStyles();
+dayjs.extend(relativeTime);
 
 let basename = "/";
 
