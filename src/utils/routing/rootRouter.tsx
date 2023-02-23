@@ -19,6 +19,13 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 
+const HomePage = Loadable(
+  React.lazy(
+    () =>
+      import(/* webpackChunkName: "feed_page" */ "../../features/Home/HomePage")
+  )
+);
+
 const FeedPage = Loadable(
   React.lazy(
     () =>
@@ -266,6 +273,8 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
+
+        <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
 
         <Route
           path="/"

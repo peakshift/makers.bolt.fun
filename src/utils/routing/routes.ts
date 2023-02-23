@@ -174,6 +174,9 @@ export const PAGES_ROUTES = {
   tournament: {
     byId: "/tournaments/:id/*",
   },
+  home: {
+    default: "/home",
+  },
   auth: {
     login: "/login",
     logout: "/logout",
