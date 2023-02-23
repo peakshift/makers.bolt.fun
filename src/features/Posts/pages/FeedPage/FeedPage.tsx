@@ -9,7 +9,7 @@ import SortBy from "./SortBy/SortBy";
 import styles from "./styles.module.scss";
 import Button from "src/Components/Button/Button";
 import { FiArrowRight } from "react-icons/fi";
-import { capitalize } from "src/utils/helperFunctions";
+import { capitalize, randomItem } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
 import { useAppDispatch } from "src/utils/hooks";
 import { stageStoryEdit } from "src/redux/features/staging.slice";
@@ -88,9 +88,9 @@ export default function FeedPage() {
               <h1
                 className={`${
                   tagFilter && "hidden"
-                } md:block text-h2 font-bolder order-1`}
+                } md:block text-h3 font-bolder order-1`}
               >
-                Discover
+                {randomWelcomeMessage}
               </h1>
               <div className="order-3 md:order-2">
                 <Button
@@ -150,3 +150,10 @@ export default function FeedPage() {
     </>
   );
 }
+
+const randomWelcomeMessage = randomItem(
+  "What are you working on today?",
+  "What did you learn today?",
+  "Do you need some help with a design?",
+  "Tell us about your idea!"
+);

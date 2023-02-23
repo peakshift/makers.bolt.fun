@@ -19,6 +19,7 @@ export default function PostActions({ post }: Props) {
   ];
 
   const navigate = useNavigate();
+
   const { vote } = useVote({
     itemId: post.id,
     itemType: Vote_Item_Type[post.__typename!],
