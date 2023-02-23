@@ -35,7 +35,7 @@ export default function WelcomeNewMaker() {
         <div className="flex flex-col gap-8">
           <Link
             to={createRoute({ type: "edit-profile" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
           >
             <div
               className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
@@ -53,7 +53,7 @@ export default function WelcomeNewMaker() {
           </Link>
           <Link
             to={createRoute({ type: "write-story" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
           >
             <div
               className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
@@ -71,7 +71,7 @@ export default function WelcomeNewMaker() {
           </Link>
           <Link
             to={createRoute({ type: "edit-project" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
           >
             <div
               className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
