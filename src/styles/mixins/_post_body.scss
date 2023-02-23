@@ -39,9 +39,9 @@
 
   p,
   ul {
-    font-size: 16px;
-    line-height: 22px;
-    margin-bottom: 1.5em;
+    font-size: 18px;
+    line-height: 1.5em;
+    margin-bottom: 1.8em;
   }
 
   a {
@@ -51,11 +51,24 @@
     text-decoration: underline;
   }
 
+  p:has(img) {
+    background: #e9d5ff;
+    border-radius: 16px;
+    padding: 16px 16px;
+    text-align: center;
+  }
+
+  p img:not(:first-of-type) {
+    margin-top: 16px;
+  }
+
   img {
     border-radius: 16px;
-    outline: 1px solid #e4e7ec;
     max-width: 100%;
     object-fit: contain;
+    outline: none;
+    display: inline-block;
+    box-shadow: 1px 11px 16px #34204a52;
   }
 
   pre {
