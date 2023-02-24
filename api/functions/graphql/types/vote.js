@@ -12,6 +12,7 @@ const { getPaymetRequestForItem, hexToUint8Array } = require("./helpers");
 const { createHash } = require("crypto");
 const { prisma } = require("../../../prisma");
 const { CONSTS } = require("../../../utils");
+const cacheService = require("../../../services/cache.service");
 
 // the types of items we can vote to
 const VOTE_ITEM_TYPE = enumType({
@@ -45,7 +46,7 @@ const LnurlDetails = objectType({
   },
 });
 
-const getModalOfType = (type) => {
+const getPrismaModelByType = (type) => {
   switch (type) {
     case "Story":
       return prisma.story;
@@ -186,25 +187,30 @@ const confirmVoteMutation = extendType({
         // if we find a vote it means the preimage is correct and we update the vote and mark it as paid
         // can we write this nicer?
         if (vote) {
-          const modal = getModalOfType(vote.item_type);
-          const item = await modal.findUnique({
+          const model = getPrismaModelByType(vote.item_type);
+          const item = await model.findUnique({
             where: { id: vote.item_id },
           });
           // count up votes cache
-          await modal.update({
-            where: { id: item.id },
-            data: {
-              votes_count: item.votes_count + vote.amount_in_sat,
-            },
-          });
-          // return the current vote
-          return prisma.vote.update({
-            where: { id: vote.id },
-            data: {
-              paid: true,
-              preimage: args.preimage,
-            },
-          });
+          const [voteObject] = await Promise.all([
+            prisma.vote.update({
+              where: { id: vote.id },
+              data: {
+                paid: true,
+                preimage: args.preimage,
+              },
+            }),
+            model.update({
+              where: { id: item.id },
+              data: {
+                votes_count: item.votes_count + vote.amount_in_sat,
+              },
+            }),
+            vote.item_type === "Story" &&
+              cacheService.invalidateStoryById(item.id),
+          ]);
+
+          return voteObject;
         } else {
           throw new Error("Invalid preimage");
         }
