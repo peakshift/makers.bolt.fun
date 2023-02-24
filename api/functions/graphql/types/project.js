@@ -388,8 +388,6 @@ const getProjectsById = extendType({
         ids: nonNull(list(nonNull(stringArg()))),
       },
       async resolve(_, { ids }, ctx, info) {
-        console.log(ids);
-
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).value;

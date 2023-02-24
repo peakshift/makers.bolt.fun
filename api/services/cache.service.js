@@ -2,11 +2,15 @@ const { default: axios } = require("axios");
 const env = require("../utils/consts");
 
 function invalidateStoryById(id) {
-  return makeRequest(`mutation { purgeStory(id: [${id}]) }`);
+  return makeRequest(
+    `mutation { _purgeType(type: "Story", keyFields: [{name: "id", value: "${id}" }]) }`
+  );
 }
 
 function invalidateUserById(id) {
-  return makeRequest(`mutation { purgeUser(id: [${id}]) }`);
+  return makeRequest(
+    `mutation { _purgeType(type: "User", keyFields: [{name: "id", value: "${id}" }]) }`
+  );
 }
 
 function makeRequest(query) {
