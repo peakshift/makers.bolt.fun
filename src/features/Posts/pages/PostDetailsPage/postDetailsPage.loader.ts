@@ -11,7 +11,7 @@ export type LoaderData = PostDetailsQuery;
 
 export const postDetailsPageLoader = createLoader<
   PostDetailsQueryVariables,
-  { type: "story" | "question" }
+  { type: Post_Type }
 >(({ params }, { type }) => {
   const { slug } = params;
 
@@ -23,7 +23,7 @@ export const postDetailsPageLoader = createLoader<
     query: PostDetailsDocument,
     variables: {
       id,
-      type: capitalize(type) as Post_Type,
+      type,
     },
     skip: isNaN(id),
   };

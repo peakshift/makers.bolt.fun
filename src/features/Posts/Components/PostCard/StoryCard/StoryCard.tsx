@@ -5,7 +5,6 @@ import { useVote } from "src/utils/hooks";
 import { Author, Tag, Vote_Item_Type } from "src/graphql";
 import Badge from "src/Components/Badge/Badge";
 import { createRoute } from "src/utils/routing";
-import { BiComment } from "react-icons/bi";
 import Card from "src/Components/Card/Card";
 import PostCardHeader from "../PostCardHeader/PostCardHeader";
 import { formatHashtag } from "src/utils/helperFunctions";

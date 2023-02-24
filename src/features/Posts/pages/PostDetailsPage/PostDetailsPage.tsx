@@ -1,39 +1,39 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
-import { PostDetailsQuery, Post_Type } from "src/graphql";
-import { capitalize } from "src/utils/helperFunctions";
+import { Post_Type, usePostDetailsQuery } from "src/graphql";
 import ScrollToTop from "src/utils/routing/scrollToTop";
 import TrendingCard from "src/features/Posts/Components/TrendingCard/TrendingCard";
 import AuthorCard from "./Components/AuthorCard/AuthorCard";
 import PageContent from "./Components/PageContent/PageContent";
 import PostActions from "./Components/PostActions/PostActions";
-import styles from "./styles.module.scss";
-import { lazy, Suspense } from "react";
-import { RotatingLines } from "react-loader-spinner";
 import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
 import { MEDIA_QUERIES } from "src/utils/theme";
-
-// const CommentsSection = lazy(
-//   () =>
-//     import(
-//       /* webpackChunkName: "comments_section" */ "src/features/Posts/Components/Comments"
-//     )
-// );
+import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 
 interface Props {
-  postType: "story" | "bounty" | "question";
+  postType: Post_Type;
 }
 
 export default function PostDetailsPage(props: Props) {
-  const loaderData = useLoaderData() as PostDetailsQuery;
+  const { slug } = useParams();
 
-  const type = capitalize(props.postType);
+  const id = Number(
+    slug?.includes("--") ? slug.slice(slug.lastIndexOf("--") + 2) : slug
+  );
 
-  const post = loaderData.getPostById;
+  const { data, loading } = usePostDetailsQuery({
+    variables: {
+      id,
+      type: props.postType,
+    },
+  });
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isMinLarge);
 
+  if (loading) return <LoadingPage />;
+
+  const post = data?.getPostById;
   if (!post) return <NotFoundPage />;
 
   return (

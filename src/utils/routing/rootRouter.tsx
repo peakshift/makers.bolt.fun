@@ -18,6 +18,7 @@ import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
+import { Post_Type } from "src/graphql";
 
 const HomePage = Loadable(
   React.lazy(
@@ -229,8 +230,8 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         />
         <Route
           path={PAGES_ROUTES.blog.storyById}
-          element={<PostDetailsPage postType="story" />}
-          loader={postDetailsPageLoader(queryClient, { type: "story" })}
+          element={<PostDetailsPage postType={Post_Type.Story} />}
+          loader={postDetailsPageLoader(queryClient, { type: Post_Type.Story })}
         />
         <Route
           path={PAGES_ROUTES.blog.tagPage}
