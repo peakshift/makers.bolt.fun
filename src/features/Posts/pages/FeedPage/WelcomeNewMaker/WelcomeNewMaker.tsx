@@ -18,17 +18,17 @@ export default function WelcomeNewMaker() {
   if (hide) return null;
 
   return (
-    <div className="p-24 md:p-36 flex flex-col gap-16 bg-primary-500 text-white rounded-16 relative">
+    <div className="p-24 md:p-36 flex flex-col gap-16 bg-primary-600 text-white rounded-16 relative">
       <IconButton
         className="absolute text-body2 top-16 right-16 md:top-24 md:right-24"
         onClick={onClose}
       >
         <IoClose />
       </IconButton>
-      <h2 className="text-h1 font-bold">Welcome!!</h2>
+      <h2 className="text-h1 font-bold">Take a look around!!</h2>
       <p className="text-body1">
-        You are now a valuable member of the most FUN community of builders &
-        designer in Bitcoin & Nostr!
+        You're entering the most FUN community of builders and
+        designers in Bitcoin & Nostr!
       </p>
       <div>
         <p className="text-gray-300 mb-8">SUGGESTED THINGS YOU CAN DO</p>
@@ -52,6 +52,24 @@ export default function WelcomeNewMaker() {
             </div>
           </Link>
           <Link
+            to="/tournaments/2/overview"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
+          >
+            <div
+              className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
+            >
+              🏆
+            </div>
+            <div>
+              <p className="text-body4 text-white font-bold">
+                Register for #NostrHack
+              </p>
+              <p className="text-body5 text-gray-100">
+                A hackathon in March to design and build on Nostr + Bitcoin
+              </p>
+            </div>
+          </Link>
+          <Link
             to={createRoute({ type: "write-story" })}
             className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
           >
@@ -62,7 +80,7 @@ export default function WelcomeNewMaker() {
             </div>
             <div>
               <p className="text-body4 text-white font-bold">
-                Write your first story
+                Introduce yourself by posting a story
               </p>
               <p className="text-body5 text-gray-100">
                 Whatever thing you would like to talk about.
@@ -79,9 +97,9 @@ export default function WelcomeNewMaker() {
               🚀
             </div>
             <div>
-              <p className="text-body4 text-white font-bold">List a project</p>
+              <p className="text-body4 text-white font-bold">List your project</p>
               <p className="text-body5 text-gray-100">
-                Add your awesome project to our projects directory.
+                Launched or in WIP mode let us know what you're working on.
               </p>
             </div>
           </Link>

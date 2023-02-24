@@ -87,7 +87,7 @@ export default function NavDesktop() {
                   </div>
                   <div>
                     <p className="text-body4 text-black font-medium">
-                      Nostr Hack & Design Week{" "}
+                      Nostr Hack & Design{" "}
                       <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
                         Hot! 🔥
                       </span>
