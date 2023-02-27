@@ -16,6 +16,7 @@ export default function NostrHackWeekOverviewPage() {
     <>
       <OgTags
         title={tournamentDetails.title}
+        description="A 2 week for building and designing on Nostr and Bitcoin"
         image={tournamentDetails.cover_image}
       />
       <Card

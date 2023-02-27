@@ -31,7 +31,7 @@ export default function CategoryPage() {
       <OgTags
         title={
           data?.getCategory.title &&
-          `Explore ${data?.getCategory.title!} Lightning Projects`
+          `Explore ${data?.getCategory.title!} Projects`
         }
         description={
           !!data?.getCategory.apps_count

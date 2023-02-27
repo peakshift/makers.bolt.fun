@@ -47,7 +47,7 @@ export default function WelcomeNewMaker() {
                 Complete your maker profile
               </p>
               <p className="text-body5 text-gray-100">
-                Add details to your maker profile so you stand out.
+                Get found by the right people.
               </p>
             </div>
           </Link>
@@ -65,7 +65,7 @@ export default function WelcomeNewMaker() {
                 Register for #NostrHack
               </p>
               <p className="text-body5 text-gray-100">
-                A hackathon in March to design and build on Nostr + Bitcoin
+                Hackathon for designing the future of social networks.
               </p>
             </div>
           </Link>
@@ -80,10 +80,10 @@ export default function WelcomeNewMaker() {
             </div>
             <div>
               <p className="text-body4 text-white font-bold">
-                Introduce yourself by posting a story
+                Introduce yourself
               </p>
               <p className="text-body5 text-gray-100">
-                Whatever thing you would like to talk about.
+                Post a story.
               </p>
             </div>
           </Link>
@@ -99,7 +99,7 @@ export default function WelcomeNewMaker() {
             <div>
               <p className="text-body4 text-white font-bold">List your project</p>
               <p className="text-body5 text-gray-100">
-                Launched or in WIP mode let us know what you're working on.
+                Let people know what you're working on. Amazing things can happen.
               </p>
             </div>
           </Link>

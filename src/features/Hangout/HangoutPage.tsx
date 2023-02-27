@@ -16,7 +16,7 @@ export default function HangoutPage() {
   return (
     <>
       <OgTags
-        title="Hangout on Bolt Fun"
+        title="Hangout on BOLT.FUN"
         description="Talk to other makers live!"
       />
       <div className="page-container h-screen bg-primary-500">

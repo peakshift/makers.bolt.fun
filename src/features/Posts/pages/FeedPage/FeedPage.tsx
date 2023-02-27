@@ -45,8 +45,8 @@ export default function FeedPage() {
   return (
     <>
       <OgTags
-        title="Bolt Fun"
-        description="A lightning app directory made for and by the bitcoin community."
+        title="BOLT.FUN"
+        description="Founders and makers sharing knwoledge and building on bitcoin"
       />
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>

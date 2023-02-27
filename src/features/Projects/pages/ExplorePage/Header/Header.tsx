@@ -11,20 +11,20 @@ export const bannerData = {
   title: (
     <>
       <p className="text-body1 font-bolder text-white">
-        Legends of Lightning ⚡️ Tournament
+        Nostr Hack & Design
       </p>
       <p className="text-body3 font-medium text-white mt-8">
-        12th Oct - 7th Dec, 2022
+        10th - 24th Mar, 2023
       </p>
       <p className="text-body4 text-white mt-8">
         <IoLocationOutline className="mr-8" /> Online
       </p>
     </>
   ),
-  img: "https://i.ibb.co/3S35g6T/wide.jpg",
+  img: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/c4d66b2b-24e4-4b15-1728-f01e9165c100/public",
   link: {
-    content: "View Winners",
-    url: createRoute({ type: "tournament", id: 1 }),
+    content: "Registration Open",
+    url: createRoute({ type: "tournament", id: 2 }),
     newTab: false,
   },
 };
@@ -34,12 +34,12 @@ const headerLinks = [
   {
     title: (
       <p className="text-body1 font-bolder text-white">
-        Explore a fun directory of lightning web apps
+        Working on a Lightning, Nostr and AI project? Let's build together.
       </p>
     ),
     img: Assets.Images_ExploreHeader1,
     link: {
-      content: "Submit project",
+      content: "Submit your project",
       url: createRoute({ type: "edit-project" }),
       newTab: false,
     },
@@ -84,7 +84,7 @@ export default function Header() {
             <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
             <div className="max-w-[90%]">{headerLinks[0].title}</div>
             <Button
-              color="white"
+              color="gray"
               href={headerLinks[0].link.url}
               className="mt-24"
             >
@@ -100,7 +100,7 @@ export default function Header() {
             <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
             <div className="max-w-[90%]">{headerLinks[1].title}</div>
             <Button
-              color="white"
+              color="gray"
               href={headerLinks[1].link.url}
               newTab={headerLinks[1].link.newTab ?? false}
               className="mt-24"

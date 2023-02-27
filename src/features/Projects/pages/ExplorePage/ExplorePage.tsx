@@ -7,7 +7,7 @@ import OgTags from "src/Components/OgTags/OgTags";
 export default function ExplorePage() {
   return (
     <div className="bg-white">
-      <OgTags title="Explore Lightning Projects" />
+      <OgTags title="#BuildOnBitcoin" />
       <div className="page-container">
         <Header />
         <div className="my-32">

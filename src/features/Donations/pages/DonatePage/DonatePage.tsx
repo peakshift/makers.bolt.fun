@@ -8,7 +8,7 @@ export default function DonatePage() {
   return (
     <>
       <OgTags
-        title="Donate to Bolt Fun"
+        title="Donate to BOLT.FUN"
         description="Help fund BOLT🔩FUN, as well as other Makers working on lightning apps through tournaments and prize pools"
       />
       <div className={`w-full bg-white`}>
