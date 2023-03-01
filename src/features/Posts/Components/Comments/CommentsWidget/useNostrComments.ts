@@ -17,6 +17,7 @@ import {
 } from "src/lib/nostr/helpers";
 import { NostrProfile } from "src/lib/nostr";
 import { createRoute } from "src/utils/routing";
+import { RelayPool } from "nostr-relaypool";
 
 export interface Props {
   publicKey?: string;
@@ -35,11 +36,7 @@ export const useNostrComments = (props: Props) => {
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
 
-  const [metadata, setMetadata] = useState<Record<string, NostrToolsEvent>>({});
-  const metadataFetching = useRef<Record<string, boolean>>({});
-
-  const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
-  fetchMetaDataRef.current = fetchMetadata;
+  const { metadata, fetchMetaDataRef } = useMetaData({ relayPool, events });
 
   const threads = useMemo(() => computeThreads(events), [events]);
 
@@ -49,6 +46,11 @@ export const useNostrComments = (props: Props) => {
   });
 
   const loadingRootEvent = !threadRootObject;
+
+  useEffect(() => {
+    if (relayPool && props.publicKey)
+      fetchMetaDataRef.current([props.publicKey]);
+  }, [fetchMetaDataRef, props.publicKey, relayPool]);
 
   useEffect(
     function subscribeToEvents() {
@@ -94,84 +96,6 @@ export const useNostrComments = (props: Props) => {
     },
     [relayPool, threadRootObject]
   );
-
-  useEffect(() => {
-    if (relayPool && events.length > 0)
-      fetchMetaDataRef.current(events.map((e) => e.pubkey));
-  }, [events, relayPool]);
-
-  useEffect(() => {
-    if (relayPool && props.publicKey)
-      fetchMetaDataRef.current([props.publicKey]);
-  }, [props.publicKey, relayPool]);
-
-  async function fetchMetadata(
-    pubkeys: string[],
-    options?: { skip_existing_keys?: boolean }
-  ) {
-    if (!relayPool) throw new Error("Relays Pool not initialized yet");
-
-    const { skip_existing_keys = true } = options ?? {};
-
-    let pubkeysToFetch = skip_existing_keys
-      ? Array.from(
-          new Set(
-            pubkeys.filter(
-              (k) => !(k in metadata || k in metadataFetching.current)
-            )
-          )
-        )
-      : pubkeys;
-
-    pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
-
-    const relaysUrls = Array.from(relayPool.relayByUrl.keys());
-
-    const unsub = relayPool.subscribe(
-      [{ kinds: [0], authors: pubkeysToFetch }],
-      relaysUrls,
-      (event) => {
-        try {
-          if (
-            !metadata[event.pubkey] ||
-            metadata[event.pubkey].created_at < event.created_at
-          ) {
-            const metaData = {
-              ...JSON.parse(event.content),
-              created_at: event.created_at,
-            };
-            setMetadata((curr) => ({
-              ...curr,
-              [event.pubkey]: metaData,
-            }));
-            fetchNIP05(event.pubkey, metaData);
-          }
-        } catch (err) {
-          /***/
-        }
-      }
-    );
-
-    setTimeout(() => unsub(), 20000);
-  }
-
-  async function fetchNIP05(pubkey: string, meta: any) {
-    if (meta && meta.nip05)
-      nip05
-        .queryProfile(meta.nip05)
-        .then((name) => {
-          if (name === meta.nip05) {
-            setMetadata((curr) => ({
-              ...curr,
-              [pubkey]: { ...meta, nip05verified: true },
-            }));
-          }
-        })
-        .catch((err) => {
-          console.log("Error while quering nip5 profile");
-          console.log(err);
-        });
-  }
 
   const publishEvent = useCallback(
     async (content: string, options?: Partial<{ replyTo?: string }>) => {
@@ -307,7 +231,7 @@ export const useNostrComments = (props: Props) => {
         );
       });
     },
-    [props.publicKey, relayPool]
+    [fetchMetaDataRef, props.publicKey, relayPool]
   );
 
   const getRelayUrls = useCallback(
@@ -353,3 +277,98 @@ async function signEvent(event: NostrToolsEvent): Promise<NostrToolsEvent> {
       .then((data) => data.event);
   else throw new Error("unknown connection type");
 }
+
+const useMetaData = ({
+  relayPool,
+  events,
+}: {
+  relayPool: RelayPool | null;
+  events: NostrToolsEvent[];
+}) => {
+  // when the events change, I want to query the profiles of the new events pubkeys
+  // I have a map of currently fetched metadata profile, so I don't need to query them again
+
+  const [nostrMetadata, setNostrMetadata] = useState<
+    Record<string, NostrToolsEvent>
+  >({});
+
+  const metadataFetching = useRef<Record<string, boolean>>({});
+
+  const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
+  fetchMetaDataRef.current = fetchMetadata;
+
+  useEffect(() => {
+    if (relayPool && events.length > 0)
+      fetchMetaDataRef.current(events.map((e) => e.pubkey));
+  }, [events, relayPool]);
+
+  async function fetchMetadata(
+    pubkeys: string[],
+    options?: { skip_existing_keys?: boolean }
+  ) {
+    if (!relayPool) throw new Error("Relays Pool not initialized yet");
+
+    const { skip_existing_keys = true } = options ?? {};
+
+    let pubkeysToFetch = skip_existing_keys
+      ? Array.from(
+          new Set(
+            pubkeys.filter(
+              (k) => !(k in nostrMetadata || k in metadataFetching.current)
+            )
+          )
+        )
+      : pubkeys;
+
+    pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
+
+    const relaysUrls = Array.from(relayPool.relayByUrl.keys());
+
+    const unsub = relayPool.subscribe(
+      [{ kinds: [0], authors: pubkeysToFetch }],
+      relaysUrls,
+      (event) => {
+        try {
+          if (
+            !nostrMetadata[event.pubkey] ||
+            nostrMetadata[event.pubkey].created_at < event.created_at
+          ) {
+            const metaData = {
+              ...JSON.parse(event.content),
+              created_at: event.created_at,
+            };
+            setNostrMetadata((curr) => ({
+              ...curr,
+              [event.pubkey]: metaData,
+            }));
+            fetchNIP05(event.pubkey, metaData);
+          }
+        } catch (err) {
+          /***/
+        }
+      }
+    );
+
+    setTimeout(() => unsub(), 20000);
+  }
+
+  async function fetchNIP05(pubkey: string, meta: any) {
+    if (meta && meta.nip05)
+      nip05
+        .queryProfile(meta.nip05)
+        .then((name) => {
+          if (name === meta.nip05) {
+            setNostrMetadata((curr) => ({
+              ...curr,
+              [pubkey]: { ...meta, nip05verified: true },
+            }));
+          }
+        })
+        .catch((err) => {
+          console.log("Error while quering nip5 profile");
+          console.log(err);
+        });
+  }
+
+  return { metadata: nostrMetadata, fetchMetaDataRef };
+};
