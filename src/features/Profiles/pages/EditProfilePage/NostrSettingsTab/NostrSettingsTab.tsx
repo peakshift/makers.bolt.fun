@@ -6,7 +6,7 @@ import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import PreferencesTabSkeleton from "./PreferencesTab.Skeleton";
 import { NetworkStatus } from "@apollo/client";
 import Card from "src/Components/Card/Card";
-import CommentsSettingsCard from "./CommentsSettingsCard/CommentsSettingsCard";
+import GeneratedKeysCard from "./GeneratedKeysCard/GeneratedKeysCard";
 import RelaysList from "src/features/Posts/Components/Comments/CommentsWidget/components/RelaysList/RelaysList";
 import LinkedNostrKeys from "./LinkedNostrKeys/LinkedNostrKeys";
 
@@ -27,17 +27,18 @@ export default function NostrSettingsTab() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
       <div className="md:col-span-2 flex flex-col gap-24">
         <LinkedNostrKeys keys={query.data.me.nostr_keys} />
-        <CommentsSettingsCard
+        <GeneratedKeysCard
           nostr_prv_key={query.data.me.nostr_prv_key}
           nostr_pub_key={query.data.me.nostr_pub_key}
         />
         <Card>
           <p className="text-body2 font-bold">📡 Your Preferred Relays List</p>
           <p className="mt-8 text-body4 text-gray-600">
-            When interacting with the Nostr network, you connect to a bunch of
+            When interacting with Nostr network, you are connected to a bunch of
             relays that you read & write data from & to.
+            <br /> <br />
+            You can change what relays you connect to here:
             <br />
-            Here are your relays:
           </p>
           <div className="mt-24">
             <RelaysList />

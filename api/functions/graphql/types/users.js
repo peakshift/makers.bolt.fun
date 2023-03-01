@@ -460,7 +460,7 @@ const linkNostrKey = extendType({
           /I want to link this nostr pubkey to my bolt.fun account with id: ([\d+])$/;
 
         const extractedId = VALID_CONTENT_REGEX.exec(event.content)?.[1];
-        console.log(extractedId);
+
         if (!extractedId || Number(extractedId) !== user.id)
           throw new Error("Content of verification message invalid");
 
