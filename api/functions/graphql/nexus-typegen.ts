@@ -555,7 +555,6 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Mutation: { // field return type
-    addNewNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
@@ -564,7 +563,9 @@ export interface NexusGenFieldTypes {
     deleteProject: NexusGenRootTypes['Project'] | null; // Project
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
+    linkNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     registerInTournament: NexusGenRootTypes['User'] | null; // User
+    unlinkNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -986,7 +987,6 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Mutation: { // field return type name
-    addNewNostrKey: 'MyProfile'
     addProjectToTournament: 'ParticipationInfo'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
@@ -995,7 +995,9 @@ export interface NexusGenFieldTypeNames {
     deleteProject: 'Project'
     deleteStory: 'Story'
     donate: 'Donation'
+    linkNostrKey: 'MyProfile'
     registerInTournament: 'User'
+    unlinkNostrKey: 'MyProfile'
     updateProfileDetails: 'MyProfile'
     updateProfileRoles: 'MyProfile'
     updateProject: 'CreateProjectResponse'
@@ -1315,9 +1317,6 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    addNewNostrKey: { // args
-      event?: NexusGenInputs['NostrEventInput'] | null; // NostrEventInput
-    }
     addProjectToTournament: { // args
       input?: NexusGenInputs['AddProjectToTournamentInput'] | null; // AddProjectToTournamentInput
     }
@@ -1344,9 +1343,15 @@ export interface NexusGenArgTypes {
     donate: { // args
       amount_in_sat: number; // Int!
     }
+    linkNostrKey: { // args
+      event?: NexusGenInputs['NostrEventInput'] | null; // NostrEventInput
+    }
     registerInTournament: { // args
       data?: NexusGenInputs['RegisterInTournamentInput'] | null; // RegisterInTournamentInput
       tournament_id: number; // Int!
+    }
+    unlinkNostrKey: { // args
+      key: string; // String!
     }
     updateProfileDetails: { // args
       data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput

@@ -5,34 +5,11 @@ import {
 } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { IoClose } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
-import { useAppDispatch, useAppSelector } from "src/utils/hooks";
-import { useState } from "react";
+import { useAppSelector } from "src/utils/hooks";
 import { NotificationsService } from "src/services";
-import { useAddNewNostrKeyMutation, useMyNostrKeysQuery } from "src/graphql";
-import CopyToClipboard from "src/Components/CopyToClipboard/CopyToClipboard";
-import { utils as secpUtils } from "@noble/secp256k1";
-import { getPublicKey, nip19 } from "nostr-tools";
-import Skeleton from "react-loading-skeleton";
+import { useLinkNewNostrKeyMutation } from "src/graphql";
 import { extractErrorMessage } from "src/utils/helperFunctions";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { Link } from "react-router-dom";
-import { PAGES_ROUTES } from "src/utils/routing";
 import { NostrToolsEvent } from "nostr-relaypool/event";
-
-export type NostrAccountConnection =
-  | {
-      type: "nostr-ext";
-      pubkey: string;
-    }
-  | {
-      type: "generated-keys";
-      pubkey: string;
-    }
-  | {
-      type: "inputted-keys";
-      pubkey: string;
-      prvkey: string;
-    };
 
 interface Props extends ModalCard {}
 
@@ -41,7 +18,7 @@ export default function ConnectNostrIdToProfileModal({
   direction,
 }: Props) {
   const me = useAppSelector((s) => s.user.me);
-  const [mutate] = useAddNewNostrKeyMutation();
+  const [mutate] = useLinkNewNostrKeyMutation();
 
   const clickVerify = async () => {
     if (window.nostr) {
@@ -50,7 +27,7 @@ export default function ConnectNostrIdToProfileModal({
         const event: NostrToolsEvent = {
           kind: 1,
           created_at: Math.round(Date.now() / 1000),
-          content: `I want to link this nostr key to my bolt.fun account with id: ${me?.id}`,
+          content: `I want to link this nostr pubkey to my bolt.fun account with id: ${me?.id}`,
           pubkey,
           tags: [],
         };
@@ -63,9 +40,11 @@ export default function ConnectNostrIdToProfileModal({
           },
           onCompleted: (data) => {
             onClose?.();
+            NotificationsService.success("Key Linked Successfully!");
           },
-        }).catch(() => {
-          NotificationsService.error("Something wrong happened...");
+        }).catch((err) => {
+          const msg = extractErrorMessage(err);
+          NotificationsService.error(msg ?? "Something wrong happened...");
         });
       } catch (error) {
         NotificationsService.error("User rejected operation");
@@ -90,23 +69,25 @@ export default function ConnectNostrIdToProfileModal({
           onClick={onClose}
         />
         <h2 className="text-h5 font-bold text-center">
-          Link a Nostr Account to Bolt.Fun Profile
+          Link a Nostr Key to Bolt.Fun Profile
         </h2>
       </div>
       <hr className="bg-gray-200" />
       <div className="flex flex-col gap-24 p-24">
         <p className="text-body4 text-gray-600">
-          To link a nostr pubkey to your profile, we will ask you to sign an
-          event using the private key of the public key that you would like to
-          link.
+          To link a nostr pubkey to your profile, we will just ask you to sign a
+          verification event using the private key of the account that you would
+          like to add.
           <br />
+          <br />
+          You'll need to have an extension that stores your private key enabled.
           <Button
             onClick={clickVerify}
             color="primary"
             fullWidth
             className="mt-24"
           >
-            Verify
+            Verify Using Extension
           </Button>
         </p>
       </div>

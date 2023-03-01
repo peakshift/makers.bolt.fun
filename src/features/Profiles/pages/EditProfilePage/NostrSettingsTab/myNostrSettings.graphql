@@ -11,8 +11,19 @@ query MyNostrSettings {
   }
 }
 
-mutation AddNewNostrKey($event: NostrEventInput) {
-  addNewNostrKey(event: $event) {
+mutation LinkNewNostrKey($event: NostrEventInput) {
+  linkNostrKey(event: $event) {
+    id
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
+  }
+}
+
+mutation UnlinkNostrKey($key: String!) {
+  unlinkNostrKey(key: $key) {
     id
     nostr_keys {
       key

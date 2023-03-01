@@ -439,24 +439,30 @@ const NostrEvent = inputObjectType({
   },
 });
 
-const addNewNostrKey = extendType({
+const linkNostrKey = extendType({
   type: "Mutation",
   definition(t) {
-    t.field("addNewNostrKey", {
+    t.field("linkNostrKey", {
       type: "MyProfile",
       args: { event: NostrEvent },
       async resolve(_root, args, ctx) {
         const { event } = args;
         const user = await getUserById(ctx.user?.id);
 
-        // Do some validation
         if (!user?.id) throw new Error("You have to login");
-        // TODO: validate new data
 
         if (!validateEvent(event)) throw new Error("Invalid event sent");
 
         const signatureValid = await verifySignature(event);
         if (!signatureValid) throw new Error("Signature not valid");
+
+        const VALID_CONTENT_REGEX =
+          /I want to link this nostr pubkey to my bolt.fun account with id: ([\d+])$/;
+
+        const extractedId = VALID_CONTENT_REGEX.exec(event.content)?.[1];
+        console.log(extractedId);
+        if (!extractedId || Number(extractedId) !== user.id)
+          throw new Error("Content of verification message invalid");
 
         const label = event.tags.find((tag) => tag[0] === "label")?.[1];
 
@@ -473,6 +479,48 @@ const addNewNostrKey = extendType({
           },
           where: {
             key: event.pubkey,
+          },
+        });
+
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            userNostrKeys: true,
+          },
+        });
+      },
+    });
+  },
+});
+
+const unlinkNostrKey = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("unlinkNostrKey", {
+      type: "MyProfile",
+      args: { key: nonNull(stringArg()) },
+      async resolve(_root, args, ctx) {
+        const { key } = args;
+        const user = await getUserById(ctx.user?.id);
+
+        // Do some validation
+        if (!user?.id) throw new Error("You have to login");
+        // TODO: validate new data
+
+        const keyExist = await prisma.userNostrKey.findFirst({
+          where: {
+            user_id: user.id,
+            key,
+          },
+        });
+
+        if (!keyExist) throw new Error("This user doesn't have this key");
+
+        await prisma.userNostrKey.delete({
+          where: {
+            key,
           },
         });
 
@@ -671,5 +719,6 @@ module.exports = {
   updateProfileDetails,
   updateUserPreferences,
   updateProfileRoles,
-  addNewNostrKey,
+  linkNostrKey,
+  unlinkNostrKey,
 };

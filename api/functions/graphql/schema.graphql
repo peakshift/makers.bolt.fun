@@ -192,7 +192,6 @@ input MakerSkillInput {
 }
 
 type Mutation {
-  addNewNostrKey(event: NostrEventInput): MyProfile
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
@@ -201,7 +200,9 @@ type Mutation {
   deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
+  linkNostrKey(event: NostrEventInput): MyProfile
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
+  unlinkNostrKey(key: String!): MyProfile
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
   updateProfileRoles(data: ProfileRolesInput): MyProfile
   updateProject(input: UpdateProjectInput): CreateProjectResponse
