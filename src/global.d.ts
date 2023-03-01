@@ -9,5 +9,7 @@ declare global {
 
 type Nostr = {
   getPublicKey(): Promise<string>;
-  signEvent(event: NostrToolsEvent): Promise<NostrToolsEventWithId>;
+  signEvent(
+    event: NostrToolsEvent
+  ): Promise<NostrToolsEventWithId & { sig: string }>;
 };

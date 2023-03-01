@@ -54,6 +54,7 @@ export type BaseUser = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_keys: Array<NostrKey>;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
@@ -223,6 +224,7 @@ export type MakerSkillInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addNewNostrKey: Maybe<MyProfile>;
   addProjectToTournament: Maybe<ParticipationInfo>;
   confirmDonation: Donation;
   confirmVote: Vote;
@@ -238,6 +240,11 @@ export type Mutation = {
   updateTournamentRegistration: Maybe<ParticipationInfo>;
   updateUserPreferences: MyProfile;
   vote: Vote;
+};
+
+
+export type MutationAddNewNostrKeyArgs = {
+  event: InputMaybe<NostrEventInput>;
 };
 
 
@@ -336,6 +343,7 @@ export type MyProfile = BaseUser & {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_keys: Array<NostrKey>;
   nostr_prv_key: Maybe<Scalars['String']>;
   nostr_pub_key: Maybe<Scalars['String']>;
   projects: Array<Project>;
@@ -353,6 +361,23 @@ export type MyProfile = BaseUser & {
 
 export type MyProfileIn_TournamentArgs = {
   id: Scalars['Int'];
+};
+
+export type NostrEventInput = {
+  content: Scalars['String'];
+  created_at: Scalars['Int'];
+  id: Scalars['String'];
+  kind: Scalars['Int'];
+  pubkey: Scalars['String'];
+  sig: Scalars['String'];
+  tags: Array<Array<Scalars['String']>>;
+};
+
+export type NostrKey = {
+  __typename?: 'NostrKey';
+  createdAt: Scalars['Date'];
+  key: Scalars['String'];
+  label: Scalars['String'];
 };
 
 export enum Post_Type {
@@ -891,6 +916,7 @@ export type User = BaseUser & {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_keys: Array<NostrKey>;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
@@ -1110,6 +1136,18 @@ export type UpdateProfileAboutMutationVariables = Exact<{
 
 
 export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', email: string | null, id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+
+export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+
+export type AddNewNostrKeyMutationVariables = Exact<{
+  event: InputMaybe<NostrEventInput>;
+}>;
+
+
+export type AddNewNostrKeyMutation = { __typename?: 'Mutation', addNewNostrKey: { __typename?: 'MyProfile', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
 
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2615,6 +2653,85 @@ export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
+export const MyNostrSettingsDocument = gql`
+    query MyNostrSettings {
+  me {
+    id
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
+    nostr_prv_key
+    nostr_pub_key
+  }
+}
+    `;
+
+/**
+ * __useMyNostrSettingsQuery__
+ *
+ * To run a query within a React component, call `useMyNostrSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyNostrSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyNostrSettingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyNostrSettingsQuery(baseOptions?: Apollo.QueryHookOptions<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>(MyNostrSettingsDocument, options);
+      }
+export function useMyNostrSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>(MyNostrSettingsDocument, options);
+        }
+export type MyNostrSettingsQueryHookResult = ReturnType<typeof useMyNostrSettingsQuery>;
+export type MyNostrSettingsLazyQueryHookResult = ReturnType<typeof useMyNostrSettingsLazyQuery>;
+export type MyNostrSettingsQueryResult = Apollo.QueryResult<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>;
+export const AddNewNostrKeyDocument = gql`
+    mutation AddNewNostrKey($event: NostrEventInput) {
+  addNewNostrKey(event: $event) {
+    id
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
+  }
+}
+    `;
+export type AddNewNostrKeyMutationFn = Apollo.MutationFunction<AddNewNostrKeyMutation, AddNewNostrKeyMutationVariables>;
+
+/**
+ * __useAddNewNostrKeyMutation__
+ *
+ * To run a mutation, you first call `useAddNewNostrKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddNewNostrKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addNewNostrKeyMutation, { data, loading, error }] = useAddNewNostrKeyMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useAddNewNostrKeyMutation(baseOptions?: Apollo.MutationHookOptions<AddNewNostrKeyMutation, AddNewNostrKeyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddNewNostrKeyMutation, AddNewNostrKeyMutationVariables>(AddNewNostrKeyDocument, options);
+      }
+export type AddNewNostrKeyMutationHookResult = ReturnType<typeof useAddNewNostrKeyMutation>;
+export type AddNewNostrKeyMutationResult = Apollo.MutationResult<AddNewNostrKeyMutation>;
+export type AddNewNostrKeyMutationOptions = Apollo.BaseMutationOptions<AddNewNostrKeyMutation, AddNewNostrKeyMutationVariables>;
 export const MyProfilePreferencesDocument = gql`
     query MyProfilePreferences {
   me {

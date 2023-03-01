@@ -18,6 +18,10 @@ const { resolveImgObjectToUrl } = require("../../../utils/resolveImageUrl");
 const { deleteImage } = require("../../../services/imageUpload.service");
 const { PrismaSelect } = require("@paljs/plugins");
 const cacheService = require("../../../services/cache.service");
+const {
+  verifySignature,
+  validateEvent,
+} = require("../../../utils/nostr-tools");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -135,6 +139,20 @@ const BaseUser = interfaceType({
         return prisma.tournamentParticipant
           .findFirst({ where: { tournament_id: args.id, user_id: parent.id } })
           .then((res) => !!res);
+      },
+    });
+
+    t.nonNull.list.nonNull.field("nostr_keys", {
+      type: "NostrKey",
+      resolve: (parent) => {
+        return prisma.userNostrKey.findMany({
+          where: {
+            user_id: parent.id,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        });
       },
     });
   },
@@ -408,6 +426,69 @@ const updateProfileDetails = extendType({
   },
 });
 
+const NostrEvent = inputObjectType({
+  name: "NostrEventInput",
+  definition(t) {
+    t.nonNull.string("id");
+    t.nonNull.int("kind");
+    t.nonNull.string("pubkey");
+    t.nonNull.string("content");
+    t.nonNull.int("created_at");
+    t.nonNull.list.nonNull.list.nonNull.string("tags");
+    t.nonNull.string("sig");
+  },
+});
+
+const addNewNostrKey = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("addNewNostrKey", {
+      type: "MyProfile",
+      args: { event: NostrEvent },
+      async resolve(_root, args, ctx) {
+        const { event } = args;
+        const user = await getUserById(ctx.user?.id);
+
+        // Do some validation
+        if (!user?.id) throw new Error("You have to login");
+        // TODO: validate new data
+
+        if (!validateEvent(event)) throw new Error("Invalid event sent");
+
+        const signatureValid = await verifySignature(event);
+        if (!signatureValid) throw new Error("Signature not valid");
+
+        const label = event.tags.find((tag) => tag[0] === "label")?.[1];
+
+        await prisma.userNostrKey.upsert({
+          create: {
+            key: event.pubkey,
+            user_id: user.id,
+            label,
+          },
+          update: {
+            user_id: user.id,
+            label,
+            createdAt: new Date(),
+          },
+          where: {
+            key: event.pubkey,
+          },
+        });
+
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            userNostrKeys: true,
+          },
+        });
+      },
+    });
+  },
+});
+
 const WalletKey = objectType({
   name: "WalletKey",
   definition(t) {
@@ -415,6 +496,15 @@ const WalletKey = objectType({
     t.nonNull.string("name");
     t.nonNull.date("createdAt");
     t.nonNull.boolean("is_current");
+  },
+});
+
+const NostrKey = objectType({
+  name: "NostrKey",
+  definition(t) {
+    t.nonNull.string("key");
+    t.nonNull.string("label");
+    t.nonNull.date("createdAt");
   },
 });
 
@@ -568,6 +658,7 @@ module.exports = {
   User,
   MyProfile,
   WalletKey,
+  NostrKey,
   MakerRole,
   // Queries
   me,
@@ -580,4 +671,5 @@ module.exports = {
   updateProfileDetails,
   updateUserPreferences,
   updateProfileRoles,
+  addNewNostrKey,
 };

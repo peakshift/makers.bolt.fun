@@ -1,6 +1,5 @@
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
-import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
 import Slider from "src/Components/Slider/Slider";
 import { useAppSelector, useMediaQuery } from "src/utils/hooks";
 import { Helmet } from "react-helmet";
@@ -9,6 +8,7 @@ import PreferencesTab from "./PreferencesTab/PreferencesTab";
 import RolesSkillsTab from "./RolesSkillsTab/RolesSkillsTab";
 import Card from "src/Components/Card/Card";
 import BasicProfileInfoTab from "./BasicProfileInfoTab/BasicProfileInfoTab";
+import NostrSettingsTab from "./NostrSettingsTab/NostrSettingsTab";
 
 const links = [
   {
@@ -18,6 +18,10 @@ const links = [
   {
     text: "🎛️  Roles & Skills",
     path: "roles-skills",
+  },
+  {
+    text: "🦩  Nostr Settings",
+    path: "nostr",
   },
   {
     text: "⚙️  Settings & Preferences",
@@ -93,6 +97,7 @@ export default function EditProfilePage() {
               <Route index element={<Navigate to="basic-info" replace />} />
               <Route path="basic-info" element={<BasicProfileInfoTab />} />
               <Route path="roles-skills" element={<RolesSkillsTab />} />
+              <Route path="nostr" element={<NostrSettingsTab />} />
               <Route path="preferences" element={<PreferencesTab />} />
             </Routes>
           </main>

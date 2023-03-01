@@ -37,6 +37,7 @@ interface BaseUser {
   linkedin: String
   location: String
   name: String!
+  nostr_keys: [NostrKey!]!
   projects: [Project!]!
   role: String
   roles: [MakerRole!]!
@@ -191,6 +192,7 @@ input MakerSkillInput {
 }
 
 type Mutation {
+  addNewNostrKey(event: NostrEventInput): MyProfile
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
@@ -222,6 +224,7 @@ type MyProfile implements BaseUser {
   linkedin: String
   location: String
   name: String!
+  nostr_keys: [NostrKey!]!
   nostr_prv_key: String
   nostr_pub_key: String
   projects: [Project!]!
@@ -234,6 +237,22 @@ type MyProfile implements BaseUser {
   twitter: String
   walletsKeys: [WalletKey!]!
   website: String
+}
+
+input NostrEventInput {
+  content: String!
+  created_at: Int!
+  id: String!
+  kind: Int!
+  pubkey: String!
+  sig: String!
+  tags: [[String!]!]!
+}
+
+type NostrKey {
+  createdAt: Date!
+  key: String!
+  label: String!
 }
 
 enum POST_TYPE {
@@ -596,6 +615,7 @@ type User implements BaseUser {
   linkedin: String
   location: String
   name: String!
+  nostr_keys: [NostrKey!]!
   projects: [Project!]!
   role: String
   roles: [MakerRole!]!

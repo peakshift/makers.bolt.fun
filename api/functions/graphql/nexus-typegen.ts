@@ -68,6 +68,15 @@ export interface NexusGenInputs {
   MakerSkillInput: { // input type
     id: number; // Int!
   }
+  NostrEventInput: { // input type
+    content: string; // String!
+    created_at: number; // Int!
+    id: string; // String!
+    kind: number; // Int!
+    pubkey: string; // String!
+    sig: string; // String!
+    tags: string[][]; // [[String!]!]!
+  }
   ProfileDetailsInput: { // input type
     avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
     bio?: string | null; // String
@@ -265,6 +274,11 @@ export interface NexusGenObjects {
     role?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
+  }
+  NostrKey: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
+    key: string; // String!
+    label: string; // String!
   }
   ParticipationInfo: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
@@ -541,6 +555,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Mutation: { // field return type
+    addNewNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
@@ -571,6 +586,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
     nostr_prv_key: string | null; // String
     nostr_pub_key: string | null; // String
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -583,6 +599,11 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
     website: string | null; // String
+  }
+  NostrKey: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
+    key: string; // String!
+    label: string; // String!
   }
   ParticipationInfo: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
@@ -799,6 +820,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
@@ -837,6 +859,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
@@ -963,6 +986,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Mutation: { // field return type name
+    addNewNostrKey: 'MyProfile'
     addProjectToTournament: 'ParticipationInfo'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
@@ -993,6 +1017,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_keys: 'NostrKey'
     nostr_prv_key: 'String'
     nostr_pub_key: 'String'
     projects: 'Project'
@@ -1005,6 +1030,11 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     walletsKeys: 'WalletKey'
     website: 'String'
+  }
+  NostrKey: { // field return type name
+    createdAt: 'Date'
+    key: 'String'
+    label: 'String'
   }
   ParticipationInfo: { // field return type name
     createdAt: 'Date'
@@ -1221,6 +1251,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_keys: 'NostrKey'
     projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
@@ -1259,6 +1290,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_keys: 'NostrKey'
     projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
@@ -1283,6 +1315,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addNewNostrKey: { // args
+      event?: NexusGenInputs['NostrEventInput'] | null; // NostrEventInput
+    }
     addProjectToTournament: { // args
       input?: NexusGenInputs['AddProjectToTournamentInput'] | null; // AddProjectToTournamentInput
     }
