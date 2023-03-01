@@ -280,6 +280,10 @@ export interface NexusGenObjects {
     key: string; // String!
     label: string; // String!
   }
+  NostrKeyWithUser: { // root type
+    key: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   ParticipationInfo: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
@@ -606,6 +610,10 @@ export interface NexusGenFieldTypes {
     key: string; // String!
     label: string; // String!
   }
+  NostrKeyWithUser: { // field return type
+    key: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   ParticipationInfo: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
@@ -694,6 +702,7 @@ export interface NexusGenFieldTypes {
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
     similarProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     tournamentParticipationInfo: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
+    usersByNostrKeys: NexusGenRootTypes['NostrKeyWithUser'][]; // [NostrKeyWithUser!]!
   }
   Question: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -1038,6 +1047,10 @@ export interface NexusGenFieldTypeNames {
     key: 'String'
     label: 'String'
   }
+  NostrKeyWithUser: { // field return type name
+    key: 'String'
+    user: 'User'
+  }
   ParticipationInfo: { // field return type name
     createdAt: 'Date'
     email: 'String'
@@ -1126,6 +1139,7 @@ export interface NexusGenFieldTypeNames {
     similarMakers: 'User'
     similarProjects: 'Project'
     tournamentParticipationInfo: 'ParticipationInfo'
+    usersByNostrKeys: 'NostrKeyWithUser'
   }
   Question: { // field return type name
     author: 'Author'
@@ -1486,6 +1500,9 @@ export interface NexusGenArgTypes {
     }
     tournamentParticipationInfo: { // args
       tournamentId: number; // Int!
+    }
+    usersByNostrKeys: { // args
+      keys: string[]; // [String!]!
     }
   }
   User: {

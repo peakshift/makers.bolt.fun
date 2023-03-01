@@ -386,6 +386,12 @@ export type NostrKey = {
   label: Scalars['String'];
 };
 
+export type NostrKeyWithUser = {
+  __typename?: 'NostrKeyWithUser';
+  key: Scalars['String'];
+  user: User;
+};
+
 export enum Post_Type {
   Bounty = 'Bounty',
   Question = 'Question',
@@ -541,6 +547,7 @@ export type Query = {
   similarMakers: Array<User>;
   similarProjects: Array<Project>;
   tournamentParticipationInfo: Maybe<ParticipationInfo>;
+  usersByNostrKeys: Array<NostrKeyWithUser>;
 };
 
 
@@ -692,6 +699,11 @@ export type QuerySimilarProjectsArgs = {
 
 export type QueryTournamentParticipationInfoArgs = {
   tournamentId: Scalars['Int'];
+};
+
+
+export type QueryUsersByNostrKeysArgs = {
+  keys: Array<Scalars['String']>;
 };
 
 export type Question = PostBase & {
@@ -1197,7 +1209,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1349,6 +1361,13 @@ export type GetTournamentByIdQueryVariables = Exact<{
 
 
 export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+
+export type NostrKeysMetadataQueryVariables = Exact<{
+  keys: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type NostrKeysMetadataQuery = { __typename?: 'Query', usersByNostrKeys: Array<{ __typename?: 'NostrKeyWithUser', key: string, user: { __typename?: 'User', id: number, name: string, avatar: string } }> };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -2988,6 +3007,11 @@ export const ProfileDocument = gql`
       avatar
       jobTitle
     }
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
     ...UserBasicInfo
     ...UserRolesSkills
   }
@@ -4111,6 +4135,46 @@ export function useGetTournamentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetTournamentByIdQueryHookResult = ReturnType<typeof useGetTournamentByIdQuery>;
 export type GetTournamentByIdLazyQueryHookResult = ReturnType<typeof useGetTournamentByIdLazyQuery>;
 export type GetTournamentByIdQueryResult = Apollo.QueryResult<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>;
+export const NostrKeysMetadataDocument = gql`
+    query NostrKeysMetadata($keys: [String!]!) {
+  usersByNostrKeys(keys: $keys) {
+    key
+    user {
+      id
+      name
+      avatar
+    }
+  }
+}
+    `;
+
+/**
+ * __useNostrKeysMetadataQuery__
+ *
+ * To run a query within a React component, call `useNostrKeysMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNostrKeysMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNostrKeysMetadataQuery({
+ *   variables: {
+ *      keys: // value for 'keys'
+ *   },
+ * });
+ */
+export function useNostrKeysMetadataQuery(baseOptions: Apollo.QueryHookOptions<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>(NostrKeysMetadataDocument, options);
+      }
+export function useNostrKeysMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>(NostrKeysMetadataDocument, options);
+        }
+export type NostrKeysMetadataQueryHookResult = ReturnType<typeof useNostrKeysMetadataQuery>;
+export type NostrKeysMetadataLazyQueryHookResult = ReturnType<typeof useNostrKeysMetadataLazyQuery>;
+export type NostrKeysMetadataQueryResult = Apollo.QueryResult<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>;
 export const VoteDocument = gql`
     mutation Vote($itemType: VOTE_ITEM_TYPE!, $itemId: Int!, $amountInSat: Int!) {
   vote(item_type: $itemType, item_id: $itemId, amount_in_sat: $amountInSat) {

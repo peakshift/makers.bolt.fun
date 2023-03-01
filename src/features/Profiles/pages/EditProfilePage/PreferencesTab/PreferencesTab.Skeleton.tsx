@@ -40,17 +40,6 @@ export default function PreferencesTabSkeleton() {
             </ul>
           </div>
         </Card>
-        <Card>
-          <p className="text-body2 font-bold">
-            <Skeleton width="12ch" />
-          </p>
-          <p className="text-body4 text-gray-600 mt-8">
-            <Skeleton width="80%" />
-            <Skeleton width="50%" />
-            <Skeleton width="65%" />
-          </p>
-          <div className="py-42"></div>
-        </Card>
       </div>
       <div className=""></div>
     </div>

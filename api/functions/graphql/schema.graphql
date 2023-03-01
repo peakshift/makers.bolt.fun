@@ -256,6 +256,11 @@ type NostrKey {
   label: String!
 }
 
+type NostrKeyWithUser {
+  key: String!
+  user: User!
+}
+
 enum POST_TYPE {
   Bounty
   Question
@@ -400,6 +405,7 @@ type Query {
   similarMakers(id: Int!): [User!]!
   similarProjects(id: Int!): [Project!]!
   tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
+  usersByNostrKeys(keys: [String!]!): [NostrKeyWithUser!]!
 }
 
 type Question implements PostBase {

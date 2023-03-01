@@ -344,6 +344,48 @@ const similarMakers = extendType({
   },
 });
 
+const NostrKeyWithUser = objectType({
+  name: "NostrKeyWithUser",
+  definition(t) {
+    t.nonNull.string("key");
+    t.nonNull.field("user", {
+      type: User,
+    });
+  },
+});
+
+const usersByNostrKeys = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.field("usersByNostrKeys", {
+      type: NostrKeyWithUser,
+      args: {
+        keys: nonNull(list(nonNull(stringArg()))),
+      },
+      async resolve(parent, { keys }, ctx) {
+        return prisma.userNostrKey
+          .findMany({
+            where: {
+              key: {
+                in: keys,
+              },
+            },
+            include: {
+              user: {
+                include: {
+                  avatar_rel: true,
+                },
+              },
+            },
+          })
+          .then((data) =>
+            data.map((item) => ({ key: item.key, user: item.user }))
+          );
+      },
+    });
+  },
+});
+
 const ProfileDetailsInput = inputObjectType({
   name: "ProfileDetailsInput",
   definition(t) {
@@ -715,6 +757,7 @@ module.exports = {
   similarMakers,
   getAllMakersRoles,
   getAllMakersSkills,
+  usersByNostrKeys,
   // Mutations
   updateProfileDetails,
   updateUserPreferences,
