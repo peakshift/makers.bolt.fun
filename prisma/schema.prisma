@@ -85,6 +85,7 @@ model User {
   posts_comments PostComment[]
   donations      Donation[]
   userKeys       UserKey[]
+  userNostrKeys  UserNostrKey[]
   skills         Skill[]
   roles          UsersOnWorkRoles[]
   projects       ProjectMember[]
@@ -97,6 +98,15 @@ model User {
 model UserKey {
   key       String   @id
   name      String   @default("My new wallet key")
+  createdAt DateTime @default(now())
+
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
+}
+
+model UserNostrKey {
+  key       String   @id
+  label     String   @default("New Nostr PubKey")
   createdAt DateTime @default(now())
 
   user    User? @relation(fields: [user_id], references: [id])
