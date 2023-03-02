@@ -2,8 +2,8 @@ import { TrackAndPrizes } from "../PrizesSection/PrizesSection";
 
 export const chat = {
   type: "discord",
-  link: "https://discord.gg/HFqtxavb7x"
-}
+  link: "https://discord.gg/HFqtxavb7x",
+};
 
 export const partners = [
   {
@@ -60,8 +60,6 @@ export const partners = [
     image: "https://i.ibb.co/HdvRbxQ/Screenshot-2022-09-14-at-17-06-33.jpg",
   },
 ];
-
-
 
 export const tracksAndPrizes = [
   {
@@ -167,3 +165,9 @@ export const tracksAndPrizes = [
     },
   },
 ] as TrackAndPrizes[];
+
+export const config = {
+  tournamentHashtags: ["legends_of_lightning"],
+  registerationOpen: false,
+  projectsSubmissionOpen: false,
+};

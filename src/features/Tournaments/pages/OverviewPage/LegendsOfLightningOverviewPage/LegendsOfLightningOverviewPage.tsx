@@ -7,7 +7,7 @@ import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
-import { partners, tracksAndPrizes, chat } from "./tournament-data";
+import { partners, tracksAndPrizes, chat } from "./lol-tournament-data";
 
 export default function LegendsOfLightningOverviewPage() {
   const { tournamentDetails, makers, myParticipationInfo } = useTournament();

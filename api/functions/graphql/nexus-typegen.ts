@@ -696,6 +696,7 @@ export interface NexusGenFieldTypes {
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
+    pubkeysOfMakersInTournament: string[]; // [String!]!
     recentProjectsInTag: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     searchUsers: NexusGenRootTypes['User'][]; // [User!]!
@@ -1133,6 +1134,7 @@ export interface NexusGenFieldTypeNames {
     popularTags: 'Tag'
     profile: 'User'
     projectsByCategory: 'Project'
+    pubkeysOfMakersInTournament: 'String'
     recentProjectsInTag: 'Project'
     searchProjects: 'Project'
     searchUsers: 'User'
@@ -1479,6 +1481,9 @@ export interface NexusGenArgTypes {
       category_id: number; // Int!
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    pubkeysOfMakersInTournament: { // args
+      tournamentId: number; // Int!
     }
     recentProjectsInTag: { // args
       tagId: number; // Int!

@@ -399,6 +399,7 @@ type Query {
   popularTags: [Tag!]!
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 60): [Project!]!
+  pubkeysOfMakersInTournament(tournamentId: Int!): [String!]!
   recentProjectsInTag(tagId: Int!, take: Int = 3): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!

@@ -7,7 +7,7 @@ import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
-import { partners, tracksAndPrizes, chat } from "./tournament-data";
+import { partners, tracksAndPrizes, chat } from "./nostr-hack-tournament-data";
 
 export default function NostrHackWeekOverviewPage() {
   const { tournamentDetails, makers, myParticipationInfo } = useTournament();
