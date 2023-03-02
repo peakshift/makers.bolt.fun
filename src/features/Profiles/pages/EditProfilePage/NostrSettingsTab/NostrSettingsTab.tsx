@@ -9,14 +9,23 @@ import Card from "src/Components/Card/Card";
 import GeneratedKeysCard from "./GeneratedKeysCard/GeneratedKeysCard";
 import RelaysList from "src/features/Posts/Components/Comments/CommentsWidget/components/RelaysList/RelaysList";
 import LinkedNostrKeys from "./LinkedNostrKeys/LinkedNostrKeys";
+import { withProviders } from "src/utils/hoc";
+import {
+  RelayPoolProvider,
+  useRelayPool,
+  useRelayPoolStatus,
+} from "src/lib/nostr";
 
 interface Props {}
 
 export type IProfilePreferencesForm =
   NonNullable<UpdateUserPreferencesMutationVariables>;
 
-export default function NostrSettingsTab() {
+function NostrSettingsTab() {
   const query = useMyNostrSettingsQuery();
+
+  const { relayPool } = useRelayPool();
+  const { relaysStatus } = useRelayPoolStatus(relayPool);
 
   if (query.networkStatus === NetworkStatus.loading)
     return <PreferencesTabSkeleton />;
@@ -41,7 +50,7 @@ export default function NostrSettingsTab() {
             <br />
           </p>
           <div className="mt-24">
-            <RelaysList />
+            <RelaysList relaysConnectionStatus={relaysStatus} />
           </div>
         </Card>
       </div>
@@ -56,3 +65,5 @@ export default function NostrSettingsTab() {
     </div>
   );
 }
+
+export default withProviders(RelayPoolProvider)(NostrSettingsTab);

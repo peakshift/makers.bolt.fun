@@ -19,8 +19,6 @@ import { NostrProfile } from "./types";
 export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
   const { relayPool } = useRelayPool();
 
-  // when the events change, I want to query the profiles of the new events pubkeys
-  // I have a map of currently fetched metadata profile, so I don't need to query them again
   const [nostrMetadata, setNostrMetadata] = useState<
     Record<string, NostrToolsEvent>
   >({});
@@ -29,16 +27,7 @@ export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
     Record<string, NostrKeysMetadataQuery["usersByNostrKeys"][number]["user"]>
   >({});
 
-  const [getMetadataFromApi] = useNostrKeysMetadataLazyQuery({
-    onCompleted: (data) => {
-      const newEntries = data.usersByNostrKeys.reduce(
-        (acc, cur) => ({ ...acc, [cur.key]: cur.user }),
-        {}
-      );
-
-      setUsersDataFromApi((curr) => ({ ...curr, ...newEntries }));
-    },
-  });
+  const [getMetadataFromApi] = useNostrKeysMetadataLazyQuery();
 
   const profilesData = useMemo(() => {
     let result: Record<string, NostrProfile> = {};
@@ -124,7 +113,17 @@ export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
       pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
 
       fetchMetadata(pubkeysToFetch);
-      getMetadataFromApi({ variables: { keys: pubkeysToFetch } });
+      getMetadataFromApi({ variables: { keys: pubkeysToFetch } }).then(
+        ({ data }) => {
+          if (data) {
+            const newEntries = data.usersByNostrKeys.reduce(
+              (acc, cur) => ({ ...acc, [cur.key]: cur.user }),
+              {}
+            );
+            setUsersDataFromApi((curr) => ({ ...curr, ...newEntries }));
+          }
+        }
+      );
     }
   }, [fetchMetadata, getMetadataFromApi, pubkeys, relayPool]);
 

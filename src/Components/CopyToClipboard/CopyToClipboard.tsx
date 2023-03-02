@@ -10,6 +10,7 @@ interface Props {
   direction?: "top" | "bottom";
   iconClasses?: string;
   alertClasses?: string;
+  successMsg?: string;
 }
 
 export default function CopyToClipboard({
@@ -17,6 +18,7 @@ export default function CopyToClipboard({
   direction = "bottom",
   iconClasses = "",
   alertClasses = "",
+  successMsg = "Copied!",
   onCopy = () => {},
 }: Props) {
   const [showAlert, setShowAlert] = useState(false);
@@ -60,7 +62,7 @@ export default function CopyToClipboard({
         }}
         className={`absolute rounded-xl text-center bg-black min-w-max text-white right-0 z-10 p-16 ${className} ${alertClasses}`}
       >
-        Copied! <IoIosCopy className="align-middle" />
+        {successMsg} <IoIosCopy className="align-middle" />
       </motion.div>
     </>
   );

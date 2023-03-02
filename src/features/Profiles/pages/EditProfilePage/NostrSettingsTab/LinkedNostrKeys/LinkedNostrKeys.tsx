@@ -10,12 +10,17 @@ import { useAppDispatch } from "src/utils/hooks";
 import CopyToClipboard from "src/Components/CopyToClipboard/CopyToClipboard";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import { NotificationsService } from "src/services";
+import { useMetaData } from "src/lib/nostr";
+import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 
 interface Props {
   keys: NonNullable<MyNostrSettingsQuery["me"]>["nostr_keys"];
 }
 
 export default function LinkedNostrKeys({ keys }: Props) {
+  const { metadata } = useMetaData({ pubkeys: keys.map((k) => k.key) });
+
   const dispatch = useAppDispatch();
 
   const [mutate] = useUnlinkNostrKeyMutation();
@@ -49,8 +54,8 @@ export default function LinkedNostrKeys({ keys }: Props) {
         This will:
         <br />- Allow other users to see your nostr public keys on your profile
         and follow you.
-        <br />- We will display your bolt.fun profile data next to your notes on
-        bolt.fun (username, avatar,...etc)
+        <br />- Your BOLT.FUN profile info will appear in place of your Nostr
+        profile info on the website (like the: username, avatar,...etc)
       </p>
 
       <p className="text-body4 text-black font-bold mt-24 mb-12">
@@ -58,29 +63,43 @@ export default function LinkedNostrKeys({ keys }: Props) {
       </p>
       {keys.length > 0 ? (
         <ul className="flex flex-col gap-12">
-          {keys.map((nostrKey) => (
-            <li
-              key={nostrKey.key}
-              className="bg-gray-100 rounded p-16 flex gap-12 justify-between"
-            >
-              <div className="flex items-center min-w-0">
-                <p className="overflow-hidden text-ellipsis">
-                  {nip19.npubEncode(nostrKey.key)}
-                  {nip19.npubEncode(nostrKey.key)}
-                </p>
-                <span className="relative">
-                  <CopyToClipboard text={nostrKey.key} />
-                </span>
-              </div>
-              <IconButton
-                size="sm"
-                className="text-red-500 shrink-0 mx-auto"
-                onClick={() => handleDeleteConnection(nostrKey.key)}
+          {keys.map((nostrKey) => {
+            const nostrProfile = getProfileDataFromMetaData(
+              metadata,
+              nostrKey.key
+            );
+            return (
+              <li
+                key={nostrKey.key}
+                className="bg-gray-100 rounded p-16 flex gap-12 items-center justify-between"
               >
-                <FiTrash2 />{" "}
-              </IconButton>
-            </li>
-          ))}
+                <div className="flex gap-8 items-center min-w-0">
+                  <Avatar width={32} src={nostrProfile.image} />
+                  <div className="overflow-hidden">
+                    <p className="font-bold overflow-hidden text-ellipsis">
+                      {nostrProfile.name}
+                    </p>
+                    <p className="text-gray-500 overflow-hidden text-ellipsis">
+                      {nip19.npubEncode(nostrKey.key)}
+                    </p>
+                  </div>
+                  <span className="relative">
+                    <CopyToClipboard
+                      text={nostrKey.key}
+                      successMsg="Copied Public Key!"
+                    />
+                  </span>
+                </div>
+                <IconButton
+                  size="sm"
+                  className="text-red-500 shrink-0 min-w-max"
+                  onClick={() => handleDeleteConnection(nostrKey.key)}
+                >
+                  <FiTrash2 />{" "}
+                </IconButton>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p className="text-gray-500">
