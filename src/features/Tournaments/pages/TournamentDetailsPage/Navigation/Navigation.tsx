@@ -10,7 +10,12 @@ export default function Navigation() {
     containScroll: "trimSnaps",
   });
 
-  const { tournamentDetails } = useTournament();
+  const {
+    tournamentDetails,
+    staticData: {
+      config: { showFeed },
+    },
+  } = useTournament();
 
   const links = useMemo(
     () => [
@@ -21,6 +26,7 @@ export default function Navigation() {
       {
         text: `Feed`,
         path: "feed",
+        hide: !showFeed,
       },
       {
         text: `Events (${tournamentDetails.events_count})`,
@@ -46,6 +52,7 @@ export default function Navigation() {
       // },
     ],
     [
+      showFeed,
       tournamentDetails.events_count,
       tournamentDetails.makers_count,
       tournamentDetails.projects_count,
@@ -58,11 +65,13 @@ export default function Navigation() {
         <div className="relative group">
           <div className="overflow-hidden" ref={viewportRef}>
             <div className="select-none w-full flex gap-8 md:gap-16">
-              {links.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) => ` 
+              {links
+                .filter((link) => !link.hide)
+                .map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    className={({ isActive }) => ` 
                    min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
                     active:scale-95 transition-transform
                     ${
@@ -71,11 +80,11 @@ export default function Navigation() {
                         : "bg-gray-100 hover:bg-gray-200 text-gray-600"
                     }
                     `}
-                  role="button"
-                >
-                  {link.text}
-                </NavLink>
-              ))}
+                    role="button"
+                  >
+                    {link.text}
+                  </NavLink>
+                ))}
             </div>
           </div>
           {/* <button className={`absolute text-body6 w-[28px] aspect-square flex justify-center items-center left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full bg-white text-gray-400 opacity-0 ${canScrollPrev && 'group-hover:opacity-100'} active:scale-90 transition-opacity border border-gray-200 shadow-md`} onClick={() => scrollSlides(-1)}>

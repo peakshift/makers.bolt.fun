@@ -8,8 +8,9 @@ import {
   useGetTournamentByIdQuery,
   useMeTournamentQuery,
 } from "src/graphql";
-import * as LOLTournamentData from "../OverviewPage/LegendsOfLightningOverviewPage/lol-tournament-data";
-import * as NostrHackTournamentData from "../OverviewPage/NostrHackWeekOverviewPage/nostr-hack-tournament-data";
+import { LOL_TOURNAMENT_STATIC_DATA } from "../OverviewPage/LegendsOfLightningOverviewPage/lol-tournament-data";
+import { NOSTR_HACK_WEEK_STATIC_DATA } from "../OverviewPage/NostrHackWeekOverviewPage/nostr-hack-tournament-data";
+import { TournamentStaticData } from "../types";
 
 interface ITournamentDetails {
   makers: GetTournamentByIdQuery["getMakersInTournament"]["makers"];
@@ -17,7 +18,7 @@ interface ITournamentDetails {
   tournamentDetails: GetTournamentByIdQuery["getTournamentById"];
   myParticipationInfo: MeTournamentQuery["tournamentParticipationInfo"];
   pubkeysOfMakersInTournament: string[];
-  staticData: typeof LOLTournamentData | typeof NostrHackTournamentData;
+  staticData: TournamentStaticData;
 }
 
 const Ctx = createContext<ITournamentDetails>(null!);
@@ -74,8 +75,9 @@ export const useTournament = () => {
 };
 
 function getStaticData(title: string) {
-  if (title.search(/legends of lightning/i) !== -1) return LOLTournamentData;
-  if (title.search(/nostr/i) !== -1) return NostrHackTournamentData;
+  if (title.search(/legends of lightning/i) !== -1)
+    return LOL_TOURNAMENT_STATIC_DATA;
+  if (title.search(/nostr/i) !== -1) return NOSTR_HACK_WEEK_STATIC_DATA;
 
   throw new Error("Unknown Tournament");
 }

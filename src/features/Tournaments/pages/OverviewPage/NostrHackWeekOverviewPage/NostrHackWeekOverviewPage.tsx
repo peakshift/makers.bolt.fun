@@ -7,10 +7,14 @@ import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
-import { partners, tracksAndPrizes, chat } from "./nostr-hack-tournament-data";
 
 export default function NostrHackWeekOverviewPage() {
-  const { tournamentDetails, makers, myParticipationInfo } = useTournament();
+  const {
+    tournamentDetails,
+    makers,
+    myParticipationInfo,
+    staticData: { partners, chat, tracksAndPrizes },
+  } = useTournament();
 
   return (
     <>
@@ -62,8 +66,9 @@ export default function NostrHackWeekOverviewPage() {
         </h2>
         <p>
           <img
-            className="w-full"
             src="https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/632c24ae-a49f-41e6-a431-871fbb8ff500/public"
+            alt="Nostr Design Community - Nostrica Conference - SATSx Hackathon"
+            className="w-full"
           />
         </p>
       </Card>
