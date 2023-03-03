@@ -24,8 +24,8 @@ const links = [
     path: "nostr",
   },
   {
-    text: "⚙️  Settings & Preferences",
-    path: "preferences",
+    text: "🔐  Security",
+    path: "auth",
   },
 ];
 
@@ -98,7 +98,7 @@ export default function EditProfilePage() {
               <Route path="basic-info" element={<BasicProfileInfoTab />} />
               <Route path="roles-skills" element={<RolesSkillsTab />} />
               <Route path="nostr" element={<NostrSettingsTab />} />
-              <Route path="preferences" element={<PreferencesTab />} />
+              <Route path="auth" element={<PreferencesTab />} />
             </Routes>
           </main>
         </div>
