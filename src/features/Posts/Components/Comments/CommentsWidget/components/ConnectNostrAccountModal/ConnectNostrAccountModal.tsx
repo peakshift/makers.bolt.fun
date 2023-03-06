@@ -332,15 +332,16 @@ export default function ConnectNostrAccountModal({
               >
                 not safe
               </a>{" "}
-              & you should try to avoid entering your private keys on any
-              website to keep them from being leaked.
+              & you should try in general to avoid entering your private keys on
+              any website if you really care about them.
               <br />
               <br />
-              This unsafe option existed to allow users to use their extension's
-              keys on their mobile devices, where there is no extensions.
+              This unsafe option used to exist to allow users to use their
+              extension's keys on their mobile devices, where extensions can't
+              be used.
               <br />
               <br />
-              But hopefully, better and safe solutions like{" "}
+              But hopefully, better and safer solutions like{" "}
               <a
                 href="https://github.com/nostr-connect/nostrum"
                 target="_blank"
@@ -349,8 +350,25 @@ export default function ConnectNostrAccountModal({
               >
                 nostr-connect
               </a>{" "}
-              should solve this problem soon!
+              should come out soon and solve the problem!
             </p>
+
+            {/* <div className="input-wrapper mt-8 relative">
+              <input
+                type={"text"}
+                className="input-text"
+                value={prvkeyInput}
+                onChange={(e) => setPrvkeyInput(e.target.value)}
+              />
+            </div>
+            <Button
+              fullWidth
+              color="primary"
+              className="mt-8"
+              onClick={connect}
+            >
+              Connect Manually
+            </Button> */}
           </div>
         )}
       </div>
