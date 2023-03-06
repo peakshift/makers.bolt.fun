@@ -7,11 +7,12 @@ import { useAppDispatch, useResizeListener } from "./hooks";
 import { useCallback, useLayoutEffect } from "react";
 import { setIsMobileDevice } from "src/redux/features/ui.slice";
 import { isMobileDevice } from "./helperFunctions";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "react-tooltip/dist/react-tooltip.css";
 import THEME from "./theme";
 import { NotificationsService } from "src/services";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
@@ -51,7 +52,7 @@ export default function Wrapper(props: any) {
           <Provider store={store}>{props.children}</Provider>
         </ApolloProvider>
       </ErrorBoundary>
-      <ReactTooltip effect="solid" delayShow={1000} />
+      <Tooltip delayShow={1000} />
       <ToastContainer
         {...NotificationsService.defaultOptions}
         newestOnTop={false}

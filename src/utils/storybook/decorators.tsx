@@ -7,7 +7,7 @@ import { useWrapperSetup } from "../Wrapper";
 import { ModifyArgs } from "./utils";
 import Modal from "src/Components/Modals/Modal/Modal";
 import { worker } from "src/mocks/browser";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 import THEME from "../theme";
 
 // Add the global stuff first (index.ts)
@@ -66,7 +66,7 @@ export const WrapperDecorator: DecoratorFn = (Story, options) => {
           </Suspense>
         </Provider>
       </ApolloProvider>
-      <ReactTooltip effect="solid" delayShow={1000} />
+      <Tooltip delayShow={1000} />
       <ToastContainer
         {...NotificationsService.defaultOptions}
         newestOnTop={false}
