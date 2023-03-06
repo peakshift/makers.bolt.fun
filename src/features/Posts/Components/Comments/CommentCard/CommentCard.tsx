@@ -14,6 +14,7 @@ import "react-popper-tooltip/dist/styles.css";
 import { useAppSelector } from "src/utils/hooks";
 import { replaceMentionsWithLinks } from "src/features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage";
 import { extractImageFromContent } from "src/lib/nostr/helpers";
+import { Tooltip } from "react-tooltip";
 
 interface Props {
   comment: NostrToolsEventWithId;
@@ -33,13 +34,6 @@ export default function CommentCard({
   onReply,
   author,
 }: Props) {
-  const {
-    getArrowProps,
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible,
-  } = usePopperTooltip();
   // const [votesCount, setVotesCount] = useState(comment.votes_count);
 
   //   const { vote } = useVote({
@@ -95,27 +89,14 @@ export default function CommentCard({
           target="_blank"
           rel="noreferrer"
           className="ml-auto text-gray-400"
+          data-tooltip-id="nostr-link"
+          data-tooltip-content="view nostr event"
         >
-          <IconButton ref={setTriggerRef}>
+          <IconButton>
             <FiLink />
           </IconButton>
+          <Tooltip id="nostr-link" />
         </a>
-        {visible && (
-          <div
-            ref={setTooltipRef}
-            {...getTooltipProps({
-              className:
-                "tooltip-container !bg-gray-900 !text-white text-body5 !rounded-8",
-            })}
-          >
-            <div
-              {...getArrowProps({
-                className: "tooltip-arrow",
-              })}
-            />
-            note link on nostr
-          </div>
-        )}
       </div>
       {image && (
         <div>
