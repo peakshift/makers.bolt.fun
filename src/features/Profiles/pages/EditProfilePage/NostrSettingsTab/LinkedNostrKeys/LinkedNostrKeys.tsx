@@ -13,6 +13,7 @@ import { NotificationsService } from "src/services";
 import { useMetaData } from "src/lib/nostr";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
+import { Tooltip } from "react-tooltip";
 
 interface Props {
   keys: NonNullable<MyNostrSettingsQuery["me"]>["nostr_keys"];
@@ -28,7 +29,7 @@ export default function LinkedNostrKeys({ keys }: Props) {
   const handleDeleteConnection = (key: string) => {
     if (
       window.confirm(
-        "Are you sure you want to unlink this nostr key from your account"
+        "Are you sure you want to unlink this nostr key from your profile?"
       )
     ) {
       mutate({
@@ -85,7 +86,7 @@ export default function LinkedNostrKeys({ keys }: Props) {
                   </div>
                   <span className="relative">
                     <CopyToClipboard
-                      text={nostrKey.key}
+                      text={nip19.npubEncode(nostrKey.key)}
                       successMsg="Copied Public Key!"
                     />
                   </span>
@@ -94,9 +95,12 @@ export default function LinkedNostrKeys({ keys }: Props) {
                   size="sm"
                   className="text-red-500 shrink-0 min-w-max"
                   onClick={() => handleDeleteConnection(nostrKey.key)}
+                  data-tooltip-id="delete-connection"
+                  data-tooltip-content="Unlink this nostr key from your profile"
                 >
-                  <FiTrash2 />{" "}
+                  <FiTrash2 />
                 </IconButton>
+                <Tooltip id="delete-connection" />
               </li>
             );
           })}
