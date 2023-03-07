@@ -164,14 +164,16 @@ export default function AboutCard({ user, isOwner }: Props) {
           }
 
           {
-            <p className="text-body5 font-medium">
+            <p className="text-body4 font-normal">
               {user.bio ? user.bio : "No bio added"}
             </p>
           }
 
           {user.nostr_keys.length > 0 && (
             <div>
-              <p className="font-bold text-black mb-8 mt-16">Nostr Keys:</p>
+              <p className="text-gray-400 text-body5 mb-8 mt-16 uppercase">
+                Nostr
+              </p>
               <ul className="flex flex-col gap-12">
                 {user.nostr_keys.map((nostrKey) => {
                   const nostrProfile = getProfileDataFromMetaData(
