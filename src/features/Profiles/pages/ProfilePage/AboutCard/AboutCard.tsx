@@ -2,10 +2,10 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { User } from "src/graphql";
 import { trimText, withHttp } from "src/utils/helperFunctions";
 import {
+  FiCopy,
   FiGithub,
   FiGlobe,
   FiLinkedin,
-  FiMail,
   FiTwitter,
 } from "react-icons/fi";
 import Button from "src/Components/Button/Button";
@@ -14,7 +14,8 @@ import { FaCopy, FaDiscord } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { NotificationsService } from "src/services/notifications.service";
 import { nip19 } from "nostr-tools";
-import { MdOutlineContentCopy } from "react-icons/md";
+import { useMetaData } from "src/lib/nostr";
+import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 import IconButton from "src/Components/IconButton/IconButton";
 
 interface Props {
@@ -37,6 +38,10 @@ interface Props {
 }
 
 export default function AboutCard({ user, isOwner }: Props) {
+  const { metadata } = useMetaData({
+    pubkeys: user.nostr_keys.map((k) => k.key),
+  });
+
   const links = [
     {
       value: user.discord,
@@ -166,34 +171,54 @@ export default function AboutCard({ user, isOwner }: Props) {
 
           {user.nostr_keys.length > 0 && (
             <div>
-              <p className="font-bold text-black">Nostr Keys:</p>
-              <ul>
-                {user.nostr_keys.map((nostrKey) => (
-                  <li key={nostrKey.key}>
-                    <div className="flex items-center min-w-0">
-                      <a
-                        href={`https://nostr.guru/p/${nostrKey.key}`}
-                        className="overflow-hidden text-ellipsis"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {nip19.npubEncode(nostrKey.key).slice(0, 25)}...
-                      </a>
-                      <CopyToClipboard
-                        onCopy={() =>
-                          NotificationsService.info(" Copied to clipboard", {
-                            icon: "📋",
-                          })
-                        }
-                        text={nostrKey.key}
-                      >
-                        <IconButton>
-                          <MdOutlineContentCopy className="text-primary-500 " />
-                        </IconButton>
-                      </CopyToClipboard>
-                    </div>
-                  </li>
-                ))}
+              <p className="font-bold text-black mb-8 mt-16">Nostr Keys:</p>
+              <ul className="flex flex-col gap-12">
+                {user.nostr_keys.map((nostrKey) => {
+                  const nostrProfile = getProfileDataFromMetaData(
+                    metadata,
+                    nostrKey.key
+                  );
+                  return (
+                    <li
+                      key={nostrKey.key}
+                      className="bg-gray-100 rounded p-16 flex gap-12 items-center justify-between"
+                    >
+                      <div className="flex gap-8 items-center min-w-0">
+                        <Avatar width={32} src={nostrProfile.image} />
+                        <div className="overflow-hidden">
+                          <p className="font-bold overflow-hidden text-ellipsis">
+                            {nostrProfile.name}
+                          </p>
+                          <a
+                            href={`https://nostr.guru/p/${nostrKey.key}`}
+                            className="block hover:underline text-gray-500 overflow-hidden text-ellipsis"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {nip19.npubEncode(nostrKey.key)}
+                          </a>
+                        </div>
+                        <span className="relative">
+                          <CopyToClipboard
+                            text={nip19.npubEncode(nostrKey.key)}
+                            onCopy={() =>
+                              NotificationsService.info(
+                                " Copied to clipboard",
+                                {
+                                  icon: "📋",
+                                }
+                              )
+                            }
+                          >
+                            <IconButton className="text-primary-500">
+                              <FiCopy />
+                            </IconButton>
+                          </CopyToClipboard>
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}
