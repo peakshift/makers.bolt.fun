@@ -258,6 +258,8 @@ model Story {
 
   project    Project? @relation(fields: [project_id], references: [id])
   project_id Int?
+
+  idea_for_tournaments TournamentIdea[]
 }
 
 model Question {
@@ -398,6 +400,7 @@ model Tournament {
   events       TournamentEvent[]
   participants TournamentParticipant[]
   projects     TournamentProject[]
+  ideas        TournamentIdea[]
 }
 
 model TournamentPrize {
@@ -485,6 +488,15 @@ model TournamentProject {
   track    TournamentTrack? @relation(fields: [track_id], references: [id])
 
   @@id([tournament_id, project_id])
+}
+
+model TournamentIdea {
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+  story         Story      @relation(fields: [story_id], references: [id])
+  story_id      Int
+
+  @@id([tournament_id, story_id])
 }
 
 // -----------------
