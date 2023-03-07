@@ -10,6 +10,8 @@ import { NotificationsService } from "src/services";
 import { useLinkNewNostrKeyMutation } from "src/graphql";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import { NostrToolsEvent } from "nostr-relaypool/event";
+import { CONSTS } from "src/utils";
+import { nip19 } from "nostr-tools";
 
 interface Props extends ModalCard {}
 
@@ -27,7 +29,13 @@ export default function ConnectNostrIdToProfileModal({
         const event: NostrToolsEvent = {
           kind: 1,
           created_at: Math.round(Date.now() / 1000),
-          content: `I want to link this nostr pubkey to my bolt.fun account with id: ${me?.id}`,
+          content: `Verifying my #BOLTFUN account on Nostr
+
+My Maker Profile: https://makers.bolt.fun/profile/${me?.id}
+
+Join our FUN community of builders and designers
+
+${nip19.npubEncode(CONSTS.BF_NOSTR_PUBKEY)} #BuildOnNostr #BuildOnBitcoin`,
           pubkey,
           tags: [],
         };

@@ -22,6 +22,7 @@ const {
   verifySignature,
   validateEvent,
 } = require("../../../utils/nostr-tools");
+const { queueService } = require("../../../services/queue.service");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -499,9 +500,9 @@ const linkNostrKey = extendType({
         if (!signatureValid) throw new Error("Signature not valid");
 
         const VALID_CONTENT_REGEX =
-          /I want to link this nostr pubkey to my bolt.fun account with id: ([\d+])$/;
+          /My Maker Profile: https:\/\/makers.bolt.fun\/profile\/(?<id>\d+)/;
 
-        const extractedId = VALID_CONTENT_REGEX.exec(event.content)?.[1];
+        const extractedId = VALID_CONTENT_REGEX.exec(event.content).groups?.id;
 
         if (!extractedId || Number(extractedId) !== user.id)
           throw new Error("Content of verification message invalid");
@@ -523,6 +524,8 @@ const linkNostrKey = extendType({
             key: event.pubkey,
           },
         });
+
+        queueService.createProfileVerificationEvent({ event });
 
         return prisma.user.findUnique({
           where: {
