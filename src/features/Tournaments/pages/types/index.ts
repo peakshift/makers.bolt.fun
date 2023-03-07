@@ -1,3 +1,4 @@
+import { Filter } from "nostr-tools";
 import { TrackAndPrizes } from "../OverviewPage/PrizesSection/PrizesSection";
 
 export interface TournamentStaticData {
@@ -21,9 +22,15 @@ export interface TournamentStaticData {
   }>;
 
   config: {
-    tournamentHashtags: string[];
-    showFeed: boolean;
     registerationOpen: boolean;
     projectsSubmissionOpen: boolean;
-  };
+  } & (
+    | {
+        showFeed: true;
+        feedFilters: (data: { participantsKeys: string[] }) => Filter[];
+      }
+    | {
+        showFeed: false;
+      }
+  );
 }

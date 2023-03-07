@@ -168,7 +168,6 @@ export const LOL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
   ],
 
   config: {
-    tournamentHashtags: ["legends_of_lightning"],
     showFeed: false,
     registerationOpen: false,
     projectsSubmissionOpen: false,
