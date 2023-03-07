@@ -648,7 +648,6 @@ export interface NexusGenFieldTypes {
     getCategory: NexusGenRootTypes['Category']; // Category!
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
-    getIdeasInTournament: NexusGenRootTypes['Story'][]; // [Story!]!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getMakersInTournament: NexusGenRootTypes['TournamentMakersResponse']; // TournamentMakersResponse!
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -1071,7 +1070,6 @@ export interface NexusGenFieldTypeNames {
     getCategory: 'Category'
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
-    getIdeasInTournament: 'Story'
     getLnurlDetailsForProject: 'LnurlDetails'
     getMakersInTournament: 'TournamentMakersResponse'
     getMyDrafts: 'Post'
@@ -1373,9 +1371,6 @@ export interface NexusGenArgTypes {
       sortBy?: string | null; // String
       tag?: number | null; // Int
       take: number | null; // Int
-    }
-    getIdeasInTournament: { // args
-      tournamentId: number; // Int!
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!

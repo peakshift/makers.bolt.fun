@@ -25,6 +25,9 @@ interface Props {
     nostr_event_id: string | null;
     createdAt: string;
   };
+  inputPlaceholder?: string;
+  hideTitle?: boolean;
+  hideProfileSettingsBtn?: boolean;
 }
 const UPDATE_PROFILE_ACTION = createAction<{ profile_data: NostrProfile }>(
   "NOSTR_PROFILE_UPDATED"
@@ -33,7 +36,12 @@ const DISCONNECT_PROFILE_ACTION = createAction<{}>(
   "NOSTR_PROFILE_DISCONNECTED"
 )({});
 
-export default function CommentsWidgetRoot({ story }: Props) {
+export default function CommentsWidgetRoot({
+  story,
+  inputPlaceholder,
+  hideTitle,
+  hideProfileSettingsBtn,
+}: Props) {
   const { relayPool, updateRelays } = useRelayPool();
   const { relaysStatus } = useRelayPoolStatus(relayPool);
 
@@ -146,19 +154,25 @@ export default function CommentsWidgetRoot({ story }: Props) {
     <>
       <div>
         <div className="flex gap-12 flex-wrap justify-between">
-          <h6 className="text-body2 font-bolder">Discussion</h6>
+          {!hideTitle ? (
+            <h6 className="text-body2 font-bolder">Discussion</h6>
+          ) : (
+            <div></div>
+          )}
           <div className="flex gap-12">
-            <button
-              className={`bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-bold py-8 px-12 rounded-12 ${
-                !myProfile && "pointer-events-none opacity-60"
-              }`}
-              onClick={openUpdateProfile}
-            >
-              <span className="text-gray-400">
-                <FaCog />
-              </span>{" "}
-              <span className="align-middle">Nostr Profile Settings</span>
-            </button>
+            {!hideProfileSettingsBtn && (
+              <button
+                className={`bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-bold py-8 px-12 rounded-12 ${
+                  !myProfile && "pointer-events-none opacity-60"
+                }`}
+                onClick={openUpdateProfile}
+              >
+                <span className="text-gray-400">
+                  <FaCog />
+                </span>{" "}
+                <span className="align-middle">Nostr Profile Settings</span>
+              </button>
+            )}
             <button
               onClick={() => setShowRelays((v) => !v)}
               className="bg-gray-200 hover:bg-gray-300 active:bg-gray-300 text-gray-600 text-body5 font-bold py-8 px-12 rounded-12"
@@ -204,7 +218,7 @@ export default function CommentsWidgetRoot({ story }: Props) {
             <div className={!true ? "blur-[2px]" : ""}>
               <AddComment
                 //   isDisconnected={connectionStatus.status !== 'Connected'}
-                placeholder="Leave a comment..."
+                placeholder={inputPlaceholder ?? "Leave a comment..."}
                 onSubmit={publishEvent}
                 avatar={myProfile?.image}
                 pubkey={myProfile?.pubkey}
