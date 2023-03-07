@@ -20,6 +20,7 @@ import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { RelayPoolProvider } from "src/lib/nostr";
 import { withProviders } from "src/utils/hoc";
+import { Tooltip } from "react-tooltip";
 
 const CommentsWidgetRoot = lazy(
   () =>
@@ -59,12 +60,16 @@ function StoryPageContent({ story }: Props) {
                 href={`https://www.nostr.guru/e/${story.nostr_event_id}`}
                 target="_blank"
                 rel="noreferrer"
+                data-tooltip-id="nostr-link"
+                data-tooltip-content="view nostr event"
               >
                 <IconButton>
                   <FiLink />
                 </IconButton>
+                <Tooltip id="nostr-link" />
               </a>
             )}
+
             <CopyToClipboard
               text={
                 window.location.origin +

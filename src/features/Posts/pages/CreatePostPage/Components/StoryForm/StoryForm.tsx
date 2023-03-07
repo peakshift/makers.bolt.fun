@@ -38,6 +38,8 @@ export default function StoryForm(props: Props) {
   const [loading, setLoading] = useState(false);
   const titleInputRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const resetKey = useRef(0); // This key is used to manually remount the editor component upon draft creation
+
   const presistPost = useThrottledCallback(
     (value) => props.storageService.set(value),
     [],
@@ -83,8 +85,9 @@ export default function StoryForm(props: Props) {
       reset();
       props.storageService.clear();
       setLoading(false);
+      resetKey.current++;
       dispatch(unstageStoryPreview());
-      if (data.createStory?.is_published)
+      if (data.createStory?.is_published) {
         navigate(
           createRoute({
             type: "story",
@@ -93,7 +96,8 @@ export default function StoryForm(props: Props) {
           }),
           { replace: true }
         );
-      props.onSuccess?.(!!data.createStory?.is_published);
+        props.onSuccess?.(!!data.createStory?.is_published);
+      }
     },
     onError: (error) => {
       NotificationsService.error(
@@ -124,7 +128,7 @@ export default function StoryForm(props: Props) {
       });
     }, props.onValidationError);
 
-  const postId = watch("id") ?? -1;
+  // const postId = watch("id") ?? -1;
   const { ref: registerTitleRef, ...titleRegisteration } = register("title");
 
   return (
@@ -219,7 +223,7 @@ export default function StoryForm(props: Props) {
                 />
               </div>
               <ContentEditor
-                key={postId}
+                key={resetKey.current}
                 initialContent={() => getValues().body}
                 placeholder="Write your story content here..."
                 name="body"
