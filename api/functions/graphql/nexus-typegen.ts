@@ -1454,6 +1454,8 @@ export interface NexusGenArgTypes {
       ids: string[]; // [String!]!
     }
     getProjectsInTournament: { // args
+      lookingForMakers?: boolean | null; // Boolean
+      roleId?: number | null; // Int
       search?: string | null; // String
       skip?: number | null; // Int
       take: number | null; // Int

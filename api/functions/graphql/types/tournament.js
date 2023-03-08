@@ -544,6 +544,8 @@ const getProjectsInTournament = extendType({
         ...paginationArgs({ take: 10 }),
         search: stringArg(),
         trackId: intArg(),
+        roleId: intArg(),
+        lookingForMakers: booleanArg(),
       },
       async resolve(_, args, ctx, info) {
         const select = new PrismaSelect(info, {
@@ -587,7 +589,29 @@ const getProjectsInTournament = extendType({
               AND: filters,
             },
           }),
+          ...(args.roleId !== null &&
+            (args.roleId !== -1
+              ? {
+                  project: {
+                    recruit_roles: {
+                      some: {
+                        roleId: args.roleId,
+                      },
+                    },
+                  },
+                }
+              : {
+                  NOT: {
+                    project: {
+                      recruit_roles: {
+                        none: {},
+                      },
+                    },
+                  },
+                })),
         };
+
+        console.log(where);
 
         const [projects, allProjectsCount] = await Promise.all([
           prisma.tournamentProject

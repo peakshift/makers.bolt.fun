@@ -628,6 +628,8 @@ export type QueryGetProjectsByIdArgs = {
 
 
 export type QueryGetProjectsInTournamentArgs = {
+  lookingForMakers: InputMaybe<Scalars['Boolean']>;
+  roleId: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
@@ -1318,6 +1320,7 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
   take: InputMaybe<Scalars['Int']>;
   skip: InputMaybe<Scalars['Int']>;
   trackId: InputMaybe<Scalars['Int']>;
+  roleId: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
 }>;
 
@@ -3754,12 +3757,13 @@ export type GetMakersInTournamentQueryHookResult = ReturnType<typeof useGetMaker
 export type GetMakersInTournamentLazyQueryHookResult = ReturnType<typeof useGetMakersInTournamentLazyQuery>;
 export type GetMakersInTournamentQueryResult = Apollo.QueryResult<GetMakersInTournamentQuery, GetMakersInTournamentQueryVariables>;
 export const GetProjectsInTournamentDocument = gql`
-    query GetProjectsInTournament($tournamentId: Int!, $take: Int, $skip: Int, $trackId: Int, $search: String) {
+    query GetProjectsInTournament($tournamentId: Int!, $take: Int, $skip: Int, $trackId: Int, $roleId: Int, $search: String) {
   getProjectsInTournament(
     tournamentId: $tournamentId
     take: $take
     skip: $skip
     trackId: $trackId
+    roleId: $roleId
     search: $search
   ) {
     allItemsCount
@@ -3803,6 +3807,7 @@ export const GetProjectsInTournamentDocument = gql`
  *      take: // value for 'take'
  *      skip: // value for 'skip'
  *      trackId: // value for 'trackId'
+ *      roleId: // value for 'roleId'
  *      search: // value for 'search'
  *   },
  * });
