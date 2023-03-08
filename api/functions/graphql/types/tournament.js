@@ -611,8 +611,6 @@ const getProjectsInTournament = extendType({
                 })),
         };
 
-        console.log(where);
-
         const [projects, allProjectsCount] = await Promise.all([
           prisma.tournamentProject
             .findMany({
