@@ -525,10 +525,10 @@ const linkNostrKey = extendType({
           },
         });
 
-        await Promise.all(
+        await Promise.all([
           queueService.createProfileVerificationEvent({ event }),
-          cacheService.invalidateUserById(user.id)
-        );
+          cacheService.invalidateUserById(user.id),
+        ]);
 
         return prisma.user.findUnique({
           where: {
