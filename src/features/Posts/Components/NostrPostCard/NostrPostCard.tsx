@@ -133,7 +133,7 @@ export default function NostrPostCard({ post, author }: Props) {
           {articleFields.title && (
             <h2 className="text-h5 font-bolder">{articleFields.title}</h2>
           )}
-          <p className="text-body4 text-gray-600 line-clamp-4">
+          <p className="text-body4 text-gray-600 line-clamp-6 whitespace-pre-wrap">
             {articleFields.summary ?? content}
           </p>
         </Link>

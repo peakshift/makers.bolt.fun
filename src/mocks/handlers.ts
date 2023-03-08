@@ -364,6 +364,7 @@ export const handlers = [
             tournamentId: 12,
             openToConnect: null,
           }),
+          pubkeysOfMakersInTournament: [],
         })
       );
     }

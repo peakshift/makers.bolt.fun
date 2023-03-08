@@ -16,6 +16,9 @@ export default function ProjectsPage() {
   const dispatch = useAppDispatch();
   const {
     tournamentDetails: { id, title, tracks, end_date },
+    staticData: {
+      config: { projectsSubmissionOpen },
+    },
     myParticipationInfo,
   } = useTournament();
   const isLoggedIn = useAppSelector((s) => !!s.user.me);
@@ -77,8 +80,6 @@ export default function ProjectsPage() {
 
   const isEmpty = allProjectsCount !== null && allProjectsCount === 0;
 
-  const isSubmissionsClosed = new Date(end_date) < new Date();
-
   return (
     <div className="pb-42 flex flex-col gap-24">
       <h2 className="text-body1 font-bolder text-gray-900">
@@ -118,7 +119,7 @@ export default function ProjectsPage() {
             </button>
           )}
         </div>
-        {!isSubmissionsClosed && (
+        {projectsSubmissionOpen && (
           <Button
             disabled={!isLoggedIn}
             size="sm"
@@ -149,7 +150,7 @@ export default function ProjectsPage() {
           trackValue={trackFilter}
           onTrackChange={setTrackFilter}
         />
-        {!isSubmissionsClosed && (
+        {projectsSubmissionOpen && (
           <Button
             disabled={!isLoggedIn}
             fullWidth

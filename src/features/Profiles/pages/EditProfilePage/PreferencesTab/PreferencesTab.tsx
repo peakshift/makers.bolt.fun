@@ -1,5 +1,4 @@
 import LinkedAccountsCard from "./LinkedAccountsCard/LinkedAccountsCard";
-import CommentsSettingsCard from "./CommentsSettingsCard/CommentsSettingsCard";
 import {
   UpdateUserPreferencesMutationVariables,
   useMyProfilePreferencesQuery,
@@ -10,11 +9,9 @@ import PreferencesTabSkeleton from "./PreferencesTab.Skeleton";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
 import { NotificationsService } from "src/services";
 import { NetworkStatus } from "@apollo/client";
-import { usePrompt } from "src/utils/hooks";
 
 interface Props {}
 
@@ -113,10 +110,6 @@ export default function PreferencesTab() {
               }}
             />
           )}
-        />
-        <CommentsSettingsCard
-          nostr_prv_key={query.data.me.nostr_prv_key}
-          nostr_pub_key={query.data.me.nostr_pub_key}
         />
       </div>
       <div className="self-start sticky-side-element">

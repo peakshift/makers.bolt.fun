@@ -17,13 +17,6 @@ export function hasTagsList(
   return topic in toipcsToFilters;
 }
 
-export const topicToNpubs = {
-  nostr: ["npub1x6gxrjdpacjc62x3y0e4lyfedzyy65kyj29t0026g4z0el2g70esc0rtxj"],
-  "bitcoin-design": [
-    "npub13s5mxgws70rpxsug96jfvglggackjrxs2ehypwg0prjaxsek42sqd9l03e",
-  ],
-};
-
 export function getFilters(topic: keyof typeof toipcsToFilters): Filter[] {
   const baseFilter = { kinds: [1, 30023], limit: 100 };
 

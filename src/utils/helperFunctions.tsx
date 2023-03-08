@@ -226,3 +226,17 @@ export function formatHashtag(tag: string) {
   if (tag.startsWith("#")) return tag;
   return "#" + tag;
 }
+
+export function objMap<
+  TObj extends object,
+  TMapperFunc extends (k: keyof TObj, v: TObj[keyof TObj]) => any,
+  TReturn = TMapperFunc extends (k: keyof TObj, v: TObj[keyof TObj]) => infer R
+    ? {
+        [k in keyof TObj]: R;
+      }
+    : never
+>(obj: TObj, func: TMapperFunc): TReturn {
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [k, func(k as keyof typeof obj, v)])
+  ) as TReturn;
+}

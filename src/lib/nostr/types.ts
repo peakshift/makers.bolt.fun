@@ -8,6 +8,7 @@ export type NostrProfile = {
   link: string;
   nip05?: string | null;
   lightning_address?: string | null;
+  boltfun_id?: number;
 };
 
 export type NostrMetadata = Record<string, NostrToolsEventWithId>;

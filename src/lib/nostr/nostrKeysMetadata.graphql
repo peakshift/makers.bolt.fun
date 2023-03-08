@@ -1,0 +1,10 @@
+query NostrKeysMetadata($keys: [String!]!) {
+  usersByNostrKeys(keys: $keys) {
+    key
+    user {
+      id
+      name
+      avatar
+    }
+  }
+}

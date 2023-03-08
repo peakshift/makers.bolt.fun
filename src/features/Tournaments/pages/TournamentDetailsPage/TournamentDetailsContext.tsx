@@ -8,12 +8,17 @@ import {
   useGetTournamentByIdQuery,
   useMeTournamentQuery,
 } from "src/graphql";
+import { LOL_TOURNAMENT_STATIC_DATA } from "../OverviewPage/LegendsOfLightningOverviewPage/lol-tournament-data";
+import { NOSTR_HACK_WEEK_STATIC_DATA } from "../OverviewPage/NostrHackWeekOverviewPage/nostr-hack-tournament-data";
+import { TournamentStaticData } from "../types";
 
 interface ITournamentDetails {
   makers: GetTournamentByIdQuery["getMakersInTournament"]["makers"];
   me: MeTournamentQuery["me"];
   tournamentDetails: GetTournamentByIdQuery["getTournamentById"];
   myParticipationInfo: MeTournamentQuery["tournamentParticipationInfo"];
+  pubkeysOfMakersInTournament: string[];
+  staticData: TournamentStaticData;
 }
 
 const Ctx = createContext<ITournamentDetails>(null!);
@@ -44,6 +49,7 @@ export default function TournamentDetailsContext({
   const {
     getMakersInTournament: makers,
     getTournamentById: tournamentDetails,
+    pubkeysOfMakersInTournament,
   } = tournaemntQuery.data;
   const { me = null, tournamentParticipationInfo: myParticipationInfo = null } =
     myParticipationInfoQuery.data ?? {};
@@ -55,6 +61,8 @@ export default function TournamentDetailsContext({
         me,
         tournamentDetails,
         myParticipationInfo,
+        pubkeysOfMakersInTournament,
+        staticData: getStaticData(tournamentDetails.title),
       }}
     >
       {children}
@@ -65,3 +73,11 @@ export default function TournamentDetailsContext({
 export const useTournament = () => {
   return useContext(Ctx);
 };
+
+function getStaticData(title: string) {
+  if (title.search(/legends of lightning/i) !== -1)
+    return LOL_TOURNAMENT_STATIC_DATA;
+  if (title.search(/nostr/i) !== -1) return NOSTR_HACK_WEEK_STATIC_DATA;
+
+  throw new Error("Unknown Tournament");
+}

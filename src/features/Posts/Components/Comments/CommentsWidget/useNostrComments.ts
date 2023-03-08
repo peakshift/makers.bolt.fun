@@ -1,14 +1,10 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDebounce } from "use-debounce";
-import {
-  getEventHash,
-  signEvent as nostrToolsSignEvent,
-  nip05,
-} from "nostr-tools";
+import { getEventHash, signEvent as nostrToolsSignEvent } from "nostr-tools";
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { useRelayPool } from "src/lib/nostr";
+import { useMetaData, useRelayPool } from "src/lib/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
@@ -34,12 +30,6 @@ export const useNostrComments = (props: Props) => {
 
   const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
-
-  const [metadata, setMetadata] = useState<Record<string, NostrToolsEvent>>({});
-  const metadataFetching = useRef<Record<string, boolean>>({});
-
-  const fetchMetaDataRef = useRef<typeof fetchMetadata>(null!);
-  fetchMetaDataRef.current = fetchMetadata;
 
   const threads = useMemo(() => computeThreads(events), [events]);
 
@@ -94,84 +84,6 @@ export const useNostrComments = (props: Props) => {
     },
     [relayPool, threadRootObject]
   );
-
-  useEffect(() => {
-    if (relayPool && events.length > 0)
-      fetchMetaDataRef.current(events.map((e) => e.pubkey));
-  }, [events, relayPool]);
-
-  useEffect(() => {
-    if (relayPool && props.publicKey)
-      fetchMetaDataRef.current([props.publicKey]);
-  }, [props.publicKey, relayPool]);
-
-  async function fetchMetadata(
-    pubkeys: string[],
-    options?: { skip_existing_keys?: boolean }
-  ) {
-    if (!relayPool) throw new Error("Relays Pool not initialized yet");
-
-    const { skip_existing_keys = true } = options ?? {};
-
-    let pubkeysToFetch = skip_existing_keys
-      ? Array.from(
-          new Set(
-            pubkeys.filter(
-              (k) => !(k in metadata || k in metadataFetching.current)
-            )
-          )
-        )
-      : pubkeys;
-
-    pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
-
-    const relaysUrls = Array.from(relayPool.relayByUrl.keys());
-
-    const unsub = relayPool.subscribe(
-      [{ kinds: [0], authors: pubkeysToFetch }],
-      relaysUrls,
-      (event) => {
-        try {
-          if (
-            !metadata[event.pubkey] ||
-            metadata[event.pubkey].created_at < event.created_at
-          ) {
-            const metaData = {
-              ...JSON.parse(event.content),
-              created_at: event.created_at,
-            };
-            setMetadata((curr) => ({
-              ...curr,
-              [event.pubkey]: metaData,
-            }));
-            fetchNIP05(event.pubkey, metaData);
-          }
-        } catch (err) {
-          /***/
-        }
-      }
-    );
-
-    setTimeout(() => unsub(), 20000);
-  }
-
-  async function fetchNIP05(pubkey: string, meta: any) {
-    if (meta && meta.nip05)
-      nip05
-        .queryProfile(meta.nip05)
-        .then((name) => {
-          if (name === meta.nip05) {
-            setMetadata((curr) => ({
-              ...curr,
-              [pubkey]: { ...meta, nip05verified: true },
-            }));
-          }
-        })
-        .catch((err) => {
-          console.log("Error while quering nip5 profile");
-          console.log(err);
-        });
-  }
 
   const publishEvent = useCallback(
     async (content: string, options?: Partial<{ replyTo?: string }>) => {
@@ -294,12 +206,10 @@ export const useNostrComments = (props: Props) => {
           relaysUrls,
           (event, afterEose, url) => {
             clearTimeout(publishTimeout);
-            if (!called_refetch_metadata) {
-              fetchMetaDataRef.current([profile.pubkey], {
-                skip_existing_keys: false,
-              });
-              called_refetch_metadata = true;
-            }
+            // if (!called_refetch_metadata) {
+            //   fetchMetadata([profile.pubkey]);
+            //   called_refetch_metadata = true;
+            // }
             return resolve(
               `event ${event.id.slice(0, 5)}… published to ${url}.`
             );
@@ -316,9 +226,9 @@ export const useNostrComments = (props: Props) => {
   );
 
   return {
+    events,
     publishEvent,
     publishMetadata,
-    metadata,
     threads,
     relaysUrls: getRelayUrls(),
     loadingRootEvent,
