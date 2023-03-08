@@ -55,4 +55,6 @@ query GetTournamentById($id: Int!) {
       }
     }
   }
+
+  pubkeysOfMakersInTournament(tournamentId: $id)
 }
