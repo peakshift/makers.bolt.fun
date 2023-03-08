@@ -525,7 +525,10 @@ const linkNostrKey = extendType({
           },
         });
 
-        queueService.createProfileVerificationEvent({ event });
+        await Promise.all(
+          queueService.createProfileVerificationEvent({ event }),
+          cacheService.invalidateUserById(user.id)
+        );
 
         return prisma.user.findUnique({
           where: {
@@ -569,14 +572,17 @@ const unlinkNostrKey = extendType({
           },
         });
 
-        return prisma.user.findUnique({
-          where: {
-            id: user.id,
-          },
-          include: {
-            userNostrKeys: true,
-          },
-        });
+        return Promise.all([
+          prisma.user.findUnique({
+            where: {
+              id: user.id,
+            },
+            include: {
+              userNostrKeys: true,
+            },
+          }),
+          cacheService.invalidateUserById(user.id),
+        ]).then((res) => res[0]);
       },
     });
   },
