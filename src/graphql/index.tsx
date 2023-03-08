@@ -54,6 +54,7 @@ export type BaseUser = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_keys: Array<NostrKey>;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
@@ -231,7 +232,9 @@ export type Mutation = {
   deleteProject: Maybe<Project>;
   deleteStory: Maybe<Story>;
   donate: Donation;
+  linkNostrKey: Maybe<MyProfile>;
   registerInTournament: Maybe<User>;
+  unlinkNostrKey: Maybe<MyProfile>;
   updateProfileDetails: Maybe<MyProfile>;
   updateProfileRoles: Maybe<MyProfile>;
   updateProject: Maybe<CreateProjectResponse>;
@@ -283,9 +286,19 @@ export type MutationDonateArgs = {
 };
 
 
+export type MutationLinkNostrKeyArgs = {
+  event: InputMaybe<NostrEventInput>;
+};
+
+
 export type MutationRegisterInTournamentArgs = {
   data: InputMaybe<RegisterInTournamentInput>;
   tournament_id: Scalars['Int'];
+};
+
+
+export type MutationUnlinkNostrKeyArgs = {
+  key: Scalars['String'];
 };
 
 
@@ -336,6 +349,7 @@ export type MyProfile = BaseUser & {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_keys: Array<NostrKey>;
   nostr_prv_key: Maybe<Scalars['String']>;
   nostr_pub_key: Maybe<Scalars['String']>;
   projects: Array<Project>;
@@ -353,6 +367,29 @@ export type MyProfile = BaseUser & {
 
 export type MyProfileIn_TournamentArgs = {
   id: Scalars['Int'];
+};
+
+export type NostrEventInput = {
+  content: Scalars['String'];
+  created_at: Scalars['Int'];
+  id: Scalars['String'];
+  kind: Scalars['Int'];
+  pubkey: Scalars['String'];
+  sig: Scalars['String'];
+  tags: Array<Array<Scalars['String']>>;
+};
+
+export type NostrKey = {
+  __typename?: 'NostrKey';
+  createdAt: Scalars['Date'];
+  key: Scalars['String'];
+  label: Scalars['String'];
+};
+
+export type NostrKeyWithUser = {
+  __typename?: 'NostrKeyWithUser';
+  key: Scalars['String'];
+  user: User;
 };
 
 export enum Post_Type {
@@ -504,12 +541,14 @@ export type Query = {
   popularTags: Array<Tag>;
   profile: Maybe<User>;
   projectsByCategory: Array<Project>;
+  pubkeysOfMakersInTournament: Array<Scalars['String']>;
   recentProjectsInTag: Array<Project>;
   searchProjects: Array<Project>;
   searchUsers: Array<User>;
   similarMakers: Array<User>;
   similarProjects: Array<Project>;
   tournamentParticipationInfo: Maybe<ParticipationInfo>;
+  usersByNostrKeys: Array<NostrKeyWithUser>;
 };
 
 
@@ -631,6 +670,11 @@ export type QueryProjectsByCategoryArgs = {
 };
 
 
+export type QueryPubkeysOfMakersInTournamentArgs = {
+  tournamentId: Scalars['Int'];
+};
+
+
 export type QueryRecentProjectsInTagArgs = {
   tagId: Scalars['Int'];
   take?: InputMaybe<Scalars['Int']>;
@@ -661,6 +705,11 @@ export type QuerySimilarProjectsArgs = {
 
 export type QueryTournamentParticipationInfoArgs = {
   tournamentId: Scalars['Int'];
+};
+
+
+export type QueryUsersByNostrKeysArgs = {
+  keys: Array<Scalars['String']>;
 };
 
 export type Question = PostBase & {
@@ -891,6 +940,7 @@ export type User = BaseUser & {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  nostr_keys: Array<NostrKey>;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
@@ -1111,6 +1161,25 @@ export type UpdateProfileAboutMutationVariables = Exact<{
 
 export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', email: string | null, id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
 
+export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+
+export type LinkNewNostrKeyMutationVariables = Exact<{
+  event: InputMaybe<NostrEventInput>;
+}>;
+
+
+export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'MyProfile', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+
+export type UnlinkNostrKeyMutationVariables = Exact<{
+  key: Scalars['String'];
+}>;
+
+
+export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'MyProfile', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1146,7 +1215,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1297,7 +1366,14 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+
+export type NostrKeysMetadataQueryVariables = Exact<{
+  keys: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type NostrKeysMetadataQuery = { __typename?: 'Query', usersByNostrKeys: Array<{ __typename?: 'NostrKeyWithUser', key: string, user: { __typename?: 'User', id: number, name: string, avatar: string } }> };
 
 export type VoteMutationVariables = Exact<{
   itemType: Vote_Item_Type;
@@ -2615,6 +2691,123 @@ export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
+export const MyNostrSettingsDocument = gql`
+    query MyNostrSettings {
+  me {
+    id
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
+    nostr_prv_key
+    nostr_pub_key
+  }
+}
+    `;
+
+/**
+ * __useMyNostrSettingsQuery__
+ *
+ * To run a query within a React component, call `useMyNostrSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyNostrSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyNostrSettingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyNostrSettingsQuery(baseOptions?: Apollo.QueryHookOptions<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>(MyNostrSettingsDocument, options);
+      }
+export function useMyNostrSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>(MyNostrSettingsDocument, options);
+        }
+export type MyNostrSettingsQueryHookResult = ReturnType<typeof useMyNostrSettingsQuery>;
+export type MyNostrSettingsLazyQueryHookResult = ReturnType<typeof useMyNostrSettingsLazyQuery>;
+export type MyNostrSettingsQueryResult = Apollo.QueryResult<MyNostrSettingsQuery, MyNostrSettingsQueryVariables>;
+export const LinkNewNostrKeyDocument = gql`
+    mutation LinkNewNostrKey($event: NostrEventInput) {
+  linkNostrKey(event: $event) {
+    id
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
+  }
+}
+    `;
+export type LinkNewNostrKeyMutationFn = Apollo.MutationFunction<LinkNewNostrKeyMutation, LinkNewNostrKeyMutationVariables>;
+
+/**
+ * __useLinkNewNostrKeyMutation__
+ *
+ * To run a mutation, you first call `useLinkNewNostrKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLinkNewNostrKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [linkNewNostrKeyMutation, { data, loading, error }] = useLinkNewNostrKeyMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useLinkNewNostrKeyMutation(baseOptions?: Apollo.MutationHookOptions<LinkNewNostrKeyMutation, LinkNewNostrKeyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LinkNewNostrKeyMutation, LinkNewNostrKeyMutationVariables>(LinkNewNostrKeyDocument, options);
+      }
+export type LinkNewNostrKeyMutationHookResult = ReturnType<typeof useLinkNewNostrKeyMutation>;
+export type LinkNewNostrKeyMutationResult = Apollo.MutationResult<LinkNewNostrKeyMutation>;
+export type LinkNewNostrKeyMutationOptions = Apollo.BaseMutationOptions<LinkNewNostrKeyMutation, LinkNewNostrKeyMutationVariables>;
+export const UnlinkNostrKeyDocument = gql`
+    mutation UnlinkNostrKey($key: String!) {
+  unlinkNostrKey(key: $key) {
+    id
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
+  }
+}
+    `;
+export type UnlinkNostrKeyMutationFn = Apollo.MutationFunction<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>;
+
+/**
+ * __useUnlinkNostrKeyMutation__
+ *
+ * To run a mutation, you first call `useUnlinkNostrKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnlinkNostrKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unlinkNostrKeyMutation, { data, loading, error }] = useUnlinkNostrKeyMutation({
+ *   variables: {
+ *      key: // value for 'key'
+ *   },
+ * });
+ */
+export function useUnlinkNostrKeyMutation(baseOptions?: Apollo.MutationHookOptions<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>(UnlinkNostrKeyDocument, options);
+      }
+export type UnlinkNostrKeyMutationHookResult = ReturnType<typeof useUnlinkNostrKeyMutation>;
+export type UnlinkNostrKeyMutationResult = Apollo.MutationResult<UnlinkNostrKeyMutation>;
+export type UnlinkNostrKeyMutationOptions = Apollo.BaseMutationOptions<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>;
 export const MyProfilePreferencesDocument = gql`
     query MyProfilePreferences {
   me {
@@ -2819,6 +3012,11 @@ export const ProfileDocument = gql`
       name
       avatar
       jobTitle
+    }
+    nostr_keys {
+      key
+      createdAt
+      label
     }
     ...UserBasicInfo
     ...UserRolesSkills
@@ -3913,6 +4111,7 @@ export const GetTournamentByIdDocument = gql`
       }
     }
   }
+  pubkeysOfMakersInTournament(tournamentId: $id)
 }
     `;
 
@@ -3943,6 +4142,46 @@ export function useGetTournamentByIdLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetTournamentByIdQueryHookResult = ReturnType<typeof useGetTournamentByIdQuery>;
 export type GetTournamentByIdLazyQueryHookResult = ReturnType<typeof useGetTournamentByIdLazyQuery>;
 export type GetTournamentByIdQueryResult = Apollo.QueryResult<GetTournamentByIdQuery, GetTournamentByIdQueryVariables>;
+export const NostrKeysMetadataDocument = gql`
+    query NostrKeysMetadata($keys: [String!]!) {
+  usersByNostrKeys(keys: $keys) {
+    key
+    user {
+      id
+      name
+      avatar
+    }
+  }
+}
+    `;
+
+/**
+ * __useNostrKeysMetadataQuery__
+ *
+ * To run a query within a React component, call `useNostrKeysMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNostrKeysMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNostrKeysMetadataQuery({
+ *   variables: {
+ *      keys: // value for 'keys'
+ *   },
+ * });
+ */
+export function useNostrKeysMetadataQuery(baseOptions: Apollo.QueryHookOptions<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>(NostrKeysMetadataDocument, options);
+      }
+export function useNostrKeysMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>(NostrKeysMetadataDocument, options);
+        }
+export type NostrKeysMetadataQueryHookResult = ReturnType<typeof useNostrKeysMetadataQuery>;
+export type NostrKeysMetadataLazyQueryHookResult = ReturnType<typeof useNostrKeysMetadataLazyQuery>;
+export type NostrKeysMetadataQueryResult = Apollo.QueryResult<NostrKeysMetadataQuery, NostrKeysMetadataQueryVariables>;
 export const VoteDocument = gql`
     mutation Vote($itemType: VOTE_ITEM_TYPE!, $itemId: Int!, $amountInSat: Int!) {
   vote(item_type: $itemType, item_id: $itemId, amount_in_sat: $amountInSat) {

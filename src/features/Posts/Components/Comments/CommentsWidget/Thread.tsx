@@ -22,7 +22,7 @@ interface Props {
   onClickedReply?: () => void;
   publishEvent?: ReturnType<typeof useNostrComments>["publishEvent"];
   relays: string[];
-  metadata: any;
+  profilesData: Record<string, NostrProfile>;
   myProfile: NostrProfile | null;
   currentDepth?: number;
 }
@@ -31,7 +31,7 @@ const MAX_REPLIES_DEPTH = 3;
 
 export default function Thread({
   thread,
-  metadata,
+  profilesData,
   relays,
   onClickedReply,
   publishEvent,
@@ -88,7 +88,7 @@ export default function Thread({
         canReply={canReply}
         comment={thread}
         onReply={clickReply}
-        author={getProfileDataFromMetaData(metadata, thread.pubkey)!}
+        author={profilesData[thread.pubkey]}
       />
       {(thread.replies.length > 0 || replyOpen) && (
         <div className="flex mt-16 gap-8 ">
@@ -124,7 +124,7 @@ export default function Thread({
                     currentDepth={currentDepth + 1}
                     key={subthread.id}
                     thread={subthread}
-                    metadata={metadata}
+                    profilesData={profilesData}
                     relays={relays}
                     onClickedReply={clickReply}
                     replyTo={thread.id}

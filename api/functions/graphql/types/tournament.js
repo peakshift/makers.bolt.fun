@@ -500,6 +500,40 @@ const getMakersInTournament = extendType({
   },
 });
 
+const pubkeysOfMakersInTournament = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.string("pubkeysOfMakersInTournament", {
+      args: {
+        tournamentId: nonNull(intArg()),
+      },
+      async resolve(_, args, ctx) {
+        const usersInTournament = await prisma.tournamentParticipant.findMany({
+          where: {
+            tournament_id: args.tournamentId,
+          },
+          select: {
+            user_id: true,
+          },
+        });
+
+        return prisma.userNostrKey
+          .findMany({
+            where: {
+              user_id: {
+                in: usersInTournament.map((u) => u.user_id),
+              },
+            },
+            select: {
+              key: true,
+            },
+          })
+          .then((data) => data.map((i) => i.key));
+      },
+    });
+  },
+});
+
 const getProjectsInTournament = extendType({
   type: "Query",
   definition(t) {
@@ -775,6 +809,7 @@ module.exports = {
   // Queries
   getTournamentById,
   getMakersInTournament,
+  pubkeysOfMakersInTournament,
   getProjectsInTournament,
   tournamentParticipationInfo,
   getTournamentToRegister,

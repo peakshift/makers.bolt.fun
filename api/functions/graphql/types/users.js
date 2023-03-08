@@ -18,6 +18,11 @@ const { resolveImgObjectToUrl } = require("../../../utils/resolveImageUrl");
 const { deleteImage } = require("../../../services/imageUpload.service");
 const { PrismaSelect } = require("@paljs/plugins");
 const cacheService = require("../../../services/cache.service");
+const {
+  verifySignature,
+  validateEvent,
+} = require("../../../utils/nostr-tools");
+const { queueService } = require("../../../services/queue.service");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -135,6 +140,20 @@ const BaseUser = interfaceType({
         return prisma.tournamentParticipant
           .findFirst({ where: { tournament_id: args.id, user_id: parent.id } })
           .then((res) => !!res);
+      },
+    });
+
+    t.nonNull.list.nonNull.field("nostr_keys", {
+      type: "NostrKey",
+      resolve: (parent) => {
+        return prisma.userNostrKey.findMany({
+          where: {
+            user_id: parent.id,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        });
       },
     });
   },
@@ -326,6 +345,48 @@ const similarMakers = extendType({
   },
 });
 
+const NostrKeyWithUser = objectType({
+  name: "NostrKeyWithUser",
+  definition(t) {
+    t.nonNull.string("key");
+    t.nonNull.field("user", {
+      type: User,
+    });
+  },
+});
+
+const usersByNostrKeys = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.field("usersByNostrKeys", {
+      type: NostrKeyWithUser,
+      args: {
+        keys: nonNull(list(nonNull(stringArg()))),
+      },
+      async resolve(parent, { keys }, ctx) {
+        return prisma.userNostrKey
+          .findMany({
+            where: {
+              key: {
+                in: keys,
+              },
+            },
+            include: {
+              user: {
+                include: {
+                  avatar_rel: true,
+                },
+              },
+            },
+          })
+          .then((data) =>
+            data.map((item) => ({ key: item.key, user: item.user }))
+          );
+      },
+    });
+  },
+});
+
 const ProfileDetailsInput = inputObjectType({
   name: "ProfileDetailsInput",
   definition(t) {
@@ -408,6 +469,119 @@ const updateProfileDetails = extendType({
   },
 });
 
+const NostrEvent = inputObjectType({
+  name: "NostrEventInput",
+  definition(t) {
+    t.nonNull.string("id");
+    t.nonNull.int("kind");
+    t.nonNull.string("pubkey");
+    t.nonNull.string("content");
+    t.nonNull.int("created_at");
+    t.nonNull.list.nonNull.list.nonNull.string("tags");
+    t.nonNull.string("sig");
+  },
+});
+
+const linkNostrKey = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("linkNostrKey", {
+      type: "MyProfile",
+      args: { event: NostrEvent },
+      async resolve(_root, args, ctx) {
+        const { event } = args;
+        const user = await getUserById(ctx.user?.id);
+
+        if (!user?.id) throw new Error("You have to login");
+
+        if (!validateEvent(event)) throw new Error("Invalid event sent");
+
+        const signatureValid = await verifySignature(event);
+        if (!signatureValid) throw new Error("Signature not valid");
+
+        const VALID_CONTENT_REGEX =
+          /My Maker Profile: https:\/\/makers.bolt.fun\/profile\/(?<id>\d+)/;
+
+        const extractedId = VALID_CONTENT_REGEX.exec(event.content).groups?.id;
+
+        if (!extractedId || Number(extractedId) !== user.id)
+          throw new Error("Content of verification message invalid");
+
+        const label = event.tags.find((tag) => tag[0] === "label")?.[1];
+
+        await prisma.userNostrKey.upsert({
+          create: {
+            key: event.pubkey,
+            user_id: user.id,
+            label,
+          },
+          update: {
+            user_id: user.id,
+            label,
+            createdAt: new Date(),
+          },
+          where: {
+            key: event.pubkey,
+          },
+        });
+
+        queueService.createProfileVerificationEvent({ event });
+
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            userNostrKeys: true,
+          },
+        });
+      },
+    });
+  },
+});
+
+const unlinkNostrKey = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("unlinkNostrKey", {
+      type: "MyProfile",
+      args: { key: nonNull(stringArg()) },
+      async resolve(_root, args, ctx) {
+        const { key } = args;
+        const user = await getUserById(ctx.user?.id);
+
+        // Do some validation
+        if (!user?.id) throw new Error("You have to login");
+        // TODO: validate new data
+
+        const keyExist = await prisma.userNostrKey.findFirst({
+          where: {
+            user_id: user.id,
+            key,
+          },
+        });
+
+        if (!keyExist) throw new Error("This user doesn't have this key");
+
+        await prisma.userNostrKey.delete({
+          where: {
+            key,
+          },
+        });
+
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            userNostrKeys: true,
+          },
+        });
+      },
+    });
+  },
+});
+
 const WalletKey = objectType({
   name: "WalletKey",
   definition(t) {
@@ -415,6 +589,15 @@ const WalletKey = objectType({
     t.nonNull.string("name");
     t.nonNull.date("createdAt");
     t.nonNull.boolean("is_current");
+  },
+});
+
+const NostrKey = objectType({
+  name: "NostrKey",
+  definition(t) {
+    t.nonNull.string("key");
+    t.nonNull.string("label");
+    t.nonNull.date("createdAt");
   },
 });
 
@@ -568,6 +751,7 @@ module.exports = {
   User,
   MyProfile,
   WalletKey,
+  NostrKey,
   MakerRole,
   // Queries
   me,
@@ -576,8 +760,11 @@ module.exports = {
   similarMakers,
   getAllMakersRoles,
   getAllMakersSkills,
+  usersByNostrKeys,
   // Mutations
   updateProfileDetails,
   updateUserPreferences,
   updateProfileRoles,
+  linkNostrKey,
+  unlinkNostrKey,
 };

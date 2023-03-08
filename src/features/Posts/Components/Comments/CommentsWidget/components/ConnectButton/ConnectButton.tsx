@@ -17,11 +17,11 @@ const CONNECT_NOSTR_ACCOUNT_ACTION = createAction<{
 export default function ConnectButton({ onAccountConnected }: Props) {
   const dispatch = useAppDispatch();
 
-  const onInsertImage = useCallback(() => {
+  const accountConnected = useCallback(() => {
     onAccountConnected();
   }, [onAccountConnected]);
 
-  useReduxEffect(onInsertImage, CONNECT_NOSTR_ACCOUNT_ACTION.type);
+  useReduxEffect(accountConnected, CONNECT_NOSTR_ACCOUNT_ACTION.type);
 
   const clickOpenModal = () => {
     dispatch(

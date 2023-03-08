@@ -2,7 +2,7 @@ import Thread from "./Thread";
 import AddComment from "../AddComment/AddComment";
 import { useNostrComments } from "./useNostrComments";
 import ConnectButton from "./components/ConnectButton/ConnectButton";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 import { getMyNostrConnection } from "./nostr-account";
 import RelaysList from "./components/RelaysList/RelaysList";
@@ -15,7 +15,12 @@ import { FaCog } from "react-icons/fa";
 import Preferences from "src/services/preferences.service";
 import IconButton from "src/Components/IconButton/IconButton";
 import { AiOutlineClose } from "react-icons/ai";
-import { NostrProfile, useRelayPool, useRelayPoolStatus } from "src/lib/nostr";
+import {
+  NostrProfile,
+  useMetaData,
+  useRelayPool,
+  useRelayPoolStatus,
+} from "src/lib/nostr";
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 
 interface Props {
@@ -57,8 +62,8 @@ export default function CommentsWidgetRoot({
   );
 
   const {
+    events,
     threads,
-    metadata,
     publishEvent,
     publishMetadata,
     relaysUrls,
@@ -68,16 +73,28 @@ export default function CommentsWidgetRoot({
     publicKey,
   });
 
+  const pubkeysUsed = useMemo(
+    () =>
+      [...events.map((e) => e.pubkey), publicKey].filter(Boolean) as string[],
+    [events, publicKey]
+  );
+
+  const { metadata, profilesData, fetchMetadata } = useMetaData({
+    pubkeys: pubkeysUsed,
+  });
+
   useEffect(() => {
-    if (publicKey)
-      setMyProfile(getProfileDataFromMetaData(metadata, publicKey));
-  }, [metadata, publicKey]);
+    if (publicKey) {
+      setMyProfile(profilesData[publicKey]);
+    }
+  }, [profilesData, publicKey]);
 
   const onUpdateProfile = useCallback(
-    ({ payload: { profile_data } }: typeof UPDATE_PROFILE_ACTION) => {
-      publishMetadata(profile_data);
+    async ({ payload: { profile_data } }: typeof UPDATE_PROFILE_ACTION) => {
+      await publishMetadata(profile_data);
+      fetchMetadata([profile_data.pubkey]);
     },
-    [publishMetadata]
+    [fetchMetadata, publishMetadata]
   );
 
   useReduxEffect(onUpdateProfile, UPDATE_PROFILE_ACTION.type);
@@ -104,24 +121,25 @@ export default function CommentsWidgetRoot({
   }, []);
 
   const openUpdateProfile = () => {
-    dispatch(
-      openModal({
-        Modal: "UpdateNostrProfileModal",
-        props: {
-          profile: {
-            ...myProfile!,
+    if (myProfile?.pubkey)
+      dispatch(
+        openModal({
+          Modal: "UpdateNostrProfileModal",
+          props: {
+            profile: {
+              ...getProfileDataFromMetaData(metadata, myProfile.pubkey),
+            },
+            updateInfoCallback: {
+              type: UPDATE_PROFILE_ACTION.type,
+              payload: {} as any,
+            },
+            disconnectProfileCallback: {
+              type: DISCONNECT_PROFILE_ACTION.type,
+              payload: {},
+            },
           },
-          updateInfoCallback: {
-            type: UPDATE_PROFILE_ACTION.type,
-            payload: {} as any,
-          },
-          disconnectProfileCallback: {
-            type: DISCONNECT_PROFILE_ACTION.type,
-            payload: {},
-          },
-        },
-      })
-    );
+        })
+      );
   };
 
   const connectedRelaysCount = Array.from(relaysStatus.values()).reduce(
@@ -237,7 +255,7 @@ export default function CommentsWidgetRoot({
               myProfile={myProfile}
               key={thread.id}
               thread={thread}
-              metadata={metadata}
+              profilesData={profilesData}
               relays={relaysUrls}
               publishEvent={publishEvent}
             />

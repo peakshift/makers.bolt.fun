@@ -10,13 +10,23 @@ export default function Navigation() {
     containScroll: "trimSnaps",
   });
 
-  const { tournamentDetails } = useTournament();
+  const {
+    tournamentDetails,
+    staticData: {
+      config: { showFeed },
+    },
+  } = useTournament();
 
   const links = useMemo(
     () => [
       {
         text: "Overview",
         path: "overview",
+      },
+      {
+        text: `Feed`,
+        path: "feed",
+        hide: !showFeed,
       },
       {
         text: `Events (${tournamentDetails.events_count})`,
@@ -46,6 +56,7 @@ export default function Navigation() {
       // },
     ],
     [
+      showFeed,
       tournamentDetails.events_count,
       tournamentDetails.makers_count,
       tournamentDetails.projects_count,
@@ -63,6 +74,19 @@ export default function Navigation() {
                   key={link.path}
                   to={link.path}
                   className={({ isActive }) => ` 
+  return (
+    <div className="w-full bg-white py-16 border-y border-gray-200 sticky-top-element z-10">
+      <div className="content-container">
+        <div className="relative group">
+          <div className="overflow-hidden" ref={viewportRef}>
+            <div className="select-none w-full flex gap-8 md:gap-16">
+              {links
+                .filter((link) => !link.hide)
+                .map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    className={({ isActive }) => ` 
                    min-w-max rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
                     active:scale-95 transition-transform
                     ${

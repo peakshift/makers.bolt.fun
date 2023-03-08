@@ -27,20 +27,21 @@ const isLoggedInHandler = async (req, res) => {
         lnurlAuthService.removeExpiredHashes(),
       ]);
 
-      const cookieConfig =
-        env.SITE_URL === "https://makers.bolt.fun"
-          ? {
-              maxAge: 3600000 * 24 * 30,
-              secure: true,
-              httpOnly: true,
-              domain: `.bolt.fun`,
-            }
-          : {
-              maxAge: 3600000 * 24 * 30,
-              secure: true,
-              httpOnly: true,
-              sameSite: "none",
-            };
+      const cookieConfig = env.FUNCTIONS_URL.startsWith(
+        "https://master--makers-bolt-fun.netlify.app"
+      )
+        ? {
+            maxAge: 3600000 * 24 * 30,
+            secure: true,
+            httpOnly: true,
+            domain: `.bolt.fun`,
+          }
+        : {
+            maxAge: 3600000 * 24 * 30,
+            secure: true,
+            httpOnly: true,
+            sameSite: "none",
+          };
       return res
         .status(200)
         .set("Cache-Control", "no-store")

@@ -68,6 +68,15 @@ export interface NexusGenInputs {
   MakerSkillInput: { // input type
     id: number; // Int!
   }
+  NostrEventInput: { // input type
+    content: string; // String!
+    created_at: number; // Int!
+    id: string; // String!
+    kind: number; // Int!
+    pubkey: string; // String!
+    sig: string; // String!
+    tags: string[][]; // [[String!]!]!
+  }
   ProfileDetailsInput: { // input type
     avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
     bio?: string | null; // String
@@ -265,6 +274,15 @@ export interface NexusGenObjects {
     role?: string | null; // String
     twitter?: string | null; // String
     website?: string | null; // String
+  }
+  NostrKey: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
+    key: string; // String!
+    label: string; // String!
+  }
+  NostrKeyWithUser: { // root type
+    key: string; // String!
+    user: NexusGenRootTypes['User']; // User!
   }
   ParticipationInfo: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
@@ -549,7 +567,9 @@ export interface NexusGenFieldTypes {
     deleteProject: NexusGenRootTypes['Project'] | null; // Project
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
+    linkNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     registerInTournament: NexusGenRootTypes['User'] | null; // User
+    unlinkNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -571,6 +591,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
     nostr_prv_key: string | null; // String
     nostr_pub_key: string | null; // String
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -583,6 +604,15 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
     website: string | null; // String
+  }
+  NostrKey: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
+    key: string; // String!
+    label: string; // String!
+  }
+  NostrKeyWithUser: { // field return type
+    key: string; // String!
+    user: NexusGenRootTypes['User']; // User!
   }
   ParticipationInfo: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
@@ -666,12 +696,14 @@ export interface NexusGenFieldTypes {
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     profile: NexusGenRootTypes['User'] | null; // User
     projectsByCategory: NexusGenRootTypes['Project'][]; // [Project!]!
+    pubkeysOfMakersInTournament: string[]; // [String!]!
     recentProjectsInTag: NexusGenRootTypes['Project'][]; // [Project!]!
     searchProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     searchUsers: NexusGenRootTypes['User'][]; // [User!]!
     similarMakers: NexusGenRootTypes['User'][]; // [User!]!
     similarProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     tournamentParticipationInfo: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
+    usersByNostrKeys: NexusGenRootTypes['NostrKeyWithUser'][]; // [NostrKeyWithUser!]!
   }
   Question: { // field return type
     author: NexusGenRootTypes['Author']; // Author!
@@ -799,6 +831,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
@@ -837,6 +870,7 @@ export interface NexusGenFieldTypes {
     linkedin: string | null; // String
     location: string | null; // String
     name: string; // String!
+    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
@@ -971,7 +1005,9 @@ export interface NexusGenFieldTypeNames {
     deleteProject: 'Project'
     deleteStory: 'Story'
     donate: 'Donation'
+    linkNostrKey: 'MyProfile'
     registerInTournament: 'User'
+    unlinkNostrKey: 'MyProfile'
     updateProfileDetails: 'MyProfile'
     updateProfileRoles: 'MyProfile'
     updateProject: 'CreateProjectResponse'
@@ -993,6 +1029,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_keys: 'NostrKey'
     nostr_prv_key: 'String'
     nostr_pub_key: 'String'
     projects: 'Project'
@@ -1005,6 +1042,15 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     walletsKeys: 'WalletKey'
     website: 'String'
+  }
+  NostrKey: { // field return type name
+    createdAt: 'Date'
+    key: 'String'
+    label: 'String'
+  }
+  NostrKeyWithUser: { // field return type name
+    key: 'String'
+    user: 'User'
   }
   ParticipationInfo: { // field return type name
     createdAt: 'Date'
@@ -1088,12 +1134,14 @@ export interface NexusGenFieldTypeNames {
     popularTags: 'Tag'
     profile: 'User'
     projectsByCategory: 'Project'
+    pubkeysOfMakersInTournament: 'String'
     recentProjectsInTag: 'Project'
     searchProjects: 'Project'
     searchUsers: 'User'
     similarMakers: 'User'
     similarProjects: 'Project'
     tournamentParticipationInfo: 'ParticipationInfo'
+    usersByNostrKeys: 'NostrKeyWithUser'
   }
   Question: { // field return type name
     author: 'Author'
@@ -1221,6 +1269,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_keys: 'NostrKey'
     projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
@@ -1259,6 +1308,7 @@ export interface NexusGenFieldTypeNames {
     linkedin: 'String'
     location: 'String'
     name: 'String'
+    nostr_keys: 'NostrKey'
     projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
@@ -1309,9 +1359,15 @@ export interface NexusGenArgTypes {
     donate: { // args
       amount_in_sat: number; // Int!
     }
+    linkNostrKey: { // args
+      event?: NexusGenInputs['NostrEventInput'] | null; // NostrEventInput
+    }
     registerInTournament: { // args
       data?: NexusGenInputs['RegisterInTournamentInput'] | null; // RegisterInTournamentInput
       tournament_id: number; // Int!
+    }
+    unlinkNostrKey: { // args
+      key: string; // String!
     }
     updateProfileDetails: { // args
       data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput
@@ -1426,6 +1482,9 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
       take: number | null; // Int
     }
+    pubkeysOfMakersInTournament: { // args
+      tournamentId: number; // Int!
+    }
     recentProjectsInTag: { // args
       tagId: number; // Int!
       take: number | null; // Int
@@ -1446,6 +1505,9 @@ export interface NexusGenArgTypes {
     }
     tournamentParticipationInfo: { // args
       tournamentId: number; // Int!
+    }
+    usersByNostrKeys: { // args
+      keys: string[]; // [String!]!
     }
   }
   User: {

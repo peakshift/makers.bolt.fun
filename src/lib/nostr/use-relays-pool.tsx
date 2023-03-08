@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import Preferences from "src/services/preferences.service";
-import { CONSTS } from "src/utils";
 import { GlobalRelayPool } from "./GlobalRelayPool";
 
 interface State {

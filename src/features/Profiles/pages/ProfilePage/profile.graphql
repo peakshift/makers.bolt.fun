@@ -34,6 +34,11 @@ query profile($profileId: Int!) {
       avatar
       jobTitle
     }
+    nostr_keys {
+      key
+      createdAt
+      label
+    }
     ...UserBasicInfo
     ...UserRolesSkills
   }

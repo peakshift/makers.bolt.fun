@@ -37,6 +37,7 @@ interface BaseUser {
   linkedin: String
   location: String
   name: String!
+  nostr_keys: [NostrKey!]!
   projects: [Project!]!
   role: String
   roles: [MakerRole!]!
@@ -199,7 +200,9 @@ type Mutation {
   deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
+  linkNostrKey(event: NostrEventInput): MyProfile
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
+  unlinkNostrKey(key: String!): MyProfile
   updateProfileDetails(data: ProfileDetailsInput): MyProfile
   updateProfileRoles(data: ProfileRolesInput): MyProfile
   updateProject(input: UpdateProjectInput): CreateProjectResponse
@@ -222,6 +225,7 @@ type MyProfile implements BaseUser {
   linkedin: String
   location: String
   name: String!
+  nostr_keys: [NostrKey!]!
   nostr_prv_key: String
   nostr_pub_key: String
   projects: [Project!]!
@@ -234,6 +238,27 @@ type MyProfile implements BaseUser {
   twitter: String
   walletsKeys: [WalletKey!]!
   website: String
+}
+
+input NostrEventInput {
+  content: String!
+  created_at: Int!
+  id: String!
+  kind: Int!
+  pubkey: String!
+  sig: String!
+  tags: [[String!]!]!
+}
+
+type NostrKey {
+  createdAt: Date!
+  key: String!
+  label: String!
+}
+
+type NostrKeyWithUser {
+  key: String!
+  user: User!
 }
 
 enum POST_TYPE {
@@ -374,12 +399,14 @@ type Query {
   popularTags: [Tag!]!
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 60): [Project!]!
+  pubkeysOfMakersInTournament(tournamentId: Int!): [String!]!
   recentProjectsInTag(tagId: Int!, take: Int = 3): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!
   similarMakers(id: Int!): [User!]!
   similarProjects(id: Int!): [Project!]!
   tournamentParticipationInfo(tournamentId: Int!): ParticipationInfo
+  usersByNostrKeys(keys: [String!]!): [NostrKeyWithUser!]!
 }
 
 type Question implements PostBase {
@@ -596,6 +623,7 @@ type User implements BaseUser {
   linkedin: String
   location: String
   name: String!
+  nostr_keys: [NostrKey!]!
   projects: [Project!]!
   role: String
   roles: [MakerRole!]!

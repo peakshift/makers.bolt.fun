@@ -14,8 +14,10 @@ import { MEDIA_QUERIES } from "src/utils/theme";
 import SimilarMakersCard from "./SimilarMakersCard/SimilarMakersCard";
 import MakerProjectsCard from "./MakerProjectsCard/MakerProjectsCard";
 import OgTags from "src/Components/OgTags/OgTags";
+import { withProviders } from "src/utils/hoc";
+import { RelayPoolProvider } from "src/lib/nostr";
 
-export default function ProfilePage() {
+function ProfilePage() {
   const { id } = useParams();
   const profileQuery = useProfileQuery({
     variables: {
@@ -106,3 +108,5 @@ export default function ProfilePage() {
     </>
   );
 }
+
+export default withProviders(RelayPoolProvider)(ProfilePage);
