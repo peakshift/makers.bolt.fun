@@ -27,9 +27,6 @@ function makeRequest(query) {
         },
       }
     )
-    .then((res) => {
-      console.log("Cache invalidated with query: ", res.data);
-    })
     .catch((err) => {
       console.log("Error while invalidating cache with query: ", query);
       console.log(err);
