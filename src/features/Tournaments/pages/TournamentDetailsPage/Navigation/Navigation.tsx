@@ -13,9 +13,11 @@ export default function Navigation() {
   const {
     tournamentDetails,
     staticData: {
-      config: { showFeed },
+      config: { showFeed, ideasRootNostrEventId },
     },
   } = useTournament();
+
+  const showIdeas = !!ideasRootNostrEventId;
 
   const links = useMemo(
     () => [
@@ -43,6 +45,7 @@ export default function Navigation() {
       {
         text: `Ideas`,
         path: "ideas",
+        hide: !showIdeas,
       },
       // {
       //     text: "???? 🚧",
@@ -69,17 +72,6 @@ export default function Navigation() {
         <div className="relative group">
           <div className="overflow-hidden" ref={viewportRef}>
             <div className="select-none w-full flex gap-8 md:gap-16">
-              {links.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) => ` 
-  return (
-    <div className="w-full bg-white py-16 border-y border-gray-200 sticky-top-element z-10">
-      <div className="content-container">
-        <div className="relative group">
-          <div className="overflow-hidden" ref={viewportRef}>
-            <div className="select-none w-full flex gap-8 md:gap-16">
               {links
                 .filter((link) => !link.hide)
                 .map((link) => (
@@ -95,11 +87,11 @@ export default function Navigation() {
                         : "bg-gray-100 hover:bg-gray-200 text-gray-600"
                     }
                     `}
-                  role="button"
-                >
-                  {link.text}
-                </NavLink>
-              ))}
+                    role="button"
+                  >
+                    {link.text}
+                  </NavLink>
+                ))}
             </div>
           </div>
           {/* <button className={`absolute text-body6 w-[28px] aspect-square flex justify-center items-center left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full bg-white text-gray-400 opacity-0 ${canScrollPrev && 'group-hover:opacity-100'} active:scale-90 transition-opacity border border-gray-200 shadow-md`} onClick={() => scrollSlides(-1)}>

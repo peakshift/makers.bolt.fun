@@ -24,6 +24,7 @@ export interface TournamentStaticData {
   config: {
     registerationOpen: boolean;
     projectsSubmissionOpen: boolean;
+    ideasRootNostrEventId?: string;
   } & (
     | {
         showFeed: true;
