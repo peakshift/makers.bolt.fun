@@ -85,6 +85,12 @@ query GetProjectsInTournament(
           avatar
         }
       }
+      recruit_roles {
+        id
+        title
+        icon
+        level
+      }
     }
   }
 }
