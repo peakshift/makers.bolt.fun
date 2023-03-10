@@ -191,6 +191,7 @@ export const users: User[] = [
       },
     ],
     private_data: {
+      id: 1,
       email: "myemail@gmail.com",
       nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
@@ -244,6 +245,7 @@ export const users: User[] = [
     ],
 
     private_data: {
+      id: 1,
       email: "myemail@gmail.com",
       nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
@@ -297,6 +299,7 @@ export const users: User[] = [
     ],
 
     private_data: {
+      id: 1,
       email: "myemail@gmail.com",
       nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
@@ -349,6 +352,7 @@ export const users: User[] = [
       },
     ],
     private_data: {
+      id: 1,
       email: "myemail@gmail.com",
       nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",

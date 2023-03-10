@@ -256,7 +256,7 @@ const UserPrivateData = objectType({
   name: "UserPrivateData",
   definition(t) {
     t.nonNull.int("id");
-    t.nonNull.string("email");
+    t.string("email");
     t.nonNull.string("nostr_prv_key");
     t.nonNull.string("nostr_pub_key");
 

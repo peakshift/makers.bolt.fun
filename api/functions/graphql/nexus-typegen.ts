@@ -408,7 +408,7 @@ export interface NexusGenObjects {
     website?: string | null; // String
   }
   UserPrivateData: { // root type
-    email: string; // String!
+    email?: string | null; // String
     id: number; // Int!
     nostr_prv_key: string; // String!
     nostr_pub_key: string; // String!
@@ -804,7 +804,7 @@ export interface NexusGenFieldTypes {
     website: string | null; // String
   }
   UserPrivateData: { // field return type
-    email: string; // String!
+    email: string | null; // String
     id: number; // Int!
     nostr_prv_key: string; // String!
     nostr_pub_key: string; // String!

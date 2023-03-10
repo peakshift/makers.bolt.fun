@@ -613,7 +613,7 @@ input UserKeyInputType {
 }
 
 type UserPrivateData {
-  email: String!
+  email: String
   id: Int!
   nostr_prv_key: String!
   nostr_pub_key: String!
