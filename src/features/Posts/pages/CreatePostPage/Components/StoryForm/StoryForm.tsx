@@ -38,7 +38,13 @@ export default function StoryForm(props: Props) {
   const [loading, setLoading] = useState(false);
   const titleInputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const resetKey = useRef(0); // This key is used to manually remount the editor component upon draft creation
+  const [resetKey, setResetKey] = useState(0);
+
+  const watchPostId = watch("id") ?? undefined;
+
+  useEffect(() => {
+    setResetKey((v) => v + 1);
+  }, [watchPostId]);
 
   const presistPost = useThrottledCallback(
     (value) => props.storageService.set(value),
@@ -85,7 +91,7 @@ export default function StoryForm(props: Props) {
       reset();
       props.storageService.clear();
       setLoading(false);
-      resetKey.current++;
+      setResetKey((v) => v + 1);
       dispatch(unstageStoryPreview());
       if (data.createStory?.is_published) {
         navigate(
@@ -223,7 +229,7 @@ export default function StoryForm(props: Props) {
                 />
               </div>
               <ContentEditor
-                key={resetKey.current}
+                key={resetKey}
                 initialContent={() => getValues().body}
                 placeholder="Write your story content here..."
                 name="body"
