@@ -97,12 +97,14 @@ input CreateProjectInput {
   cover_image: ImageInput!
   description: String!
   discord: String
+  figma: String
   github: String
   hashtag: String!
   id: Int
   launch_status: ProjectLaunchStatusEnum!
   lightning_address: String
   members: [TeamMemberInput!]!
+  npub: String
   recruit_roles: [Int!]!
   screenshots: [ImageInput!]!
   slack: String
@@ -294,6 +296,7 @@ type Project {
   cover_image: String
   description: String!
   discord: String
+  figma: String
   github: String
   hashtag: String!
   id: Int!
@@ -302,6 +305,7 @@ type Project {
   lnurl_callback_url: String
   members(take: Int): [ProjectMember!]!
   members_count: Int!
+  npub: String
   permissions: [ProjectPermissionEnum!]!
   recruit_roles: [MakerRole!]!
   screenshots: [String!]!
@@ -558,12 +562,14 @@ input UpdateProjectInput {
   cover_image: ImageInput!
   description: String!
   discord: String
+  figma: String
   github: String
   hashtag: String!
   id: Int
   launch_status: ProjectLaunchStatusEnum!
   lightning_address: String
   members: [TeamMemberInput!]!
+  npub: String
   recruit_roles: [Int!]!
   screenshots: [ImageInput!]!
   slack: String
@@ -615,8 +621,8 @@ input UserKeyInputType {
 type UserPrivateData {
   email: String
   id: Int!
-  nostr_prv_key: String!
-  nostr_pub_key: String!
+  nostr_prv_key: String
+  nostr_pub_key: String
   walletsKeys: [WalletKey!]!
 }
 

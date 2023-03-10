@@ -123,12 +123,14 @@ export type CreateProjectInput = {
   cover_image: ImageInput;
   description: Scalars['String'];
   discord?: InputMaybe<Scalars['String']>;
+  figma?: InputMaybe<Scalars['String']>;
   github?: InputMaybe<Scalars['String']>;
   hashtag: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   launch_status: ProjectLaunchStatusEnum;
   lightning_address?: InputMaybe<Scalars['String']>;
   members: Array<TeamMemberInput>;
+  npub?: InputMaybe<Scalars['String']>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;
   slack?: InputMaybe<Scalars['String']>;
@@ -422,6 +424,7 @@ export type Project = {
   cover_image: Maybe<Scalars['String']>;
   description: Scalars['String'];
   discord: Maybe<Scalars['String']>;
+  figma: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   hashtag: Scalars['String'];
   id: Scalars['Int'];
@@ -430,6 +433,7 @@ export type Project = {
   lnurl_callback_url: Maybe<Scalars['String']>;
   members: Array<ProjectMember>;
   members_count: Scalars['Int'];
+  npub: Maybe<Scalars['String']>;
   permissions: Array<ProjectPermissionEnum>;
   recruit_roles: Array<MakerRole>;
   screenshots: Array<Scalars['String']>;
@@ -870,12 +874,14 @@ export type UpdateProjectInput = {
   cover_image: ImageInput;
   description: Scalars['String'];
   discord?: InputMaybe<Scalars['String']>;
+  figma?: InputMaybe<Scalars['String']>;
   github?: InputMaybe<Scalars['String']>;
   hashtag: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   launch_status: ProjectLaunchStatusEnum;
   lightning_address?: InputMaybe<Scalars['String']>;
   members: Array<TeamMemberInput>;
+  npub?: InputMaybe<Scalars['String']>;
   recruit_roles: Array<Scalars['Int']>;
   screenshots: Array<ImageInput>;
   slack?: InputMaybe<Scalars['String']>;
@@ -934,8 +940,8 @@ export type UserPrivateData = {
   __typename?: 'UserPrivateData';
   email: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  nostr_prv_key: Scalars['String'];
-  nostr_pub_key: Scalars['String'];
+  nostr_prv_key: Maybe<Scalars['String']>;
+  nostr_pub_key: Maybe<Scalars['String']>;
   walletsKeys: Array<WalletKey>;
 };
 
@@ -1132,12 +1138,12 @@ export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfil
 export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string } } | null };
+export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null } } | null };
 
 export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string } } | null };
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null } } | null };
 
 export type LinkNewNostrKeyMutationVariables = Exact<{
   event: InputMaybe<NostrEventInput>;
@@ -1156,14 +1162,14 @@ export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: 
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } } | null };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } } };
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } } };
 
 export type UserRolesSkillsFragment = { __typename?: 'User', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
 
@@ -1213,21 +1219,21 @@ export type GetAllCapabilitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllCapabilitiesQuery = { __typename?: 'Query', getAllCapabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
 
-export type ProjectDetailsFragment = { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
+export type ProjectDetailsFragment = { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
 
 export type CreateProjectMutationVariables = Exact<{
   input: InputMaybe<CreateProjectInput>;
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type UpdateProjectMutationVariables = Exact<{
   input: InputMaybe<UpdateProjectInput>;
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type IsValidProjectHashtagQueryVariables = Exact<{
   hashtag: Scalars['String'];
@@ -1248,7 +1254,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type SimilarProjectsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -1263,7 +1269,7 @@ export type ProjectDetailsModalQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1409,6 +1415,8 @@ export const ProjectDetailsFragmentDoc = gql`
   github
   slack
   telegram
+  figma
+  npub
   screenshots
   website
   lightning_address
@@ -3414,6 +3422,8 @@ export const ProjectDetailsDocument = gql`
     discord
     github
     slack
+    figma
+    npub
     telegram
     screenshots
     website
@@ -3563,6 +3573,8 @@ export const ProjectDetailsModalDocument = gql`
     github
     slack
     telegram
+    figma
+    npub
     screenshots
     website
     lightning_address

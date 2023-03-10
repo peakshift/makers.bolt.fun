@@ -166,6 +166,8 @@ model Project {
   github              String?
   telegram            String?
   slack               String?
+  figma               String?
+  npub                String?
   contact_email       String?
   thumbnail_image     String?
   thumbnail_image_id  Int?         @unique

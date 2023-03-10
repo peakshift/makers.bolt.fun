@@ -39,12 +39,14 @@ export interface NexusGenInputs {
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
     discord?: string | null; // String
+    figma?: string | null; // String
     github?: string | null; // String
     hashtag: string; // String!
     id?: number | null; // Int
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
+    npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
@@ -118,12 +120,14 @@ export interface NexusGenInputs {
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
     discord?: string | null; // String
+    figma?: string | null; // String
     github?: string | null; // String
     hashtag: string; // String!
     id?: number | null; // Int
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
+    npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
@@ -283,12 +287,14 @@ export interface NexusGenObjects {
   Project: { // root type
     description: string; // String!
     discord?: string | null; // String
+    figma?: string | null; // String
     github?: string | null; // String
     hashtag: string; // String!
     id: number; // Int!
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
+    npub?: string | null; // String
     slack?: string | null; // String
     tagline: string; // String!
     telegram?: string | null; // String
@@ -410,8 +416,8 @@ export interface NexusGenObjects {
   UserPrivateData: { // root type
     email?: string | null; // String
     id: number; // Int!
-    nostr_prv_key: string; // String!
-    nostr_pub_key: string; // String!
+    nostr_prv_key?: string | null; // String
+    nostr_pub_key?: string | null; // String
   }
   Vote: { // root type
     amount_in_sat: number; // Int!
@@ -595,6 +601,7 @@ export interface NexusGenFieldTypes {
     cover_image: string | null; // String
     description: string; // String!
     discord: string | null; // String
+    figma: string | null; // String
     github: string | null; // String
     hashtag: string; // String!
     id: number; // Int!
@@ -603,6 +610,7 @@ export interface NexusGenFieldTypes {
     lnurl_callback_url: string | null; // String
     members: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
     members_count: number; // Int!
+    npub: string | null; // String
     permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
@@ -806,8 +814,8 @@ export interface NexusGenFieldTypes {
   UserPrivateData: { // field return type
     email: string | null; // String
     id: number; // Int!
-    nostr_prv_key: string; // String!
-    nostr_pub_key: string; // String!
+    nostr_prv_key: string | null; // String
+    nostr_pub_key: string | null; // String
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
   }
   Vote: { // field return type
@@ -1013,6 +1021,7 @@ export interface NexusGenFieldTypeNames {
     cover_image: 'String'
     description: 'String'
     discord: 'String'
+    figma: 'String'
     github: 'String'
     hashtag: 'String'
     id: 'Int'
@@ -1021,6 +1030,7 @@ export interface NexusGenFieldTypeNames {
     lnurl_callback_url: 'String'
     members: 'ProjectMember'
     members_count: 'Int'
+    npub: 'String'
     permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
     screenshots: 'String'

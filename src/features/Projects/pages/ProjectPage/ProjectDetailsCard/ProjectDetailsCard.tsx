@@ -20,7 +20,7 @@ import { setVoteAmount } from "src/redux/features/vote.slice";
 import { numberFormatter } from "src/utils/helperFunctions";
 import { MEDIA_QUERIES } from "src/utils/theme";
 import { FaDiscord } from "react-icons/fa";
-import { FiEdit2, FiGithub, FiGlobe, FiTwitter } from "react-icons/fi";
+import { FiEdit2, FiFigma, FiGithub, FiGlobe, FiTwitter } from "react-icons/fi";
 import CopyToClipboard from "react-copy-to-clipboard";
 import Badge from "src/Components/Badge/Badge";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -28,6 +28,8 @@ import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 import { IoMdClose } from "react-icons/io";
 import { sortMembersByRole } from "src/features/Projects/utils/helperFunctions";
+import { GiOstrich } from "react-icons/gi";
+import { Tooltip } from "react-tooltip";
 
 interface Props extends ModalCard {
   projectId: number;
@@ -91,6 +93,7 @@ export default function ProjectDetailsCard({
       text: project.discord,
       icon: FaDiscord,
       colors: "bg-violet-100 text-violet-900",
+      label: "Discord",
     },
     {
       value: project.website,
@@ -98,6 +101,7 @@ export default function ProjectDetailsCard({
       icon: FiGlobe,
       colors: "bg-gray-100 text-gray-900",
       url: project.website,
+      label: "Website",
     },
     {
       value: project.twitter,
@@ -105,13 +109,31 @@ export default function ProjectDetailsCard({
       icon: FiTwitter,
       colors: "bg-blue-100 text-blue-500",
       url: project.twitter,
+      label: "Twitter",
     },
     {
       value: project.github,
       text: project.github,
       icon: FiGithub,
-      colors: "bg-pink-100 text-pink-600",
+      colors: "bg-gray-200 text-gray-800",
       url: project.github,
+      label: "Github",
+    },
+    {
+      value: project.npub,
+      text: project.npub,
+      icon: GiOstrich,
+      colors: "bg-violet-100 text-violet-600",
+      url: `https://nostr.guru/p/${project.npub}`,
+      label: "Nostr Public Key",
+    },
+    {
+      value: project.figma,
+      text: project.figma,
+      icon: FiFigma,
+      colors: "bg-pink-100 text-pink-600",
+      url: project.figma,
+      label: "Figma",
     },
   ];
 
@@ -245,8 +267,11 @@ export default function ProjectDetailsCard({
                     className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
                     target="_blank"
                     rel="noreferrer"
+                    data-tooltip-id={`project_link_${link.url}`}
+                    data-tooltip-content={link.label}
                   >
                     <link.icon className="scale-125" />
+                    <Tooltip id={`project_link_${link.url}`} />
                   </a>
                 ) : (
                   <CopyToClipboard
@@ -261,8 +286,11 @@ export default function ProjectDetailsCard({
                       key={idx}
                       onClick={() => {}}
                       className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
+                      data-tooltip-id={`project_link_${link.url}`}
+                      data-tooltip-content={link.label}
                     >
                       <link.icon className="scale-125" />
+                      <Tooltip id={`project_link_${link.url}`} />
                     </button>
                   </CopyToClipboard>
                 )

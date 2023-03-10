@@ -12,6 +12,8 @@ fragment ProjectDetails on Project {
   github
   slack
   telegram
+  figma
+  npub
   screenshots
   website
   lightning_address
