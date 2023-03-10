@@ -257,8 +257,8 @@ const UserPrivateData = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.string("email");
-    t.nonNull.string("nostr_prv_key");
-    t.nonNull.string("nostr_pub_key");
+    t.string("nostr_prv_key");
+    t.string("nostr_pub_key");
 
     t.nonNull.list.nonNull.field("walletsKeys", {
       type: "WalletKey",
