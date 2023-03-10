@@ -1,6 +1,4 @@
-import React from "react";
-import { FaDiscord } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -8,6 +6,7 @@ import { openModal } from "src/redux/features/modals.slice";
 import { useCountdown } from "src/utils/hooks";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { twMerge } from "tailwind-merge";
+import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
 
 interface Props {
   start_date: string;
@@ -16,7 +15,7 @@ interface Props {
   isRegistered: boolean;
   isRegistrationOpen?: boolean;
   partners: { link: string; image: string; isPrimary?: boolean }[];
-  chat: { type: string; link: string; }
+  chat: { type: string; link: string };
 }
 
 export default function RegisterCard({
@@ -29,7 +28,9 @@ export default function RegisterCard({
   chat,
 }: Props) {
   const counter = useCountdown(start_date);
-  const { id: tournamentId } = useParams();
+  const {
+    tournamentDetails: { id: tournamentId, end_date },
+  } = useTournament();
 
   const isLoggedIn = useAppSelector((state) => !!state.user.me);
   const dispatch = useAppDispatch();
@@ -104,7 +105,7 @@ export default function RegisterCard({
               <span>&#8226;</span>
               <span className="font-medium text-body5">Live</span>
               <span className="font-medium text-body6 text-gray-500 ml-auto">
-                entries close Nov 24
+                entries close {dayjs(end_date).format("Do MMM")}
               </span>
             </div>
           ) : (
