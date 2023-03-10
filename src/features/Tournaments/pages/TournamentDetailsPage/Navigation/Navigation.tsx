@@ -17,7 +17,7 @@ export default function Navigation() {
     },
   } = useTournament();
 
-  const showIdeas = !!ideasRootNostrEventId;
+  const showIdeas = false && !!ideasRootNostrEventId;
 
   const links = useMemo(
     () => [
@@ -60,6 +60,7 @@ export default function Navigation() {
     ],
     [
       showFeed,
+      showIdeas,
       tournamentDetails.events_count,
       tournamentDetails.makers_count,
       tournamentDetails.projects_count,
