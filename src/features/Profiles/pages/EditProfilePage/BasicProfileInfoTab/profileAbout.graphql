@@ -17,14 +17,18 @@ fragment UserBasicInfo on BaseUser {
 
 query MyProfileAbout {
   me {
-    email
+    private_data {
+      email
+    }
     ...UserBasicInfo
   }
 }
 
 mutation updateProfileAbout($data: ProfileDetailsInput) {
   updateProfileDetails(data: $data) {
-    email
+    private_data {
+      email
+    }
     ...UserBasicInfo
   }
 }

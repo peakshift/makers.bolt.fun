@@ -50,7 +50,7 @@ export default function PreferencesTab() {
 
   const query = useMyProfilePreferencesQuery({
     onCompleted: (data) => {
-      if (data.me) reset(data.me);
+      if (data.me) reset({ ...data.me, ...data.me.private_data });
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -75,7 +75,10 @@ export default function PreferencesTab() {
       },
       onCompleted: ({ updateUserPreferences }) => {
         if (updateUserPreferences) {
-          reset(updateUserPreferences);
+          reset({
+            ...updateUserPreferences,
+            ...updateUserPreferences.private_data,
+          });
           toast.update(toastId, {
             render: "Saved changes successfully",
             type: "success",

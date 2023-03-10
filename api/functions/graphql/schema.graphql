@@ -200,44 +200,15 @@ type Mutation {
   deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
-  linkNostrKey(event: NostrEventInput): MyProfile
+  linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
-  unlinkNostrKey(key: String!): MyProfile
-  updateProfileDetails(data: ProfileDetailsInput): MyProfile
-  updateProfileRoles(data: ProfileRolesInput): MyProfile
+  unlinkNostrKey(key: String!): User
+  updateProfileDetails(data: ProfileDetailsInput): User
+  updateProfileRoles(data: ProfileRolesInput): User
   updateProject(input: UpdateProjectInput): CreateProjectResponse
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
-  updateUserPreferences(userKeys: [UserKeyInputType!]): MyProfile!
+  updateUserPreferences(userKeys: [UserKeyInputType!]): User!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
-}
-
-type MyProfile implements BaseUser {
-  avatar: String!
-  bio: String
-  discord: String
-  email: String
-  github: String
-  id: Int!
-  in_tournament(id: Int!): Boolean!
-  jobTitle: String
-  join_date: Date!
-  lightning_address: String
-  linkedin: String
-  location: String
-  name: String!
-  nostr_keys: [NostrKey!]!
-  nostr_prv_key: String
-  nostr_pub_key: String
-  projects: [Project!]!
-  role: String
-  roles: [MakerRole!]!
-  similar_makers: [User!]!
-  skills: [MakerSkill!]!
-  stories: [Story!]!
-  tournaments: [Tournament!]!
-  twitter: String
-  walletsKeys: [WalletKey!]!
-  website: String
 }
 
 input NostrEventInput {
@@ -381,7 +352,6 @@ type Query {
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
-  getIdeasInTournament(tournamentId: Int!): [Story!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
@@ -394,7 +364,7 @@ type Query {
   getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
-  me: MyProfile
+  me: User
   newProjects(skip: Int = 0, take: Int = 20): [Project!]!
   officialTags: [Tag!]!
   popularTags: [Tag!]!
@@ -625,6 +595,7 @@ type User implements BaseUser {
   location: String
   name: String!
   nostr_keys: [NostrKey!]!
+  private_data: UserPrivateData!
   projects: [Project!]!
   role: String
   roles: [MakerRole!]!
@@ -639,6 +610,14 @@ type User implements BaseUser {
 input UserKeyInputType {
   key: String!
   name: String!
+}
+
+type UserPrivateData {
+  email: String!
+  id: Int!
+  nostr_prv_key: String!
+  nostr_pub_key: String!
+  walletsKeys: [WalletKey!]!
 }
 
 enum VOTE_ITEM_TYPE {

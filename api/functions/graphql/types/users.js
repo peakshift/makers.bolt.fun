@@ -228,17 +228,37 @@ const User = objectType({
   name: "User",
   definition(t) {
     t.implements("BaseUser");
+    t.nonNull.field("private_data", {
+      type: UserPrivateData,
+      resolve: (parent, _, context) => {
+        const userId = context.user?.id;
+
+        if (userId !== parent.id)
+          throw new Error("Can't access private data for another user");
+
+        return prisma.user.findUnique({
+          where: {
+            id: parent.id,
+          },
+          select: {
+            id: true,
+            email: true,
+            nostr_prv_key: true,
+            nostr_pub_key: true,
+          },
+        });
+      },
+    });
   },
 });
 
-const MyProfile = objectType({
-  name: "MyProfile",
+const UserPrivateData = objectType({
+  name: "UserPrivateData",
   definition(t) {
-    t.implements("BaseUser");
-
-    t.string("email");
-    t.string("nostr_prv_key");
-    t.string("nostr_pub_key");
+    t.nonNull.int("id");
+    t.nonNull.string("email");
+    t.nonNull.string("nostr_prv_key");
+    t.nonNull.string("nostr_pub_key");
 
     t.nonNull.list.nonNull.field("walletsKeys", {
       type: "WalletKey",
@@ -267,7 +287,7 @@ const me = extendType({
   type: "Query",
   definition(t) {
     t.field("me", {
-      type: "MyProfile",
+      type: "User",
       async resolve(parent, args, context, info) {
         if (!context.user?.id) return null;
         const select = new PrismaSelect(info, {
@@ -411,7 +431,7 @@ const updateProfileDetails = extendType({
   type: "Mutation",
   definition(t) {
     t.field("updateProfileDetails", {
-      type: "MyProfile",
+      type: "User",
       args: { data: ProfileDetailsInput },
       async resolve(_root, args, ctx) {
         const user = await getUserById(ctx.user?.id);
@@ -448,7 +468,6 @@ const updateProfileDetails = extendType({
             await deleteImage(user.avatar_id);
           }
         }
-        cacheService.invalidateUserById(user.id);
 
         // Preprocess & insert
         return prisma.user.update({
@@ -486,7 +505,7 @@ const linkNostrKey = extendType({
   type: "Mutation",
   definition(t) {
     t.field("linkNostrKey", {
-      type: "MyProfile",
+      type: "User",
       args: { event: NostrEvent },
       async resolve(_root, args, ctx) {
         const { event } = args;
@@ -525,9 +544,8 @@ const linkNostrKey = extendType({
           },
         });
 
-        await Promise.all([
-          queueService.createProfileVerificationEvent({ event }),
-          cacheService.invalidateUserById(user.id),
+        await Promise.allSettled([
+          queueService.publishProfileVerifiedEvent({ event }),
         ]);
 
         return prisma.user.findUnique({
@@ -547,7 +565,7 @@ const unlinkNostrKey = extendType({
   type: "Mutation",
   definition(t) {
     t.field("unlinkNostrKey", {
-      type: "MyProfile",
+      type: "User",
       args: { key: nonNull(stringArg()) },
       async resolve(_root, args, ctx) {
         const { key } = args;
@@ -572,17 +590,14 @@ const unlinkNostrKey = extendType({
           },
         });
 
-        return Promise.all([
-          prisma.user.findUnique({
-            where: {
-              id: user.id,
-            },
-            include: {
-              userNostrKeys: true,
-            },
-          }),
-          cacheService.invalidateUserById(user.id),
-        ]).then((res) => res[0]);
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            userNostrKeys: true,
+          },
+        });
       },
     });
   },
@@ -619,7 +634,7 @@ const updateUserPreferences = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("updateUserPreferences", {
-      type: "MyProfile",
+      type: "User",
       args: { userKeys: list(nonNull(UserKeyInputType)) },
       async resolve(_root, args, ctx) {
         const user = ctx.user;
@@ -707,7 +722,7 @@ const updateProfileRoles = extendType({
   type: "Mutation",
   definition(t) {
     t.field("updateProfileRoles", {
-      type: "MyProfile",
+      type: "User",
       args: { data: ProfileRolesInput },
       async resolve(_root, args, ctx) {
         const user = ctx.user;
@@ -755,7 +770,6 @@ module.exports = {
 
   BaseUser,
   User,
-  MyProfile,
   WalletKey,
   NostrKey,
   MakerRole,

@@ -2,7 +2,6 @@ import { Chance } from "chance";
 import {
   GenericMakerRole,
   MakerSkill,
-  MyProfile,
   RoleLevelEnum,
   Tournament,
   User,
@@ -158,10 +157,9 @@ const tournaments = [
   },
 ] as Tournament[];
 
-export const users: (User & MyProfile)[] = [
+export const users: User[] = [
   {
     id: 123,
-    email: "mtg0987654321@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Mtg",
@@ -177,22 +175,6 @@ export const users: (User & MyProfile)[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
-    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
-    walletsKeys: [
-      {
-        key: "1645h234j2421zxvertw",
-        name: "My Alby wallet key",
-        is_current: true,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-      {
-        key: "66345134234235",
-        name: "My Phoenix wallet key",
-        is_current: false,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-    ],
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -208,10 +190,28 @@ export const users: (User & MyProfile)[] = [
         label: "My nostr key",
       },
     ],
+    private_data: {
+      email: "myemail@gmail.com",
+      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      walletsKeys: [
+        {
+          key: "1645h234j2421zxvertw",
+          name: "My Alby wallet key",
+          is_current: true,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+        {
+          key: "66345134234235",
+          name: "My Phoenix wallet key",
+          is_current: false,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+      ],
+    },
   },
   {
     id: 441,
-    email: "eddy@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Eduardu.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Edward P",
@@ -227,23 +227,6 @@ export const users: (User & MyProfile)[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
-    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
-
-    walletsKeys: [
-      {
-        key: "1645h234j2421zxvertw",
-        name: "My Alby wallet key",
-        is_current: true,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-      {
-        key: "66345134234235",
-        name: "My Phoenix wallet key",
-        is_current: false,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-    ],
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -259,10 +242,29 @@ export const users: (User & MyProfile)[] = [
         label: "My nostr key",
       },
     ],
+
+    private_data: {
+      email: "myemail@gmail.com",
+      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      walletsKeys: [
+        {
+          key: "1645h234j2421zxvertw",
+          name: "My Alby wallet key",
+          is_current: true,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+        {
+          key: "66345134234235",
+          name: "My Phoenix wallet key",
+          is_current: false,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+      ],
+    },
   },
   {
     id: 422,
-    email: "johns@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Johns.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Johns Beharry",
@@ -278,22 +280,6 @@ export const users: (User & MyProfile)[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
-    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
-    walletsKeys: [
-      {
-        key: "1645h234j2421zxvertw",
-        name: "My Alby wallet key",
-        is_current: true,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-      {
-        key: "66345134234235",
-        name: "My Phoenix wallet key",
-        is_current: false,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-    ],
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -309,10 +295,29 @@ export const users: (User & MyProfile)[] = [
         label: "My nostr key",
       },
     ],
+
+    private_data: {
+      email: "myemail@gmail.com",
+      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      walletsKeys: [
+        {
+          key: "1645h234j2421zxvertw",
+          name: "My Alby wallet key",
+          is_current: true,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+        {
+          key: "66345134234235",
+          name: "My Phoenix wallet key",
+          is_current: false,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+      ],
+    },
   },
   {
     id: 511,
-    email: "carlos@gmail.com",
     avatar: "https://avatars.dicebear.com/api/bottts/Carlos.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Mohammed Taher ",
@@ -328,22 +333,6 @@ export const users: (User & MyProfile)[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
-    nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-    nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
-    walletsKeys: [
-      {
-        key: "1645h234j2421zxvertw",
-        name: "My Alby wallet key",
-        is_current: true,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-      {
-        key: "66345134234235",
-        name: "My Phoenix wallet key",
-        is_current: false,
-        createdAt: new Date(2022, 6, 2).toISOString(),
-      },
-    ],
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -359,5 +348,24 @@ export const users: (User & MyProfile)[] = [
         label: "My nostr key",
       },
     ],
+    private_data: {
+      email: "myemail@gmail.com",
+      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      walletsKeys: [
+        {
+          key: "1645h234j2421zxvertw",
+          name: "My Alby wallet key",
+          is_current: true,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+        {
+          key: "66345134234235",
+          name: "My Phoenix wallet key",
+          is_current: false,
+          createdAt: new Date(2022, 6, 2).toISOString(),
+        },
+      ],
+    },
   },
 ];

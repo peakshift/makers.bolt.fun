@@ -16,13 +16,10 @@ const cacheApiURI = "https://cache.bolt.fun";
 
 const httpLink = new HttpLink({
   uri:
-    window.location.hostname !== "makers.bolt.fun"
-      ? graphqlApiURI
-      : cacheApiURI,
+    process.env.REACT_APP_USE_CACHE_API === "true"
+      ? cacheApiURI
+      : graphqlApiURI,
   credentials: "include",
-  headers: {
-    "gcdn-debug": 1,
-  },
 });
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {

@@ -25,7 +25,7 @@ function createStoryRootEvent({
   );
 }
 
-function createProfileVerificationEvent({ event }) {
+function publishProfileVerifiedEvent({ event }) {
   return axios.post(
     env.BF_QUEUES_SERVICE_URL +
       "/add-job/publish-profile-verification-to-nostr",
@@ -42,6 +42,6 @@ function createProfileVerificationEvent({ event }) {
   );
 }
 
-const queueService = { createStoryRootEvent, createProfileVerificationEvent };
+const queueService = { createStoryRootEvent, publishProfileVerifiedEvent };
 
 module.exports = { queueService };

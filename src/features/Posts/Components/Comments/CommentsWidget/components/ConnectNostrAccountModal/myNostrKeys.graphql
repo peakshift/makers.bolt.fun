@@ -1,7 +1,0 @@
-query MyNostrKeys {
-  me {
-    id
-    nostr_prv_key
-    nostr_pub_key
-  }
-}
