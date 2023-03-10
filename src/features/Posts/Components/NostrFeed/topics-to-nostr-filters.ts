@@ -1,6 +1,6 @@
 export const toipcsToFilters = {
   nostr: {
-    hashtags: ["NostrDesign", "NostrHackWeek", "DesigningNostr"],
+    hashtags: ["NostrDesign", "NostrHack", "DesigningNostr"],
     pubkey: [
       "369061c9a1ee258d28d123f35f913968884d52c4928ab7bd5a4544fcfd48f3f3", // full-feed / nostr design
       "1021c8921548fa89abb4cc7e8668a3a8dcebae0a4c323ffeaf570438832d6993", // erik

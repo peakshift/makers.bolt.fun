@@ -112,7 +112,7 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
           CONSTS.BF_NOSTR_PUBKEY,
           ...participantsKeys,
         ],
-        "#t": ["nostr"],
+        "#t": ["nostrhack"],
       },
     ],
     showFeed: true,

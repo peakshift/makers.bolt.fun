@@ -112,7 +112,7 @@ export default function AddProjectTournamentModal({
       <hr className="bg-gray-200" />
       <div className="flex flex-col gap-24 p-24">
         <p className="text-body4 text-gray-600">
-          Enter your project to #NostrHackWeek.
+          Enter your project to #NostrHack.
         </p>
 
         <div>

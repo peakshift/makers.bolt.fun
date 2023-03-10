@@ -32,10 +32,6 @@ export const useNostrQuery = (props: Props) => {
 
       const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-      //   const filter = {
-      //       "#t" : ['nostrdesign','nostrhackweek']
-      //   };
-
       let unsub = relayPool.subscribe(
         props.filters,
         relaysUrls,

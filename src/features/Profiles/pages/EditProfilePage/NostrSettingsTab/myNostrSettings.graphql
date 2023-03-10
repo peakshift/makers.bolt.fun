@@ -6,8 +6,10 @@ query MyNostrSettings {
       createdAt
       label
     }
-    nostr_prv_key
-    nostr_pub_key
+    private_data {
+      nostr_prv_key
+      nostr_pub_key
+    }
   }
 }
 

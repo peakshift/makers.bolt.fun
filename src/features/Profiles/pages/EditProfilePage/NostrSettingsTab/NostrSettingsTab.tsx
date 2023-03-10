@@ -37,8 +37,8 @@ function NostrSettingsTab() {
       <div className="md:col-span-2 flex flex-col gap-24">
         <LinkedNostrKeys keys={query.data.me.nostr_keys} />
         <GeneratedKeysCard
-          nostr_prv_key={query.data.me.nostr_prv_key}
-          nostr_pub_key={query.data.me.nostr_pub_key}
+          nostr_prv_key={query.data.me.private_data.nostr_prv_key}
+          nostr_pub_key={query.data.me.private_data.nostr_pub_key}
         />
         <Card>
           <p className="text-body2 font-bold">📡 Your Preferred Relays List</p>

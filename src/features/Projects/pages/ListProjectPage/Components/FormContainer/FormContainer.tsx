@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 import { nanoid } from "@reduxjs/toolkit";
 import { Helmet } from "react-helmet";
+import { nip19 } from "nostr-tools";
 
 interface Props {}
 
@@ -124,7 +125,44 @@ const schema: yup.SchemaOf<IListProjectForm> = yup
     twitter: yup.string().url().nullable(),
     discord: yup.string().url().nullable(),
     github: yup.string().url().nullable(),
+    figma: yup.string().url().nullable(),
     slack: yup.string().url().nullable(),
+    npub: yup
+      .string()
+      .nullable()
+      .transform((_value) => {
+        if (!_value) return null;
+        let value = _value;
+        if (_value?.startsWith("nostr:")) {
+          value = _value.replace("nostr:", "");
+        }
+        if (value?.startsWith("npub")) {
+          try {
+            return nip19.decode(value).data;
+          } catch (error) {
+            throw new yup.ValidationError(
+              new yup.ValidationError(
+                "invalid encoding format",
+                value,
+                "npub",
+                "is-valid"
+              )
+            );
+          }
+        }
+
+        // valid hex key
+        if (value.match(/^[a-f0-9]{64}$/)) return value;
+
+        throw new yup.ValidationError(
+          new yup.ValidationError(
+            "not a valid public key",
+            value,
+            "npub",
+            "is-valid"
+          )
+        );
+      }),
     telegram: yup.string().url().nullable(),
     category_id: yup.number().required("please choose a category"),
     capabilities: yup.array().of(yup.number().required()).default([]),
@@ -203,6 +241,8 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
             slack: data.slack,
             telegram: data.telegram,
             github: data.github,
+            figma: data.figma,
+            npub: data.npub,
             lightning_address: data.lightning_address,
             category_id: data.category.id,
             capabilities: data.capabilities.map((c) => c.id),

@@ -2,11 +2,11 @@ import Button from "src/Components/Button/Button";
 import { useAppDispatch } from "src/utils/hooks";
 import { openModal } from "src/redux/features/modals.slice";
 import Card from "src/Components/Card/Card";
-import { MyProfile } from "src/graphql";
 import WalletKey from "./WalletKey";
 import InfoCard from "src/Components/InfoCard/InfoCard";
+import { UserPrivateData } from "src/graphql";
 
-export type WalletKeyType = MyProfile["walletsKeys"][number];
+export type WalletKeyType = UserPrivateData["walletsKeys"][number];
 
 interface Props {
   value: WalletKeyType[];

@@ -13,6 +13,8 @@ query ProjectDetailsModal($projectId: Int, $projectTag: String) {
     github
     slack
     telegram
+    figma
+    npub
     screenshots
     website
     lightning_address

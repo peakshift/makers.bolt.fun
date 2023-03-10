@@ -12,6 +12,8 @@ query ProjectDetails($projectId: Int, $projectTag: String) {
     discord
     github
     slack
+    figma
+    npub
     telegram
     screenshots
     website

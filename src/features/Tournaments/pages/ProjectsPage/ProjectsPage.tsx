@@ -37,6 +37,7 @@ export default function ProjectsPage() {
     variables: {
       tournamentId: id,
       trackId: trackFilter?.id ?? null,
+      roleId: null,
       search: debouncedsearchFilter,
       skip: 0,
       take: 200,

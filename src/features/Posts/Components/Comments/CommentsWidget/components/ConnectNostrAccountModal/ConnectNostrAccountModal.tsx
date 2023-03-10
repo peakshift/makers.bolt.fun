@@ -186,13 +186,17 @@ export default function ConnectNostrAccountModal({
                             type={"password"}
                             className="input-text"
                             defaultValue={
-                              myGeneratedKeysQuery.data?.me.nostr_prv_key!
+                              myGeneratedKeysQuery.data?.me.private_data
+                                .nostr_prv_key!
                             }
                             readOnly
                           />
 
                           <CopyToClipboard
-                            text={myGeneratedKeysQuery.data?.me.nostr_prv_key!}
+                            text={
+                              myGeneratedKeysQuery.data?.me.private_data
+                                .nostr_prv_key!
+                            }
                           />
                         </div>
                       </div>
@@ -205,13 +209,15 @@ export default function ConnectNostrAccountModal({
                             type="text"
                             className="input-text"
                             defaultValue={
-                              myGeneratedKeysQuery.data?.me.nostr_pub_key!!
+                              myGeneratedKeysQuery.data?.me.private_data
+                                .nostr_pub_key!!
                             }
                             readOnly
                           />
                           <CopyToClipboard
                             text={
-                              myGeneratedKeysQuery.data?.me.nostr_pub_key! ?? ""
+                              myGeneratedKeysQuery.data?.me.private_data
+                                .nostr_pub_key! ?? ""
                             }
                           />
                         </div>
@@ -242,7 +248,8 @@ export default function ConnectNostrAccountModal({
             )}
             <Button
               disabled={
-                !isLoggedIn || !myGeneratedKeysQuery.data?.me?.nostr_prv_key
+                !isLoggedIn ||
+                !myGeneratedKeysQuery.data?.me?.private_data.nostr_prv_key
               }
               fullWidth
               color="primary"
@@ -410,7 +417,7 @@ export default function ConnectNostrAccountModal({
   }
 
   function connectGeneratedKeys() {
-    const prvKey = myGeneratedKeysQuery.data?.me?.nostr_prv_key;
+    const prvKey = myGeneratedKeysQuery.data?.me?.private_data.nostr_prv_key;
     if (!prvKey) throw new Error("Private key not provided");
 
     const pubkey = getPublicKey(prvKey);

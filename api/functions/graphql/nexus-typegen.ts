@@ -39,12 +39,14 @@ export interface NexusGenInputs {
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
     discord?: string | null; // String
+    figma?: string | null; // String
     github?: string | null; // String
     hashtag: string; // String!
     id?: number | null; // Int
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
+    npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
@@ -118,12 +120,14 @@ export interface NexusGenInputs {
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
     discord?: string | null; // String
+    figma?: string | null; // String
     github?: string | null; // String
     hashtag: string; // String!
     id?: number | null; // Int
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
+    npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
@@ -257,24 +261,6 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   Mutation: {};
-  MyProfile: { // root type
-    bio?: string | null; // String
-    discord?: string | null; // String
-    email?: string | null; // String
-    github?: string | null; // String
-    id: number; // Int!
-    jobTitle?: string | null; // String
-    join_date: NexusGenScalars['Date']; // Date!
-    lightning_address?: string | null; // String
-    linkedin?: string | null; // String
-    location?: string | null; // String
-    name: string; // String!
-    nostr_prv_key?: string | null; // String
-    nostr_pub_key?: string | null; // String
-    role?: string | null; // String
-    twitter?: string | null; // String
-    website?: string | null; // String
-  }
   NostrKey: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
     key: string; // String!
@@ -301,12 +287,14 @@ export interface NexusGenObjects {
   Project: { // root type
     description: string; // String!
     discord?: string | null; // String
+    figma?: string | null; // String
     github?: string | null; // String
     hashtag: string; // String!
     id: number; // Int!
     launch_status: NexusGenEnums['ProjectLaunchStatusEnum']; // ProjectLaunchStatusEnum!
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
+    npub?: string | null; // String
     slack?: string | null; // String
     tagline: string; // String!
     telegram?: string | null; // String
@@ -425,6 +413,12 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     website?: string | null; // String
   }
+  UserPrivateData: { // root type
+    email?: string | null; // String
+    id: number; // Int!
+    nostr_prv_key?: string | null; // String
+    nostr_pub_key?: string | null; // String
+  }
   Vote: { // root type
     amount_in_sat: number; // Int!
     id: number; // Int!
@@ -443,7 +437,7 @@ export interface NexusGenObjects {
 }
 
 export interface NexusGenInterfaces {
-  BaseUser: NexusGenRootTypes['MyProfile'] | NexusGenRootTypes['User'];
+  BaseUser: NexusGenRootTypes['User'];
   PostBase: NexusGenRootTypes['Bounty'] | NexusGenRootTypes['Question'] | NexusGenRootTypes['Story'];
 }
 
@@ -567,43 +561,15 @@ export interface NexusGenFieldTypes {
     deleteProject: NexusGenRootTypes['Project'] | null; // Project
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
-    linkNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    linkNostrKey: NexusGenRootTypes['User'] | null; // User
     registerInTournament: NexusGenRootTypes['User'] | null; // User
-    unlinkNostrKey: NexusGenRootTypes['MyProfile'] | null; // MyProfile
-    updateProfileDetails: NexusGenRootTypes['MyProfile'] | null; // MyProfile
-    updateProfileRoles: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
+    updateProfileDetails: NexusGenRootTypes['User'] | null; // User
+    updateProfileRoles: NexusGenRootTypes['User'] | null; // User
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     updateTournamentRegistration: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
-    updateUserPreferences: NexusGenRootTypes['MyProfile']; // MyProfile!
+    updateUserPreferences: NexusGenRootTypes['User']; // User!
     vote: NexusGenRootTypes['Vote']; // Vote!
-  }
-  MyProfile: { // field return type
-    avatar: string; // String!
-    bio: string | null; // String
-    discord: string | null; // String
-    email: string | null; // String
-    github: string | null; // String
-    id: number; // Int!
-    in_tournament: boolean; // Boolean!
-    jobTitle: string | null; // String
-    join_date: NexusGenScalars['Date']; // Date!
-    lightning_address: string | null; // String
-    linkedin: string | null; // String
-    location: string | null; // String
-    name: string; // String!
-    nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
-    nostr_prv_key: string | null; // String
-    nostr_pub_key: string | null; // String
-    projects: NexusGenRootTypes['Project'][]; // [Project!]!
-    role: string | null; // String
-    roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
-    similar_makers: NexusGenRootTypes['User'][]; // [User!]!
-    skills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
-    stories: NexusGenRootTypes['Story'][]; // [Story!]!
-    tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
-    twitter: string | null; // String
-    walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
-    website: string | null; // String
   }
   NostrKey: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
@@ -635,6 +601,7 @@ export interface NexusGenFieldTypes {
     cover_image: string | null; // String
     description: string; // String!
     discord: string | null; // String
+    figma: string | null; // String
     github: string | null; // String
     hashtag: string; // String!
     id: number; // Int!
@@ -643,6 +610,7 @@ export interface NexusGenFieldTypes {
     lnurl_callback_url: string | null; // String
     members: NexusGenRootTypes['ProjectMember'][]; // [ProjectMember!]!
     members_count: number; // Int!
+    npub: string | null; // String
     permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
     screenshots: string[]; // [String!]!
@@ -690,7 +658,7 @@ export interface NexusGenFieldTypes {
     getTournamentToRegister: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
-    me: NexusGenRootTypes['MyProfile'] | null; // MyProfile
+    me: NexusGenRootTypes['User'] | null; // User
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     officialTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
     popularTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -832,6 +800,7 @@ export interface NexusGenFieldTypes {
     location: string | null; // String
     name: string; // String!
     nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
+    private_data: NexusGenRootTypes['UserPrivateData']; // UserPrivateData!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
@@ -841,6 +810,13 @@ export interface NexusGenFieldTypes {
     tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String
     website: string | null; // String
+  }
+  UserPrivateData: { // field return type
+    email: string | null; // String
+    id: number; // Int!
+    nostr_prv_key: string | null; // String
+    nostr_pub_key: string | null; // String
+    walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
   }
   Vote: { // field return type
     amount_in_sat: number; // Int!
@@ -1005,43 +981,15 @@ export interface NexusGenFieldTypeNames {
     deleteProject: 'Project'
     deleteStory: 'Story'
     donate: 'Donation'
-    linkNostrKey: 'MyProfile'
+    linkNostrKey: 'User'
     registerInTournament: 'User'
-    unlinkNostrKey: 'MyProfile'
-    updateProfileDetails: 'MyProfile'
-    updateProfileRoles: 'MyProfile'
+    unlinkNostrKey: 'User'
+    updateProfileDetails: 'User'
+    updateProfileRoles: 'User'
     updateProject: 'CreateProjectResponse'
     updateTournamentRegistration: 'ParticipationInfo'
-    updateUserPreferences: 'MyProfile'
+    updateUserPreferences: 'User'
     vote: 'Vote'
-  }
-  MyProfile: { // field return type name
-    avatar: 'String'
-    bio: 'String'
-    discord: 'String'
-    email: 'String'
-    github: 'String'
-    id: 'Int'
-    in_tournament: 'Boolean'
-    jobTitle: 'String'
-    join_date: 'Date'
-    lightning_address: 'String'
-    linkedin: 'String'
-    location: 'String'
-    name: 'String'
-    nostr_keys: 'NostrKey'
-    nostr_prv_key: 'String'
-    nostr_pub_key: 'String'
-    projects: 'Project'
-    role: 'String'
-    roles: 'MakerRole'
-    similar_makers: 'User'
-    skills: 'MakerSkill'
-    stories: 'Story'
-    tournaments: 'Tournament'
-    twitter: 'String'
-    walletsKeys: 'WalletKey'
-    website: 'String'
   }
   NostrKey: { // field return type name
     createdAt: 'Date'
@@ -1073,6 +1021,7 @@ export interface NexusGenFieldTypeNames {
     cover_image: 'String'
     description: 'String'
     discord: 'String'
+    figma: 'String'
     github: 'String'
     hashtag: 'String'
     id: 'Int'
@@ -1081,6 +1030,7 @@ export interface NexusGenFieldTypeNames {
     lnurl_callback_url: 'String'
     members: 'ProjectMember'
     members_count: 'Int'
+    npub: 'String'
     permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
     screenshots: 'String'
@@ -1128,7 +1078,7 @@ export interface NexusGenFieldTypeNames {
     getTournamentToRegister: 'Tournament'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
-    me: 'MyProfile'
+    me: 'User'
     newProjects: 'Project'
     officialTags: 'Tag'
     popularTags: 'Tag'
@@ -1270,6 +1220,7 @@ export interface NexusGenFieldTypeNames {
     location: 'String'
     name: 'String'
     nostr_keys: 'NostrKey'
+    private_data: 'UserPrivateData'
     projects: 'Project'
     role: 'String'
     roles: 'MakerRole'
@@ -1279,6 +1230,13 @@ export interface NexusGenFieldTypeNames {
     tournaments: 'Tournament'
     twitter: 'String'
     website: 'String'
+  }
+  UserPrivateData: { // field return type name
+    email: 'String'
+    id: 'Int'
+    nostr_prv_key: 'String'
+    nostr_pub_key: 'String'
+    walletsKeys: 'WalletKey'
   }
   Vote: { // field return type name
     amount_in_sat: 'Int'
@@ -1391,11 +1349,6 @@ export interface NexusGenArgTypes {
       item_type: NexusGenEnums['VOTE_ITEM_TYPE']; // VOTE_ITEM_TYPE!
     }
   }
-  MyProfile: {
-    in_tournament: { // args
-      id: number; // Int!
-    }
-  }
   Project: {
     members: { // args
       take?: number | null; // Int
@@ -1454,6 +1407,8 @@ export interface NexusGenArgTypes {
       ids: string[]; // [String!]!
     }
     getProjectsInTournament: { // args
+      lookingForMakers?: boolean | null; // Boolean
+      roleId?: number | null; // Int
       search?: string | null; // String
       skip?: number | null; // Int
       take: number | null; // Int
@@ -1524,13 +1479,12 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractTypeMembers {
   Post: "Bounty" | "Question" | "Story"
-  BaseUser: "MyProfile" | "User"
+  BaseUser: "User"
   PostBase: "Bounty" | "Question" | "Story"
 }
 
 export interface NexusGenTypeInterfaces {
   Bounty: "PostBase"
-  MyProfile: "BaseUser"
   Question: "PostBase"
   Story: "PostBase"
   User: "BaseUser"
