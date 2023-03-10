@@ -352,6 +352,24 @@ export default function ProjectDetailsCard({
             </div>
           </div>
         )}
+        {
+          <div className="">
+            <p className="text-body6 uppercase font-medium text-gray-400 mb-8">
+              Looking for
+            </p>
+            {project.recruit_roles.length ? (
+              <ul className="flex flex-wrap gap-8">
+                {project.recruit_roles.map((role) => (
+                  <li key={role.id}>
+                    <Badge size="sm" className="!text-body5">
+                      {role.icon} {role.title}
+                    </Badge>{" "}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        }
 
         <Button
           color="white"

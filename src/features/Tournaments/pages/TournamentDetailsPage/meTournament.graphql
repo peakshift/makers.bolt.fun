@@ -20,6 +20,12 @@ query MeTournament($id: Int!) {
             avatar
           }
         }
+        recruit_roles {
+          id
+          title
+          icon
+          level
+        }
       }
       track {
         id

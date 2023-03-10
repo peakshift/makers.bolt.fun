@@ -3,6 +3,7 @@ const { createExpressApp } = require("../../modules");
 const express = require("express");
 const CONSTS = require("../../utils/consts");
 const { prisma } = require("../../prisma");
+const cacheService = require("../../services/cache.service");
 
 const onJobSuccess = async (req, res) => {
   const base64Token = Buffer.from(
@@ -22,12 +23,15 @@ const onJobSuccess = async (req, res) => {
           .status(400)
           .send("story_id or root_event_id are not provided");
 
-      await prisma.story.update({
-        where: { id: Number(story_id) },
-        data: {
-          nostr_event_id: root_event_id,
-        },
-      });
+      await Promise.all([
+        prisma.story.update({
+          where: { id: Number(story_id) },
+          data: {
+            nostr_event_id: root_event_id,
+          },
+        }),
+        cacheService.invalidateStoryById(story_id),
+      ]);
     } else {
       return res.status(400).send("Unknown job type: ", type);
     }
