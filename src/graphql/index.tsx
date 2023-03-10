@@ -232,14 +232,14 @@ export type Mutation = {
   deleteProject: Maybe<Project>;
   deleteStory: Maybe<Story>;
   donate: Donation;
-  linkNostrKey: Maybe<MyProfile>;
+  linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
-  unlinkNostrKey: Maybe<MyProfile>;
-  updateProfileDetails: Maybe<MyProfile>;
-  updateProfileRoles: Maybe<MyProfile>;
+  unlinkNostrKey: Maybe<User>;
+  updateProfileDetails: Maybe<User>;
+  updateProfileRoles: Maybe<User>;
   updateProject: Maybe<CreateProjectResponse>;
   updateTournamentRegistration: Maybe<ParticipationInfo>;
-  updateUserPreferences: MyProfile;
+  updateUserPreferences: User;
   vote: Vote;
 };
 
@@ -332,41 +332,6 @@ export type MutationVoteArgs = {
   amount_in_sat: Scalars['Int'];
   item_id: Scalars['Int'];
   item_type: Vote_Item_Type;
-};
-
-export type MyProfile = BaseUser & {
-  __typename?: 'MyProfile';
-  avatar: Scalars['String'];
-  bio: Maybe<Scalars['String']>;
-  discord: Maybe<Scalars['String']>;
-  email: Maybe<Scalars['String']>;
-  github: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
-  in_tournament: Scalars['Boolean'];
-  jobTitle: Maybe<Scalars['String']>;
-  join_date: Scalars['Date'];
-  lightning_address: Maybe<Scalars['String']>;
-  linkedin: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  nostr_keys: Array<NostrKey>;
-  nostr_prv_key: Maybe<Scalars['String']>;
-  nostr_pub_key: Maybe<Scalars['String']>;
-  projects: Array<Project>;
-  role: Maybe<Scalars['String']>;
-  roles: Array<MakerRole>;
-  similar_makers: Array<User>;
-  skills: Array<MakerSkill>;
-  stories: Array<Story>;
-  tournaments: Array<Tournament>;
-  twitter: Maybe<Scalars['String']>;
-  walletsKeys: Array<WalletKey>;
-  website: Maybe<Scalars['String']>;
-};
-
-
-export type MyProfileIn_TournamentArgs = {
-  id: Scalars['Int'];
 };
 
 export type NostrEventInput = {
@@ -535,7 +500,7 @@ export type Query = {
   getTournamentToRegister: Array<Tournament>;
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
-  me: Maybe<MyProfile>;
+  me: Maybe<User>;
   newProjects: Array<Project>;
   officialTags: Array<Tag>;
   popularTags: Array<Tag>;
@@ -943,6 +908,7 @@ export type User = BaseUser & {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   nostr_keys: Array<NostrKey>;
+  private_data: UserPrivateData;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
@@ -962,6 +928,14 @@ export type UserIn_TournamentArgs = {
 export type UserKeyInputType = {
   key: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type UserPrivateData = {
+  __typename?: 'UserPrivateData';
+  email: Scalars['String'];
+  nostr_prv_key: Scalars['String'];
+  nostr_pub_key: Scalars['String'];
+  walletsKeys: Array<WalletKey>;
 };
 
 export enum Vote_Item_Type {
@@ -1019,7 +993,7 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1056,11 +1030,6 @@ export type GetActiveUsersQueryVariables = Exact<{
 
 
 export type GetActiveUsersQuery = { __typename?: 'Query', activeUsers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }> };
-
-export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null } | null };
 
 export type RecentProjectsInTagQueryVariables = Exact<{
   tagId: Scalars['Int'];
@@ -1103,7 +1072,7 @@ export type DeleteStoryMutation = { __typename?: 'Mutation', deleteStory: { __ty
 export type MyProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProjectsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, projects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> } | null };
+export type MyProjectsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, projects: Array<{ __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }> } | null };
 
 export type FeedTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1145,72 +1114,69 @@ export type TagFeedQueryVariables = Exact<{
 
 export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
-type UserBasicInfo_MyProfile_Fragment = { __typename?: 'MyProfile', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
-
-type UserBasicInfo_User_Fragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
-
-export type UserBasicInfoFragment = UserBasicInfo_MyProfile_Fragment | UserBasicInfo_User_Fragment;
+export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', email: string | null, id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string } } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'MyProfile', email: string | null, id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string } } | null };
+
+export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string } } | null };
 
 export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string } } | null };
 
 export type LinkNewNostrKeyMutationVariables = Exact<{
   event: InputMaybe<NostrEventInput>;
 }>;
 
 
-export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'MyProfile', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
 
 export type UnlinkNostrKeyMutationVariables = Exact<{
   key: Scalars['String'];
 }>;
 
 
-export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'MyProfile', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
 
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } | null };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'MyProfile', id: number, nostr_pub_key: string | null, nostr_prv_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } };
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string, nostr_pub_key: string, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } } };
 
-type UserRolesSkills_MyProfile_Fragment = { __typename?: 'MyProfile', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
-
-type UserRolesSkills_User_Fragment = { __typename?: 'User', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
-
-export type UserRolesSkillsFragment = UserRolesSkills_MyProfile_Fragment | UserRolesSkills_User_Fragment;
+export type UserRolesSkillsFragment = { __typename?: 'User', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
 
 export type MyProfileRolesSkillsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileRolesSkillsQuery = { __typename?: 'Query', me: { __typename?: 'MyProfile', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null, getAllMakersRoles: Array<{ __typename?: 'GenericMakerRole', id: number, title: string, icon: string }>, getAllMakersSkills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> };
+export type MyProfileRolesSkillsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null, getAllMakersRoles: Array<{ __typename?: 'GenericMakerRole', id: number, title: string, icon: string }>, getAllMakersSkills: Array<{ __typename?: 'MakerSkill', id: number, title: string }> };
 
 export type UpdateUserRolesSkillsMutationVariables = Exact<{
   data: InputMaybe<ProfileRolesInput>;
 }>;
 
 
-export type UpdateUserRolesSkillsMutation = { __typename?: 'Mutation', updateProfileRoles: { __typename?: 'MyProfile', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type UpdateUserRolesSkillsMutation = { __typename?: 'Mutation', updateProfileRoles: { __typename?: 'User', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
@@ -1362,7 +1328,7 @@ export type MeTournamentQueryVariables = Exact<{
 }>;
 
 
-export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'MyProfile', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -1872,42 +1838,6 @@ export function useGetActiveUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetActiveUsersQueryHookResult = ReturnType<typeof useGetActiveUsersQuery>;
 export type GetActiveUsersLazyQueryHookResult = ReturnType<typeof useGetActiveUsersLazyQuery>;
 export type GetActiveUsersQueryResult = Apollo.QueryResult<GetActiveUsersQuery, GetActiveUsersQueryVariables>;
-export const MyNostrKeysDocument = gql`
-    query MyNostrKeys {
-  me {
-    id
-    nostr_prv_key
-    nostr_pub_key
-  }
-}
-    `;
-
-/**
- * __useMyNostrKeysQuery__
- *
- * To run a query within a React component, call `useMyNostrKeysQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyNostrKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyNostrKeysQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMyNostrKeysQuery(baseOptions?: Apollo.QueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
-      }
-export function useMyNostrKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
-        }
-export type MyNostrKeysQueryHookResult = ReturnType<typeof useMyNostrKeysQuery>;
-export type MyNostrKeysLazyQueryHookResult = ReturnType<typeof useMyNostrKeysLazyQuery>;
-export type MyNostrKeysQueryResult = Apollo.QueryResult<MyNostrKeysQuery, MyNostrKeysQueryVariables>;
 export const RecentProjectsInTagDocument = gql`
     query recentProjectsInTag($tagId: Int!) {
   recentProjectsInTag(tagId: $tagId) {
@@ -2628,7 +2558,9 @@ export type TagFeedQueryResult = Apollo.QueryResult<TagFeedQuery, TagFeedQueryVa
 export const MyProfileAboutDocument = gql`
     query MyProfileAbout {
   me {
-    email
+    private_data {
+      email
+    }
     ...UserBasicInfo
   }
 }
@@ -2663,7 +2595,9 @@ export type MyProfileAboutQueryResult = Apollo.QueryResult<MyProfileAboutQuery, 
 export const UpdateProfileAboutDocument = gql`
     mutation updateProfileAbout($data: ProfileDetailsInput) {
   updateProfileDetails(data: $data) {
-    email
+    private_data {
+      email
+    }
     ...UserBasicInfo
   }
 }
@@ -2694,6 +2628,44 @@ export function useUpdateProfileAboutMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateProfileAboutMutationHookResult = ReturnType<typeof useUpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationResult = Apollo.MutationResult<UpdateProfileAboutMutation>;
 export type UpdateProfileAboutMutationOptions = Apollo.BaseMutationOptions<UpdateProfileAboutMutation, UpdateProfileAboutMutationVariables>;
+export const MyNostrKeysDocument = gql`
+    query MyNostrKeys {
+  me {
+    id
+    private_data {
+      nostr_prv_key
+      nostr_pub_key
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyNostrKeysQuery__
+ *
+ * To run a query within a React component, call `useMyNostrKeysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyNostrKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyNostrKeysQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyNostrKeysQuery(baseOptions?: Apollo.QueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
+      }
+export function useMyNostrKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNostrKeysQuery, MyNostrKeysQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyNostrKeysQuery, MyNostrKeysQueryVariables>(MyNostrKeysDocument, options);
+        }
+export type MyNostrKeysQueryHookResult = ReturnType<typeof useMyNostrKeysQuery>;
+export type MyNostrKeysLazyQueryHookResult = ReturnType<typeof useMyNostrKeysLazyQuery>;
+export type MyNostrKeysQueryResult = Apollo.QueryResult<MyNostrKeysQuery, MyNostrKeysQueryVariables>;
 export const MyNostrSettingsDocument = gql`
     query MyNostrSettings {
   me {
@@ -2703,8 +2675,10 @@ export const MyNostrSettingsDocument = gql`
       createdAt
       label
     }
-    nostr_prv_key
-    nostr_pub_key
+    private_data {
+      nostr_prv_key
+      nostr_pub_key
+    }
   }
 }
     `;
@@ -2815,14 +2789,16 @@ export const MyProfilePreferencesDocument = gql`
     query MyProfilePreferences {
   me {
     id
-    walletsKeys {
-      key
-      name
-      createdAt
-      is_current
+    private_data {
+      walletsKeys {
+        key
+        name
+        createdAt
+        is_current
+      }
+      nostr_prv_key
+      nostr_pub_key
     }
-    nostr_prv_key
-    nostr_pub_key
   }
 }
     `;
@@ -2857,12 +2833,14 @@ export const UpdateUserPreferencesDocument = gql`
     mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
   updateUserPreferences(userKeys: $walletsKeys) {
     id
-    walletsKeys {
-      key
-      name
+    private_data {
+      walletsKeys {
+        key
+        name
+      }
+      nostr_prv_key
+      nostr_pub_key
     }
-    nostr_pub_key
-    nostr_prv_key
   }
 }
     `;
