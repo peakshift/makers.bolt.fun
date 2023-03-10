@@ -59,6 +59,7 @@ type RouteOptions =
     }
   | {
       type: "edit-profile";
+      tab?: "basic-info" | "roles-skills" | "nostr" | "auth";
     }
   | {
       type: "tournament";
@@ -119,7 +120,8 @@ export function createRoute(options: RouteOptions) {
       (options.username ? `/${toSlug(options.username)}` : "")
     );
 
-  if (options.type === "edit-profile") return "/edit-profile";
+  if (options.type === "edit-profile")
+    return "/edit-profile" + (options.tab ? `/${options.tab}` : "");
 
   if (options.type === "tournament")
     return (
