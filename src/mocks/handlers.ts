@@ -365,6 +365,7 @@ export const handlers = [
             openToConnect: null,
           }),
           pubkeysOfMakersInTournament: [],
+          pubkeysOfProjectsInTournament: [],
         })
       );
     }

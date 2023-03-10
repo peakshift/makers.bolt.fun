@@ -18,6 +18,7 @@ interface ITournamentDetails {
   tournamentDetails: GetTournamentByIdQuery["getTournamentById"];
   myParticipationInfo: MeTournamentQuery["tournamentParticipationInfo"];
   pubkeysOfMakersInTournament: string[];
+  pubkeysOfProjectsInTournament: string[];
   staticData: TournamentStaticData;
 }
 
@@ -50,6 +51,7 @@ export default function TournamentDetailsContext({
     getMakersInTournament: makers,
     getTournamentById: tournamentDetails,
     pubkeysOfMakersInTournament,
+    pubkeysOfProjectsInTournament,
   } = tournaemntQuery.data;
   const { me = null, tournamentParticipationInfo: myParticipationInfo = null } =
     myParticipationInfoQuery.data ?? {};
@@ -62,6 +64,7 @@ export default function TournamentDetailsContext({
         tournamentDetails,
         myParticipationInfo,
         pubkeysOfMakersInTournament,
+        pubkeysOfProjectsInTournament,
         staticData: getStaticData(tournamentDetails.title),
       }}
     >

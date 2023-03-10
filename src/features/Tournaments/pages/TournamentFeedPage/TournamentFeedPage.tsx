@@ -10,19 +10,24 @@ type Props = {};
 function TournamentFeedPage(props: Props) {
   const {
     pubkeysOfMakersInTournament,
+    pubkeysOfProjectsInTournament,
     staticData: { config },
   } = useTournament();
 
   const filters = useMemo(
     () =>
       config.showFeed
-        ? config.feedFilters({ participantsKeys: pubkeysOfMakersInTournament })
+        ? config.feedFilters({
+            participantsKeys: pubkeysOfMakersInTournament,
+            projectsKeys: pubkeysOfProjectsInTournament,
+          })
         : [],
-    [config, pubkeysOfMakersInTournament]
+    [config, pubkeysOfMakersInTournament, pubkeysOfProjectsInTournament]
   );
 
   const { events, isEmpty } = useNostrQuery({
     filters,
+    sortEvents: true,
   });
 
   const pubkeysToFetch = useMemo(
@@ -57,7 +62,7 @@ function TournamentFeedPage(props: Props) {
     );
 
   return (
-    <div className="flex flex-col gap-24">
+    <div className="flex flex-col gap-24 pb-24">
       {posts.map((post) => (
         <NostrPostCard
           key={post.id}

@@ -28,7 +28,10 @@ export interface TournamentStaticData {
   } & (
     | {
         showFeed: true;
-        feedFilters: (data: { participantsKeys: string[] }) => Filter[];
+        feedFilters: (data: {
+          participantsKeys: string[];
+          projectsKeys: string[];
+        }) => Filter[];
       }
     | {
         showFeed: false;

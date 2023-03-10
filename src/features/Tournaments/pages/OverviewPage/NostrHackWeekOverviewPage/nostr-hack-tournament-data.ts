@@ -1,3 +1,4 @@
+import { Filter } from "nostr-tools";
 import { CONSTS } from "src/utils";
 import { TournamentStaticData } from "../../types";
 
@@ -103,18 +104,24 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
   ],
 
   config: {
-    feedFilters: ({ participantsKeys }) => [
-      {
-        kinds: [1, 30023],
-        limit: 100,
-        authors: [
-          "369061c9a1ee258d28d123f35f913968884d52c4928ab7bd5a4544fcfd48f3f3", // nostr-design
-          CONSTS.BF_NOSTR_PUBKEY,
-          ...participantsKeys,
-        ],
-        "#t": ["nostrhack"],
-      },
-    ],
+    feedFilters: ({ participantsKeys, projectsKeys }) =>
+      [
+        {
+          kinds: [1, 30023],
+          limit: 100,
+          authors: [
+            "369061c9a1ee258d28d123f35f913968884d52c4928ab7bd5a4544fcfd48f3f3", // nostr-design
+            CONSTS.BF_NOSTR_PUBKEY,
+            ...participantsKeys,
+          ],
+          "#t": ["nostrhack"],
+        },
+        {
+          kinds: [1, 30023],
+          limit: 100,
+          authors: projectsKeys,
+        },
+      ] as Filter[],
     showFeed: true,
     registerationOpen: true,
     projectsSubmissionOpen: true,
