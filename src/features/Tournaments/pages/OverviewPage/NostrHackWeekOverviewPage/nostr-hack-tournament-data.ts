@@ -118,5 +118,7 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
     showFeed: true,
     registerationOpen: true,
     projectsSubmissionOpen: true,
+    ideasRootNostrEventId:
+      "4cc8cb708b575c465962cb099bf8b1b2705edfc303613bc30e06c0dd47d08d2f",
   },
 };

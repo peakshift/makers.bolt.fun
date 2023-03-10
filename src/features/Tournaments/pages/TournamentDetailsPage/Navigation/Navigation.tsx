@@ -13,9 +13,11 @@ export default function Navigation() {
   const {
     tournamentDetails,
     staticData: {
-      config: { showFeed },
+      config: { showFeed, ideasRootNostrEventId },
     },
   } = useTournament();
+
+  const showIdeas = !!ideasRootNostrEventId;
 
   const links = useMemo(
     () => [
@@ -39,6 +41,11 @@ export default function Navigation() {
       {
         text: `Projects (${tournamentDetails.projects_count})`,
         path: "projects",
+      },
+      {
+        text: `Ideas`,
+        path: "ideas",
+        hide: !showIdeas,
       },
       // {
       //     text: "???? 🚧",
