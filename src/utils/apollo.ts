@@ -20,9 +20,6 @@ const httpLink = new HttpLink({
       ? graphqlApiURI
       : cacheApiURI,
   credentials: "include",
-  headers: {
-    "gcdn-debug": 1,
-  },
 });
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {
