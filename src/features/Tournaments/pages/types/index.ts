@@ -21,6 +21,18 @@ export interface TournamentStaticData {
     isPrimary: boolean;
   }>;
 
+  schedule: {
+    date: string;
+    events: {
+      event: string;
+      time: string | null;
+      timezone: "UTC" | null;
+      location: "BOLT.FUN" | "Youtube" | null;
+      url?: string;
+      type: "Hangout" | "Presentation" | "Workshop" | null;
+    }[];
+  }[];
+
   config: {
     registerationOpen: boolean;
     projectsSubmissionOpen: boolean;

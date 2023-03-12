@@ -7,6 +7,7 @@ import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
+import ScheduleSection from "../ScheduleSection/ScheduleSection";
 
 export default function NostrHackWeekOverviewPage() {
   const {
@@ -48,6 +49,7 @@ export default function NostrHackWeekOverviewPage() {
             chat={chat}
           />
         </div>
+        <ScheduleSection />
         <PrizesSection tracks={tracksAndPrizes} />
         <JudgesSection judges={tournamentDetails.judges} />
       </Card>

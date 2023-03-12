@@ -103,6 +103,225 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
     },
   ],
 
+  schedule: [
+    {
+      date: "Friday March 10",
+      events: [
+        {
+          event: "Hacking begins",
+          time: "00:00",
+          timezone: "UTC",
+          location: null,
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Sunday March 12",
+      events: [
+        {
+          event: "Maker Mixer: Introductions & team formations (Eastern)",
+          time: "12:00 - 13:00",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+        {
+          event: "Maker Mixer: Introductions & team formations (Western)",
+          time: "19:00 - 13:00",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Monday March 13",
+      events: [
+        {
+          event: "Nostr 101: What the F#&* is Nostr?",
+          time: "18:00 - 19:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+      ],
+    },
+    {
+      date: "Tuesday March 14",
+      events: [
+        {
+          event: "The future is Nostr",
+          time: "18:30 - 19:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+        {
+          event: "Nostr Quickstart using React.js",
+          time: "12:00 - 13:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+      ],
+    },
+    {
+      date: "Wednesday March 15",
+      events: [
+        {
+          event: "Unveiling 3 Nostr extensions in LNbits",
+          time: "12:00 - 13:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+      ],
+    },
+    {
+      date: "Thursday March 16",
+      events: [
+        {
+          event: "Nostr Connect Workshop",
+          time: "10:00 - 11:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+      ],
+    },
+    {
+      date: "Friday March 17",
+      events: [
+        {
+          event: "Check in: Eastern",
+          time: "10:00 - 11:30",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+        {
+          event: "Check in: Western",
+          time: "19:00 - 20:00",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Sunday March 19",
+      events: [
+        {
+          event: "Nostrica Day #1",
+          time: "15:00 - 23:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Monday March 20",
+      events: [
+        {
+          event: "Nostrica Day #2",
+          time: "15:00 - 23:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Tuesday March 21",
+      events: [
+        {
+          event: "Nostrica Day #3",
+          time: "15:00 - 23:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Wednesday March 22",
+      events: [
+        {
+          event: "Check in: Eastern",
+          time: "10:00 - 11:30",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+        {
+          event: "Check in: Western",
+          time: "19:00 - 20:00",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Wednesday March 23",
+      events: [
+        {
+          event: "Get your pitches ready!",
+          time: null,
+          timezone: null,
+          location: null,
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Friday March 24",
+      events: [
+        {
+          event: "Pitches: Eastern",
+          time: "10:00 - 11:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+        {
+          event: "Pitches: Western",
+          time: "19:00 - 20:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+        {
+          event: "Closing Ceremony",
+          time: "10:00 - 11:30",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+        {
+          event: "Deadline to post remaining pitches",
+          time: "23:59",
+          timezone: "UTC",
+          location: null,
+          type: null,
+        },
+      ],
+    },
+  ],
+
   config: {
     feedFilters: ({ participantsKeys, projectsKeys }) =>
       [

@@ -6,6 +6,8 @@ export const LOL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     link: "https://discord.gg/HFqtxavb7x",
   },
 
+  schedule: [],
+
   partners: [
     {
       link: "https://fulgur.ventures/",
