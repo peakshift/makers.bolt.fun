@@ -128,7 +128,7 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
         },
         {
           event: "Maker Mixer: Introductions & team formations (Western)",
-          time: "19:00 - 13:00",
+          time: "19:00 - 20:00",
           timezone: "UTC",
           location: "BOLT.FUN",
           type: "Hangout",
