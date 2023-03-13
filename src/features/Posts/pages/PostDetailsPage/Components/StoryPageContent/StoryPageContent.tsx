@@ -16,11 +16,12 @@ import { NotificationsService } from "src/services";
 import OgTags from "src/Components/OgTags/OgTags";
 import { formatHashtag } from "src/utils/helperFunctions";
 import { Link } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, RefObject, Suspense, useEffect, useRef, useState } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { RelayPoolProvider } from "src/lib/nostr";
 import { withProviders } from "src/utils/hoc";
 import { Tooltip } from "react-tooltip";
+import Lightbox from "src/Components/Lightbox/Lightbox";
 
 const CommentsWidgetRoot = lazy(
   () =>
@@ -34,6 +35,8 @@ interface Props {
 }
 
 function StoryPageContent({ story }: Props) {
+  const storyContentDomRef = useRef<HTMLDivElement>(null);
+
   const { curUser } = useAppSelector((state) => ({
     curUser: state.user.me,
   }));
@@ -151,11 +154,13 @@ function StoryPageContent({ story }: Props) {
         </div>
 
         <div
+          ref={storyContentDomRef}
           className={`mt-42 ${styles.body}`}
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(marked.parse(story.body)),
           }}
         ></div>
+        <PostImagesLightbox contentDomRef={storyContentDomRef} />
       </Card>
       <div id="comments" className="mt-10 comments_col">
         <Suspense
@@ -179,3 +184,50 @@ function StoryPageContent({ story }: Props) {
 }
 
 export default withProviders(RelayPoolProvider)(StoryPageContent);
+
+function PostImagesLightbox({
+  contentDomRef,
+}: {
+  contentDomRef: RefObject<HTMLDivElement>;
+}) {
+  const [images, setImages] = useState<string[]>([]);
+  const [imageOpen, setImageOpen] = useState(-1);
+
+  useEffect(() => {
+    const onClick = () => {};
+    let idx = 0;
+
+    const listenersToClean: [HTMLImageElement, EventListener][] = [];
+
+    contentDomRef.current?.querySelectorAll("img").forEach((img) => {
+      const imageUrl = img.getAttribute("src");
+      if (imageUrl) {
+        setImages((prev) => [...prev, imageUrl]);
+        const _idx = idx;
+        const handler = () => {
+          setImageOpen(_idx);
+        };
+        img.classList.add("cursor-pointer");
+        img.addEventListener("click", handler);
+        listenersToClean.push([img, handler]);
+
+        idx++;
+      }
+    });
+
+    return () => {
+      listenersToClean.forEach(([img, handler]) => {
+        img.removeEventListener("click", handler);
+      });
+    };
+  }, [contentDomRef]);
+
+  return (
+    <Lightbox
+      images={images}
+      isOpen={imageOpen !== -1}
+      initOpenIndex={imageOpen}
+      onClose={() => setImageOpen(-1)}
+    />
+  );
+}
