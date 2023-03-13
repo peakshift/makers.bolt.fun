@@ -9,23 +9,20 @@ import { trimText } from "src/utils/helperFunctions";
 import IconButton from "src/Components/IconButton/IconButton";
 import { nip19 } from "nostr-tools";
 import { FiLink } from "react-icons/fi";
-import { usePopperTooltip } from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
 import { useAppSelector } from "src/utils/hooks";
 import { replaceMentionsWithLinks } from "src/features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage";
 import { extractImageFromContent } from "src/lib/nostr/helpers";
 import { Tooltip } from "react-tooltip";
+import LinkDuo from "src/Components/LinkDuo/LinkDuo";
+import { NostrProfile } from "src/lib/nostr";
+import { createRoute } from "src/utils/routing";
 
 interface Props {
   comment: NostrToolsEventWithId;
   canReply?: boolean;
   onReply?: () => void;
-  author: {
-    pubkey: string;
-    name: string;
-    image: string | null;
-    link: string;
-  };
+  author: NostrProfile;
 }
 
 export default function CommentCard({
@@ -52,14 +49,16 @@ export default function CommentCard({
   return (
     <Card className="relative">
       <div className="flex gap-8">
-        <a
-          href={
-            isMobile
-              ? `nostr:${nip19.npubEncode(comment.pubkey)}`
-              : `https://www.nostr.guru/p/${comment.pubkey}`
+        <LinkDuo
+          to={
+            author.boltfun_id
+              ? createRoute({
+                  type: "profile",
+                  id: author.boltfun_id,
+                  username: author.name,
+                })
+              : `https://nostr.guru/p/${author.pubkey}`
           }
-          target="_blank"
-          rel="noreferrer"
           className="shrink-0"
         >
           <Avatar
@@ -69,7 +68,7 @@ export default function CommentCard({
               `https://avatars.dicebear.com/api/identicon/${author.pubkey}.svg`
             }
           />
-        </a>
+        </LinkDuo>
         <div className="overflow-hidden">
           <a href={author.link} target="_blank" rel="noreferrer">
             <p className="text-body5 text-gray-700">

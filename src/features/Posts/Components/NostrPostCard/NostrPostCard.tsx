@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
-import { useAppSelector } from "src/utils/hooks";
 import Badge from "src/Components/Badge/Badge";
 import { createRoute } from "src/utils/routing";
 import Card from "src/Components/Card/Card";
 import { formatHashtag, trimText } from "src/utils/helperFunctions";
 import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrProfile } from "src/lib/nostr";
-import { nip19 } from "nostr-tools";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";
 import { usePopperTooltip } from "react-popper-tooltip";
@@ -16,6 +14,7 @@ import {
   extractArticleFields,
   extractImageFromContent,
 } from "src/lib/nostr/helpers";
+import LinkDuo from "src/Components/LinkDuo/LinkDuo";
 
 dayjs.extend(relativeTime);
 
@@ -25,8 +24,6 @@ interface Props {
 }
 
 export default function NostrPostCard({ post, author }: Props) {
-  const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
-
   const {
     getArrowProps,
     getTooltipProps,
@@ -51,14 +48,16 @@ export default function NostrPostCard({ post, author }: Props) {
         date={story.createdAt}
       /> */}
       <div className="flex items-center gap-8">
-        <a
-          href={
-            isMobile
-              ? `nostr:${nip19.npubEncode(post.pubkey)}`
-              : `https://www.nostr.guru/p/${post.pubkey}`
+        <LinkDuo
+          to={
+            author?.boltfun_id
+              ? createRoute({
+                  type: "profile",
+                  id: author.boltfun_id,
+                  username: author.name,
+                })
+              : `https://nostr.guru/p/${post.pubkey}`
           }
-          target="_blank"
-          rel="noreferrer"
           className="shrink-0"
         >
           <Avatar
@@ -68,7 +67,7 @@ export default function NostrPostCard({ post, author }: Props) {
               `https://avatars.dicebear.com/api/identicon/${author?.pubkey}.svg`
             }
           />
-        </a>
+        </LinkDuo>
         <div className="overflow-hidden">
           <a href={author?.link} target="_blank" rel="noreferrer">
             <p className="text-body5 text-gray-700">

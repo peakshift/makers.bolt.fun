@@ -16,6 +16,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { NostrProfile } from "src/lib/nostr";
 import dayjs from "dayjs";
 import { extractArticleFields } from "src/lib/nostr/helpers";
+import LinkDuo from "src/Components/LinkDuo/LinkDuo";
 
 interface Props {
   author: NostrProfile;
@@ -41,10 +42,16 @@ export default function PageContent({ author, post, articleFields }: Props) {
           date={story.createdAt}
         /> */}
           <div className="flex gap-8">
-            <a
-              href={`https://www.nostr.guru/p/${post.pubkey}`}
-              target="_blank"
-              rel="noreferrer"
+            <LinkDuo
+              to={
+                author.boltfun_id
+                  ? createRoute({
+                      type: "profile",
+                      id: author.boltfun_id,
+                      username: author.name,
+                    })
+                  : `https://nostr.guru/p/${author.pubkey}`
+              }
               className="shrink-0"
             >
               <Avatar
@@ -54,7 +61,7 @@ export default function PageContent({ author, post, articleFields }: Props) {
                   `https://avatars.dicebear.com/api/identicon/${author?.pubkey}.svg`
                 }
               />
-            </a>
+            </LinkDuo>
             <div className="overflow-hidden">
               <a
                 href={`https://www.nostr.guru/p/${post.pubkey}`}

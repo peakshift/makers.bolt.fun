@@ -9,7 +9,7 @@ import { RotatingLines } from "react-loader-spinner";
 import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
 import { MEDIA_QUERIES } from "src/utils/theme";
-import { RelayPoolProvider, useNostrQuery } from "src/lib/nostr";
+import { RelayPoolProvider, useMetaData, useNostrQuery } from "src/lib/nostr";
 import {
   extractArticleFields,
   getProfileDataFromMetaData,
@@ -30,9 +30,16 @@ function NostrPostDetailsPage(props: Props) {
 
   const filters = useMemo(() => [{ ids: [params.id ?? ""] }], [params.id]);
 
-  const { events, isEmpty, metadata } = useNostrQuery({
+  const { events, isEmpty } = useNostrQuery({
     filters,
   });
+
+  const pubkeysUsed = useMemo(
+    () => [...events.map((e) => e.pubkey)].filter(Boolean) as string[],
+    [events]
+  );
+
+  const { profilesData } = useMetaData({ pubkeys: pubkeysUsed });
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isMinLarge);
 
@@ -45,7 +52,7 @@ function NostrPostDetailsPage(props: Props) {
     content: replaceMentionsWithLinks(events[0].content, events[0].tags),
   };
   const articleFields = extractArticleFields(post);
-  const author = getProfileDataFromMetaData(metadata, post.pubkey);
+  const author = profilesData[post.pubkey];
 
   return (
     <>
