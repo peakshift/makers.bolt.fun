@@ -53,7 +53,7 @@ export default function WelcomeNewMaker() {
           </Link>
           <Link
             to={createRoute({ type: "edit-profile", tab: "nostr" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-yellow-500 rounded bg-opacity-60 "
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-yellow-400 hover:bg-opacity-40 rounded bg-opacity-50 "
           >
             <div
               className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
@@ -63,7 +63,7 @@ export default function WelcomeNewMaker() {
             <div>
               <p className="text-body4 text-white font-bold">
                 Link Your Nostr Public Key{" "}
-                <span className="font-medium text-xs leading-5 rounded bg-orange-600  bg-red-400/10 px-8 py-0.1">
+                <span className="font-medium text-xs leading-5 rounded bg-orange-400 px-8">
                   NEW
                 </span>
               </p>

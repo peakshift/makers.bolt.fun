@@ -268,7 +268,11 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route
           path={PAGES_ROUTES.profile.editProfile}
-          element={<EditProfilePage />}
+          element={
+            <ProtectedRoute>
+              <EditProfilePage />
+            </ProtectedRoute>
+          }
         />
         <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
 

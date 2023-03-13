@@ -34,7 +34,7 @@ export function withProviders(
   )[]
 ) {
   return <ComponentProps extends Record<string, any>>(
-      WrappedComponent: (props: ComponentProps) => JSX.Element
+      WrappedComponent: (props: ComponentProps) => JSX.Element | null
     ) =>
     (props: ComponentProps) =>
       providers.reduceRight((acc, prov) => {

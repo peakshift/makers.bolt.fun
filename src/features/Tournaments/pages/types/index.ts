@@ -40,6 +40,7 @@ export interface TournamentStaticData {
   } & (
     | {
         showFeed: true;
+        mainFeedHashtag: string;
         feedFilters: (data: {
           participantsKeys: string[];
           projectsKeys: string[];

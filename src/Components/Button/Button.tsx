@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { UnionToObjectKeys } from "src/utils/types/utils";
-import { Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { twMerge } from "tailwind-merge";
+import LinkDuo from "../LinkDuo/LinkDuo";
 
 type Props = {
   color?: "primary" | "red" | "white" | "gray" | "black" | "none";
@@ -118,36 +118,21 @@ const Button = React.forwardRef<any, Props>(
       </>
     );
 
-    if (href && newTab)
-      return (
-        <a
-          href={href}
-          className={twMerge(
-            classes,
-            disabled && "opacity-75 pointer-events-none",
-            className
-          )}
-          onClick={(e) => handleClick(e)}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {btnContent}
-        </a>
-      );
-
     if (href)
       return (
-        <Link
+        <LinkDuo
           to={href}
           className={twMerge(
             classes,
             disabled && "opacity-75 pointer-events-none",
             className
           )}
+          target={newTab ? "_blank" : "_self"}
+          rel="noopener noreferrer"
           onClick={(e) => handleClick(e)}
         >
           {btnContent}
-        </Link>
+        </LinkDuo>
       );
 
     return (
