@@ -22,10 +22,16 @@ export default function ScheduleSection() {
         }}
         items={schedule.map((day) => ({
           heading: (
-            <p className="text-body2 text-gray-700">
-              {day.date}
-              <sup>{getOrdinalSuffix(day.date)}</sup>
-            </p>
+            <div className="flex items-center grow">
+              <p className="text-body2 text-gray-700">
+                {day.date}
+                <sup>{getOrdinalSuffix(day.date)}</sup>
+              </p>
+
+              <span className="text-body5 font-light inline-block ml-auto mr-16 text-gray-400">
+                {day.events.length} Events
+              </span>
+            </div>
           ),
           content: (
             <div className={`text-gray-600 `}>
