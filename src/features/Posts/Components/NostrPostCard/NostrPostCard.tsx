@@ -136,13 +136,15 @@ export default function NostrPostCard({ post, author }: Props) {
             {articleFields.summary ?? content}
           </p>
         </Link>
-        <div className="flex flex-wrap gap-8 mt-8">
-          {articleFields.tags.map((tag, idx) => (
-            <Badge key={idx} className="hover:bg-gray-200" size="sm">
-              {formatHashtag(tag)}
-            </Badge>
-          ))}
-        </div>
+        {articleFields.tags.length > 0 && (
+          <div className="flex flex-wrap gap-8 mt-8">
+            {articleFields.tags.map((tag, idx) => (
+              <Badge key={idx} className="hover:bg-gray-200" size="sm">
+                {formatHashtag(tag)}
+              </Badge>
+            ))}
+          </div>
+        )}
 
         {/* <hr className="my-16 bg-gray-200" />
             <div className="flex gap-24 items-center">

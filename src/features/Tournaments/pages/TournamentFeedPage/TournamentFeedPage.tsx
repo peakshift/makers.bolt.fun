@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Link } from "react-router-dom";
+import { Virtuoso } from "react-virtuoso";
 import NostrPostCard from "src/features/Posts/Components/NostrPostCard/NostrPostCard";
 import { PostCardSkeleton } from "src/features/Posts/Components/PostCard";
 import { RelayPoolProvider, useMetaData, useNostrQuery } from "src/lib/nostr";
@@ -112,15 +113,26 @@ function TournamentFeedPage(props: Props) {
           <TopPosters.Skeleton />
         )}
       </div>
-      {posts.map((post) => (
-        <NostrPostCard
-          key={post.id}
-          post={post}
-          author={profilesData[post.pubkey]}
-        />
-      ))}
+      <Virtuoso
+        useWindowScroll
+        data={posts}
+        components={{
+          List,
+        }}
+        itemContent={(idx, post) => (
+          <NostrPostCard
+            key={post.id}
+            post={post}
+            author={profilesData[post.pubkey]}
+          />
+        )}
+      />
     </div>
   );
 }
+
+const List = React.forwardRef<any, any>((props, ref) => {
+  return <div {...props} ref={ref} className={`flex flex-col gap-24`} />;
+});
 
 export default withProviders(RelayPoolProvider)(TournamentFeedPage);

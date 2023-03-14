@@ -87,6 +87,7 @@
     "react-toastify": "^9.0.8",
     "react-tooltip": "^5.9.0",
     "react-topbar-progress-indicator": "^4.1.1",
+    "react-virtuoso": "^4.1.0",
     "remirror": "^2.0.24",
     "serverless-http": "^3.0.1",
     "stream": "npm:stream-browserify",

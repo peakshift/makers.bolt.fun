@@ -1,11 +1,12 @@
 import { Filter, Kind } from "nostr-tools";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { RelayPoolProvider, useNostrQuery } from "src/lib/nostr";
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 import { withProviders } from "src/utils/hoc";
 import NostrPostCard from "../NostrPostCard/NostrPostCard";
 import { PostCardSkeleton } from "../PostCard";
 import { toipcsToFilters } from "./topics-to-nostr-filters";
+import { ListProps, Virtuoso } from "react-virtuoso";
 
 type Props = {
   topic: keyof typeof toipcsToFilters;
@@ -22,7 +23,12 @@ export function getFilters(topic: keyof typeof toipcsToFilters): Filter[] {
 
   let filters: Filter[] = [];
   if (toipcsToFilters[topic].hashtags)
-    filters.push({ ...baseFilter, "#t": toipcsToFilters[topic].hashtags });
+    filters.push({
+      ...baseFilter,
+      "#t": toipcsToFilters[topic].hashtags.map((tag) =>
+        tag.toLocaleLowerCase()
+      ),
+    });
   if (toipcsToFilters[topic].pubkey)
     filters.push({ ...baseFilter, authors: toipcsToFilters[topic].pubkey });
 
@@ -59,16 +65,25 @@ function NostrFeed(props: Props) {
     );
 
   return (
-    <div className="flex flex-col gap-24">
-      {posts.map((post) => (
+    <Virtuoso
+      useWindowScroll
+      data={posts}
+      components={{
+        List,
+      }}
+      itemContent={(idx, post) => (
         <NostrPostCard
           key={post.id}
           post={post}
           author={getProfileDataFromMetaData(metadata, post.pubkey)}
         />
-      ))}
-    </div>
+      )}
+    />
   );
 }
+
+const List = React.forwardRef<any, any>((props, ref) => {
+  return <div {...props} ref={ref} className={`flex flex-col gap-24`} />;
+});
 
 export default withProviders(RelayPoolProvider)(NostrFeed);
