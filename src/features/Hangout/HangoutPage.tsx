@@ -19,17 +19,17 @@ export default function HangoutPage() {
         title="Hangout on BOLT.FUN"
         description="Talk to other makers live!"
       />
-      <div className="page-container h-screen bg-primary-500">
+      <div className="page-container min-h-screen bg-primary-500">
         <div className="grid gap-24 auto-rows-max grid-cols-1 lg:grid-cols-[1fr_4fr]">
           <div className="">
             <button
-              className={`w-48 bg-primary-600 rounded-12 border-2 border-transparent justify-around items-center text-white hover:bg-primary-400 active:bg-primary-400`}
+              className={`w-48 aspect-square bg-primary-600 rounded-12 border-2 border-transparent justify-around items-center text-white hover:bg-primary-400 active:bg-primary-400`}
               onClick={() => navigate(-1)}
             >
               <FiArrowLeft className={"text-body3"} />
             </button>
           </div>
-          <div className="bg-primary-600 h-[min(60vh,800px)] rounded-12 md:rounded-16 overflow-hidden">
+          <div className="bg-primary-600 w-full h-[80vh] rounded-12 md:rounded-16 overflow-hidden">
             <JitsiMeeting
               domain={"meet.fulmo.org"}
               roomName={"BOLTFUN Hangout"}
