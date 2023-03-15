@@ -649,7 +649,9 @@ const createStory = extendType({
                 logError(error);
                 throw new ApolloError("Unexpected error happened...");
               });
+          }
 
+          if (!was_published && createdStory.is_published)
             _promisesList.push(
               sendNewStoryNotification({
                 title: createdStory.title,
@@ -677,7 +679,6 @@ const createStory = extendType({
                   console.log(err);
                 })
             );
-          }
 
           _promisesList.push(
             prisma.hostedImage.updateMany({
