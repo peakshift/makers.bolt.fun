@@ -21,7 +21,7 @@ import TagProjectInput from "../TagProjectInput/TagProjectInput";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 
 interface Props {
-  isUpdating?: boolean;
+  isSaved?: boolean;
   isPublished?: boolean;
   onSuccess?: (isDraft: boolean) => void;
   onValidationError?: () => void;
@@ -33,9 +33,11 @@ export default function StoryForm(props: Props) {
   const navigate = useNavigate();
   const { handleSubmit, control, register, trigger, getValues, watch, reset } =
     useFormContext<CreateStoryType>();
+  const [navigateToNewStoryPage, setNavigateToNewStoryPage] = useState(false);
 
   const [editMode, setEditMode] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState<"saving-draft" | "publishing" | false>(false);
   const titleInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [resetKey, setResetKey] = useState(0);
@@ -52,13 +54,13 @@ export default function StoryForm(props: Props) {
     1000
   );
   useEffect(() => {
-    if (!props.isUpdating) {
+    if (!props.isSaved) {
       const subscription = watch(({ id, is_published, ...values }) =>
         presistPost(values)
       );
       return () => subscription.unsubscribe();
     }
-  }, [presistPost, props.isUpdating, watch]);
+  }, [presistPost, props.isSaved, watch]);
 
   useEffect(() => {
     if (editMode)
@@ -88,19 +90,31 @@ export default function StoryForm(props: Props) {
 
   const [createStory] = useCreateStoryMutation({
     onCompleted: (data) => {
-      reset();
       props.storageService.clear();
       setLoading(false);
       setResetKey((v) => v + 1);
       dispatch(unstageStoryPreview());
+      reset({
+        title: "",
+        body: "",
+        id: undefined,
+        tags: [],
+        cover_image: undefined,
+        is_published: false,
+        project: undefined,
+      });
       if (data.createStory?.is_published) {
-        navigate(
-          createRoute({
-            type: "story",
-            id: data.createStory?.id!,
-            title: data.createStory?.title,
-          }),
-          { replace: true }
+        setTimeout(
+          () =>
+            navigate(
+              createRoute({
+                type: "story",
+                id: data.createStory?.id!,
+                title: data.createStory?.title,
+              }),
+              { replace: true }
+            ),
+          1000
         );
         props.onSuccess?.(!!data.createStory?.is_published);
       }
@@ -118,7 +132,7 @@ export default function StoryForm(props: Props) {
 
   const clickSubmit = (publish_now: boolean) =>
     handleSubmit<CreateStoryType>((data) => {
-      setLoading(true);
+      setLoading(publish_now ? "publishing" : "saving-draft");
       createStory({
         variables: {
           data: {
@@ -243,22 +257,32 @@ export default function StoryForm(props: Props) {
           />
         )}
         <div className="flex gap-16 mt-32">
-          <Button type="submit" color="primary" disabled={loading}>
-            {props.isUpdating
-              ? loading
-                ? "Updating..."
-                : "Update"
-              : loading
+          <Button type="submit" color="primary" disabled={!!loading}>
+            {props.isSaved
+              ? props.isPublished
+                ? loading === "publishing"
+                  ? "Updating..."
+                  : "Update"
+                : loading === "publishing"
+                ? "Publishing..."
+                : "Publish"
+              : loading === "publishing"
               ? "Publishing..."
               : "Publish"}
           </Button>
           {!props.isPublished && (
             <Button
               color="gray"
-              disabled={loading}
+              disabled={!!loading}
               onClick={clickSubmit(false)}
             >
-              Save as Draft
+              {props.isSaved
+                ? loading === "saving-draft"
+                  ? "Saving..."
+                  : "Save changes to draft"
+                : loading === "saving-draft"
+                ? "Saving as draft..."
+                : "Save as draft"}
             </Button>
           )}
         </div>

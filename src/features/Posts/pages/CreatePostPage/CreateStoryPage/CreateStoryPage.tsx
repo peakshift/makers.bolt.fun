@@ -12,7 +12,12 @@ import {
 } from "src/graphql";
 import { unstageStoryEdit } from "src/redux/features/staging.slice";
 import { StorageService } from "src/services";
-import { useAppDispatch, useAppSelector, usePreload } from "src/utils/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  usePreload,
+  useWindowPrompt,
+} from "src/utils/hooks";
 import { Override } from "src/utils/interfaces";
 import { imageSchema, tagSchema } from "src/utils/validation";
 import * as yup from "yup";
@@ -115,6 +120,8 @@ function CreateStoryPage() {
 
   usePreload("PostPage");
 
+  useWindowPrompt(formMethods.formState.isDirty);
+
   useEffect(() => {
     dispatch(unstageStoryEdit());
   }, [dispatch]);
@@ -137,13 +144,17 @@ function CreateStoryPage() {
       </div>
     );
 
+  const isPublished = !!formMethods.getValues()?.is_published;
+  const isSaved =
+    !!formMethods.getValues()?.id && formMethods.getValues()?.id! > 0;
+
   return (
     <FormProvider {...formMethods}>
       <div className={styles.grid}>
         <StoryForm
           key={formKey}
-          isPublished={!!initFormData?.is_published}
-          isUpdating={!!initFormData?.id}
+          isPublished={isPublished}
+          isSaved={isSaved}
           onSuccess={() => setStoryCreated(true)}
           onValidationError={() =>
             errorsContainerRef.current.scrollIntoView({
