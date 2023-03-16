@@ -124,7 +124,6 @@ export default function ProjectDetailsCard({
       text: project.npub,
       icon: GiOstrich,
       colors: "bg-violet-100 text-violet-600",
-      url: `https://nostr.guru/p/${project.npub}`,
       label: "Nostr Public Key",
     },
     {

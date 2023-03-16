@@ -1,6 +1,10 @@
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { User } from "src/graphql";
-import { trimText, withHttp } from "src/utils/helperFunctions";
+import {
+  extractErrorMessage,
+  trimText,
+  withHttp,
+} from "src/utils/helperFunctions";
 import {
   FiCopy,
   FiGithub,
@@ -10,13 +14,14 @@ import {
 } from "react-icons/fi";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
-import { FaCopy, FaDiscord } from "react-icons/fa";
+import { FaDiscord } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { NotificationsService } from "src/services/notifications.service";
 import { nip19 } from "nostr-tools";
 import { useMetaData } from "src/lib/nostr";
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 import IconButton from "src/Components/IconButton/IconButton";
+import { Wallet_Service } from "src/services";
 
 interface Props {
   isOwner?: boolean;
@@ -78,6 +83,40 @@ export default function AboutCard({ user, isOwner }: Props) {
       url: user.linkedin && withHttp(user.linkedin),
     },
   ];
+
+  const onTipLightningAddress = async () => {
+    try {
+      const webln = await Wallet_Service.getWebln();
+
+      if (!webln) throw new Error("No WebLN provider found");
+
+      const lnaddress = user.lightning_address!;
+      const [username, host] = lnaddress.split("@");
+
+      const url = `https://${host}/.well-known/lnurlp/${username}`;
+      const response = await fetch(url);
+      const lnurlDetails = await response.json();
+
+      const callback = new URL(lnurlDetails.callback);
+      const amount = 100 * 1000; // lnurl-pay requires milli-sats
+      callback.searchParams.set("amount", amount.toString());
+
+      const callbackResponse = await fetch(callback.toString());
+      const prDetails = await callbackResponse.json();
+
+      let paymentResponse = await webln.sendPayment(prDetails.pr);
+      if (paymentResponse.preimage) {
+        NotificationsService.success(
+          `Tipped ${trimText(user.name, 10)} 100 Sats!`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      NotificationsService.error(
+        extractErrorMessage(error) ?? "Something went wrong"
+      );
+    }
+  };
 
   return (
     <Card defaultPadding={false}>
@@ -156,11 +195,14 @@ export default function AboutCard({ user, isOwner }: Props) {
           }
 
           {
-            <p className="text-body5 font-medium">
+            <button
+              onClick={onTipLightningAddress}
+              className="text-body5 bg-amber-100 hover:bg-amber-200  self-start px-16 py-8 rounded font-medium"
+            >
               {user.lightning_address
                 ? `⚡${user.lightning_address}`
                 : "⚡ No lightning address"}
-            </p>
+            </button>
           }
 
           {
