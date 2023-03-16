@@ -11,7 +11,6 @@ import { useLinkNewNostrKeyMutation } from "src/graphql";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import { NostrToolsEvent } from "nostr-relaypool/event";
 import { CONSTS } from "src/utils";
-import { nip19 } from "nostr-tools";
 
 interface Props extends ModalCard {}
 
@@ -34,10 +33,11 @@ export default function ConnectNostrIdToProfileModal({
 My Maker Profile: https://makers.bolt.fun/profile/${me?.id}
 
 Join our FUN community of builders and designers
+#[0] 
 
-${nip19.npubEncode(CONSTS.BF_NOSTR_PUBKEY)} #BuildOnNostr #BuildOnBitcoin`,
+#BuildOnNostr #BuildOnBitcoin`,
           pubkey,
-          tags: [],
+          tags: [["p", CONSTS.BF_NOSTR_PUBKEY]],
         };
 
         const signedEvent = await window.nostr.signEvent(event);
