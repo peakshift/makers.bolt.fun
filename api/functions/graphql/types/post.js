@@ -600,6 +600,11 @@ const createStory = extendType({
                   user: {
                     select: {
                       name: true,
+                      userNostrKeys: {
+                        select: {
+                          key: true,
+                        },
+                      },
                     },
                   },
                 },
@@ -641,6 +646,11 @@ const createStory = extendType({
                   user: {
                     select: {
                       name: true,
+                      userNostrKeys: {
+                        select: {
+                          key: true,
+                        },
+                      },
                     },
                   },
                 },
@@ -671,6 +681,7 @@ const createStory = extendType({
                   url: `${env.SITE_URL}/story/${toSlug(createdStory.title)}--${
                     createdStory.id
                   }`,
+                  author_nostr_pubkey: createdStory.user.userNostrKeys[0]?.key,
                   author_name: createdStory.user.name,
                   tags,
                 })

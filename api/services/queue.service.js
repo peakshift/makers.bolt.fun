@@ -7,12 +7,21 @@ function createStoryRootEvent({
   url,
   canonical_url,
   author_name,
+  author_nostr_pubkey,
   tags,
 }) {
   return axios.post(
     env.BF_QUEUES_SERVICE_URL + "/add-job/publish-story-to-nostr",
     {
-      story: { id, title, url, canonical_url, author_name, tags },
+      story: {
+        id,
+        title,
+        url,
+        canonical_url,
+        author_name,
+        author_nostr_pubkey,
+        tags,
+      },
       callback_url: env.FUNCTIONS_URL + "/on-job-success",
     },
     {
