@@ -273,7 +273,7 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
       ],
     },
     {
-      date: "Wednesday March 23",
+      date: "Thursday March 23",
       events: [
         {
           event: "Get your pitches ready!",
