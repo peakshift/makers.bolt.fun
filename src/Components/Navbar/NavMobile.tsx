@@ -7,7 +7,7 @@ import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
 import { FiMenu } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
 import styles from "./styles.module.css";
 import "@szhsin/react-menu/dist/index.css";
@@ -60,12 +60,27 @@ export default function NavMobile() {
   const { curUser } = useAppSelector((state) => ({
     curUser: state.user.me,
   }));
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash !== "#nav-menu") toggleDrawerOpen(false);
+  }, [location.hash, toggleDrawerOpen]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     if (drawerOpen) document.body.style.overflowY = "hidden";
-    else document.body.style.overflowY = "initial";
+    else {
+      document.body.style.overflowY = "initial";
+    }
   }, [drawerOpen]);
+
+  const onToggleDrawer = (value?: boolean) => {
+    toggleDrawerOpen((v) => value ?? !v);
+    if (value === false || (!value && drawerOpen))
+      window.history.replaceState("", document.title, window.location.pathname);
+  };
 
   return (
     <div className={`${styles.navMobile}`}>
@@ -73,11 +88,12 @@ export default function NavMobile() {
         <div className="content-container">
           <div className="flex justify-between items-center">
             <div className="flex-1 flex content-start">
-              <IconButton
-                className="auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center"
-                onClick={() => toggleDrawerOpen()}
-              >
-                {!drawerOpen ? (
+              {!drawerOpen ? (
+                <IconButton
+                  className="auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center"
+                  onClick={() => onToggleDrawer(true)}
+                  href="#nav-menu"
+                >
                   <motion.div
                     key={drawerOpen ? 1 : 0}
                     variants={navBtnVariant}
@@ -86,7 +102,12 @@ export default function NavMobile() {
                   >
                     <FiMenu />
                   </motion.div>
-                ) : (
+                </IconButton>
+              ) : (
+                <IconButton
+                  className="auto text-2xl w-[50px] h-[50px] hover:bg-gray-200 self-center"
+                  onClick={() => onToggleDrawer(false)}
+                >
                   <motion.div
                     key={drawerOpen ? 1 : 0}
                     variants={navBtnVariant}
@@ -95,8 +116,8 @@ export default function NavMobile() {
                   >
                     <GrClose />
                   </motion.div>
-                )}
-              </IconButton>
+                </IconButton>
+              )}
             </div>
 
             <div className="flex-[2] flex justify-center">
@@ -184,10 +205,11 @@ export default function NavMobile() {
 
       <div className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]">
         {drawerOpen && (
-          <div
-            onClick={() => toggleDrawerOpen()}
+          <button
+            onClick={() => onToggleDrawer()}
+            tabIndex={-1}
             className="pointer-events-auto absolute left-0 w-full min-h-full bg-gray-400 opacity-20"
-          ></div>
+          ></button>
         )}
         <motion.div
           className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border px-16 flex flex-col"
@@ -196,13 +218,12 @@ export default function NavMobile() {
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
-            <Search onResultClick={() => toggleDrawerOpen(false)} />
+            <Search onResultClick={() => onToggleDrawer(false)} />
           </div>
           <ul className="flex flex-col py-16 gap-32 border-t">
             <li className="relative">
               <Link
                 to={"/projects"}
-                onClick={() => toggleDrawerOpen(false)}
                 className="text-body4 font-bold hover:text-primary-600"
               >
                 Projects
@@ -211,7 +232,6 @@ export default function NavMobile() {
             <li className="relative">
               <Link
                 to={createRoute({ type: "hangout" })}
-                onClick={() => toggleDrawerOpen(false)}
                 className="text-body4 font-bold hover:text-primary-600"
               >
                 Hangout{" "}
@@ -244,7 +264,6 @@ export default function NavMobile() {
                   <div className="flex flex-col gap-24 pt-16">
                     <Link
                       to="/tournaments/2"
-                      onClick={() => toggleDrawerOpen(false)}
                       className="font-medium flex gap-16 !rounded-12 p-8 group bg-pink-100 hover:bg-purple-100 border-2 border-pink-200 hover:border-purple-200"
                     >
                       <div className="shrink-0 bg-white border border-pink-200 group-hover:border-purple-200 w-48 h-48 rounded-full flex justify-center items-center">
@@ -252,10 +271,10 @@ export default function NavMobile() {
                       </div>
                       <div>
                         <p className="text-body4 text-black font-medium">
-                        Nostr Hack & Design{" "}
-                        <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
-                          Hot! 🔥
-                        </span>
+                          Nostr Hack & Design{" "}
+                          <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
+                            Hot! 🔥
+                          </span>
                         </p>
                         <p className="text-body5 font-normal text-gray-600 mt-4">
                           Design & Build cool social things!
@@ -264,7 +283,6 @@ export default function NavMobile() {
                     </Link>
                     <Link
                       to="/hackathons"
-                      onClick={() => toggleDrawerOpen(false)}
                       className="font-medium flex gap-16 !rounded-12"
                     >
                       <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
@@ -272,7 +290,7 @@ export default function NavMobile() {
                       </div>
                       <div>
                         <p className="text-body4 text-black font-medium">
-                        Upcoming Hackathons
+                          Upcoming Hackathons
                         </p>
                         <p className="text-body5 font-normal text-gray-600 mt-4">
                           Take part in hackathons & tournaments
@@ -281,7 +299,6 @@ export default function NavMobile() {
                     </Link>
                     <Link
                       to="/tournaments/1"
-                      onClick={() => toggleDrawerOpen(false)}
                       className="font-medium flex gap-16 !rounded-12 "
                     >
                       <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
@@ -299,7 +316,6 @@ export default function NavMobile() {
                     </Link>
                     <a
                       href="mailto:team@peakshift.com"
-                      onClick={() => toggleDrawerOpen(false)}
                       className="font-medium flex gap-16 !rounded-12"
                     >
                       <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
@@ -331,7 +347,6 @@ export default function NavMobile() {
             <li className="relative">
               <Link
                 to={"/donate"}
-                onClick={() => toggleDrawerOpen(false)}
                 className="text-body4 font-bold hover:text-primary-600"
               >
                 Donate
@@ -341,7 +356,6 @@ export default function NavMobile() {
               <li className="relative">
                 <Link
                   to={"/logout"}
-                  onClick={() => toggleDrawerOpen(false)}
                   className="text-body4 font-bold hover:text-primary-600"
                 >
                   Logout 👋
