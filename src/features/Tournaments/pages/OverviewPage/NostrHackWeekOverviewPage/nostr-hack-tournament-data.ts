@@ -304,14 +304,6 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
           type: "Presentation",
         },
         {
-          event: "Closing Ceremony",
-          time: "10:00 - 11:30",
-          timezone: "UTC",
-          location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
-          type: "Presentation",
-        },
-        {
           event: "Deadline to post remaining pitches",
           time: "23:59",
           timezone: "UTC",
