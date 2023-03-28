@@ -74,3 +74,25 @@ const handler = serverless(app);
 exports.handler = async (event, context) => {
   return await handler(event, context);
 };
+
+function getCookieConfig() {
+  if (
+    env.NODE_ENV === "development" ||
+    !env.FUNCTIONS_URL.startsWith("https://master--makers-bolt-fun.netlify.app")
+  )
+    return {
+      maxAge: 3600000 * 24 * 30,
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+    };
+
+  return {
+    maxAge: 3600000 * 24 * 30,
+    secure: true,
+    httpOnly: true,
+    domain: `.bolt.fun`,
+  };
+}
+
+exports.getCookieConfig = getCookieConfig;
