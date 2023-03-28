@@ -23,7 +23,7 @@ export default function ApplyForm() {
 
   return (
     <form
-      className="bg-gray-900 flex flex-col items-center gap-40 p-24 md:p-42 rounded-r"
+      className="bg-gray-900 flex flex-col items-center gap-40 p-24 md:p-42 rounded-b md:rounded-r"
       onSubmit={onSubmit}
     >
       <div className="">

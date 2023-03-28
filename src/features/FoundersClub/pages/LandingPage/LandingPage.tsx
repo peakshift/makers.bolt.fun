@@ -31,7 +31,7 @@ export default function LandingPage() {
               </div>
             </div>
           </aside>
-          <main className="relative md:col-span-3 bg-white rounded px-24 md:px-80 py-80 md:pt-[160px] flex flex-col gap-[160px]">
+          <main className="relative md:col-span-3 bg-white rounded px-24 max-md:-mx-16 md:px-80 py-80 md:pt-[160px] flex flex-col gap-[160px]">
             <div className="absolute w-full inset-x-0 top-0 ">
               <img src={BgImage} alt="" className="w-full" />
               <div className="bg-gray-100 absolute inset-0 bg-opacity-40 xl:bg-opacity-10"></div>
@@ -142,8 +142,8 @@ export default function LandingPage() {
             </section>
             <section>
               <div className="grid md:grid-cols-2 gap-24 items-center">
-                <img src={HangoutImage} alt="" />
-                <div className="text-right flex flex-col gap-24 items-end">
+                <img src={HangoutImage} alt="" className="order-2" />
+                <div className="md:text-right flex flex-col gap-24 md:items-end">
                   <span className="bg-gray-200 w-48 aspect-square rounded-12 text-blue-500 flex flex-col justify-center items-center text-body1">
                     <FiUsers />
                   </span>
@@ -234,7 +234,7 @@ export default function LandingPage() {
               </div>
             </section>
             <section id="mission-0">
-              <div className="bg-gray-900 rounded p-48 text-center flex flex-col gap-24">
+              <div className="bg-gray-900 rounded p-24 md:p-48 text-center flex flex-col gap-24">
                 <span className="bg-gray-800 text-blue-400 px-24 py-12 rounded self-center">
                   MISSION #0
                 </span>
@@ -280,7 +280,7 @@ export default function LandingPage() {
               </div>
             </section>
             <section>
-              <div className="bg-gray-50 rounded grid grid-cols-2">
+              <div className="bg-gray-50 rounded grid md:grid-cols-2">
                 <div className="flex flex-col justify-center items-center gap-40 p-24 md:p-42">
                   <div className="">
                     <h2 className="text-body1 text-center font-bolder text-primary-500 bg-gradient-to-r from-blue-500 to-violet-400 bg-clip-text text-transparent">
