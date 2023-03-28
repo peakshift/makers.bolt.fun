@@ -1,7 +1,6 @@
 const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
-const env = require("../../utils/consts");
 const { getCookieConfig } = require("../is-logged-in/is-logged-in");
 
 const logoutHandler = (req, res, next) => {

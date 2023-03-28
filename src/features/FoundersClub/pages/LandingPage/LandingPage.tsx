@@ -226,7 +226,11 @@ export default function LandingPage() {
                     <span className="text-gray-300 font-light">(soon)</span>
                   </Button>
                 </div>
-                <img src={PerksImage} alt="" />
+                <img
+                  src={PerksImage}
+                  alt=""
+                  className="translate-x-24 md:translate-x-80"
+                />
               </div>
             </section>
             <section id="mission-0">
