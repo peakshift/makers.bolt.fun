@@ -785,7 +785,7 @@ const isClubInvitationValid = extendType({
         invitationCode: nonNull(stringArg()),
       },
       async resolve(parent, { invitationCode }, context, info) {
-        return ClubInvitationStatus.value.members["DECLINED"];
+        return ClubInvitationStatus.value.members["UNUSED"];
       },
     });
   },
