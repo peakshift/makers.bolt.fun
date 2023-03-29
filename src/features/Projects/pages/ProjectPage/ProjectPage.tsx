@@ -63,7 +63,7 @@ export default function ProjectPage() {
         </div>
         <div className="absolute left-24 bottom-0 translate-y-1/2 w-[108px] aspect-square">
           <img
-            className="w-full h-full border-2 border-white rounded-24"
+            className="w-full h-full border-2 bg-white border-white rounded-24"
             src={project.thumbnail_image!}
             alt=""
           />
