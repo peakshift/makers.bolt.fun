@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { ValueContainerProps, components } from "react-select";
 import Button from "src/Components/Button/Button";
 import BasicSelectInput from "src/Components/Inputs/Selects/BasicSelectInput/BasicSelectInput";
-import { MyProjectsQuery, useMyProjectsQuery } from "src/graphql";
+import {
+  MyProjectsQuery,
+  useApplyToFoundersClubMutation,
+  useMyProjectsQuery,
+} from "src/graphql";
+import { NotificationsService } from "src/services";
+import { extractErrorMessage } from "src/utils/helperFunctions";
 import { useAppSelector } from "src/utils/hooks";
 
 type Project = NonNullable<MyProjectsQuery["me"]>["projects"][number];
@@ -13,12 +19,36 @@ export default function ApplyForm() {
 
   const isLoggedIn = useAppSelector((state) => !!state.user.me?.id);
 
+  const [sendApplication, { loading }] = useApplyToFoundersClubMutation();
+
   const query = useMyProjectsQuery();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSelectedProject(null);
-    setReasonInput("");
+
+    if (!selectedProject) return;
+    if (!reasonInput) return;
+
+    sendApplication({
+      variables: {
+        data: {
+          project_id: selectedProject?.id,
+          reason: reasonInput,
+        },
+      },
+      onCompleted: (data) => {
+        NotificationsService.success("Your Application was sent successfully!");
+        setSelectedProject(null);
+        setReasonInput("");
+      },
+      onError: (error) => {
+        NotificationsService.error(
+          extractErrorMessage(error) ??
+            "Unexpected error happened, please try again",
+          { error }
+        );
+      },
+    });
   };
 
   return (
@@ -93,7 +123,12 @@ export default function ApplyForm() {
           />
         </div>
       </div>
-      <Button type="submit" color="primary" fullWidth disabled={!isLoggedIn}>
+      <Button
+        type="submit"
+        color="primary"
+        fullWidth
+        disabled={!isLoggedIn || loading}
+      >
         Apply {isLoggedIn ? "" : " (login to apply)"}
       </Button>
     </form>

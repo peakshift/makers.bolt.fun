@@ -1,5 +1,9 @@
-import { ApolloClient, QueryOptions } from "@apollo/client";
+import { ApolloClient, QueryOptions as BaseQueryOptions } from "@apollo/client";
 import { LoaderFunctionArgs } from "react-router-dom";
+
+type QueryOptions<TQueryVars> = BaseQueryOptions<TQueryVars> & {
+  skip?: boolean;
+};
 
 export function createLoader<TQueryVars>(
   createQueryOptions: (args: LoaderFunctionArgs) => QueryOptions<TQueryVars>
@@ -28,6 +32,8 @@ export function createLoader<TQueryVars, TProps>(
       const queryOptions = props
         ? createQueryOptions(args, props)
         : createQueryOptions(args);
+
+      if (queryOptions.skip) return null;
       return (await queryClient.query(queryOptions)).data;
     };
 }

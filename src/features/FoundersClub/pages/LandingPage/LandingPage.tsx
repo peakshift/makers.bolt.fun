@@ -9,8 +9,29 @@ import PerksImage from "./assets/perks.png";
 import Button from "src/Components/Button/Button";
 import { FiSmile, FiTarget, FiUsers } from "react-icons/fi";
 import ApplyForm from "./Components/ApplyForm";
+import { useLoaderData } from "react-router-dom";
+import { Club_Invitation_Status } from "src/graphql";
+import { LoaderData } from "./foundersLandingPage.loader";
+import { useEffect } from "react";
+
+let showedAlert = false;
 
 export default function LandingPage() {
+  const loaderData = useLoaderData() as LoaderData;
+
+  const invitationStatus = loaderData?.isClubInvitationValid;
+
+  useEffect(() => {
+    if (showedAlert) return;
+    if (invitationStatus === Club_Invitation_Status.Invalid)
+      alert("Invalid invitation code...");
+    if (invitationStatus === Club_Invitation_Status.Declined)
+      alert("You have already declined the invitation...");
+    if (invitationStatus === Club_Invitation_Status.Accepted)
+      alert("You have already accepted the invitation...");
+    showedAlert = true;
+  }, [invitationStatus]);
+
   return (
     <>
       <OgTags
@@ -48,32 +69,34 @@ export default function LandingPage() {
                     their ideas, connect, learn and share their experiences.
                   </p>
                 </div>
-                <div className="basis-[326px] mx-auto bg-gray-800 rounded p-16 text-white relative">
-                  {" "}
-                  <img
-                    src={JohnsAvatar}
-                    alt=""
-                    className="absolute w-[100px] top-0 right-0 -translate-y-1/4 translate-x-1/4"
-                  />
-                  <p className="text-body2 font-bold mb-4">
-                    Claim your invitation
-                  </p>
-                  <p className="text-body4 font-light">
-                    Hey it’s Johns here! <br />
-                    <br /> We think you’d be a great fit for our new members
-                    only community wanted to see if you wanted to be a part of
-                    it before we officially launch.
-                    <br />
-                    <br /> Check out the rest of the page and let us know if
-                    you’d like to join!
-                  </p>
-                  <Button color="primary" fullWidth className="mt-32">
-                    Accept Invitation
-                  </Button>
-                  <Button color="gray" fullWidth className="mt-16">
-                    Sorry, I’m not interested
-                  </Button>
-                </div>
+                {invitationStatus === Club_Invitation_Status.Unused && (
+                  <div className="basis-[326px] mx-auto bg-gray-800 rounded p-16 text-white relative">
+                    {" "}
+                    <img
+                      src={JohnsAvatar}
+                      alt=""
+                      className="absolute w-[100px] top-0 right-0 -translate-y-1/4 translate-x-1/4"
+                    />
+                    <p className="text-body2 font-bold mb-4">
+                      Claim your invitation
+                    </p>
+                    <p className="text-body4 font-light">
+                      Hey it’s Johns here! <br />
+                      <br /> We think you’d be a great fit for our new members
+                      only community wanted to see if you wanted to be a part of
+                      it before we officially launch.
+                      <br />
+                      <br /> Check out the rest of the page and let us know if
+                      you’d like to join!
+                    </p>
+                    <Button color="primary" fullWidth className="mt-32">
+                      Accept Invitation
+                    </Button>
+                    <Button color="gray" fullWidth className="mt-16">
+                      Sorry, I’m not interested
+                    </Button>
+                  </div>
+                )}
               </div>
             </header>
             <section>
@@ -142,7 +165,7 @@ export default function LandingPage() {
             </section>
             <section>
               <div className="grid md:grid-cols-2 gap-24 items-center">
-                <img src={HangoutImage} alt="" className="order-2" />
+                <img src={HangoutImage} alt="" className="max-md:order-2" />
                 <div className="md:text-right flex flex-col gap-24 md:items-end">
                   <span className="bg-gray-200 w-48 aspect-square rounded-12 text-blue-500 flex flex-col justify-center items-center text-body1">
                     <FiUsers />

@@ -75,6 +75,13 @@ type BountyApplication {
   workplan: String!
 }
 
+enum CLUB_INVITATION_STATUS {
+  ACCEPTED
+  DECLINED
+  INVALID
+  UNUSED
+}
+
 type Capability {
   icon: String!
   id: Int!
@@ -194,7 +201,9 @@ input MakerSkillInput {
 }
 
 type Mutation {
+  acceptOrRejectClubInvitation(data: acceptOrRejectClubInvitationInput): String!
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
+  applyToFoundersClub(data: applyToFoundersClubInput): String!
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createProject(input: CreateProjectInput): CreateProjectResponse
@@ -368,6 +377,7 @@ type Query {
   getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
+  isClubInvitationValid(invitationCode: String!): CLUB_INVITATION_STATUS!
   me: User
   newProjects(skip: Int = 0, take: Int = 20): [Project!]!
   officialTags: [Tag!]!
@@ -651,4 +661,15 @@ type WalletKey {
   is_current: Boolean!
   key: String!
   name: String!
+}
+
+input acceptOrRejectClubInvitationInput {
+  code: String!
+  email: String
+  isAccepted: Boolean!
+}
+
+input applyToFoundersClubInput {
+  project_id: Int!
+  reason: String!
 }

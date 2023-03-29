@@ -19,6 +19,7 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 import { Post_Type } from "src/graphql";
+import { foundersClubLandingPageLoader } from "src/features/FoundersClub/pages/LandingPage/foundersLandingPage.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -292,6 +293,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route
           path={PAGES_ROUTES.foundersClub.default}
+          loader={foundersClubLandingPageLoader(queryClient)}
           element={<FoundersClubLandingPage />}
         />
 

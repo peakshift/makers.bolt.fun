@@ -1,0 +1,7 @@
+query IsClubInvitationValid($invitationCode: String!) {
+  isClubInvitationValid(invitationCode: $invitationCode)
+}
+
+mutation ApplyToFoundersClub($data: applyToFoundersClubInput) {
+  applyToFoundersClub(data: $data)
+}
