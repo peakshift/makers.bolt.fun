@@ -80,19 +80,19 @@ model User {
 
   join_date DateTime @default(now())
 
-  stories        Story[]
-  questions      Question[]
-  posts_comments PostComment[]
-  donations      Donation[]
-  userKeys       UserKey[]
-  userNostrKeys  UserNostrKey[]
-  skills         Skill[]
-  roles          UsersOnWorkRoles[]
-  projects       ProjectMember[]
-  moderating     Tag[]
-  votes          Vote[]
-
-  tournaments TournamentParticipant[]
+  stories                  Story[]
+  questions                Question[]
+  posts_comments           PostComment[]
+  donations                Donation[]
+  userKeys                 UserKey[]
+  userNostrKeys            UserNostrKey[]
+  skills                   Skill[]
+  roles                    UsersOnWorkRoles[]
+  projects                 ProjectMember[]
+  moderating               Tag[]
+  votes                    Vote[]
+  founders_club_membership FoundersClubMember?
+  tournaments              TournamentParticipant[]
 }
 
 model UserKey {
@@ -498,4 +498,19 @@ model Capability {
   icon    String?
   project Project[]
   tags    Tag[]
+}
+
+model FoundersClubInvitation {
+  id        Int      @id @default(autoincrement())
+  code      String
+  status    String // unused, accepted, rejected
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FoundersClubMember {
+  id      Int    @id @default(autoincrement())
+  email   String
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id Int    @unique // relation scalar field (used in the `@relation` attribute above)
 }
