@@ -44,9 +44,11 @@ export default function LandingPage() {
           grid grid-cols-[24px_1fr_24px] md:grid-cols-[80px_1fr_80px]
           max-md:-mx-16 py-80 "
           >
-            <div className="bg-primary-500 text-white absolute inset-x-0 top-0 z-10 px-16 py-4 font-bold text-center">
-              You are a valuable member of the Founders Club! ✨
-            </div>
+            {loaderData?.me?.is_in_founders_club && (
+              <div className="bg-primary-500 text-white absolute inset-x-0 top-0 z-10 px-16 py-4 font-bold text-center">
+                You are a valuable member of the Founders Club! ✨
+              </div>
+            )}
             <div className="col-start-2 col-end-3 flex flex-col gap-y-[160px]">
               <div className="absolute w-full inset-x-0 top-0 ">
                 <img src={BgImage} alt="" className="w-full" />
