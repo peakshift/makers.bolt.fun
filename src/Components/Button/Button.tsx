@@ -87,15 +87,15 @@ const Button = React.forwardRef<any, Props>(
     },
     ref
   ) => {
-    let classes = `
-    inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center relative
-    ${baseBtnStyles[variant]}
-    ${btnPadding[size]}
-    ${variant === "fill" ? btnStylesFill[color] : btnStylesOutline[color]}
-    ${isLoading && disableOnLoading && "bg-opacity-70 pointer-events-none"}
-    ${fullWidth && "w-full"}
-    ${disabled && "opacity-80 pointer-events-none"}
-    `;
+    let classes = createButtonStyleClasses({
+      color,
+      variant,
+      size,
+      fullWidth,
+      disabled,
+      isLoading,
+      disableOnLoading,
+    });
 
     const onClick = props.onClick;
 
@@ -149,5 +149,36 @@ const Button = React.forwardRef<any, Props>(
     );
   }
 );
+
+export function createButtonStyleClasses({
+  color = "white",
+  variant = "fill",
+  size = "md",
+  disabled,
+  fullWidth,
+  isLoading,
+  disableOnLoading,
+}: Pick<
+  Props,
+  | "variant"
+  | "size"
+  | "color"
+  | "fullWidth"
+  | "isLoading"
+  | "disabled"
+  | "disableOnLoading"
+>) {
+  let classes = `
+  inline-block font-sans rounded-lg font-regular hover:cursor-pointer text-center relative
+  ${baseBtnStyles[variant]}
+  ${btnPadding[size]}
+  ${variant === "fill" ? btnStylesFill[color] : btnStylesOutline[color]}
+  ${isLoading && disableOnLoading && "bg-opacity-70 pointer-events-none"}
+  ${fullWidth && "w-full"}
+  ${disabled && "opacity-80 pointer-events-none"}
+  `;
+
+  return classes;
+}
 
 export default Button;

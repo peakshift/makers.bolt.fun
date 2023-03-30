@@ -31,6 +31,7 @@ interface BaseUser {
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
+  is_in_founders_club: Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String
@@ -201,7 +202,7 @@ input MakerSkillInput {
 }
 
 type Mutation {
-  acceptOrRejectClubInvitation(data: acceptOrRejectClubInvitationInput): String!
+  acceptOrRejectClubInvitation(data: acceptOrRejectClubInvitationInput): User!
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
   applyToFoundersClub(data: applyToFoundersClubInput): String!
   confirmDonation(payment_request: String!, preimage: String!): Donation!
@@ -377,7 +378,7 @@ type Query {
   getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
-  isClubInvitationValid(invitationCode: String!): CLUB_INVITATION_STATUS!
+  isClubInvitationValid(invitationCode: String): CLUB_INVITATION_STATUS
   me: User
   newProjects(skip: Int = 0, take: Int = 20): [Project!]!
   officialTags: [Tag!]!
@@ -605,6 +606,7 @@ type User implements BaseUser {
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
+  is_in_founders_club: Boolean!
   jobTitle: String
   join_date: Date!
   lightning_address: String

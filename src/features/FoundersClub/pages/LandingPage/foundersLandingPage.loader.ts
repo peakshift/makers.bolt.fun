@@ -1,22 +1,21 @@
 import { createLoader } from "src/utils/routing/helpers";
 import {
-  IsClubInvitationValidDocument,
-  IsClubInvitationValidQuery,
-  IsClubInvitationValidQueryVariables,
+  FounderClubLandingPageDocument,
+  FounderClubLandingPageQuery,
+  FounderClubLandingPageQueryVariables,
 } from "src/graphql";
 
-export type LoaderData = IsClubInvitationValidQuery | null;
+export type LoaderData = FounderClubLandingPageQuery | null;
 
 export const foundersClubLandingPageLoader =
-  createLoader<IsClubInvitationValidQueryVariables>(({ request }) => {
+  createLoader<FounderClubLandingPageQueryVariables>(({ request }) => {
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
 
     return {
-      query: IsClubInvitationValidDocument,
+      query: FounderClubLandingPageDocument,
       variables: {
-        invitationCode: code!,
+        invitationCode: code,
       },
-      skip: !code,
     };
   });

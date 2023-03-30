@@ -175,6 +175,7 @@ export const users: User[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
+    is_in_founders_club: true,
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -228,6 +229,7 @@ export const users: User[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
+    is_in_founders_club: true,
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -282,6 +284,7 @@ export const users: User[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
+    is_in_founders_club: true,
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
@@ -336,6 +339,7 @@ export const users: User[] = [
     website: "https://mtg-dev.tech",
     stories: posts.stories,
     in_tournament: true,
+    is_in_founders_club: true,
     roles: randomItems(3, ...allMakersRoles).map((role) => ({
       ...role,
       level: randomItem(...Object.values(RoleLevelEnum)),
