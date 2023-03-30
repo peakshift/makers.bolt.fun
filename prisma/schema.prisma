@@ -502,7 +502,7 @@ model Capability {
 
 model FoundersClubInvitation {
   id        Int      @id @default(autoincrement())
-  code      String
+  code      String   @unique
   status    String // unused, accepted, rejected
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
