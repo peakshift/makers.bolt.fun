@@ -12,19 +12,23 @@ import NostrSettingsTab from "./NostrSettingsTab/NostrSettingsTab";
 
 const links = [
   {
-    text: "🤠  Basic information",
+    icon: "🤠",
+    text: "Basic information",
     path: "basic-info",
   },
   {
-    text: "🎛️  Roles & Skills",
+    icon: "🎛️",
+    text: "Roles & Skills",
     path: "roles-skills",
   },
   {
-    text: "🦩  Nostr Settings",
+    icon: "🦩",
+    text: "Nostr Settings",
     path: "nostr",
   },
   {
-    text: "🔐  Security",
+    icon: "🔐",
+    text: "Security",
     path: "auth",
   },
 ];
@@ -62,6 +66,9 @@ export default function EditProfilePage() {
                                 ${isActive ? "bg-gray-100" : "hover:bg-gray-50"}
                                 `}
                       >
+                        <span className="mr-4" aria-hidden>
+                          {link.icon}
+                        </span>{" "}
                         {link.text}
                       </NavLink>
                     </li>
@@ -84,6 +91,9 @@ export default function EditProfilePage() {
                             : "none",
                         })}
                       >
+                        <span className="mr-4" aria-hidden>
+                          {link.icon}
+                        </span>{" "}
                         {link.text}
                       </NavLink>
                     ))}

@@ -50,6 +50,33 @@ export default function FeedPage() {
       />
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
+          <aside id="categories" className="no-scrollbar">
+            <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
+              <h1
+                className={`${
+                  tagFilter && "hidden"
+                } md:block text-h3 font-bolder order-1`}
+              >
+                {randomWelcomeMessage}
+              </h1>
+              <div className="order-3 md:order-2">
+                <Button
+                  href={createRoute({ type: "write-story" })}
+                  color="primary"
+                  fullWidth
+                  onClick={() => dispatch(stageStoryEdit(null))}
+                >
+                  Write a story
+                </Button>
+              </div>
+              <div className="order-2 md:order-3">
+                <FeedTagsFilter
+                  value={tagFilter}
+                  onChange={setTagFilter as any}
+                />
+              </div>
+            </div>
+          </aside>
           <div id="title">
             {tagFilter && (
               <p className="text-body6 text-gray-500 font-medium mb-8">
@@ -83,33 +110,6 @@ export default function FeedPage() {
               onReachedBottom={fetchMore}
             />
           </div>
-          <aside id="categories" className="no-scrollbar">
-            <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-              <h1
-                className={`${
-                  tagFilter && "hidden"
-                } md:block text-h3 font-bolder order-1`}
-              >
-                {randomWelcomeMessage}
-              </h1>
-              <div className="order-3 md:order-2">
-                <Button
-                  href={createRoute({ type: "write-story" })}
-                  color="primary"
-                  fullWidth
-                  onClick={() => dispatch(stageStoryEdit(null))}
-                >
-                  Write a story
-                </Button>
-              </div>
-              <div className="order-2 md:order-3">
-                <FeedTagsFilter
-                  value={tagFilter}
-                  onChange={setTagFilter as any}
-                />
-              </div>
-            </div>
-          </aside>
           <aside id="side" className="no-scrollbar">
             <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
               <TrendingCard />

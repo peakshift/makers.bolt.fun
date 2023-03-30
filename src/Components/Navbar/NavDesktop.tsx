@@ -32,11 +32,21 @@ export default function NavDesktop() {
       <div className="content-container">
         <div className="flex items-center">
           <Link to="/">
-            <h2 className="text-h5 font-bold mr-40 lg:mr-64">
-              <img className="h-40" src={ASSETS.Logo} alt="Bolt fun logo" />
-            </h2>
+            <img
+              className="h-40 mr-40 lg:mr-64"
+              src={ASSETS.Logo}
+              alt="Bolt fun logo"
+            />
           </Link>
           <ul className="flex gap-32 xl:gap-64">
+            <li className="relative">
+              <Link
+                to={"/feed"}
+                className="text-body4 font-bold hover:text-primary-600"
+              >
+                Feed
+              </Link>
+            </li>
             <li className="relative">
               <Link
                 to={"/projects"}
