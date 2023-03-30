@@ -32,6 +32,8 @@ export default function LandingPage() {
     showedAlert = true;
   }, [invitationStatus]);
 
+  const showInvitationCard = invitationStatus != null;
+
   return (
     <>
       <OgTags
@@ -59,11 +61,15 @@ export default function LandingPage() {
             </div>
             <header className="relative">
               <div className="flex flex-wrap gap-16 gap-y-32 justify-between items-center">
-                <div className="grow basis-[440px]">
-                  <h1 className="text-h2 md:text-[55px] md:leading-[140%] text-primary-500 bg-gradient-to-r from-blue-500 to-violet-400 font-bolder bg-clip-text text-transparent inline-block">
+                <div
+                  className={`grow basis-[440px] max-md:text-center ${
+                    !showInvitationCard && "text-center"
+                  }`}
+                >
+                  <h1 className="text-h1 md:text-[55px] md:leading-[140%] text-primary-500 bg-gradient-to-r from-blue-500 to-violet-400 font-bolder bg-clip-text text-transparent inline-block">
                     Founders Club
                   </h1>
-                  <p className="text-body2 font-medium mb-8 text-gray-700">
+                  <p className="text-body2 font-medium mb-8 mx-auto text-gray-700 max-w-[60ch]">
                     The Founders Club is an exclusive space on BOLT.FUN that
                     offers a safe and supportive environment for makers to pitch
                     their ideas, connect, learn and share their experiences.
