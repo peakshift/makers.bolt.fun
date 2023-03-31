@@ -48,6 +48,7 @@ export type BaseUser = {
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
+  is_in_founders_club: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
@@ -98,6 +99,13 @@ export type BountyApplication = {
   id: Scalars['Int'];
   workplan: Scalars['String'];
 };
+
+export enum Club_Invitation_Status {
+  Accepted = 'ACCEPTED',
+  Declined = 'DECLINED',
+  Invalid = 'INVALID',
+  Unused = 'UNUSED'
+}
 
 export type Capability = {
   __typename?: 'Capability';
@@ -226,7 +234,9 @@ export type MakerSkillInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptOrRejectClubInvitation: User;
   addProjectToTournament: Maybe<ParticipationInfo>;
+  applyToFoundersClub: Scalars['String'];
   confirmDonation: Donation;
   confirmVote: Vote;
   createProject: Maybe<CreateProjectResponse>;
@@ -246,8 +256,18 @@ export type Mutation = {
 };
 
 
+export type MutationAcceptOrRejectClubInvitationArgs = {
+  data: InputMaybe<AcceptOrRejectClubInvitationInput>;
+};
+
+
 export type MutationAddProjectToTournamentArgs = {
   input: InputMaybe<AddProjectToTournamentInput>;
+};
+
+
+export type MutationApplyToFoundersClubArgs = {
+  data: InputMaybe<ApplyToFoundersClubInput>;
 };
 
 
@@ -504,6 +524,7 @@ export type Query = {
   getTournamentToRegister: Array<Tournament>;
   getTrendingPosts: Array<Post>;
   hottestProjects: Array<Project>;
+  isClubInvitationValid: Maybe<Club_Invitation_Status>;
   me: Maybe<User>;
   newProjects: Array<Project>;
   officialTags: Array<Tag>;
@@ -621,6 +642,11 @@ export type QueryGetTournamentByIdArgs = {
 export type QueryHottestProjectsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryIsClubInvitationValidArgs = {
+  invitationCode: InputMaybe<Scalars['String']>;
 };
 
 
@@ -913,6 +939,7 @@ export type User = BaseUser & {
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
+  is_in_founders_club: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
@@ -979,6 +1006,17 @@ export type WalletKey = {
   name: Scalars['String'];
 };
 
+export type AcceptOrRejectClubInvitationInput = {
+  code: Scalars['String'];
+  email?: InputMaybe<Scalars['String']>;
+  isAccepted: Scalars['Boolean'];
+};
+
+export type ApplyToFoundersClubInput = {
+  project_id: Scalars['Int'];
+  reason: Scalars['String'];
+};
+
 export type OfficialTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1027,6 +1065,27 @@ export type ConfirmDonationMutationVariables = Exact<{
 
 
 export type ConfirmDonationMutation = { __typename?: 'Mutation', confirmDonation: { __typename?: 'Donation', id: number, amount: number, paid: boolean } };
+
+export type FounderClubLandingPageQueryVariables = Exact<{
+  invitationCode: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FounderClubLandingPageQuery = { __typename?: 'Query', isClubInvitationValid: Club_Invitation_Status | null, me: { __typename?: 'User', id: number, is_in_founders_club: boolean } | null };
+
+export type ApplyToFoundersClubMutationVariables = Exact<{
+  data: InputMaybe<ApplyToFoundersClubInput>;
+}>;
+
+
+export type ApplyToFoundersClubMutation = { __typename?: 'Mutation', applyToFoundersClub: string };
+
+export type AcceptOrRejectClubInvitationMutationVariables = Exact<{
+  data: InputMaybe<AcceptOrRejectClubInvitationInput>;
+}>;
+
+
+export type AcceptOrRejectClubInvitationMutation = { __typename?: 'Mutation', acceptOrRejectClubInvitation: { __typename?: 'User', id: number, is_in_founders_club: boolean } };
 
 export type GetHackathonsQueryVariables = Exact<{
   sortBy: InputMaybe<Scalars['String']>;
@@ -1766,6 +1825,108 @@ export function useConfirmDonationMutation(baseOptions?: Apollo.MutationHookOpti
 export type ConfirmDonationMutationHookResult = ReturnType<typeof useConfirmDonationMutation>;
 export type ConfirmDonationMutationResult = Apollo.MutationResult<ConfirmDonationMutation>;
 export type ConfirmDonationMutationOptions = Apollo.BaseMutationOptions<ConfirmDonationMutation, ConfirmDonationMutationVariables>;
+export const FounderClubLandingPageDocument = gql`
+    query FounderClubLandingPage($invitationCode: String) {
+  isClubInvitationValid(invitationCode: $invitationCode)
+  me {
+    id
+    is_in_founders_club
+  }
+}
+    `;
+
+/**
+ * __useFounderClubLandingPageQuery__
+ *
+ * To run a query within a React component, call `useFounderClubLandingPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFounderClubLandingPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFounderClubLandingPageQuery({
+ *   variables: {
+ *      invitationCode: // value for 'invitationCode'
+ *   },
+ * });
+ */
+export function useFounderClubLandingPageQuery(baseOptions?: Apollo.QueryHookOptions<FounderClubLandingPageQuery, FounderClubLandingPageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FounderClubLandingPageQuery, FounderClubLandingPageQueryVariables>(FounderClubLandingPageDocument, options);
+      }
+export function useFounderClubLandingPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FounderClubLandingPageQuery, FounderClubLandingPageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FounderClubLandingPageQuery, FounderClubLandingPageQueryVariables>(FounderClubLandingPageDocument, options);
+        }
+export type FounderClubLandingPageQueryHookResult = ReturnType<typeof useFounderClubLandingPageQuery>;
+export type FounderClubLandingPageLazyQueryHookResult = ReturnType<typeof useFounderClubLandingPageLazyQuery>;
+export type FounderClubLandingPageQueryResult = Apollo.QueryResult<FounderClubLandingPageQuery, FounderClubLandingPageQueryVariables>;
+export const ApplyToFoundersClubDocument = gql`
+    mutation ApplyToFoundersClub($data: applyToFoundersClubInput) {
+  applyToFoundersClub(data: $data)
+}
+    `;
+export type ApplyToFoundersClubMutationFn = Apollo.MutationFunction<ApplyToFoundersClubMutation, ApplyToFoundersClubMutationVariables>;
+
+/**
+ * __useApplyToFoundersClubMutation__
+ *
+ * To run a mutation, you first call `useApplyToFoundersClubMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useApplyToFoundersClubMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [applyToFoundersClubMutation, { data, loading, error }] = useApplyToFoundersClubMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useApplyToFoundersClubMutation(baseOptions?: Apollo.MutationHookOptions<ApplyToFoundersClubMutation, ApplyToFoundersClubMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ApplyToFoundersClubMutation, ApplyToFoundersClubMutationVariables>(ApplyToFoundersClubDocument, options);
+      }
+export type ApplyToFoundersClubMutationHookResult = ReturnType<typeof useApplyToFoundersClubMutation>;
+export type ApplyToFoundersClubMutationResult = Apollo.MutationResult<ApplyToFoundersClubMutation>;
+export type ApplyToFoundersClubMutationOptions = Apollo.BaseMutationOptions<ApplyToFoundersClubMutation, ApplyToFoundersClubMutationVariables>;
+export const AcceptOrRejectClubInvitationDocument = gql`
+    mutation AcceptOrRejectClubInvitation($data: acceptOrRejectClubInvitationInput) {
+  acceptOrRejectClubInvitation(data: $data) {
+    id
+    is_in_founders_club
+  }
+}
+    `;
+export type AcceptOrRejectClubInvitationMutationFn = Apollo.MutationFunction<AcceptOrRejectClubInvitationMutation, AcceptOrRejectClubInvitationMutationVariables>;
+
+/**
+ * __useAcceptOrRejectClubInvitationMutation__
+ *
+ * To run a mutation, you first call `useAcceptOrRejectClubInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptOrRejectClubInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptOrRejectClubInvitationMutation, { data, loading, error }] = useAcceptOrRejectClubInvitationMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAcceptOrRejectClubInvitationMutation(baseOptions?: Apollo.MutationHookOptions<AcceptOrRejectClubInvitationMutation, AcceptOrRejectClubInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptOrRejectClubInvitationMutation, AcceptOrRejectClubInvitationMutationVariables>(AcceptOrRejectClubInvitationDocument, options);
+      }
+export type AcceptOrRejectClubInvitationMutationHookResult = ReturnType<typeof useAcceptOrRejectClubInvitationMutation>;
+export type AcceptOrRejectClubInvitationMutationResult = Apollo.MutationResult<AcceptOrRejectClubInvitationMutation>;
+export type AcceptOrRejectClubInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptOrRejectClubInvitationMutation, AcceptOrRejectClubInvitationMutationVariables>;
 export const GetHackathonsDocument = gql`
     query getHackathons($sortBy: String, $tag: Int) {
   getAllHackathons(sortBy: $sortBy, tag: $tag) {

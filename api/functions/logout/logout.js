@@ -1,21 +1,12 @@
 const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
+const { getCookieConfig } = require("../is-logged-in/is-logged-in");
 
 const logoutHandler = (req, res, next) => {
-  res
-    .clearCookie("Authorization", {
-      secure: true,
-      httpOnly: true,
-      sameSite: "none",
-    })
-    .clearCookie("Authorization", {
-      secure: true,
-      httpOnly: true,
-      domain: `.bolt.fun`,
-    })
-    .redirect("/")
-    .end();
+  const cookieConfig = getCookieConfig();
+  delete cookieConfig.maxAge;
+  res.clearCookie("Authorization", cookieConfig).sendStatus(200).end();
 };
 
 let app;

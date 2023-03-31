@@ -23,6 +23,7 @@ const {
   validateEvent,
 } = require("../../../utils/nostr-tools");
 const { queueService } = require("../../../services/queue.service");
+const { ValidationError, AuthenticationError } = require("apollo-server");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -74,6 +75,15 @@ const BaseUser = interfaceType({
       type: MakerSkill,
       resolve: (parent) => {
         return prisma.user.findUnique({ where: { id: parent.id } }).skills();
+      },
+    });
+
+    t.nonNull.boolean("is_in_founders_club", {
+      resolve: (parent) => {
+        return prisma.user
+          .findUnique({ where: { id: parent.id } })
+          .founders_club_membership()
+          .then((res) => !!res);
       },
     });
     t.nonNull.list.nonNull.field("tournaments", {
@@ -765,6 +775,168 @@ const updateProfileRoles = extendType({
   },
 });
 
+const ClubInvitationStatus = enumType({
+  name: "CLUB_INVITATION_STATUS",
+  members: {
+    INVALID: "INVALID",
+    UNUSED: "UNUSED",
+    ACCEPTED: "ACCEPTED",
+    DECLINED: "DECLINED",
+  },
+});
+
+const isClubInvitationValid = extendType({
+  type: "Query",
+  definition(t) {
+    t.field("isClubInvitationValid", {
+      type: ClubInvitationStatus,
+      args: {
+        invitationCode: stringArg(),
+      },
+      async resolve(parent, { invitationCode }, context, info) {
+        if (!invitationCode) return null;
+        return prisma.foundersClubInvitation
+          .findUnique({
+            where: {
+              code: invitationCode,
+            },
+          })
+          .then((res) =>
+            res ? res.status : ClubInvitationStatus.value.members["INVALID"]
+          );
+      },
+    });
+  },
+});
+
+const acceptOrRejectClubInvitationInput = inputObjectType({
+  name: "acceptOrRejectClubInvitationInput",
+  definition(t) {
+    t.nonNull.string("code");
+    t.nonNull.boolean("isAccepted");
+    t.string("email");
+  },
+});
+
+const acceptOrRejectClubInvitation = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("acceptOrRejectClubInvitation", {
+      type: "User",
+      args: { data: acceptOrRejectClubInvitationInput },
+      async resolve(_root, { data: { code, isAccepted, email } }, ctx, info) {
+        const user = await getUserById(ctx.user?.id);
+
+        if (!user?.id) throw new AuthenticationError("You have to login");
+
+        const invitation = await prisma.foundersClubInvitation.findUnique({
+          where: {
+            code,
+          },
+          select: {
+            status: true,
+          },
+        });
+
+        if (!invitation) throw new ValidationError("Invalid invitation code");
+        if (invitation.status !== "UNUSED")
+          throw new ValidationError("Invitation has already been used");
+
+        const isAlreadyMember = await prisma.foundersClubMember.findUnique({
+          where: {
+            user_id: user.id,
+          },
+        });
+
+        if (isAlreadyMember)
+          throw new ValidationError(
+            "You are already a member of the Founders Club!"
+          );
+
+        await prisma.$transaction([
+          prisma.foundersClubInvitation.update({
+            where: {
+              code,
+            },
+            data: {
+              status: isAccepted ? "ACCEPTED" : "DECLINED",
+            },
+          }),
+          prisma.foundersClubMember.create({
+            data: {
+              user_id: user.id,
+              email,
+            },
+          }),
+        ]);
+
+        const select = new PrismaSelect(info, {
+          defaultFields: defaultPrismaSelectFields,
+        }).valueWithFilter("User");
+
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          ...select,
+        });
+      },
+    });
+  },
+});
+
+const applyToFoundersClubInput = inputObjectType({
+  name: "applyToFoundersClubInput",
+  definition(t) {
+    t.nonNull.int("project_id");
+    t.nonNull.string("reason");
+  },
+});
+
+const applyToFoundersClub = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.field("applyToFoundersClub", {
+      type: "String",
+      args: { data: applyToFoundersClubInput },
+      async resolve(_root, { data: { project_id, reason } }, ctx) {
+        const user = await getUserById(ctx.user?.id);
+
+        // Do some validation
+        if (!user?.id) throw new AuthenticationError("You have to login");
+        const project = await prisma.project.findUnique({
+          where: {
+            id: project_id,
+          },
+          select: {
+            id: true,
+            title: true,
+            hashtag: true,
+            members: {
+              select: {
+                user: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        if (!project) throw new ValidationError("Invalid project");
+
+        if (!project.members.find((m) => m.user.id === user.id))
+          throw new ValidationError("You are not a member of this project");
+
+        // sendInvitationEmail(user.email, project.title, project.hashtag, reason);
+
+        return "Success";
+      },
+    });
+  },
+});
+
 module.exports = {
   // Types
 
@@ -781,10 +953,13 @@ module.exports = {
   getAllMakersRoles,
   getAllMakersSkills,
   usersByNostrKeys,
+  isClubInvitationValid,
   // Mutations
   updateProfileDetails,
   updateUserPreferences,
   updateProfileRoles,
   linkNostrKey,
   unlinkNostrKey,
+  acceptOrRejectClubInvitation,
+  applyToFoundersClub,
 };

@@ -19,6 +19,7 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 import { Post_Type } from "src/graphql";
+import { foundersClubLandingPageLoader } from "src/features/FoundersClub/pages/LandingPage/foundersLandingPage.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -186,6 +187,15 @@ const HangoutPage = Loadable(
   )
 );
 
+const FoundersClubLandingPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "hangout_page" */ "../../features/FoundersClub/pages/LandingPage/LandingPage"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -280,6 +290,12 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
         <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+
+        <Route
+          path={PAGES_ROUTES.foundersClub.default}
+          loader={foundersClubLandingPageLoader(queryClient)}
+          element={<FoundersClubLandingPage />}
+        />
 
         <Route
           path="/"

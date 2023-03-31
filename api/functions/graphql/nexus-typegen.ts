@@ -147,9 +147,19 @@ export interface NexusGenInputs {
     key: string; // String!
     name: string; // String!
   }
+  acceptOrRejectClubInvitationInput: { // input type
+    code: string; // String!
+    email?: string | null; // String
+    isAccepted: boolean; // Boolean!
+  }
+  applyToFoundersClubInput: { // input type
+    project_id: number; // Int!
+    reason: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
+  CLUB_INVITATION_STATUS: "ACCEPTED" | "DECLINED" | "INVALID" | "UNUSED"
   POST_TYPE: "Bounty" | "Question" | "Story"
   ProjectLaunchStatusEnum: "Launched" | "WIP"
   ProjectPermissionEnum: "DeleteProject" | "UpdateAdmins" | "UpdateInfo" | "UpdateMembers"
@@ -553,7 +563,9 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Mutation: { // field return type
+    acceptOrRejectClubInvitation: NexusGenRootTypes['User']; // User!
     addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
+    applyToFoundersClub: string; // String!
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -658,6 +670,7 @@ export interface NexusGenFieldTypes {
     getTournamentToRegister: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     getTrendingPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     hottestProjects: NexusGenRootTypes['Project'][]; // [Project!]!
+    isClubInvitationValid: NexusGenEnums['CLUB_INVITATION_STATUS'] | null; // CLUB_INVITATION_STATUS
     me: NexusGenRootTypes['User'] | null; // User
     newProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     officialTags: NexusGenRootTypes['Tag'][]; // [Tag!]!
@@ -794,6 +807,7 @@ export interface NexusGenFieldTypes {
     github: string | null; // String
     id: number; // Int!
     in_tournament: boolean; // Boolean!
+    is_in_founders_club: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
@@ -841,6 +855,7 @@ export interface NexusGenFieldTypes {
     github: string | null; // String
     id: number; // Int!
     in_tournament: boolean; // Boolean!
+    is_in_founders_club: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
@@ -974,7 +989,9 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Mutation: { // field return type name
+    acceptOrRejectClubInvitation: 'User'
     addProjectToTournament: 'ParticipationInfo'
+    applyToFoundersClub: 'String'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
     createProject: 'CreateProjectResponse'
@@ -1079,6 +1096,7 @@ export interface NexusGenFieldTypeNames {
     getTournamentToRegister: 'Tournament'
     getTrendingPosts: 'Post'
     hottestProjects: 'Project'
+    isClubInvitationValid: 'CLUB_INVITATION_STATUS'
     me: 'User'
     newProjects: 'Project'
     officialTags: 'Tag'
@@ -1215,6 +1233,7 @@ export interface NexusGenFieldTypeNames {
     github: 'String'
     id: 'Int'
     in_tournament: 'Boolean'
+    is_in_founders_club: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     lightning_address: 'String'
@@ -1262,6 +1281,7 @@ export interface NexusGenFieldTypeNames {
     github: 'String'
     id: 'Int'
     in_tournament: 'Boolean'
+    is_in_founders_club: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     lightning_address: 'String'
@@ -1293,8 +1313,14 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    acceptOrRejectClubInvitation: { // args
+      data?: NexusGenInputs['acceptOrRejectClubInvitationInput'] | null; // acceptOrRejectClubInvitationInput
+    }
     addProjectToTournament: { // args
       input?: NexusGenInputs['AddProjectToTournamentInput'] | null; // AddProjectToTournamentInput
+    }
+    applyToFoundersClub: { // args
+      data?: NexusGenInputs['applyToFoundersClubInput'] | null; // applyToFoundersClubInput
     }
     confirmDonation: { // args
       payment_request: string; // String!
@@ -1426,6 +1452,9 @@ export interface NexusGenArgTypes {
     hottestProjects: { // args
       skip?: number | null; // Int
       take: number | null; // Int
+    }
+    isClubInvitationValid: { // args
+      invitationCode?: string | null; // String
     }
     newProjects: { // args
       skip?: number | null; // Int

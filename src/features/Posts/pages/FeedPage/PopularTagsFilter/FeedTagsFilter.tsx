@@ -11,13 +11,12 @@ import Button from "src/Components/Button/Button";
 export type FilterTag = Pick<Tag, "id" | "title" | "icon">;
 
 interface Props {
-  value: FilterTag | null;
-  onChange?: (newFilter: FilterTag | null) => void;
+  value?: FilterTag | null; // deprecated
 }
 
 const MAX_SHOWED_TAGS = 10;
 
-export default function FeedTagsFilter({ value, onChange }: Props) {
+export default function FeedTagsFilter({ value }: Props) {
   const tagsQuery = useFeedTagsQuery();
 
   const selectedId = value?.id;

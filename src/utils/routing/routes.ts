@@ -152,6 +152,10 @@ export const PAGES_ROUTES = {
   hangout: {
     default: "/hangout",
   },
+
+  foundersClub: {
+    default: "/founders-club",
+  },
   blog: {
     feed: "/feed",
     postById: "/feed/post/:type/:id/*",
