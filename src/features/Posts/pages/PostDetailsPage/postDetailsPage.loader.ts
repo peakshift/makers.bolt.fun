@@ -7,7 +7,7 @@ import {
 } from "src/graphql";
 import { capitalize } from "src/utils/helperFunctions";
 
-export type LoaderData = PostDetailsQuery;
+export type LoaderData = PostDetailsQuery | null;
 
 export const postDetailsPageLoader = createLoader<
   PostDetailsQueryVariables,

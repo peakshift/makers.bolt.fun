@@ -103,10 +103,7 @@ export default function FeedPage() {
                 </Button>
               </div>
               <div className="order-2 md:order-3">
-                <FeedTagsFilter
-                  value={tagFilter}
-                  onChange={setTagFilter as any}
-                />
+                <FeedTagsFilter />
               </div>
             </div>
           </aside>

@@ -1,0 +1,20 @@
+query FounderClubLandingPage($invitationCode: String) {
+  isClubInvitationValid(invitationCode: $invitationCode)
+  me {
+    id
+    is_in_founders_club
+  }
+}
+
+mutation ApplyToFoundersClub($data: applyToFoundersClubInput) {
+  applyToFoundersClub(data: $data)
+}
+
+mutation AcceptOrRejectClubInvitation(
+  $data: acceptOrRejectClubInvitationInput
+) {
+  acceptOrRejectClubInvitation(data: $data) {
+    id
+    is_in_founders_club
+  }
+}
