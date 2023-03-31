@@ -16,6 +16,7 @@ import { stageStoryEdit } from "src/redux/features/staging.slice";
 import OgTags from "src/Components/OgTags/OgTags";
 import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
 import dayjs from "dayjs";
+import SkipLink from "src/Components/SkipLink/SkipLink";
 
 export default function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
@@ -48,6 +49,7 @@ export default function FeedPage() {
         title="BOLT.FUN"
         description="Founders and makers sharing knwoledge and building on bitcoin"
       />
+      <SkipLink id="content">Skip To Content</SkipLink>
       <div className={`page-container`}>
         <div className={`w-full ${styles.grid}`}>
           <aside id="categories" className="no-scrollbar">
