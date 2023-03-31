@@ -26,7 +26,7 @@ export default function LandingPage() {
         title="Founders Club"
         description="The Founders Club is an exclusive space on BOLT.FUN that offers a safe and supportive environment for makers to pitch their ideas, connect, learn and share their experiences. "
       />
-      <div className={`page-container bg-gray-50`}>
+      <div className={`page-container bg-gray-50 rounded-16`}>
         <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-16">
           <aside className="hidden lg:block no-scrollbar">
             <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
@@ -46,7 +46,7 @@ export default function LandingPage() {
           max-md:-mx-16 py-80"
           >
             {loaderData?.me?.is_in_founders_club && (
-              <div className="bg-primary-500 text-white absolute inset-x-0 top-0 z-10 px-16 py-4 font-bold text-center">
+              <div className="bg-primary-500 text-white absolute inset-x-0 top-0 z-10 px-16 py-4 font-bold text-center rounded-t-16">
                 You are a valuable member of the Founders Club! ✨
               </div>
             )}
