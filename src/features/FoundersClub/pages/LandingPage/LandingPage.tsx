@@ -1,7 +1,7 @@
 import OgTags from "src/Components/OgTags/OgTags";
 import FeedTagsFilter from "src/features/Posts/pages/FeedPage/PopularTagsFilter/FeedTagsFilter";
 import Card from "src/Components/Card/Card";
-import BgImage from "./assets/bg.png";
+import BgImage from "./assets/bg.jpg";
 import HangoutImage from "./assets/hangout.jpg";
 import EventsImage from "./assets/events.png";
 import PerksImage from "./assets/perks.png";
@@ -52,8 +52,8 @@ export default function LandingPage() {
             )}
             <div className="col-start-2 col-end-3 flex flex-col gap-y-[160px]">
               <div className="absolute w-full inset-x-0 top-0 ">
-                <img src={BgImage} alt="" className="w-full" />
-                <div className="bg-gray-50 absolute inset-0 bg-opacity-40 xl:bg-opacity-10"></div>
+                <img src={BgImage} alt="" className="w-full" />{" "}
+                <div className="bg-gradient-to-b from-transparent to-[#fff0]  absolute inset-0 bg-opacity-40 xl:bg-opacity-10"></div>
               </div>
               <header className="relative md:py-80">
                 <div className="flex flex-wrap gap-16 gap-y-32 justify-between items-center">
