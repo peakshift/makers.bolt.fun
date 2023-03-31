@@ -5,6 +5,7 @@ import BgImage from "./assets/bg.png";
 import HangoutImage from "./assets/hangout.jpg";
 import EventsImage from "./assets/events.png";
 import PerksImage from "./assets/perks.png";
+import CirclesImage from "./assets/circles.svg";
 import { FiSmile, FiTarget, FiUsers } from "react-icons/fi";
 import ApplyForm from "./Components/ApplyForm";
 import { useLoaderData } from "react-router-dom";
@@ -40,9 +41,9 @@ export default function LandingPage() {
             </div>
           </aside>
           <main
-            className="relative md:col-span-3 bg-white rounded
+            className="relative isolate md:col-span-3 bg-white rounded
           grid grid-cols-[24px_1fr_24px] md:grid-cols-[80px_1fr_80px]
-          max-md:-mx-16 py-80 "
+          max-md:-mx-16 py-80"
           >
             {loaderData?.me?.is_in_founders_club && (
               <div className="bg-primary-500 text-white absolute inset-x-0 top-0 z-10 px-16 py-4 font-bold text-center">
@@ -52,7 +53,7 @@ export default function LandingPage() {
             <div className="col-start-2 col-end-3 flex flex-col gap-y-[160px]">
               <div className="absolute w-full inset-x-0 top-0 ">
                 <img src={BgImage} alt="" className="w-full" />
-                <div className="bg-gray-100 absolute inset-0 bg-opacity-40 xl:bg-opacity-10"></div>
+                <div className="bg-gray-50 absolute inset-0 bg-opacity-40 xl:bg-opacity-10"></div>
               </div>
               <header className="relative md:py-80">
                 <div className="flex flex-wrap gap-16 gap-y-32 justify-between items-center">
@@ -80,6 +81,11 @@ export default function LandingPage() {
               <section className="relative">
                 <h2 className="text-h2 text-center font-bolder mb-24">
                   What's Inside
+                  <img
+                    src={CirclesImage}
+                    alt=""
+                    className="absolute -translate-y-1/2 -z-10"
+                  />
                 </h2>
                 <p className="text-body2 text-center">
                   As a small startup trying to figure out product market fit
@@ -258,7 +264,7 @@ export default function LandingPage() {
                         d="M111.75 51L69.75 9V51H111.75Z"
                         fill="#1E293B"
                         stroke="#101828"
-                        stroke-width="7"
+                        strokeWidth="7"
                       />
                     </svg>
                   </span>
