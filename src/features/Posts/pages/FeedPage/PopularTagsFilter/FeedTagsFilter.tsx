@@ -1,4 +1,4 @@
-import { useMediaQuery } from "src/utils/hooks";
+import { useCarousel, useMediaQuery } from "src/utils/hooks";
 import Skeleton from "react-loading-skeleton";
 import Slider from "src/Components/Slider/Slider";
 import { Tag, useFeedTagsQuery } from "src/graphql";
@@ -18,6 +18,18 @@ interface Props {
 const MAX_SHOWED_TAGS = 10;
 
 export default function FeedTagsFilter({ value, onChange }: Props) {
+  const {
+    viewportRef,
+    scrollSlides,
+    canScrollNext,
+    canScrollPrev,
+    isClickAllowed,
+  } = useCarousel({
+    align: "start",
+    slidesToScroll: 2,
+    containScroll: "trimSnaps",
+  });
+
   const tagsQuery = useFeedTagsQuery();
 
   const selectedId = value?.id;
@@ -31,11 +43,14 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
           <div className="flex flex-wrap justify-between items-center mb-16 gap-y-8">
             <p className="text-body2 font-bolder text-gray-900">🏷️ Topics</p>
 
-            <Link to={PAGES_ROUTES.blog.topicsPage}>
-              <Button variant="text" color="primary" size="sm">
-                See All
-              </Button>
-            </Link>
+            <Button
+              variant="text"
+              color="primary"
+              size="sm"
+              href={PAGES_ROUTES.blog.topicsPage}
+            >
+              See All
+            </Button>
           </div>
           <ul className="flex flex-col gap-16 mb-16">
             {tagsQuery.loading
@@ -112,19 +127,23 @@ export default function FeedTagsFilter({ value, onChange }: Props) {
                   See all topics
                 </Button>
               </div>
-              <Slider>
-                {tagsQuery.data?.officialTags.map((tag) => (
-                  <Link
-                    key={tag.id}
-                    to={createRoute({ type: "tag-page", tag: tag.title })}
-                    className={`${
-                      tag.id === selectedId ? "bg-gray-200" : "bg-gray-100"
-                    } py-12 px-16 rounded-8 text-body5`}
-                  >
-                    {tag.icon} {formatHashtag(tag.title)}
-                  </Link>
-                ))}
-              </Slider>
+              <div className="relative group">
+                <div className="overflow-hidden py-2" ref={viewportRef}>
+                  <div className="select-none w-full flex gap-16">
+                    {tagsQuery.data?.officialTags.map((tag) => (
+                      <Link
+                        key={tag.id}
+                        to={createRoute({ type: "tag-page", tag: tag.title })}
+                        className={`min-w-max py-12 px-16 rounded-8 text-body5 ${
+                          tag.id === selectedId ? "bg-gray-200" : "bg-gray-100"
+                        } `}
+                      >
+                        {tag.icon} {formatHashtag(tag.title)}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </>

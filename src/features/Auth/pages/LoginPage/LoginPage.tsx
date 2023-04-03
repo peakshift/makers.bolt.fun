@@ -177,8 +177,8 @@ export default function LoginPage() {
           />
         </a>
         <p className="text-gray-600 text-body4 text-center">
-          Scan this code or copy + paste it to your lightning wallet. Or click
-          to login with your browser's wallet.
+          Scan this QR code or copy + paste it to your lightning wallet. Or
+          click to login with your browser's wallet.
         </p>
         <div className="w-full grid md:grid-cols-2 gap-16">
           <a
@@ -188,7 +188,7 @@ export default function LoginPage() {
             Click to connect <IoRocketOutline />
           </a>
           <Button color="gray" onClick={copyToClipboard}>
-            {copied ? "Copied" : "Copy"} <FiCopy />
+            {copied ? "Copied" : "Copy LNURL"} <FiCopy />
           </Button>
           <a
             href={`https://makers.bolt.fun/story/sign-in-with-lightning--99`}

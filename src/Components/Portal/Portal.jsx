@@ -16,3 +16,5 @@ export const Portal = ({ children, id = "root-id" }) => {
 
   return ReactDOM.createPortal(children, container);
 };
+
+export default Portal;

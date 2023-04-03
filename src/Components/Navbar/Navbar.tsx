@@ -65,8 +65,10 @@ export default function Navbar() {
   useResizeListener(updateNavHeight);
 
   return (
-    <div className="sticky top-0 left-0 w-full z-[2010]">
-      {isLargeScreen ? <NavDesktop /> : <NavMobile />}
-    </div>
+    <>
+      <header className="sticky top-0 left-0 w-full z-[2010]">
+        {isLargeScreen ? <NavDesktop /> : <NavMobile />}
+      </header>
+    </>
   );
 }
