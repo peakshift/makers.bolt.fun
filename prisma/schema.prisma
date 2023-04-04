@@ -105,9 +105,10 @@ model UserKey {
 }
 
 model UserNostrKey {
-  key       String   @id
-  label     String   @default("New Nostr PubKey")
-  createdAt DateTime @default(now())
+  key        String   @id
+  label      String   @default("New Nostr PubKey")
+  createdAt  DateTime @default(now())
+  is_primary Boolean  @default(false)
 
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
