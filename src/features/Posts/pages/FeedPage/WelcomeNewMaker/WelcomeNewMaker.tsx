@@ -73,24 +73,6 @@ export default function WelcomeNewMaker() {
             </div>
           </Link>
           <Link
-            to="/tournaments/2/overview"
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
-          >
-            <div
-              className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
-            >
-              🏆
-            </div>
-            <div>
-              <p className="text-body4 text-white font-bold">
-                Register for #NostrHack
-              </p>
-              <p className="text-body5 text-gray-100">
-                Hackathon for designing the future of social networks.
-              </p>
-            </div>
-          </Link>
-          <Link
             to={createRoute({ type: "write-story" })}
             className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
           >

@@ -30,9 +30,9 @@ export default function SortBy({ filterChanged }: Props) {
   return (
     <ul className="flex gap-8">
       {filters.map((f, idx) => (
-        <li
-          key={f.value}
-          className={` 
+        <li key={f.value}>
+          <button
+            className={` 
                   text-primary-600 rounded-48 px-16 py-8 cursor-pointer font-medium text-body5
                     active:scale-95 transition-transform
                     ${
@@ -40,10 +40,10 @@ export default function SortBy({ filterChanged }: Props) {
                         ? "bg-primary-100"
                         : "bg-gray-100 hover:bg-gray-200"
                     }`}
-          onClick={() => filterClicked(f.value)}
-          role="button"
-        >
-          {f.text}
+            onClick={() => filterClicked(f.value)}
+          >
+            {f.text}
+          </button>
         </li>
       ))}
     </ul>

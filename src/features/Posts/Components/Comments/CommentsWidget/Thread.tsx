@@ -70,7 +70,7 @@ export default function Thread({
 
   const handleReply = async (text: string) => {
     try {
-      await publishEvent?.(text, { replyTo: thread.id });
+      await publishEvent?.(text, { replyToEvent: thread });
       toggleRepliesCollapsed(false);
       setReplyOpen(false);
       setScrollToLatestReply(true);

@@ -4,7 +4,7 @@ import { getEventHash, signEvent as nostrToolsSignEvent } from "nostr-tools";
 import { CONSTS } from "src/utils";
 import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { useMetaData, useRelayPool } from "src/lib/nostr";
+import { useRelayPool } from "src/lib/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
@@ -86,7 +86,10 @@ export const useNostrComments = (props: Props) => {
   );
 
   const publishEvent = useCallback(
-    async (content: string, options?: Partial<{ replyTo?: string }>) => {
+    async (
+      content: string,
+      options?: Partial<{ replyToEvent?: NostrToolsEventWithId }>
+    ) => {
       if (!threadRootObject)
         throw new Error("No Root Event Found for this post");
       if (!relayPool) throw new Error("No relays pool");
@@ -107,7 +110,21 @@ export const useNostrComments = (props: Props) => {
           ]);
       } else tags.push(["r", threadRootObject.url]);
 
-      if (options?.replyTo) tags.push(["e", options.replyTo!, "", "reply"]);
+      if (options?.replyToEvent) {
+        tags.push(["e", options.replyToEvent.id!, "", "reply"]);
+        const pTagsToInclude = [
+          options.replyToEvent.pubkey,
+          ...options.replyToEvent.tags
+            .filter((tag) => tag[0] === "p")
+            .map((tag) => tag[1]),
+        ];
+
+        tags.push(
+          ...pTagsToInclude
+            .filter((p, idx) => pTagsToInclude.indexOf(p) === idx)
+            .map((p) => ["p", p])
+        );
+      }
 
       let baseEvent: NostrToolsEvent = {
         pubkey: props.publicKey!,

@@ -159,171 +159,265 @@ export default function BasicProfileInfoTab() {
         </div>
         <div className="p-16 md:p-24 mt-64">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <p className="text-body5 font-medium">Name</p>
+            <label htmlFor="name-input" className="text-body5 font-medium">
+              Name
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.name && `bg-primary-50`
               }`}
             >
               <input
+                id="name-input"
                 autoFocus
                 type="text"
                 className="input-text"
                 placeholder="John Doe"
+                aria-invalid={errors.name ? "true" : "false"}
                 {...register("name")}
               />
             </div>
             {errors.name && (
-              <p className="input-error">{errors.name.message}</p>
+              <p role="alert" className="input-error">
+                {errors.name.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Bio</p>
+            <label
+              htmlFor="bio-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Bio
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.bio && `bg-primary-50`
               }`}
             >
               <textarea
+                id="bio-input"
                 rows={4}
                 className="input-text"
                 placeholder="Tell others a little bit about yourself"
+                aria-invalid={errors.bio ? "true" : "false"}
                 {...register("bio")}
               />
             </div>
-            {errors.bio && <p className="input-error">{errors.bio.message}</p>}
-            <p className="text-body5 mt-16 font-medium">Job Title</p>
+            {errors.bio && (
+              <p role="alert" className="input-error">
+                {errors.bio.message}
+              </p>
+            )}
+            <label
+              htmlFor="jobTitle-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Job Title
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.jobTitle && `bg-primary-50`
               }`}
             >
               <input
+                id="jobTitle-input"
                 type="text"
                 className="input-text"
                 placeholder="Back-end Developer"
+                aria-invalid={errors.jobTitle ? "true" : "false"}
                 {...register("jobTitle")}
               />
             </div>
             {errors.jobTitle && (
-              <p className="input-error">{errors.jobTitle.message}</p>
+              <p role="alert" className="input-error">
+                {errors.jobTitle.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Location</p>
+            <label
+              htmlFor="location-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Location
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.location && `bg-primary-50`
               }`}
             >
               <input
+                id="location-input"
                 type="text"
                 className="input-text"
                 placeholder="UK, London"
+                aria-invalid={errors.location ? "true" : "false"}
                 {...register("location")}
               />
             </div>
             {errors.location && (
-              <p className="input-error">{errors.location.message}</p>
+              <p role="alert" className="input-error">
+                {errors.location.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Email</p>
+            <label
+              htmlFor="email-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Email
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.email && `bg-primary-50`
               }`}
             >
               <input
+                id="email-input"
                 type="text"
                 className="input-text"
                 placeholder="johndoe@gmail.com"
+                aria-invalid={errors.email ? "true" : "false"}
                 {...register("email")}
               />
             </div>
             {errors.email && (
-              <p className="input-error">{errors.email.message}</p>
+              <p role="alert" className="input-error">
+                {errors.email.message}
+              </p>
             )}
             <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
               Your email is visible only to you, we will only use it to send you
               important updates or notices. No spam!
             </p>
 
-            <p className="text-body5 mt-16 font-medium">Twitter handle</p>
+            <label
+              htmlFor="twitter-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Twitter handle
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.twitter && `bg-primary-50`
               }`}
             >
               <input
+                id="twitter-input"
                 type="text"
                 className="input-text"
                 placeholder="@johndoe"
+                aria-invalid={errors.twitter ? "true" : "false"}
                 {...register("twitter")}
               />
             </div>
             {errors.twitter && (
-              <p className="input-error">{errors.twitter.message}</p>
+              <p role="alert" className="input-error">
+                {errors.twitter.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Discord username</p>
+            <label
+              htmlFor="discord-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Discord username
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.discord && `bg-primary-50`
               }`}
             >
               <input
+                id="discord-input"
                 type="text"
                 className="input-text"
                 placeholder="Satoshi#2121"
+                aria-invalid={errors.discord ? "true" : "false"}
                 {...register("discord")}
               />
             </div>
             {errors.discord && (
-              <p className="input-error">{errors.discord.message}</p>
+              <p role="alert" className="input-error">
+                {errors.discord.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Github username</p>
+            <label
+              htmlFor="github-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Github username
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.github && `bg-primary-50`
               }`}
             >
               <input
+                id="github-input"
                 type="text"
                 className="input-text"
                 placeholder="johndoe"
+                aria-invalid={errors.github ? "true" : "false"}
                 {...register("github")}
               />
             </div>
             {errors.github && (
-              <p className="input-error">{errors.github.message}</p>
+              <p role="alert" className="input-error">
+                {errors.github.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Linkedin</p>
+            <label
+              htmlFor="linkedin-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Linkedin
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.linkedin && `bg-primary-50`
               }`}
             >
               <input
+                id="linkedin-input"
                 type="text"
                 className="input-text"
                 placeholder="www.linkedin.com/in/john-doe"
+                aria-invalid={errors.linkedin ? "true" : "false"}
                 {...register("linkedin")}
               />
             </div>
             {errors.linkedin && (
-              <p className="input-error">{errors.linkedin.message}</p>
+              <p role="alert" className="input-error">
+                {errors.linkedin.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Your website</p>
+            <label
+              htmlFor="website-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Your website
+            </label>
             <div
               className={`input-wrapper mt-8 relative ${
                 dirtyFields.website && `bg-primary-50`
               }`}
             >
               <input
+                id="website-input"
                 type="text"
                 className="input-text"
                 placeholder="www.website.io"
+                aria-invalid={errors.website ? "true" : "false"}
                 {...register("website")}
               />
             </div>
             {errors.website && (
-              <p className="input-error">{errors.website.message}</p>
+              <p role="alert" className="input-error">
+                {errors.website.message}
+              </p>
             )}
-            <p className="text-body5 mt-16 font-medium">Lightning address</p>
+            <label
+              htmlFor="lnAddress-input"
+              className="text-body5 mt-16 font-medium inline-block"
+            >
+              Lightning address
+            </label>
 
             <div
               className={`input-wrapper mt-8 relative ${
@@ -331,14 +425,18 @@ export default function BasicProfileInfoTab() {
               }`}
             >
               <input
+                id="lnAddress-input"
                 type="text"
                 className="input-text"
                 placeholder="johndoe@lnd.com"
+                aria-invalid={errors.lightning_address ? "true" : "false"}
                 {...register("lightning_address")}
               />
             </div>
             {errors.lightning_address && (
-              <p className="input-error">{errors.lightning_address.message}</p>
+              <p role="alert" className="input-error">
+                {errors.lightning_address.message}
+              </p>
             )}
             <p className="text-body6 text-gray-400 mt-8 max-w-[70ch]">
               Your lightning address is used to send the votes you get on your
