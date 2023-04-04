@@ -204,6 +204,7 @@ type Mutation {
   donate(amount_in_sat: Int!): Donation!
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
+  setUserNostrKeyAsPrimary(key: String!): User
   unlinkNostrKey(key: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
   updateProfileRoles(data: ProfileRolesInput): User
@@ -225,6 +226,7 @@ input NostrEventInput {
 
 type NostrKey {
   createdAt: Date!
+  is_primary: Boolean!
   key: String!
   label: String!
 }

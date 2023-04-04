@@ -263,6 +263,7 @@ export interface NexusGenObjects {
   Mutation: {};
   NostrKey: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
+    is_primary: boolean; // Boolean!
     key: string; // String!
     label: string; // String!
   }
@@ -563,6 +564,7 @@ export interface NexusGenFieldTypes {
     donate: NexusGenRootTypes['Donation']; // Donation!
     linkNostrKey: NexusGenRootTypes['User'] | null; // User
     registerInTournament: NexusGenRootTypes['User'] | null; // User
+    setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
     updateProfileRoles: NexusGenRootTypes['User'] | null; // User
@@ -573,6 +575,7 @@ export interface NexusGenFieldTypes {
   }
   NostrKey: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
+    is_primary: boolean; // Boolean!
     key: string; // String!
     label: string; // String!
   }
@@ -984,6 +987,7 @@ export interface NexusGenFieldTypeNames {
     donate: 'Donation'
     linkNostrKey: 'User'
     registerInTournament: 'User'
+    setUserNostrKeyAsPrimary: 'User'
     unlinkNostrKey: 'User'
     updateProfileDetails: 'User'
     updateProfileRoles: 'User'
@@ -994,6 +998,7 @@ export interface NexusGenFieldTypeNames {
   }
   NostrKey: { // field return type name
     createdAt: 'Date'
+    is_primary: 'Boolean'
     key: 'String'
     label: 'String'
   }
@@ -1325,6 +1330,9 @@ export interface NexusGenArgTypes {
     registerInTournament: { // args
       data?: NexusGenInputs['RegisterInTournamentInput'] | null; // RegisterInTournamentInput
       tournament_id: number; // Int!
+    }
+    setUserNostrKeyAsPrimary: { // args
+      key: string; // String!
     }
     unlinkNostrKey: { // args
       key: string; // String!

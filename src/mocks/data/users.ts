@@ -188,6 +188,7 @@ export const users: User[] = [
         key: "123123123123",
         createdAt: new Date().toISOString(),
         label: "My nostr key",
+        is_primary: true,
       },
     ],
     private_data: {
@@ -241,6 +242,7 @@ export const users: User[] = [
         key: "123123123123",
         createdAt: new Date().toISOString(),
         label: "My nostr key",
+        is_primary: true,
       },
     ],
 
@@ -295,6 +297,7 @@ export const users: User[] = [
         key: "123123123123",
         createdAt: new Date().toISOString(),
         label: "My nostr key",
+        is_primary: true,
       },
     ],
 
@@ -349,6 +352,7 @@ export const users: User[] = [
         key: "123123123123",
         createdAt: new Date().toISOString(),
         label: "My nostr key",
+        is_primary: true,
       },
     ],
     private_data: {

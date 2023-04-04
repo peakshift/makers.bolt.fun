@@ -5,6 +5,7 @@ query MyNostrSettings {
       key
       createdAt
       label
+      is_primary
     }
     private_data {
       nostr_prv_key
@@ -20,6 +21,7 @@ mutation LinkNewNostrKey($event: NostrEventInput) {
       key
       createdAt
       label
+      is_primary
     }
   }
 }
@@ -31,6 +33,17 @@ mutation UnlinkNostrKey($key: String!) {
       key
       createdAt
       label
+      is_primary
+    }
+  }
+}
+
+mutation SetUserNostrKeyAsPrimary($key: String!) {
+  setUserNostrKeyAsPrimary(key: $key) {
+    id
+    nostr_keys {
+      key
+      is_primary
     }
   }
 }

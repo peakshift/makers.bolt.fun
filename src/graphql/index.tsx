@@ -236,6 +236,7 @@ export type Mutation = {
   donate: Donation;
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
+  setUserNostrKeyAsPrimary: Maybe<User>;
   unlinkNostrKey: Maybe<User>;
   updateProfileDetails: Maybe<User>;
   updateProfileRoles: Maybe<User>;
@@ -299,6 +300,11 @@ export type MutationRegisterInTournamentArgs = {
 };
 
 
+export type MutationSetUserNostrKeyAsPrimaryArgs = {
+  key: Scalars['String'];
+};
+
+
 export type MutationUnlinkNostrKeyArgs = {
   key: Scalars['String'];
 };
@@ -349,6 +355,7 @@ export type NostrEventInput = {
 export type NostrKey = {
   __typename?: 'NostrKey';
   createdAt: Scalars['Date'];
+  is_primary: Scalars['Boolean'];
   key: Scalars['String'];
   label: Scalars['String'];
 };
@@ -1149,21 +1156,28 @@ export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User'
 export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null } } | null };
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null } } | null };
 
 export type LinkNewNostrKeyMutationVariables = Exact<{
   event: InputMaybe<NostrEventInput>;
 }>;
 
 
-export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
 
 export type UnlinkNostrKeyMutationVariables = Exact<{
   key: Scalars['String'];
 }>;
 
 
-export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }> } | null };
+export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
+
+export type SetUserNostrKeyAsPrimaryMutationVariables = Exact<{
+  key: Scalars['String'];
+}>;
+
+
+export type SetUserNostrKeyAsPrimaryMutation = { __typename?: 'Mutation', setUserNostrKeyAsPrimary: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, is_primary: boolean }> } | null };
 
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1196,7 +1210,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -2689,6 +2703,7 @@ export const MyNostrSettingsDocument = gql`
       key
       createdAt
       label
+      is_primary
     }
     private_data {
       nostr_prv_key
@@ -2732,6 +2747,7 @@ export const LinkNewNostrKeyDocument = gql`
       key
       createdAt
       label
+      is_primary
     }
   }
 }
@@ -2770,6 +2786,7 @@ export const UnlinkNostrKeyDocument = gql`
       key
       createdAt
       label
+      is_primary
     }
   }
 }
@@ -2800,6 +2817,43 @@ export function useUnlinkNostrKeyMutation(baseOptions?: Apollo.MutationHookOptio
 export type UnlinkNostrKeyMutationHookResult = ReturnType<typeof useUnlinkNostrKeyMutation>;
 export type UnlinkNostrKeyMutationResult = Apollo.MutationResult<UnlinkNostrKeyMutation>;
 export type UnlinkNostrKeyMutationOptions = Apollo.BaseMutationOptions<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>;
+export const SetUserNostrKeyAsPrimaryDocument = gql`
+    mutation SetUserNostrKeyAsPrimary($key: String!) {
+  setUserNostrKeyAsPrimary(key: $key) {
+    id
+    nostr_keys {
+      key
+      is_primary
+    }
+  }
+}
+    `;
+export type SetUserNostrKeyAsPrimaryMutationFn = Apollo.MutationFunction<SetUserNostrKeyAsPrimaryMutation, SetUserNostrKeyAsPrimaryMutationVariables>;
+
+/**
+ * __useSetUserNostrKeyAsPrimaryMutation__
+ *
+ * To run a mutation, you first call `useSetUserNostrKeyAsPrimaryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetUserNostrKeyAsPrimaryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setUserNostrKeyAsPrimaryMutation, { data, loading, error }] = useSetUserNostrKeyAsPrimaryMutation({
+ *   variables: {
+ *      key: // value for 'key'
+ *   },
+ * });
+ */
+export function useSetUserNostrKeyAsPrimaryMutation(baseOptions?: Apollo.MutationHookOptions<SetUserNostrKeyAsPrimaryMutation, SetUserNostrKeyAsPrimaryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetUserNostrKeyAsPrimaryMutation, SetUserNostrKeyAsPrimaryMutationVariables>(SetUserNostrKeyAsPrimaryDocument, options);
+      }
+export type SetUserNostrKeyAsPrimaryMutationHookResult = ReturnType<typeof useSetUserNostrKeyAsPrimaryMutation>;
+export type SetUserNostrKeyAsPrimaryMutationResult = Apollo.MutationResult<SetUserNostrKeyAsPrimaryMutation>;
+export type SetUserNostrKeyAsPrimaryMutationOptions = Apollo.BaseMutationOptions<SetUserNostrKeyAsPrimaryMutation, SetUserNostrKeyAsPrimaryMutationVariables>;
 export const MyProfilePreferencesDocument = gql`
     query MyProfilePreferences {
   me {
@@ -3013,6 +3067,7 @@ export const ProfileDocument = gql`
       key
       createdAt
       label
+      is_primary
     }
     ...UserBasicInfo
     ...UserRolesSkills
