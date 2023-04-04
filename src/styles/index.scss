@@ -8,6 +8,7 @@ $screen-xs-min: 320px;
 
 html {
   scrollbar-gutter: stable;
+  scroll-padding-top: calc(var(--navHeight) + 16px);
 }
 
 body {

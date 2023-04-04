@@ -5,7 +5,6 @@ import { UnionToObjectKeys } from "src/utils/types/utils";
 type Props =
   | ({
       onClick?: () => void;
-      onKeyDown?: (v: any) => void;
       className?: string;
       size?: "sm" | "md" | "lg";
       variant?: "blank" | "fill";
@@ -13,7 +12,6 @@ type Props =
     } & React.ComponentPropsWithoutRef<"button">)
   | ({
       onClick?: () => void;
-      onKeyDown?: (v: any) => void;
       href: string;
       className?: string;
       size?: "sm" | "md" | "lg";
@@ -42,7 +40,6 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(
       className = "",
       children,
       onClick = () => {},
-      onKeyDown,
       variant = "blank",
       isDisabled,
       ...restProps
@@ -60,7 +57,6 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(
                 inline-block active:scale-95 rounded-full ${className}`}
           style={{ lineHeight: 0 }}
           onClick={onClick}
-          onKeyDown={onKeyDown}
           {...restProps}
         >
           {children}
@@ -80,7 +76,6 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(
              `}
         style={{ lineHeight: 0 }}
         onClick={onClick}
-        onKeyDown={onKeyDown}
         disabled={isDisabled}
         {...restProps}
       >
