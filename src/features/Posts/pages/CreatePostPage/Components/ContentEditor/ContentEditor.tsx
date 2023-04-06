@@ -1,118 +1,125 @@
-import 'remirror/styles/all.css';
-import styles from './styles.module.scss'
-import TurndownService from 'turndown'
-import javascript from 'refractor/lang/javascript';
-import typescript from 'refractor/lang/typescript';
+import "remirror/styles/all.css";
+import styles from "./styles.module.scss";
+import TurndownService from "turndown";
+import javascript from "refractor/lang/javascript";
+import typescript from "refractor/lang/typescript";
 import {
-    BlockquoteExtension,
-    BoldExtension,
-    BulletListExtension,
-    CodeBlockExtension,
-    CodeExtension,
-    HardBreakExtension,
-    HeadingExtension,
-    ImageExtension,
-    ItalicExtension,
-    LinkExtension,
-    ListItemExtension,
-    MarkdownExtension,
-    NodeFormattingExtension,
-    OrderedListExtension,
-    PlaceholderExtension,
-    IframeExtension,
-    UnderlineExtension,
-} from 'remirror/extensions';
-import { ExtensionPriority, InvalidContentHandler } from 'remirror';
-import { EditorComponent, Remirror, useRemirror } from '@remirror/react';
-import { useCallback } from 'react';
-import TextEditorComponents from 'src/Components/Inputs/TextEditor';
-import Toolbar from './Toolbar';
-import { uploadImage } from 'src/Components/Inputs/FilesInputs/upload-image';
+  BlockquoteExtension,
+  BoldExtension,
+  BulletListExtension,
+  CodeBlockExtension,
+  CodeExtension,
+  HardBreakExtension,
+  HeadingExtension,
+  ImageExtension,
+  ItalicExtension,
+  LinkExtension,
+  ListItemExtension,
+  MarkdownExtension,
+  NodeFormattingExtension,
+  OrderedListExtension,
+  PlaceholderExtension,
+  IframeExtension,
+  UnderlineExtension,
+} from "remirror/extensions";
+import { ExtensionPriority, InvalidContentHandler } from "remirror";
+import { EditorComponent, Remirror, useRemirror } from "@remirror/react";
+import { useCallback } from "react";
+import TextEditorComponents from "src/Components/Inputs/TextEditor";
+import Toolbar from "./Toolbar";
+import { uploadImage } from "src/Components/Inputs/FilesInputs/upload-image";
 
-
-const turndownService = new TurndownService()
-turndownService.keep(['iframe']);
+const turndownService = new TurndownService();
+turndownService.keep(["iframe"]);
 
 interface Props {
-    placeholder?: string;
-    initialContent?: () => string;
-    name?: string;
+  placeholder?: string;
+  initialContent?: () => string;
+  name?: string;
 }
 
-export default function ContentEditor({ placeholder, initialContent, name }: Props) {
+export default function ContentEditor({
+  placeholder,
+  initialContent,
+  name,
+}: Props) {
+  const onError: InvalidContentHandler = useCallback(
+    ({ json, invalidContent, transformers }) => {
+      // Automatically remove all invalid nodes and marks.
+      return transformers.remove(json, invalidContent);
+    },
+    []
+  );
 
-    const onError: InvalidContentHandler = useCallback(({ json, invalidContent, transformers }) => {
-        // Automatically remove all invalid nodes and marks.
-        return transformers.remove(json, invalidContent);
-    }, []);
+  const extensions = useCallback(
+    () => [
+      new PlaceholderExtension({ placeholder }),
+      new LinkExtension({
+        autoLink: true,
+        defaultTarget: "_blank",
+        extraAttributes: {
+          rel: "noopener noreferrer",
+        },
+      }),
+      new MarkdownExtension({
+        copyAsMarkdown: true,
+        htmlToMarkdown: (html) => turndownService.turndown(html),
+      }),
+      new BoldExtension(),
+      // new StrikeExtension(),
+      new UnderlineExtension(),
+      new ItalicExtension(),
+      new HeadingExtension(),
+      new BlockquoteExtension(),
+      new BulletListExtension(),
+      new OrderedListExtension(),
+      new ListItemExtension({
+        priority: ExtensionPriority.High,
+        enableCollapsible: true,
+      }),
+      // new TaskListExtension(),
+      new CodeExtension(),
+      new CodeBlockExtension({
+        supportedLanguages: [javascript, typescript],
+      }),
+      new ImageExtension({
+        uploadHandler(files) {
+          return files.map(
+            (file) => () =>
+              uploadImage(file.file).then((data) => ({
+                src: data.src,
+                fileName: data.filename,
+              }))
+          );
+        },
+        enableResizing: false,
+      }),
+      new IframeExtension(),
+      // new TrailingNodeExtension(),
+      // new TableExtension(),
+      // new NodeFormattingExtension(),
+      /**
+       * `HardBreakExtension` allows us to create a newline inside paragraphs.
+       * e.g. in a list item
+       */
+      new HardBreakExtension(),
+    ],
+    [placeholder]
+  );
 
+  const { manager } = useRemirror({
+    extensions,
+    stringHandler: "markdown",
+    onError,
+  });
 
-    const extensions = useCallback(
-        () => [
-            new PlaceholderExtension({ placeholder }),
-            new LinkExtension({
-                autoLink: true,
-                defaultTarget: "_blank",
-                extraAttributes: {
-                    rel: 'noopener noreferrer'
-                }
-            }),
-            new MarkdownExtension({
-                copyAsMarkdown: true, htmlToMarkdown: (html) => turndownService.turndown(html)
-            }),
-            new BoldExtension(),
-            // new StrikeExtension(),
-            new UnderlineExtension(),
-            new ItalicExtension(),
-            new HeadingExtension(),
-            new BlockquoteExtension(),
-            new BulletListExtension(),
-            new OrderedListExtension(),
-            new ListItemExtension({ priority: ExtensionPriority.High, enableCollapsible: true }),
-            // new TaskListExtension(),
-            new CodeExtension(),
-            new CodeBlockExtension({
-                supportedLanguages: [javascript, typescript]
-            }),
-            new ImageExtension({
-                uploadHandler(files) {
-                    return files.map(file => () => uploadImage(file.file).then(data => ({ src: data.src, fileName: data.filename })))
-                },
-                enableResizing: false,
-            }),
-            new IframeExtension(),
-            // new TrailingNodeExtension(),
-            // new TableExtension(),
-            new NodeFormattingExtension(),
-            /**
-             * `HardBreakExtension` allows us to create a newline inside paragraphs.
-             * e.g. in a list item
-             */
-            new HardBreakExtension(),
-        ],
-        [placeholder],
-    );
-
-
-    const { manager } = useRemirror({
-        extensions,
-        stringHandler: 'markdown',
-        onError,
-    });
-
-
-    return (
-        <div className={`remirror-theme ${styles.wrapper} post-body bg-white`}>
-            <Remirror
-                manager={manager}
-                initialContent={initialContent?.()}
-            >
-                <TextEditorComponents.SaveModule name={name} />
-                <Toolbar />
-                <EditorComponent />
-            </Remirror>
-        </div>
-    );
-};
-
-
+  return (
+    <div className={`remirror-theme ${styles.wrapper} post-body bg-white`}>
+      <Remirror manager={manager} initialContent={initialContent?.()}>
+        <TextEditorComponents.SaveModule name={name} />
+        <Toolbar />
+        <EditorComponent />
+      </Remirror>
+    </div>
+  );
+}

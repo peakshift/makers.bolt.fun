@@ -63,53 +63,74 @@ export default function ProjectDetailsTab(props: Props) {
           {(errors.cover_image || errors.thumbnail_image) && (
             <div className="mb-16">
               {errors.cover_image && (
-                <p className="input-error">{errors.cover_image.message}</p>
+                <p className="input-error" role="alert">
+                  {errors.cover_image.message}
+                </p>
               )}
               {errors.thumbnail_image && (
-                <p className="input-error">{errors.thumbnail_image.message}</p>
+                <p className="input-error" role="alert">
+                  {errors.thumbnail_image.message}
+                </p>
               )}
             </div>
           )}
-          <p className="text-body5 font-medium">
+          <label htmlFor="title-input" className="text-body5 font-medium">
             Project name<sup className="text-red-500">*</sup>
-          </p>
+          </label>
           <TextInput
+            id="title-input"
             className="mt-8"
             isError={!!errors.title}
             placeholder="e.g BOLT🔩FUN"
+            aria-invalid={!!errors.title}
             {...register("title")}
           />
           {errors.title && (
-            <p className="input-error">{errors.title.message}</p>
+            <p className="input-error" role="alert">
+              {errors.title.message}
+            </p>
           )}
-          <p className="text-body5 mt-16 font-medium">
+          <label
+            htmlFor="project-link-input"
+            className="text-body5 mt-16 font-medium"
+          >
             Project link<sup className="text-red-500">*</sup>
-          </p>
+          </label>
           <TextInput
+            id="project-link-input"
             className="mt-8"
             isError={!!errors.website}
             placeholder="https://lightning.xyz"
             {...register("website")}
           />
           {errors.website && (
-            <p className="input-error">{errors.website.message}</p>
+            <p className="input-error" role="alert">
+              {errors.website.message}
+            </p>
           )}
-          <p className="text-body5 mt-16 font-medium">
+          <label
+            htmlFor="tagline-input"
+            className="text-body5 mt-16 font-medium"
+          >
             Tagline<sup className="text-red-500">*</sup>
-          </p>
+          </label>
           <TextInput
+            id="tagline-input"
             className="mt-8"
             isError={!!errors.tagline}
             placeholder="Your product’s one liner"
             {...register("tagline")}
           />
           {errors.tagline && (
-            <p className="input-error">{errors.tagline.message}</p>
+            <p className="input-error" role="alert">
+              {errors.tagline.message}
+            </p>
           )}
-          <p className="text-body5 mt-16 font-medium">
+          <label htmlFor="desc-input" className="text-body5 mt-16 font-medium">
             Description<sup className="text-red-500">*</sup>
-          </p>
+          </label>
           <TextareaInput
+            id="desc-input"
             className="mt-8"
             isError={!!errors.description}
             rows={5}
@@ -122,12 +143,18 @@ export default function ProjectDetailsTab(props: Props) {
             )}
           />
           {errors.description && (
-            <p className="input-error">{errors.description.message}</p>
+            <p className="input-error" role="alert">
+              {errors.description.message}
+            </p>
           )}
-          <p className="text-body5 font-medium mt-16">
+          <label
+            htmlFor="hashtag-input"
+            className="text-body5 font-medium mt-16"
+          >
             Project tag<sup className="text-red-500">*</sup>
-          </p>
+          </label>
           <TextInput
+            id="hashtag-input"
             className="mt-8"
             isError={!!errors.hashtag}
             placeholder="my_project_name"
@@ -140,7 +167,9 @@ export default function ProjectDetailsTab(props: Props) {
             {...registerDebounceValidation("hashtag", 1000, trigger, register)}
           />
           {errors.hashtag && (
-            <p className="input-error">{errors.hashtag.message}</p>
+            <p className="input-error" role="alert">
+              {errors.hashtag.message}
+            </p>
           )}
           {isUpdating && dirtyFields.hashtag && (
             <InfoCard className="mt-8 bg-warning-50 border-warning-100">
@@ -173,11 +202,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <FiTwitter className="text-blue-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Twitter Link"
               placeholder="https://twitter.com/project_handle"
               {...register("twitter")}
             />
             {errors.twitter && (
-              <p className="input-error">{errors.twitter.message}</p>
+              <p className="input-error" role="alert">
+                {errors.twitter.message}
+              </p>
             )}
           </div>
 
@@ -188,11 +220,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <FaDiscord className="text-violet-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Discord Link"
               placeholder="https://discord.com/"
               {...register("discord")}
             />
             {errors.discord && (
-              <p className="input-error">{errors.discord.message}</p>
+              <p className="input-error" role="alert">
+                {errors.discord.message}
+              </p>
             )}
           </div>
 
@@ -203,11 +238,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <FiGithub className="text-gray-700 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Github Link"
               placeholder="https://github.com/"
               {...register("github")}
             />
             {errors.github && (
-              <p className="input-error">{errors.github.message}</p>
+              <p className="input-error" role="alert">
+                {errors.github.message}
+              </p>
             )}
           </div>
           <div>
@@ -217,11 +255,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <FaSlack className="text-pink-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Slack Link"
               placeholder="https://slack.com/"
               {...register("slack")}
             />
             {errors.slack && (
-              <p className="input-error">{errors.slack.message}</p>
+              <p className="input-error" role="alert">
+                {errors.slack.message}
+              </p>
             )}
           </div>
           <div>
@@ -231,11 +272,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <FaTelegram className="text-teal-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Telegram Link"
               placeholder="https://t.me/XXXXXX"
               {...register("telegram")}
             />
             {errors.telegram && (
-              <p className="input-error">{errors.telegram.message}</p>
+              <p className="input-error" role="alert">
+                {errors.telegram.message}
+              </p>
             )}
           </div>
           <div>
@@ -245,11 +289,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <FaFigma className="text-pink-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Figma Link"
               placeholder="https://www.figma.com/file/XXXXXX"
               {...register("figma")}
             />
             {errors.figma && (
-              <p className="input-error">{errors.figma.message}</p>
+              <p className="input-error" role="alert">
+                {errors.figma.message}
+              </p>
             )}
           </div>
           <div>
@@ -259,11 +306,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <GiOstrich className="text-violet-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Nostr Public Key"
               placeholder="npub123456..."
               {...register("npub")}
             />
             {errors.npub && (
-              <p className="input-error">{errors.npub.message}</p>
+              <p className="input-error" role="alert">
+                {errors.npub.message}
+              </p>
             )}
           </div>
           <div>
@@ -273,11 +323,14 @@ export default function ProjectDetailsTab(props: Props) {
               renderBefore={() => (
                 <BsLightningChargeFill className="text-yellow-400 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
               )}
+              aria-label="Lightning Address"
               placeholder="lightning_address@XXX.com"
               {...register("lightning_address")}
             />
             {errors.lightning_address && (
-              <p className="input-error">{errors.lightning_address.message}</p>
+              <p className="input-error" role="alert">
+                {errors.lightning_address.message}
+              </p>
             )}
           </div>
         </div>
@@ -299,7 +352,9 @@ export default function ProjectDetailsTab(props: Props) {
             )}
           />
           {errors.category_id && (
-            <p className="input-error">{errors.category_id?.message}</p>
+            <p className="input-error" role="alert">
+              {errors.category_id?.message}
+            </p>
           )}
         </div>
       </Card>
@@ -319,7 +374,9 @@ export default function ProjectDetailsTab(props: Props) {
             )}
           />
           {errors.capabilities && (
-            <p className="input-error">{errors.capabilities?.message}</p>
+            <p className="input-error" role="alert">
+              {errors.capabilities?.message}
+            </p>
           )}
         </div>
       </Card>
@@ -343,7 +400,9 @@ export default function ProjectDetailsTab(props: Props) {
             )}
           />
           {errors.capabilities && (
-            <p className="input-error">{errors.capabilities?.message}</p>
+            <p className="input-error" role="alert">
+              {errors.capabilities?.message}
+            </p>
           )}
         </div>
       </Card>

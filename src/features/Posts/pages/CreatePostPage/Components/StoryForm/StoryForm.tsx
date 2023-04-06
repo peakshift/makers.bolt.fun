@@ -31,8 +31,16 @@ interface Props {
 export default function StoryForm(props: Props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { handleSubmit, control, register, trigger, getValues, watch, reset } =
-    useFormContext<CreateStoryType>();
+  const {
+    handleSubmit,
+    control,
+    register,
+    trigger,
+    getValues,
+    watch,
+    reset,
+    formState: { errors },
+  } = useFormContext<CreateStoryType>();
   const [navigateToNewStoryPage, setNavigateToNewStoryPage] = useState(false);
 
   const [editMode, setEditMode] = useState(true);
@@ -201,6 +209,7 @@ export default function StoryForm(props: Props) {
                     className="p-0 text-[42px] leading-[58px] border-0 w-full max-w-full resize-none
                                 focus:border-0 focus:outline-none focus:ring-0 font-bolder placeholder:!text-gray-400"
                     placeholder="New story title here..."
+                    aria-invalid={errors.title ? "true" : "false"}
                     {...titleRegisteration}
                     ref={(e) => {
                       registerTitleRef(e);
@@ -225,6 +234,7 @@ export default function StoryForm(props: Props) {
                       value={value}
                       onChange={onChange}
                       onBlur={onBlur}
+                      aria-invalid={errors.tags ? "true" : "false"}
                     />
                   )}
                 />

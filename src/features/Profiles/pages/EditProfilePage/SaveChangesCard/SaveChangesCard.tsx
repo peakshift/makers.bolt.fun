@@ -38,6 +38,7 @@ export default function SaveChangesCard(props: Props) {
             id: user.id,
             username: user.name,
           })}
+          aria-label="Go To Profile"
         >
           <Avatar width={48} src={user.avatar!} />
         </Link>

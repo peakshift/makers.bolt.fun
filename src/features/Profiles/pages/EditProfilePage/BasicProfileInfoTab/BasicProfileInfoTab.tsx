@@ -169,7 +169,6 @@ export default function BasicProfileInfoTab() {
             >
               <input
                 id="name-input"
-                autoFocus
                 type="text"
                 className="input-text"
                 placeholder="John Doe"

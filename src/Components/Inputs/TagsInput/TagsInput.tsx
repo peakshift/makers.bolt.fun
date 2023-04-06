@@ -93,6 +93,7 @@ export default function TagsInput({
             primary: "var(--primary)",
           },
         })}
+        {...props}
       />
       {/* <div className="flex mt-16 gap-8 flex-wrap">
                 {(value as Tag[]).map((tag, idx) => <Badge color="gray" key={tag.title} onRemove={() => handleRemove(idx)} >{tag.title}</Badge>)}
