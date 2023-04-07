@@ -9,6 +9,7 @@ import { setUser } from "./redux/features/user.slice";
 import { Outlet } from "react-router-dom";
 import GlobalLoader from "./Components/GlobalLoader/GlobalLoader";
 import OgTags from "./Components/OgTags/OgTags";
+import ScrollToHashElement from "./utils/routing/ScrollToHashElement";
 
 function App() {
   const { isWalletConnected } = useAppSelector((state) => ({
@@ -47,6 +48,7 @@ function App() {
         image="https://makers.bolt.fun/assets/images/og-thumbnail.jpg"
       />
       <GlobalLoader />
+      <ScrollToHashElement />
       <Suspense fallback={<LoadingPage />}>
         <Outlet />
       </Suspense>

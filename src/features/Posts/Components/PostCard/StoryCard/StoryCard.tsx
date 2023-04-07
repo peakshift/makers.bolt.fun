@@ -93,7 +93,10 @@ export default function StoryCard({ story, comments }: Props) {
           <div className="flex gap-24 items-center">
             <VoteButton votes={story.votes_count} dense onVote={vote} />
 
-            <span className="text-gray-400">
+            <Link
+              to={`${storyUrl}#comments`}
+              className="text-gray-500 rounded-8 p-8 hover:bg-gray-100"
+            >
               <FiMessageSquare />{" "}
               <span className="align-middle">
                 {isLoadingComments ? (
@@ -102,7 +105,7 @@ export default function StoryCard({ story, comments }: Props) {
                   `${comments.data.length} Comments`
                 )}
               </span>
-            </span>
+            </Link>
           </div>
           {comments?.data && comments.data.length > 0 && (
             <div className=" bg-gray-100 p-24 mt-16 rounded">
@@ -111,15 +114,15 @@ export default function StoryCard({ story, comments }: Props) {
                   <li>
                     <p>
                       <span className="font-bold text-gray-900">
-                        {nip19.npubEncode(comment.pubkey).slice(0, 10)}
+                        {nip19.npubEncode(comment.pubkey).slice(0, 10)}...
                       </span>{" "}
-                      <span className=" text-body5">
+                      <span className="text-body5 text-gray-400 italic">
                         {calcTimeSincePosting(
                           new Date(comment.created_at * 1000).toISOString()
                         )}
                       </span>
                     </p>
-                    <p className="text-gray-600 line-clamp-2">
+                    <p className="text-gray-600 whitespace-pre-line">
                       {comment.content}
                     </p>
                   </li>
@@ -127,8 +130,8 @@ export default function StoryCard({ story, comments }: Props) {
               </ul>
               {comments.data.length > 3 && (
                 <Link
-                  to={storyUrl}
-                  className="inline-block mt-16 text-gray-600 hover:underline "
+                  to={`${storyUrl}#comments`}
+                  className="inline-block mt-24 text-gray-600 font-medium hover:underline "
                 >
                   See all {comments.data.length} comments
                 </Link>
