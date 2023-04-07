@@ -38,6 +38,7 @@ query profile($profileId: Int!) {
       key
       createdAt
       label
+      is_primary
     }
     ...UserBasicInfo
     ...UserRolesSkills

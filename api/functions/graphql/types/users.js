@@ -528,16 +528,25 @@ const linkNostrKey = extendType({
 
         const label = event.tags.find((tag) => tag[0] === "label")?.[1];
 
+        const hasPrimaryKey = await prisma.userNostrKey.findFirst({
+          where: {
+            user_id: user.id,
+            is_primary: true,
+          },
+        });
+
         await prisma.userNostrKey.upsert({
           create: {
             key: event.pubkey,
             user_id: user.id,
             label,
+            is_primary: !hasPrimaryKey,
           },
           update: {
             user_id: user.id,
             label,
             createdAt: new Date(),
+            is_primary: !hasPrimaryKey,
           },
           where: {
             key: event.pubkey,
@@ -590,6 +599,77 @@ const unlinkNostrKey = extendType({
           },
         });
 
+        if (keyExist.is_primary) {
+          const newPrimary = await prisma.userNostrKey.findFirst({
+            where: {
+              user_id: user.id,
+            },
+          });
+          if (newPrimary)
+            await prisma.userNostrKey.update({
+              where: {
+                key: newPrimary.key,
+              },
+              data: {
+                is_primary: true,
+              },
+            });
+        }
+
+        return prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            userNostrKeys: true,
+          },
+        });
+      },
+    });
+  },
+});
+
+const setUserNostrKeyAsPrimary = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("setUserNostrKeyAsPrimary", {
+      type: "User",
+      args: { key: nonNull(stringArg()) },
+      async resolve(_root, args, ctx) {
+        const { key } = args;
+        const user = await getUserById(ctx.user?.id);
+
+        // Do some validation
+        if (!user?.id) throw new Error("You have to login");
+
+        const keyExist = await prisma.userNostrKey.findFirst({
+          where: {
+            user_id: user.id,
+            key,
+          },
+        });
+
+        if (!keyExist) throw new Error("This user doesn't have this key");
+
+        await prisma.$transaction([
+          prisma.userNostrKey.updateMany({
+            where: {
+              user_id: user.id,
+            },
+            data: {
+              is_primary: false,
+            },
+          }),
+          prisma.userNostrKey.update({
+            where: {
+              key,
+            },
+            data: {
+              is_primary: true,
+            },
+          }),
+        ]);
+
         return prisma.user.findUnique({
           where: {
             id: user.id,
@@ -619,6 +699,7 @@ const NostrKey = objectType({
     t.nonNull.string("key");
     t.nonNull.string("label");
     t.nonNull.date("createdAt");
+    t.nonNull.boolean("is_primary");
   },
 });
 
@@ -787,4 +868,5 @@ module.exports = {
   updateProfileRoles,
   linkNostrKey,
   unlinkNostrKey,
+  setUserNostrKeyAsPrimary,
 };

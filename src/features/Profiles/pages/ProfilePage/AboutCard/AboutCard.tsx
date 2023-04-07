@@ -22,6 +22,7 @@ import { useMetaData } from "src/lib/nostr";
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 import IconButton from "src/Components/IconButton/IconButton";
 import { Wallet_Service } from "src/services";
+import Badge from "src/Components/Badge/Badge";
 
 interface Props {
   isOwner?: boolean;
@@ -128,7 +129,7 @@ export default function AboutCard({ user, isOwner }: Props) {
       <div className="h-64 flex justify-end items-center px-24">
         {isOwner && (
           <Button size="sm" color="gray" href="/edit-profile">
-            Edit Profile
+            Edit Profile ⚙️
           </Button>
         )}
       </div>
@@ -217,52 +218,59 @@ export default function AboutCard({ user, isOwner }: Props) {
                 Nostr
               </p>
               <ul className="flex flex-col gap-12">
-                {user.nostr_keys.map((nostrKey) => {
-                  const nostrProfile = getProfileDataFromMetaData(
-                    metadata,
-                    nostrKey.key
-                  );
-                  return (
-                    <li
-                      key={nostrKey.key}
-                      className="bg-gray-100 rounded p-16 flex gap-12 items-center justify-between"
-                    >
-                      <div className="flex gap-8 items-center min-w-0">
-                        <Avatar width={32} src={nostrProfile.image} />
-                        <div className="overflow-hidden">
-                          <p className="font-bold overflow-hidden text-ellipsis">
-                            {nostrProfile.name}
-                          </p>
-                          <a
-                            href={`https://nostr.guru/p/${nostrKey.key}`}
-                            className="block hover:underline text-gray-500 overflow-hidden text-ellipsis"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {nip19.npubEncode(nostrKey.key)}
-                          </a>
+                {[...user.nostr_keys]
+                  .sort((k1, k2) => (k1.is_primary ? -1 : 1))
+                  .map((nostrKey) => {
+                    const nostrProfile = getProfileDataFromMetaData(
+                      metadata,
+                      nostrKey.key
+                    );
+                    return (
+                      <li
+                        key={nostrKey.key}
+                        className="bg-gray-100 rounded p-16 flex gap-12 items-center justify-between"
+                      >
+                        <div className="flex gap-8 items-center min-w-0">
+                          <Avatar width={32} src={nostrProfile.image} />
+                          <div className="overflow-hidden">
+                            <p className="font-bold overflow-hidden text-ellipsis whitespace-nowrap">
+                              {nostrKey.is_primary && (
+                                <Badge size="sm" color="black" className="mr-8">
+                                  Primary Key
+                                </Badge>
+                              )}
+                              {nostrProfile.name}
+                            </p>
+                            <a
+                              href={`https://nostr.guru/p/${nostrKey.key}`}
+                              className="block hover:underline text-gray-500 overflow-hidden text-ellipsis"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {nip19.npubEncode(nostrKey.key)}
+                            </a>
+                          </div>
+                          <span className="relative">
+                            <CopyToClipboard
+                              text={nip19.npubEncode(nostrKey.key)}
+                              onCopy={() =>
+                                NotificationsService.info(
+                                  " Copied to clipboard",
+                                  {
+                                    icon: "📋",
+                                  }
+                                )
+                              }
+                            >
+                              <IconButton className="text-primary-500">
+                                <FiCopy />
+                              </IconButton>
+                            </CopyToClipboard>
+                          </span>
                         </div>
-                        <span className="relative">
-                          <CopyToClipboard
-                            text={nip19.npubEncode(nostrKey.key)}
-                            onCopy={() =>
-                              NotificationsService.info(
-                                " Copied to clipboard",
-                                {
-                                  icon: "📋",
-                                }
-                              )
-                            }
-                          >
-                            <IconButton className="text-primary-500">
-                              <FiCopy />
-                            </IconButton>
-                          </CopyToClipboard>
-                        </span>
-                      </div>
-                    </li>
-                  );
-                })}
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
           )}
