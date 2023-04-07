@@ -63,7 +63,12 @@ export default function StoryCard({ story, comments }: Props) {
       />
       <Card className="overflow-hidden mt-8">
         {story.cover_image && (
-          <Link className="mb-16 block" to={storyUrl}>
+          <Link
+            className="mb-16 block"
+            to={storyUrl}
+            aria-hidden="true"
+            tabIndex={-1}
+          >
             <img
               src={story.cover_image}
               className="h-[200px] w-full object-cover rounded-8"

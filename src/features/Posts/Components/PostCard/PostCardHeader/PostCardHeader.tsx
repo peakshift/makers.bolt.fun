@@ -27,6 +27,8 @@ export default function PostCardHeader(props: Props) {
             id: props.author.id,
             username: props.author.name,
           })}
+          aria-hidden="true"
+          tabIndex={-1}
         >
           <Avatar width={32} src={props.author.avatar} />
         </Link>
@@ -34,6 +36,8 @@ export default function PostCardHeader(props: Props) {
           <Link
             className="-ml-12"
             to={createRoute({ type: "project", tag: props.project.hashtag })}
+            aria-hidden="true"
+            tabIndex={-1}
           >
             <Avatar src={props.project.thumbnail_image!} width={32} />
           </Link>
