@@ -91,6 +91,7 @@ export default function TagPage() {
                 items={feedQuery.data?.getFeed}
                 isFetching={isFetchingMore}
                 onReachedBottom={fetchMore}
+                postsToComments={{}}
               />
             )}
           </div>

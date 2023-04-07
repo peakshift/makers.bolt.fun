@@ -1,6 +1,6 @@
 import { useUpdateEffect } from "@react-hookz/web";
-import { useState } from "react";
-import { useFeedQuery } from "src/graphql";
+import { useEffect, useState } from "react";
+import { Story, useFeedQuery } from "src/graphql";
 import { useAppSelector, useInfiniteQuery, usePreload } from "src/utils/hooks";
 import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
@@ -17,8 +17,11 @@ import OgTags from "src/Components/OgTags/OgTags";
 import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
 import dayjs from "dayjs";
 import SkipLink from "src/Components/SkipLink/SkipLink";
+import { useFeedComments } from "./useFeedComments";
+import { withProviders } from "src/utils/hoc";
+import { RelayPoolProvider } from "src/lib/nostr";
 
-export default function FeedPage() {
+function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
   const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
   const dispatch = useAppDispatch();
@@ -39,6 +42,14 @@ export default function FeedPage() {
   useUpdateEffect(variablesChanged, [sortByFilter, tagFilter]);
 
   usePreload("PostPage");
+
+  useEffect(() => {
+    console.log("Changed");
+  }, [feedQuery.data?.getFeed]);
+
+  const { postsToComments } = useFeedComments({
+    posts: (feedQuery.data?.getFeed ?? []) as Story[],
+  });
 
   const isNewUser =
     userJoinDate && dayjs(Date.now()).diff(userJoinDate, "hours") <= 24;
@@ -110,6 +121,7 @@ export default function FeedPage() {
               items={feedQuery.data?.getFeed}
               isFetching={isFetchingMore}
               onReachedBottom={fetchMore}
+              postsToComments={postsToComments}
             />
           </div>
           <aside id="side" className="no-scrollbar">
@@ -152,6 +164,8 @@ export default function FeedPage() {
     </>
   );
 }
+
+export default withProviders(RelayPoolProvider)(FeedPage);
 
 const randomWelcomeMessage = randomItem(
   "What are you working on today?",
