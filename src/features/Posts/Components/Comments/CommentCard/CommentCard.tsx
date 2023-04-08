@@ -17,6 +17,7 @@ import { Tooltip } from "react-tooltip";
 import LinkDuo from "src/Components/LinkDuo/LinkDuo";
 import { NostrProfile } from "src/lib/nostr";
 import { createRoute } from "src/utils/routing";
+import { purifyHtml } from "src/utils/validation";
 
 interface Props {
   comment: NostrToolsEventWithId;
@@ -105,7 +106,7 @@ export default function CommentCard({
       <div
         className="text-body4 mt-16 whitespace-pre-line break-words [&_a]:text-blue-400 [&_a]:underline"
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(marked.parse(contentWithMentionsLinks)),
+          __html: purifyHtml(marked.parse(contentWithMentionsLinks)),
         }}
       ></div>
       <div className="flex gap-24 items-center">

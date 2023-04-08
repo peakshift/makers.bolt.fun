@@ -22,6 +22,7 @@ import { RelayPoolProvider } from "src/lib/nostr";
 import { withProviders } from "src/utils/hoc";
 import { Tooltip } from "react-tooltip";
 import PostImagesLightbox from "../PostImagesLightbox/PostImagesLightbox";
+import { purifyHtml } from "src/utils/validation";
 
 const CommentsWidgetRoot = lazy(
   () =>
@@ -157,7 +158,7 @@ function StoryPageContent({ story }: Props) {
           ref={storyContentDomRef}
           className={`mt-42 ${styles.body}`}
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(marked.parse(story.body)),
+            __html: purifyHtml(marked.parse(story.body)),
           }}
         ></div>
         <PostImagesLightbox contentDomRef={storyContentDomRef} />

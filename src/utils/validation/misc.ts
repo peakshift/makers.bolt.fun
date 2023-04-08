@@ -8,6 +8,7 @@ import {
   UseFormTrigger,
 } from "react-hook-form";
 import debounce from "lodash.debounce";
+import DOMPurify from "dompurify";
 
 export const imageSchema = yup
   .object()
@@ -41,4 +42,11 @@ export const registerDebounceValidation = <TFieldValues extends FieldValues>(
       debouncedValidate();
     },
   };
+};
+
+export const purifyHtml = (html: string) => {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["iframe"],
+    ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
+  });
 };

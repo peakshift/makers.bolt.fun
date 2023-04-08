@@ -2,6 +2,7 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
+import { purifyHtml } from "src/utils/validation";
 import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
 import FAQsSection from "../FAQsSection/FAQsSection";
 import JudgesSection from "../JudgesSection/JudgesSection";
@@ -31,9 +32,7 @@ export default function LegendsOfLightningOverviewPage() {
             <div
               className={`text-gray-600 prose `}
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(
-                  marked.parse(tournamentDetails.description)
-                ),
+                __html: purifyHtml(marked.parse(tournamentDetails.description)),
               }}
             ></div>
           </div>

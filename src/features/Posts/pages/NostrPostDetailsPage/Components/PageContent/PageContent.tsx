@@ -17,6 +17,7 @@ import { NostrProfile } from "src/lib/nostr";
 import dayjs from "dayjs";
 import { extractArticleFields } from "src/lib/nostr/helpers";
 import LinkDuo from "src/Components/LinkDuo/LinkDuo";
+import { purifyHtml } from "src/utils/validation";
 
 interface Props {
   author: NostrProfile;
@@ -131,7 +132,7 @@ export default function PageContent({ author, post, articleFields }: Props) {
         <div
           className={`${styles.body} break-words`}
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(marked.parse(post.content)),
+            __html: purifyHtml(marked.parse(post.content)),
           }}
         ></div>
         {articleFields.tags.length > 0 && (

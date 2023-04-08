@@ -4,6 +4,7 @@ import Badge from "src/Components/Badge/Badge";
 import { Post } from "src/graphql";
 import Card from "src/Components/Card/Card";
 import { formatHashtag } from "src/utils/helperFunctions";
+import { purifyHtml } from "src/utils/validation";
 
 function isPost(type?: string): type is "story" {
   return type === "story";
@@ -50,7 +51,9 @@ export default function PreviewPostContent({ post }: Props) {
 
         <div
           className={`mt-42 ${styles.body}`}
-          dangerouslySetInnerHTML={{ __html: marked.parse(post.body, {}) }}
+          dangerouslySetInnerHTML={{
+            __html: purifyHtml(marked.parse(post.body, {})),
+          }}
         ></div>
       </Card>
     </div>

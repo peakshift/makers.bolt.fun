@@ -18,6 +18,7 @@ import { FiLink } from "react-icons/fi";
 import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
 import { RelayPoolProvider } from "src/lib/nostr";
+import { purifyHtml } from "src/utils/validation";
 
 export default function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });
@@ -111,7 +112,7 @@ export default function TagPage() {
                   <div
                     className={`prose text-gray-600 ${styles.tag_desc}`}
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(
+                      __html: purifyHtml(
                         marked.parse(loaderData.getTagInfo.long_description)
                       ),
                     }}
@@ -122,7 +123,7 @@ export default function TagPage() {
                 <div
                   className={`prose text-gray-600 ${styles.tag_desc} lg:hidden`}
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(
+                    __html: purifyHtml(
                       marked.parse(loaderData.getTagInfo.description)
                     ),
                   }}
