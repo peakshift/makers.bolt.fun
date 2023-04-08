@@ -46,7 +46,7 @@ export const registerDebounceValidation = <TFieldValues extends FieldValues>(
 
 export const purifyHtml = (html: string) => {
   return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ["iframe"],
+    ADD_TAGS: ["iframe"],
     ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
   });
 };
