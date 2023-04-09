@@ -145,15 +145,17 @@ function FeedPage() {
                     >
                       <span className="bg-gray-50 group-hover:bg-gray-100 rounded-8 w-40 h-40 text-center py-8">
                         {item.icon}
+                      </span>
+                      <span className="self-center px-8">
+                        {item.text}
                         {item.badge && (
                           <span
-                            className={`absolute -top-3 -right-36 font-medium text-xs leading-5 rounded px-2 py-0.1 bg-${item.badge.color}-400/10 text-${item.badge.color}-600`}
+                            className={`ml-4 inline-block font-medium text-xs rounded px-2 py-0.5 bg-${item.badge.color}-500 text-white`}
                           >
                             {item.badge.text}
                           </span>
                         )}
                       </span>
-                      <span className="self-center px-8">{item.text}</span>
                     </a>
                   </li>
                 ))}
