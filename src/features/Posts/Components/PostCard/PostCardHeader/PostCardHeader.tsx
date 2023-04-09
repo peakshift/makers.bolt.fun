@@ -70,9 +70,9 @@ export default function PostCardHeader(props: Props) {
           </>
         )}
       </span>
-      <p className="text-body6 text-gray-500 font-medium">
+      <time dateTime={props.date} className="text-body6 text-gray-500 font-medium">
         {calcTimeSincePosting(props.date)}
-      </p>
+      </time>
     </div>
   );
 }
