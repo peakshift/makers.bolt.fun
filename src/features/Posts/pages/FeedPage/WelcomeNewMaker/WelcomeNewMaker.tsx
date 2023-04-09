@@ -25,29 +25,25 @@ export default function WelcomeNewMaker() {
       >
         <IoClose />
       </IconButton>
-      <h2 className="text-h1 font-bold">Take a look around!!</h2>
+      <h2 className="text-h1 font-bold">Take a look around</h2>
       <p className="text-body1">
-        You're entering the most FUN community of builders and designers in
-        Bitcoin & Nostr!
+        The most FUN community of builders and designers making the future with Bitcoin, Nostr, and AI!
       </p>
       <div>
         <p className="text-gray-300 mb-8">SUGGESTED THINGS YOU CAN DO</p>
         <div className="flex flex-col gap-8">
           <Link
             to={createRoute({ type: "edit-profile" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center rounded bg-primary-500 hover:bg-primary-400"
           >
             <div
-              className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
-            >
+              className={`shrink-0 flex flex-col justify-center items-center bg-white bg-opacity-50 rounded-8 w-48 h-48`}
+              >
               👾
             </div>
             <div>
               <p className="text-body4 text-white font-bold">
                 Complete your maker profile
-              </p>
-              <p className="text-body5 text-gray-100">
-                Get found by the right people.
               </p>
             </div>
           </Link>
@@ -56,54 +52,46 @@ export default function WelcomeNewMaker() {
             className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-yellow-400 hover:bg-opacity-40 rounded bg-opacity-50 "
           >
             <div
-              className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
-            >
+              className={`shrink-0 flex flex-col justify-center items-center bg-white bg-opacity-50 rounded-8 w-48 h-48`}
+              >
               🦩
             </div>
             <div>
               <p className="text-body4 text-white font-bold">
-                Link Your Nostr Public Key{" "}
+                Verify yourself on Nostr{" "}
                 <span className="font-medium text-xs leading-5 rounded bg-orange-400 px-8">
                   NEW
                 </span>
-              </p>
-              <p className="text-body5 text-gray-100">
-                So other makers can follow you on Nostr.
               </p>
             </div>
           </Link>
           <Link
             to={createRoute({ type: "write-story" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center rounded bg-primary-500 hover:bg-primary-400"
           >
             <div
-              className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
-            >
+              className={`shrink-0 flex flex-col justify-center items-center bg-white bg-opacity-50 rounded-8 w-48 h-48`}
+              >
               ✍️
             </div>
             <div>
               <p className="text-body4 text-white font-bold">
                 Introduce yourself
               </p>
-              <p className="text-body5 text-gray-100">Post a story.</p>
             </div>
           </Link>
           <Link
             to={createRoute({ type: "edit-project" })}
-            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center bg-white rounded bg-opacity-20 hover:bg-opacity-10"
+            className="flex max-md:flex-col w-full p-8 gap-8 md:items-center rounded bg-primary-500 hover:bg-primary-400"
           >
             <div
-              className={`shrink-0 flex flex-col justify-center items-center bg-gray-200 rounded-8 w-48 h-48`}
+              className={`shrink-0 flex flex-col justify-center items-center bg-white bg-opacity-50 rounded-8 w-48 h-48`}
             >
               🚀
             </div>
             <div>
               <p className="text-body4 text-white font-bold">
-                List your project
-              </p>
-              <p className="text-body5 text-gray-100">
-                Let people know what you're working on. Amazing things can
-                happen.
+                Submit your project
               </p>
             </div>
           </Link>
