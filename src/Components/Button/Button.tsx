@@ -24,7 +24,7 @@ const btnStylesFill: UnionToObjectKeys<Props, "color"> = {
   primary:
     "bg-primary-500 hover:bg-primary-400 active:bg-primary-600 text-white",
   gray: "bg-gray-100 hover:bg-gray-200 text-gray-900 active:bg-gray-300",
-  white: "border border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50",
+  white: "border-2 border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50",
   black: "text-white bg-black hover:bg-gray-900",
   red: "bg-red-500 hover:bg-red-600 active:bg-red-700 text-white",
 };
@@ -50,7 +50,7 @@ const btnStylesOutline: UnionToObjectKeys<Props, "color"> = {
 const baseBtnStyles: UnionToObjectKeys<Props, "variant"> = {
   fill: "transition-transform active:scale-95",
   outline:
-    "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 ",
+    "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border-2 border-gray-200 active:scale-95 ",
   text: "transition-transform active:scale-95 hover:bg-gray-100 active:bg-gray-50",
 };
 
