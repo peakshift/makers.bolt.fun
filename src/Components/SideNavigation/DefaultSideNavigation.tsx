@@ -1,6 +1,7 @@
 import React from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 
 type NavItem = {
   href: string;
@@ -15,7 +16,7 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    href: "/feed",
+    href: PAGES_ROUTES.blog.feed,
     icon: "📰",
     text: "Feed",
   },
@@ -25,12 +26,12 @@ const navItems: NavItem[] = [
     text: "CUBO+",
   },
   {
-    href: "/topics",
+    href: PAGES_ROUTES.blog.topicsPage,
     icon: "🏷️",
     text: "Topics",
   },
   {
-    href: "/hangout",
+    href: createRoute({ type: "hangout" }),
     icon: "🔊",
     text: "Hangout",
     badge: {
@@ -39,17 +40,17 @@ const navItems: NavItem[] = [
     },
   },
   {
-    href: "/projects",
+    href: createRoute({ type: "projects-page" }),
     icon: "🚀",
     text: "Explore Projects",
   },
   {
-    href: "/tournaments/2/overview",
+    href: createRoute({ type: "tournament", id: 2 }),
     icon: "🦩",
     text: "#NostrHack",
   },
   {
-    href: "/tournaments/1/overview",
+    href: createRoute({ type: "tournament", id: 1 }),
     icon: "🏆",
     text: "#LegendsOfLightning",
   },
