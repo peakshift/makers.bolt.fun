@@ -43,10 +43,6 @@ function FeedPage() {
 
   usePreload("PostPage");
 
-  useEffect(() => {
-    console.log("Changed");
-  }, [feedQuery.data?.getFeed]);
-
   const { postsToComments } = useFeedComments({
     posts: (feedQuery.data?.getFeed ?? []) as Story[],
   });

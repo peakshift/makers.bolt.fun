@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import DefaultSideNavigation from "./DefaultSideNavigation";
 
 const Context = createContext<{
   renderSideNav: () => React.ReactNode;
@@ -19,9 +20,11 @@ const Context = createContext<{
 export default function SideNavigationProvider(props: PropsWithChildren<{}>) {
   const [componentSideNav, setComponentSideNav] = useState<
     Record<string, () => React.ReactNode>
-  >({});
+  >({
+    default: DefaultSideNavigation,
+  });
 
-  const compsIdsStack = useRef([] as string[]);
+  const compsIdsStack = useRef(["default"] as string[]);
 
   const setRenderSideNav = useCallback(
     (compId: string, renderSideNav: () => React.ReactNode) => {
@@ -62,12 +65,7 @@ const useSideNavigation = () => {
 };
 
 export function SideNavigation(props: PropsWithChildren<{}>) {
-  const { renderSideNav, setRenderSideNav } = useSideNavigation();
-  const componentId = useId();
-
-  useEffect(() => {
-    setRenderSideNav(componentId, () => props.children);
-  }, [componentId, props.children, setRenderSideNav]);
+  const { renderSideNav } = useSideNavigation();
 
   return (
     <nav className="md:overflow-y-auto sticky-side-element flex flex-col gap-16 md:gap-24">
@@ -81,7 +79,7 @@ SideNavigation.Override = function Override(props: PropsWithChildren<{}>) {
   const componentId = useId();
 
   useEffect(() => {
-    setRenderSideNav(componentId, () => props.children);
+    return setRenderSideNav(componentId, () => props.children);
   }, [componentId, props.children, setRenderSideNav]);
 
   return null;

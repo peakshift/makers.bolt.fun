@@ -8,10 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiPlusCircle } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
+import { FaPlusCircle } from "react-icons/fa";
 
 export default function NavDesktop() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -30,15 +31,52 @@ export default function NavDesktop() {
   return (
     <nav className="bg-white border-b-2 py-16 w-full min-w-full">
       <div className="content-container">
-        <div className="flex items-center">
+        <div className="flex gap-16 items-center">
           <Link to="/">
             <img
               className="h-40 mr-40 lg:mr-64"
               src={ASSETS.Logo}
-              alt="BOLT.FUN logo"
+              alt="BOLT.FUN"
             />
           </Link>
-          <div className="flex-1"></div>
+          <div className="ml-auto">
+            <Menu
+              align="end"
+              offsetY={4}
+              menuClassName="!p-8 !rounded-12"
+              menuButton={
+                <Button color="gray" size="sm">
+                  <FiPlusCircle className="text-gray-600 mr-8" />
+                  <span className="align-middle">Create</span>{" "}
+                </Button>
+              }
+            >
+              <MenuItem
+                href={createRoute({
+                  type: "write-story",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+              >
+                ✍️ Story
+              </MenuItem>
+              <MenuItem
+                href={createRoute({
+                  type: "write-story",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+              >
+                🙋‍♂️ Question
+              </MenuItem>
+              <MenuItem
+                href={createRoute({
+                  type: "edit-project",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+              >
+                🚀 Project
+              </MenuItem>
+            </Menu>
+          </div>
 
           <motion.div
             animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
