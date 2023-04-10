@@ -108,7 +108,7 @@ export default function StoryCard({ story, comments }: Props) {
               <span className="align-middle">
                 {isLoadingComments ? (
                   <Skeleton width="9ch" />
-                ) : comments.data.length == 1 ? (
+                ) : comments.data.length === 1 ? (
                   `${comments.data.length} Comment`
                 ) : comments.data.length > 1 ? (
                   `${comments.data.length} Comments`
