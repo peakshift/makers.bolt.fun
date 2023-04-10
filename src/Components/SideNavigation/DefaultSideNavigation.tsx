@@ -106,7 +106,7 @@ export default function DefaultSideNavigation() {
             <NavLink
               className={({ isActive }) =>
                 `flex items-center text-gray-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${
-                  isActive ? "bg-primary-100" : "group-hover:bg-gray-100"
+                  isActive ? "bg-gray-200" : "group-hover:bg-gray-100"
                 }`
               }
               to={item.href}
