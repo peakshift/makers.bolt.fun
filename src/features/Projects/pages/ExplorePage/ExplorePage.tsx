@@ -6,10 +6,10 @@ import SkipLink from "src/Components/SkipLink/SkipLink";
 
 export default function ExplorePage() {
   return (
-    <div className="bg-white">
+    <div className="bg-white p-16 rounded-24">
       <SkipLink id="explore-projects-content">Skip To Content</SkipLink>
       <OgTags title="#BuildOnBitcoin" />
-      <main className="page-container" id="explore-projects-content">
+      <main id="explore-projects-content">
         <Header />
         <div className="my-32">
           <Categories />

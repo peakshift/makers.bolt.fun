@@ -19,6 +19,7 @@ import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
 import { RelayPoolProvider } from "src/lib/nostr";
 import { purifyHtml } from "src/utils/validation";
+import { SideNavigation } from "src/Components/SideNavigation/SideNavigationContext";
 
 export default function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });
@@ -96,97 +97,95 @@ export default function TagPage() {
               />
             )}
           </div>
-          <aside id="categories" className="no-scrollbar">
-            <div className="sticky-side-element flex flex-col gap-16 md:gap-24 md:overflow-y-scroll">
-              <div>
-                <h1 className="text-body2 text-ellipsis overflow-hidden whitespace-nowrap font-bolder">
-                  {loaderData.getTagInfo.icon}{" "}
-                  {formatHashtag(loaderData.getTagInfo.title)}
-                </h1>
-              </div>
-              {loaderData.getTagInfo.long_description && (
-                <div className="hidden lg:block">
-                  <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
-                    Description
-                  </p>
-                  <div
-                    className={`prose text-gray-600 ${styles.tag_desc}`}
-                    dangerouslySetInnerHTML={{
-                      __html: purifyHtml(
-                        marked.parse(loaderData.getTagInfo.long_description)
-                      ),
-                    }}
-                  ></div>
-                </div>
-              )}
-              {loaderData.getTagInfo.description && (
+          <SideNavigation.Override>
+            <div>
+              <h1 className="text-body2 text-ellipsis overflow-hidden whitespace-nowrap font-bolder">
+                {loaderData.getTagInfo.icon}{" "}
+                {formatHashtag(loaderData.getTagInfo.title)}
+              </h1>
+            </div>
+            {loaderData.getTagInfo.long_description && (
+              <div className="hidden lg:block">
+                <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
+                  Description
+                </p>
                 <div
-                  className={`prose text-gray-600 ${styles.tag_desc} lg:hidden`}
+                  className={`prose text-gray-600 ${styles.tag_desc}`}
                   dangerouslySetInnerHTML={{
                     __html: purifyHtml(
-                      marked.parse(loaderData.getTagInfo.description)
+                      marked.parse(loaderData.getTagInfo.long_description)
                     ),
                   }}
                 ></div>
-              )}
-              {loaderData.getTagInfo.links.length > 0 && (
-                <div className="hidden lg:block">
-                  <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
-                    LINKS
-                  </p>
-                  {loaderData.getTagInfo.links.map((link) => (
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-8 text-gray-600 mb-8 last-of-type:mb-0"
+              </div>
+            )}
+            {loaderData.getTagInfo.description && (
+              <div
+                className={`prose text-gray-600 ${styles.tag_desc} lg:hidden`}
+                dangerouslySetInnerHTML={{
+                  __html: purifyHtml(
+                    marked.parse(loaderData.getTagInfo.description)
+                  ),
+                }}
+              ></div>
+            )}
+            {loaderData.getTagInfo.links.length > 0 && (
+              <div className="hidden lg:block">
+                <p className="text-body6 uppercase font-medium text-gray-500 mb-8">
+                  LINKS
+                </p>
+                {loaderData.getTagInfo.links.map((link) => (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-8 text-gray-600 mb-8 last-of-type:mb-0"
+                  >
+                    <FiLink />{" "}
+                    <span className="hover:underline underline-offset-1 font-medium">
+                      {link.name}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            )}
+            {loaderData.getTagInfo.moderators.length > 0 && (
+              <div className="hidden lg:block">
+                <p className="text-body6 uppercase font-medium text-gray-500 mb-16">
+                  MODERATORS
+                </p>
+                <div className="flex flex-wrap gap-16">
+                  {loaderData.getTagInfo.moderators.map((mod) => (
+                    <Link
+                      key={mod.id}
+                      to={createRoute({
+                        type: "profile",
+                        id: mod.id,
+                        username: mod.name,
+                      })}
                     >
-                      <FiLink />{" "}
-                      <span className="hover:underline underline-offset-1 font-medium">
-                        {link.name}
-                      </span>
-                    </a>
+                      <Avatar src={mod.avatar} width={40} />
+                    </Link>
                   ))}
                 </div>
-              )}
-              {loaderData.getTagInfo.moderators.length > 0 && (
-                <div className="hidden lg:block">
-                  <p className="text-body6 uppercase font-medium text-gray-500 mb-16">
-                    MODERATORS
-                  </p>
-                  <div className="flex flex-wrap gap-16">
-                    {loaderData.getTagInfo.moderators.map((mod) => (
-                      <Link
-                        key={mod.id}
-                        to={createRoute({
-                          type: "profile",
-                          id: mod.id,
-                          username: mod.name,
-                        })}
-                      >
-                        <Avatar src={mod.avatar} width={40} />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <div className="order-3 md:order-2">
-                <Button
-                  href={createRoute({
-                    type: "write-story",
-                    initData: {
-                      tags: [loaderData.getTagInfo.title],
-                    },
-                  })}
-                  color="primary"
-                  fullWidth
-                >
-                  Write a {formatHashtag(tagInfo.title)} story
-                </Button>
               </div>
-              <div className="order-2 md:order-3"></div>
+            )}
+            <div className="order-3 md:order-2">
+              <Button
+                href={createRoute({
+                  type: "write-story",
+                  initData: {
+                    tags: [loaderData.getTagInfo.title],
+                  },
+                })}
+                color="primary"
+                fullWidth
+              >
+                Write a {formatHashtag(tagInfo.title)} story
+              </Button>
             </div>
-          </aside>
+            <div className="order-2 md:order-3"></div>
+          </SideNavigation.Override>
           <aside id="side" className="no-scrollbar">
             <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
               <TrendingCard />

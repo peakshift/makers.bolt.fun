@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import Navbar from "src/Components/Navbar/Navbar";
 
-export const NavbarLayout = () => {
+export const TopNavLayout = () => {
   return (
     <>
       <Navbar />

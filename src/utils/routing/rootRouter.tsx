@@ -11,7 +11,7 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
-import { NavbarLayout } from "./layouts";
+import { SideNavLayout, TopNavLayout } from "./layouts";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
@@ -205,13 +205,52 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           </ProtectedRoute>
         }
       />
-      <Route element={<NavbarLayout />}>
-        <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
-        <Route
-          path={PAGES_ROUTES.projects.byCategoryId}
-          element={<CategoryPage />}
-        />
-        <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
+      <Route element={<TopNavLayout />}>
+        <Route element={<SideNavLayout />}>
+          <Route
+            path={PAGES_ROUTES.projects.hottest}
+            element={<HottestPage />}
+          />
+          <Route
+            path={PAGES_ROUTES.projects.byCategoryId}
+            element={<CategoryPage />}
+          />
+          <Route
+            path={PAGES_ROUTES.projects.default}
+            element={<ExplorePage />}
+          />
+          <Route
+            path={PAGES_ROUTES.blog.tagPage}
+            element={<TagPage />}
+            loader={tagPageLoader(queryClient)}
+          />
+
+          <Route
+            path={PAGES_ROUTES.blog.topicsPage}
+            element={<AllTopicsPage />}
+            loader={allTopicsPageLoader(queryClient)}
+          />
+          <Route
+            path={PAGES_ROUTES.blog.feed}
+            element={<FeedPage />}
+            loader={feedPageLoader(queryClient)}
+          />
+          <Route
+            path={PAGES_ROUTES.blog.catchStory}
+            element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
+          />
+
+          <Route
+            path={PAGES_ROUTES.hackathons.default}
+            element={<HackathonsPage />}
+          />
+
+          <Route
+            path={PAGES_ROUTES.tournament.byId}
+            element={<TournamentDetailsPage />}
+          />
+        </Route>
+
         <Route
           path={PAGES_ROUTES.projects.listProject}
           element={<ListProjectPage />}
@@ -232,36 +271,6 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           path={PAGES_ROUTES.blog.storyById}
           element={<PostDetailsPage postType={Post_Type.Story} />}
           loader={postDetailsPageLoader(queryClient, { type: Post_Type.Story })}
-        />
-        <Route
-          path={PAGES_ROUTES.blog.tagPage}
-          element={<TagPage />}
-          loader={tagPageLoader(queryClient)}
-        />
-
-        <Route
-          path={PAGES_ROUTES.blog.topicsPage}
-          element={<AllTopicsPage />}
-          loader={allTopicsPageLoader(queryClient)}
-        />
-        <Route
-          path={PAGES_ROUTES.blog.feed}
-          element={<FeedPage />}
-          loader={feedPageLoader(queryClient)}
-        />
-        <Route
-          path={PAGES_ROUTES.blog.catchStory}
-          element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
-        />
-
-        <Route
-          path={PAGES_ROUTES.hackathons.default}
-          element={<HackathonsPage />}
-        />
-
-        <Route
-          path={PAGES_ROUTES.tournament.byId}
-          element={<TournamentDetailsPage />}
         />
 
         <Route path={PAGES_ROUTES.donate.default} element={<DonatePage />} />

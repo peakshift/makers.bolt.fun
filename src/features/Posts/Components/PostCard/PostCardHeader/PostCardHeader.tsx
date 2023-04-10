@@ -64,13 +64,16 @@ export default function PostCardHeader(props: Props) {
               to={createRoute({ type: "project", tag: props.project.hashtag })}
             >
               <p className="text-gray-900 text-body5 font-medium">
-                {trimText(props.project.title, 15)}
+                {trimText(props.project.title, 20)}
               </p>
             </Link>
           </>
         )}
       </span>
-      <time dateTime={props.date} className="text-body6 text-gray-500 font-medium">
+      <time
+        dateTime={props.date}
+        className="text-body6 text-gray-500 font-medium"
+      >
         {calcTimeSincePosting(props.date)}
       </time>
     </div>

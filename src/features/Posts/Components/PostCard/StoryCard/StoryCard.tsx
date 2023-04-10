@@ -14,8 +14,8 @@ import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { MdChatBubble } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { nip19 } from "nostr-tools";
-import DOMPurify from 'dompurify';
-import { marked } from 'marked';
+import DOMPurify from "dompurify";
+import { marked } from "marked";
 
 export type StoryCardType = Pick<
   Story,
@@ -79,8 +79,11 @@ export default function StoryCard({ story, comments }: Props) {
           </Link>
         )}
         <div>
-          
-          <h2 className="text-h4 font-bolder"><Link className="block" to={storyUrl}>{story.title}</Link></h2>
+          <h2 className="text-h4 font-bolder">
+            <Link className="block" to={storyUrl}>
+              {story.title}
+            </Link>
+          </h2>
           <div className="flex flex-wrap gap-8 mt-8">
             {story.tags.map((tag) => (
               <Link
@@ -119,14 +122,17 @@ export default function StoryCard({ story, comments }: Props) {
             <div className=" bg-gray-100 p-24 mt-16 rounded">
               <ul className="flex flex-col gap-16">
                 {comments?.data.slice(0, 3).map((comment) => (
-                  <li>
+                  <li key={comment.id}>
                     <p>
                       <span className="font-bold text-gray-900">
                         {nip19.npubEncode(comment.pubkey).slice(0, 10)}...
                       </span>{" "}
                       <time
-                        dateTime={new Date(comment.created_at * 1000).toISOString()}
-                        className="text-body5 text-gray-400 italic">
+                        dateTime={new Date(
+                          comment.created_at * 1000
+                        ).toISOString()}
+                        className="text-body5 text-gray-400 italic"
+                      >
                         {calcTimeSincePosting(
                           new Date(comment.created_at * 1000).toISOString()
                         )}
@@ -134,9 +140,12 @@ export default function StoryCard({ story, comments }: Props) {
                     </p>
                     <div
                       className="text-gray-600 prose"
-                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(comment.content)) }}
-                    >
-                    </div>
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(
+                          marked.parse(comment.content)
+                        ),
+                      }}
+                    ></div>
                   </li>
                 ))}
               </ul>
