@@ -14,8 +14,8 @@ import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { MdChatBubble } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { nip19 } from "nostr-tools";
-import DOMPurify from "dompurify";
 import { marked } from "marked";
+import { purifyHtml } from "src/utils/validation";
 
 export type StoryCardType = Pick<
   Story,
@@ -139,11 +139,9 @@ export default function StoryCard({ story, comments }: Props) {
                       </time>
                     </p>
                     <div
-                      className="text-gray-600 prose"
+                      className="text-gray-600 prose line-clamp-6"
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(
-                          marked.parse(comment.content)
-                        ),
+                        __html: purifyHtml(marked.parse(comment.content)),
                       }}
                     ></div>
                   </li>
