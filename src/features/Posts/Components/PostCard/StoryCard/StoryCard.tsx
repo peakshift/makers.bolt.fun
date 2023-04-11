@@ -28,6 +28,7 @@ export type StoryCardType = Pick<
   | "votes_count"
   | "comments_count"
   | "project"
+  | "nostr_event_id"
 > & {
   tags: Array<Pick<Tag, "id" | "title">>;
   author: Pick<Author, "id" | "name" | "avatar" | "join_date">;

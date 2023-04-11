@@ -1,31 +1,21 @@
 import { useUpdateEffect } from "@react-hookz/web";
-import { useEffect, useState } from "react";
-import { Story, useFeedQuery } from "src/graphql";
-import { useAppSelector, useInfiniteQuery, usePreload } from "src/utils/hooks";
+import { useState } from "react";
+import { useFeedQuery } from "src/graphql";
+import { useInfiniteQuery, usePreload } from "src/utils/hooks";
 import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
-import FeedTagsFilter, { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
-import SortBy from "./SortBy/SortBy";
+import { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
 import styles from "./styles.module.scss";
-import Button from "src/Components/Button/Button";
-import { FiArrowRight } from "react-icons/fi";
-import { capitalize, randomItem } from "src/utils/helperFunctions";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import { useAppDispatch } from "src/utils/hooks";
-import { stageStoryEdit } from "src/redux/features/staging.slice";
 import OgTags from "src/Components/OgTags/OgTags";
 import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
-import dayjs from "dayjs";
 import SkipLink from "src/Components/SkipLink/SkipLink";
-import { useFeedComments } from "./useFeedComments";
 import { withProviders } from "src/utils/hoc";
 import { RelayPoolProvider } from "src/lib/nostr";
-import { SideNavigation } from "src/Components/SideNavigation/SideNavigationContext";
 
 function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
   const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
-  const userJoinDate = useAppSelector((s) => s.user.me?.join_date);
 
   const feedQuery = useFeedQuery({
     variables: {
@@ -43,13 +33,6 @@ function FeedPage() {
 
   usePreload("PostPage");
 
-  const { postsToComments } = useFeedComments({
-    posts: (feedQuery.data?.getFeed ?? []) as Story[],
-  });
-
-  const isNewUser =
-    userJoinDate && dayjs(Date.now()).diff(userJoinDate, "hours") <= 24;
-
   return (
     <>
       <OgTags
@@ -59,13 +42,12 @@ function FeedPage() {
       <SkipLink id="content">Skip To Content</SkipLink>
       <div className={`w-full ${styles.grid}`}>
         <div id="content" className="pt-16 md:pt-0 flex flex-col gap-24">
-          {(isNewUser || true) && <WelcomeNewMaker />}
+          <WelcomeNewMaker />
           <PostsList
             isLoading={feedQuery.loading}
             items={feedQuery.data?.getFeed}
             isFetching={isFetchingMore}
             onReachedBottom={fetchMore}
-            postsToComments={postsToComments}
           />
         </div>
         <aside id="side" className="no-scrollbar">

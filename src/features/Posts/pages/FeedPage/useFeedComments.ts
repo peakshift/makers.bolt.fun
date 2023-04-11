@@ -5,7 +5,7 @@ import { insertEventIntoDescendingList } from "src/lib/nostr/helpers";
 import { useDebounce } from "use-debounce";
 
 interface Props {
-  posts: { nostr_event_id?: string | null }[];
+  events_ids?: string[];
 }
 
 const TIME_TO_CONSIDER_EMPTY = 10 * 1000;
@@ -17,7 +17,7 @@ export type PostsToComments = {
   };
 };
 
-export const useFeedComments = ({ posts }: Props) => {
+export const useFeedComments = ({ events_ids }: Props) => {
   const { relayPool } = useRelayPool();
 
   const [postsToCommentsImmediate, setPostsToComments] =
@@ -35,17 +35,20 @@ export const useFeedComments = ({ posts }: Props) => {
   useEffect(
     function subscribeToEvents() {
       if (!relayPool) return;
+      if (!events_ids) return;
 
       const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-      const postsToInclude = posts.filter(
-        (p) => p.nostr_event_id && !postsToCommentsRef.current[p.nostr_event_id]
+      const postsToInclude = events_ids.filter(
+        (id) => !postsToCommentsRef.current[id]
       );
+
+      if (!postsToInclude.length) return;
 
       setPostsToComments((curr) => {
         const newPostsToComments = { ...curr };
-        postsToInclude.forEach((p) => {
-          newPostsToComments[p.nostr_event_id!] = {
+        postsToInclude.forEach((id) => {
+          newPostsToComments[id!] = {
             state: "fetching",
             data: [],
           };
@@ -53,7 +56,7 @@ export const useFeedComments = ({ posts }: Props) => {
         return newPostsToComments;
       });
 
-      const filter = { "#e": postsToInclude.map((p) => p.nostr_event_id) };
+      const filter = { "#e": postsToInclude };
 
       let unsub = relayPool.subscribe(
         [
@@ -68,7 +71,6 @@ export const useFeedComments = ({ posts }: Props) => {
           const rootTag = event.tags.find(
             (t) => t[0] === "e" && t[3] === "root"
           );
-
           if (rootTag) {
             setPostsToComments((curr) => ({
               ...curr,
@@ -92,9 +94,9 @@ export const useFeedComments = ({ posts }: Props) => {
       setTimeout(() => {
         setPostsToComments((curr) => {
           const newPostsToComments = { ...curr };
-          postsToInclude.forEach((p) => {
-            if (newPostsToComments[p.nostr_event_id!].state === "fetching") {
-              newPostsToComments[p.nostr_event_id!] = {
+          postsToInclude.forEach((id) => {
+            if (newPostsToComments[id!].state === "fetching") {
+              newPostsToComments[id!] = {
                 state: "fetched",
                 data: [],
               };
@@ -102,6 +104,7 @@ export const useFeedComments = ({ posts }: Props) => {
           });
           return newPostsToComments;
         });
+        unsub();
       }, TIME_TO_CONSIDER_EMPTY);
 
       relayPool.onerror((relayUrl, err) => {
@@ -112,10 +115,10 @@ export const useFeedComments = ({ posts }: Props) => {
       });
 
       return () => {
-        unsub();
+        // unsub();
       };
     },
-    [relayPool, posts]
+    [events_ids, relayPool]
   );
 
   return { postsToComments };

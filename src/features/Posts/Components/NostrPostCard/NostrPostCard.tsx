@@ -15,15 +15,24 @@ import {
   extractImageFromContent,
 } from "src/lib/nostr/helpers";
 import LinkDuo from "src/Components/LinkDuo/LinkDuo";
+import { nip19 } from "nostr-tools";
+import { calcTimeSincePosting } from "../PostCard/PostCardHeader/PostCardHeader";
+import { FiMessageSquare } from "react-icons/fi";
+import Skeleton from "react-loading-skeleton";
 
 dayjs.extend(relativeTime);
 
 interface Props {
   post: NostrToolsEventWithId;
   author: NostrProfile | null;
+
+  comments?: {
+    state: "fetching" | "fetched";
+    data: NostrToolsEventWithId[];
+  };
 }
 
-export default function NostrPostCard({ post, author }: Props) {
+export default function NostrPostCard({ post, author, comments }: Props) {
   const {
     getArrowProps,
     getTooltipProps,
@@ -38,7 +47,12 @@ export default function NostrPostCard({ post, author }: Props) {
     post.content
   );
 
+  const isLoadingComments =
+    comments === undefined || comments?.state === "fetching";
+
   const coverImage = articleFields.image || contentImage;
+
+  const storyUrl = createRoute({ type: "nostr-story", id: post.id });
 
   return (
     <div>
@@ -110,7 +124,7 @@ export default function NostrPostCard({ post, author }: Props) {
         )}
       </div>
       <Card className="overflow-hidden mt-8 flex flex-col gap-12">
-        <Link to={createRoute({ type: "nostr-story", id: post.id })}>
+        <Link to={storyUrl}>
           {coverImage && (
             // <Link
             //   className="mb-16 block"
@@ -143,6 +157,56 @@ export default function NostrPostCard({ post, author }: Props) {
                 {formatHashtag(tag)}
               </Badge>
             ))}
+          </div>
+        )}
+
+        <div className="flex gap-24 items-center">
+          <Link
+            to={`${storyUrl}#comments`}
+            className="text-gray-500 rounded-8 p-8 hover:bg-gray-100"
+          >
+            <FiMessageSquare />{" "}
+            <span className="align-middle">
+              {isLoadingComments ? (
+                <Skeleton width="9ch" />
+              ) : comments.data.length > 0 ? (
+                `${comments.data.length} Comments`
+              ) : (
+                "Leave a comment!"
+              )}
+            </span>
+          </Link>
+        </div>
+
+        {comments?.data && comments.data.length > 0 && (
+          <div className=" bg-gray-100 p-24 rounded">
+            <ul className="flex flex-col gap-16">
+              {comments?.data.slice(0, 3).map((comment) => (
+                <li key={comment.id}>
+                  <p>
+                    <span className="font-bold text-gray-900">
+                      {nip19.npubEncode(comment.pubkey).slice(0, 10)}...
+                    </span>{" "}
+                    <span className="text-body5 text-gray-400 italic">
+                      {calcTimeSincePosting(
+                        new Date(comment.created_at * 1000).toISOString()
+                      )}
+                    </span>
+                  </p>
+                  <p className="text-gray-600 whitespace-pre-line">
+                    {comment.content}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            {comments.data.length > 3 && (
+              <Link
+                to={`${storyUrl}#comments`}
+                className="inline-block mt-24 text-gray-600 font-medium hover:underline "
+              >
+                See all {comments.data.length} comments
+              </Link>
+            )}
           </div>
         )}
 

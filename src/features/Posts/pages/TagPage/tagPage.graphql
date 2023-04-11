@@ -38,6 +38,7 @@ query TagFeed($take: Int, $skip: Int, $sortBy: String, $tag: Int) {
       type
       cover_image
       comments_count
+      nostr_event_id
       project {
         id
         title
