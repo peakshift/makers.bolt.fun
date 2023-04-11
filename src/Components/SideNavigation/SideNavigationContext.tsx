@@ -24,8 +24,7 @@ export default function SideNavigationProvider(props: PropsWithChildren<{}>) {
     default: DefaultSideNavigation,
   });
 
-  const compsIdsStack = useRef(["default"] as string[]);
-
+  const [compsIdsStack, setCompsIdsStack] = useState(["default"] as string[]);
   const setRenderSideNav = useCallback(
     (compId: string, renderSideNav: () => React.ReactNode) => {
       setComponentSideNav((prev) => ({
@@ -33,19 +32,17 @@ export default function SideNavigationProvider(props: PropsWithChildren<{}>) {
         [compId]: renderSideNav,
       }));
 
-      compsIdsStack.current.push(compId);
+      setCompsIdsStack((prev) => [...prev, compId]);
 
       return () => {
-        compsIdsStack.current = compsIdsStack.current.filter(
-          (id) => id !== compId
-        );
+        setCompsIdsStack((prev) => prev.filter((id) => id !== compId));
       };
     },
     []
   );
 
   const whatToRender =
-    componentSideNav[compsIdsStack.current[compsIdsStack.current.length - 1]];
+    componentSideNav[compsIdsStack[compsIdsStack.length - 1]];
 
   return (
     <Context.Provider value={{ renderSideNav: whatToRender, setRenderSideNav }}>
