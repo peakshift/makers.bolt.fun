@@ -157,7 +157,7 @@ function CreateStoryPage() {
           isSaved={isSaved}
           onSuccess={() => setStoryCreated(true)}
           onValidationError={() =>
-            errorsContainerRef.current.scrollIntoView({
+            errorsContainerRef.current?.scrollIntoView({
               behavior: "smooth",
               block: "center",
             })

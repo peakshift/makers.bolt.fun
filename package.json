@@ -201,5 +201,14 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(y-protocols|lib0|react-native-button)/)"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/utils/testing/fileMock.js",
+      "\\.(css|scss|less)$": "<rootDir>/src/utils/testing/fileMock.js"
+    }
   }
 }
