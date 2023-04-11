@@ -8,11 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { FiChevronDown, FiPlusCircle } from "react-icons/fi";
+import { FiPlusCircle } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
-import { FaPlusCircle } from "react-icons/fa";
 
 export default function NavDesktop() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -62,6 +61,9 @@ export default function NavDesktop() {
               <MenuItem
                 href={createRoute({
                   type: "write-story",
+                  initData: {
+                    tags: ["get-help"],
+                  },
                 })}
                 className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >

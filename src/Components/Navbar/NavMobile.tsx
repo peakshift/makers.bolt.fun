@@ -243,6 +243,9 @@ export default function NavMobile() {
               <MenuItem
                 href={createRoute({
                   type: "write-story",
+                  initData: {
+                    tags: ["get-help"],
+                  },
                 })}
                 className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >
