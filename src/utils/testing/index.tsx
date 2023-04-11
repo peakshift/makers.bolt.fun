@@ -6,6 +6,7 @@ import { apolloClient } from "../apollo";
 import { Provider as ReduxProvider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { NotificationsService } from "src/services";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
 const render = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) => {
   return _render(ui, { wrapper: createProviders, ...options });
@@ -18,10 +19,23 @@ const createCustomRenderer = (options?: {}) => {
 const createProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   const store = createReduxStore(undefined);
 
+  const routes = [
+    {
+      path: "/",
+      element: children,
+    },
+  ];
+
+  const router = createMemoryRouter(routes, {
+    initialEntries: ["/"],
+  });
+
   return (
     <>
       <ApolloProvider client={apolloClient}>
-        <ReduxProvider store={store}>{children}</ReduxProvider>
+        <ReduxProvider store={store}>
+          <RouterProvider router={router} />
+        </ReduxProvider>
       </ApolloProvider>
       <ToastContainer
         {...NotificationsService.defaultOptions}
