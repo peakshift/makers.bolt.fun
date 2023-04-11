@@ -19,7 +19,7 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { ErrorBoundary } from "react-error-boundary";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
-import SideNavigationProvider from "src/Components/SideNavigation/SideNavigationContext";
+import { SideNavigationProvider } from "src/Components/SideNavigation";
 
 THEME.injectStyles();
 dayjs.extend(relativeTime);

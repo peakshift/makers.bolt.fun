@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { SideNavigation } from "src/Components/SideNavigation/SideNavigationContext";
+import { SideNavigation } from "src/Components/SideNavigation";
 
 export const SideNavLayout = () => {
   return (

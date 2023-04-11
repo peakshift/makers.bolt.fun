@@ -3,56 +3,45 @@ import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
-  useId,
-  useRef,
   useState,
 } from "react";
 import DefaultSideNavigation from "./DefaultSideNavigation";
 
-const Context = createContext<{
+const SideNavigationContext = createContext<{
   renderSideNav: () => React.ReactNode;
-  setRenderSideNav: (
-    compId: string,
-    renderSideNav: () => React.ReactNode
-  ) => void;
+  setCurrentSideNav: (renderSideNav: () => React.ReactNode) => void;
 }>(undefined!);
 
-export default function SideNavigationProvider(props: PropsWithChildren<{}>) {
-  const [componentSideNav, setComponentSideNav] = useState<
-    Record<string, () => React.ReactNode>
-  >({
-    default: DefaultSideNavigation,
-  });
+export function SideNavigationProvider(props: PropsWithChildren<{}>) {
+  const [renderFuncsStack, setRenderFuncsStack] = useState(
+    [] as (() => React.ReactNode)[]
+  );
 
-  const [compsIdsStack, setCompsIdsStack] = useState(["default"] as string[]);
-  const setRenderSideNav = useCallback(
-    (compId: string, renderSideNav: () => React.ReactNode) => {
-      setComponentSideNav((prev) => ({
-        ...prev,
-        [compId]: renderSideNav,
-      }));
-
-      setCompsIdsStack((prev) => [...prev, compId]);
+  const setCurrentSideNav = useCallback(
+    (renderSideNav: () => React.ReactNode) => {
+      setRenderFuncsStack((prev) => [...prev, renderSideNav]);
 
       return () => {
-        setCompsIdsStack((prev) => prev.filter((id) => id !== compId));
+        setRenderFuncsStack((prev) => prev.slice(0, -1));
       };
     },
     []
   );
 
   const whatToRender =
-    componentSideNav[compsIdsStack[compsIdsStack.length - 1]];
+    renderFuncsStack[renderFuncsStack.length - 1] || DefaultSideNavigation;
 
   return (
-    <Context.Provider value={{ renderSideNav: whatToRender, setRenderSideNav }}>
+    <SideNavigationContext.Provider
+      value={{ renderSideNav: whatToRender, setCurrentSideNav }}
+    >
       {props.children}
-    </Context.Provider>
+    </SideNavigationContext.Provider>
   );
 }
 
 const useSideNavigation = () => {
-  const value = React.useContext(Context);
+  const value = React.useContext(SideNavigationContext);
   if (value === undefined) {
     throw new Error(
       "useSideNavigation must be used within a SideNavigationProvider"
@@ -61,7 +50,7 @@ const useSideNavigation = () => {
   return value;
 };
 
-export function SideNavigation(props: PropsWithChildren<{}>) {
+export function SideNavigation() {
   const { renderSideNav } = useSideNavigation();
 
   return (
@@ -72,12 +61,11 @@ export function SideNavigation(props: PropsWithChildren<{}>) {
 }
 
 SideNavigation.Override = function Override(props: PropsWithChildren<{}>) {
-  const { setRenderSideNav } = useSideNavigation();
-  const componentId = useId();
+  const { setCurrentSideNav } = useSideNavigation();
 
   useEffect(() => {
-    return setRenderSideNav(componentId, () => props.children);
-  }, [componentId, props.children, setRenderSideNav]);
+    return setCurrentSideNav(() => props.children);
+  }, [props.children, setCurrentSideNav]);
 
   return null;
 };

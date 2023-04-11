@@ -14,7 +14,7 @@ import "@szhsin/react-menu/dist/index.css";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
-import { SideNavigation } from "../SideNavigation/SideNavigationContext";
+import { SideNavigation } from "../SideNavigation";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },

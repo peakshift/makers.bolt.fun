@@ -18,7 +18,7 @@ import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
 import { RelayPoolProvider } from "src/lib/nostr";
 import { purifyHtml } from "src/utils/validation";
-import { SideNavigation } from "src/Components/SideNavigation/SideNavigationContext";
+import { SideNavigation } from "src/Components/SideNavigation";
 import { withProviders } from "src/utils/hoc";
 
 function TagPage() {
