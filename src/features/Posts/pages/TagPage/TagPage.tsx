@@ -10,7 +10,6 @@ import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import { LoaderData } from "./tagPage.loader";
 import OgTags from "src/Components/OgTags/OgTags";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import DOMPurify from "dompurify";
 import { marked } from "marked";
 import { Fulgur } from "src/Components/Ads/Fulgur";
 import ActiveUsers from "../../Components/ActiveUsers/ActiveUsers";
@@ -19,8 +18,9 @@ import RecentProjects from "../../Components/RecentProjects/RecentProjects";
 import NostrFeed, { hasTagsList } from "../../Components/NostrFeed/NostrFeed";
 import { RelayPoolProvider } from "src/lib/nostr";
 import { purifyHtml } from "src/utils/validation";
+import { withProviders } from "src/utils/hoc";
 
-export default function TagPage() {
+function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });
   const loaderData = useLoaderData() as LoaderData;
 
@@ -92,7 +92,6 @@ export default function TagPage() {
                 items={feedQuery.data?.getFeed}
                 isFetching={isFetchingMore}
                 onReachedBottom={fetchMore}
-                postsToComments={{}}
               />
             )}
           </div>
@@ -200,3 +199,5 @@ export default function TagPage() {
     </>
   );
 }
+
+export default withProviders(RelayPoolProvider)(TagPage);

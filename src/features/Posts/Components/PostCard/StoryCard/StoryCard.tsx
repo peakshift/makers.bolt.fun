@@ -26,6 +26,7 @@ export type StoryCardType = Pick<
   | "votes_count"
   | "comments_count"
   | "project"
+  | "nostr_event_id"
 > & {
   tags: Array<Pick<Tag, "id" | "title">>;
   author: Pick<Author, "id" | "name" | "avatar" | "join_date">;
@@ -118,7 +119,7 @@ export default function StoryCard({ story, comments }: Props) {
             <div className=" bg-gray-100 p-24 mt-16 rounded">
               <ul className="flex flex-col gap-16">
                 {comments?.data.slice(0, 3).map((comment) => (
-                  <li>
+                  <li key={comment.id}>
                     <p>
                       <span className="font-bold text-gray-900">
                         {nip19.npubEncode(comment.pubkey).slice(0, 10)}...

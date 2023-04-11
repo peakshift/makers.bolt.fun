@@ -7,6 +7,7 @@ import NostrPostCard from "../NostrPostCard/NostrPostCard";
 import { PostCardSkeleton } from "../PostCard";
 import { toipcsToFilters } from "./topics-to-nostr-filters";
 import { ListProps, Virtuoso } from "react-virtuoso";
+import { useFeedComments } from "../../pages/FeedPage/useFeedComments";
 
 type Props = {
   topic: keyof typeof toipcsToFilters;
@@ -44,6 +45,12 @@ function NostrFeed(props: Props) {
     (event) => !event.tags.some(([tag]) => tag === "e")
   );
 
+  const postsIds = useMemo(() => events.map((e) => e.id), [events]);
+
+  const { postsToComments } = useFeedComments({
+    events_ids: postsIds,
+  });
+
   if (isEmpty)
     return (
       <p className="flex py-48 flex-col text-body3 justify-center items-center text-gray-400 text-center col-[1/-1]">
@@ -76,6 +83,7 @@ function NostrFeed(props: Props) {
           key={post.id}
           post={post}
           author={getProfileDataFromMetaData(metadata, post.pubkey)}
+          comments={postsToComments[post.id]}
         />
       )}
     />
@@ -86,4 +94,4 @@ const List = React.forwardRef<any, any>((props, ref) => {
   return <div {...props} ref={ref} className={`flex flex-col gap-24`} />;
 });
 
-export default withProviders(RelayPoolProvider)(NostrFeed);
+export default NostrFeed;
