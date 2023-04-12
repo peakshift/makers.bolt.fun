@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import Button from "src/Components/Button/Button";
 import { nonNullable } from "src/utils/helperFunctions";
 import { useReachedBottom } from "src/utils/hooks/useReachedBottom";
 import { ListComponentProps } from "src/utils/interfaces";
@@ -6,7 +7,9 @@ import { useFeedComments } from "../../pages/FeedPage/useFeedComments";
 import PostCard, { PostCardSkeleton } from "../PostCard";
 import { PostCardType } from "../PostCard/PostCard/PostCard";
 
-type Props = ListComponentProps<PostCardType>;
+type Props = ListComponentProps<PostCardType> & {
+  renderEmptyState?: () => JSX.Element;
+};
 
 export default function PostsList(props: Props) {
   const { ref } = useReachedBottom<HTMLDivElement>(props.onReachedBottom);
@@ -39,6 +42,13 @@ export default function PostsList(props: Props) {
           </>
         }
       </div>
+    );
+
+  if (props.items?.length === 0)
+    return (
+      props.renderEmptyState?.() ?? (
+        <div className="text-center text-gray-500">No posts found</div>
+      )
     );
 
   return (
