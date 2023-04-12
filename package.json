@@ -118,6 +118,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "db:generate": "prisma generate",
+    "db:generate-proxy": "prisma generate --data-proxy",
     "db:migrate-dev": "prisma migrate dev",
     "db:migrate-deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset",

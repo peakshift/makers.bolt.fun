@@ -176,6 +176,7 @@ function StoryPageContent({ story }: Props) {
               id: story.id,
               nostr_event_id: story.nostr_event_id,
               createdAt: story.createdAt,
+              author_pubkey: story.author.primary_nostr_key,
             }}
           />
         </Suspense>

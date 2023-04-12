@@ -22,6 +22,7 @@ export interface Props {
     id?: number;
     nostr_event_id: string | null;
     createdAt: string;
+    author_pubkey?: string | null;
   };
 }
 
@@ -110,21 +111,21 @@ export const useNostrComments = (props: Props) => {
           ]);
       } else tags.push(["r", threadRootObject.url]);
 
+      let pubkeysToInclude = new Set<string>();
+      if (props.story.author_pubkey)
+        pubkeysToInclude.add(props.story.author_pubkey);
+
       if (options?.replyToEvent) {
         tags.push(["e", options.replyToEvent.id!, "", "reply"]);
-        const pTagsToInclude = [
-          options.replyToEvent.pubkey,
-          ...options.replyToEvent.tags
-            .filter((tag) => tag[0] === "p")
-            .map((tag) => tag[1]),
-        ];
-
-        tags.push(
-          ...pTagsToInclude
-            .filter((p, idx) => pTagsToInclude.indexOf(p) === idx)
-            .map((p) => ["p", p])
-        );
+        pubkeysToInclude.add(options.replyToEvent.pubkey);
+        options.replyToEvent.tags.forEach((tag) => {
+          if (tag[0] === "p") pubkeysToInclude.add(tag[1]);
+        });
       }
+
+      pubkeysToInclude.forEach((pubkey) => {
+        tags.push(["p", pubkey]);
+      });
 
       let baseEvent: NostrToolsEvent = {
         pubkey: props.publicKey!,
@@ -170,7 +171,13 @@ export const useNostrComments = (props: Props) => {
         );
       });
     },
-    [props.publicKey, props.story.id, relayPool, threadRootObject]
+    [
+      props.publicKey,
+      props.story.author_pubkey,
+      props.story.id,
+      relayPool,
+      threadRootObject,
+    ]
   );
 
   const publishMetadata = useCallback(
