@@ -1,52 +1,59 @@
-
 import dayjs from "dayjs";
 import { Bounty, Post, Question, Story } from "src/features/Posts/types";
 import { random, randomItem, randomItems } from "src/utils/helperFunctions";
 import { getAvatarImage, getCoverImage } from "./utils";
-import { Chance } from 'chance'
+import { Chance } from "chance";
 import { tags } from "./tags";
+import { User } from "src/graphql";
 
-const getDate = () => dayjs().subtract(random(5, 48), 'hour').toString();
+const getDate = () => dayjs().subtract(random(5, 48), "hour").toString();
 
-const getAuthor = () => ({
+const getAuthor = () =>
+  ({
     id: 12,
     name: "John Doe",
     avatar: getAvatarImage(),
     join_date: getDate(),
     lightning_address: null,
-})
+    primary_nostr_key: "123124123123dfsadfsa8d7f11sadfasdf",
+  } as User);
 
 export const generatePostComments = (cnt: number = 1) => {
+  let comments = [];
+  const rootCommentsIds: any[] = [];
+  for (let i = 0; i < cnt; i++) {
+    const parentId =
+      Math.random() < 0.4
+        ? null
+        : rootCommentsIds.length
+        ? randomItem(...rootCommentsIds)
+        : null;
+    const comment = {
+      id: i + 1,
+      nostr_id: "123123123123123123",
+      body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",
+      created_at: Date.now(),
+      author: getAuthor(),
+      votes_count: 123,
+      parentId,
+      pubkey: "123",
+      replies: [],
+    };
+    comments.push(comment);
+    if (!parentId) rootCommentsIds.push(comment.id);
+  }
+  return comments;
+};
 
-    let comments = [];
-    const rootCommentsIds: any[] = []
-    for (let i = 0; i < cnt; i++) {
-        const parentId = Math.random() < .4 ? null : rootCommentsIds.length ? randomItem(...rootCommentsIds) : null;
-        const comment = {
-            id: i + 1,
-            nostr_id: '123123123123123123',
-            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, at ut sit id. Vulputate aliquet aliquam penatibus ac, et dictum est etiam. Sagittis odio dui sed viverra donec rutrum iaculis vitae morbi.",
-            created_at: Date.now(),
-            author: getAuthor(),
-            votes_count: 123,
-            parentId,
-            pubkey: '123',
-            replies: [],
-        }
-        comments.push(comment);
-        if (!parentId)
-            rootCommentsIds.push(comment.id);
-
-    }
-    return comments;
-}
-
-const getApplications = (cnt: number = 1): Bounty['applications'] => Array(cnt).fill(0).map((_, idx) => ({
-    id: idx + 1,
-    workplan: "I Plan to build this using React, Ts, Redux, and Storybook.",
-    date: getDate(),
-    author: getAuthor(),
-}))
+const getApplications = (cnt: number = 1): Bounty["applications"] =>
+  Array(cnt)
+    .fill(0)
+    .map((_, idx) => ({
+      id: idx + 1,
+      workplan: "I Plan to build this using React, Ts, Redux, and Storybook.",
+      date: getDate(),
+      author: getAuthor(),
+    }));
 
 const postBody = `
 [Marked] lets you convert [Markdown] into HTML.  Markdown is a simple text format whose goal is to be very easy to read and write, even when not converted to HTML.  This demo page will let you type anything you like and see how it gets converted.  Live.  No more waiting around.
@@ -79,139 +86,147 @@ Ready to start writing?  Either start changing stuff on the left or
 [Markdown]: http://daringfireball.net/projects/markdown/
 
 
-`
-
+`;
 
 export let posts = {
-    stories: [
-        {
-            id: 4,
-            title: 'Digital Editor, Mars Review of Books',
-            body: postBody,
-            cover_image: getCoverImage(),
-            // comments_count: 3,
-            createdAt: getDate(),
-            updatedAt: getDate(),
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: randomItems(3, ...tags),
-            author: getAuthor(),
-            // comments: generatePostComments(3),
-            is_published: true,
+  stories: [
+    {
+      id: 4,
+      title: "Digital Editor, Mars Review of Books",
+      body: postBody,
+      cover_image: getCoverImage(),
+      // comments_count: 3,
+      createdAt: getDate(),
+      updatedAt: getDate(),
+      votes_count: 120,
+      excerpt:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...",
+      type: "Story",
+      tags: randomItems(3, ...tags),
+      author: getAuthor(),
+      // comments: generatePostComments(3),
+      is_published: true,
+    },
+    {
+      id: 6,
+      title: "The End Is Nigh",
+      body: postBody,
+      cover_image: getCoverImage(),
+      // comments_count: 3,
+      createdAt: getDate(),
+      updatedAt: getDate(),
+      votes_count: 120,
+      excerpt:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...",
+      type: "Story",
+      tags: randomItems(3, ...tags),
+      author: getAuthor(),
+      // comments: generatePostComments(3),
+      is_published: true,
+    },
+  ] as Story[],
+  bounties: [
+    {
+      type: "Bounty",
+      id: 22,
+      title: "Digital Editor, Mars Review of Books",
+      body: postBody,
+      cover_image: getCoverImage(),
+      applicants_count: 31,
+      createdAt: getDate(),
+      votes_count: 120,
+      excerpt:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...",
+      tags: randomItems(3, ...tags),
+      author: getAuthor(),
+      deadline: "25 May",
+      reward_amount: 200_000,
+      applications: getApplications(2),
+    },
+    {
+      type: "Bounty",
+      id: 51,
+      title: "Wanted, Dead OR Alive!!",
+      body: postBody,
+      cover_image: getCoverImage(),
+      applicants_count: 31,
+      createdAt: getDate(),
+      votes_count: 120,
+      excerpt:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...",
+      tags: randomItems(3, ...tags),
+      author: getAuthor(),
+      deadline: "25 May",
+      reward_amount: 200_000,
+      applications: getApplications(2),
+    },
+  ] as Bounty[],
+  questions: [
+    {
+      type: "Question",
+      id: 33,
+      title: "Digital Editor, Mars Review of Books",
+      body: postBody,
+      // answers_count: 3,
+      createdAt: getDate(),
+      updatedAt: getDate(),
+      votes_count: 70,
+      excerpt:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...",
+      tags: [
+        { id: 1, title: "lnurl", description: "", isOfficial: false, icon: "" },
+        { id: 2, title: "webln", description: "", isOfficial: false, icon: "" },
+      ],
+      author: getAuthor(),
+      // comments: generatePostComments(3),
+      is_published: true,
+    },
+    {
+      type: "Question",
+      id: 33,
+      title: "What is a man but miserable pile of secrets?",
+      body: postBody,
+      // answers_count: 3,
+      createdAt: getDate(),
+      updatedAt: getDate(),
+      votes_count: 70,
+      excerpt:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...",
+      tags: [
+        { id: 1, title: "lnurl", description: "", isOfficial: false, icon: "" },
+        { id: 2, title: "webln", description: "", isOfficial: false, icon: "" },
+      ],
+      author: getAuthor(),
+      // comments: generatePostComments(3),
+      is_published: true,
+    },
+  ] as Question[],
+};
 
+posts.bounties = posts.bounties.map((b) => ({ ...b, __typename: "Bounty" }));
+posts.questions = posts.questions.map((b) => ({
+  ...b,
+  __typename: "Question",
+}));
+posts.stories = posts.stories.map((b) => ({ ...b, __typename: "Story" }));
 
-        },
-        {
-            id: 6,
-            title: 'The End Is Nigh',
-            body: postBody,
-            cover_image: getCoverImage(),
-            // comments_count: 3,
-            createdAt: getDate(),
-            updatedAt: getDate(),
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            type: "Story",
-            tags: randomItems(3, ...tags),
-            author: getAuthor(),
-            // comments: generatePostComments(3),
-            is_published: true,
-        },
-    ] as Story[],
-    bounties: [
-        {
-            type: "Bounty",
-            id: 22,
-            title: 'Digital Editor, Mars Review of Books',
-            body: postBody,
-            cover_image: getCoverImage(),
-            applicants_count: 31,
-            createdAt: getDate(),
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: randomItems(3, ...tags),
-            author: getAuthor(),
-            deadline: "25 May",
-            reward_amount: 200_000,
-            applications: getApplications(2),
+const feedRandomer = new Chance("feed");
 
-        },
-        {
-            type: "Bounty",
-            id: 51,
-            title: 'Wanted, Dead OR Alive!!',
-            body: postBody,
-            cover_image: getCoverImage(),
-            applicants_count: 31,
-            createdAt: getDate(),
-            votes_count: 120,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: randomItems(3, ...tags),
-            author: getAuthor(),
-            deadline: "25 May",
-            reward_amount: 200_000,
-            applications: getApplications(2),
-
-        },
-    ] as Bounty[],
-    questions: [
-        {
-            type: "Question",
-            id: 33,
-            title: 'Digital Editor, Mars Review of Books',
-            body: postBody,
-            // answers_count: 3,
-            createdAt: getDate(),
-            updatedAt: getDate(),
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl", description: '', isOfficial: false, icon: '' },
-                { id: 2, title: "webln", description: '', isOfficial: false, icon: '' },
-            ],
-            author: getAuthor(),
-            // comments: generatePostComments(3),
-            is_published: true,
-        },
-        {
-            type: "Question",
-            id: 33,
-            title: 'What is a man but miserable pile of secrets?',
-            body: postBody,
-            // answers_count: 3,
-            createdAt: getDate(),
-            updatedAt: getDate(),
-            votes_count: 70,
-            excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In odio libero accumsan...',
-            tags: [
-                { id: 1, title: "lnurl", description: '', isOfficial: false, icon: '' },
-                { id: 2, title: "webln", description: '', isOfficial: false, icon: '' },
-            ],
-            author: getAuthor(),
-            // comments: generatePostComments(3),
-            is_published: true,
-        },
-    ] as Question[]
-}
-
-
-posts.bounties = posts.bounties.map(b => ({ ...b, __typename: "Bounty" }))
-posts.questions = posts.questions.map(b => ({ ...b, __typename: "Question" }))
-posts.stories = posts.stories.map(b => ({ ...b, __typename: "Story" }))
-
-
-const feedRandomer = new Chance('feed')
-
-export const feed: Post[] = Array(30).fill(0).map((_, idx) => {
-    const post = feedRandomer.pickone([posts.bounties[0], posts.questions[0], posts.stories[0]])
+export const feed: Post[] = Array(30)
+  .fill(0)
+  .map((_, idx) => {
+    const post = feedRandomer.pickone([
+      posts.bounties[0],
+      posts.questions[0],
+      posts.stories[0],
+    ]);
 
     return {
-        ...post,
-        id: idx + 1,
-        title: feedRandomer.sentence({
-            words: feedRandomer.integer({ min: 4, max: 7 })
-        }),
-        date: getDate(),
-    }
-})
+      ...post,
+      id: idx + 1,
+      title: feedRandomer.sentence({
+        words: feedRandomer.integer({ min: 4, max: 7 }),
+      }),
+      date: getDate(),
+    };
+  });

@@ -187,7 +187,7 @@ export default function ConnectNostrAccountModal({
                             className="input-text"
                             defaultValue={
                               myGeneratedKeysQuery.data?.me.private_data
-                                .nostr_prv_key!
+                                .default_nostr_prv_key!
                             }
                             readOnly
                           />
@@ -195,7 +195,7 @@ export default function ConnectNostrAccountModal({
                           <CopyToClipboard
                             text={
                               myGeneratedKeysQuery.data?.me.private_data
-                                .nostr_prv_key!
+                                .default_nostr_prv_key!
                             }
                           />
                         </div>
@@ -210,14 +210,14 @@ export default function ConnectNostrAccountModal({
                             className="input-text"
                             defaultValue={
                               myGeneratedKeysQuery.data?.me.private_data
-                                .nostr_pub_key!!
+                                .default_nostr_pub_key!!
                             }
                             readOnly
                           />
                           <CopyToClipboard
                             text={
                               myGeneratedKeysQuery.data?.me.private_data
-                                .nostr_pub_key! ?? ""
+                                .default_nostr_pub_key! ?? ""
                             }
                           />
                         </div>
@@ -249,7 +249,8 @@ export default function ConnectNostrAccountModal({
             <Button
               disabled={
                 !isLoggedIn ||
-                !myGeneratedKeysQuery.data?.me?.private_data.nostr_prv_key
+                !myGeneratedKeysQuery.data?.me?.private_data
+                  .default_nostr_prv_key
               }
               fullWidth
               color="primary"
@@ -417,7 +418,8 @@ export default function ConnectNostrAccountModal({
   }
 
   function connectGeneratedKeys() {
-    const prvKey = myGeneratedKeysQuery.data?.me?.private_data.nostr_prv_key;
+    const prvKey =
+      myGeneratedKeysQuery.data?.me?.private_data.default_nostr_prv_key;
     if (!prvKey) throw new Error("Private key not provided");
 
     const pubkey = getPublicKey(prvKey);

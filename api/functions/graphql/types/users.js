@@ -49,6 +49,18 @@ const BaseUser = interfaceType({
     t.string("linkedin");
     t.string("bio");
     t.string("location");
+    t.string("primary_nostr_key", {
+      resolve: (parent) => {
+        return prisma.userNostrKey
+          .findFirst({
+            where: {
+              user_id: parent.id,
+              is_primary: true,
+            },
+          })
+          .then((res) => res?.key);
+      },
+    });
     t.nonNull.list.nonNull.field("roles", {
       type: MakerRole,
       resolve: async (parent) => {
@@ -236,17 +248,23 @@ const User = objectType({
         if (userId !== parent.id)
           throw new Error("Can't access private data for another user");
 
-        return prisma.user.findUnique({
-          where: {
-            id: parent.id,
-          },
-          select: {
-            id: true,
-            email: true,
-            nostr_prv_key: true,
-            nostr_pub_key: true,
-          },
-        });
+        return prisma.user
+          .findUnique({
+            where: {
+              id: parent.id,
+            },
+            select: {
+              id: true,
+              email: true,
+              nostr_prv_key: true,
+              nostr_pub_key: true,
+            },
+          })
+          .then((data) => ({
+            ...data,
+            default_nostr_prv_key: data.nostr_prv_key,
+            default_nostr_pub_key: data.nostr_pub_key,
+          }));
       },
     });
   },
@@ -257,8 +275,8 @@ const UserPrivateData = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.string("email");
-    t.string("nostr_prv_key");
-    t.string("nostr_pub_key");
+    t.string("default_nostr_prv_key");
+    t.string("default_nostr_pub_key");
 
     t.nonNull.list.nonNull.field("walletsKeys", {
       type: "WalletKey",

@@ -38,6 +38,7 @@ interface BaseUser {
   location: String
   name: String!
   nostr_keys: [NostrKey!]!
+  primary_nostr_key: String
   projects: [Project!]!
   role: String
   roles: [MakerRole!]!
@@ -52,7 +53,7 @@ interface BaseUser {
 type Bounty implements PostBase {
   applicants_count: Int!
   applications: [BountyApplication!]!
-  author: Author!
+  author: User!
   body: String!
   cover_image: String
   createdAt: Date!
@@ -69,7 +70,7 @@ type Bounty implements PostBase {
 }
 
 type BountyApplication {
-  author: Author!
+  author: User!
   date: String!
   id: Int!
   workplan: String!
@@ -263,7 +264,7 @@ interface PostBase {
 }
 
 type PostComment {
-  author: Author!
+  author: User!
   body: String!
   created_at: Date!
   id: Int!
@@ -388,7 +389,7 @@ type Query {
 }
 
 type Question implements PostBase {
-  author: Author!
+  author: User!
   body: String!
   createdAt: Date!
   excerpt: String!
@@ -415,7 +416,7 @@ enum RoleLevelEnum {
 }
 
 type Story implements PostBase {
-  author: Author!
+  author: User!
   body: String!
   comments: [PostComment!]!
   comments_count: Int!
@@ -604,6 +605,7 @@ type User implements BaseUser {
   location: String
   name: String!
   nostr_keys: [NostrKey!]!
+  primary_nostr_key: String
   private_data: UserPrivateData!
   projects: [Project!]!
   role: String
@@ -622,10 +624,10 @@ input UserKeyInputType {
 }
 
 type UserPrivateData {
+  default_nostr_prv_key: String
+  default_nostr_pub_key: String
   email: String
   id: Int!
-  nostr_prv_key: String
-  nostr_pub_key: String
   walletsKeys: [WalletKey!]!
 }
 

@@ -8,8 +8,8 @@ query MyProfilePreferences {
         createdAt
         is_current
       }
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }
@@ -22,8 +22,8 @@ mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
         key
         name
       }
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }

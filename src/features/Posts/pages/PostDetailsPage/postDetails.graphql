@@ -9,6 +9,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         name
         avatar
         join_date
+        primary_nostr_key
       }
       body
       tags {
@@ -49,6 +50,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         name
         avatar
         join_date
+        primary_nostr_key
       }
       body
       tags {
@@ -81,6 +83,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         name
         avatar
         join_date
+        primary_nostr_key
       }
       body
       tags {
