@@ -2,9 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Project } from "../../utils/interfaces";
 
 interface StoreState {
-  openId: Project['id'] | null,
+  openId: Project["id"] | null;
   project: Project | null;
-
 }
 
 const initialState = {
@@ -15,14 +14,12 @@ export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    openProject(state, action: PayloadAction<StoreState['openId']>) {
+    openProject(state, action: PayloadAction<StoreState["openId"]>) {
       state.openId = action.payload;
     },
-    setProject(state, action: PayloadAction<StoreState['project']>) {
+    setProject(state, action: PayloadAction<StoreState["project"]>) {
       state.project = action.payload;
     },
-
-
   },
 });
 
