@@ -1,25 +1,25 @@
-const scalars = require('./_scalars')
-const misc = require('./misc')
-const category = require('./category')
-const project = require('./project')
-const vote = require('./vote')
-const post = require('./post')
-const users = require('./users')
-const hackathon = require('./hackathon')
-const tournament = require('./tournament')
-const donation = require('./donation')
-const tag = require('./tag')
+import * as scalars from "./_scalars";
+import * as misc from "./misc";
+import * as category from "./category";
+import * as project from "./project";
+import * as vote from "./vote";
+import * as post from "./post";
+import * as users from "./users";
+import * as hackathon from "./hackathon";
+import * as tournament from "./tournament";
+import * as donation from "./donation";
+import * as tag from "./tag";
 
-module.exports = {
-    ...misc,
-    ...tag,
-    ...scalars,
-    ...category,
-    ...project,
-    ...vote,
-    ...post,
-    ...users,
-    ...hackathon,
-    ...tournament,
-    ...donation,
-}
+export default {
+  ...misc,
+  ...tag,
+  ...scalars,
+  ...category,
+  ...project,
+  ...vote,
+  ...post,
+  ...users,
+  ...hackathon,
+  ...tournament,
+  ...donation,
+};

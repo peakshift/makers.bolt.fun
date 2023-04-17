@@ -1,17 +1,16 @@
-const { makeSchema } = require('nexus');
-const { join } = require('path');
-const types = require('../types')
-
+import { makeSchema } from "nexus";
+import { join } from "path";
+import * as types from "../types";
 
 const schema = makeSchema({
-  types: types,
+  types: Object.values(types),
   outputs: {
-    typegen: join(__dirname, '..', 'nexus-typegen.ts'),
-    schema: join(__dirname, '..', 'schema.graphql'),
+    typegen: join(__dirname, "..", "nexus-typegen.ts"),
+    schema: join(__dirname, "..", "schema.graphql"),
   },
-})
+});
 
-module.exports = schema;
+export default schema;
 
 // const { gql } = require("apollo-server-lambda");
 // const projectSchema = require('./project')

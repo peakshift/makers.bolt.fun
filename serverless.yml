@@ -33,6 +33,12 @@ functions:
       - http:
           path: get-login-url
           method: get
+  hello:
+    handler: api/functions/hello/hello.handler
+    events:
+      - http:
+          path: hello
+          method: get
 
   login:
     handler: api/functions/login/login.handler
