@@ -6,5 +6,6 @@ query Me {
     join_date
     jobTitle
     bio
+    primary_nostr_key
   }
 }

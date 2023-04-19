@@ -9,7 +9,11 @@ import { RotatingLines } from "react-loader-spinner";
 import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
 import { MEDIA_QUERIES } from "src/utils/theme";
-import { RelayPoolProvider, useMetaData, useNostrQuery } from "src/lib/nostr";
+import {
+  RelayPoolProvider,
+  useMetaData,
+  useNostrQueryList,
+} from "src/lib/nostr";
 import {
   extractArticleFields,
   getProfileDataFromMetaData,
@@ -30,7 +34,7 @@ function NostrPostDetailsPage(props: Props) {
 
   const filters = useMemo(() => [{ ids: [params.id ?? ""] }], [params.id]);
 
-  const { events, isEmpty } = useNostrQuery({
+  const { events, isEmpty } = useNostrQueryList({
     filters,
   });
 

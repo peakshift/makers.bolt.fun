@@ -12,7 +12,7 @@ interface Props {
   sortEvents?: boolean;
 }
 
-export const useNostrQuery = (props: Props) => {
+export const useNostrQueryList = (props: Props) => {
   const { relayPool } = useRelayPool();
 
   const [eventsImmediate, setEvents] = useState<NostrToolsEventWithId[]>([]);

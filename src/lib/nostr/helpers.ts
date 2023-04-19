@@ -69,9 +69,16 @@ export function getProfileDataFromMetaData(
   } as NostrProfile;
 }
 
-export function insertEventIntoDescendingList<
-  T extends NostrToolsEvent | NostrToolsEventWithId
->(sortedArray: T[], event: T) {
+export function insertItemIntoDescendingList<
+  T extends Object,
+  TSortingField extends keyof T,
+  TUniqueField extends keyof T
+>(
+  sortedArray: T[],
+  item: T,
+  comparisonField: TSortingField,
+  idField: TUniqueField
+) {
   let start = 0;
   let end = sortedArray.length - 1;
   let midPoint;
@@ -79,9 +86,9 @@ export function insertEventIntoDescendingList<
 
   if (end < 0) {
     position = 0;
-  } else if (event.created_at < sortedArray[end].created_at) {
+  } else if (item[comparisonField] < sortedArray[end][comparisonField]) {
     position = end + 1;
-  } else if (event.created_at >= sortedArray[start].created_at) {
+  } else if (item[comparisonField] >= sortedArray[start][comparisonField]) {
     position = start;
   } else
     while (true) {
@@ -90,9 +97,11 @@ export function insertEventIntoDescendingList<
         break;
       }
       midPoint = Math.floor(start + (end - start) / 2);
-      if (sortedArray[midPoint].created_at > event.created_at) {
+      if (sortedArray[midPoint][comparisonField] > item[comparisonField]) {
         start = midPoint;
-      } else if (sortedArray[midPoint].created_at < event.created_at) {
+      } else if (
+        sortedArray[midPoint][comparisonField] < item[comparisonField]
+      ) {
         end = midPoint;
       } else {
         // aMidPoint === num
@@ -102,15 +111,22 @@ export function insertEventIntoDescendingList<
     }
 
   // insert when num is NOT already in (no duplicates)
-  if (sortedArray[position]?.id !== event.id) {
+  if (sortedArray[position]?.[idField] !== item[idField]) {
     return [
       ...sortedArray.slice(0, position),
-      event,
+      item,
       ...sortedArray.slice(position),
     ];
   }
 
   return sortedArray;
+}
+
+export function insertEventIntoDescendingList<T extends NostrToolsEventWithId>(
+  sortedArray: T[],
+  item: T
+) {
+  return insertItemIntoDescendingList(sortedArray, item, "created_at", "id");
 }
 
 export type ThreadedEvent = NostrToolsEventWithId & {

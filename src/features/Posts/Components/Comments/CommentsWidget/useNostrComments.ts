@@ -29,7 +29,7 @@ export interface Props {
 export const useNostrComments = (props: Props) => {
   const { relayPool } = useRelayPool();
 
-  const [eventsImmediate, setEvents] = useState<NostrToolsEvent[]>([]);
+  const [eventsImmediate, setEvents] = useState<NostrToolsEventWithId[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
 
   const threads = useMemo(() => computeThreads(events), [events]);
@@ -124,7 +124,7 @@ export const useNostrComments = (props: Props) => {
       }
 
       pubkeysToInclude.forEach((pubkey) => {
-        tags.push(["p", pubkey]);
+        if (pubkey !== props.publicKey) tags.push(["p", pubkey]);
       });
 
       let baseEvent: NostrToolsEvent = {

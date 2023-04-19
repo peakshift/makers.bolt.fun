@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "src/graphql";
+import { MeQuery, User } from "src/graphql";
 
 interface StoreState {
-  me:
-    | Pick<User, "id" | "name" | "avatar" | "bio" | "jobTitle" | "join_date">
-    | undefined // fetching user data if exist
-    | null; // user not logged in
+  me: MeQuery["me"] | undefined;
 }
 
 const initialState = {
