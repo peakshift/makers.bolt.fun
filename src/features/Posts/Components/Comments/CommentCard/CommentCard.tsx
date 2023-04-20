@@ -2,7 +2,6 @@ import { marked } from "marked";
 import { BiComment } from "react-icons/bi";
 import DOMPurify from "dompurify";
 import Card from "src/Components/Card/Card";
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";
 import { trimText } from "src/utils/helperFunctions";
@@ -15,12 +14,12 @@ import { replaceMentionsWithLinks } from "src/features/Posts/pages/NostrPostDeta
 import { extractImageFromContent } from "src/lib/nostr/helpers";
 import { Tooltip } from "react-tooltip";
 import LinkDuo from "src/Components/LinkDuo/LinkDuo";
-import { NostrProfile } from "src/lib/nostr";
+import { NostrEvent, NostrProfile } from "src/lib/nostr";
 import { createRoute } from "src/utils/routing";
 import { purifyHtml } from "src/utils/validation";
 
 interface Props {
-  comment: NostrToolsEventWithId;
+  comment: NostrEvent;
   canReply?: boolean;
   onReply?: () => void;
   author: NostrProfile;

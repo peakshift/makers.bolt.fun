@@ -6,7 +6,6 @@ import {
   useLayoutEffect,
   useMemo,
 } from "react";
-import { NostrToolsEvent } from "nostr-relaypool/event";
 import { useRelayPool } from "./use-relays-pool";
 import { nip05 } from "nostr-tools";
 import {
@@ -14,13 +13,13 @@ import {
   useNostrKeysMetadataLazyQuery,
 } from "src/graphql";
 import { getProfileDataFromMetaData } from "./helpers";
-import { NostrProfile } from "./types";
+import { NostrEvent, NostrProfile } from "./types";
 
 export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
   const { relayPool } = useRelayPool();
 
   const [nostrMetadata, setNostrMetadata] = useState<
-    Record<string, NostrToolsEvent>
+    Record<string, NostrEvent>
   >({});
 
   const [usersDataFromApi, setUsersDataFromApi] = useState<

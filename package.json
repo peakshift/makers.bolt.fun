@@ -59,7 +59,7 @@
     "msw": "^0.39.2",
     "netlify-plugin-bundle-env": "^0.2.2",
     "nexus": "^1.3.0",
-    "nostr-relaypool": "^0.4.1",
+    "nostr-relaypool": "^0.6.16",
     "nostr-tools": "^1.2.0",
     "qrcode.react": "^3.0.2",
     "react": "^18.0.0",

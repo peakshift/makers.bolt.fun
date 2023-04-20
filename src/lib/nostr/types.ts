@@ -1,4 +1,4 @@
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
+import { Event, EventTemplate, UnsignedEvent } from "nostr-tools";
 
 export type NostrProfile = {
   pubkey: string;
@@ -11,4 +11,8 @@ export type NostrProfile = {
   boltfun_id?: number;
 };
 
-export type NostrMetadata = Record<string, NostrToolsEventWithId>;
+export type NostrMetadata = Record<string, Event>;
+
+export type NostrEvent = Event;
+export type NostrEventTemplate = EventTemplate;
+export type UnsignedNostrEvent = UnsignedEvent;

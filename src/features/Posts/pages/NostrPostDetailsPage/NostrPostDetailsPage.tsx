@@ -14,14 +14,10 @@ import {
   useMetaData,
   useNostrQueryList,
 } from "src/lib/nostr";
-import {
-  extractArticleFields,
-  getProfileDataFromMetaData,
-} from "src/lib/nostr/helpers";
+import { extractArticleFields } from "src/lib/nostr/helpers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
-import { NostrToolsEvent } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
 import { withProviders } from "src/utils/hoc";
 

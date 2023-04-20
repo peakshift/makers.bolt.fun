@@ -1,7 +1,10 @@
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { Event, Filter } from "nostr-tools";
 import { useEffect, useMemo, useState } from "react";
-import { useNostrQueryItem, useNostrQueryList } from "src/lib/nostr";
+import {
+  NostrEvent,
+  useNostrQueryItem,
+  useNostrQueryList,
+} from "src/lib/nostr";
 import { insertItemIntoDescendingList } from "src/lib/nostr/helpers";
 
 interface Props {
@@ -56,7 +59,7 @@ export const useNotifications = ({ pubkey }: Props) => {
   // filter and parse events individually
   useEffect(() => {
     async function convertToNotification(
-      event: NostrToolsEventWithId
+      event: NostrEvent
     ): Promise<Notification | undefined> {
       function getEventCategory(event: Event) {
         if (
@@ -85,7 +88,7 @@ export const useNotifications = ({ pubkey }: Props) => {
 
       const hasMentionedMe = event.content.search(`#[${myPTagIndex}]`) !== -1;
 
-      let postEvent: NostrToolsEventWithId | null = event;
+      let postEvent: NostrEvent | null = event;
       if (eventType !== "post") postEvent = await getEventById(postEventId);
 
       const postTitleRgx = /^(?<postTitle>.*?)\s*$/m;

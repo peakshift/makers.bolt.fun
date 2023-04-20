@@ -2,9 +2,13 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { getEventHash, signEvent as nostrToolsSignEvent } from "nostr-tools";
 import { CONSTS } from "src/utils";
-import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import { useRelayPool } from "src/lib/nostr";
+import {
+  NostrEvent,
+  NostrEventTemplate,
+  UnsignedNostrEvent,
+  useRelayPool,
+} from "src/lib/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
@@ -29,7 +33,7 @@ export interface Props {
 export const useNostrComments = (props: Props) => {
   const { relayPool } = useRelayPool();
 
-  const [eventsImmediate, setEvents] = useState<NostrToolsEventWithId[]>([]);
+  const [eventsImmediate, setEvents] = useState<NostrEvent[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
 
   const threads = useMemo(() => computeThreads(events), [events]);
@@ -89,7 +93,7 @@ export const useNostrComments = (props: Props) => {
   const publishEvent = useCallback(
     async (
       content: string,
-      options?: Partial<{ replyToEvent?: NostrToolsEventWithId }>
+      options?: Partial<{ replyToEvent?: NostrEvent }>
     ) => {
       if (!threadRootObject)
         throw new Error("No Root Event Found for this post");
@@ -127,7 +131,7 @@ export const useNostrComments = (props: Props) => {
         if (pubkey !== props.publicKey) tags.push(["p", pubkey]);
       });
 
-      let baseEvent: NostrToolsEvent = {
+      let baseEvent: UnsignedNostrEvent = {
         pubkey: props.publicKey!,
         created_at: Math.round(Date.now() / 1000),
         kind: 1,
@@ -140,7 +144,7 @@ export const useNostrComments = (props: Props) => {
       const event = {
         ...signedEvent,
         id: getEventHash(signedEvent),
-      } as NostrToolsEventWithId;
+      } as NostrEvent;
 
       return new Promise(async (resolve, reject) => {
         console.log("publishing...");
@@ -186,7 +190,7 @@ export const useNostrComments = (props: Props) => {
 
       const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-      let baseEvent: NostrToolsEvent = {
+      let baseEvent: UnsignedNostrEvent = {
         pubkey: props.publicKey!,
         created_at: Math.round(Date.now() / 1000),
         kind: 0,
@@ -202,12 +206,7 @@ export const useNostrComments = (props: Props) => {
         }),
       };
 
-      const signedEvent = await signEvent(baseEvent);
-
-      const event = {
-        ...signedEvent,
-        id: getEventHash(signedEvent),
-      } as NostrToolsEventWithId;
+      const event = await signEvent(baseEvent);
 
       let called_refetch_metadata = false;
 
@@ -259,7 +258,7 @@ export const useNostrComments = (props: Props) => {
   };
 };
 
-async function signEvent(event: NostrToolsEvent): Promise<NostrToolsEvent> {
+async function signEvent(event: UnsignedNostrEvent): Promise<NostrEvent> {
   const nostrConnectionStr = localStorage.getItem("nostr-connection");
   if (!nostrConnectionStr)
     throw new Error("You need to connect your nostr account first");
@@ -273,6 +272,7 @@ async function signEvent(event: NostrToolsEvent): Promise<NostrToolsEvent> {
     return {
       ...event,
       sig: nostrToolsSignEvent(event, nostrConnection.prvkey),
+      id: getEventHash(event),
     };
   else if (nostrConnection.type === "generated-keys")
     return fetch(CONSTS.apiEndpoint + "/nostr-sign-event", {

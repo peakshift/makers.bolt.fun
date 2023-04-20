@@ -9,8 +9,8 @@ import { useAppSelector } from "src/utils/hooks";
 import { NotificationsService } from "src/services";
 import { useLinkNewNostrKeyMutation } from "src/graphql";
 import { extractErrorMessage } from "src/utils/helperFunctions";
-import { NostrToolsEvent } from "nostr-relaypool/event";
 import { CONSTS } from "src/utils";
+import { UnsignedNostrEvent } from "src/lib/nostr";
 
 interface Props extends ModalCard {}
 
@@ -25,7 +25,7 @@ export default function ConnectNostrIdToProfileModal({
     if (window.nostr) {
       try {
         const pubkey = await window.nostr.getPublicKey();
-        const event: NostrToolsEvent = {
+        const event: UnsignedNostrEvent = {
           kind: 1,
           created_at: Math.round(Date.now() / 1000),
           content: `Verifying my #BOLTFUN account on Nostr
