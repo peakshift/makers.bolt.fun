@@ -2,19 +2,24 @@ import { Event, Filter } from "nostr-tools";
 import { useEffect, useMemo, useState } from "react";
 import {
   NostrEvent,
+  useMetaData,
   useNostrQueryItem,
   useNostrQueryList,
 } from "src/lib/nostr";
-import { insertItemIntoDescendingList } from "src/lib/nostr/helpers";
+import {
+  getProfileDataFromMetaData,
+  insertItemIntoDescendingList,
+} from "src/lib/nostr/helpers";
 
 interface Props {
   pubkey?: string | null;
 }
 
-export type Notification = {
+type NotificationBase = {
   id: string;
   created_at: number;
   url: string;
+  pubkey: string;
   postTitle?: string;
 } & (
   | {
@@ -34,6 +39,10 @@ export type Notification = {
     }
 );
 
+export type Notification = ReturnType<
+  typeof useNotifications
+>["notifications"][number];
+
 export const useNotifications = ({ pubkey }: Props) => {
   // construct filters array
   const filters: Filter[] = useMemo(
@@ -50,17 +59,30 @@ export const useNotifications = ({ pubkey }: Props) => {
     [pubkey]
   );
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<NotificationBase[]>([]);
 
   // query events
-  const { events } = useNostrQueryList({ filters, sortEvents: true });
+  const { events, isEmpty } = useNostrQueryList({ filters, sortEvents: true });
   const { getEventById } = useNostrQueryItem();
+
+  const { metadata } = useMetaData({
+    pubkeys: notifications.map((n) => n.pubkey),
+  });
+
+  const notificationsWithMetadata = useMemo(
+    () =>
+      notifications.map((n) => ({
+        ...n,
+        user: getProfileDataFromMetaData(metadata, n.pubkey),
+      })),
+    [notifications, metadata]
+  );
 
   // filter and parse events individually
   useEffect(() => {
     async function convertToNotification(
       event: NostrEvent
-    ): Promise<Notification | undefined> {
+    ): Promise<NotificationBase | undefined> {
       function getEventCategory(event: Event) {
         if (
           event.tags.some((t) => t[0] === "e" && t[3] === "root") &&
@@ -108,6 +130,7 @@ export const useNotifications = ({ pubkey }: Props) => {
             id: event.id,
             url,
             created_at: event.created_at,
+            pubkey: event.pubkey,
           };
         }
         return {
@@ -117,6 +140,7 @@ export const useNotifications = ({ pubkey }: Props) => {
           postTitle,
           url,
           created_at: event.created_at,
+          pubkey: event.pubkey,
         };
       }
 
@@ -128,6 +152,7 @@ export const useNotifications = ({ pubkey }: Props) => {
           postTitle,
           url,
           created_at: event.created_at,
+          pubkey: event.pubkey,
         };
 
       if (eventType === "reply")
@@ -138,13 +163,20 @@ export const useNotifications = ({ pubkey }: Props) => {
           postTitle,
           url,
           created_at: event.created_at,
+          pubkey: event.pubkey,
         };
 
       return undefined;
     }
-
     events
-      .filter((e) => e.pubkey !== pubkey)
+      .filter(
+        (e) =>
+          e.pubkey !== pubkey &&
+          (e.tags.some((t) => t[0] === "c" && t[1] === "bolt.fun") ||
+            e.tags.some(
+              (t) => t[0] === "r" && t[1].startsWith("https://makers.bolt.fun")
+            ))
+      )
       .forEach((event) => {
         convertToNotification(event).then((notification) => {
           if (!notification) return;
@@ -155,7 +187,7 @@ export const useNotifications = ({ pubkey }: Props) => {
       });
   }, [events, getEventById, pubkey]);
 
-  return { notifications };
+  return { notifications: notificationsWithMetadata, isEmpty };
 };
 
 const BF_STORY_URL_REGEX =

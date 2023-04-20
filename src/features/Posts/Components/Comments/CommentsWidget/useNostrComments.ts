@@ -3,17 +3,13 @@ import { useDebounce } from "use-debounce";
 import { getEventHash, signEvent as nostrToolsSignEvent } from "nostr-tools";
 import { CONSTS } from "src/utils";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import {
-  NostrEvent,
-  NostrEventTemplate,
-  UnsignedNostrEvent,
-  useRelayPool,
-} from "src/lib/nostr";
+import { NostrEvent, UnsignedNostrEvent, useRelayPool } from "src/lib/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
 import {
   insertEventIntoDescendingList,
   computeThreads,
   normalizeURL,
+  ThreadedEvent,
 } from "src/lib/nostr/helpers";
 import { NostrProfile } from "src/lib/nostr";
 import { createRoute } from "src/utils/routing";
@@ -93,7 +89,7 @@ export const useNostrComments = (props: Props) => {
   const publishEvent = useCallback(
     async (
       content: string,
-      options?: Partial<{ replyToEvent?: NostrEvent }>
+      options?: Partial<{ replyToEvent?: ThreadedEvent }>
     ) => {
       if (!threadRootObject)
         throw new Error("No Root Event Found for this post");
@@ -101,7 +97,10 @@ export const useNostrComments = (props: Props) => {
 
       const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-      let tags: string[][] = [["client", "makers.bolt.fun"]];
+      let tags: string[][] = [
+        ["client", "bolt.fun"],
+        ["c", "bolt.fun"],
+      ];
 
       if (threadRootObject.type === "root-event") {
         tags.push(["e", threadRootObject.event_id, "", "root"]);
@@ -121,10 +120,10 @@ export const useNostrComments = (props: Props) => {
 
       if (options?.replyToEvent) {
         tags.push(["e", options.replyToEvent.id!, "", "reply"]);
-        pubkeysToInclude.add(options.replyToEvent.pubkey);
-        options.replyToEvent.tags.forEach((tag) => {
-          if (tag[0] === "p") pubkeysToInclude.add(tag[1]);
-        });
+
+        extractThreadPubkeys(options.replyToEvent).forEach((pubkey) =>
+          pubkeysToInclude.add(pubkey)
+        );
       }
 
       pubkeysToInclude.forEach((pubkey) => {
@@ -208,8 +207,6 @@ export const useNostrComments = (props: Props) => {
 
       const event = await signEvent(baseEvent);
 
-      let called_refetch_metadata = false;
-
       return new Promise(async (resolve, reject) => {
         const publishTimeout = setTimeout(() => {
           return reject(
@@ -229,10 +226,6 @@ export const useNostrComments = (props: Props) => {
           relaysUrls,
           (event, afterEose, url) => {
             clearTimeout(publishTimeout);
-            // if (!called_refetch_metadata) {
-            //   fetchMetadata([profile.pubkey]);
-            //   called_refetch_metadata = true;
-            // }
             return resolve(
               `event ${event.id.slice(0, 5)}… published to ${url}.`
             );
@@ -286,4 +279,12 @@ async function signEvent(event: UnsignedNostrEvent): Promise<NostrEvent> {
       .then((res) => res.json())
       .then((data) => data.event);
   else throw new Error("unknown connection type");
+}
+
+function extractThreadPubkeys(thread: ThreadedEvent) {
+  const pubkeys = [thread.pubkey];
+  thread.replies.forEach((reply) => {
+    pubkeys.push(...extractThreadPubkeys(reply));
+  });
+  return pubkeys;
 }

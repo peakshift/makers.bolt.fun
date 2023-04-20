@@ -52,8 +52,8 @@ function Navbar() {
     (state) => state.user.me?.primary_nostr_key
   );
 
-  const { notifications } = useNotifications({
-    pubkey: "85efb8a81515b93db9af829e2f6740fbad2e7bb6b73d912f254e7b2d92fcdc65",
+  const { notifications, isEmpty } = useNotifications({
+    pubkey: user_nostr_key,
   });
 
   const updateNavHeight = useCallback(() => {
@@ -80,7 +80,11 @@ function Navbar() {
     <>
       <header className="sticky top-0 left-0 w-full z-[2010]">
         {isLargeScreen ? (
-          <NavDesktop notifications={notifications} />
+          <NavDesktop
+            isLoadingNotifications={notifications.length === 0 && !isEmpty}
+            notifications={notifications}
+            hasPrimaryNostrKey={!!user_nostr_key}
+          />
         ) : (
           <NavMobile />
         )}

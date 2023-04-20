@@ -13,13 +13,21 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 import { Notification } from "src/features/Notifications/useNotifications";
-import { FaBell } from "react-icons/fa";
+import { trimText } from "src/utils/helperFunctions";
+import dayjs from "dayjs";
+import Skeleton from "react-loading-skeleton";
 
 interface Props {
+  isLoadingNotifications: boolean;
   notifications: Notification[];
+  hasPrimaryNostrKey: boolean;
 }
 
-export default function NavDesktop({ notifications }: Props) {
+export default function NavDesktop({
+  notifications,
+  hasPrimaryNostrKey,
+  isLoadingNotifications,
+}: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const { curUser } = useAppSelector((state) => ({
@@ -213,13 +221,72 @@ export default function NavDesktop({ notifications }: Props) {
           <Menu
             align="end"
             offsetY={4}
-            menuClassName="!p-8 !rounded-12 max-w-[420px]"
+            menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)]"
             menuButton={
-              <IconButton>
-                <FiBell className="text-orange-400" />
+              <IconButton className="text-gray-900 hover:text-orange-300">
+                <FiBell />
               </IconButton>
             }
           >
+            {!hasPrimaryNostrKey && (
+              <div className="flex flex-col items-center py-16 gap-16">
+                <p className="text-gray-600 text-center ">
+                  To see notifications, please link your nostr public key firts.
+                </p>
+                <Button
+                  href={createRoute({ type: "edit-profile", tab: "nostr" })}
+                  size="sm"
+                  color="primary"
+                >
+                  Link Nostr Key <span aria-hidden>🔑</span>
+                </Button>
+              </div>
+            )}
+            {isLoadingNotifications && (
+              <>
+                <MenuItem className="!p-16 flex gap-16 hover:bg-gray-100 !rounded-12 text-body5 ">
+                  <div className="flex gap-16 items-start w-full">
+                    <Skeleton circle width="32px" height="32px" />
+                    <div className="flex-1">
+                      <p className="text-gray-900 font-bold ">
+                        <Skeleton width="80%" />
+                      </p>
+                      <p className="text-body6 text-gray-500 font-medium">
+                        {" "}
+                        <Skeleton width="5ch" />
+                      </p>
+                      <p className="line-clamp-2 text-gray-600 mt-4">
+                        <Skeleton /> <Skeleton />
+                      </p>
+                    </div>
+                  </div>
+                </MenuItem>
+                <MenuItem className="!p-16 flex gap-16 hover:bg-gray-100 !rounded-12 text-body5 ">
+                  <div className="flex gap-16 items-start w-full">
+                    <Skeleton circle width="32px" height="32px" />
+                    <div className="flex-1">
+                      <p className="text-gray-900 font-bold ">
+                        <Skeleton width="80%" />
+                      </p>
+                      <p className="text-body6 text-gray-500 font-medium">
+                        {" "}
+                        <Skeleton width="5ch" />
+                      </p>
+                      <p className="line-clamp-2 text-gray-600 mt-4">
+                        <Skeleton /> <Skeleton />
+                      </p>
+                    </div>
+                  </div>
+                </MenuItem>
+              </>
+            )}
+            {!isLoadingNotifications && notifications.length === 0 && (
+              <div className="flex flex-col items-center py-16 gap-16">
+                <p className="text-gray-600 text-center ">
+                  Nothing to be seen here...
+                </p>
+              </div>
+            )}
             {notifications.map((notification) => (
               <MenuItem
                 key={notification.id}
@@ -228,26 +295,55 @@ export default function NavDesktop({ notifications }: Props) {
                   e.syntheticEvent.preventDefault();
                   navigate(new URL(notification.url).pathname);
                 }}
-                className="!p-16 flex gap-16 hover:bg-gray-100 !rounded-12"
+                className="!p-16 flex gap-16 hover:bg-gray-100 !rounded-12 text-body5"
               >
                 {notification.type === "comment-on-post" && (
-                  <div>
-                    <p className="text-gray-900 font-bold ">
-                      Someone commented on your post
-                    </p>
-                    <p className="line-clamp-2 text-gray-600">
-                      {notification.commentText}
-                    </p>
+                  <div className="flex gap-16 items-start w-full">
+                    <Avatar src={notification.user.image} width={32} />
+                    <div>
+                      <p className="text-gray-900 font-bold ">
+                        {trimText(notification.user.name, 12)} commented on your
+                        post
+                      </p>
+                      <p className="text-body6 text-gray-500 font-medium">
+                        {dayjs(notification.created_at * 1000).from(new Date())}
+                      </p>
+                      <p className="line-clamp-2 text-gray-600 mt-4">
+                        {notification.commentText}
+                      </p>
+                    </div>
                   </div>
                 )}
                 {notification.type === "reply-on-comment" && (
-                  <div>
-                    <p className="text-gray-900 font-bold ">
-                      Someone replied on your comment
-                    </p>
-                    <div className="">
-                      <p className="line-clamp-2 text-gray-600">
+                  <div className="flex gap-16 items-start w-full">
+                    <Avatar src={notification.user.image} width={32} />
+                    <div>
+                      <p className="text-gray-900 font-bold ">
+                        {trimText(notification.user.name, 12)} replied on your
+                        comment
+                      </p>
+                      <p className="text-body6 text-gray-500 font-medium">
+                        {dayjs(notification.created_at * 1000).from(new Date())}
+                      </p>
+                      <p className="line-clamp-2 text-gray-600 mt-4">
                         {notification.replyText}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {notification.type === "mention-in-post" && (
+                  <div className="flex gap-16 items-start w-full">
+                    <Avatar src={notification.user.image} width={32} />
+                    <div>
+                      <p className="text-gray-900 font-bold ">
+                        {trimText(notification.user.name, 12)} mentioned you in
+                        a post
+                      </p>
+                      <p className="text-body6 text-gray-500 font-medium">
+                        {dayjs(notification.created_at * 1000).from(new Date())}
+                      </p>
+                      <p className="line-clamp-2 text-gray-600 mt-4">
+                        {notification.postTitle}
                       </p>
                     </div>
                   </div>

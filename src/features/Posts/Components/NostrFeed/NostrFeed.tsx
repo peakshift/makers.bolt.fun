@@ -39,7 +39,10 @@ export function getFilters(topic: keyof typeof toipcsToFilters): Filter[] {
 function NostrFeed(props: Props) {
   const filters = useMemo(() => getFilters(props.topic), [props.topic]);
 
-  const { events, metadata, isEmpty } = useNostrQueryList({ filters });
+  const { events, metadata, isEmpty } = useNostrQueryList({
+    filters,
+    shouldFetchMetadata: true,
+  });
 
   const posts = events.filter(
     (event) => !event.tags.some(([tag]) => tag === "e")

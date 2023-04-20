@@ -9,6 +9,8 @@ interface Props {
   filters: Filter[];
   publicKey?: string;
   sortEvents?: boolean;
+  timeout?: number;
+  shouldFetchMetadata?: boolean;
 }
 
 export const useNostrQueryList = (props: Props) => {
@@ -64,24 +66,24 @@ export const useNostrQueryList = (props: Props) => {
   );
 
   useEffect(() => {
-    if (relayPool && events.length > 0)
+    if (props.shouldFetchMetadata && relayPool && events.length > 0)
       fetchMetaDataRef.current(events.map((e) => e.pubkey));
-  }, [events, relayPool]);
+  }, [events, props.shouldFetchMetadata, relayPool]);
 
   useEffect(() => {
-    if (relayPool && props.publicKey)
+    if (props.shouldFetchMetadata && relayPool && props.publicKey)
       fetchMetaDataRef.current([props.publicKey]);
-  }, [props.publicKey, relayPool]);
+  }, [props.shouldFetchMetadata, props.publicKey, relayPool]);
 
   useEffect(() => {
     if (events.length === 0) {
       const timeout = setTimeout(() => {
         setIsEmpty(true);
-      }, 20000);
+      }, props.timeout ?? 10000);
       return () => clearTimeout(timeout);
     }
     setIsEmpty(false);
-  }, [events.length]);
+  }, [events.length, props.timeout]);
 
   async function fetchMetadata(
     pubkeys: string[],
@@ -130,7 +132,7 @@ export const useNostrQueryList = (props: Props) => {
       }
     );
 
-    setTimeout(() => unsub(), 20000);
+    setTimeout(() => unsub(), props.timeout ?? 10000);
   }
 
   async function fetchNIP05(pubkey: string, meta: any) {

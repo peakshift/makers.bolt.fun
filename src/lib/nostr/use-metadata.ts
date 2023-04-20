@@ -88,7 +88,8 @@ export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
           } catch (err) {
             /***/
           }
-        }
+        },
+        200
       );
 
       setTimeout(() => unsub(), 20000);
