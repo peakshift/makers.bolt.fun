@@ -6,7 +6,7 @@ import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
-import { FiMenu } from "react-icons/fi";
+import { FiBell, FiMenu } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
 import styles from "./styles.module.css";
@@ -53,7 +53,11 @@ const listArrowVariants = {
   closed: { rotate: 0 },
 };
 
-export default function NavMobile() {
+interface Props {
+  renderNotificationsList: () => JSX.Element;
+}
+
+export default function NavMobile({ renderNotificationsList }: Props) {
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
   const [eventsOpen, toggleEventsOpen] = useToggle(false);
 
@@ -130,7 +134,20 @@ export default function NavMobile() {
               </Link>
             </div>
 
-            <div className="flex-1 flex justify-end">
+            <div className="flex-1 shrink-0 flex gap-4 justify-end">
+              <Menu
+                align="end"
+                arrow
+                menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] position"
+                viewScroll="initial"
+                menuButton={
+                  <IconButton className="text-gray-900 hover:text-orange-300">
+                    <FiBell />
+                  </IconButton>
+                }
+              >
+                {renderNotificationsList()}
+              </Menu>
               {curUser !== undefined &&
                 (curUser ? (
                   <Menu

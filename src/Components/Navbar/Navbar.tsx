@@ -14,6 +14,7 @@ import { IoMdTrophy } from "react-icons/io";
 import { useNotifications } from "src/features/Notifications/useNotifications";
 import { withProviders } from "src/utils/hoc";
 import { RelayPoolProvider } from "src/lib/nostr";
+import NotificationsList from "./NotificationsList/NotificationsList";
 
 export const navLinks = [
   { text: "Explore", url: "/", icon: MdHomeFilled, color: "text-primary-600" },
@@ -76,17 +77,21 @@ function Navbar() {
 
   useResizeListener(updateNavHeight);
 
+  const RenderNotificationsList = () => (
+    <NotificationsList
+      isLoadingNotifications={notifications.length === 0 && !isEmpty}
+      notifications={notifications}
+      noKeyConnected={!user_nostr_key}
+    />
+  );
+
   return (
     <>
       <header className="sticky top-0 left-0 w-full z-[2010]">
         {isLargeScreen ? (
-          <NavDesktop
-            isLoadingNotifications={notifications.length === 0 && !isEmpty}
-            notifications={notifications}
-            hasPrimaryNostrKey={!!user_nostr_key}
-          />
+          <NavDesktop renderNotificationsList={RenderNotificationsList} />
         ) : (
-          <NavMobile />
+          <NavMobile renderNotificationsList={RenderNotificationsList} />
         )}
       </header>
     </>
