@@ -1,51 +1,41 @@
-import { renderHook } from "@testing-library/react";
-import { RelayPool } from "nostr-relaypool";
-import {
-  Event,
-  generatePrivateKey,
-  getEventHash,
-  getPublicKey,
-  signEvent,
-  SimplePool,
-  UnsignedEvent,
-} from "nostr-tools";
-import { useEffect, useMemo, useState } from "react";
-import { withProviders } from "src/utils/hoc";
+import { randomUUID } from "crypto";
+import { useMemo } from "react";
 import { render, screen } from "src/utils/testing";
 import { useNostrQueryList } from "../hooks/use-nostr-query-list";
-import { RelayPoolProvider, useRelayPool } from "../hooks/use-relays-pool";
-import { InMemoryRelayServer } from "../InMemoryRelay";
+import { MockRelayInitializer } from "./InMemoryRelay";
+import { createNostrEvent, withTestingRelaysProvider } from "./helpers";
 
-const withTestingRelaysProvider = withProviders([
-  RelayPoolProvider,
-  { relays: ["ws://localhost:8083", "ws://localhost:8084"] },
-]);
-
-const _relayServer1 = new InMemoryRelayServer(8083);
-const _relayServer2 = new InMemoryRelayServer(8084);
+const relayBucketId = randomUUID();
+const mockRelay1 = new MockRelayInitializer(8083, relayBucketId);
+const mockRelay2 = new MockRelayInitializer(8084, relayBucketId);
 
 beforeAll(async () => {
-  await _relayServer1.initServer();
-  await _relayServer2.initServer();
+  await Promise.all([
+    mockRelay1.waitForSocketToStart(),
+    mockRelay2.waitForSocketToStart(),
+  ]);
 });
 
-beforeEach(() => {
-  _relayServer1.clear();
-  _relayServer2.clear();
+beforeEach(async () => {
+  await Promise.all([
+    mockRelay1.clearRelayEvents(),
+    mockRelay2.clearRelayEvents(),
+  ]);
 });
 
-afterAll(async () => {
-  await _relayServer1.close();
-  await _relayServer2.close();
-});
-
-const UseNostrQueryList = withTestingRelaysProvider(() => {
+const UseNostrQueryList = withTestingRelaysProvider(relayBucketId)(() => {
   const filters = useMemo(() => [{ kinds: [1] }], []);
 
-  const { events } = useNostrQueryList({ filters, debounceDelay: 200 });
+  const { events, isEmpty } = useNostrQueryList({
+    filters,
+    debounceDelay: 200,
+    considerEmptyTimeout: 300,
+  });
 
   return (
     <div>
+      <h1>Events</h1>
+      <p>Is Empty: {isEmpty ? "true" : "false"}</p>
       <ul>
         {events.map((event) => (
           <li key={event.id} data-testid="event">
@@ -59,41 +49,34 @@ const UseNostrQueryList = withTestingRelaysProvider(() => {
   );
 });
 
-const createNostrEvent = (data: Partial<Event>): Event => {
-  const prvKey = generatePrivateKey();
-  const pubKey = getPublicKey(prvKey);
-
-  const baseEvent: UnsignedEvent = {
-    content: data.content ?? "default content",
-    created_at: data.created_at ?? Math.floor(Date.now() / 1000),
-    kind: data.kind ?? 1,
-    tags: data.tags ?? [],
-    pubkey: data.pubkey ?? pubKey,
-  };
-
-  const id = getEventHash(baseEvent);
-
-  return {
-    ...baseEvent,
-    id,
-    sig: data.sig ?? signEvent(baseEvent, prvKey),
-  };
-};
-
 describe("useNostrQueryList Hook", () => {
   it("should fetch events from relays", async () => {
-    _relayServer1.initEvents([
-      createNostrEvent({ content: "Event No. 1" }),
-      createNostrEvent({ content: "Event No. 2" }),
-      createNostrEvent({ content: "Event No. 3" }),
+    await Promise.all([
+      mockRelay1.setRelayEvents([
+        createNostrEvent({ content: "Event No. 1" }),
+        createNostrEvent({ content: "Event No. 2" }),
+        createNostrEvent({ content: "Event No. 3" }),
+      ]),
+      mockRelay2.setRelayEvents([
+        createNostrEvent({ content: "Event No. 4" }),
+        createNostrEvent({ content: "Event No. 5" }),
+      ]),
     ]);
 
-    _relayServer2.initEvents([
-      createNostrEvent({ content: "Event No. 4" }),
-      createNostrEvent({ content: "Event No. 5" }),
-    ]);
     render(<UseNostrQueryList />);
+
     expect(await screen.findByText(/Event No. 1/)).toBeInTheDocument();
     expect(await screen.findByText(/Event No. 4/)).toBeInTheDocument();
+    expect(await screen.findByText(/Is Empty: false/)).toBeInTheDocument();
+  });
+
+  it("should become empty", async () => {
+    await Promise.all([
+      mockRelay1.setRelayEvents([createNostrEvent({ kind: 0 })]),
+    ]);
+
+    render(<UseNostrQueryList />);
+    expect(await screen.findByText(/Is Empty: false/)).toBeInTheDocument();
+    expect(await screen.findByText(/Is Empty: true/)).toBeInTheDocument();
   });
 });

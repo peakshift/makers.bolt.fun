@@ -9,7 +9,7 @@ interface Props {
   filters: Filter[];
   publicKey?: string;
   sortEvents?: boolean;
-  timeout?: number;
+  considerEmptyTimeout?: number;
   shouldFetchMetadata?: boolean;
   debounceDelay?: number;
 }
@@ -80,11 +80,11 @@ export const useNostrQueryList = (props: Props) => {
     if (events.length === 0) {
       const timeout = setTimeout(() => {
         setIsEmpty(true);
-      }, props.timeout ?? 10000);
+      }, props.considerEmptyTimeout ?? 10000);
       return () => clearTimeout(timeout);
     }
     setIsEmpty(false);
-  }, [events.length, props.timeout]);
+  }, [events.length, props.considerEmptyTimeout]);
 
   async function fetchMetadata(
     pubkeys: string[],
@@ -133,7 +133,7 @@ export const useNostrQueryList = (props: Props) => {
       }
     );
 
-    setTimeout(() => unsub(), props.timeout ?? 10000);
+    setTimeout(() => unsub(), props.considerEmptyTimeout ?? 10000);
   }
 
   async function fetchNIP05(pubkey: string, meta: any) {

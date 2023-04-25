@@ -213,6 +213,8 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/utils/testing/fileMock.js",
       "\\.(css|scss|less)$": "<rootDir>/src/utils/testing/fileMock.js"
-    }
+    },
+    "globalSetup": "<rootDir>/src/utils/testing/globalSetup.ts",
+    "globalTeardown": "<rootDir>/src/utils/testing/globalTeardown.ts"
   }
 }
