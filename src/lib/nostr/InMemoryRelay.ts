@@ -12,12 +12,23 @@ export class InMemoryRelayServer {
   totalSubscriptions = 0;
   serverStarted = false;
 
-  initServer(port = 8081, host = "localhost") {
+  _port: number;
+  _host: string;
+
+  constructor(port = 8081, host = "localhost") {
+    this._port = port;
+    this._host = host;
+  }
+
+  initServer() {
     let resolveServerStarted: (v: boolean) => void;
 
-    this.wss = new WebSocketServer({ port, host }, () => {
-      resolveServerStarted(true);
-    });
+    this.wss = new WebSocketServer(
+      { port: this._port, host: this._host },
+      () => {
+        resolveServerStarted(true);
+      }
+    );
     this.wss.on("connection", (ws) => {
       this.connections.add(ws);
       ws.on("message", (message) => {

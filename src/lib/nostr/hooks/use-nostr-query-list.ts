@@ -11,13 +11,14 @@ interface Props {
   sortEvents?: boolean;
   timeout?: number;
   shouldFetchMetadata?: boolean;
+  debounceDelay?: number;
 }
 
 export const useNostrQueryList = (props: Props) => {
   const { relayPool } = useRelayPool();
 
   const [eventsImmediate, setEvents] = useState<NostrEvent[]>([]);
-  const [events] = useDebounce(eventsImmediate, 1);
+  const [events] = useDebounce(eventsImmediate, props.debounceDelay ?? 900);
 
   const [metadata, setMetadata] = useState<NostrMetadata>({});
   const metadataFetching = useRef<Record<string, boolean>>({});
