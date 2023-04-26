@@ -126,6 +126,9 @@ export const useNostrComments = (props: Props) => {
         });
       }
 
+      // I don't want to include my own pubkey in the p tag list
+      pubkeysToInclude.delete(props.publicKey!);
+
       pubkeysToInclude.forEach((pubkey) => {
         tags.push(["p", pubkey]);
       });
