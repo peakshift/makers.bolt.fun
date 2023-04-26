@@ -208,7 +208,7 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
               </IconButton>
             )}
           </motion.div>
-          {curUser !== undefined && (
+          {!!curUser && (
             <Menu
               align="end"
               arrow

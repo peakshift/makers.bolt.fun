@@ -150,7 +150,7 @@ export default function NavMobile({ renderNotificationsList }: Props) {
                   {renderNotificationsList()}
                 </Menu>
               )}
-              {curUser !== undefined &&
+              {!!curUser &&
                 (curUser ? (
                   <Menu
                     align="end"
