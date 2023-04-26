@@ -135,19 +135,21 @@ export default function NavMobile({ renderNotificationsList }: Props) {
             </div>
 
             <div className="flex-1 shrink-0 flex gap-4 justify-end">
-              <Menu
-                align="end"
-                arrow
-                menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg small-scrollbar"
-                viewScroll="initial"
-                menuButton={
-                  <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
-                    <FiBell />
-                  </IconButton>
-                }
-              >
-                {renderNotificationsList()}
-              </Menu>
+              {curUser !== undefined && (
+                <Menu
+                  align="end"
+                  arrow
+                  menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg small-scrollbar"
+                  viewScroll="initial"
+                  menuButton={
+                    <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
+                      <FiBell />
+                    </IconButton>
+                  }
+                >
+                  {renderNotificationsList()}
+                </Menu>
+              )}
               {curUser !== undefined &&
                 (curUser ? (
                   <Menu
