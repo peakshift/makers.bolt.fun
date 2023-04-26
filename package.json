@@ -20,7 +20,7 @@
     "@rpldy/upload-preview": "^1.0.1",
     "@rpldy/uploady": "^1.0.1",
     "@shopify/react-web-worker": "^5.0.1",
-    "@szhsin/react-menu": "^3.0.2",
+    "@szhsin/react-menu": "^3.5.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.27",

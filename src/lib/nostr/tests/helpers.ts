@@ -20,8 +20,10 @@ export const withTestingRelaysProvider = (bucketId: string) =>
     },
   ]);
 
-export const createNostrEvent = (data: Partial<Event>): Event => {
-  const prvKey = generatePrivateKey();
+export const createNostrEvent = (
+  data: Partial<Event & { prvKey: string }>
+): Event => {
+  const prvKey = data.prvKey ?? generatePrivateKey();
   const pubKey = getPublicKey(prvKey);
 
   const baseEvent: UnsignedNostrEvent = {
@@ -44,11 +46,12 @@ export const createNostrEvent = (data: Partial<Event>): Event => {
 export const createMetadataEvent = (
   data: Partial<Omit<NostrProfile, "pubkey"> & { prvKey: string }>
 ): Event => {
-  const prvKey = data.prvKey ?? generatePrivateKey();
+  const { prvKey = generatePrivateKey(), ...content } = data;
+
   const pubKey = getPublicKey(prvKey);
 
   const baseEvent: UnsignedNostrEvent = {
-    content: JSON.stringify(data),
+    content: JSON.stringify(content),
     created_at: Math.floor(Date.now() / 1000),
     kind: 0,
     tags: [],

@@ -39,7 +39,7 @@ export default function NotificationsList({
 
   if (isLoadingNotifications)
     return (
-      <>
+      <div aria-label="Loading">
         <MenuItem className="!p-16 flex gap-16 hover:bg-gray-100 !rounded-12 text-body5 ">
           <div className="flex gap-16 items-start w-full">
             <Skeleton circle width="32px" height="32px" />
@@ -72,12 +72,15 @@ export default function NotificationsList({
             </div>
           </div>
         </MenuItem>
-      </>
+      </div>
     );
 
   if (!isLoadingNotifications && notifications.length === 0)
     return (
-      <div className="flex flex-col items-center py-16 gap-16">
+      <div
+        className="flex flex-col items-center py-16 gap-16"
+        aria-label="notifications empty"
+      >
         <p className="text-gray-600 text-center ">Nothing to be seen here...</p>
       </div>
     );

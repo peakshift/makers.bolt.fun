@@ -8,6 +8,10 @@ import { ToastContainer } from "react-toastify";
 import { NotificationsService } from "src/services";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+dayjs.extend(relativeTime);
+
 const render = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) => {
   return _render(ui, { wrapper: createProviders, ...options });
 };

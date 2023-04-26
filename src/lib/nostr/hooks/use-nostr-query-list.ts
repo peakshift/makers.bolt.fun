@@ -18,7 +18,10 @@ export const useNostrQueryList = (props: Props) => {
   const { relayPool } = useRelayPool();
 
   const [eventsImmediate, setEvents] = useState<NostrEvent[]>([]);
-  const [events] = useDebounce(eventsImmediate, props.debounceDelay ?? 900);
+  const [events] = useDebounce(
+    eventsImmediate,
+    props.debounceDelay ?? process.env.NODE_ENV === "test" ? 100 : 1000
+  );
 
   const [metadata, setMetadata] = useState<NostrMetadata>({});
   const metadataFetching = useRef<Record<string, boolean>>({});

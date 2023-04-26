@@ -107,8 +107,7 @@ export const useNotifications = ({ pubkey }: Props) => {
       const url = event.tags.find((t) => t[0] === "r")?.[1];
 
       if (!url) return undefined;
-
-      const hasMentionedMe = event.content.search(`#[${myPTagIndex}]`) !== -1;
+      const hasMentionedMe = event.content.indexOf(`#[${myPTagIndex}]`) !== -1;
 
       let postEvent: NostrEvent | null = event;
       if (eventType !== "post") postEvent = await getEventById(postEventId);
