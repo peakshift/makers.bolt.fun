@@ -211,9 +211,9 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
           <Menu
             align="end"
             arrow
-            menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)]"
+            menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)] max-h-[min(50vh,480px)] overflow-y-auto overflow-x-hidden  small-scrollbar"
             menuButton={
-              <IconButton className="text-gray-900 hover:text-orange-300">
+              <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
                 <FiBell />
               </IconButton>
             }

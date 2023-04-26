@@ -138,10 +138,10 @@ export default function NavMobile({ renderNotificationsList }: Props) {
               <Menu
                 align="end"
                 arrow
-                menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] position"
+                menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg small-scrollbar"
                 viewScroll="initial"
                 menuButton={
-                  <IconButton className="text-gray-900 hover:text-orange-300">
+                  <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
                     <FiBell />
                   </IconButton>
                 }

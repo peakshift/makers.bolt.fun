@@ -1,5 +1,6 @@
 import { MenuItem } from "@szhsin/react-menu";
 import dayjs from "dayjs";
+import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import Button from "src/Components/Button/Button";
@@ -14,11 +15,16 @@ interface Props {
   notifications: Notification[];
 }
 
+const RENDER_PER_PAGE = 5;
+
 export default function NotificationsList({
   isLoadingNotifications,
   noKeyConnected,
   notifications,
 }: Props) {
+  const [numberOfEventsToRender, setNumberOfEventsToRender] =
+    useState(RENDER_PER_PAGE);
+
   const navigate = useNavigate();
 
   if (noKeyConnected)
@@ -87,7 +93,7 @@ export default function NotificationsList({
 
   return (
     <>
-      {notifications.map((notification) => (
+      {notifications.slice(0, numberOfEventsToRender).map((notification) => (
         <MenuItem
           key={notification.id}
           href={notification.url}
@@ -100,7 +106,7 @@ export default function NotificationsList({
           {notification.type === "comment-on-post" && (
             <div className="flex gap-16 items-start w-full">
               <Avatar src={notification.user.image} width={32} />
-              <div>
+              <div className="min-w-0">
                 <p className="text-gray-900 font-bold ">
                   {trimText(notification.user.name, 12)} commented on your post
                 </p>
@@ -116,7 +122,7 @@ export default function NotificationsList({
           {notification.type === "reply-on-comment" && (
             <div className="flex gap-16 items-start w-full">
               <Avatar src={notification.user.image} width={32} />
-              <div>
+              <div className="min-w-0">
                 <p className="text-gray-900 font-bold ">
                   {trimText(notification.user.name, 12)} replied on your comment
                 </p>
@@ -132,7 +138,7 @@ export default function NotificationsList({
           {notification.type === "mention-in-post" && (
             <div className="flex gap-16 items-start w-full">
               <Avatar src={notification.user.image} width={32} />
-              <div>
+              <div className="min-w-0">
                 <p className="text-gray-900 font-bold ">
                   {trimText(notification.user.name, 12)} mentioned you in a post
                 </p>
@@ -147,6 +153,16 @@ export default function NotificationsList({
           )}
         </MenuItem>
       ))}
+      {notifications.length > numberOfEventsToRender && (
+        <Button
+          color="gray"
+          variant="text"
+          fullWidth
+          onClick={() => setNumberOfEventsToRender((v) => v + RENDER_PER_PAGE)}
+        >
+          Load More
+        </Button>
+      )}
     </>
   );
 }
