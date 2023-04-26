@@ -1,6 +1,5 @@
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useRelayPool } from "src/lib/nostr";
+import { NostrEvent, useRelayPool } from "src/lib/nostr";
 import { insertEventIntoDescendingList } from "src/lib/nostr/helpers";
 import { useDebounce } from "use-debounce";
 
@@ -13,7 +12,7 @@ const TIME_TO_CONSIDER_EMPTY = 10 * 1000;
 export type PostsToComments = {
   [nostr_id: string]: {
     state: "fetching" | "fetched";
-    data: NostrToolsEventWithId[];
+    data: NostrEvent[];
   };
 };
 

@@ -1,6 +1,5 @@
-import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
-import { NostrProfile } from "./types";
+import { NostrEvent, NostrProfile } from "./types";
 
 export function normalizeURL(raw: string) {
   let url = new URL(raw);
@@ -69,9 +68,10 @@ export function getProfileDataFromMetaData(
   } as NostrProfile;
 }
 
-export function insertEventIntoDescendingList<
-  T extends NostrToolsEvent | NostrToolsEventWithId
->(sortedArray: T[], event: T) {
+export function insertEventIntoDescendingList<T extends NostrEvent>(
+  sortedArray: T[],
+  event: T
+) {
   let start = 0;
   let end = sortedArray.length - 1;
   let midPoint;
@@ -113,11 +113,11 @@ export function insertEventIntoDescendingList<
   return sortedArray;
 }
 
-export type ThreadedEvent = NostrToolsEventWithId & {
+export type ThreadedEvent = NostrEvent & {
   replies: ThreadedEvent[];
 };
 
-export function computeThreads(events: readonly NostrToolsEvent[]) {
+export function computeThreads(events: readonly NostrEvent[]) {
   let threadableEvents = events.map((event) => ({
     ...event,
     replies: [],
@@ -167,7 +167,7 @@ export function computeThreads(events: readonly NostrToolsEvent[]) {
     // couldn't find this event, so manufacture one
     let fake = {
       id,
-      replies: [] as NostrToolsEvent[],
+      replies: [] as NostrEvent[],
     } as unknown as ThreadedEvent;
     threadableEvents.push(fake);
 
@@ -177,7 +177,7 @@ export function computeThreads(events: readonly NostrToolsEvent[]) {
 
 const EXTRACT_IMAGE_FROM_CONTENT_REGEX = /https?:\/\/(\S+?(?:jpe?g|png|gif))$/i;
 
-export function extractArticleFields(event: NostrToolsEventWithId) {
+export function extractArticleFields(event: NostrEvent) {
   const title = event.tags.find((t) => t[0] === "title")?.[1];
   const summary = event.tags.find((t) => t[0] === "summary")?.[1];
   let image = event.tags.find((t) => t[0] === "image")?.[1];
