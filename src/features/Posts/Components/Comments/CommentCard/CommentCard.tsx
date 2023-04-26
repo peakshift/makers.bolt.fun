@@ -79,11 +79,7 @@ export default function CommentCard({
           </p>
         </div>
         <a
-          href={
-            isMobile
-              ? `nostr:${nip19.noteEncode(comment.id)}`
-              : `https://www.nostr.guru/e/${comment.id}`
-          }
+          href={`https://www.nostr.guru/e/${comment.id}`}
           target="_blank"
           rel="noreferrer"
           className="ml-auto text-gray-400"
