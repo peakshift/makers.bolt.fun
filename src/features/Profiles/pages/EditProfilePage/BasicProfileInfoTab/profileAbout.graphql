@@ -3,6 +3,7 @@ fragment UserBasicInfo on BaseUser {
   name
   avatar
   join_date
+  primary_nostr_key
   role
   jobTitle
   lightning_address

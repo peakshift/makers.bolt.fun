@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { Virtuoso } from "react-virtuoso";
 import NostrPostCard from "src/features/Posts/Components/NostrPostCard/NostrPostCard";
 import { PostCardSkeleton } from "src/features/Posts/Components/PostCard";
-import { RelayPoolProvider, useMetaData, useNostrQuery } from "src/lib/nostr";
+import {
+  RelayPoolProvider,
+  useMetaData,
+  useNostrQueryList,
+} from "src/lib/nostr";
 import { withProviders } from "src/utils/hoc";
 import { createRoute } from "src/utils/routing";
 import { useTournament } from "../TournamentDetailsPage/TournamentDetailsContext";
@@ -30,7 +34,7 @@ function TournamentFeedPage(props: Props) {
     [config, pubkeysOfMakersInTournament, pubkeysOfProjectsInTournament]
   );
 
-  const { events, isEmpty } = useNostrQuery({
+  const { events, isEmpty } = useNostrQueryList({
     filters,
     sortEvents: true,
   });

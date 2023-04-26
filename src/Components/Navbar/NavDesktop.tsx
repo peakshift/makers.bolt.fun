@@ -8,12 +8,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { FiChevronDown } from "react-icons/fi";
+import { FiBell, FiChevronDown } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 
-export default function NavDesktop() {
+interface Props {
+  renderNotificationsList: () => JSX.Element;
+}
+
+export default function NavDesktop({ renderNotificationsList }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const { curUser } = useAppSelector((state) => ({
@@ -30,7 +34,7 @@ export default function NavDesktop() {
   return (
     <nav className="bg-white py-16 w-full min-w-full">
       <div className="content-container">
-        <div className="flex items-center">
+        <div className="flex items-center gap-16">
           <Link to="/">
             <img
               className="h-40 mr-40 lg:mr-64"
@@ -204,6 +208,20 @@ export default function NavDesktop() {
               </IconButton>
             )}
           </motion.div>
+          {!!curUser && (
+            <Menu
+              align="end"
+              arrow
+              menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)] max-h-[min(50vh,480px)] overflow-y-auto overflow-x-hidden  small-scrollbar"
+              menuButton={
+                <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
+                  <FiBell />
+                </IconButton>
+              }
+            >
+              {renderNotificationsList()}
+            </Menu>
+          )}
           {curUser !== undefined &&
             (curUser ? (
               <Menu

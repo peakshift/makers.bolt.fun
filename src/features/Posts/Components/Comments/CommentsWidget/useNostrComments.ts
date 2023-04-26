@@ -9,6 +9,7 @@ import {
   insertEventIntoDescendingList,
   computeThreads,
   normalizeURL,
+  ThreadedEvent,
 } from "src/lib/nostr/helpers";
 import { NostrProfile } from "src/lib/nostr";
 import { createRoute } from "src/utils/routing";
@@ -88,7 +89,7 @@ export const useNostrComments = (props: Props) => {
   const publishEvent = useCallback(
     async (
       content: string,
-      options?: Partial<{ replyToEvent?: NostrEvent }>
+      options?: Partial<{ replyToEvent?: ThreadedEvent }>
     ) => {
       if (!threadRootObject)
         throw new Error("No Root Event Found for this post");
@@ -119,11 +120,14 @@ export const useNostrComments = (props: Props) => {
 
       if (options?.replyToEvent) {
         tags.push(["e", options.replyToEvent.id!, "", "reply"]);
-        pubkeysToInclude.add(options.replyToEvent.pubkey);
-        options.replyToEvent.tags.forEach((tag) => {
-          if (tag[0] === "p") pubkeysToInclude.add(tag[1]);
-        });
+
+        extractThreadPubkeys(options.replyToEvent).forEach((pubkey) =>
+          pubkeysToInclude.add(pubkey)
+        );
       }
+
+      // I don't want to include my own pubkey in the p tag list
+      pubkeysToInclude.delete(props.publicKey!);
 
       // I don't want to include my own pubkey in the p tag list
       pubkeysToInclude.delete(props.publicKey!);
@@ -207,14 +211,7 @@ export const useNostrComments = (props: Props) => {
         }),
       };
 
-      const signedEvent = await signEvent(baseEvent);
-
-      const event = {
-        ...signedEvent,
-        id: getEventHash(signedEvent),
-      } as NostrEvent;
-
-      let called_refetch_metadata = false;
+      const event = await signEvent(baseEvent);
 
       return new Promise(async (resolve, reject) => {
         const publishTimeout = setTimeout(() => {
@@ -235,10 +232,6 @@ export const useNostrComments = (props: Props) => {
           relaysUrls,
           (event, afterEose, url) => {
             clearTimeout(publishTimeout);
-            // if (!called_refetch_metadata) {
-            //   fetchMetadata([profile.pubkey]);
-            //   called_refetch_metadata = true;
-            // }
             return resolve(
               `event ${event.id.slice(0, 5)}… published to ${url}.`
             );
@@ -292,4 +285,12 @@ async function signEvent(event: UnsignedNostrEvent): Promise<NostrEvent> {
       .then((res) => res.json())
       .then((data) => data.event);
   else throw new Error("unknown connection type");
+}
+
+function extractThreadPubkeys(thread: ThreadedEvent) {
+  const pubkeys = [thread.pubkey];
+  thread.replies.forEach((reply) => {
+    pubkeys.push(...extractThreadPubkeys(reply));
+  });
+  return pubkeys;
 }
