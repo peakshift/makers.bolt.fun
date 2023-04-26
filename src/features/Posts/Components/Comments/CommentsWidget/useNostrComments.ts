@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { getEventHash, signEvent as nostrToolsSignEvent } from "nostr-tools";
 import { CONSTS } from "src/utils";
-import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
+import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool";
 import { NostrAccountConnection } from "./components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 import { useRelayPool } from "src/lib/nostr";
 import { useGetThreadRootObject } from "./hooks/use-get-thread-root";
@@ -97,7 +97,10 @@ export const useNostrComments = (props: Props) => {
 
       const relaysUrls = Array.from(relayPool.relayByUrl.keys());
 
-      let tags: string[][] = [["client", "makers.bolt.fun"]];
+      let tags: string[][] = [
+        ["client", "bolt.fun"],
+        ["c", "bolt.fun"],
+      ];
 
       if (threadRootObject.type === "root-event") {
         tags.push(["e", threadRootObject.event_id, "", "root"]);
