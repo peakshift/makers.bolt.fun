@@ -1,6 +1,5 @@
 import { marked } from "marked";
 import { BiComment } from "react-icons/bi";
-import DOMPurify from "dompurify";
 import Card from "src/Components/Card/Card";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";

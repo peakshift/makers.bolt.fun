@@ -129,6 +129,9 @@ export const useNostrComments = (props: Props) => {
       // I don't want to include my own pubkey in the p tag list
       pubkeysToInclude.delete(props.publicKey!);
 
+      // I don't want to include my own pubkey in the p tag list
+      pubkeysToInclude.delete(props.publicKey!);
+
       pubkeysToInclude.forEach((pubkey) => {
         tags.push(["p", pubkey]);
       });
@@ -267,8 +270,8 @@ async function signEvent(event: UnsignedNostrEvent): Promise<NostrEvent> {
   else if (nostrConnection.type === "inputted-keys")
     return {
       ...event,
-      sig: nostrToolsSignEvent(event, nostrConnection.prvkey),
       id: getEventHash(event),
+      sig: nostrToolsSignEvent(event, nostrConnection.prvkey),
     };
   else if (nostrConnection.type === "generated-keys")
     return fetch(CONSTS.apiEndpoint + "/nostr-sign-event", {
