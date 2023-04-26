@@ -26,8 +26,10 @@ export function getName(metadata: Record<string, any>, pubkey: string): string {
       return meta.nip05;
     }
     if (meta.name && meta.name.length) return meta.name;
-  } else if (pubkey) {
+  }
+  if (pubkey) {
     let npub = nip19.npubEncode(pubkey);
+
     return npub;
   }
 
@@ -39,20 +41,24 @@ export function getProfileDataFromMetaData(
   pubkey: string
 ): NostrProfile {
   let meta = metadata[pubkey];
-  if (!meta)
-    return {
-      pubkey,
-      name: nip19.npubEncode(pubkey),
-      about: null,
-      image: `https://avatars.dicebear.com/api/identicon/${pubkey}.svg`,
-      lightning_address: null,
-      nip05: null,
-      link: "nostr:" + nip19.npubEncode(pubkey),
-    };
+
+  const defaultProfileInfo: NostrProfile = {
+    pubkey,
+    name: nip19.npubEncode(pubkey),
+    about: null,
+    image: `https://avatars.dicebear.com/api/identicon/${pubkey}.svg`,
+    lightning_address: null,
+    nip05: null,
+    link: "nostr:" + nip19.npubEncode(pubkey),
+  };
+
+  if (!meta) return defaultProfileInfo;
 
   const name = getName(metadata, pubkey);
   const image =
-    meta.picture && meta.picture.length ? (meta.picture as string) : null;
+    meta.picture && meta.picture.length
+      ? (meta.picture as string)
+      : defaultProfileInfo.image;
   const about = meta.about && meta.about.length ? (meta.about as string) : null;
   const nip05 = meta.nip05 && meta.nip05.length ? (meta.nip05 as string) : null;
   const lud06 = meta.lud06 && meta.lud06.length ? (meta.lud06 as string) : null;
@@ -65,7 +71,7 @@ export function getProfileDataFromMetaData(
     lightning_address: lud06,
     nip05,
     link: "nostr:" + nip19.npubEncode(pubkey),
-  } as NostrProfile;
+  };
 }
 
 export function insertItemIntoDescendingList<
