@@ -65,18 +65,19 @@ model User {
   avatar_rel HostedImage? @relation("User_Avatar", fields: [avatar_id], references: [id])
   role       String       @default("user")
 
-  email             String?
-  jobTitle          String?
-  lightning_address String?
-  website           String?
-  twitter           String?
-  github            String?
-  discord           String?
-  linkedin          String?
-  bio               String?
-  location          String?
-  nostr_prv_key     String?
-  nostr_pub_key     String?
+  email                       String?
+  jobTitle                    String?
+  lightning_address           String?
+  website                     String?
+  twitter                     String?
+  github                      String?
+  discord                     String?
+  linkedin                    String?
+  bio                         String?
+  location                    String?
+  nostr_prv_key               String?
+  nostr_pub_key               String?
+  last_seen_notification_time DateTime @default(now())
 
   join_date DateTime @default(now())
 
