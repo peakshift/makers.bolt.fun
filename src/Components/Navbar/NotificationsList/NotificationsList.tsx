@@ -157,8 +157,8 @@ export default function NotificationsList(props: Props) {
               e.syntheticEvent.preventDefault();
               navigate(new URL(notification.url).pathname);
             }}
-            className={`!p-16 flex gap-16 !rounded-12 text-body5 focus:ring ${
-              isNew ? "bg-orange-100 hover:bg-orange-200" : "hover:bg-gray-100 "
+            className={`!p-16 flex gap-16 !rounded-12 text-body5 ${
+              isNew ? "bg-orange-100 hover:bg-orange-200" : "hover:bg-gray-200 "
             }`}
           >
             {isNew && <p className="sr-only">New Notification</p>}
