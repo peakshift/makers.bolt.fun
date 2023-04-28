@@ -6,7 +6,11 @@ import { MockRelayInitializer } from "src/lib/nostr/tests/InMemoryRelay";
 import {
   createMetadataEvent,
   createNostrEvent,
+  withTestingRelaysProvider,
 } from "src/lib/nostr/tests/helpers";
+import { getMockUser } from "src/utils/testing/helpers";
+import { ReactElement } from "react";
+import { User } from "src/graphql";
 const relayBucketId = randomUUID();
 const mockRelay1 = new MockRelayInitializer(8083, relayBucketId);
 const mockRelay2 = new MockRelayInitializer(8084, relayBucketId);
@@ -31,9 +35,29 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
+const IdentityComponent = ({ children }: { children: React.ReactNode }) => (
+  <>{children}</>
+);
+
+let myMockUser: User;
+
+const customRender = (ui: ReactElement | JSX.Element) => {
+  const ExtraProviders =
+    withTestingRelaysProvider(relayBucketId)(IdentityComponent);
+  render(ui, {
+    reduxStoreInitialData: {
+      user: {
+        me: myMockUser,
+      },
+    },
+    customWrapper: ExtraProviders,
+  });
+};
+
 describe("Notifications List", () => {
   const myUserPrvKey = generatePrivateKey();
   const myUserPubKey = getPublicKey(myUserPrvKey);
+  myMockUser = getMockUser({ primary_nostr_key: myUserPubKey });
 
   const anotherUserPrvKey = generatePrivateKey();
   const anotherUserProfileData = createMetadataEvent({
@@ -42,7 +66,7 @@ describe("Notifications List", () => {
   });
 
   it("Should start with loading state then become empty", async () => {
-    render(
+    customRender(
       <NotificationsList renderOpenListButton={() => <button>Open</button>} />
     );
 
@@ -74,7 +98,7 @@ describe("Notifications List", () => {
       mockRelay2.setRelayEvents([postMentionEvent]),
     ]);
 
-    render(
+    customRender(
       <NotificationsList renderOpenListButton={() => <button>Open</button>} />
     );
 
@@ -115,7 +139,7 @@ describe("Notifications List", () => {
       mockRelay2.setRelayEvents([postEvent, commentEvent]),
     ]);
 
-    render(
+    customRender(
       <NotificationsList renderOpenListButton={() => <button>Open</button>} />
     );
 
@@ -168,7 +192,7 @@ describe("Notifications List", () => {
       mockRelay2.setRelayEvents([postEvent, commentEvent, replyEvent]),
     ]);
 
-    render(
+    customRender(
       <NotificationsList renderOpenListButton={() => <button>Open</button>} />
     );
 
