@@ -10,6 +10,7 @@ import {
   getProfileDataFromMetaData,
   insertItemIntoDescendingList,
 } from "src/lib/nostr/helpers";
+import { useAppSelector } from "src/utils/hooks";
 
 interface Props {
   pubkey?: string | null;
@@ -45,12 +46,14 @@ export type Notification = ReturnType<
 
 export const useNotifications = ({ pubkey }: Props) => {
   // construct filters array
+
   const filters: Filter[] = useMemo(
     () =>
       pubkey
         ? [
             {
               kinds: [1],
+              // since: Math.floor(Date.parse(last_seen_notification_time) / 1000),
               "#p": [pubkey],
               // "#c": ["bolt.fun"],
             },

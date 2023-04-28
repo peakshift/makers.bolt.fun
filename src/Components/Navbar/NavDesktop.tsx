@@ -12,12 +12,9 @@ import { FiBell, FiChevronDown } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
+import NotificationsList from "./NotificationsList/NotificationsList";
 
-interface Props {
-  renderNotificationsList: () => JSX.Element;
-}
-
-export default function NavDesktop({ renderNotificationsList }: Props) {
+export default function NavDesktop() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const { curUser } = useAppSelector((state) => ({
@@ -209,18 +206,25 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
             )}
           </motion.div>
           {!!curUser && (
-            <Menu
-              align="end"
-              arrow
-              menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)] max-h-[min(50vh,480px)] overflow-y-auto overflow-x-hidden  small-scrollbar"
-              menuButton={
-                <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
-                  <FiBell />
+            <NotificationsList
+              menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)] max-h-[min(50vh,480px)] overflow-y-auto overflow-x-hidden flex flex-col gap-4 small-scrollbar"
+              renderOpenListButton={({ hasNewNotifications }) => (
+                <IconButton
+                  className="text-gray-900 hover:text-gray-700 group relative"
+                  aria-label="Open Notifications List"
+                  aria-describedby="has-new-notifications"
+                >
+                  <FiBell className="group-hover:rotate-12 group-hover:scale-110" />
+                  {hasNewNotifications && (
+                    <span
+                      id="has-new-notifications"
+                      className="w-8 block bg-red-500 aspect-square rounded-full absolute top-8 right-8 animate-pulse"
+                      aria-label="has new notifications"
+                    ></span>
+                  )}
                 </IconButton>
-              }
-            >
-              {renderNotificationsList()}
-            </Menu>
+              )}
+            />
           )}
           {curUser !== undefined &&
             (curUser ? (

@@ -5,7 +5,7 @@ import { Wallet_Service } from "./services";
 import { useWrapperSetup } from "./utils/Wrapper";
 import LoadingPage from "./Components/LoadingPage/LoadingPage";
 import { useMeQuery } from "./graphql";
-import { setUser } from "./redux/features/user.slice";
+import { setMeData } from "./redux/features/user.slice";
 import { Outlet } from "react-router-dom";
 import GlobalLoader from "./Components/GlobalLoader/GlobalLoader";
 import OgTags from "./Components/OgTags/OgTags";
@@ -21,11 +21,11 @@ function App() {
 
   useMeQuery({
     onCompleted: (data) => {
-      dispatch(setUser(data.me));
+      dispatch(setMeData(data.me));
       hideLoadingScreen();
     },
     onError: (error) => {
-      dispatch(setUser(null));
+      dispatch(setMeData(null));
       hideLoadingScreen();
     },
   });

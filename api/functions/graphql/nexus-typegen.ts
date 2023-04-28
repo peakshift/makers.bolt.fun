@@ -406,6 +406,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     jobTitle?: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    last_seen_notification_time: NexusGenScalars['Date']; // Date!
     lightning_address?: string | null; // String
     linkedin?: string | null; // String
     location?: string | null; // String
@@ -566,6 +567,7 @@ export interface NexusGenFieldTypes {
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
+    updateLastSeenNotificationTime: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
     updateProfileRoles: NexusGenRootTypes['User'] | null; // User
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -799,6 +801,7 @@ export interface NexusGenFieldTypes {
     in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    last_seen_notification_time: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
     linkedin: string | null; // String
     location: string | null; // String
@@ -847,6 +850,7 @@ export interface NexusGenFieldTypes {
     in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    last_seen_notification_time: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
     linkedin: string | null; // String
     location: string | null; // String
@@ -991,6 +995,7 @@ export interface NexusGenFieldTypeNames {
     registerInTournament: 'User'
     setUserNostrKeyAsPrimary: 'User'
     unlinkNostrKey: 'User'
+    updateLastSeenNotificationTime: 'User'
     updateProfileDetails: 'User'
     updateProfileRoles: 'User'
     updateProject: 'CreateProjectResponse'
@@ -1224,6 +1229,7 @@ export interface NexusGenFieldTypeNames {
     in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
+    last_seen_notification_time: 'Date'
     lightning_address: 'String'
     linkedin: 'String'
     location: 'String'
@@ -1272,6 +1278,7 @@ export interface NexusGenFieldTypeNames {
     in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
+    last_seen_notification_time: 'Date'
     lightning_address: 'String'
     linkedin: 'String'
     location: 'String'
@@ -1340,6 +1347,9 @@ export interface NexusGenArgTypes {
     }
     unlinkNostrKey: { // args
       key: string; // String!
+    }
+    updateLastSeenNotificationTime: { // args
+      timestamp: string; // String!
     }
     updateProfileDetails: { // args
       data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput

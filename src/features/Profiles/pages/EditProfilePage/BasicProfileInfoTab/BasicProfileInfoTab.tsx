@@ -13,7 +13,7 @@ import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
 import Card from "src/Components/Card/Card";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
-import { setUser } from "src/redux/features/user.slice";
+import { setMeData } from "src/redux/features/user.slice";
 import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
 import { useApolloClient } from "@apollo/client";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
@@ -117,7 +117,7 @@ export default function BasicProfileInfoTab() {
       },
       onCompleted: ({ updateProfileDetails: data }) => {
         if (data) {
-          dispatch(setUser(data));
+          dispatch(setMeData(data));
           reset({ ...data, avatar: { url: data.avatar } });
           apolloClient.writeFragment({
             id: `User:${data?.id}`,

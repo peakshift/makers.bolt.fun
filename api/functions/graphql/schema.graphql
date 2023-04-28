@@ -33,6 +33,7 @@ interface BaseUser {
   in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
+  last_seen_notification_time: Date!
   lightning_address: String
   linkedin: String
   location: String
@@ -207,6 +208,7 @@ type Mutation {
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   setUserNostrKeyAsPrimary(key: String!): User
   unlinkNostrKey(key: String!): User
+  updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
   updateProfileRoles(data: ProfileRolesInput): User
   updateProject(input: UpdateProjectInput): CreateProjectResponse
@@ -600,6 +602,7 @@ type User implements BaseUser {
   in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
+  last_seen_notification_time: Date!
   lightning_address: String
   linkedin: String
   location: String

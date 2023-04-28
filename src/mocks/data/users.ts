@@ -12,6 +12,7 @@ import { projects } from "./projects";
 import { getCoverImage, getAvatarImage } from "./utils";
 
 const chance = new Chance();
+
 export const allMakersRoles: GenericMakerRole[] = [
   {
     id: 1,
@@ -166,6 +167,7 @@ export const users: User[] = [
     github: "MTG2000",
     jobTitle: "Front-end Web Developer",
     join_date: new Date(2021).toISOString(),
+    last_seen_notification_time: getYesterdayDate(),
     lightning_address: "mtg@getalby.com",
     linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
     location: "Germany, Berlin",
@@ -221,6 +223,7 @@ export const users: User[] = [
     github: "barefoot_88",
     jobTitle: "Senior Product Designer",
     join_date: new Date(2021).toISOString(),
+    last_seen_notification_time: getYesterdayDate(),
     lightning_address: "ed@getalby.com",
     linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
     location: "Germany, Berlin",
@@ -276,6 +279,7 @@ export const users: User[] = [
     github: "johnsbehhary",
     jobTitle: "Manager",
     join_date: new Date(2021).toISOString(),
+    last_seen_notification_time: getYesterdayDate(),
     lightning_address: "johns@getalby.com",
     linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
     location: "Germany, Berlin",
@@ -331,6 +335,7 @@ export const users: User[] = [
     github: "MTG2000",
     jobTitle: "Back-end Web Developer",
     join_date: new Date(2021).toISOString(),
+    last_seen_notification_time: getYesterdayDate(),
     lightning_address: "carlos@getalby.com",
     linkedin: "https://www.linkedin.com/in/mtg-softwares-dev/",
     location: "Germany, Berlin",
@@ -379,3 +384,9 @@ export const users: User[] = [
     },
   },
 ];
+
+function getYesterdayDate() {
+  const date = new Date();
+  date.setDate(date.getDate() - 1);
+  return date.toISOString();
+}
