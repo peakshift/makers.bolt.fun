@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { FiPlusCircle } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
@@ -33,7 +33,7 @@ export default function NavDesktop() {
         <div className="flex gap-16 items-center">
           <Link to="/">
             <img
-              className="h-40 mr-40 lg:mr-64"
+              className="h-40 mr-40 lg:mr-64 cursor-pointer"
               src={ASSETS.Logo}
               alt="BOLT.FUN"
             />
@@ -42,11 +42,11 @@ export default function NavDesktop() {
             <Menu
               align="end"
               offsetY={4}
-              menuClassName="!p-8 !rounded-12"
+              menuClassName="!p-8 !border-gray-300 !border-2 !shadow-none !rounded-lg !border-solid"
               menuButton={
-                <Button color="gray" size="sm">
-                  <FiPlusCircle className="text-gray-600 mr-8" />
+                <Button color="secondary" size="sm">
                   <span className="align-middle">Create</span>{" "}
+                  <FiPlus className="text-primary-500 mr-8" />
                 </Button>
               }
             >

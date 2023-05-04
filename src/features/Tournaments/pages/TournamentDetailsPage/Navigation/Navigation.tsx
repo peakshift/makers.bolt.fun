@@ -68,11 +68,11 @@ export default function Navigation() {
   );
 
   return (
-    <div className="w-full bg-white py-16 border-y border-gray-200 sticky-top-element z-10">
+    <nav className="w-full sticky-top-element z-10 py-20 bg-gradient-to-b from-blue-500">
       <div className="content-container">
         <div className="relative group">
           <div className="overflow-hidden" ref={viewportRef}>
-            <div className="select-none w-full flex gap-8 md:gap-16">
+            <div className="select-none w-full flex gap-8 md:gap-16 justify-center">
               {links
                 .filter((link) => !link.hide)
                 .map((link) => (
@@ -103,6 +103,6 @@ export default function Navigation() {
                 </button> */}
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

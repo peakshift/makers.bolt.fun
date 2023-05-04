@@ -17,13 +17,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     href: PAGES_ROUTES.blog.feed,
-    icon: "📰",
-    text: "Feed",
-  },
-  {
-    href: "/t/cubo+",
-    icon: "➕",
-    text: "CUBO+",
+    icon: "🏠",
+    text: "Home",
   },
   {
     href: PAGES_ROUTES.blog.topicsPage,
@@ -80,13 +75,13 @@ export default function DefaultSideNavigation() {
         <li className="group" key={item.href}>
           {item.isExternal ? (
             <a
-              className="flex items-center text-gray-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform group-hover:bg-gray-100"
+              className="flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform group-hover:bg-slate-100"
               href={item.href}
               target="_blank"
               rel="noreferrer"
             >
               <span
-                className="bg-gray-50 group-hover:bg-gray-100 rounded-8 w-40 h-40 text-center py-8"
+                className="bg-slate-50 group-hover:bg-slate-100 rounded-8 w-40 h-40 text-center py-8"
                 aria-hidden
               >
                 {item.icon}
@@ -106,8 +101,8 @@ export default function DefaultSideNavigation() {
           ) : (
             <NavLink
               className={({ isActive }) =>
-                `flex items-center text-gray-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${
-                  isActive ? "bg-gray-200" : "group-hover:bg-gray-100"
+                `flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${
+                  isActive ? "bg-slate-200" : "group-hover:bg-slate-100"
                 }`
               }
               to={item.href}
