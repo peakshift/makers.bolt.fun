@@ -172,6 +172,7 @@ function StoryPageContent({ story }: Props) {
           }
         >
           <CommentsWidgetRoot
+            key={story.id}
             story={{
               id: story.id,
               nostr_event_id: story.nostr_event_id,
