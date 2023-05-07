@@ -18,6 +18,7 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { ErrorBoundary } from "react-error-boundary";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import { SideNavigationProvider } from "src/Components/SideNavigation";
 import { getStore } from "src/redux/store";
 
 THEME.injectStyles();
@@ -49,7 +50,9 @@ export default function Wrapper(props: any) {
     <>
       <ErrorBoundary FallbackComponent={ErrorPage}>
         <ApolloProvider client={apolloClient}>
+          <SideNavigationProvider>
           <Provider store={getStore()}>{props.children}</Provider>
+          </SideNavigationProvider>
         </ApolloProvider>
       </ErrorBoundary>
       <Tooltip delayShow={1000} />

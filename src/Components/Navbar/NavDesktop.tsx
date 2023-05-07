@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
-import { FiBell, FiChevronDown } from "react-icons/fi";
+import { FiBell, FiChevronDown, FiPlus } from "react-icons/fi";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
@@ -32,157 +32,57 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-white py-16 w-full min-w-full">
+    <nav className="bg-white border-b-2 py-16 w-full min-w-full">
       <div className="content-container">
         <div className="flex items-center gap-16">
           <Link to="/">
             <img
-              className="h-40 mr-40 lg:mr-64"
+              className="h-40 mr-40 lg:mr-64 cursor-pointer"
               src={ASSETS.Logo}
-              alt="Bolt fun logo"
+              alt="BOLT.FUN"
             />
           </Link>
-          <ul className="flex gap-32 xl:gap-64">
-            <li className="relative">
-              <Link
-                to={"/feed"}
-                className="text-body4 font-bold hover:text-primary-600"
+          <div className="ml-auto">
+            <Menu
+              align="end"
+              offsetY={4}
+              menuClassName="!p-8 !border-gray-300 !border-2 !shadow-none !rounded-lg !border-solid"
+              menuButton={
+                <Button color="secondary" size="sm">
+                  <span className="align-middle">Create</span>{" "}
+                  <FiPlus className="text-primary-500 mr-8" />
+                </Button>
+              }
+            >
+              <MenuItem
+                href={createRoute({
+                  type: "write-story",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >
-                Feed
-              </Link>
-            </li>
-            <li className="relative">
-              <Link
-                to={"/projects"}
-                className="text-body4 font-bold hover:text-primary-600"
+                ✍️ Story
+              </MenuItem>
+              <MenuItem
+                href={createRoute({
+                  type: "write-story",
+                  initData: {
+                    tags: ["get-help"],
+                  },
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >
-                Projects
-              </Link>
-            </li>
-            <li className="relative">
-              <Link
-                to={createRoute({ type: "hangout" })}
-                className="text-body4 font-bold hover:text-primary-600 relative pr-4"
+                🙋‍♂️ Question
+              </MenuItem>
+              <MenuItem
+                href={createRoute({
+                  type: "edit-project",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >
-                Hangout{" "}
-                <span className="absolute -top-3 -right-36 font-medium text-xs leading-5 rounded text-red-600 bg-red-400/10 px-2 py-0.1">
-                  LIVE
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Menu
-                offsetY={28}
-                menuButton={
-                  <MenuButton className="text-body4 font-bold hover:text-primary-600">
-                    <div className="flex items-center">
-                      {" "}
-                      Events
-                      <sup className="text-red-500 text-body2 block animate-pulse">
-                        &#8226;
-                      </sup>{" "}
-                      <FiChevronDown className="ml-8" />{" "}
-                    </div>
-                  </MenuButton>
-                }
-                menuClassName="!rounded-12 !p-8 !border-gray-200"
-                menuStyle={{ border: "1px solid" }}
-              >
-                <MenuItem
-                  href="/tournaments/2"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/tournaments/2/overview");
-                  }}
-                  className="!p-16 font-medium flex gap-16 group bg-pink-100 hover:bg-purple-100 border-2 border-pink-200 hover:border-purple-200 !rounded-12"
-                >
-                  <div className="group-hover:border-purple-200 bg-white border border-pink-200 w-48 h-48 rounded-full flex justify-center items-center">
-                    <span className="text-body2">🦩</span>
-                  </div>
-                  <div>
-                    <p className="text-body4 text-black font-medium">
-                      Nostr Hack & Design{" "}
-                      <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
-                        Hot! 🔥
-                      </span>
-                    </p>
-                    <p className="text-body5 text-gray-600 mt-4">
-                      Design & Build cool social things!
-                    </p>
-                  </div>
-                </MenuItem>
-                <MenuItem
-                  href="/hackathons"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/hackathons");
-                  }}
-                  className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                >
-                  <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                    <span className="text-body2">👩‍💻</span>
-                  </div>
-                  <div>
-                    <p className="text-body4 text-black font-medium">
-                      Upcoming Hackathons
-                    </p>
-                    <p className="text-body5 text-gray-600 mt-4">
-                      Take part in hackathons & tournaments
-                    </p>
-                  </div>
-                </MenuItem>
-                <MenuItem
-                  href="/tournaments/1"
-                  onClick={(e) => {
-                    e.syntheticEvent.preventDefault();
-                    navigate("/tournaments/1/overview");
-                  }}
-                  className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                >
-                  <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                    <span className="text-body2">🏆</span>
-                  </div>
-                  <div>
-                    <p className="text-body4 text-black font-medium">
-                      #LegendsOfLightning
-                    </p>
-                    <p className="text-body5 text-gray-600 mt-4">
-                      In 2022 we put on the largest
-                      <br /> bitcoin hackathon.
-                    </p>
-                  </div>
-                </MenuItem>
-                <MenuItem
-                  href="mailto:team@peakshift.com"
-                  className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                >
-                  <div className="bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                    <span className="text-body2">💬</span>
-                  </div>
-                  <div>
-                    <p className="text-body4 text-black font-medium">
-                      Host a Hackathon
-                    </p>
-                    <p className="text-body5 text-gray-600 mt-4">
-                      Need some help setting up your own?
-                    </p>
-                  </div>
-                </MenuItem>
-              </Menu>
-            </li>
-            <li className="relative">
-              <a
-                href={"https://bolt.fun/guide/"}
-                target="_blank"
-                rel="noreferrer"
-                className="text-body4 font-bold hover:text-primary-600"
-              >
-                Guide
-              </a>
-            </li>
-          </ul>
-
-          <div className="flex-1"></div>
+                🚀 Project
+              </MenuItem>
+            </Menu>
+          </div>
 
           <motion.div
             animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
@@ -277,7 +177,7 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
               </Menu>
             ) : (
               <Button size="sm" color="white" href="/login">
-                Connect ⚡
+                Sign in 🔑
               </Button>
             ))}
           <div className="relative h-36">

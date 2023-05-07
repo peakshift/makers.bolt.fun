@@ -36,8 +36,11 @@ export default function ScheduleSection() {
           content: (
             <div className={`text-gray-600 `}>
               <ul className="">
-                {day.events.map((event) => (
-                  <div className="py-20 flex gap-32 flex-wrap items-start last-of-type:border-b-0 border-b border-gray-100">
+                {day.events.map((event, idx) => (
+                  <div
+                    key={idx}
+                    className="py-20 flex gap-32 flex-wrap items-start last-of-type:border-b-0 border-b border-gray-100"
+                  >
                     <div className="">
                       <BsClockFill />
                     </div>

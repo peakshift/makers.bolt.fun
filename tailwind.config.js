@@ -5,7 +5,7 @@ module.exports = {
     "./src/features/**/*.{html,js,ts,tsx,jsx}",
     "./src/pages/**/*.{html,js,ts,tsx,jsx}",
     "./src/Components/**/*.{html,js,ts,tsx,jsx}",
-    "./src/layouts/**/*.{html,js,ts,tsx,jsx}",
+    "./src/utils/routing/layouts/**/*.{html,js,ts,tsx,jsx}",
     "./src/App.tsx",
     "./src/index.html",
   ],

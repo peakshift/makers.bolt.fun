@@ -46,7 +46,7 @@ export default function Badge({
   onClick,
 }: PropsWithChildren<Props>) {
   const classes = `
-        rounded-48 border inline-block relative align-middle
+        rounded inline-block relative align-middle
         shadow-${shadow}
         ${badgrColor[color]}
         ${badgeSize[size]}

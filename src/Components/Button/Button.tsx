@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 import LinkDuo from "../LinkDuo/LinkDuo";
 
 type Props = {
-  color?: "primary" | "red" | "white" | "gray" | "black" | "none";
+  color?: "primary" | "secondary" | "red" | "white" | "gray" | "black" | "none";
   variant?: "fill" | "outline" | "text";
   size?: "sm" | "md" | "lg";
   children: ReactNode;
@@ -23,8 +23,9 @@ const btnStylesFill: UnionToObjectKeys<Props, "color"> = {
   none: "",
   primary:
     "bg-primary-500 hover:bg-primary-400 active:bg-primary-600 text-white",
+  secondary: "border-2 border-primary-300 bg-primary-100 hover:bg-primary-100 text-primary-900 active:bg-primary-300",
   gray: "bg-gray-100 hover:bg-gray-200 text-gray-900 active:bg-gray-300",
-  white: "border border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50",
+  white: "border-2 border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50",
   black: "text-white bg-black hover:bg-gray-900",
   red: "bg-red-500 hover:bg-red-600 active:bg-red-700 text-white",
 };
@@ -32,6 +33,7 @@ const btnStylesFill: UnionToObjectKeys<Props, "color"> = {
 const loadingColor: UnionToObjectKeys<Props, "color"> = {
   none: "#101828",
   primary: "#ffffff",
+  secondary: "#ffffff",
   gray: "#101828",
   white: "#101828",
   black: "#ffffff",
@@ -41,6 +43,7 @@ const loadingColor: UnionToObjectKeys<Props, "color"> = {
 const btnStylesOutline: UnionToObjectKeys<Props, "color"> = {
   none: "",
   primary: "text-primary-600",
+  secondary: "text-primary-600",
   gray: "text-gray-600",
   white: "text-gray-900",
   black: "text-black",
@@ -50,7 +53,7 @@ const btnStylesOutline: UnionToObjectKeys<Props, "color"> = {
 const baseBtnStyles: UnionToObjectKeys<Props, "variant"> = {
   fill: "transition-transform active:scale-95",
   outline:
-    "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border border-gray-200 active:scale-95 ",
+    "transition-transform bg-gray-900 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-10 border-2 border-gray-200 active:scale-95 ",
   text: "transition-transform active:scale-95 hover:bg-gray-100 active:bg-gray-50",
 };
 
