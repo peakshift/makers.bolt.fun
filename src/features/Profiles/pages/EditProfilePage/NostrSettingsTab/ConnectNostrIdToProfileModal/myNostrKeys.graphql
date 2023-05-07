@@ -2,8 +2,8 @@ query MyNostrKeys {
   me {
     id
     private_data {
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }

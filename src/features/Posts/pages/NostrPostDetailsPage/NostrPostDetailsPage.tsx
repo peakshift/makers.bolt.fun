@@ -9,15 +9,15 @@ import { RotatingLines } from "react-loader-spinner";
 import OgTags from "src/Components/OgTags/OgTags";
 import { useMediaQuery } from "src/utils/hooks";
 import { MEDIA_QUERIES } from "src/utils/theme";
-import { RelayPoolProvider, useMetaData, useNostrQuery } from "src/lib/nostr";
 import {
-  extractArticleFields,
-  getProfileDataFromMetaData,
-} from "src/lib/nostr/helpers";
+  RelayPoolProvider,
+  useMetaData,
+  useNostrQueryList,
+} from "src/lib/nostr";
+import { extractArticleFields } from "src/lib/nostr/helpers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PostDetailsPageSkeleton from "./PostDetailsPage.skeleton";
-import { NostrToolsEvent } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
 import { withProviders } from "src/utils/hoc";
 
@@ -30,7 +30,7 @@ function NostrPostDetailsPage(props: Props) {
 
   const filters = useMemo(() => [{ ids: [params.id ?? ""] }], [params.id]);
 
-  const { events, isEmpty } = useNostrQuery({
+  const { events, isEmpty } = useNostrQueryList({
     filters,
   });
 

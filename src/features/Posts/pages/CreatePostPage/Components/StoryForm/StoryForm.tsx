@@ -204,6 +204,7 @@ export default function StoryForm(props: Props) {
 
                 <div className="mt-16 relative">
                   <textarea
+                    aria-label="Story title"
                     rows={1}
                     autoFocus
                     className="p-0 text-[42px] leading-[58px] border-0 w-full max-w-full resize-none

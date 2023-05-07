@@ -127,7 +127,7 @@ const Story = objectType({
       },
     });
     t.nonNull.field("author", {
-      type: "Author",
+      type: "User",
       resolve: (parent) => {
         return (
           parent.user ||
@@ -170,7 +170,7 @@ const BountyApplication = objectType({
     t.nonNull.string("date");
     t.nonNull.string("workplan");
     t.nonNull.field("author", {
-      type: "Author",
+      type: "User",
     });
   },
 });
@@ -190,7 +190,7 @@ const Bounty = objectType({
       type: "BountyApplication",
     });
     t.nonNull.field("author", {
-      type: "Author",
+      type: "User",
       resolve: (parent) => {
         return prisma.bounty.findUnique({ where: { id: parent.id } }).user();
       },
@@ -226,7 +226,7 @@ const Question = objectType({
     // });
 
     t.nonNull.field("author", {
-      type: "Author",
+      type: "User",
       resolve: (parent) => {
         return prisma.question.findUnique({ where: { id: parent.id } }).user();
       },
@@ -241,7 +241,7 @@ const PostComment = objectType({
     t.nonNull.date("created_at");
     t.nonNull.string("body");
     t.nonNull.field("author", {
-      type: "Author",
+      type: "User",
     });
     t.int("parentId");
     t.nonNull.int("votes_count");

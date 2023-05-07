@@ -191,11 +191,12 @@ export const users: User[] = [
         is_primary: true,
       },
     ],
+    primary_nostr_key: "123124123123dfsadfsa8d7f11sadfasdf",
     private_data: {
       id: 1,
       email: "myemail@gmail.com",
-      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -245,12 +246,12 @@ export const users: User[] = [
         is_primary: true,
       },
     ],
-
+    primary_nostr_key: "123124123123dfsadfsa8d7f11sadfasdf",
     private_data: {
       id: 1,
       email: "myemail@gmail.com",
-      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -300,12 +301,12 @@ export const users: User[] = [
         is_primary: true,
       },
     ],
-
+    primary_nostr_key: "123124123123dfsadfsa8d7f11sadfasdf",
     private_data: {
       id: 1,
       email: "myemail@gmail.com",
-      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -355,11 +356,12 @@ export const users: User[] = [
         is_primary: true,
       },
     ],
+    primary_nostr_key: "123124123123dfsadfsa8d7f11sadfasdf",
     private_data: {
       id: 1,
       email: "myemail@gmail.com",
-      nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
-      nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
+      default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",

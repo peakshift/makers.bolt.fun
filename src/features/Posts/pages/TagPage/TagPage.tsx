@@ -20,6 +20,7 @@ import { RelayPoolProvider } from "src/lib/nostr";
 import { purifyHtml } from "src/utils/validation";
 import { SideNavigation } from "src/Components/SideNavigation";
 import { withProviders } from "src/utils/hoc";
+import LeadingOthersImage from "./leading-others-image.webp";
 
 function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams({ feed: "bolt-fun" });
@@ -87,12 +88,45 @@ function TagPage() {
             {hasTagsList(topicTitle) && selectedFeed === "nostr" && (
               <NostrFeed topic={topicTitle} />
             )}
+
             {selectedFeed === "bolt-fun" && (
               <PostsList
                 isLoading={feedQuery.loading}
                 items={feedQuery.data?.getFeed}
                 isFetching={isFetchingMore}
                 onReachedBottom={fetchMore}
+                renderEmptyState={() => (
+                  <div className="flex flex-col py-36 gap-16 items-center text-gray-600">
+                    <img
+                      src={LeadingOthersImage}
+                      alt="Someone leading others by going first"
+                      className="max-w-[360px] -rotate-3"
+                    />
+                    <p className="text-body3 font-bold">
+                      {" "}
+                      It's empty here... for now!
+                    </p>
+                    <p>
+                      Things often starts off lonely but every{" "}
+                      <span className="line-through">movement</span> topic needs
+                      a leader to kick things off.
+                    </p>
+
+                    <Button
+                      color="primary"
+                      variant="outline"
+                      href={createRoute({
+                        type: "write-story",
+                        initData: {
+                          tags: [loaderData.getTagInfo.title],
+                        },
+                      })}
+                    >
+                      Write the first{" "}
+                      {formatHashtag(loaderData.getTagInfo.title)} story!
+                    </Button>
+                  </div>
+                )}
               />
             )}
           </div>

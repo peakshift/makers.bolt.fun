@@ -1,3 +1,4 @@
+import { useMountEffect } from "@react-hookz/web";
 import { RelayPool } from "nostr-relaypool";
 import {
   createContext,
@@ -8,7 +9,7 @@ import {
   useState,
 } from "react";
 import Preferences from "src/services/preferences.service";
-import { GlobalRelayPool } from "./GlobalRelayPool";
+import { GlobalRelayPool } from "../GlobalRelayPool";
 
 interface State {
   relayPool: RelayPool | null;
@@ -17,18 +18,22 @@ interface State {
 
 const RelayPoolContext = createContext<State | null>(null);
 
-export const RelayPoolProvider = (props: PropsWithChildren<{}>) => {
+interface Props {
+  relays?: string[];
+}
+
+export const RelayPoolProvider = (props: PropsWithChildren<Props>) => {
   const [relayPool, setRelayPool] = useState<RelayPool | null>(null);
 
-  useEffect(() => {
+  useMountEffect(() => {
     const pool = GlobalRelayPool.initPool(
-      Preferences.get("nostr_relays_to_connect_to")
+      props.relays ?? Preferences.get("nostr_relays_to_connect_to")
     );
     setRelayPool(pool);
     return () => {
       GlobalRelayPool.closeAfterDelay();
     };
-  }, []);
+  });
 
   const updateRelays = useCallback(
     (relays: string[]) => {

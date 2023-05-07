@@ -55,6 +55,7 @@ export type BaseUser = {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   nostr_keys: Array<NostrKey>;
+  primary_nostr_key: Maybe<Scalars['String']>;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
   roles: Array<MakerRole>;
@@ -75,7 +76,7 @@ export type Bounty = PostBase & {
   __typename?: 'Bounty';
   applicants_count: Scalars['Int'];
   applications: Array<BountyApplication>;
-  author: Author;
+  author: User;
   body: Scalars['String'];
   cover_image: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
@@ -93,7 +94,7 @@ export type Bounty = PostBase & {
 
 export type BountyApplication = {
   __typename?: 'BountyApplication';
-  author: Author;
+  author: User;
   date: Scalars['String'];
   id: Scalars['Int'];
   workplan: Scalars['String'];
@@ -395,7 +396,7 @@ export type PostBase = {
 
 export type PostComment = {
   __typename?: 'PostComment';
-  author: Author;
+  author: User;
   body: Scalars['String'];
   created_at: Scalars['Date'];
   id: Scalars['Int'];
@@ -698,7 +699,7 @@ export type QueryUsersByNostrKeysArgs = {
 
 export type Question = PostBase & {
   __typename?: 'Question';
-  author: Author;
+  author: User;
   body: Scalars['String'];
   createdAt: Scalars['Date'];
   excerpt: Scalars['String'];
@@ -726,7 +727,7 @@ export enum RoleLevelEnum {
 
 export type Story = PostBase & {
   __typename?: 'Story';
-  author: Author;
+  author: User;
   body: Scalars['String'];
   comments: Array<PostComment>;
   comments_count: Scalars['Int'];
@@ -927,6 +928,7 @@ export type User = BaseUser & {
   location: Maybe<Scalars['String']>;
   name: Scalars['String'];
   nostr_keys: Array<NostrKey>;
+  primary_nostr_key: Maybe<Scalars['String']>;
   private_data: UserPrivateData;
   projects: Array<Project>;
   role: Maybe<Scalars['String']>;
@@ -951,10 +953,10 @@ export type UserKeyInputType = {
 
 export type UserPrivateData = {
   __typename?: 'UserPrivateData';
+  default_nostr_prv_key: Maybe<Scalars['String']>;
+  default_nostr_pub_key: Maybe<Scalars['String']>;
   email: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  nostr_prv_key: Maybe<Scalars['String']>;
-  nostr_pub_key: Maybe<Scalars['String']>;
   walletsKeys: Array<WalletKey>;
 };
 
@@ -1013,7 +1015,7 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1061,7 +1063,7 @@ export type RecentProjectsInTagQuery = { __typename?: 'Query', recentProjectsInT
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'Author', id: number, avatar: string } }> };
+export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } }> };
 
 export type GetAllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1107,7 +1109,7 @@ export type FeedQueryVariables = Exact<{
 }>;
 
 
-export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
+export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
 export type PostDetailsQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -1115,7 +1117,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'Author', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
 
 export type GetTagInfoQueryVariables = Exact<{
   tag: InputMaybe<Scalars['String']>;
@@ -1132,64 +1134,64 @@ export type TagFeedQueryVariables = Exact<{
 }>;
 
 
-export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'Author', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
+export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
-export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
+export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null } } | null };
+export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', default_nostr_prv_key: string | null, default_nostr_pub_key: string | null } } | null };
 
 export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null } } | null };
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, private_data: { __typename?: 'UserPrivateData', default_nostr_prv_key: string | null, default_nostr_pub_key: string | null } } | null };
 
 export type LinkNewNostrKeyMutationVariables = Exact<{
   event: InputMaybe<NostrEventInput>;
 }>;
 
 
-export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
+export type LinkNewNostrKeyMutation = { __typename?: 'Mutation', linkNostrKey: { __typename?: 'User', id: number, primary_nostr_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
 
 export type UnlinkNostrKeyMutationVariables = Exact<{
   key: Scalars['String'];
 }>;
 
 
-export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
+export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, primary_nostr_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
 
 export type SetUserNostrKeyAsPrimaryMutationVariables = Exact<{
   key: Scalars['String'];
 }>;
 
 
-export type SetUserNostrKeyAsPrimaryMutation = { __typename?: 'Mutation', setUserNostrKeyAsPrimary: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, is_primary: boolean }> } | null };
+export type SetUserNostrKeyAsPrimaryMutation = { __typename?: 'Mutation', setUserNostrKeyAsPrimary: { __typename?: 'User', id: number, primary_nostr_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, is_primary: boolean }> } | null };
 
 export type MyProfilePreferencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } } | null };
+export type MyProfilePreferencesQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', default_nostr_prv_key: string | null, default_nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string, createdAt: any, is_current: boolean }> } } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   walletsKeys: InputMaybe<Array<UserKeyInputType> | UserKeyInputType>;
 }>;
 
 
-export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', nostr_prv_key: string | null, nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } } };
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', default_nostr_prv_key: string | null, default_nostr_pub_key: string | null, walletsKeys: Array<{ __typename?: 'WalletKey', key: string, name: string }> } } };
 
 export type UserRolesSkillsFragment = { __typename?: 'User', skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> };
 
@@ -1210,7 +1212,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1394,6 +1396,7 @@ export const UserBasicInfoFragmentDoc = gql`
   name
   avatar
   join_date
+  primary_nostr_key
   role
   jobTitle
   lightning_address
@@ -1641,6 +1644,7 @@ export const MeDocument = gql`
     join_date
     jobTitle
     bio
+    primary_nostr_key
   }
 }
     `;
@@ -2334,6 +2338,7 @@ export const PostDetailsDocument = gql`
         name
         avatar
         join_date
+        primary_nostr_key
       }
       body
       tags {
@@ -2361,6 +2366,7 @@ export const PostDetailsDocument = gql`
         name
         avatar
         join_date
+        primary_nostr_key
       }
       body
       tags {
@@ -2393,6 +2399,7 @@ export const PostDetailsDocument = gql`
         name
         avatar
         join_date
+        primary_nostr_key
       }
       body
       tags {
@@ -2664,8 +2671,8 @@ export const MyNostrKeysDocument = gql`
   me {
     id
     private_data {
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }
@@ -2708,8 +2715,8 @@ export const MyNostrSettingsDocument = gql`
       is_primary
     }
     private_data {
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }
@@ -2745,6 +2752,7 @@ export const LinkNewNostrKeyDocument = gql`
     mutation LinkNewNostrKey($event: NostrEventInput) {
   linkNostrKey(event: $event) {
     id
+    primary_nostr_key
     nostr_keys {
       key
       createdAt
@@ -2784,6 +2792,7 @@ export const UnlinkNostrKeyDocument = gql`
     mutation UnlinkNostrKey($key: String!) {
   unlinkNostrKey(key: $key) {
     id
+    primary_nostr_key
     nostr_keys {
       key
       createdAt
@@ -2823,6 +2832,7 @@ export const SetUserNostrKeyAsPrimaryDocument = gql`
     mutation SetUserNostrKeyAsPrimary($key: String!) {
   setUserNostrKeyAsPrimary(key: $key) {
     id
+    primary_nostr_key
     nostr_keys {
       key
       is_primary
@@ -2867,8 +2877,8 @@ export const MyProfilePreferencesDocument = gql`
         createdAt
         is_current
       }
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }
@@ -2909,8 +2919,8 @@ export const UpdateUserPreferencesDocument = gql`
         key
         name
       }
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }

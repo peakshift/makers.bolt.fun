@@ -1,22 +1,27 @@
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { Filter, nip05 } from "nostr-tools";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { insertEventIntoDescendingList } from "src/lib/nostr/helpers";
 import { useDebounce } from "use-debounce";
-import { NostrMetadata } from "./types";
+import { NostrEvent, NostrMetadata } from "../types";
 import { useRelayPool } from "./use-relays-pool";
 
 interface Props {
   filters: Filter[];
   publicKey?: string;
   sortEvents?: boolean;
+  considerEmptyTimeout?: number;
+  shouldFetchMetadata?: boolean;
+  debounceDelay?: number;
 }
 
-export const useNostrQuery = (props: Props) => {
+export const useNostrQueryList = (props: Props) => {
   const { relayPool } = useRelayPool();
 
-  const [eventsImmediate, setEvents] = useState<NostrToolsEventWithId[]>([]);
-  const [events] = useDebounce(eventsImmediate, 1000);
+  const [eventsImmediate, setEvents] = useState<NostrEvent[]>([]);
+  const [events] = useDebounce(
+    eventsImmediate,
+    props.debounceDelay ?? process.env.NODE_ENV === "test" ? 100 : 1000
+  );
 
   const [metadata, setMetadata] = useState<NostrMetadata>({});
   const metadataFetching = useRef<Record<string, boolean>>({});
@@ -65,24 +70,24 @@ export const useNostrQuery = (props: Props) => {
   );
 
   useEffect(() => {
-    if (relayPool && events.length > 0)
+    if (props.shouldFetchMetadata && relayPool && events.length > 0)
       fetchMetaDataRef.current(events.map((e) => e.pubkey));
-  }, [events, relayPool]);
+  }, [events, props.shouldFetchMetadata, relayPool]);
 
   useEffect(() => {
-    if (relayPool && props.publicKey)
+    if (props.shouldFetchMetadata && relayPool && props.publicKey)
       fetchMetaDataRef.current([props.publicKey]);
-  }, [props.publicKey, relayPool]);
+  }, [props.shouldFetchMetadata, props.publicKey, relayPool]);
 
   useEffect(() => {
     if (events.length === 0) {
       const timeout = setTimeout(() => {
         setIsEmpty(true);
-      }, 20000);
+      }, props.considerEmptyTimeout ?? 10000);
       return () => clearTimeout(timeout);
     }
     setIsEmpty(false);
-  }, [events.length]);
+  }, [events.length, props.considerEmptyTimeout]);
 
   async function fetchMetadata(
     pubkeys: string[],
@@ -131,7 +136,7 @@ export const useNostrQuery = (props: Props) => {
       }
     );
 
-    setTimeout(() => unsub(), 20000);
+    setTimeout(() => unsub(), props.considerEmptyTimeout ?? 10000);
   }
 
   async function fetchNIP05(pubkey: string, meta: any) {

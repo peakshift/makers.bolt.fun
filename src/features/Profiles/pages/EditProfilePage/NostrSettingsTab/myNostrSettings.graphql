@@ -8,8 +8,8 @@ query MyNostrSettings {
       is_primary
     }
     private_data {
-      nostr_prv_key
-      nostr_pub_key
+      default_nostr_prv_key
+      default_nostr_pub_key
     }
   }
 }
@@ -17,6 +17,7 @@ query MyNostrSettings {
 mutation LinkNewNostrKey($event: NostrEventInput) {
   linkNostrKey(event: $event) {
     id
+    primary_nostr_key
     nostr_keys {
       key
       createdAt
@@ -29,6 +30,7 @@ mutation LinkNewNostrKey($event: NostrEventInput) {
 mutation UnlinkNostrKey($key: String!) {
   unlinkNostrKey(key: $key) {
     id
+    primary_nostr_key
     nostr_keys {
       key
       createdAt
@@ -41,6 +43,7 @@ mutation UnlinkNostrKey($key: String!) {
 mutation SetUserNostrKeyAsPrimary($key: String!) {
   setUserNostrKeyAsPrimary(key: $key) {
     id
+    primary_nostr_key
     nostr_keys {
       key
       is_primary

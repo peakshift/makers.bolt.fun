@@ -1,6 +1,6 @@
 import { Filter, Kind } from "nostr-tools";
 import React, { useMemo } from "react";
-import { RelayPoolProvider, useNostrQuery } from "src/lib/nostr";
+import { RelayPoolProvider, useNostrQueryList } from "src/lib/nostr";
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 import { withProviders } from "src/utils/hoc";
 import NostrPostCard from "../NostrPostCard/NostrPostCard";
@@ -39,7 +39,10 @@ export function getFilters(topic: keyof typeof toipcsToFilters): Filter[] {
 function NostrFeed(props: Props) {
   const filters = useMemo(() => getFilters(props.topic), [props.topic]);
 
-  const { events, metadata, isEmpty } = useNostrQuery({ filters });
+  const { events, metadata, isEmpty } = useNostrQueryList({
+    filters,
+    shouldFetchMetadata: true,
+  });
 
   const posts = events.filter(
     (event) => !event.tags.some(([tag]) => tag === "e")

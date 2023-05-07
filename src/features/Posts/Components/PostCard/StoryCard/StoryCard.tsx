@@ -10,12 +10,13 @@ import PostCardHeader, {
   calcTimeSincePosting,
 } from "../PostCardHeader/PostCardHeader";
 import { formatHashtag } from "src/utils/helperFunctions";
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
-import { MdChatBubble } from "react-icons/md";
-import Skeleton from "react-loading-skeleton";
-import { nip19 } from "nostr-tools";
 import { marked } from "marked";
 import { purifyHtml } from "src/utils/validation";
+import { MdChatBubble } from "react-icons/md";
+import { FiMessageSquare } from "react-icons/fi";
+import Skeleton from "react-loading-skeleton";
+import { nip19 } from "nostr-tools";
+import { NostrEvent } from "src/lib/nostr";
 
 export type StoryCardType = Pick<
   Story,
@@ -38,7 +39,7 @@ interface Props {
   story: StoryCardType;
   comments?: {
     state: "fetching" | "fetched";
-    data: NostrToolsEventWithId[];
+    data: NostrEvent[];
   };
 }
 export default function StoryCard({ story, comments }: Props) {

@@ -29,6 +29,7 @@ interface Props {
     id?: number;
     nostr_event_id: string | null;
     createdAt: string;
+    author_pubkey?: string | null;
   };
   inputPlaceholder?: string;
   hideTitle?: boolean;

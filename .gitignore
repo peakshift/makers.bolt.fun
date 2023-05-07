@@ -1,6 +1,6 @@
 .netlify
 .env
- build 
+build 
 storybook-static
 envs/client/.dev.preview-server.env
 envs/server

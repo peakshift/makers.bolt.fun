@@ -1,6 +1,5 @@
-import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
 import { nip19 } from "nostr-tools";
-import { NostrProfile } from "./types";
+import { NostrEvent, NostrProfile } from "./types";
 
 export function normalizeURL(raw: string) {
   let url = new URL(raw);
@@ -27,8 +26,10 @@ export function getName(metadata: Record<string, any>, pubkey: string): string {
       return meta.nip05;
     }
     if (meta.name && meta.name.length) return meta.name;
-  } else if (pubkey) {
+  }
+  if (pubkey) {
     let npub = nip19.npubEncode(pubkey);
+
     return npub;
   }
 
@@ -40,20 +41,24 @@ export function getProfileDataFromMetaData(
   pubkey: string
 ): NostrProfile {
   let meta = metadata[pubkey];
-  if (!meta)
-    return {
-      pubkey,
-      name: nip19.npubEncode(pubkey),
-      about: null,
-      image: `https://avatars.dicebear.com/api/identicon/${pubkey}.svg`,
-      lightning_address: null,
-      nip05: null,
-      link: "nostr:" + nip19.npubEncode(pubkey),
-    };
+
+  const defaultProfileInfo: NostrProfile = {
+    pubkey,
+    name: nip19.npubEncode(pubkey),
+    about: null,
+    image: `https://avatars.dicebear.com/api/identicon/${pubkey}.svg`,
+    lightning_address: null,
+    nip05: null,
+    link: "nostr:" + nip19.npubEncode(pubkey),
+  };
+
+  if (!meta) return defaultProfileInfo;
 
   const name = getName(metadata, pubkey);
   const image =
-    meta.picture && meta.picture.length ? (meta.picture as string) : null;
+    meta.picture && meta.picture.length
+      ? (meta.picture as string)
+      : defaultProfileInfo.image;
   const about = meta.about && meta.about.length ? (meta.about as string) : null;
   const nip05 = meta.nip05 && meta.nip05.length ? (meta.nip05 as string) : null;
   const lud06 = meta.lud06 && meta.lud06.length ? (meta.lud06 as string) : null;
@@ -66,12 +71,19 @@ export function getProfileDataFromMetaData(
     lightning_address: lud06,
     nip05,
     link: "nostr:" + nip19.npubEncode(pubkey),
-  } as NostrProfile;
+  };
 }
 
-export function insertEventIntoDescendingList<
-  T extends NostrToolsEvent | NostrToolsEventWithId
->(sortedArray: T[], event: T) {
+export function insertItemIntoDescendingList<
+  T extends Object,
+  TSortingField extends keyof T,
+  TUniqueField extends keyof T
+>(
+  sortedArray: T[],
+  item: T,
+  comparisonField: TSortingField,
+  idField: TUniqueField
+) {
   let start = 0;
   let end = sortedArray.length - 1;
   let midPoint;
@@ -79,9 +91,9 @@ export function insertEventIntoDescendingList<
 
   if (end < 0) {
     position = 0;
-  } else if (event.created_at < sortedArray[end].created_at) {
+  } else if (item[comparisonField] < sortedArray[end][comparisonField]) {
     position = end + 1;
-  } else if (event.created_at >= sortedArray[start].created_at) {
+  } else if (item[comparisonField] >= sortedArray[start][comparisonField]) {
     position = start;
   } else
     while (true) {
@@ -90,9 +102,11 @@ export function insertEventIntoDescendingList<
         break;
       }
       midPoint = Math.floor(start + (end - start) / 2);
-      if (sortedArray[midPoint].created_at > event.created_at) {
+      if (sortedArray[midPoint][comparisonField] > item[comparisonField]) {
         start = midPoint;
-      } else if (sortedArray[midPoint].created_at < event.created_at) {
+      } else if (
+        sortedArray[midPoint][comparisonField] < item[comparisonField]
+      ) {
         end = midPoint;
       } else {
         // aMidPoint === num
@@ -102,10 +116,10 @@ export function insertEventIntoDescendingList<
     }
 
   // insert when num is NOT already in (no duplicates)
-  if (sortedArray[position]?.id !== event.id) {
+  if (sortedArray[position]?.[idField] !== item[idField]) {
     return [
       ...sortedArray.slice(0, position),
-      event,
+      item,
       ...sortedArray.slice(position),
     ];
   }
@@ -113,11 +127,18 @@ export function insertEventIntoDescendingList<
   return sortedArray;
 }
 
-export type ThreadedEvent = NostrToolsEventWithId & {
+export function insertEventIntoDescendingList<T extends NostrEvent>(
+  sortedArray: T[],
+  item: T
+) {
+  return insertItemIntoDescendingList(sortedArray, item, "created_at", "id");
+}
+
+export type ThreadedEvent = NostrEvent & {
   replies: ThreadedEvent[];
 };
 
-export function computeThreads(events: readonly NostrToolsEvent[]) {
+export function computeThreads(events: readonly NostrEvent[]) {
   let threadableEvents = events.map((event) => ({
     ...event,
     replies: [],
@@ -167,7 +188,7 @@ export function computeThreads(events: readonly NostrToolsEvent[]) {
     // couldn't find this event, so manufacture one
     let fake = {
       id,
-      replies: [] as NostrToolsEvent[],
+      replies: [] as NostrEvent[],
     } as unknown as ThreadedEvent;
     threadableEvents.push(fake);
 
@@ -177,7 +198,7 @@ export function computeThreads(events: readonly NostrToolsEvent[]) {
 
 const EXTRACT_IMAGE_FROM_CONTENT_REGEX = /https?:\/\/(\S+?(?:jpe?g|png|gif))$/i;
 
-export function extractArticleFields(event: NostrToolsEventWithId) {
+export function extractArticleFields(event: NostrEvent) {
   const title = event.tags.find((t) => t[0] === "title")?.[1];
   const summary = event.tags.find((t) => t[0] === "summary")?.[1];
   let image = event.tags.find((t) => t[0] === "image")?.[1];

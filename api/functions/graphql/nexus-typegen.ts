@@ -198,7 +198,7 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   BountyApplication: { // root type
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     date: string; // String!
     id: number; // Int!
     workplan: string; // String!
@@ -278,7 +278,7 @@ export interface NexusGenObjects {
     projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // root type
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -415,10 +415,10 @@ export interface NexusGenObjects {
     website?: string | null; // String
   }
   UserPrivateData: { // root type
+    default_nostr_prv_key?: string | null; // String
+    default_nostr_pub_key?: string | null; // String
     email?: string | null; // String
     id: number; // Int!
-    nostr_prv_key?: string | null; // String
-    nostr_pub_key?: string | null; // String
   }
   Vote: { // root type
     amount_in_sat: number; // Int!
@@ -468,7 +468,7 @@ export interface NexusGenFieldTypes {
   Bounty: { // field return type
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
@@ -484,7 +484,7 @@ export interface NexusGenFieldTypes {
     votes_count: number; // Int!
   }
   BountyApplication: { // field return type
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     date: string; // String!
     id: number; // Int!
     workplan: string; // String!
@@ -590,7 +590,7 @@ export interface NexusGenFieldTypes {
     projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // field return type
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -678,7 +678,7 @@ export interface NexusGenFieldTypes {
     usersByNostrKeys: NexusGenRootTypes['NostrKeyWithUser'][]; // [NostrKeyWithUser!]!
   }
   Question: { // field return type
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
@@ -691,7 +691,7 @@ export interface NexusGenFieldTypes {
     votes_count: number; // Int!
   }
   Story: { // field return type
-    author: NexusGenRootTypes['Author']; // Author!
+    author: NexusGenRootTypes['User']; // User!
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
@@ -804,6 +804,7 @@ export interface NexusGenFieldTypes {
     location: string | null; // String
     name: string; // String!
     nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
+    primary_nostr_key: string | null; // String
     private_data: NexusGenRootTypes['UserPrivateData']; // UserPrivateData!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
@@ -816,10 +817,10 @@ export interface NexusGenFieldTypes {
     website: string | null; // String
   }
   UserPrivateData: { // field return type
+    default_nostr_prv_key: string | null; // String
+    default_nostr_pub_key: string | null; // String
     email: string | null; // String
     id: number; // Int!
-    nostr_prv_key: string | null; // String
-    nostr_pub_key: string | null; // String
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
   }
   Vote: { // field return type
@@ -851,6 +852,7 @@ export interface NexusGenFieldTypes {
     location: string | null; // String
     name: string; // String!
     nostr_keys: NexusGenRootTypes['NostrKey'][]; // [NostrKey!]!
+    primary_nostr_key: string | null; // String
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     role: string | null; // String
     roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
@@ -891,7 +893,7 @@ export interface NexusGenFieldTypeNames {
   Bounty: { // field return type name
     applicants_count: 'Int'
     applications: 'BountyApplication'
-    author: 'Author'
+    author: 'User'
     body: 'String'
     cover_image: 'String'
     createdAt: 'Date'
@@ -907,7 +909,7 @@ export interface NexusGenFieldTypeNames {
     votes_count: 'Int'
   }
   BountyApplication: { // field return type name
-    author: 'Author'
+    author: 'User'
     date: 'String'
     id: 'Int'
     workplan: 'String'
@@ -1013,7 +1015,7 @@ export interface NexusGenFieldTypeNames {
     projects: 'ProjectInTournament'
   }
   PostComment: { // field return type name
-    author: 'Author'
+    author: 'User'
     body: 'String'
     created_at: 'Date'
     id: 'Int'
@@ -1101,7 +1103,7 @@ export interface NexusGenFieldTypeNames {
     usersByNostrKeys: 'NostrKeyWithUser'
   }
   Question: { // field return type name
-    author: 'Author'
+    author: 'User'
     body: 'String'
     createdAt: 'Date'
     excerpt: 'String'
@@ -1114,7 +1116,7 @@ export interface NexusGenFieldTypeNames {
     votes_count: 'Int'
   }
   Story: { // field return type name
-    author: 'Author'
+    author: 'User'
     body: 'String'
     comments: 'PostComment'
     comments_count: 'Int'
@@ -1227,6 +1229,7 @@ export interface NexusGenFieldTypeNames {
     location: 'String'
     name: 'String'
     nostr_keys: 'NostrKey'
+    primary_nostr_key: 'String'
     private_data: 'UserPrivateData'
     projects: 'Project'
     role: 'String'
@@ -1239,10 +1242,10 @@ export interface NexusGenFieldTypeNames {
     website: 'String'
   }
   UserPrivateData: { // field return type name
+    default_nostr_prv_key: 'String'
+    default_nostr_pub_key: 'String'
     email: 'String'
     id: 'Int'
-    nostr_prv_key: 'String'
-    nostr_pub_key: 'String'
     walletsKeys: 'WalletKey'
   }
   Vote: { // field return type name
@@ -1274,6 +1277,7 @@ export interface NexusGenFieldTypeNames {
     location: 'String'
     name: 'String'
     nostr_keys: 'NostrKey'
+    primary_nostr_key: 'String'
     projects: 'Project'
     role: 'String'
     roles: 'MakerRole'

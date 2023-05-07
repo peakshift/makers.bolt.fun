@@ -18,12 +18,12 @@ import {
 } from "src/graphql";
 import { PropsWithChildren } from "react";
 import { useSearchParams } from "react-router-dom";
-import { usePrompt, useWindowPrompt } from "src/utils/hooks";
+import { useWindowPrompt } from "src/utils/hooks";
 import { imageSchema } from "src/utils/validation";
 import { Override } from "src/utils/interfaces";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import { apolloClient } from "src/utils/apollo";
-import { store } from "src/redux/store";
+import { getStore } from "src/redux/store";
 import UpdateProjectContextProvider from "./updateProjectContext";
 import { useNavigate } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
@@ -291,7 +291,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
 function prepareMembers(
   members: ProjectDetailsQuery["getProject"]["members"]
 ): ProjectMember[] {
-  const me = store.getState().user.me;
+  const me = getStore().getState().user.me;
 
   if (!me) {
     window.location.href = "/login";

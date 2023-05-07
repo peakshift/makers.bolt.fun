@@ -1,4 +1,3 @@
-import DOMPurify from "dompurify";
 import { marked } from "marked";
 import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
@@ -15,7 +14,7 @@ export default function NostrHackWeekOverviewPage() {
     tournamentDetails,
     makers,
     myParticipationInfo,
-    staticData: { partners, chat, tracksAndPrizes },
+    staticData: { partners, chat, tracksAndPrizes, config },
   } = useTournament();
 
   return (
@@ -43,7 +42,7 @@ export default function NostrHackWeekOverviewPage() {
             start_date={tournamentDetails.start_date}
             avatars={makers.map((m) => m.user.avatar)}
             isRegistered={!!myParticipationInfo}
-            isRegistrationOpen
+            isRegistrationOpen={config.registerationOpen}
             partners={partners}
             chat={chat}
           />
