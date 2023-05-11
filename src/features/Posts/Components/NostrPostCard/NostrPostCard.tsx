@@ -3,8 +3,7 @@ import Badge from "src/Components/Badge/Badge";
 import { createRoute } from "src/utils/routing";
 import Card from "src/Components/Card/Card";
 import { formatHashtag, trimText } from "src/utils/helperFunctions";
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
-import { NostrProfile } from "src/lib/nostr";
+import { NostrEvent, NostrProfile } from "src/lib/nostr";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import dayjs from "dayjs";
 import { usePopperTooltip } from "react-popper-tooltip";
@@ -19,7 +18,7 @@ import LinkDuo from "src/Components/LinkDuo/LinkDuo";
 dayjs.extend(relativeTime);
 
 interface Props {
-  post: NostrToolsEventWithId;
+  post: NostrEvent;
   author: NostrProfile | null;
 }
 

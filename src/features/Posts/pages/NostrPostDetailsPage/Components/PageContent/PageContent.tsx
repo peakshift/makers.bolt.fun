@@ -1,4 +1,3 @@
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import Card from "src/Components/Card/Card";
 import IconButton from "src/Components/IconButton/IconButton";
 import { FiLink, FiShare2 } from "react-icons/fi";
@@ -13,14 +12,14 @@ import styles from "./styles.module.scss";
 import { lazy, Suspense } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { NostrProfile } from "src/lib/nostr";
+import { NostrEvent, NostrProfile } from "src/lib/nostr";
 import dayjs from "dayjs";
 import { extractArticleFields } from "src/lib/nostr/helpers";
 import LinkDuo from "src/Components/LinkDuo/LinkDuo";
 
 interface Props {
   author: NostrProfile;
-  post: NostrToolsEventWithId;
+  post: NostrEvent;
   articleFields: ReturnType<typeof extractArticleFields>;
 }
 

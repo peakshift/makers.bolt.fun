@@ -1,4 +1,4 @@
-import { NostrToolsEvent, NostrToolsEventWithId } from "nostr-relaypool/event";
+import { NostrEvent, UnsignedNostrEvent } from "./lib/nostr";
 
 declare global {
   interface Window {
@@ -9,7 +9,5 @@ declare global {
 
 type Nostr = {
   getPublicKey(): Promise<string>;
-  signEvent(
-    event: NostrToolsEvent
-  ): Promise<NostrToolsEventWithId & { sig: string }>;
+  signEvent(event: UnsignedNostrEvent): Promise<NostrEvent>;
 };

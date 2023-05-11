@@ -1,9 +1,8 @@
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { Filter, nip05 } from "nostr-tools";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { insertEventIntoDescendingList } from "src/lib/nostr/helpers";
 import { useDebounce } from "use-debounce";
-import { NostrMetadata } from "./types";
+import { NostrEvent, NostrMetadata } from "./types";
 import { useRelayPool } from "./use-relays-pool";
 
 interface Props {
@@ -15,7 +14,7 @@ interface Props {
 export const useNostrQuery = (props: Props) => {
   const { relayPool } = useRelayPool();
 
-  const [eventsImmediate, setEvents] = useState<NostrToolsEventWithId[]>([]);
+  const [eventsImmediate, setEvents] = useState<NostrEvent[]>([]);
   const [events] = useDebounce(eventsImmediate, 1000);
 
   const [metadata, setMetadata] = useState<NostrMetadata>({});

@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import { RelayPool } from "nostr-relaypool";
-import { NostrToolsEventWithId } from "nostr-relaypool/event";
 import { useEffect, useState } from "react";
 import { normalizeURL } from "src/lib/nostr/helpers";
 import { CONSTS } from "src/utils";
 import { createRoute } from "src/utils/routing";
 import { useDebounce } from "use-debounce";
 import { Props } from "../useNostrComments";
+import { NostrEvent } from "src/lib/nostr";
 
 export const useGetThreadRootObject = (props: {
   relaysPool: RelayPool | null;
@@ -24,8 +24,7 @@ export const useGetThreadRootObject = (props: {
 
   const [threadRootObject, setThreadRootObject] = useState<Result | null>(null);
 
-  const [baseEventImmediate, setBaseEvent] =
-    useState<NostrToolsEventWithId | null>(null);
+  const [baseEventImmediate, setBaseEvent] = useState<NostrEvent | null>(null);
   const [baseEvent] = useDebounce(baseEventImmediate, 1000);
 
   useEffect(() => {
@@ -107,7 +106,7 @@ export const useGetThreadRootObject = (props: {
   return threadRootObject;
 };
 
-function isValidRootStoryEvent(event: NostrToolsEventWithId) {
+function isValidRootStoryEvent(event: NostrEvent) {
   if (event.pubkey !== CONSTS.BF_NOSTR_PUBKEY) return false;
   if (event.tags.some((tag) => tag[0] === "e")) return false;
   if (
