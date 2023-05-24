@@ -47,8 +47,8 @@ export default function NostrHackWeekOverviewPage() {
             chat={chat}
           />
         </div>
-        <ScheduleSection />
         <PrizesSection tracks={tracksAndPrizes} />
+        <ScheduleSection />
         <JudgesSection judges={tournamentDetails.judges} />
       </Card>
       <Card

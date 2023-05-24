@@ -80,13 +80,13 @@ export const LOL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         },
         {
           id: 2,
-          title: "Runners UP x2",
+          title: "",
           amount: "0.5 BTC",
           project: "mutiny",
         },
         {
           id: 3,
-          title: "Runners UP x2",
+          title: "",
           amount: "0.5 BTC",
           project: "agrimint",
         },

@@ -68,7 +68,7 @@ export default function Navigation() {
   );
 
   return (
-    <nav className="w-full sticky-top-element z-10 py-20 bg-gradient-to-b from-blue-500">
+    <nav className="w-full sticky-top-element z-10 py-20 bg-gray-50">
       <div className="content-container">
         <div className="relative group">
           <div className="overflow-hidden" ref={viewportRef}>

@@ -146,16 +146,24 @@ const renderPrizes = (
       if (!project1 || !project2 || !project3) return;
 
       return (
-        <div className="flex flex-col md:justify-end flex-wrap gap-40">
+        <div className="flex flex-col md:justify-end md:items-end flex-wrap gap-40">
           <div className="flex flex-col md:items-end">
             <h4 className={`text-h2 mb-8`}>{prize1.title}</h4>
             <ProjectThumbnail project={project1!} />
           </div>
-          <div className="flex flex-col md:items-end">
-            <h4 className={`text-body2 mb-8`}>{prize2.title}</h4>
-            <div className="flex gap-16">
-              <ProjectThumbnail project={project2!} />
-              <ProjectThumbnail project={project3!} />
+
+          <div className="flex gap-36 flex-wrap min-w-0">
+            <div className="flex flex-col md:items-end">
+              <h4 className={`text-body2 mb-8`}>{prize2.title}</h4>
+              <div className="flex gap-16">
+                <ProjectThumbnail project={project2!} />
+              </div>
+            </div>
+            <div className="flex flex-col md:items-end">
+              <h4 className={`text-body2 mb-8`}>{prize3.title}</h4>
+              <div className="flex gap-16">
+                <ProjectThumbnail project={project3!} />
+              </div>
             </div>
           </div>
         </div>
@@ -257,12 +265,9 @@ const ProjectThumbnail = ({ project }: { project: Partial<Project> }) => {
         className="w-full h-full rounded-12 object-cover"
         alt={`${project.title}`}
       />
-      <div
-        ref={setTooltipRef}
-        {...getTooltipProps({ className: "tooltip-container z-10" })}
-      >
-        <div {...getArrowProps({ className: "tooltip-arrow" })} />
-        {visible && (
+      {visible && (
+        <div ref={setTooltipRef} {...getTooltipProps({ className: "" })}>
+          <div {...getArrowProps({ className: "tooltip-arrow" })} />
           <div className="text-left font-sans bg-white px-12 py-8 border border-gray-200 rounded-12 flex flex-wrap gap-12 shadow-lg relative z-10">
             <img
               className="w-42 h-42 rounded-12 object-cover"
@@ -280,8 +285,8 @@ const ProjectThumbnail = ({ project }: { project: Partial<Project> }) => {
               </p>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </button>
   );
 };

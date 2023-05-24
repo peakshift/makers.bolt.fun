@@ -62,16 +62,19 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
         {
           id: 1,
           title: " 1st",
+          project: "nosta",
           amount: "6,125,431 Sats ",
         },
         {
           id: 2,
           title: " 2nd",
+          project: "colighter",
           amount: "4,079,537 Sats ",
         },
         {
           id: 3,
           title: " 3rd",
+          project: "nygma",
           amount: "2,045,894 Sats",
         },
       ],
@@ -87,16 +90,19 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
         {
           id: 4,
           title: " 1st",
+          project: "goodstr",
           amount: "6,125,431 Sats ",
         },
         {
           id: 5,
           title: " 2nd",
+          project: "Nostr_UI_Design",
           amount: "4,079,537 Sats ",
         },
         {
           id: 6,
           title: " 3rd",
+          project: "zapstr",
           amount: "2,045,894 Sats",
         },
       ],
