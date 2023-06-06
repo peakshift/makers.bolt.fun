@@ -20,6 +20,11 @@ export const LOL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       isPrimary: true,
     },
     {
+      link: "https://stakwork.com",
+      image: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/89167fd6-a109-4293-6d4f-ae4f8b67f500/original",
+      isPrimary: true,
+    },
+    {
       link: "https://peakshift.com/",
       image: "https://i.ibb.co/nPJVd7s/ps.png",
     },
