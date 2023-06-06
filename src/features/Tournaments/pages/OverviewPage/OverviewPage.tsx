@@ -8,6 +8,8 @@ export default function OverviewPage() {
 
   if (tournamentDetails.title.search(/legends of lightning/i) !== -1)
     return <LegendsOfLightningOverviewPage />;
+  if (tournamentDetails.title.search(/ai4all/i) !== -1)
+    return <LegendsOfLightningOverviewPage />;
   if (tournamentDetails.title.search(/nostr/i) !== -1)
     return <NostrHackWeekOverviewPage />;
 
