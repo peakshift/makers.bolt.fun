@@ -81,6 +81,7 @@ function getStaticData(title: string) {
   if (title.search(/legends of lightning/i) !== -1)
     return LOL_TOURNAMENT_STATIC_DATA;
   if (title.search(/nostr/i) !== -1) return NOSTR_HACK_WEEK_STATIC_DATA;
+  if (title.search(/ai4all/i) !== -1) return LOL_TOURNAMENT_STATIC_DATA;
 
   throw new Error("Unknown Tournament");
 }
