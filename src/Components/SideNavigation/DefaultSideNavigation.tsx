@@ -40,14 +40,21 @@ const navItems: NavItem[] = [
     text: "Explore Projects",
   },
   {
-    href: createRoute({ type: "tournament", id: 2 }),
-    icon: "🦩",
-    text: "#NostrHack",
+    href: createRoute({ type: "tournament", id: 1 }),
+    icon: "🤖",
+    text: "#AI4ALL",
   },
   {
-    href: createRoute({ type: "tournament", id: 1 }),
+    href: "https://bolt.fun/tournaments/2",
+    icon: "🦩",
+    text: "#NostrHack",
+    isExternal: true,
+  },
+  {
+    href: "https://bolt.fun/tournaments/1",
     icon: "🏆",
     text: "#LegendsOfLightning",
+    isExternal: true,
   },
   {
     href: "mailto:team@peakshift.com",

@@ -17,8 +17,6 @@ export default function LegendsOfLightningOverviewPage() {
     staticData: { partners, chat, tracksAndPrizes },
   } = useTournament();
 
-  console.log("myParticipationInfo", myParticipationInfo);
-
   return (
     <>
       <OgTags
@@ -42,7 +40,7 @@ export default function LegendsOfLightningOverviewPage() {
             makers_count={tournamentDetails.makers_count}
             start_date={tournamentDetails.start_date}
             avatars={makers.map((m) => m.user.avatar)}
-            isRegistered={!myParticipationInfo}
+            isRegistered={!!myParticipationInfo}
             partners={partners}
             chat={chat}
           />
