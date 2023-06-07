@@ -60,9 +60,10 @@ export default function LandingPage() {
                   <li key={link.title} className="basis-[240px] grow">
                     <a
                       href={link.link}
-                      className="p-24 rounded h-full flex flex-col gap-8 hover:outline outline-yellow-400"
+                      className="p-24 rounded h-full flex flex-col gap-8 hover:outline"
                       style={{
                         backgroundColor: link.color ?? "#F1F5F9",
+                        outlineColor: `color-mix(in srgb, ${link.color} 80%, #292e41)`,
                       }}
                       target="_blank"
                       rel="noreferrer"
