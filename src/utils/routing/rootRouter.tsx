@@ -23,7 +23,9 @@ import { Post_Type } from "src/graphql";
 const HomePage = Loadable(
   React.lazy(
     () =>
-      import(/* webpackChunkName: "feed_page" */ "../../features/Home/HomePage")
+      import(
+        /* webpackChunkName: "feed_page" */ "../../features/Home/pages/LandingPage/LandingPage"
+      )
   )
 );
 
@@ -249,6 +251,8 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             path={PAGES_ROUTES.tournament.byId}
             element={<TournamentDetailsPage />}
           />
+
+          <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
         </Route>
 
         <Route
@@ -287,8 +291,6 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
-
-        <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
 
         <Route
           path="/"

@@ -1,0 +1,96 @@
+{
+  "__comment": "by default, all feilds are required, except: link.emoji OR link.logo, link.color",
+  "data": [
+    {
+      "title": "Spaces for Designers",
+      "description": "As a small startup trying to figure out product market fit ourself, we’ve created The Founders Club so we could be amongst cool people building sustainable businesses on bitcoin to learn from.",
+
+      "links": [
+        {
+          "title": "Bitcoin Design Community",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "🎨",
+          "color": "#FEFCE8"
+        },
+
+        {
+          "title": "Wallet UI Kit",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "💎",
+          "color": "#FFEDD5"
+        },
+
+        {
+          "title": "Bitcoin Design Guide",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "🔩",
+          "color": "#F1F5F9"
+        }
+      ]
+    },
+    {
+      "title": "Tools for Developers",
+      "description": "As a small startup trying to figure out product market fit ourself, we’ve created The Founders Club so we could be amongst cool people building sustainable businesses on bitcoin to learn from.",
+
+      "links": [
+        {
+          "title": "Bitcoin Design Community",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "🎨",
+          "color": "#FEFCE8"
+        },
+
+        {
+          "title": "Wallet UI Kit",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "💎",
+          "color": "#FFEDD5"
+        },
+
+        {
+          "title": "Bitcoin Design Guide",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "🔩",
+          "color": "#F1F5F9"
+        }
+      ]
+    },
+    {
+      "title": "Tools for the Web ",
+      "description": "As a small startup trying to figure out product market fit ourself, we’ve created The Founders Club so we could be amongst cool people building sustainable businesses on bitcoin to learn from.",
+
+      "links": [
+        {
+          "title": "Alby",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "🐝",
+          "logo": "https://pbs.twimg.com/profile_images/1452933125743460360/5xkRoFj7_400x400.jpg",
+          "color": "#FEFCE8"
+        },
+
+        {
+          "title": "Wallet UI Kit",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "💎",
+          "color": "#FFEDD5"
+        },
+
+        {
+          "title": "Bitcoin Design Guide",
+          "description": "Every few months we’ll be having missions for members of the founders club.",
+          "link": "https://bitcoin.design/",
+          "emoji": "🔩",
+          "color": "#F1F5F9"
+        }
+      ]
+    }
+  ]
+}
