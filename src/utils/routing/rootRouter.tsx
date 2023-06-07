@@ -253,6 +253,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           />
 
           <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+          <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
         </Route>
 
         <Route
@@ -294,7 +295,13 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route
           path="/"
-          element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
+          element={
+            <ProtectedRoute
+              notAuthorizedRedirectPath={PAGES_ROUTES.home.default}
+            >
+              <Navigate replace to={PAGES_ROUTES.blog.feed} />
+            </ProtectedRoute>
+          }
         />
       </Route>
     </Route>
