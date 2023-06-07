@@ -213,6 +213,7 @@ export default function NavMobile({ renderNotificationsList }: Props) {
                       size="sm"
                       color="none"
                       className="!text-body5 whitespace-nowrap"
+                      state={{ from: location.pathname }}
                     >
                       Sign In ⚡
                     </Button>
