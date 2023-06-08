@@ -117,11 +117,10 @@ export default function LandingPage() {
             </section>
           ))}
           <section className="bg-gray-800 rounded-16 p-32 text-center  relative isolate">
-            <img
-              src={ConfettiImage}
-              alt=""
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 z-0"
-            />
+            <div className="absolute inset-0 flex flex-col justify-center items-center">
+              <img src={ConfettiImage} alt="" className="" />
+              <div className="bg-gray-800 bg-opacity-40 absolute inset-0"></div>
+            </div>
             <div className="flex flex-col gap-12 relative">
               <h2 className="text-body1 font-bolder bg-gradient-to-r from-blue-500 to-violet-400 bg-clip-text text-transparent ">
                 Join the community
@@ -143,12 +142,8 @@ export default function LandingPage() {
               >
                 Sign up
               </Button>
-              <p className="text-gray-300">
-                Read more about the{" "}
-                <a href="#" className="underline">
-                  FUN
-                </a>{" "}
-                community
+              <p className="text-gray-200">
+                And become a part of the most FUN developers community!
               </p>
             </div>
           </section>
