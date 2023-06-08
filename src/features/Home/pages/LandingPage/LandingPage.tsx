@@ -39,11 +39,28 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-wrap gap-20">
                 <Button
-                  href={createRoute({ type: "write-story" })}
+                  href={createRoute({
+                    type: "write-story",
+                    initData: {
+                      tags: ["intros"],
+                    },
+                  })}
                   color="none"
                   className="bg-gray-700 text-white px-32"
                 >
                   Introduce yourself 🚀
+                </Button>
+                <Button
+                  href={createRoute({
+                    type: "write-story",
+                    initData: {
+                      tags: ["get-help"],
+                    },
+                  })}
+                  color="none"
+                  className="bg-gray-700 text-white px-32"
+                >
+                  Ask a question 🙋‍♂️
                 </Button>
               </div>
             </div>
