@@ -173,7 +173,10 @@ export const useNotifications = ({ pubkey }: Props) => {
           e.pubkey !== pubkey &&
           (e.tags.some((t) => t[0] === "c" && t[1] === "bolt.fun") ||
             e.tags.some(
-              (t) => t[0] === "r" && t[1].startsWith("https://makers.bolt.fun")
+              (t) =>
+                t[0] === "r" &&
+                (t[1].startsWith("https://makers.bolt.fun") ||
+                  t[1].startsWith("https://bolt.fun"))
             ))
       )
       .forEach((event) => {

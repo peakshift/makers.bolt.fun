@@ -43,9 +43,9 @@ function App() {
   return (
     <div id="app" className="w-full">
       <OgTags
-        title="makers.bolt.fun"
+        title="BOLT.FUN"
         description="A lightning app directory made for and by the bitcoin community."
-        image="https://makers.bolt.fun/assets/images/og-thumbnail.jpg"
+        image="https://bolt.fun/assets/images/og-thumbnail.jpg"
       />
       <GlobalLoader />
       <ScrollToHashElement />
