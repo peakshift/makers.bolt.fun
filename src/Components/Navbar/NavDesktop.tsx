@@ -4,7 +4,7 @@ import { useAppSelector, useCurrentSection } from "src/utils/hooks";
 import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
@@ -27,6 +27,8 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
   const openSearch = () => {
     setSearchOpen(true);
   };
+
+  const { pathname } = useLocation();
 
   const currentSection = useCurrentSection();
   const navigate = useNavigate();
@@ -176,7 +178,12 @@ export default function NavDesktop({ renderNotificationsList }: Props) {
                 </MenuItem>
               </Menu>
             ) : (
-              <Button size="sm" color="white" href="/login">
+              <Button
+                size="sm"
+                color="white"
+                href="/login"
+                state={{ from: pathname }}
+              >
                 Sign in 🔑
               </Button>
             ))}

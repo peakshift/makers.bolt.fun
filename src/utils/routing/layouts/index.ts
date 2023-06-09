@@ -1,2 +1,2 @@
-export * from "./TopNavLayout";
-export * from "./SideNavLayout";
+export { TopNavLayout } from "./TopNavLayout";
+export { SideNavLayout } from "./SideNavLayout";

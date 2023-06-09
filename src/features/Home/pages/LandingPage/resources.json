@@ -1,0 +1,71 @@
+{
+  "__comment": "by default, all feilds are required, except: link.emoji OR link.logo, link.color",
+  "data": [
+    {
+      "title": "Spaces for Designers",
+      "description": "Good user experience and creativity is critical for any technology to reach the masses.",
+
+      "links": [
+        {
+          "title": "Getting started guide",
+          "description": "A large collection of guides geared towards designers, and frontend developers to creating all sorts of bitcoin and lightning applications.",
+          "link": "https://bit.ly/bitcoin-design-guide",
+          "emoji": "🏁",
+          "color": "#FEFCE8",
+          "linkCTA": "Visit Guide"
+        },
+
+        {
+          "title": "Join a community",
+          "description": "Meet other designers, developers, copywriters, and other creatives working to drive bitcoin adoption through awesome UX.",
+          "link": "https://bit.ly/bitcoin-design-discord",
+          "emoji": "🌐",
+          "color": "#e7e0f8",
+          "linkCTA": "Join Discord"
+        },
+
+        {
+          "title": "Bitcoin UI Kit",
+          "description": "A design system and UI kit to use as the foundation for prototypes, and concept explorations of your next bitcoin application.",
+          "link": "https://bit.ly/bitcoin-ui-kit",
+          "emoji": "🧰",
+          "color": "#ffecec",
+          "linkCTA": "Check it out"
+        }
+      ]
+    },
+    {
+      "title": "Decentralised social networks",
+      "description": "",
+
+      "links": [
+        {
+          "title": "What is Nostr?",
+          "description": "A web-socket based social network that has caught the attention of Twitter's founder Jack Dorsey who's going to fund $5 million dollars for ecosystem projects.",
+          "link": "https://bit.ly/heynostr",
+          "emoji": "💡",
+          "color": "#FEFCE8",
+          "linkCTA": "Learn what is Nostr"
+        },
+
+        {
+          "title": "Resources for developers",
+          "description": "Building Nostr applications is super easy, you just need to know a bit of HTML+CSS and enough javascript to use websockets.",
+          "link": "https://makers.bolt.fun/story/list-of-resources-to-learn-nostr--833",
+          "emoji": "📚",
+          "color": "#FFEDD5",
+          "linkCTA": "View resources"
+        },
+
+        {
+          "title": "Slashtags",
+          "description": "Tools for building peer-to-peer applications, and data storage without the need of a blockchain!",
+          "link": "https://bit.ly/bob-slashtags",
+          "logo": "https://raw.githubusercontent.com/synonymdev/slashtags/master/docs/_img/slashtags_brand_mark.png",
+          "color": "#F1F5F9",
+          "linkCTA": "Learn about Slashtags"
+        }
+      ]
+    }
+  ]
+}

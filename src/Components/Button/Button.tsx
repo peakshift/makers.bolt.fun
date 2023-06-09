@@ -17,13 +17,15 @@ type Props = {
   isLoading?: boolean;
   disableOnLoading?: boolean;
   disabled?: boolean;
+  state?: Record<string, any>;
 } & React.ComponentPropsWithoutRef<"button">;
 
 const btnStylesFill: UnionToObjectKeys<Props, "color"> = {
   none: "",
   primary:
     "bg-primary-500 hover:bg-primary-400 active:bg-primary-600 text-white",
-  secondary: "border-2 border-primary-300 bg-primary-100 hover:bg-primary-100 text-primary-900 active:bg-primary-300",
+  secondary:
+    "border-2 border-primary-300 bg-primary-100 hover:bg-primary-100 text-primary-900 active:bg-primary-300",
   gray: "bg-gray-100 hover:bg-gray-200 text-gray-900 active:bg-gray-300",
   white: "border-2 border-gray-300 text-gray-900 bg-gray-25 hover:bg-gray-50",
   black: "text-white bg-black hover:bg-gray-900",
@@ -86,6 +88,7 @@ const Button = React.forwardRef<any, Props>(
       isLoading,
       disableOnLoading = true,
       children,
+      state,
       ...props
     },
     ref
@@ -133,6 +136,7 @@ const Button = React.forwardRef<any, Props>(
           target={newTab ? "_blank" : "_self"}
           rel="noopener noreferrer"
           onClick={(e) => handleClick(e)}
+          state={state}
         >
           {btnContent}
         </LinkDuo>

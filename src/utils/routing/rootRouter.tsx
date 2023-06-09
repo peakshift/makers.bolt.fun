@@ -11,20 +11,21 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
+import { SideNavLayout, TopNavLayout } from "./layouts/index";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
-import { Post_Type } from "src/graphql";
-import { SideNavLayout } from "./layouts/SideNavLayout";
-import { TopNavLayout } from "./layouts/TopNavLayout";
+import { Post_Type } from "src/graphql"; 
 
 const HomePage = Loadable(
   React.lazy(
     () =>
-      import(/* webpackChunkName: "feed_page" */ "../../features/Home/HomePage")
+      import(
+        /* webpackChunkName: "feed_page" */ "../../features/Home/pages/LandingPage/LandingPage"
+      )
   )
 );
 
@@ -250,6 +251,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             path={PAGES_ROUTES.tournament.byId}
             element={<TournamentDetailsPage />}
           />
+
+          <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+          <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
+          <Route path={"/Build-On-Bitcoin"} element={<HomePage />} />
         </Route>
 
         <Route
@@ -289,11 +294,15 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
-        <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
-
         <Route
           path="/"
-          element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
+          element={
+            <ProtectedRoute
+              notAuthorizedRedirectPath={PAGES_ROUTES.home.default}
+            >
+              <Navigate replace to={PAGES_ROUTES.blog.feed} />
+            </ProtectedRoute>
+          }
         />
       </Route>
     </Route>

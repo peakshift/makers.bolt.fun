@@ -17,8 +17,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     href: PAGES_ROUTES.blog.feed,
-    icon: "🏠",
-    text: "Home",
+    icon: "📰",
+    text: "Feed",
   },
   {
     href: PAGES_ROUTES.blog.topicsPage,

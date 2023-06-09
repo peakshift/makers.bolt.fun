@@ -5,9 +5,16 @@ type Props = {
   to?: string;
   children: React.ReactNode;
   newTab?: boolean;
+  state?: Record<string, any>;
 } & React.ComponentPropsWithoutRef<"a">;
 
-export default function LinkDuo({ to, children, newTab, ...props }: Props) {
+export default function LinkDuo({
+  to,
+  children,
+  newTab,
+  state,
+  ...props
+}: Props) {
   // It is a simple element with nothing to link to
   if (!to) return <span {...props}>{children}</span>;
 
@@ -30,6 +37,7 @@ export default function LinkDuo({ to, children, newTab, ...props }: Props) {
       to={to}
       target={newTab ? "_blank" : undefined}
       rel={"noopener noreferrer"}
+      state={state}
       {...props}
     >
       {children}
