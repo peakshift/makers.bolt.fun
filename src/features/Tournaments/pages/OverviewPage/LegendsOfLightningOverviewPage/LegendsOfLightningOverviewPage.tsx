@@ -17,8 +17,6 @@ export default function LegendsOfLightningOverviewPage() {
     staticData: { partners, chat, tracksAndPrizes },
   } = useTournament();
 
-  console.log("myParticipationInfo", myParticipationInfo);
-
   return (
     <>
       <OgTags

@@ -1,4 +1,10 @@
-import React, { createContext, PropsWithChildren, useContext } from "react";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
@@ -8,8 +14,6 @@ import {
   useGetTournamentByIdQuery,
   useMeTournamentQuery,
 } from "src/graphql";
-import { LOL_TOURNAMENT_STATIC_DATA } from "../OverviewPage/LegendsOfLightningOverviewPage/lol-tournament-data";
-import { NOSTR_HACK_WEEK_STATIC_DATA } from "../OverviewPage/NostrHackWeekOverviewPage/nostr-hack-tournament-data";
 import { TournamentStaticData } from "../types";
 
 interface ITournamentDetails {
@@ -28,6 +32,7 @@ export default function TournamentDetailsContext({
   children,
 }: PropsWithChildren<{}>) {
   const { id } = useParams();
+  const [staticData, setStaticData] = useState<TournamentStaticData>();
 
   const tournaemntQuery = useGetTournamentByIdQuery({
     variables: {
@@ -42,7 +47,22 @@ export default function TournamentDetailsContext({
     skip: !id,
   });
 
-  if (tournaemntQuery.loading || myParticipationInfoQuery.loading)
+  const tournametTitle = tournaemntQuery.data?.getTournamentById?.title;
+
+  useEffect(() => {
+    if (!tournametTitle) return;
+
+    (async () => {
+      const data = await getStaticData(tournametTitle);
+      setStaticData(data);
+    })();
+  }, [tournametTitle]);
+
+  if (
+    tournaemntQuery.loading ||
+    myParticipationInfoQuery.loading ||
+    !staticData
+  )
     return <LoadingPage />;
 
   if (!tournaemntQuery.data?.getTournamentById) return <NotFoundPage />;
@@ -65,7 +85,7 @@ export default function TournamentDetailsContext({
         myParticipationInfo,
         pubkeysOfMakersInTournament,
         pubkeysOfProjectsInTournament,
-        staticData: getStaticData(tournamentDetails.title),
+        staticData,
       }}
     >
       {children}
@@ -77,11 +97,24 @@ export const useTournament = () => {
   return useContext(Ctx);
 };
 
-function getStaticData(title: string) {
-  if (title.search(/legends of lightning/i) !== -1)
-    return LOL_TOURNAMENT_STATIC_DATA;
-  if (title.search(/nostr/i) !== -1) return NOSTR_HACK_WEEK_STATIC_DATA;
-  if (title.search(/ai4all/i) !== -1) return LOL_TOURNAMENT_STATIC_DATA;
+async function getStaticData(title: string) {
+  let dataPromise;
 
-  throw new Error("Unknown Tournament");
+  if (title.search(/legends of lightning/i) !== -1)
+    dataPromise = import(
+      "../OverviewPage/LegendsOfLightningOverviewPage/lol-tournament-data"
+    );
+  else if (title.search(/nostr/i) !== -1)
+    dataPromise = import(
+      "../OverviewPage/NostrHackWeekOverviewPage/nostr-hack-tournament-data"
+    );
+  else if (title.search(/ai4all/i) !== -1)
+    dataPromise = import(
+      "../OverviewPage/AI4ALLOverviewPage/a4a-tournament-data"
+    );
+  else throw new Error("Unknown Tournament");
+
+  const { default: data } = await dataPromise;
+
+  return data as TournamentStaticData;
 }

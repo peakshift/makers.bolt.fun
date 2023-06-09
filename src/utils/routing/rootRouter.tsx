@@ -11,7 +11,6 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
-import { SideNavLayout, TopNavLayout } from "./layouts";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
@@ -19,6 +18,8 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 import { Post_Type } from "src/graphql";
+import { SideNavLayout } from "./layouts/SideNavLayout";
+import { TopNavLayout } from "./layouts/TopNavLayout";
 
 const HomePage = Loadable(
   React.lazy(
