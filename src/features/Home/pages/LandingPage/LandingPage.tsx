@@ -3,6 +3,7 @@ import BgImage from "./assets/bg.jpg";
 import ConfettiImage from "./assets/confetti.png";
 import SocialPreviewImage from "./assets/social-preview.jpg";
 import CreateProfileImage from "./assets/create-profile.png";
+import BTCPragueImage from "./assets/btc-prague.png";
 import Button from "src/Components/Button/Button";
 import resourcesData from "./resources.json";
 import { FaChevronRight } from "react-icons/fa";
@@ -64,6 +65,14 @@ export default function LandingPage() {
                 >
                   Ask a question 🙋‍♂️
                 </Button>
+              </div>
+              <div className="flex gap-32 items-center mt-16">
+                <span className="text-gray-500 uppercase">announced at</span>
+                <img
+                  src={BTCPragueImage}
+                  alt="BTC Prague"
+                  className="max-h-48"
+                />
               </div>
             </div>
           </header>
