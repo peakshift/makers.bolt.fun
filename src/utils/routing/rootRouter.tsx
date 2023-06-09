@@ -11,7 +11,7 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
-import { SideNavLayout, TopNavLayout } from "./layouts";
+import { SideNavLayout, TopNavLayout } from "./layouts/index";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
