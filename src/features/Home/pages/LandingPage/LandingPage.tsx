@@ -110,7 +110,7 @@ export default function LandingPage() {
                       </p>
                       <p className="text-gray-700">{link.description}</p>
                       <p className="text-gray-900 font-bolder mt-auto">
-                        Learn more <FaChevronRight />
+                        {link.linkCTA ?? "Learn More"} <FaChevronRight />
                       </p>
                     </a>
                   </li>
