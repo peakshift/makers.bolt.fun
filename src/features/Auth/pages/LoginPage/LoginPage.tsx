@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Grid } from "react-loader-spinner";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useMeQuery } from "src/graphql";
 import { CONSTS } from "src/utils";
 import { QRCodeSVG } from "qrcode.react";
@@ -12,6 +12,7 @@ import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText } from "src/utils/helperFunctions";
 import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 import { useErrorHandler } from "react-error-boundary";
+import { useAppSelector } from "src/utils/hooks";
 
 export const useLnurlQuery = () => {
   const [loading, setLoading] = useState(true);
@@ -53,6 +54,8 @@ export default function LoginPage() {
   const location = useLocation();
   const [copied, setCopied] = useState(false);
 
+  const alreadyLoggedIn = useAppSelector((s) => !!s.user.me?.id);
+
   const canFetchIsLogged = useRef(true);
   const {
     loadingLnurl,
@@ -69,16 +72,7 @@ export default function LoginPage() {
 
   const meQuery = useMeQuery({
     onCompleted: (data) => {
-      if (data.me) {
-        setIsLoggedIn(true);
-        meQuery.stopPolling();
-        setTimeout(() => {
-          const cameFrom = getPropertyFromUnknown(location.state, "from");
-          const navigateTo = cameFrom ? cameFrom : "/";
-
-          navigate(navigateTo, { replace: true });
-        }, 2000);
-      }
+      if (data.me) setIsLoggedIn(true);
     },
   });
 
@@ -110,6 +104,19 @@ export default function LoginPage() {
   }, [refetch, session_token]);
 
   useEffect(() => {
+    if (isLoggedIn) {
+      meQuery.stopPolling();
+      const timeout = setTimeout(() => {
+        const cameFrom = getPropertyFromUnknown(location.state, "from");
+        const navigateTo = cameFrom ? cameFrom : "/";
+
+        navigate(navigateTo, { replace: true });
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoggedIn, location.state, meQuery, navigate]);
+
+  useEffect(() => {
     let interval: NodeJS.Timer;
     if (lnurl) interval = startPolling();
 
@@ -121,7 +128,15 @@ export default function LoginPage() {
 
   let content = <></>;
 
-  if (error)
+  if (alreadyLoggedIn)
+    content = (
+      <div className="flex flex-col gap-24 items-center">
+        <p className="text-body1 text-gray-700 font-bold">
+          You are already logged in. 👍
+        </p>
+      </div>
+    );
+  else if (error)
     content = (
       <div className="flex flex-col gap-24 items-center">
         <p className="text-body3 text-red-500 font-bold">
@@ -191,7 +206,7 @@ export default function LoginPage() {
             {copied ? "Copied" : "Copy LNURL"} <FiCopy />
           </Button>
           <a
-            href={`https://makers.bolt.fun/story/sign-in-with-lightning--99`}
+            href={`https://bolt.fun/story/sign-in-with-lightning--99`}
             target="_blank"
             rel="noreferrer"
             className="md:col-span-2 block text-body4 text-center text-gray-900 border border-gray-200 rounded-10 px-16 py-12 active:scale-90 transition-transform"
@@ -205,8 +220,8 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>{`makers.bolt.fun`}</title>
-        <meta property="og:title" content={`makers.bolt.fun`} />
+        <title>bolt.fun</title>
+        <meta property="og:title" content="bolt.fun" />
       </Helmet>
       <div className="page-container">
         <div className="min-h-[80vh] flex flex-col justify-center items-center">
