@@ -28,7 +28,7 @@ const isLoggedInHandler = async (req, res) => {
       ]);
 
       const cookieConfig = env.FUNCTIONS_URL.startsWith(
-        "https://master--makers-bolt-fun.netlify.app"
+        "https://master--boltfun.netlify.app"
       )
         ? {
             maxAge: 3600000 * 24 * 30,

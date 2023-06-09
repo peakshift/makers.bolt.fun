@@ -53,11 +53,7 @@ const useSideNavigation = () => {
 export function SideNavigation() {
   const { renderSideNav } = useSideNavigation();
 
-  return (
-    <nav className="md:overflow-y-auto sticky-side-element flex flex-col gap-16 md:gap-24">
-      {renderSideNav && renderSideNav()}
-    </nav>
-  );
+  return <>{renderSideNav ? renderSideNav() : null}</>;
 }
 
 SideNavigation.Override = function Override(props: PropsWithChildren<{}>) {

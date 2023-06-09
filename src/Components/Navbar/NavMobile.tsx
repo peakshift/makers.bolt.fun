@@ -286,25 +286,10 @@ export default function NavMobile({ renderNotificationsList }: Props) {
               <a href="/#">About Us</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Support</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Press</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Contacts</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Careers</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Sitemap</a>
+              <a href="mailto:team@peakshift.com">Contacts</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
               <a href="/#">Legal</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Cookies Settings</a>
             </li>
           </ul>
         </motion.div>

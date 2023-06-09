@@ -15,10 +15,7 @@ const graphqlApiURI = CONSTS.apiEndpoint + "/graphql";
 const cacheApiURI = "https://cache.bolt.fun";
 
 const httpLink = new HttpLink({
-  uri:
-    window.location.hostname !== "makers.bolt.fun"
-      ? graphqlApiURI
-      : cacheApiURI,
+  uri: window.location.hostname !== "bolt.fun" ? graphqlApiURI : cacheApiURI,
   credentials: "include",
 });
 
