@@ -25,14 +25,14 @@ export default function LandingPage() {
         <div className="col-start-2 col-end-3 flex flex-col gap-y-[160px]">
           <div className="absolute w-full inset-x-0 top-0 -z-10">
             <img src={BgImage} alt="" className="w-full" />{" "}
-            <div className="bg-gradient-to-b from-transparent to-[#fff0]  absolute inset-0 bg-opacity-40 xl:bg-opacity-10"></div>
+            <div className="bg-gradient-to-b from-transparent via-[#f8f8f863] to-40% absolute inset-0"></div>
           </div>
           <header className="relative md:py-80">
             <div className="flex flex-col gap-32 text-center items-center">
-              <h1 className="text-h1 md:text-[55px] md:leading-[140%] text-primary-500 bg-gradient-to-r from-blue-500 to-violet-400 font-bolder bg-clip-text text-transparent inline-block">
+              <h1 className="text-h2 md:text-[55px] md:leading-[140%] text-primary-500 bg-gradient-to-r from-blue-500 to-violet-400 font-bolder bg-clip-text text-transparent inline-block">
                 #BuildOnBitcoin
               </h1>
-              <p className="text-body2 font-medium mb-8 text-gray-700">
+              <p className="text-body2 font-medium mb-8 text-gray-800 drop-shadow-sm">
                 People are building the future of the internet with Bitcoin.
                 From social networks, to streaming payments, and even custom
                 assets.
@@ -40,7 +40,7 @@ export default function LandingPage() {
                 <br />
                 Now we celebrate 10 years of 0 downtime and fast with layer 2!
               </p>
-              <div className="flex flex-wrap gap-20">
+              <div className="flex flex-wrap justify-center gap-20">
                 <Button
                   href={createRoute({
                     type: "write-story",
@@ -66,7 +66,7 @@ export default function LandingPage() {
                   Ask a question 🙋‍♂️
                 </Button>
               </div>
-              <div className="flex gap-32 items-center mt-16">
+              <div className="flex flex-wrap gap-32 items-center mt-16">
                 <span className="text-gray-500 uppercase">announced at</span>
                 <img
                   src={BTCPragueImage}
@@ -86,7 +86,7 @@ export default function LandingPage() {
           </button> */}
           {resourcesData.data.map((item) => (
             <section key={item.title} className="relative">
-              <h2 className="text-h2 text-center font-bolder mb-24">
+              <h2 className="text-h3 md:text-h2 text-center font-bolder mb-24">
                 {item.title}
               </h2>
               <p className="text-body3 text-center">{item.description}</p>
@@ -127,10 +127,10 @@ export default function LandingPage() {
               </ul>
             </section>
           ))}
-          <section className="bg-gray-800 rounded-16 p-32 text-center  relative isolate">
+          <section className="bg-gray-800 rounded-16 p-16 md:p-32 text-center  relative isolate">
             <div className="absolute inset-0 flex flex-col justify-center items-center">
               <img src={ConfettiImage} alt="" className="" />
-              <div className="bg-gray-800 bg-opacity-40 absolute inset-0"></div>
+              <div className="bg-gray-800 rounded-16 bg-opacity-40 absolute inset-0"></div>
             </div>
             <div className="flex flex-col gap-12 relative">
               <h2 className="text-body1 font-bolder bg-gradient-to-r from-blue-500 to-violet-400 bg-clip-text text-transparent ">

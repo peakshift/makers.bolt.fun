@@ -14,7 +14,7 @@ export default function LegendsOfLightningOverviewPage() {
     tournamentDetails,
     makers,
     myParticipationInfo,
-    staticData: { partners, chat, tracksAndPrizes },
+    staticData: { partners, chat, tracksAndPrizes, config },
   } = useTournament();
 
   return (
@@ -41,6 +41,7 @@ export default function LegendsOfLightningOverviewPage() {
             start_date={tournamentDetails.start_date}
             avatars={makers.map((m) => m.user.avatar)}
             isRegistered={!myParticipationInfo}
+            isRegistrationOpen={config.registerationOpen}
             partners={partners}
             chat={chat}
           />
