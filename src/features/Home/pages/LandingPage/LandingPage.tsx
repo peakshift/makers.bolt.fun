@@ -1,6 +1,7 @@
 import OgTags from "src/Components/OgTags/OgTags";
 import BgImage from "./assets/bg.jpg";
 import ConfettiImage from "./assets/confetti.png";
+import SocialPreviewImage from "./assets/social-preview.jpg";
 import CreateProfileImage from "./assets/create-profile.png";
 import Button from "src/Components/Button/Button";
 import resourcesData from "./resources.json";
@@ -13,6 +14,7 @@ export default function LandingPage() {
       <OgTags
         title="Build on Bitcoin | BOLT FUN"
         description="The Founders Club is an exclusive space on BOLT.FUN that offers a safe and supportive environment for makers to pitch their ideas, connect, learn and share their experiences. "
+        image={SocialPreviewImage}
       />
       <main
         className="relative isolate md:col-span-3 bg-white rounded
@@ -65,14 +67,14 @@ export default function LandingPage() {
               </div>
             </div>
           </header>
-          <button className="my-32 px-32 py-24 bg-gray-900 text-white flex gap-16 text-left rounded-16">
+          {/* <button className="my-32 px-32 py-24 bg-gray-900 text-white flex gap-16 text-left rounded-16">
             <div>
               <p className="text-body2 font-bolder">AI4ALL Hackathon ⚡️</p>
               <p className="">
                 Sign up for the Fedi x Replit hackathon coming up in July!
               </p>
             </div>
-          </button>
+          </button> */}
           {resourcesData.data.map((item) => (
             <section key={item.title} className="relative">
               <h2 className="text-h2 text-center font-bolder mb-24">

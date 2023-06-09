@@ -3,91 +3,60 @@
   "data": [
     {
       "title": "Spaces for Designers",
-      "description": "As a small startup trying to figure out product market fit ourself, we’ve created The Founders Club so we could be amongst cool people building sustainable businesses on bitcoin to learn from.",
+      "description": "Good user experience and creativity is critical for any technology to reach the masses.",
 
       "links": [
         {
-          "title": "Bitcoin Design Community",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "🎨",
+          "title": "Getting started guide",
+          "description": "A large collection of guides geared towards designers, and frontend developers to creating all sorts of bitcoin and lightning applications.",
+          "link": "https://bit.ly/bitcoin-design-guide",
+          "emoji": "🏁",
           "color": "#FEFCE8"
         },
 
         {
-          "title": "Wallet UI Kit",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "💎",
-          "color": "#FFEDD5"
+          "title": "Join a community",
+          "description": "Meet other designers, developers, copywriters, and other creatives working to drive bitcoin adoption through awesome UX.",
+          "link": "https://bit.ly/bitcoin-design-discord",
+          "emoji": "🌐",
+          "color": "#e7e0f8"
         },
 
         {
-          "title": "Bitcoin Design Guide",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "🔩",
-          "color": "#F1F5F9"
+          "title": "Bitcoin UI Kit",
+          "description": "A design system and UI kit to use as the foundation for prototypes, and concept explorations of your next bitcoin application.",
+          "link": "https://bit.ly/bitcoin-ui-kit",
+          "emoji": "🧰",
+          "color": "#ffecec"
         }
       ]
     },
     {
-      "title": "Tools for Developers",
-      "description": "As a small startup trying to figure out product market fit ourself, we’ve created The Founders Club so we could be amongst cool people building sustainable businesses on bitcoin to learn from.",
+      "title": "Decentralised social networks",
+      "description": "",
 
       "links": [
         {
-          "title": "Bitcoin Design Community",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "🎨",
+          "title": "What is Nostr?",
+          "description": "A web-socket based social network that has caught the attention of Twitter's founder Jack Dorsey who's going to fund $5 million dollars for ecosystem projects.",
+          "link": "https://bit.ly/heynostr",
+          "emoji": "💡",
           "color": "#FEFCE8"
         },
 
         {
-          "title": "Wallet UI Kit",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "💎",
+          "title": "Resources for developers",
+          "description": "Building Nostr applications is super easy, you just need to know a bit of HTML+CSS and enough javascript to use websockets.",
+          "link": "https://makers.bolt.fun/story/list-of-resources-to-learn-nostr--833",
+          "emoji": "📚",
           "color": "#FFEDD5"
         },
 
         {
-          "title": "Bitcoin Design Guide",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "🔩",
-          "color": "#F1F5F9"
-        }
-      ]
-    },
-    {
-      "title": "Tools for the Web ",
-      "description": "As a small startup trying to figure out product market fit ourself, we’ve created The Founders Club so we could be amongst cool people building sustainable businesses on bitcoin to learn from.",
-
-      "links": [
-        {
-          "title": "Alby",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "🐝",
-          "logo": "https://pbs.twimg.com/profile_images/1452933125743460360/5xkRoFj7_400x400.jpg",
-          "color": "#FEFCE8"
-        },
-
-        {
-          "title": "Wallet UI Kit",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "💎",
-          "color": "#FFEDD5"
-        },
-
-        {
-          "title": "Bitcoin Design Guide",
-          "description": "Every few months we’ll be having missions for members of the founders club.",
-          "link": "https://bitcoin.design/",
-          "emoji": "🔩",
+          "title": "Slashtags",
+          "description": "Tools for building peer-to-peer applications, and data storage without the need of a blockchain!",
+          "link": "https://bit.ly/bob-slashtags",
+          "logo": "https://raw.githubusercontent.com/synonymdev/slashtags/master/docs/_img/slashtags_brand_mark.png",
           "color": "#F1F5F9"
         }
       ]

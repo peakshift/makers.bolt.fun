@@ -254,6 +254,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
           <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
+          <Route path={"/Build-On-Bitcoin"} element={<HomePage />} />
         </Route>
 
         <Route
