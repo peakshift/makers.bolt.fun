@@ -25,7 +25,7 @@ export default function LegendsOfLightningOverviewPage() {
       />
       <Card
         onlyMd
-        className="flex flex-col gap-42 bg-white max-md:-mx-16 max-md:-mt-24 px-16"
+        className="flex flex-col gap-42 bg-white max-md:-mx-16 px-16"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-24 items-start">
           <div className="md:col-span-2">
