@@ -66,6 +66,39 @@
           "linkCTA": "Learn about Slashtags"
         }
       ]
+    },
+    {
+      "title": "Lightning on the web",
+      "description": "",
+
+      "links": [
+        {
+          "title": "What is WebLN?",
+          "description": "A guide that explains what is WebLN, and how it can be used to build lightning applications on the web.",
+          "link": "https://webln.guide/",
+          "emoji": "🤔",
+          "color": "#FEFCE8",
+          "linkCTA": "Visit Guide"
+        },
+
+        {
+          "title": "Resources for developers",
+          "description": "A compilation of great resources to learn how to build lightning applications on the web.",
+          "link": "https://bolt.fun/story/list-of-resources-for-learning-webln--834",
+          "emoji": "📚",
+          "color": "#FFEDD5",
+          "linkCTA": "View resources"
+        },
+
+        {
+          "title": "WebLN Experiments",
+          "description": "A web app that showcases the capabilities of WebLN, and how it can be used to build lightning applications on the web.",
+          "link": "https://webln.twentyuno.net/",
+          "emoji": "🧪",
+          "color": "#F1F5F9",
+          "linkCTA": "Play with it"
+        }
+      ]
     }
   ]
 }
