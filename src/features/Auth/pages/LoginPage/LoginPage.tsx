@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Grid } from "react-loader-spinner";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useMeQuery } from "src/graphql";
-import { CONSTS } from "src/utils";
 import { QRCodeSVG } from "qrcode.react";
 import { IoRocketOutline } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
@@ -12,7 +11,6 @@ import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText } from "src/utils/helperFunctions";
 import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 import { useErrorHandler } from "react-error-boundary";
-import { useAppSelector } from "src/utils/hooks";
 
 export const useLnurlQuery = () => {
   const [loading, setLoading] = useState(true);
@@ -50,13 +48,12 @@ export const useLnurlQuery = () => {
 
 export default function LoginPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [copiedCurrentLnurl, setCopiedCurrentLnurl] = useState(false);
+  const canFetchIsLogged = useRef(true);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const [copied, setCopied] = useState(false);
 
-  const alreadyLoggedIn = useAppSelector((s) => !!s.user.me?.id);
-
-  const canFetchIsLogged = useRef(true);
   const {
     loadingLnurl,
     data: { lnurl, session_token },
@@ -67,7 +64,7 @@ export default function LoginPage() {
   const clipboard = useCopyToClipboard();
 
   useEffect(() => {
-    setCopied(false);
+    setCopiedCurrentLnurl(false);
   }, [lnurl]);
 
   const meQuery = useMeQuery({
@@ -77,7 +74,7 @@ export default function LoginPage() {
   });
 
   const copyToClipboard = () => {
-    setCopied(true);
+    setCopiedCurrentLnurl(true);
     clipboard(lnurl);
   };
 
@@ -128,15 +125,7 @@ export default function LoginPage() {
 
   let content = <></>;
 
-  if (alreadyLoggedIn)
-    content = (
-      <div className="flex flex-col gap-24 items-center">
-        <p className="text-body1 text-gray-700 font-bold">
-          You are already logged in. 👍
-        </p>
-      </div>
-    );
-  else if (error)
+  if (error)
     content = (
       <div className="flex flex-col gap-24 items-center">
         <p className="text-body3 text-red-500 font-bold">
@@ -203,7 +192,7 @@ export default function LoginPage() {
             Click to connect <IoRocketOutline />
           </a>
           <Button color="gray" onClick={copyToClipboard}>
-            {copied ? "Copied" : "Copy LNURL"} <FiCopy />
+            {copiedCurrentLnurl ? "Copied!" : "Copy LNURL"} <FiCopy />
           </Button>
           <a
             href={`https://bolt.fun/story/sign-in-with-lightning--99`}
