@@ -31,20 +31,23 @@ const Ctx = createContext<ITournamentDetails>(null!);
 export default function TournamentDetailsContext({
   children,
 }: PropsWithChildren<{}>) {
-  const { id } = useParams();
+  const { id: idOrSlug } = useParams();
   const [staticData, setStaticData] = useState<TournamentStaticData>();
 
   const tournaemntQuery = useGetTournamentByIdQuery({
     variables: {
-      idOrSlug: id!,
+      idOrSlug: idOrSlug!,
     },
-    skip: !id,
+    skip: !idOrSlug,
   });
+
+  const tournamentId = tournaemntQuery.data?.getTournamentById?.id;
+
   const myParticipationInfoQuery = useMeTournamentQuery({
     variables: {
-      id: Number(id)!,
+      id: Number(tournamentId)!,
     },
-    skip: !id,
+    skip: !tournamentId,
   });
 
   const tournametTitle = tournaemntQuery.data?.getTournamentById?.title;
