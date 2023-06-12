@@ -361,7 +361,7 @@ export const handlers = [
             search: null,
             skip: null,
             take: 4,
-            tournamentId: 12,
+            tournamentIdOrSlug: "12",
             openToConnect: null,
           }),
           pubkeysOfMakersInTournament: [],

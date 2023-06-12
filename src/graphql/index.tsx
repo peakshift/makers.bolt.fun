@@ -579,7 +579,7 @@ export type QueryGetMakersInTournamentArgs = {
   search: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
 };
 
 
@@ -622,7 +622,7 @@ export type QueryGetTagInfoArgs = {
 
 
 export type QueryGetTournamentByIdArgs = {
-  id: Scalars['Int'];
+  idOrSlug: Scalars['String'];
 };
 
 
@@ -651,12 +651,12 @@ export type QueryProjectsByCategoryArgs = {
 
 
 export type QueryPubkeysOfMakersInTournamentArgs = {
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
 };
 
 
 export type QueryPubkeysOfProjectsInTournamentArgs = {
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
 };
 
 
@@ -1299,7 +1299,7 @@ export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetAllRolesQuery = { __typename?: 'Query', getAllMakersRoles: Array<{ __typename?: 'GenericMakerRole', id: number, title: string, icon: string }> };
 
 export type GetMakersInTournamentQueryVariables = Exact<{
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
   take: InputMaybe<Scalars['Int']>;
   skip: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
@@ -1360,7 +1360,7 @@ export type MeTournamentQueryVariables = Exact<{
 export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
-  id: Scalars['Int'];
+  idOrSlug: Scalars['String'];
 }>;
 
 
@@ -3751,9 +3751,9 @@ export type GetAllRolesQueryHookResult = ReturnType<typeof useGetAllRolesQuery>;
 export type GetAllRolesLazyQueryHookResult = ReturnType<typeof useGetAllRolesLazyQuery>;
 export type GetAllRolesQueryResult = Apollo.QueryResult<GetAllRolesQuery, GetAllRolesQueryVariables>;
 export const GetMakersInTournamentDocument = gql`
-    query GetMakersInTournament($tournamentId: Int!, $take: Int, $skip: Int, $search: String, $roleId: Int, $openToConnect: Boolean) {
+    query GetMakersInTournament($tournamentIdOrSlug: String!, $take: Int, $skip: Int, $search: String, $roleId: Int, $openToConnect: Boolean) {
   getMakersInTournament(
-    tournamentId: $tournamentId
+    tournamentIdOrSlug: $tournamentIdOrSlug
     take: $take
     skip: $skip
     search: $search
@@ -3800,7 +3800,7 @@ export const GetMakersInTournamentDocument = gql`
  * @example
  * const { data, loading, error } = useGetMakersInTournamentQuery({
  *   variables: {
- *      tournamentId: // value for 'tournamentId'
+ *      tournamentIdOrSlug: // value for 'tournamentIdOrSlug'
  *      take: // value for 'take'
  *      skip: // value for 'skip'
  *      search: // value for 'search'
@@ -4138,8 +4138,8 @@ export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery
 export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
 export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetTournamentByIdDocument = gql`
-    query GetTournamentById($id: Int!) {
-  getTournamentById(id: $id) {
+    query GetTournamentById($idOrSlug: String!) {
+  getTournamentById(idOrSlug: $idOrSlug) {
     id
     title
     description
@@ -4184,7 +4184,7 @@ export const GetTournamentByIdDocument = gql`
       answer
     }
   }
-  getMakersInTournament(tournamentId: $id, take: 4) {
+  getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {
     makers {
       user {
         id
@@ -4192,8 +4192,8 @@ export const GetTournamentByIdDocument = gql`
       }
     }
   }
-  pubkeysOfMakersInTournament(tournamentId: $id)
-  pubkeysOfProjectsInTournament(tournamentId: $id)
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: $idOrSlug)
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: $idOrSlug)
 }
     `;
 
@@ -4209,7 +4209,7 @@ export const GetTournamentByIdDocument = gql`
  * @example
  * const { data, loading, error } = useGetTournamentByIdQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      idOrSlug: // value for 'idOrSlug'
  *   },
  * });
  */

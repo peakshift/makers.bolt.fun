@@ -36,7 +36,7 @@ export default function TournamentDetailsContext({
 
   const tournaemntQuery = useGetTournamentByIdQuery({
     variables: {
-      id: Number(id)!,
+      idOrSlug: id!,
     },
     skip: !id,
   });

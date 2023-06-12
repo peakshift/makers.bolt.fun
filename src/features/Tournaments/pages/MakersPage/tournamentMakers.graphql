@@ -7,7 +7,7 @@ query GetAllRoles {
 }
 
 query GetMakersInTournament(
-  $tournamentId: Int!
+  $tournamentIdOrSlug: String!
   $take: Int
   $skip: Int
   $search: String
@@ -15,7 +15,7 @@ query GetMakersInTournament(
   $openToConnect: Boolean
 ) {
   getMakersInTournament(
-    tournamentId: $tournamentId
+    tournamentIdOrSlug: $tournamentIdOrSlug
     take: $take
     skip: $skip
     search: $search

@@ -265,15 +265,20 @@ const getTournamentById = extendType({
     t.nonNull.field("getTournamentById", {
       type: Tournament,
       args: {
-        id: nonNull(intArg()),
+        idOrSlug: nonNull(stringArg()),
       },
-      resolve(_, { id }, ctx, info) {
+      resolve(_, { idOrSlug }, ctx, info) {
+        let where = {};
+
+        if (isNaN(idOrSlug)) where = { slug: idOrSlug };
+        else where = { id: parseInt(idOrSlug) };
+
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).value;
         return prisma.tournament
           .findUnique({
-            where: { id },
+            where,
             ...select,
           })
           .catch(console.log);
@@ -396,7 +401,7 @@ const getMakersInTournament = extendType({
     t.nonNull.field("getMakersInTournament", {
       type: TournamentMakersResponse,
       args: {
-        tournamentId: nonNull(intArg()),
+        tournamentIdOrSlug: nonNull(stringArg()),
         ...paginationArgs({ take: 10 }),
         search: stringArg(),
         roleId: intArg(),
@@ -404,6 +409,12 @@ const getMakersInTournament = extendType({
       },
       async resolve(_, args, ctx) {
         const user = ctx.user;
+
+        let whereTournament = {};
+
+        if (isNaN(args.tournamentIdOrSlug))
+          whereTournament = { slug: args.tournamentIdOrSlug };
+        else whereTournament = { id: parseInt(args.tournamentIdOrSlug) };
 
         let filters = [];
 
@@ -465,7 +476,7 @@ const getMakersInTournament = extendType({
         const makers = (
           await prisma.tournamentParticipant.findMany({
             where: {
-              tournament_id: args.tournamentId,
+              tournament: whereTournament,
               ...(filters.length > 0 && {
                 user: {
                   AND: filters,
@@ -505,12 +516,18 @@ const pubkeysOfMakersInTournament = extendType({
   definition(t) {
     t.nonNull.list.nonNull.string("pubkeysOfMakersInTournament", {
       args: {
-        tournamentId: nonNull(intArg()),
+        tournamentIdOrSlug: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
+        let whereTournament = {};
+
+        if (isNaN(args.tournamentIdOrSlug))
+          whereTournament = { slug: args.tournamentIdOrSlug };
+        else whereTournament = { id: parseInt(args.tournamentIdOrSlug) };
+
         const usersInTournament = await prisma.tournamentParticipant.findMany({
           where: {
-            tournament_id: args.tournamentId,
+            tournament: whereTournament,
           },
           select: {
             user_id: true,
@@ -539,13 +556,19 @@ const pubkeysOfProjectsInTournament = extendType({
   definition(t) {
     t.nonNull.list.nonNull.string("pubkeysOfProjectsInTournament", {
       args: {
-        tournamentId: nonNull(intArg()),
+        tournamentIdOrSlug: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
+        let whereTournament = {};
+
+        if (isNaN(args.tournamentIdOrSlug))
+          whereTournament = { slug: args.tournamentIdOrSlug };
+        else whereTournament = { id: parseInt(args.tournamentIdOrSlug) };
+
         return prisma.tournamentProject
           .findMany({
             where: {
-              tournament_id: args.tournamentId,
+              tournament: whereTournament,
             },
             select: {
               project: {

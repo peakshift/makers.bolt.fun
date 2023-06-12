@@ -381,6 +381,7 @@ model HostedImage {
 // -----------------
 model Tournament {
   id                  Int          @id @default(autoincrement())
+  slug                String?      @unique
   title               String
   description         String
   thumbnail_image     String

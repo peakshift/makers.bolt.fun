@@ -1404,7 +1404,7 @@ export interface NexusGenArgTypes {
       search?: string | null; // String
       skip?: number | null; // Int
       take: number | null; // Int
-      tournamentId: number; // Int!
+      tournamentIdOrSlug: string; // String!
     }
     getMyDrafts: { // args
       type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
@@ -1433,7 +1433,7 @@ export interface NexusGenArgTypes {
       tag?: string | null; // String
     }
     getTournamentById: { // args
-      id: number; // Int!
+      idOrSlug: string; // String!
     }
     hottestProjects: { // args
       skip?: number | null; // Int
@@ -1452,10 +1452,10 @@ export interface NexusGenArgTypes {
       take: number | null; // Int
     }
     pubkeysOfMakersInTournament: { // args
-      tournamentId: number; // Int!
+      tournamentIdOrSlug: string; // String!
     }
     pubkeysOfProjectsInTournament: { // args
-      tournamentId: number; // Int!
+      tournamentIdOrSlug: string; // String!
     }
     recentProjectsInTag: { // args
       tagId: number; // Int!

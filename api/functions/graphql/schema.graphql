@@ -360,14 +360,14 @@ type Query {
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
-  getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!): TournamentMakersResponse!
+  getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentIdOrSlug: String!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int, tag: String): Project!
   getProjectsById(ids: [String!]!): [Project!]!
   getProjectsInTournament(lookingForMakers: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentId: Int!, trackId: Int): TournamentProjectsResponse!
   getTagInfo(tag: String): Tag!
-  getTournamentById(id: Int!): Tournament!
+  getTournamentById(idOrSlug: String!): Tournament!
   getTournamentToRegister: [Tournament!]!
   getTrendingPosts: [Post!]!
   hottestProjects(skip: Int = 0, take: Int = 50): [Project!]!
@@ -377,8 +377,8 @@ type Query {
   popularTags: [Tag!]!
   profile(id: Int!): User
   projectsByCategory(category_id: Int!, skip: Int = 0, take: Int = 60): [Project!]!
-  pubkeysOfMakersInTournament(tournamentId: Int!): [String!]!
-  pubkeysOfProjectsInTournament(tournamentId: Int!): [String!]!
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: String!): [String!]!
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: String!): [String!]!
   recentProjectsInTag(tagId: Int!, take: Int = 3): [Project!]!
   searchProjects(search: String!, skip: Int = 0, take: Int = 50): [Project!]!
   searchUsers(value: String!): [User!]!
