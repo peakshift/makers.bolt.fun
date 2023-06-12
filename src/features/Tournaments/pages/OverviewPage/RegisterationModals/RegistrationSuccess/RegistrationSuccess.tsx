@@ -92,7 +92,7 @@ export default function RegistrationSuccess({
             href={createRoute({
               type: "tournament",
               tab: "makers",
-              id: props.tournamentId,
+              idOrSlug: props.tournamentId,
             })}
             onClick={onClose}
             color="primary"

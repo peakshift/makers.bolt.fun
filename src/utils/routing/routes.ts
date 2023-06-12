@@ -63,7 +63,7 @@ type RouteOptions =
     }
   | {
       type: "tournament";
-      id: string | number;
+      idOrSlug: string | number;
       tab?: "overview" | "events" | "makers" | "projects";
     };
 
@@ -125,7 +125,8 @@ export function createRoute(options: RouteOptions) {
 
   if (options.type === "tournament")
     return (
-      `/tournaments/${options.id}` + (options.tab ? `/${options.tab}` : "")
+      `/tournaments/${options.idOrSlug}` +
+      (options.tab ? `/${options.tab}` : "")
     );
 
   if (options.type === "hangout") return "/hangout";

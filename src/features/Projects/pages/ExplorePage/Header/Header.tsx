@@ -10,9 +10,7 @@ import { IoLocationOutline } from "react-icons/io5";
 export const bannerData = {
   title: (
     <>
-      <p className="text-body1 font-bolder text-white">
-        Nostr Hack & Design
-      </p>
+      <p className="text-body1 font-bolder text-white">Nostr Hack & Design</p>
       <p className="text-body3 font-medium text-white mt-8">
         10th - 24th Mar, 2023
       </p>
@@ -24,7 +22,7 @@ export const bannerData = {
   img: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/c4d66b2b-24e4-4b15-1728-f01e9165c100/public",
   link: {
     content: "Registration Open",
-    url: createRoute({ type: "tournament", id: 2 }),
+    url: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
     newTab: false,
   },
 };

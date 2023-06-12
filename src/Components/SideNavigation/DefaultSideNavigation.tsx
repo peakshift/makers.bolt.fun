@@ -40,17 +40,17 @@ const navItems: NavItem[] = [
     text: "Explore Projects",
   },
   // {
-  //   href: createRoute({ type: "tournament", id: 3 }),
+  //   href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
   //   icon: "🤖",
   //   text: "#AI4ALL",
   // },
   {
-    href: createRoute({ type: "tournament", id: 2 }),
+    href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
     icon: "🦩",
     text: "#NostrHack",
   },
   {
-    href: createRoute({ type: "tournament", id: 1 }),
+    href: createRoute({ type: "tournament", idOrSlug: "legends-of-lightning" }),
     icon: "🏆",
     text: "#LegendsOfLightning",
   },
