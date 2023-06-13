@@ -127,7 +127,7 @@ export default function RegisterCard({
       )}
       <div>
         <p className="text-body5 text-gray-900 font-medium">
-          Sponsors & collaborators
+          Organisers & Sponsors
         </p>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-y-16 gap-x-10 mt-16">
           {partners.map((p, idx) => (

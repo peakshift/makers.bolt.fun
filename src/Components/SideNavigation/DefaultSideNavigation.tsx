@@ -39,11 +39,15 @@ const navItems: NavItem[] = [
     icon: "🚀",
     text: "Explore Projects",
   },
-  // {
-  //   href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
-  //   icon: "🤖",
-  //   text: "#AI4ALL",
-  // },
+  {
+    href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
+    icon: "🤖",
+    text: "#AI4ALL",
+    badge: {
+      text: "JOIN!",
+      color: "red",
+    },
+  },
   {
     href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
     icon: "🦩",

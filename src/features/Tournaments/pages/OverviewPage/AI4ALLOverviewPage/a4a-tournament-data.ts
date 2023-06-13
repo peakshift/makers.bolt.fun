@@ -3,7 +3,7 @@ import { TournamentStaticData } from "../../types";
 export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
   chat: {
     type: "discord",
-    link: "https://discord.gg/wZKUjf4NRa",
+    link: "https://discord.gg/AVgabQzCqJ", // general chat
   },
 
   schedule: [],
@@ -16,9 +16,15 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       isPrimary: true,
     },
     {
+      link: "https://www.stakwork.com/",
+      image:
+        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/15fae9f1-3f9d-4fa7-5992-0e052111fc00/original",
+      isPrimary: true,
+    },
+    {
       link: "https://replit.com/",
       image:
-        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fblog.replit.com%2Fimages%2Fnew_logo%2Flogotype.png%3Fv%3D1664916455431&f=1&nofb=1&ipt=b17bfcfa1e9e989b739f17edc24280c1706ce2f02a3d113021b464752a676f95&ipo=images",
+        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/f9fea1da-e968-420d-a274-52af966b2800/original",
       isPrimary: true,
     },
   ],
@@ -26,25 +32,15 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
   tracksAndPrizes: [
     {
       id: 1,
-      title: "Grand Champion",
+      title: "Overall",
       description:
         "The Paperclip Maximizer, the AGI-pocalypse bringer himself! Every project entered will be eligible for this award, no matter what track they choose.",
       image: "https://i.ibb.co/2gMLDmJ/grand-prize.png",
       prizes: [
         {
           id: 1,
-          title: "the legend",
-          amount: "1 BTC",
-        },
-        {
-          id: 2,
-          title: "",
-          amount: "0.5 BTC",
-        },
-        {
-          id: 3,
-          title: "",
-          amount: "0.5 BTC",
+          title: "Prize",
+          amount: "$10,000",
         },
       ],
       sponsor: {
@@ -53,30 +49,15 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     },
     {
       id: 2,
-      title: "Machine Payments",
+      title: "Agents (Machine Payments)",
       description:
-        "Focusing on scalability and product market fit, this track allows makers to let their imaginations run wild with either lightning or on-chain technology.",
+        "This track is for projects that use bitcoin to give agents and LLMs the ability to use bitcoin in interesting ways to perform economic actions.",
       image: "https://i.ibb.co/d4vxYXD/global-adoption-lg.png",
       prizes: [
         {
           id: 4,
-          title: " 1st",
-          amount: "$5k",
-        },
-        {
-          id: 5,
-          title: " 2nd",
-          amount: "$2.5k",
-        },
-        {
-          id: 6,
-          title: " 3rd",
-          amount: "$1.5k",
-        },
-        {
-          id: 7,
-          title: " Design",
-          amount: "$1k",
+          title: " Prize",
+          amount: "$1000",
         },
       ],
       sponsor: {
@@ -87,28 +68,13 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       id: 3,
       title: "Privacy",
       description:
-        "In partnership with ABC 22, this track seeks to encourage makers to build solutions that solve African challenges & increase bitcoin adoption by Africans.",
+        "This track is for projects that explore the tradeoffs of the new wave of generative AI and privacy: how can we use these tools and 3rd parties without giving up our rights and freedoms?",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
       prizes: [
         {
           id: 8,
-          title: " 1st",
-          amount: "$5k",
-        },
-        {
-          id: 9,
-          title: " 2nd",
-          amount: "$2.5k",
-        },
-        {
-          id: 10,
-          title: " 3rd",
-          amount: "$1.5k",
-        },
-        {
-          id: 11,
-          title: " Design",
-          amount: "$1k",
+          title: " Prize",
+          amount: "$1000",
         },
       ],
       sponsor: {
@@ -117,30 +83,15 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     },
     {
       id: 4,
-      title: "Community",
+      title: "Training",
       description:
-        "Democratize access to AI resources. Bring generative AI to the largest audience possible through local deployments, privacy, and micropayments.",
+        "There's a ton of work required to build, train, clean data for, fine tune, and run RLHF on AI models. This track is about using Bitcoin to coordinate the economic incentives around building and running AI models at scale (large or small)",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
       prizes: [
         {
           id: 12,
-          title: " 1st",
-          amount: "$5k",
-        },
-        {
-          id: 13,
-          title: " 2nd",
-          amount: "$2.5k",
-        },
-        {
-          id: 14,
-          title: " 3rd",
-          amount: "$1.5k",
-        },
-        {
-          id: 15,
-          title: " Design",
-          amount: "$1k",
+          title: " Prize",
+          amount: "$1000",
         },
       ],
       sponsor: {
@@ -151,28 +102,13 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       id: 5,
       title: "Bitcoin Education",
       description:
-        "Use generative AI to make educational bitcoin content to orange pill the world!",
+        "Generative AI lets us build personalized educational tracks and materials to help onboard the rest of the world to using bitcoin. This track is about using AI to orange pill people in interesting ways.",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
       prizes: [
         {
           id: 16,
-          title: " 1st",
-          amount: "$5k",
-        },
-        {
-          id: 17,
-          title: " 2nd",
-          amount: "$2.5k",
-        },
-        {
-          id: 18,
-          title: " 3rd",
-          amount: "$1.5k",
-        },
-        {
-          id: 19,
-          title: " Design",
-          amount: "$1k",
+          title: " Prize",
+          amount: "$1000",
         },
       ],
       sponsor: {
