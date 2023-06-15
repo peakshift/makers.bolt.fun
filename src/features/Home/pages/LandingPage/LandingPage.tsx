@@ -14,7 +14,7 @@ export default function LandingPage() {
     <>
       <OgTags
         title="Build on Bitcoin | BOLT FUN"
-        description="The Founders Club is an exclusive space on BOLT.FUN that offers a safe and supportive environment for makers to pitch their ideas, connect, learn and share their experiences. "
+        description="People are building the future of the internet with Bitcoin. From social networks, to streaming payments, and even custom assets. Now we celebrate 10 years of 0 downtime and fast with layer 2!"
         image={SocialPreviewImage}
       />
       <main
