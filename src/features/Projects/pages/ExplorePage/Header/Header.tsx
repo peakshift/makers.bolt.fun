@@ -10,19 +10,19 @@ import { IoLocationOutline } from "react-icons/io5";
 export const bannerData = {
   title: (
     <>
-      <p className="text-body1 font-bolder text-white">Nostr Hack & Design</p>
+      <p className="text-body1 font-bolder text-white">AI4ALL</p>
       <p className="text-body3 font-medium text-white mt-8">
-        10th - 24th Mar, 2023
+        1st Jul - 31th Jul, 2023
       </p>
       <p className="text-body4 text-white mt-8">
         <IoLocationOutline className="mr-8" /> Online
       </p>
     </>
   ),
-  img: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/c4d66b2b-24e4-4b15-1728-f01e9165c100/public",
+  img: "https://images-ext-2.discordapp.net/external/RaQ6rDyBvRQzZNXnf0dugeRSjkm-Q6lWjvwQAGAiFHo/https/imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/3b423956-fc1f-49dc-ba8c-1244d055b300/original",
   link: {
     content: "Registration Open",
-    url: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
+    url: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
     newTab: false,
   },
 };
