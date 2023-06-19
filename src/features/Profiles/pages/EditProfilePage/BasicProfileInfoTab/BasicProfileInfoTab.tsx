@@ -36,6 +36,7 @@ const schema: yup.SchemaOf<IFormInputs> = yup
     jobTitle: yup.string().ensure(),
     lightning_address: yup
       .string()
+      .trim()
       .test({
         name: "is valid lightning_address",
         test: async (value) => {
