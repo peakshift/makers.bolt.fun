@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import Button from 'src/Components/Button/Button';
 import { Direction, replaceModal } from 'src/redux/features/modals.slice';
 import BasicSelectInput from 'src/Components/Inputs/Selects/BasicSelectInput/BasicSelectInput';
-import { GetTournamentByIdDocument, TournamentMakerHackingStatusEnum, useRegisterInTournamentMutation } from 'src/graphql';
+import { GetTournamentByIdDocument, GetTournamentByIdQueryVariables, MeTournamentDocument, MeTournamentQueryVariables, TournamentMakerHackingStatusEnum, useRegisterInTournamentMutation } from 'src/graphql';
 import InfoCard from 'src/Components/InfoCard/InfoCard';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -93,8 +93,13 @@ export default function RegistrationDetails({ onClose, direction, ...props }: Pr
             refetchQueries: [{
                 query: GetTournamentByIdDocument,
                 variables: {
+                    idOrSlug: props.tournamentId.toString()
+                } as GetTournamentByIdQueryVariables
+            },{
+                query: MeTournamentDocument,
+                variables: {
                     id: props.tournamentId
-                }
+                } as MeTournamentQueryVariables
             }]
         })
             .catch(() => {
