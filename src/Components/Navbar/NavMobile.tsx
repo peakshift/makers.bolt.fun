@@ -223,7 +223,10 @@ export default function NavMobile({ renderNotificationsList }: Props) {
         </div>
       </nav>
 
-      <div className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]">
+      <div
+        className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]"
+        style={{ height: "calc(100dvh - 67px)" }}
+      >
         {drawerOpen && (
           <button
             onClick={() => onToggleDrawer()}
@@ -234,7 +237,7 @@ export default function NavMobile({ renderNotificationsList }: Props) {
         <motion.div
           className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border px-16 flex flex-col"
           variants={navListVariants}
-          style={{ height: "calc(100vh - 67px)" }}
+          style={{ height: "calc(100dvh - 67px)" }}
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
