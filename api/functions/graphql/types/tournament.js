@@ -17,6 +17,7 @@ const {
 } = require("./helpers");
 const { ApolloError } = require("@apollo/client");
 const { PrismaSelect } = require("@paljs/plugins");
+const { queueService } = require("../../../services/queue.service");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
@@ -725,10 +726,10 @@ const registerInTournament = extendType({
         { tournament_id, data: { email, hacking_status } },
         ctx
       ) {
-        const user = ctx.user;
+        const user_id = ctx.user?.id;
 
         // Do some validation
-        if (!user?.id) throw new Error("You have to login");
+        if (!user_id) throw new Error("You have to login");
 
         // Email verification here:
         // ....
@@ -737,7 +738,7 @@ const registerInTournament = extendType({
         const alreadyRegistered = await prisma.tournamentParticipant.findFirst({
           where: {
             tournament_id,
-            user_id: user.id,
+            user_id,
           },
           include: {
             user: true,
@@ -746,11 +747,11 @@ const registerInTournament = extendType({
 
         if (alreadyRegistered) return alreadyRegistered.user;
 
-        return prisma.tournamentParticipant
+        const res = await prisma.tournamentParticipant
           .create({
             data: {
               tournament_id,
-              user_id: user.id,
+              user_id,
               email,
               hacking_status,
             },
@@ -759,6 +760,15 @@ const registerInTournament = extendType({
             },
           })
           .then((data) => data.user);
+
+        await queueService.newUserRegisteredInTournament({
+          user_id: res.id,
+          user_name: res.name,
+          tournament_id,
+          email,
+        });
+
+        return res;
       },
     });
   },
@@ -865,6 +875,13 @@ const addProjectToTournament = extendType({
           update: {
             track_id,
           },
+        });
+
+        await queueService.newProjectSubmittedInTournament({
+          user_id: user.id,
+          project_id,
+          tournament_id,
+          track_id,
         });
 
         return getUserParticipationInfo(user.id, tournament_id);
