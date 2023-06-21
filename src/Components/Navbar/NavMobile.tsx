@@ -292,7 +292,10 @@ export default function NavMobile({ renderNotificationsList }: Props) {
               <a href="mailto:team@peakshift.com">Contacts</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Legal</a>
+              <Link to="/terms-conditions">Terms & Conditions</Link>
+            </li>
+            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
+              <Link to="/privacy-policy">Privacy Policy</Link>{" "}
             </li>
           </ul>
         </motion.div>
