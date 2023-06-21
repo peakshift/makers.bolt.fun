@@ -7,6 +7,7 @@ import { useCountdown } from "src/utils/hooks";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { twMerge } from "tailwind-merge";
 import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
+import { TournamentStaticData } from "../../types";
 
 interface Props {
   start_date: string;
@@ -14,7 +15,7 @@ interface Props {
   avatars: string[];
   isRegistered: boolean;
   isRegistrationOpen?: boolean;
-  partners: { link: string; image: string; isPrimary?: boolean }[];
+  partnersList: TournamentStaticData["partnersList"];
   chat: { type: string; link: string };
 }
 
@@ -24,7 +25,7 @@ export default function RegisterCard({
   avatars,
   isRegistered,
   isRegistrationOpen,
-  partners,
+  partnersList,
   chat,
 }: Props) {
   const counter = useCountdown(start_date);
@@ -125,29 +126,34 @@ export default function RegisterCard({
           )}
         </div>
       )}
-      <div>
-        <p className="text-body5 text-gray-900 font-medium">
-          Organisers & Sponsors
-        </p>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-y-16 gap-x-10 mt-16">
-          {partners.map((p, idx) => (
-            <a
-              className={twMerge(
-                "aspect-square rounded-16 overflow-hidden border border-gray-200",
-                p.isPrimary && "col-[1/-1] aspect-auto rounded-0 border-none"
-              )}
-              key={idx}
-              href={p.link}
-            >
-              <img
-                src={p.image}
-                className="w-full h-full object-cover"
-                alt=""
-              />
-            </a>
-          ))}
-        </div>
-      </div>
+      <ul className="flex flex-col gap-24">
+        {partnersList.map((partners, idx) => (
+          <li key={idx}>
+            <p className="text-body5 text-gray-900 font-medium">
+              {partners.title}
+            </p>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-y-16 gap-x-10 mt-16">
+              {partners.items.map((p, idx) => (
+                <a
+                  className={twMerge(
+                    "aspect-square rounded-16 overflow-hidden border border-gray-200",
+                    p.isBigImage &&
+                      "col-[1/-1] aspect-auto rounded-0 border-none"
+                  )}
+                  key={idx}
+                  href={p.link}
+                >
+                  <img
+                    src={p.image}
+                    className="w-full h-full object-cover"
+                    alt=""
+                  />
+                </a>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 }

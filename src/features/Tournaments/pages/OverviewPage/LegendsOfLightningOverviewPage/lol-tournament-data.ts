@@ -8,59 +8,66 @@ export const LOL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
 
   schedule: [],
 
-  partners: [
+  partnersList: [
     {
-      link: "https://fulgur.ventures/",
-      image: "https://i.ibb.co/7zhq234/fulgur.png",
-      isPrimary: true,
-    },
-    {
-      link: "https://peakshift.com/",
-      image: "https://i.ibb.co/nPJVd7s/ps.png",
-    },
-    {
-      link: "https://www.afrobitcoin.org/",
-      image: "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
-    },
-    {
-      link: "https://bitcoin.design/",
-      image: "https://i.ibb.co/cgY6zy2/bitcoin-design.jpg",
-    },
-    {
-      link: "https://voltage.cloud/",
-      image: "https://i.ibb.co/vd6mQfg/voltage.png",
-    },
-    {
-      link: "https://lightning.engineering/",
-      image: "https://i.ibb.co/x34whhN/lightning.png",
-    },
-    {
-      link: "https://galoy.io",
-      image: "https://i.ibb.co/xCcT4Hw/galoy2.jpg",
-    },
-    {
-      link: "https://breez.technology/",
-      image: "https://i.ibb.co/6stx8tC/breez.webp",
-    },
-    {
-      link: "https://www.getmash.com",
-      image: "https://i.ibb.co/fxNh5v3/mash-logo.png",
-    },
-    {
-      link: "https://2022.tabconf.com/",
-      image: "https://i.ibb.co/zFGVqvV/tab-conf.jpg",
-    },
-    {
-      link: "https://geyser.fund/",
-      image: "https://i.ibb.co/tp6L5bt/geyser.jpg",
-    },
-    {
-      link: "https://opensats.org/",
-      image: "https://i.ibb.co/b5y29TL/open-sats.jpg",
-    },
-    {
-      link: "https://adoptingbitcoin.org/2022/",
-      image: "https://i.ibb.co/HdvRbxQ/Screenshot-2022-09-14-at-17-06-33.jpg",
+      title: "Organizers & Sponsors",
+      items: [
+        {
+          link: "https://fulgur.ventures/",
+          image: "https://i.ibb.co/7zhq234/fulgur.png",
+          isBigImage: true,
+        },
+        {
+          link: "https://peakshift.com/",
+          image: "https://i.ibb.co/nPJVd7s/ps.png",
+        },
+        {
+          link: "https://www.afrobitcoin.org/",
+          image:
+            "https://i.ibb.co/qDZYrGz/Screenshot-2022-09-14-at-17-03-47.jpg",
+        },
+        {
+          link: "https://bitcoin.design/",
+          image: "https://i.ibb.co/cgY6zy2/bitcoin-design.jpg",
+        },
+        {
+          link: "https://voltage.cloud/",
+          image: "https://i.ibb.co/vd6mQfg/voltage.png",
+        },
+        {
+          link: "https://lightning.engineering/",
+          image: "https://i.ibb.co/x34whhN/lightning.png",
+        },
+        {
+          link: "https://galoy.io",
+          image: "https://i.ibb.co/xCcT4Hw/galoy2.jpg",
+        },
+        {
+          link: "https://breez.technology/",
+          image: "https://i.ibb.co/6stx8tC/breez.webp",
+        },
+        {
+          link: "https://www.getmash.com",
+          image: "https://i.ibb.co/fxNh5v3/mash-logo.png",
+        },
+        {
+          link: "https://2022.tabconf.com/",
+          image: "https://i.ibb.co/zFGVqvV/tab-conf.jpg",
+        },
+        {
+          link: "https://geyser.fund/",
+          image: "https://i.ibb.co/tp6L5bt/geyser.jpg",
+        },
+        {
+          link: "https://opensats.org/",
+          image: "https://i.ibb.co/b5y29TL/open-sats.jpg",
+        },
+        {
+          link: "https://adoptingbitcoin.org/2022/",
+          image:
+            "https://i.ibb.co/HdvRbxQ/Screenshot-2022-09-14-at-17-06-33.jpg",
+        },
+      ],
     },
   ],
 

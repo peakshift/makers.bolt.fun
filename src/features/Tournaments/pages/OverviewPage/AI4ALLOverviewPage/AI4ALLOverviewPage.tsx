@@ -1,11 +1,9 @@
-import DOMPurify from "dompurify";
 import { marked } from "marked";
 import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
 import { purifyHtml } from "src/utils/validation";
 import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
 import FAQsSection from "../FAQsSection/FAQsSection";
-import JudgesSection from "../JudgesSection/JudgesSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
 
@@ -14,7 +12,7 @@ export default function LegendsOfLightningOverviewPage() {
     tournamentDetails,
     makers,
     myParticipationInfo,
-    staticData: { partners, chat, tracksAndPrizes, config },
+    staticData: { partnersList, chat, tracksAndPrizes, config },
   } = useTournament();
 
   return (
@@ -42,7 +40,7 @@ export default function LegendsOfLightningOverviewPage() {
             avatars={makers.map((m) => m.user.avatar)}
             isRegistered={!!myParticipationInfo}
             isRegistrationOpen={config.registerationOpen}
-            partners={partners}
+            partnersList={partnersList}
             chat={chat}
           />
         </div>

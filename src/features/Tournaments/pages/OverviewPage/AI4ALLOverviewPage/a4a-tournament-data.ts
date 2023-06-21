@@ -8,24 +8,34 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
 
   schedule: [],
 
-  partners: [
+  partnersList: [
     {
-      link: "https://fedi.xyz/",
-      image:
-        "https://mma.prnewswire.com/media/2068426/fedi_brandmark_dark_Logo.jpg?p=publish",
-      isPrimary: true,
+      title: "Organizers",
+      items: [
+        {
+          link: "https://fedi.xyz/",
+          image:
+            "https://mma.prnewswire.com/media/2068426/fedi_brandmark_dark_Logo.jpg?p=publish",
+          isBigImage: true,
+        },
+        {
+          link: "https://www.stakwork.com/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/15fae9f1-3f9d-4fa7-5992-0e052111fc00/original",
+          isBigImage: true,
+        },
+      ],
     },
     {
-      link: "https://www.stakwork.com/",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/15fae9f1-3f9d-4fa7-5992-0e052111fc00/original",
-      isPrimary: true,
-    },
-    {
-      link: "https://replit.com/",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/f9fea1da-e968-420d-a274-52af966b2800/original",
-      isPrimary: true,
+      title: "Collaborators",
+      items: [
+        {
+          link: "https://replit.com/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/f9fea1da-e968-420d-a274-52af966b2800/original",
+          isBigImage: true,
+        },
+      ],
     },
   ],
 

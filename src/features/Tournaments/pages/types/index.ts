@@ -1,16 +1,21 @@
 import { Filter } from "nostr-tools";
 import { TrackAndPrizes } from "../OverviewPage/PrizesSection/PrizesSection";
 
+interface Partner {
+  link: string;
+  image: string;
+  isBigImage?: boolean;
+}
+
 export interface TournamentStaticData {
   chat: {
     type: string;
     link: string;
   };
 
-  partners: Array<{
-    link: string;
-    image: string;
-    isPrimary?: boolean;
+  partnersList: Array<{
+    title: string;
+    items: Partner[];
   }>;
 
   tracksAndPrizes: Array<TrackAndPrizes>;

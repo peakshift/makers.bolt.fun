@@ -8,36 +8,41 @@ export const NOSTR_HACK_WEEK_STATIC_DATA: TournamentStaticData = {
     link: "https://t.me/nostrdesign",
   },
 
-  partners: [
+  partnersList: [
     {
-      link: "https://wolfnyc.com",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/64bd8c50-35fd-4e16-ffbe-3a22adaf7600/public",
-      isPrimary: true,
-    },
-    {
-      link: "https://spiral.xyz/",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/be64459d-7ead-4094-19f1-9ebd1a003200/public",
-      isPrimary: true,
-    },
-    {
-      link: "https://getalby.com/",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/19ad3cc8-5d88-403e-bd3c-7c38cea2b000/public",
-      isPrimary: true,
-    },
-    {
-      link: "https://twitter.com/peakshift/",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2e55f932-c9a6-4c9f-adce-83c0eca2a100/public",
-      isPrimary: true,
-    },
-    {
-      link: "https://www.bradmills.ca/",
-      image:
-        "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/bf4a4ead-7fd5-4414-8348-d286c2340000/public",
-      isPrimary: true,
+      title: "Organizers & Sponsors",
+      items: [
+        {
+          link: "https://wolfnyc.com",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/64bd8c50-35fd-4e16-ffbe-3a22adaf7600/public",
+          isBigImage: true,
+        },
+        {
+          link: "https://spiral.xyz/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/be64459d-7ead-4094-19f1-9ebd1a003200/public",
+          isBigImage: true,
+        },
+        {
+          link: "https://getalby.com/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/19ad3cc8-5d88-403e-bd3c-7c38cea2b000/public",
+          isBigImage: true,
+        },
+        {
+          link: "https://twitter.com/peakshift/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2e55f932-c9a6-4c9f-adce-83c0eca2a100/public",
+          isBigImage: true,
+        },
+        {
+          link: "https://www.bradmills.ca/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/bf4a4ead-7fd5-4414-8348-d286c2340000/public",
+          isBigImage: true,
+        },
+      ],
     },
   ],
 

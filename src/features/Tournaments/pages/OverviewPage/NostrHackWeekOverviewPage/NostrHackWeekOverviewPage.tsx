@@ -14,7 +14,7 @@ export default function NostrHackWeekOverviewPage() {
     tournamentDetails,
     makers,
     myParticipationInfo,
-    staticData: { partners, chat, tracksAndPrizes, config },
+    staticData: { partnersList, chat, tracksAndPrizes, config },
   } = useTournament();
 
   return (
@@ -43,7 +43,7 @@ export default function NostrHackWeekOverviewPage() {
             avatars={makers.map((m) => m.user.avatar)}
             isRegistered={!!myParticipationInfo}
             isRegistrationOpen={config.registerationOpen}
-            partners={partners}
+            partnersList={partnersList}
             chat={chat}
           />
         </div>
