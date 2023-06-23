@@ -48,6 +48,7 @@ export interface NexusGenInputs {
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
+    replit?: string | null; // String
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
     tagline: string; // String!
@@ -129,6 +130,7 @@ export interface NexusGenInputs {
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
+    replit?: string | null; // String
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
     tagline: string; // String!
@@ -296,6 +298,7 @@ export interface NexusGenObjects {
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
     npub?: string | null; // String
+    replit?: string | null; // String
     slack?: string | null; // String
     tagline: string; // String!
     telegram?: string | null; // String
@@ -616,6 +619,7 @@ export interface NexusGenFieldTypes {
     npub: string | null; // String
     permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
+    replit: string | null; // String
     screenshots: string[]; // [String!]!
     slack: string | null; // String
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
@@ -1041,6 +1045,7 @@ export interface NexusGenFieldTypeNames {
     npub: 'String'
     permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
+    replit: 'String'
     screenshots: 'String'
     slack: 'String'
     stories: 'Story'

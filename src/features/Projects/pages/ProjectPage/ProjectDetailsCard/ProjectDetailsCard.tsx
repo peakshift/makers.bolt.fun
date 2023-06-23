@@ -30,6 +30,7 @@ import { IoMdClose } from "react-icons/io";
 import { sortMembersByRole } from "src/features/Projects/utils/helperFunctions";
 import { GiOstrich } from "react-icons/gi";
 import { Tooltip } from "react-tooltip";
+import { SiReplit } from "react-icons/si";
 
 interface Props extends ModalCard {
   projectId: number;
@@ -133,6 +134,14 @@ export default function ProjectDetailsCard({
       colors: "bg-pink-100 text-pink-600",
       url: project.figma,
       label: "Figma",
+    },
+    {
+      value: project.replit,
+      text: project.replit,
+      icon: SiReplit,
+      colors: "bg-orange-100 text-orange-600",
+      url: project.replit,
+      label: "Replit",
     },
   ];
 

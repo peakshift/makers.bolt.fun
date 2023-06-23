@@ -61,6 +61,7 @@ const Project = objectType({
     t.string("github");
     t.string("slack");
     t.string("figma");
+    t.string("replit");
     t.string("npub");
     t.string("telegram");
     t.nonNull.list.nonNull.string("screenshots", {
@@ -648,6 +649,7 @@ const CreateProjectInput = inputObjectType({
     t.string("slack");
     t.string("telegram");
     t.string("figma");
+    t.string("replit");
     t.string("npub");
     t.string("lightning_address");
     t.nonNull.int("category_id");
@@ -692,6 +694,7 @@ const createProject = extendType({
           discord,
           github,
           figma,
+          replit,
           npub,
           slack,
           telegram,
@@ -810,6 +813,7 @@ const createProject = extendType({
             telegram,
             launch_status,
             figma,
+            replit,
             npub,
 
             ...coverImageRel,
@@ -903,6 +907,7 @@ const UpdateProjectInput = inputObjectType({
     t.string("slack");
     t.string("telegram");
     t.string("figma");
+    t.string("replit");
     t.string("npub");
     t.string("lightning_address");
     t.nonNull.int("category_id");
@@ -941,6 +946,7 @@ const updateProject = extendType({
           discord,
           github,
           figma,
+          replit,
           npub,
           slack,
           telegram,
@@ -1149,6 +1155,7 @@ const updateProject = extendType({
               twitter,
               slack,
               figma,
+              replit,
               npub,
               telegram,
               launch_status,

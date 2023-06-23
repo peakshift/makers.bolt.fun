@@ -6,6 +6,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NotificationsService } from "src/services";
 import { GiOstrich } from "react-icons/gi";
 import { Tooltip } from "react-tooltip";
+import { SiReplit } from "react-icons/si";
 
 interface Props {
   links: Pick<
@@ -17,6 +18,7 @@ interface Props {
     | "slack"
     | "telegram"
     | "figma"
+    | "replit"
     | "npub"
   >;
 }
@@ -68,6 +70,14 @@ export default function LinksCard({ links }: Props) {
       colors: "bg-pink-100 text-pink-600",
       url: links.figma,
       label: "Figma",
+    },
+    {
+      value: links.replit,
+      text: links.replit,
+      icon: SiReplit,
+      colors: "bg-orange-100 text-orange-600",
+      url: links.replit,
+      label: "Replit",
     },
   ];
 

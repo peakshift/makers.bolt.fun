@@ -169,6 +169,7 @@ model Project {
   telegram            String?
   slack               String?
   figma               String?
+  replit              String?
   npub                String?
   contact_email       String?
   thumbnail_image     String?

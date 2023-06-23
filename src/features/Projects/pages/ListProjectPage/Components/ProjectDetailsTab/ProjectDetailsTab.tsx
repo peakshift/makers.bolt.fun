@@ -3,6 +3,7 @@ import Card from "src/Components/Card/Card";
 import { FaDiscord, FaFigma, FaSlack, FaTelegram } from "react-icons/fa";
 import { GiOstrich } from "react-icons/gi";
 import { FiGithub, FiTwitter } from "react-icons/fi";
+import { SiReplit } from "react-icons/si";
 import CategoriesInput from "../CategoriesInput/CategoriesInput";
 import CapabilitiesInput from "../CapabilitiesInput/CapabilitiesInput";
 import { IListProjectForm } from "../FormContainer/FormContainer";
@@ -296,6 +297,23 @@ export default function ProjectDetailsTab(props: Props) {
             {errors.figma && (
               <p className="input-error" role="alert">
                 {errors.figma.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <TextInput
+              className="mt-8"
+              isError={!!errors.replit}
+              renderBefore={() => (
+                <SiReplit className="text-orange-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
+              )}
+              aria-label="Replit Link"
+              placeholder="https://replit.com/@username/project-name"
+              {...register("replit")}
+            />
+            {errors.replit && (
+              <p className="input-error" role="alert">
+                {errors.replit.message}
               </p>
             )}
           </div>
