@@ -37,6 +37,23 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         },
       ],
     },
+    {
+      title: "Sponsors",
+      items: [
+        {
+          link: "https://hivemind.vc",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/5bf55e42-8eca-41c1-94b6-5b5d1adf0900/original",
+          isBigImage: true,
+        },
+        {
+          link: "https://spiritofsatoshi.ai/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/b1b9a5b5-87b7-4e7d-e8d5-c6edac962b00/original",
+          isBigImage: true,
+        },
+      ],
+    },
   ],
 
   tracksAndPrizes: [
@@ -53,9 +70,6 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$10,000",
         },
       ],
-      sponsor: {
-        logo: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2cb3bc6d-65bc-42d5-b751-666d6cb56100/original",
-      },
     },
     {
       id: 2,
@@ -70,9 +84,6 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      sponsor: {
-        logo: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2cb3bc6d-65bc-42d5-b751-666d6cb56100/original",
-      },
     },
     {
       id: 3,
@@ -87,9 +98,6 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      sponsor: {
-        logo: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2cb3bc6d-65bc-42d5-b751-666d6cb56100/original",
-      },
     },
     {
       id: 4,
@@ -104,9 +112,6 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      sponsor: {
-        logo: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2cb3bc6d-65bc-42d5-b751-666d6cb56100/original",
-      },
     },
     {
       id: 5,
@@ -121,9 +126,6 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      sponsor: {
-        logo: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/2cb3bc6d-65bc-42d5-b751-666d6cb56100/original",
-      },
     },
   ],
 
