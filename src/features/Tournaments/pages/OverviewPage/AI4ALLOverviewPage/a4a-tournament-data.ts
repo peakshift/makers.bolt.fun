@@ -21,7 +21,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         {
           link: "https://www.stakwork.com/",
           image:
-            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/15fae9f1-3f9d-4fa7-5992-0e052111fc00/original",
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/06bb6244-6812-4d21-e675-9d7b1db6f400/original",
           isBigImage: true,
         },
       ],
