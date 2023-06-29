@@ -16,7 +16,7 @@ const PRIVACY_POLICY = `
 
 5. **Data Retention**: We only retain personal data for as long as necessary to fulfill the purposes we collected it for, including for the purposes of satisfying any legal, accounting, or reporting requirements.
 
-6. **Rights**: As a data subject in the European Union, you have the right to access, rectify, or erase any personal data we have collected. Please contact us at [contact email] to exercise these rights.
+6. **Rights**: As a data subject in the European Union, you have the right to access, rectify, or erase any personal data we have collected. Please contact us at [hackathons@peakshift.com](mailto:hackathons@peakshift.com) to exercise these rights.
 
 This policy is subject to change and we recommend checking this page periodically for updates.
 `;
