@@ -45,7 +45,7 @@ export default function LegendsOfLightningOverviewPage() {
           />
         </div>
         <PrizesSection tracks={tracksAndPrizes} />
-        {/* <JudgesSection judges={tournamentDetails.judges} /> */}
+        <JudgesSection judges={tournamentDetails.judges} />
         <FAQsSection faqs={tournamentDetails.faqs} />
       </Card>
     </>
