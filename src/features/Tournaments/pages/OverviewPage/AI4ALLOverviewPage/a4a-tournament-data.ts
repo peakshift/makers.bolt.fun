@@ -52,6 +52,12 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/b1b9a5b5-87b7-4e7d-e8d5-c6edac962b00/original",
           isBigImage: true,
         },
+        {
+          link: "https://premai.io/",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/7b6df226-c883-40a7-d332-6bc3faf4d700/original",
+          isBigImage: true,
+        },
       ],
     },
   ],

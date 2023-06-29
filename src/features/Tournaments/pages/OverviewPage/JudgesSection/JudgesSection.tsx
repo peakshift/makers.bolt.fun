@@ -22,7 +22,6 @@ export default function JudgesSection({ judges }: Props) {
                     className="p-16 rounded-16 flex flex-col justify-center items-center gap-16 md:gap-24"
                     style={{ backgroundColor: colors[idx] }}
                 >
-                    <img src={judge.avatar} className='w-[100px] md:w-[128px] aspect-square object-contain' alt="" />
                     <div className='text-center'>
                         <p className='text-body4 font-medium'>{judge.name}</p>
                         <p className='text-body4 mt-4'>{judge.company}</p>
