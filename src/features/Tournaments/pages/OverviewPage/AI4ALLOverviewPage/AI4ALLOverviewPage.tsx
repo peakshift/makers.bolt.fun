@@ -3,6 +3,7 @@ import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
 import { purifyHtml } from "src/utils/validation";
 import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
+import JudgesSection from "../JudgesSection/JudgesSection";
 import FAQsSection from "../FAQsSection/FAQsSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
 import RegisterCard from "../RegisterCard/RegisterCard";

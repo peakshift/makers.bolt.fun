@@ -13,6 +13,8 @@ export default function JudgesSection({ judges }: Props) {
         return judges.map((_, i) => bgColors[i % bgColors.length])
     }, [judges])
 
+    console.log("judges", judges);
+
     return (
         <div>
             <h2 className='text-body1 font-bolder text-gray-900 mb-16'>Judges</h2>
@@ -22,10 +24,10 @@ export default function JudgesSection({ judges }: Props) {
                     className="p-16 rounded-16 flex flex-col justify-center items-center gap-16 md:gap-24"
                     style={{ backgroundColor: colors[idx] }}
                 >
-                    <div className='text-center'>
+                    <a className='text-center'>
                         <p className='text-body4 font-medium'>{judge.name}</p>
                         <p className='text-body4 mt-4'>{judge.company}</p>
-                    </div>
+                    </a>
                 </div>)}
             </div>
         </div>
