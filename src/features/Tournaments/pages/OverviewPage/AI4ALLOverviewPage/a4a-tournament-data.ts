@@ -58,6 +58,12 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/7b6df226-c883-40a7-d332-6bc3faf4d700/original",
           isBigImage: true,
         },
+        {
+          link: "http://zebedee.io",
+          image:
+            "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/cbd92d74-423e-44a8-761a-16caeeac0100/original",
+          isBigImage: true,
+        },
       ],
     },
   ],
