@@ -24,10 +24,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       events: [
         {
           event: "Opening Ceremony",
-          time: "13:00",
+          time: "15:00",
           timezone: "UTC",
           location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
+          url: "https://www.youtube.com/watch?v=I9RMay6ZKL8",
           type: "Presentation",
         },
       ],
