@@ -6,7 +6,226 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     link: "https://discord.gg/AVgabQzCqJ", // general chat
   },
 
-  schedule: [],
+  schedule: [
+    {
+      date: "Saturday July 1",
+      events: [
+        {
+          event: "Hacking Begins",
+          time: "00:00",
+          timezone: "UTC",
+          location: null,
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Monday July 3",
+      events: [
+        {
+          event: "Opening Ceremony",
+          time: "13:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Presentation",
+        },
+      ],
+    },
+    {
+      date: "Tuesday July 4",
+      events: [
+        {
+          event: "Let's Build Sauron: Running a Lightning Node from a Repl",
+          time: "9:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+        {
+          event: "Maker Mixer: Western Hemisphere",
+          time: "13:00",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Wednesday July 5",
+      events: [
+        {
+          event: "Coding with WebLN",
+          time: "17:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+        {
+          event: "Maker Mixer: Eastern Hemisphere",
+          time: "19:00",
+          timezone: "UTC",
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Thursday July 6",
+      events: [
+        {
+          event: "LNGPT: Build a Lightning Powered AI Chatbot",
+          time: "3:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+        {
+          event: "Breez / Non-custodial lightning with Breez SDK",
+          time: "11:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+      ],
+    },
+    {
+      date: "Friday July 7",
+      events: [
+        {
+          event: "Check in",
+          time: null,
+          timezone: null,
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Monday July 10",
+      events: [
+        {
+          event: "Pay2Chat: Pay Per Message",
+          time: "12:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+      ],
+    },
+    {
+      date: "Tuesday July 11",
+      events: [
+        {
+          event: "Pay2Chat: Sell Packages using L402",
+          time: "12:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+      ],
+    },
+    {
+      date: "Wednesday July 12",
+      events: [
+        {
+          event: "Fedi-mods / Build Fedimint Module",
+          time: "12:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+        {
+          event: "Pay2Chat: Designing your paid packages",
+          time: "15:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+      ],
+    },
+    {
+      date: "Thursday July 13",
+      events: [
+        {
+          event: "Pay2Chat: First Use & Onboarding (UX)",
+          time: "11:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
+      ],
+    },
+    {
+      date: "Friday July 14",
+      events: [
+        {
+          event: "Check in",
+          time: "10:00 - 11:30",
+          timezone: null,
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Friday July 21",
+      events: [
+        {
+          event: "Check in: Eastern Hemisphere",
+          time: "10:00 - 11:30",
+          timezone: null,
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Friday July 28",
+      events: [
+        {
+          event: "Check in",
+          time: "10:00 - 11:30",
+          timezone: null,
+          location: "BOLT.FUN",
+          type: "Hangout",
+        },
+      ],
+    },
+    {
+      date: "Monday July 31",
+      events: [
+        {
+          event: "Hacking Ends",
+          time: "00:00",
+          timezone: "UTC",
+          location: null,
+          type: null,
+        },
+      ],
+    },
+    {
+      date: "Thursday August 3",
+      events: [
+        {
+          event: "Finals & Results",
+          time: "00:00",
+          timezone: "UTC",
+          location: "Youtube",
+          type: "Presentation",
+        },
+      ],
+    },
+  ],
 
   partnersList: [
     {

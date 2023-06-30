@@ -6,6 +6,7 @@ import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsCont
 import JudgesSection from "../JudgesSection/JudgesSection";
 import FAQsSection from "../FAQsSection/FAQsSection";
 import PrizesSection from "../PrizesSection/PrizesSection";
+import ScheduleSection from "../ScheduleSection/ScheduleSection";
 import RegisterCard from "../RegisterCard/RegisterCard";
 
 export default function LegendsOfLightningOverviewPage() {
@@ -46,6 +47,7 @@ export default function LegendsOfLightningOverviewPage() {
           />
         </div>
         <PrizesSection tracks={tracksAndPrizes} />
+        <ScheduleSection />
         <JudgesSection judges={tournamentDetails.judges} />
         <FAQsSection faqs={tournamentDetails.faqs} />
       </Card>
