@@ -142,6 +142,7 @@ export default function RegisterCard({
                   )}
                   key={idx}
                   href={p.link}
+                  target="_blank"
                 >
                   <img
                     src={p.image}
