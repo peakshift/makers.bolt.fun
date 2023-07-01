@@ -213,18 +213,18 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         },
       ],
     },
-    {
-      date: "Thursday August 3",
-      events: [
-        {
-          event: "Finals & Results",
-          time: "00:00",
-          timezone: "UTC",
-          location: "Youtube",
-          type: "Presentation",
-        },
-      ],
-    },
+    // {
+    //   date: "Thursday August 3",
+    //   events: [
+    //     {
+    //       event: "Finals & Results",
+    //       time: "00:00",
+    //       timezone: "UTC",
+    //       location: "Youtube",
+    //       type: "Presentation",
+    //     },
+    //   ],
+    // },
   ],
 
   partnersList: [
