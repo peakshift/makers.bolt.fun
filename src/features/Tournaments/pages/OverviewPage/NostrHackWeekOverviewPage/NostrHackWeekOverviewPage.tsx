@@ -48,7 +48,6 @@ export default function NostrHackWeekOverviewPage() {
           />
         </div>
         <PrizesSection tracks={tracksAndPrizes} />
-        <ScheduleSection />
         <JudgesSection judges={tournamentDetails.judges} />
       </Card>
       <Card

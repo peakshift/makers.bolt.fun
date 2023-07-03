@@ -31,7 +31,7 @@ export default function Navigation() {
         hide: !showFeed,
       },
       {
-        text: `Events (${tournamentDetails.events_count})`,
+        text: `Events`,
         path: "events",
       },
       {
