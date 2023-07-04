@@ -7,6 +7,12 @@ function invalidateStoryById(id) {
   );
 }
 
+function invalidateTournamentProjects() {
+  return makeRequest(
+    `mutation { _purgeType(type: "TournamentProjectsResponse") }`
+  );
+}
+
 function invalidateUserById(id) {
   return makeRequest(
     `mutation { _purgeType(type: "User", keyFields: [{name: "id", value: "${id}" }]) }`
@@ -36,6 +42,7 @@ function makeRequest(query) {
 const cacheService = {
   invalidateStoryById,
   invalidateUserById,
+  invalidateTournamentProjects,
 };
 
 module.exports = cacheService;

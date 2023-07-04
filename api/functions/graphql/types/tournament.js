@@ -17,6 +17,9 @@ const {
 } = require("./helpers");
 const { ApolloError } = require("@apollo/client");
 const { PrismaSelect } = require("@paljs/plugins");
+const {
+  invalidateTournamentProjects,
+} = require("../../../services/cache.service");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
@@ -867,7 +870,12 @@ const addProjectToTournament = extendType({
           },
         });
 
-        return getUserParticipationInfo(user.id, tournament_id);
+        const [newParticipationInfo] = await Promise.all([
+          getUserParticipationInfo(user.id, tournament_id),
+          invalidateTournamentProjects().catch(console.log),
+        ]);
+
+        return newParticipationInfo;
       },
     });
   },
