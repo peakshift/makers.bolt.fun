@@ -37,10 +37,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       events: [
         {
           event: "Let's Build Sauron: Running a Lightning Node from a Repl",
-          time: "9:00",
+          time: "16:00",
           timezone: "UTC",
           location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
+          url: "https://www.youtube.com/watch?v=q0bSRW3FSkM",
           type: "Workshop",
         },
         {
