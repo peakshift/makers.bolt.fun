@@ -44,7 +44,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Maker Mixer: Western Hemisphere",
+          event: "Maker Mixer: Eastern Hemisphere",
           time: "13:00",
           timezone: "UTC",
           location: "BOLT.FUN",
@@ -64,7 +64,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Maker Mixer: Eastern Hemisphere",
+          event: "Maker Mixer: Western Hemisphere",
           time: "19:00",
           timezone: "UTC",
           location: "BOLT.FUN",
@@ -78,17 +78,9 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         {
           event: "LNGPT: Build a Lightning Powered AI Chatbot",
           time: "3:00",
-          timezone: "UTC",
-          location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
-          type: "Workshop",
-        },
-        {
-          event: "Breez / Non-custodial lightning with Breez SDK",
-          time: "11:00",
-          timezone: "UTC",
-          location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
+          timezone: "PST",
+          location: "Twitch",
+          url: "https://twitch.tv/mckaywrigley",
           type: "Workshop",
         },
       ],

@@ -65,6 +65,17 @@ export default function ScheduleSection() {
                           <FaYoutube className="text-red-600 text-body3" />
                         </a>
                       )}
+                      {event.location === "Twitch" && (
+                        <a
+                          href={event.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mr-10 flex-shrink-0 text-body3"
+                        >
+                          Watch{" "}
+                          <FaYoutube className="text-red-600 text-body3" />
+                        </a>
+                      )}
                       {event.location === "BOLT.FUN" && (
                         <Link
                           to={createRoute({ type: "hangout" })}
