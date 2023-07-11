@@ -102,23 +102,18 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       events: [
         {
           event: "Pay2Chat: Pay Per Message",
-          time: "12:00",
+          time: "11:00",
           timezone: "UTC",
           location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
+          url: "https://www.youtube.com/watch?v=i-4Z-itXEiw",
           type: "Workshop",
         },
-      ],
-    },
-    {
-      date: "Tuesday July 11",
-      events: [
         {
-          event: "Pay2Chat: Sell Packages using L402",
+          event: "Pay2Chat: Pay Per Message",
           time: "12:00",
           timezone: "UTC",
           location: "Youtube",
-          url: "https://www.youtube.com/@BOLTFUN/featured",
+          url: "https://www.youtube.com/watch?v=w7njz9P2je8",
           type: "Workshop",
         },
       ],
@@ -135,7 +130,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Pay2Chat: Designing your paid packages",
+          event: "Pay2Chat: Sell Packages Using L402",
           time: "15:00",
           timezone: "UTC",
           location: "Youtube",
@@ -155,6 +150,14 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           url: "https://www.youtube.com/@BOLTFUN/featured",
           type: "Workshop",
         },
+        {
+          event: "Apature: LangChain + L402 using tools from Lightning Labs",
+          time: "16:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
+        },
       ],
     },
     {
@@ -163,9 +166,17 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         {
           event: "Check in",
           time: "10:00 - 11:30",
-          timezone: null,
+          timezone: "UTC",
           location: "BOLT.FUN",
           type: "Hangout",
+        },
+        {
+          event: "Bits and Bolts: AI, Robots and Bitcoin",
+          time: "13:00 - 14:00",
+          timezone: "UTC",
+          location: "Youtube",
+          url: "https://www.youtube.com/@BOLTFUN/featured",
+          type: "Workshop",
         },
       ],
     },
