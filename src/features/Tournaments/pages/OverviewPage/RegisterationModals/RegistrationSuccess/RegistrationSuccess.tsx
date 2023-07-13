@@ -8,6 +8,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { useAppSelector } from "src/utils/hooks";
 import Button from "src/Components/Button/Button";
 import { createRoute } from "src/utils/routing";
+import { getCurrentTournamentStaticData } from "../../../TournamentDetailsPage/TournamentDetailsContext";
 
 interface Props extends ModalCard {
   tournamentId: number;
@@ -18,6 +19,8 @@ export default function RegistrationSuccess({
   direction,
   ...props
 }: Props) {
+  const staticData = getCurrentTournamentStaticData();
+
   const me = useAppSelector((state) => state.user.me);
 
   if (!me) throw new Error("User not defined");
@@ -85,7 +88,33 @@ export default function RegistrationSuccess({
             </p>
           </div>
         </div>
-
+        {staticData?.makersDeals &&
+          staticData.makersDeals.map((deal) => (
+            <div className="flex w-full gap-8 items-center">
+              <div
+                className={`shrink-0 flex flex-col justify-center items-center bg-gray-50 rounded-8 w-48 h-48`}
+              >
+                💸
+              </div>
+              {deal.link ? (
+                <a href={deal.link} target="_blank" rel="noreferrer">
+                  <div className="self-center px-16 text-left">
+                    <p className="text-body4 text-gray-900 font-medium">
+                      {deal.title}
+                    </p>
+                    <p className="text-body5 text-gray-400">{deal.text}</p>
+                  </div>
+                </a>
+              ) : (
+                <div className="self-center px-16 text-left">
+                  <p className="text-body4 text-gray-900 font-medium">
+                    {deal.title}
+                  </p>
+                  <p className="text-body5 text-gray-400">{deal.text}</p>
+                </div>
+              )}
+            </div>
+          ))}
         <div className="flex flex-col gap-16 w-full mt-24">
           <Button
             fullWidth

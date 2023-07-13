@@ -28,6 +28,8 @@ interface ITournamentDetails {
 
 const Ctx = createContext<ITournamentDetails>(null!);
 
+let currentTournamentStaticData: TournamentStaticData | null = null;
+
 export default function TournamentDetailsContext({
   children,
 }: PropsWithChildren<{}>) {
@@ -60,6 +62,11 @@ export default function TournamentDetailsContext({
       setStaticData(data);
     })();
   }, [tournametTitle]);
+
+  useEffect(() => {
+    if (!staticData) currentTournamentStaticData = null;
+    else currentTournamentStaticData = staticData;
+  }, [staticData]);
 
   if (
     tournaemntQuery.loading ||
@@ -98,6 +105,10 @@ export default function TournamentDetailsContext({
 
 export const useTournament = () => {
   return useContext(Ctx);
+};
+
+export const getCurrentTournamentStaticData = () => {
+  return currentTournamentStaticData;
 };
 
 async function getStaticData(title: string) {

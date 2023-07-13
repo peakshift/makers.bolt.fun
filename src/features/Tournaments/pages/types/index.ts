@@ -38,6 +38,12 @@ export interface TournamentStaticData {
     }[];
   }[];
 
+  makersDeals?: {
+    title: string;
+    text: string;
+    link?: string;
+  }[];
+
   config: {
     registerationOpen: boolean;
     projectsSubmissionOpen: boolean;

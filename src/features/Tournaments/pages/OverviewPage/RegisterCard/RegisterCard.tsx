@@ -143,6 +143,7 @@ export default function RegisterCard({
                   key={idx}
                   href={p.link}
                   target="_blank"
+                  rel="noreferrer"
                 >
                   <img
                     src={p.image}

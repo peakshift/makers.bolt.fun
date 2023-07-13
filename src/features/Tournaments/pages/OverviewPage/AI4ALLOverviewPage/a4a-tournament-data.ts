@@ -360,6 +360,14 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     },
   ],
 
+  makersDeals: [
+    {
+      title: "Get free services from our partners",
+      text: 'Use "ai4all" code to get a free ZEBEDEE Pro subscription NOW!',
+      link: "https://zebedee.io",
+    },
+  ],
+
   config: {
     showFeed: false,
     registerationOpen: true,
