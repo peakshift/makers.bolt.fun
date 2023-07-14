@@ -365,9 +365,9 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
 
   makersDeals: [
     {
-      title: "Get free services from our partners",
-      text: 'Use "ai4all" code to get a free ZEBEDEE Pro subscription NOW!',
-      link: "https://zebedee.io",
+      title: "ZEBEDEE Pro Subscription!",
+      text: "Use code 'ai4all' to get a free subscription though the end of 2023",
+      link: "https://dashboard.zebedee.io/signup",
     },
   ],
 
