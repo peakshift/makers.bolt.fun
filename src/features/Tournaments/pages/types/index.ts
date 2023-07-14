@@ -31,7 +31,7 @@ export interface TournamentStaticData {
     events: {
       event: string;
       time: string | null;
-      timezone: "UTC" | null;
+      timezone: "UTC" | "PST" | null;
       location: "BOLT.FUN" | "Youtube" | "Twitch" | null;
       url?: string;
       type: "Hangout" | "Presentation" | "Workshop" | null;
