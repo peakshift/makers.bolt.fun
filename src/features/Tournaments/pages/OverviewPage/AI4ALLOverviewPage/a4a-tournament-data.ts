@@ -294,8 +294,8 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     {
       id: 1,
       title: "Overall",
-      description:
-        "The Paperclip Maximizer, the AGI-pocalypse bringer himself! Every project entered will be eligible for this award, no matter what track they choose.",
+      description: `The Paperclip Maximizer, the AGI-pocalypse bringer himself! Every project entered will be eligible for this award, no matter what track they choose.
+        `,
       image: "https://i.ibb.co/2gMLDmJ/grand-prize.png",
       prizes: [
         {
@@ -304,12 +304,15 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$10,000",
         },
       ],
+      additionalPrizes: [
+        "6 months of free Lightspark service",
+        "6 months of ZEBEDEE API Premier Access",
+      ],
     },
     {
       id: 2,
       title: "Agents (Machine Payments)",
-      description:
-        "This track is for projects that use bitcoin to give agents and LLMs the ability to use bitcoin in interesting ways to perform economic actions.",
+      description: `This track is for projects that use bitcoin to give agents and LLMs the ability to use bitcoin in interesting ways to perform economic actions.`,
       image: "https://i.ibb.co/d4vxYXD/global-adoption-lg.png",
       prizes: [
         {
@@ -318,6 +321,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
+      additionalPrizes: ["6 months of free Lightspark service"],
     },
     {
       id: 3,
@@ -332,6 +336,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
+      additionalPrizes: ["6 months of free Lightspark service"],
     },
     {
       id: 4,
@@ -346,6 +351,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
+      additionalPrizes: ["6 months of free Lightspark service"],
     },
     {
       id: 5,
@@ -360,6 +366,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
+      additionalPrizes: ["6 months of free Lightspark service"],
     },
   ],
 
@@ -368,6 +375,11 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       title: "ZEBEDEE Pro Subscription!",
       text: "Use code 'ai4all' to get a free subscription though the end of 2023",
       link: "https://dashboard.zebedee.io/signup",
+    },
+    {
+      title: "Voltage 40$ Credit!",
+      text: "Use code 'ai4all' to get 40$ in free credits",
+      link: "https://account.voltage.cloud/billing/coupon",
     },
   ],
 

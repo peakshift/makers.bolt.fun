@@ -16,6 +16,7 @@ export type TrackAndPrizes = {
     amount: string;
     project?: string;
   }>;
+  additionalPrizes?: string[];
   sponsor?: {
     logo: string;
   };
@@ -62,7 +63,9 @@ export default function PrizesSection({ tracks }: Props) {
                 <h3 className="text-body2 text-gray-900 font-bolder">
                   {track.title}
                 </h3>
-                <p className="text-body4 text-gray-500">{track.description}</p>
+                <p className="text-body4 text-gray-500 whitespace-pre-line">
+                  {track.description}
+                </p>
                 {track.sponsor && (
                   <div className="flex gap-8 mt-8">
                     <p className="text-body6 text-gray-500">Sponsored by </p>{" "}
@@ -79,6 +82,15 @@ export default function PrizesSection({ tracks }: Props) {
                   track.prizes,
                   winningProjectsMap as Map<string, Partial<Project>> | null,
                   trackNumber
+                )}
+                {track.additionalPrizes && track.additionalPrizes.length > 0 && (
+                  <ul className="text-gray-500 mt-16 flex flex-col font-sans font-medium">
+                    {track.additionalPrizes.map((prize, idx) => (
+                      <li key={idx} className="">
+                        <span className="scale-150">+</span> {prize}
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </div>
             </div>

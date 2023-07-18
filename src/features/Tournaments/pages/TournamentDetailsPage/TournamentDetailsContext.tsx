@@ -107,6 +107,7 @@ export const useTournament = () => {
   return useContext(Ctx);
 };
 
+// TODO: Remove if not used later
 export const getCurrentTournamentStaticData = () => {
   return currentTournamentStaticData;
 };
