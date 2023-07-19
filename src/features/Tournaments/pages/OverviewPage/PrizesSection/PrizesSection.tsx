@@ -16,7 +16,10 @@ export type TrackAndPrizes = {
     amount: string;
     project?: string;
   }>;
-  additionalPrizes?: string[];
+  additionalPrizes?: Array<{
+    text: string;
+    url?: string;
+  }>;
   sponsor?: {
     logo: string;
   };
@@ -87,7 +90,15 @@ export default function PrizesSection({ tracks }: Props) {
                   <ul className="text-gray-500 mt-16 flex flex-col font-sans font-medium">
                     {track.additionalPrizes.map((prize, idx) => (
                       <li key={idx} className="">
-                        <span className="scale-150">+</span> {prize}
+                        {prize.url ? (
+                          <a href={prize.url} target="_blank" rel="noreferrer">
+                            <span className="scale-150">+</span> {prize.text}
+                          </a>
+                        ) : (
+                          <>
+                            <span className="scale-150">+</span> {prize.text}
+                          </>
+                        )}
                       </li>
                     ))}
                   </ul>

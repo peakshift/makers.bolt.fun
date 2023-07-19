@@ -286,6 +286,11 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/cbd92d74-423e-44a8-761a-16caeeac0100/original",
           isBigImage: true,
         },
+        {
+          link: "https://www.lightsparks.com/",
+          image: "https://i.postimg.cc/rFQRDj52/image.png",
+          isBigImage: true,
+        },
       ],
     },
   ],
@@ -305,8 +310,14 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         },
       ],
       additionalPrizes: [
-        "6 months of free Lightspark service",
-        "6 months of ZEBEDEE API Premier Access",
+        {
+          text: "1 Year of Tier-1 Lightspark Service (Value of $18000)",
+          url: "https://www.lightsparks.com",
+        },
+        {
+          text: "6 months of ZEBEDEE API Premier Access (Value of $3000)",
+          url: "https://zebedee.io/",
+        },
       ],
     },
     {
@@ -321,7 +332,12 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      additionalPrizes: ["6 months of free Lightspark service"],
+      additionalPrizes: [
+        {
+          text: "6 months of free Lightspark service (Value of $9000)",
+          url: "https://www.lightsparks.com",
+        },
+      ],
     },
     {
       id: 3,
@@ -336,7 +352,11 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      additionalPrizes: ["6 months of free Lightspark service"],
+      additionalPrizes: [
+        {
+          text: "6 months of free Lightspark service (Value of $9000)",
+        },
+      ],
     },
     {
       id: 4,
@@ -351,7 +371,11 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      additionalPrizes: ["6 months of free Lightspark service"],
+      additionalPrizes: [
+        {
+          text: "6 months of free Lightspark service (Value of $9000)",
+        },
+      ],
     },
     {
       id: 5,
@@ -366,7 +390,11 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           amount: "$1000",
         },
       ],
-      additionalPrizes: ["6 months of free Lightspark service"],
+      additionalPrizes: [
+        {
+          text: "6 months of free Lightspark service (Value of $9000)",
+        },
+      ],
     },
   ],
 
