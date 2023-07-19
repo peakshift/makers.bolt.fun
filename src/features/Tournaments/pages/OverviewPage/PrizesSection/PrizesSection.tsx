@@ -132,7 +132,10 @@ const renderPrizes = (
     return (
       <div>
         <h4 className="text-[32px] leading-[1em]">{prizes[0].title}</h4>
-        <p className="text-[118px] leading-[1em]" data-attr={trackNumber + 1}>
+        <p
+          className="text-[84px] md:text-[118px] leading-[1em]"
+          data-attr={trackNumber + 1}
+        >
           {prizes[0].amount}
         </p>
       </div>

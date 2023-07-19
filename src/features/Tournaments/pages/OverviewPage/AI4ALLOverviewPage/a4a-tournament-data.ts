@@ -288,7 +288,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
         },
         {
           link: "https://www.lightsparks.com/",
-          image: "https://i.postimg.cc/rFQRDj52/image.png",
+          image: "https://i.postimg.cc/YqxHzySj/lightspark.png",
           isBigImage: true,
         },
       ],
@@ -355,6 +355,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       additionalPrizes: [
         {
           text: "6 months of free Lightspark service (Value of $9000)",
+          url: "https://www.lightsparks.com",
         },
       ],
     },
@@ -374,6 +375,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       additionalPrizes: [
         {
           text: "6 months of free Lightspark service (Value of $9000)",
+          url: "https://www.lightsparks.com",
         },
       ],
     },
@@ -393,6 +395,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       additionalPrizes: [
         {
           text: "6 months of free Lightspark service (Value of $9000)",
+          url: "https://www.lightsparks.com",
         },
       ],
     },
