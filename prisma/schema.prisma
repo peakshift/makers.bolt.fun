@@ -369,7 +369,6 @@ model HostedImage {
   User                   User?            @relation("User_Avatar")
   TournamentThumbnail    Tournament?      @relation("Tournament_ThumbnailImage")
   Tournament_CoverImage  Tournament?      @relation("Tournament_CoverImage")
-  TournamentPrize_Image  TournamentPrize? @relation("TournamentPrize_Image")
   TournamentJudge_Avatar TournamentJudge? @relation("TournamentJudge_Avatar")
   TournamentEvent_Image  TournamentEvent? @relation("TournamentEvent_Image")
 
@@ -397,25 +396,19 @@ model Tournament {
   website             String
   votes_count         Int          @default(0)
 
-  prizes       TournamentPrize[]
+  prizes       Json?
+  contacts     Json?
+  partners     Json?
+  schedule     Json?
+  makers_deals Json?
+  config       Json?
+
   tracks       TournamentTrack[]
   judges       TournamentJudge[]
   faqs         TournamentFAQ[]
   events       TournamentEvent[]
   participants TournamentParticipant[]
   projects     TournamentProject[]
-}
-
-model TournamentPrize {
-  id        Int          @id @default(autoincrement())
-  title     String
-  amount    String
-  image     String
-  image_id  Int?         @unique
-  image_rel HostedImage? @relation("TournamentPrize_Image", fields: [image_id], references: [id])
-
-  tournament    Tournament @relation(fields: [tournament_id], references: [id])
-  tournament_id Int
 }
 
 model TournamentTrack {

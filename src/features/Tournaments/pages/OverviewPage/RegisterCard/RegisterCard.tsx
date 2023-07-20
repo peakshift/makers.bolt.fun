@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { TournamentContact, TournamentPartner } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { useCountdown } from "src/utils/hooks";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
@@ -15,8 +16,8 @@ interface Props {
   avatars: string[];
   isRegistered: boolean;
   isRegistrationOpen?: boolean;
-  partnersList: TournamentStaticData["partnersList"];
-  chat: { type: string; link: string };
+  partnersList: TournamentPartner[];
+  contacts: TournamentContact[];
 }
 
 export default function RegisterCard({
@@ -26,7 +27,7 @@ export default function RegisterCard({
   isRegistered,
   isRegistrationOpen,
   partnersList,
-  chat,
+  contacts,
 }: Props) {
   const counter = useCountdown(start_date);
   const {
@@ -88,15 +89,22 @@ export default function RegisterCard({
             {isRegistered ? "Registered!" : "Register Now"}
           </Button>
         )}
-        <Button
-          color={"gray"}
-          href={chat.link}
-          newTab
-          fullWidth
-          className="mt-8 !text-primary-500"
-        >
-          <span className="align-middle ml-4">Join the chat</span>
-        </Button>
+        {contacts.length > 0 && (
+          <div className="mt-16">
+            {contacts.map((contact, idx) => (
+              <Button
+                key={idx}
+                color={"gray"}
+                href={contact.url}
+                newTab
+                fullWidth
+                className="mt-8 !text-primary-500"
+              >
+                <span className="align-middle ml-4">Join the chat</span>
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
       {isRegistrationOpen && (
         <div>
@@ -141,7 +149,7 @@ export default function RegisterCard({
                       "col-[1/-1] aspect-auto rounded-0 border-none"
                   )}
                   key={idx}
-                  href={p.link}
+                  href={p.url}
                   target="_blank"
                   rel="noreferrer"
                 >

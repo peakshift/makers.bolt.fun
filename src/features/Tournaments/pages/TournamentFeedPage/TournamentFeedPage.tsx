@@ -20,17 +20,18 @@ function TournamentFeedPage(props: Props) {
   const {
     pubkeysOfMakersInTournament,
     pubkeysOfProjectsInTournament,
-    staticData: { config },
+    tournamentDetails: { config },
   } = useTournament();
 
   const filters = useMemo(
     () =>
       config.showFeed
-        ? config.feedFilters({
-            participantsKeys: pubkeysOfMakersInTournament,
-            projectsKeys: pubkeysOfProjectsInTournament,
-          })
-        : [],
+        ? []
+        : // ? config.feedFilters({
+          //     participantsKeys: pubkeysOfMakersInTournament,
+          //     projectsKeys: pubkeysOfProjectsInTournament,
+          //   })
+          [],
     [config, pubkeysOfMakersInTournament, pubkeysOfProjectsInTournament]
   );
 

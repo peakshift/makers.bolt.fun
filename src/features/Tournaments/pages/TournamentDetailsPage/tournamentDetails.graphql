@@ -16,8 +16,17 @@ query GetTournamentById($idOrSlug: String!) {
 
     prizes {
       title
-      amount
+      description
       image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
     }
     tracks {
       id
@@ -44,6 +53,42 @@ query GetTournamentById($idOrSlug: String!) {
     faqs {
       question
       answer
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
     }
   }
 

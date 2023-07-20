@@ -123,6 +123,27 @@ type CreateProjectResponse {
   project: Project!
 }
 
+input CreateTournamentInput {
+  config: TournamentConfigInput!
+  contacts: [TournamentContactInput!]!
+  cover_image: ImageInput!
+  description: String!
+  end_date: Date!
+  faqs: [TournamentFAQInput!]!
+  judges: [TournamentJudgeInput!]!
+  location: String!
+  makers_deals: [TournamentMakerDealInput!]!
+  partners: [TournamentPartnerInput!]!
+  prizes: [TournamentPrizeInput!]!
+  schedule: [TournamentScheduleInput!]!
+  slug: String!
+  start_date: Date!
+  thumbnail_image: ImageInput!
+  title: String!
+  tracks: [TournamentTrackInput!]!
+  website: String!
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -201,6 +222,7 @@ type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
+  createTournament(data: CreateTournamentInput): Tournament
   deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
@@ -476,6 +498,8 @@ input TeamMemberInput {
 }
 
 type Tournament {
+  config: TournamentConfig!
+  contacts: [TournamentContact!]!
   cover_image: String!
   description: String!
   end_date: Date!
@@ -486,13 +510,44 @@ type Tournament {
   judges: [TournamentJudge!]!
   location: String!
   makers_count: Int!
+  makers_deals: [TournamentMakerDeal!]!
+  partners: [TournamentPartner!]!
   prizes: [TournamentPrize!]!
   projects_count: Int!
+  schedule: [TournamentSchedule!]!
   start_date: Date!
   thumbnail_image: String!
   title: String!
   tracks: [TournamentTrack!]!
   website: String!
+}
+
+type TournamentConfig {
+  feedFilters: [String!]
+  ideasRootNostrEventId: String
+  mainFeedHashtag: String
+  projectsSubmissionOpen: Boolean!
+  registerationOpen: Boolean!
+  showFeed: Boolean
+}
+
+input TournamentConfigInput {
+  feedFilters: [String!]
+  ideasRootNostrEventId: String
+  mainFeedHashtag: String
+  projectsSubmissionOpen: Boolean!
+  registerationOpen: Boolean!
+  showFeed: Boolean
+}
+
+type TournamentContact {
+  type: String!
+  url: String!
+}
+
+input TournamentContactInput {
+  type: String!
+  url: String!
 }
 
 type TournamentEvent {
@@ -520,10 +575,33 @@ type TournamentFAQ {
   question: String!
 }
 
+input TournamentFAQInput {
+  answer: String!
+  question: String!
+}
+
 type TournamentJudge {
   avatar: String!
   company: String!
   name: String!
+}
+
+input TournamentJudgeInput {
+  company: String!
+  cover_image: ImageInput!
+  name: String!
+}
+
+type TournamentMakerDeal {
+  description: String!
+  title: String!
+  url: String
+}
+
+input TournamentMakerDealInput {
+  description: String!
+  title: String!
+  url: String
 }
 
 enum TournamentMakerHackingStatusEnum {
@@ -543,10 +621,58 @@ type TournamentParticipant {
   user: User!
 }
 
-type TournamentPrize {
-  amount: String!
-  image: String!
+type TournamentPartner {
+  items: [TournamentPartnerItem!]!
   title: String!
+}
+
+input TournamentPartnerInput {
+  items: [TournamentPartnerItemInput!]!
+  title: String!
+}
+
+type TournamentPartnerItem {
+  image: String!
+  isBigImage: Boolean
+  url: String!
+}
+
+input TournamentPartnerItemInput {
+  image: String!
+  isBigImage: Boolean
+  url: String!
+}
+
+type TournamentPrize {
+  additional_prizes: [TournamentPrizeAdditionalPrize!]
+  description: String!
+  image: String!
+  positions: [TournamentPrizePosition!]!
+  title: String!
+}
+
+type TournamentPrizeAdditionalPrize {
+  text: String!
+  url: String
+}
+
+input TournamentPrizeInput {
+  description: String!
+  image: String!
+  positions: [TournamentPrizePositionInput!]!
+  title: String!
+}
+
+type TournamentPrizePosition {
+  position: String!
+  project: String
+  reward: String!
+}
+
+input TournamentPrizePositionInput {
+  position: String!
+  project: String
+  reward: String!
 }
 
 type TournamentProjectsResponse {
@@ -556,9 +682,43 @@ type TournamentProjectsResponse {
   projects: [Project!]!
 }
 
+type TournamentSchedule {
+  date: String!
+  events: [TournamentScheduleEvent!]!
+}
+
+type TournamentScheduleEvent {
+  location: String
+  time: String
+  timezone: String
+  title: String!
+  type: String
+  url: String
+}
+
+input TournamentScheduleEventInput {
+  location: String
+  time: String
+  timezone: String
+  title: String!
+  type: String
+  url: String
+}
+
+input TournamentScheduleInput {
+  date: String!
+  events: [TournamentScheduleEventInput!]!
+}
+
 type TournamentTrack {
   icon: String!
   id: Int!
+  title: String!
+}
+
+input TournamentTrackInput {
+  icon: String!
+  id: Int
   title: String!
 }
 
