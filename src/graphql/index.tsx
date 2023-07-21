@@ -790,6 +790,8 @@ export type TeamMemberInput = {
 
 export type Tournament = {
   __typename?: 'Tournament';
+  config: TournamentConfig;
+  contacts: Array<TournamentContact>;
   cover_image: Scalars['String'];
   description: Scalars['String'];
   end_date: Scalars['Date'];
@@ -800,13 +802,32 @@ export type Tournament = {
   judges: Array<TournamentJudge>;
   location: Scalars['String'];
   makers_count: Scalars['Int'];
+  makers_deals: Array<TournamentMakerDeal>;
+  partners: Array<TournamentPartner>;
   prizes: Array<TournamentPrize>;
   projects_count: Scalars['Int'];
+  schedule: Array<TournamentSchedule>;
   start_date: Scalars['Date'];
   thumbnail_image: Scalars['String'];
   title: Scalars['String'];
   tracks: Array<TournamentTrack>;
   website: Scalars['String'];
+};
+
+export type TournamentConfig = {
+  __typename?: 'TournamentConfig';
+  feedFilters: Maybe<Array<Scalars['String']>>;
+  ideasRootNostrEventId: Maybe<Scalars['String']>;
+  mainFeedHashtag: Maybe<Scalars['String']>;
+  projectsSubmissionOpen: Scalars['Boolean'];
+  registerationOpen: Scalars['Boolean'];
+  showFeed: Scalars['Boolean'];
+};
+
+export type TournamentContact = {
+  __typename?: 'TournamentContact';
+  type: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type TournamentEvent = {
@@ -843,6 +864,13 @@ export type TournamentJudge = {
   name: Scalars['String'];
 };
 
+export type TournamentMakerDeal = {
+  __typename?: 'TournamentMakerDeal';
+  description: Scalars['String'];
+  title: Scalars['String'];
+  url: Maybe<Scalars['String']>;
+};
+
 export enum TournamentMakerHackingStatusEnum {
   OpenToConnect = 'OpenToConnect',
   Solo = 'Solo'
@@ -862,11 +890,39 @@ export type TournamentParticipant = {
   user: User;
 };
 
+export type TournamentPartner = {
+  __typename?: 'TournamentPartner';
+  items: Array<TournamentPartnerItem>;
+  title: Scalars['String'];
+};
+
+export type TournamentPartnerItem = {
+  __typename?: 'TournamentPartnerItem';
+  image: Scalars['String'];
+  isBigImage: Maybe<Scalars['Boolean']>;
+  url: Scalars['String'];
+};
+
 export type TournamentPrize = {
   __typename?: 'TournamentPrize';
-  amount: Scalars['String'];
+  additional_prizes: Maybe<Array<TournamentPrizeAdditionalPrize>>;
+  description: Scalars['String'];
   image: Scalars['String'];
+  positions: Array<TournamentPrizePosition>;
   title: Scalars['String'];
+};
+
+export type TournamentPrizeAdditionalPrize = {
+  __typename?: 'TournamentPrizeAdditionalPrize';
+  text: Scalars['String'];
+  url: Maybe<Scalars['String']>;
+};
+
+export type TournamentPrizePosition = {
+  __typename?: 'TournamentPrizePosition';
+  position: Scalars['String'];
+  project: Maybe<Scalars['String']>;
+  reward: Scalars['String'];
 };
 
 export type TournamentProjectsResponse = {
@@ -875,6 +931,22 @@ export type TournamentProjectsResponse = {
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
   projects: Array<Project>;
+};
+
+export type TournamentSchedule = {
+  __typename?: 'TournamentSchedule';
+  date: Scalars['String'];
+  events: Array<TournamentScheduleEvent>;
+};
+
+export type TournamentScheduleEvent = {
+  __typename?: 'TournamentScheduleEvent';
+  location: Maybe<Scalars['String']>;
+  time: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: Maybe<Scalars['String']>;
+  url: Maybe<Scalars['String']>;
 };
 
 export type TournamentTrack = {
@@ -1367,7 +1439,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, ideasRootNostrEventId: string | null, showFeed: boolean, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type NostrKeysMetadataQueryVariables = Exact<{
   keys: Array<Scalars['String']> | Scalars['String'];
@@ -4160,8 +4232,17 @@ export const GetTournamentByIdDocument = gql`
     projects_count
     prizes {
       title
-      amount
+      description
       image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
     }
     tracks {
       id
@@ -4188,6 +4269,42 @@ export const GetTournamentByIdDocument = gql`
     faqs {
       question
       answer
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
     }
   }
   getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {

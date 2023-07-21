@@ -23,7 +23,6 @@ interface ITournamentDetails {
   myParticipationInfo: MeTournamentQuery["tournamentParticipationInfo"];
   pubkeysOfMakersInTournament: string[];
   pubkeysOfProjectsInTournament: string[];
-  staticData: TournamentStaticData;
 }
 
 const Ctx = createContext<ITournamentDetails>(null!);
@@ -34,7 +33,6 @@ export default function TournamentDetailsContext({
   children,
 }: PropsWithChildren<{}>) {
   const { id: idOrSlug } = useParams();
-  const [staticData, setStaticData] = useState<TournamentStaticData>();
 
   const tournaemntQuery = useGetTournamentByIdQuery({
     variables: {
@@ -52,27 +50,7 @@ export default function TournamentDetailsContext({
     skip: !tournamentId,
   });
 
-  const tournametTitle = tournaemntQuery.data?.getTournamentById?.title;
-
-  useEffect(() => {
-    if (!tournametTitle) return;
-
-    (async () => {
-      const data = await getStaticData(tournametTitle);
-      setStaticData(data);
-    })();
-  }, [tournametTitle]);
-
-  useEffect(() => {
-    if (!staticData) currentTournamentStaticData = null;
-    else currentTournamentStaticData = staticData;
-  }, [staticData]);
-
-  if (
-    tournaemntQuery.loading ||
-    myParticipationInfoQuery.loading ||
-    !staticData
-  )
+  if (tournaemntQuery.loading || myParticipationInfoQuery.loading)
     return <LoadingPage />;
 
   if (!tournaemntQuery.data?.getTournamentById) return <NotFoundPage />;
@@ -95,7 +73,6 @@ export default function TournamentDetailsContext({
         myParticipationInfo,
         pubkeysOfMakersInTournament,
         pubkeysOfProjectsInTournament,
-        staticData,
       }}
     >
       {children}

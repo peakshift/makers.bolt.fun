@@ -5,7 +5,7 @@ import { useTournament } from "../TournamentDetailsPage/TournamentDetailsContext
 
 function IdeasPage() {
   const {
-    staticData: {
+    tournamentDetails: {
       config: { ideasRootNostrEventId },
     },
   } = useTournament();
