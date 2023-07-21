@@ -2,7 +2,7 @@ import { Filter } from "nostr-tools";
 import { TrackAndPrizes } from "../OverviewPage/PrizesSection/PrizesSection";
 
 interface Partner {
-  link: string;
+  url: string;
   image: string;
   isBigImage?: boolean;
 }
@@ -10,7 +10,7 @@ interface Partner {
 export interface TournamentStaticData {
   chat: {
     type: string;
-    link: string;
+    url: string;
   };
 
   partnersList: Array<{
@@ -20,16 +20,10 @@ export interface TournamentStaticData {
 
   tracksAndPrizes: Array<TrackAndPrizes>;
 
-  communityPartners?: Array<{
-    link: string;
-    image: string;
-    isPrimary: boolean;
-  }>;
-
   schedule: {
     date: string;
     events: {
-      event: string;
+      title: string;
       time: string | null;
       timezone: "UTC" | "PST" | null;
       location: "BOLT.FUN" | "Youtube" | "Twitch" | null;
@@ -40,8 +34,8 @@ export interface TournamentStaticData {
 
   makersDeals?: {
     title: string;
-    text: string;
-    link?: string;
+    description: string;
+    url?: string;
   }[];
 
   config: {

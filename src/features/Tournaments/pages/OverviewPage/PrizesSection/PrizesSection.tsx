@@ -14,10 +14,9 @@ export type TrackAndPrizes = {
   title: string;
   description: string;
   image: string;
-  prizes: Array<{
-    id: number;
-    title: string;
-    amount: string;
+  positions: Array<{
+    position: string;
+    reward: string;
     project?: string;
   }>;
   additionalPrizes?: Array<{

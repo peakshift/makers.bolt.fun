@@ -3,7 +3,7 @@ import { TournamentStaticData } from "../../types";
 export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
   chat: {
     type: "discord",
-    link: "https://discord.gg/AVgabQzCqJ", // general chat
+    url: "https://discord.gg/AVgabQzCqJ", // general chat
   },
 
   schedule: [
@@ -11,7 +11,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Saturday July 1",
       events: [
         {
-          event: "Hacking Begins",
+          title: "Hacking Begins",
           time: "00:00",
           timezone: "UTC",
           location: null,
@@ -23,7 +23,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Monday July 3",
       events: [
         {
-          event: "Opening Ceremony",
+          title: "Opening Ceremony",
           time: "15:00",
           timezone: "UTC",
           location: "Youtube",
@@ -36,7 +36,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Tuesday July 4",
       events: [
         {
-          event: "Let's Build Sauron: Running a Lightning Node from a Repl",
+          title: "Let's Build Sauron: Running a Lightning Node from a Repl",
           time: "16:00",
           timezone: "UTC",
           location: "Youtube",
@@ -44,7 +44,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Maker Mixer: Eastern Hemisphere",
+          title: "Maker Mixer: Eastern Hemisphere",
           time: "13:00",
           timezone: "UTC",
           location: "BOLT.FUN",
@@ -56,7 +56,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Wednesday July 5",
       events: [
         {
-          event: "Coding with WebLN",
+          title: "Coding with WebLN",
           time: "17:00",
           timezone: "UTC",
           location: "Youtube",
@@ -64,7 +64,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Maker Mixer: Western Hemisphere",
+          title: "Maker Mixer: Western Hemisphere",
           time: "19:00",
           timezone: "UTC",
           location: "BOLT.FUN",
@@ -76,7 +76,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Thursday July 6",
       events: [
         {
-          event: "LNGPT: Build a Lightning Powered AI Chatbot",
+          title: "LNGPT: Build a Lightning Powered AI Chatbot",
           time: "3:00",
           timezone: "PST",
           location: "Twitch",
@@ -89,7 +89,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Friday July 7",
       events: [
         {
-          event: "Check in",
+          title: "Check in",
           time: null,
           timezone: null,
           location: "BOLT.FUN",
@@ -101,7 +101,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Monday July 10",
       events: [
         {
-          event: "Pay2Chat: Pay Per Message",
+          title: "Pay2Chat: Pay Per Message",
           time: "11:00",
           timezone: "UTC",
           location: "Youtube",
@@ -109,7 +109,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Pay2Chat: Pay Per Message",
+          title: "Pay2Chat: Pay Per Message",
           time: "12:00",
           timezone: "UTC",
           location: "Youtube",
@@ -122,7 +122,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Wednesday July 12",
       events: [
         {
-          event: "Fedi-mods / Build Fedimint Module",
+          title: "Fedi-mods / Build Fedimint Module",
           time: "12:00",
           timezone: "UTC",
           location: "Youtube",
@@ -130,7 +130,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Pay2Chat: Sell Packages Using L402",
+          title: "Pay2Chat: Sell Packages Using L402",
           time: "15:00",
           timezone: "UTC",
           location: "Youtube",
@@ -143,7 +143,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Thursday July 13",
       events: [
         {
-          event: "Pay2Chat: First Use & Onboarding (UX)",
+          title: "Pay2Chat: First Use & Onboarding (UX)",
           time: "11:00",
           timezone: "UTC",
           location: "Youtube",
@@ -151,7 +151,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
           type: "Workshop",
         },
         {
-          event: "Apature: LangChain + L402 using tools from Lightning Labs",
+          title: "Apature: LangChain + L402 using tools from Lightning Labs",
           time: "16:00",
           timezone: "UTC",
           location: "Youtube",
@@ -164,14 +164,14 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Friday July 14",
       events: [
         {
-          event: "Check in",
+          title: "Check in",
           time: "10:00 - 11:30",
           timezone: "UTC",
           location: "BOLT.FUN",
           type: "Hangout",
         },
         {
-          event: "Bits and Bolts: AI, Robots and Bitcoin",
+          title: "Bits and Bolts: AI, Robots and Bitcoin",
           time: "13:00 - 14:00",
           timezone: "UTC",
           location: "Youtube",
@@ -184,7 +184,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Friday July 21",
       events: [
         {
-          event: "Check in: Eastern Hemisphere",
+          title: "Check in: Eastern Hemisphere",
           time: "10:00 - 11:30",
           timezone: null,
           location: "BOLT.FUN",
@@ -196,7 +196,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Friday July 28",
       events: [
         {
-          event: "Check in",
+          title: "Check in",
           time: "10:00 - 11:30",
           timezone: null,
           location: "BOLT.FUN",
@@ -208,7 +208,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       date: "Monday July 31",
       events: [
         {
-          event: "Hacking Ends",
+          title: "Hacking Ends",
           time: "00:00",
           timezone: "UTC",
           location: null,
@@ -220,7 +220,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
     //   date: "Thursday August 3",
     //   events: [
     //     {
-    //       event: "Finals & Results",
+    //       title: "Finals & Results",
     //       time: "00:00",
     //       timezone: "UTC",
     //       location: "Youtube",
@@ -235,13 +235,13 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       title: "Organizers",
       items: [
         {
-          link: "https://fedi.xyz/",
+          url: "https://fedi.xyz/",
           image:
             "https://mma.prnewswire.com/media/2068426/fedi_brandmark_dark_Logo.jpg?p=publish",
           isBigImage: true,
         },
         {
-          link: "https://www.stakwork.com/",
+          url: "https://www.stakwork.com/",
           image:
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/06bb6244-6812-4d21-e675-9d7b1db6f400/original",
           isBigImage: true,
@@ -252,7 +252,7 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       title: "Collaborators",
       items: [
         {
-          link: "https://replit.com/",
+          url: "https://replit.com/",
           image:
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/f9fea1da-e968-420d-a274-52af966b2800/original",
           isBigImage: true,
@@ -263,31 +263,31 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       title: "Sponsors",
       items: [
         {
-          link: "https://hivemind.vc",
+          url: "https://hivemind.vc",
           image:
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/5bf55e42-8eca-41c1-94b6-5b5d1adf0900/original",
           isBigImage: true,
         },
         {
-          link: "https://spiritofsatoshi.ai/",
+          url: "https://spiritofsatoshi.ai/",
           image:
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/b1b9a5b5-87b7-4e7d-e8d5-c6edac962b00/original",
           isBigImage: true,
         },
         {
-          link: "https://premai.io/",
+          url: "https://premai.io/",
           image:
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/7b6df226-c883-40a7-d332-6bc3faf4d700/original",
           isBigImage: true,
         },
         {
-          link: "http://zebedee.io",
+          url: "http://zebedee.io",
           image:
             "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/cbd92d74-423e-44a8-761a-16caeeac0100/original",
           isBigImage: true,
         },
         {
-          link: "https://www.lightsparks.com/",
+          url: "https://www.lightsparks.com/",
           image: "https://i.postimg.cc/YqxHzySj/lightspark.png",
           isBigImage: true,
         },
@@ -302,11 +302,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       description: `The Paperclip Maximizer, the AGI-pocalypse bringer himself! Every project entered will be eligible for this award, no matter what track they choose.
         `,
       image: "https://i.ibb.co/2gMLDmJ/grand-prize.png",
-      prizes: [
+      positions: [
         {
-          id: 1,
-          title: "Prize",
-          amount: "$10,000",
+          position: "Prize",
+          reward: "$10,000",
         },
       ],
       additionalPrizes: [
@@ -325,11 +324,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       title: "Agents (Machine Payments)",
       description: `This track is for projects that use bitcoin to give agents and LLMs the ability to use bitcoin in interesting ways to perform economic actions.`,
       image: "https://i.ibb.co/d4vxYXD/global-adoption-lg.png",
-      prizes: [
+      positions: [
         {
-          id: 4,
-          title: " Prize",
-          amount: "$1000",
+          position: " Prize",
+          reward: "$1000",
         },
       ],
       additionalPrizes: [
@@ -345,11 +343,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       description:
         "This track is for projects that explore the tradeoffs of the new wave of generative AI and privacy: how can we use these tools and 3rd parties without giving up our rights and freedoms?",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
-      prizes: [
+      positions: [
         {
-          id: 8,
-          title: " Prize",
-          amount: "$1000",
+          position: " Prize",
+          reward: "$1000",
         },
       ],
       additionalPrizes: [
@@ -365,11 +362,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       description:
         "There's a ton of work required to build, train, clean data for, fine tune, and run RLHF on AI models. This track is about using Bitcoin to coordinate the economic incentives around building and running AI models at scale (large or small)",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
-      prizes: [
+      positions: [
         {
-          id: 12,
-          title: " Prize",
-          amount: "$1000",
+          position: " Prize",
+          reward: "$1000",
         },
       ],
       additionalPrizes: [
@@ -385,11 +381,10 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
       description:
         "Generative AI lets us build personalized educational tracks and materials to help onboard the rest of the world to using bitcoin. This track is about using AI to orange pill people in interesting ways.",
       image: "https://i.ibb.co/TW8FqRN/Africa-track-thin.png",
-      prizes: [
+      positions: [
         {
-          id: 16,
-          title: " Prize",
-          amount: "$1000",
+          position: " Prize",
+          reward: "$1000",
         },
       ],
       additionalPrizes: [
@@ -404,13 +399,14 @@ export const AI4ALL_TOURNAMENT_STATIC_DATA: TournamentStaticData = {
   makersDeals: [
     {
       title: "ZEBEDEE Pro Subscription!",
-      text: "Use code 'ai4all' to get a free subscription though the end of 2023",
-      link: "https://dashboard.zebedee.io/signup",
+      description:
+        "Use code 'ai4all' to get a free subscription though the end of 2023",
+      url: "https://dashboard.zebedee.io/signup",
     },
     {
       title: "Voltage 40$ Credit!",
-      text: "Use code 'ai4all' to get 40$ in free credits",
-      link: "https://account.voltage.cloud/billing/coupon",
+      description: "Use code 'ai4all' to get 40$ in free credits",
+      url: "https://account.voltage.cloud/billing/coupon",
     },
   ],
 
