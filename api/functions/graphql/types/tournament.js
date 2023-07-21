@@ -206,7 +206,7 @@ const Tournament = objectType({
       resolve(parent) {
         return prisma.tournament
           .findUnique({ where: { id: parent.id } })
-          .prizes();
+          .then((tournament) => tournament.prizes || []);
       },
     });
     t.nonNull.list.nonNull.field("judges", {
