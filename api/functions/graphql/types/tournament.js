@@ -1018,8 +1018,6 @@ const createTournament = extendType({
 
         if (!user?.id) throw new Error("You have to login");
 
-        console.log(input);
-
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
           prisma.hostedImage.findFirstOrThrow({
             where: {

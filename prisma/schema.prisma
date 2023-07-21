@@ -381,13 +381,11 @@ model HostedImage {
 // -----------------
 model Tournament {
   id                  Int          @id @default(autoincrement())
-  slug                String?      @unique
+  slug                String       @unique
   title               String
   description         String
-  thumbnail_image     String
   thumbnail_image_id  Int?
   thumbnail_image_rel HostedImage? @relation("Tournament_ThumbnailImage", fields: [thumbnail_image_id], references: [id])
-  cover_image         String
   cover_image_id      Int?
   cover_image_rel     HostedImage? @relation("Tournament_CoverImage", fields: [cover_image_id], references: [id])
   start_date          DateTime
