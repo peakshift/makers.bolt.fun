@@ -1005,6 +1005,10 @@ const CreateTournamentInput = inputObjectType({
   },
 });
 
+const isAdminUser = (userId) => {
+  return userId === 3 || userId === 37;
+};
+
 const createTournament = extendType({
   type: "Mutation",
   definition(t) {
@@ -1017,6 +1021,9 @@ const createTournament = extendType({
         const user = ctx.user;
 
         if (!user?.id) throw new Error("You have to login");
+
+        if (!isAdminUser(user.id))
+          throw new Error("You are not allowed to create a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
           prisma.hostedImage.findFirstOrThrow({
