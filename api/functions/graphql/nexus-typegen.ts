@@ -59,14 +59,18 @@ export interface NexusGenInputs {
     twitter?: string | null; // String
     website: string; // String!
   }
+  CreateTournamentFAQInput: { // input type
+    answer: string; // String!
+    question: string; // String!
+  }
   CreateTournamentInput: { // input type
     config: NexusGenInputs['TournamentConfigInput']; // TournamentConfigInput!
     contacts: NexusGenInputs['TournamentContactInput'][]; // [TournamentContactInput!]!
     cover_image: NexusGenInputs['ImageInput']; // ImageInput!
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
-    faqs: NexusGenInputs['TournamentFAQInput'][]; // [TournamentFAQInput!]!
-    judges: NexusGenInputs['TournamentJudgeInput'][]; // [TournamentJudgeInput!]!
+    faqs: NexusGenInputs['CreateTournamentFAQInput'][]; // [CreateTournamentFAQInput!]!
+    judges: NexusGenInputs['CreateTournamentJudgeInput'][]; // [CreateTournamentJudgeInput!]!
     location: string; // String!
     makers_deals: NexusGenInputs['TournamentMakerDealInput'][]; // [TournamentMakerDealInput!]!
     partners: NexusGenInputs['TournamentPartnerInput'][]; // [TournamentPartnerInput!]!
@@ -76,8 +80,17 @@ export interface NexusGenInputs {
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
-    tracks: NexusGenInputs['TournamentTrackInput'][]; // [TournamentTrackInput!]!
+    tracks: NexusGenInputs['CreateTournamentTrackInput'][]; // [CreateTournamentTrackInput!]!
     website: string; // String!
+  }
+  CreateTournamentJudgeInput: { // input type
+    avatar: NexusGenInputs['ImageInput']; // ImageInput!
+    company: string; // String!
+    name: string; // String!
+  }
+  CreateTournamentTrackInput: { // input type
+    icon: string; // String!
+    title: string; // String!
   }
   ImageInput: { // input type
     id?: string | null; // String
@@ -147,15 +160,6 @@ export interface NexusGenInputs {
     type: string; // String!
     url: string; // String!
   }
-  TournamentFAQInput: { // input type
-    answer: string; // String!
-    question: string; // String!
-  }
-  TournamentJudgeInput: { // input type
-    company: string; // String!
-    cover_image: NexusGenInputs['ImageInput']; // ImageInput!
-    name: string; // String!
-  }
   TournamentMakerDealInput: { // input type
     description: string; // String!
     title: string; // String!
@@ -170,7 +174,12 @@ export interface NexusGenInputs {
     isBigImage?: boolean | null; // Boolean
     url: string; // String!
   }
+  TournamentPrizeAdditionalPrizeInput: { // input type
+    text: string; // String!
+    url?: string | null; // String
+  }
   TournamentPrizeInput: { // input type
+    additional_prizes?: NexusGenInputs['TournamentPrizeAdditionalPrizeInput'][] | null; // [TournamentPrizeAdditionalPrizeInput!]
     description: string; // String!
     image: string; // String!
     positions: NexusGenInputs['TournamentPrizePositionInput'][]; // [TournamentPrizePositionInput!]!
@@ -192,11 +201,6 @@ export interface NexusGenInputs {
   TournamentScheduleInput: { // input type
     date: string; // String!
     events: NexusGenInputs['TournamentScheduleEventInput'][]; // [TournamentScheduleEventInput!]!
-  }
-  TournamentTrackInput: { // input type
-    icon: string; // String!
-    id?: number | null; // Int
-    title: string; // String!
   }
   UpdateProjectInput: { // input type
     capabilities: number[]; // [Int!]!
@@ -222,6 +226,21 @@ export interface NexusGenInputs {
     title: string; // String!
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
+    website: string; // String!
+  }
+  UpdateTournamentInput: { // input type
+    config: NexusGenInputs['TournamentConfigInput']; // TournamentConfigInput!
+    contacts: NexusGenInputs['TournamentContactInput'][]; // [TournamentContactInput!]!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    id?: number | null; // Int
+    location: string; // String!
+    makers_deals: NexusGenInputs['TournamentMakerDealInput'][]; // [TournamentMakerDealInput!]!
+    partners: NexusGenInputs['TournamentPartnerInput'][]; // [TournamentPartnerInput!]!
+    prizes: NexusGenInputs['TournamentPrizeInput'][]; // [TournamentPrizeInput!]!
+    schedule: NexusGenInputs['TournamentScheduleInput'][]; // [TournamentScheduleInput!]!
+    start_date: NexusGenScalars['Date']; // Date!
+    title: string; // String!
     website: string; // String!
   }
   UpdateTournamentRegistrationInput: { // input type
@@ -466,6 +485,7 @@ export interface NexusGenObjects {
   }
   TournamentFAQ: { // root type
     answer: string; // String!
+    id: number; // Int!
     question: string; // String!
   }
   TournamentJudge: { // root type
@@ -706,6 +726,7 @@ export interface NexusGenFieldTypes {
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
     updateProfileRoles: NexusGenRootTypes['User'] | null; // User
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
+    updateTournament: NexusGenRootTypes['Tournament'] | null; // Tournament
     updateTournamentRegistration: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     updateUserPreferences: NexusGenRootTypes['User']; // User!
     vote: NexusGenRootTypes['Vote']; // Vote!
@@ -912,6 +933,7 @@ export interface NexusGenFieldTypes {
   }
   TournamentFAQ: { // field return type
     answer: string; // String!
+    id: number; // Int!
     question: string; // String!
   }
   TournamentJudge: { // field return type
@@ -1187,6 +1209,7 @@ export interface NexusGenFieldTypeNames {
     updateProfileDetails: 'User'
     updateProfileRoles: 'User'
     updateProject: 'CreateProjectResponse'
+    updateTournament: 'Tournament'
     updateTournamentRegistration: 'ParticipationInfo'
     updateUserPreferences: 'User'
     vote: 'Vote'
@@ -1393,6 +1416,7 @@ export interface NexusGenFieldTypeNames {
   }
   TournamentFAQ: { // field return type name
     answer: 'String'
+    id: 'Int'
     question: 'String'
   }
   TournamentJudge: { // field return type name
@@ -1600,6 +1624,9 @@ export interface NexusGenArgTypes {
     }
     updateProject: { // args
       input?: NexusGenInputs['UpdateProjectInput'] | null; // UpdateProjectInput
+    }
+    updateTournament: { // args
+      data?: NexusGenInputs['UpdateTournamentInput'] | null; // UpdateTournamentInput
     }
     updateTournamentRegistration: { // args
       data?: NexusGenInputs['UpdateTournamentRegistrationInput'] | null; // UpdateTournamentRegistrationInput

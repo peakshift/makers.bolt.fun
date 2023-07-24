@@ -123,14 +123,19 @@ type CreateProjectResponse {
   project: Project!
 }
 
+input CreateTournamentFAQInput {
+  answer: String!
+  question: String!
+}
+
 input CreateTournamentInput {
   config: TournamentConfigInput!
   contacts: [TournamentContactInput!]!
   cover_image: ImageInput!
   description: String!
   end_date: Date!
-  faqs: [TournamentFAQInput!]!
-  judges: [TournamentJudgeInput!]!
+  faqs: [CreateTournamentFAQInput!]!
+  judges: [CreateTournamentJudgeInput!]!
   location: String!
   makers_deals: [TournamentMakerDealInput!]!
   partners: [TournamentPartnerInput!]!
@@ -140,8 +145,19 @@ input CreateTournamentInput {
   start_date: Date!
   thumbnail_image: ImageInput!
   title: String!
-  tracks: [TournamentTrackInput!]!
+  tracks: [CreateTournamentTrackInput!]!
   website: String!
+}
+
+input CreateTournamentJudgeInput {
+  avatar: ImageInput!
+  company: String!
+  name: String!
+}
+
+input CreateTournamentTrackInput {
+  icon: String!
+  title: String!
 }
 
 """Date custom scalar type"""
@@ -233,6 +249,7 @@ type Mutation {
   updateProfileDetails(data: ProfileDetailsInput): User
   updateProfileRoles(data: ProfileRolesInput): User
   updateProject(input: UpdateProjectInput): CreateProjectResponse
+  updateTournament(data: UpdateTournamentInput): Tournament
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(userKeys: [UserKeyInputType!]): User!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
@@ -572,23 +589,13 @@ enum TournamentEventTypeEnum {
 
 type TournamentFAQ {
   answer: String!
-  question: String!
-}
-
-input TournamentFAQInput {
-  answer: String!
+  id: Int!
   question: String!
 }
 
 type TournamentJudge {
   avatar: String!
   company: String!
-  name: String!
-}
-
-input TournamentJudgeInput {
-  company: String!
-  cover_image: ImageInput!
   name: String!
 }
 
@@ -656,7 +663,13 @@ type TournamentPrizeAdditionalPrize {
   url: String
 }
 
+input TournamentPrizeAdditionalPrizeInput {
+  text: String!
+  url: String
+}
+
 input TournamentPrizeInput {
+  additional_prizes: [TournamentPrizeAdditionalPrizeInput!]
   description: String!
   image: String!
   positions: [TournamentPrizePositionInput!]!
@@ -716,12 +729,6 @@ type TournamentTrack {
   title: String!
 }
 
-input TournamentTrackInput {
-  icon: String!
-  id: Int
-  title: String!
-}
-
 input UpdateProjectInput {
   capabilities: [Int!]!
   category_id: Int!
@@ -746,6 +753,22 @@ input UpdateProjectInput {
   title: String!
   tournaments: [Int!]!
   twitter: String
+  website: String!
+}
+
+input UpdateTournamentInput {
+  config: TournamentConfigInput!
+  contacts: [TournamentContactInput!]!
+  description: String!
+  end_date: Date!
+  id: Int
+  location: String!
+  makers_deals: [TournamentMakerDealInput!]!
+  partners: [TournamentPartnerInput!]!
+  prizes: [TournamentPrizeInput!]!
+  schedule: [TournamentScheduleInput!]!
+  start_date: Date!
+  title: String!
   website: String!
 }
 
