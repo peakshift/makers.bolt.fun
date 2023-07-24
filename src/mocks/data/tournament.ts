@@ -240,24 +240,28 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
 
     faqs: [
       {
+        id: 1,
         question: "What is Shock the Web?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`,
       },
       {
+        id: 2,
         question: "When and where will it take place?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`,
       },
       {
+        id: 3,
         question: "What will we be doing?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`,
       },
       {
+        id: 4,
         question:
           "This is my first time hacking on lightning, will there be help?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
@@ -265,6 +269,7 @@ Bitcoin development can seem scary for new developers coming in, but it doesn't 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`,
       },
       {
+        id: 5,
         question:
           "This is my first time hacking on lightning, will there be help?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
@@ -272,12 +277,14 @@ Bitcoin development can seem scary for new developers coming in, but it doesn't 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`,
       },
       {
+        id: 6,
         question: "How many members can I have on my team?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
 
 Bitcoin development can seem scary for new developers coming in, but it doesn't have to be. With the lightning network's toolkit and libraries a bunch of new opportunities are waiting to be explored. We hope these hackathons can be a chance for you to preview what is possible on bitcoin and the lightning network by fostering collaboration, hopefully shortening (or easing) any developer onboarding time, and helping you connect with other bitcoiners in a fun and friendly space.`,
       },
       {
+        id: 7,
         question: "Who will choose the winners?",
         answer: `Shock the Web is a virtual hackathon to promote, explore, build and design web applications that can interact with WebLN enabled wallets and browsers. We want to make building on bitcoin more accessible to the masses of web developers out there. 
 

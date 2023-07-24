@@ -11,6 +11,7 @@ const CONSTS = {
   DEFAULT_RELAYS,
   BF_NOSTR_PUBKEY:
     "4f260791d78a93d13e09f1965f4ba1e1f96d1fcb812123a26d95737c9d54802b",
+  OPENAI_API_KEY: process.env.REACT_APP_OPENAI_API_KEY ?? "",
 };
 
 export default CONSTS;
