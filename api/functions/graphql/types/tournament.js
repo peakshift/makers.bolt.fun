@@ -1047,13 +1047,11 @@ const createTournament = extendType({
             website: input.website,
             start_date: input.start_date,
             end_date: input.end_date,
-            thumbnail_image: "",
             thumbnail_image_rel: {
               connect: {
                 id: thumbnail_image_rel.id,
               },
             },
-            cover_image: "",
             cover_image_rel: {
               connect: {
                 id: cover_image_rel.id,
