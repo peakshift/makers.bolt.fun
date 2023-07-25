@@ -229,19 +229,19 @@ export interface NexusGenInputs {
     website: string; // String!
   }
   UpdateTournamentInput: { // input type
-    config: NexusGenInputs['TournamentConfigInput']; // TournamentConfigInput!
-    contacts: NexusGenInputs['TournamentContactInput'][]; // [TournamentContactInput!]!
-    description: string; // String!
-    end_date: NexusGenScalars['Date']; // Date!
+    config?: NexusGenInputs['TournamentConfigInput'] | null; // TournamentConfigInput
+    contacts?: NexusGenInputs['TournamentContactInput'][] | null; // [TournamentContactInput!]
+    description?: string | null; // String
+    end_date?: NexusGenScalars['Date'] | null; // Date
     id?: number | null; // Int
-    location: string; // String!
-    makers_deals: NexusGenInputs['TournamentMakerDealInput'][]; // [TournamentMakerDealInput!]!
-    partners: NexusGenInputs['TournamentPartnerInput'][]; // [TournamentPartnerInput!]!
-    prizes: NexusGenInputs['TournamentPrizeInput'][]; // [TournamentPrizeInput!]!
-    schedule: NexusGenInputs['TournamentScheduleInput'][]; // [TournamentScheduleInput!]!
-    start_date: NexusGenScalars['Date']; // Date!
-    title: string; // String!
-    website: string; // String!
+    location?: string | null; // String
+    makers_deals?: NexusGenInputs['TournamentMakerDealInput'][] | null; // [TournamentMakerDealInput!]
+    partners?: NexusGenInputs['TournamentPartnerInput'][] | null; // [TournamentPartnerInput!]
+    prizes?: NexusGenInputs['TournamentPrizeInput'][] | null; // [TournamentPrizeInput!]
+    schedule?: NexusGenInputs['TournamentScheduleInput'][] | null; // [TournamentScheduleInput!]
+    start_date?: NexusGenScalars['Date'] | null; // Date
+    title?: string | null; // String
+    website?: string | null; // String
   }
   UpdateTournamentRegistrationInput: { // input type
     email?: string | null; // String

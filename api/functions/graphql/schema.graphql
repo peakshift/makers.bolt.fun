@@ -757,19 +757,19 @@ input UpdateProjectInput {
 }
 
 input UpdateTournamentInput {
-  config: TournamentConfigInput!
-  contacts: [TournamentContactInput!]!
-  description: String!
-  end_date: Date!
+  config: TournamentConfigInput
+  contacts: [TournamentContactInput!]
+  description: String
+  end_date: Date
   id: Int
-  location: String!
-  makers_deals: [TournamentMakerDealInput!]!
-  partners: [TournamentPartnerInput!]!
-  prizes: [TournamentPrizeInput!]!
-  schedule: [TournamentScheduleInput!]!
-  start_date: Date!
-  title: String!
-  website: String!
+  location: String
+  makers_deals: [TournamentMakerDealInput!]
+  partners: [TournamentPartnerInput!]
+  prizes: [TournamentPrizeInput!]
+  schedule: [TournamentScheduleInput!]
+  start_date: Date
+  title: String
+  website: String
 }
 
 input UpdateTournamentRegistrationInput {

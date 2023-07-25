@@ -1013,7 +1013,7 @@ const CreateTournamentInput = inputObjectType({
 });
 
 const isAdminUser = (userId) => {
-  return userId === 3 || userId === 37;
+  return userId === 3 || userId === 37 || userId === 9;
 };
 
 const createTournament = extendType({
@@ -1099,8 +1099,8 @@ const UpdateTournamentInput = inputObjectType({
   name: "UpdateTournamentInput",
   definition(t) {
     t.int("id");
-    t.nonNull.string("title");
-    t.nonNull.string("description");
+    t.string("title");
+    t.string("description");
 
     // t.field("thumbnail_image", {
     //   type: ImageInput,
@@ -1109,35 +1109,35 @@ const UpdateTournamentInput = inputObjectType({
     //   type: ImageInput,
     // });
 
-    t.nonNull.date("start_date");
-    t.nonNull.date("end_date");
+    t.date("start_date");
+    t.date("end_date");
 
-    t.nonNull.string("location");
-    t.nonNull.string("website");
+    t.string("location");
+    t.string("website");
 
-    t.nonNull.list.nonNull.field("prizes", {
+    t.list.nonNull.field("prizes", {
       type: TournamentPrizeInput,
     });
 
     // contacts
-    t.nonNull.list.nonNull.field("contacts", {
+    t.list.nonNull.field("contacts", {
       type: TournamentContactInput,
     });
     // partners
-    t.nonNull.list.nonNull.field("partners", {
+    t.list.nonNull.field("partners", {
       type: TournamentPartnerInput,
     });
     // schedule
-    t.nonNull.list.nonNull.field("schedule", {
+    t.list.nonNull.field("schedule", {
       type: TournamentScheduleInput,
     });
     // makers deals
-    t.nonNull.list.nonNull.field("makers_deals", {
+    t.list.nonNull.field("makers_deals", {
       type: TournamentMakerDealInput,
     });
 
     // config
-    t.nonNull.field("config", {
+    t.field("config", {
       type: TournamentConfigInput,
     });
 
@@ -1172,7 +1172,7 @@ const updateTournament = extendType({
         if (!user?.id) throw new Error("You have to login");
 
         if (!isAdminUser(user.id))
-          throw new Error("You are not allowed to create a tournament");
+          throw new Error("You are not allowed to update a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
           input.thumbnail_image?.id
