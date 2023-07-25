@@ -1013,7 +1013,7 @@ const CreateTournamentInput = inputObjectType({
 });
 
 const isAdminUser = (userId) => {
-  return userId === 3 || userId === 37;
+  return userId === 3 || userId === 37 || userId === 9;
 };
 
 const createTournament = extendType({

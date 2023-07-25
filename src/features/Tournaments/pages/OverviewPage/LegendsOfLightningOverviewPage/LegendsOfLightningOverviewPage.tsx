@@ -79,6 +79,7 @@ export default function LegendsOfLightningOverviewPage() {
               )}
           </div>
           <RegisterCard
+            tournament={tournamentDetails}
             makers_count={tournamentDetails.makers_count}
             start_date={tournamentDetails.start_date}
             avatars={makers.map((m) => m.user.avatar)}

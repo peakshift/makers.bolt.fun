@@ -5,7 +5,7 @@ import { useSubmitMessage } from "./useSubmitMessage";
 interface Props {}
 
 export default function MessagesContainer({}: Props) {
-  const inputRef = React.useRef<HTMLInputElement>(null!);
+  const inputRef = React.useRef<HTMLTextAreaElement>(null!);
 
   const [msgInput, setMessageInput] = useState("");
   const [inputDisabled, setInputDisabled] = useState(false);
@@ -94,7 +94,7 @@ export default function MessagesContainer({}: Props) {
             inputDisabled && "opacity-70"
           }`}
         >
-          <input
+          <textarea
             ref={inputRef}
             className="grow p-16 bg-transparent focus:outline-none "
             placeholder={

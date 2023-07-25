@@ -2,15 +2,14 @@ import dayjs from "dayjs";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { TournamentContact, TournamentPartner } from "src/graphql";
+import { Tournament, TournamentContact, TournamentPartner } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { useCountdown } from "src/utils/hooks";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { twMerge } from "tailwind-merge";
-import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
-import { TournamentStaticData } from "../../types";
 
 interface Props {
+  tournament: Pick<Tournament, "id" | "start_date" | "end_date">;
   start_date: string;
   makers_count: number;
   avatars: string[];
@@ -28,24 +27,22 @@ export default function RegisterCard({
   isRegistrationOpen,
   partnersList,
   contacts,
+  tournament,
 }: Props) {
   const counter = useCountdown(start_date);
-  const {
-    tournamentDetails: { id: tournamentId, end_date },
-  } = useTournament();
 
   const isLoggedIn = useAppSelector((state) => !!state.user.me);
   const dispatch = useAppDispatch();
 
   const onRegister = () => {
-    if (!tournamentId) return;
+    if (!tournament.id) return;
 
     if (isLoggedIn)
       dispatch(
         openModal({
           Modal: "RegisterTournamet_ConfrimAccount",
           props: {
-            tournamentId: Number(tournamentId),
+            tournamentId: Number(tournament.id),
           },
         })
       );
@@ -54,7 +51,7 @@ export default function RegisterCard({
         openModal({
           Modal: "RegisterTournamet_Login",
           props: {
-            tournamentId: Number(tournamentId),
+            tournamentId: Number(tournament.id),
           },
         })
       );
@@ -114,7 +111,7 @@ export default function RegisterCard({
               <span>&#8226;</span>
               <span className="font-medium text-body5">Live</span>
               <span className="font-medium text-body6 text-gray-500 ml-auto">
-                entries close {dayjs(end_date).format("Do MMM")}
+                entries close {dayjs(tournament.end_date).format("Do MMM")}
               </span>
             </div>
           ) : (

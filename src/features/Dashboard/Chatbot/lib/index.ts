@@ -1,16 +1,6 @@
-import {
-  ChatCompletionFunctions,
-  ChatCompletionResponseMessage,
-  Configuration,
-  OpenAIApi,
-} from "openai";
+import { ChatCompletionFunctions, ChatCompletionResponseMessage } from "openai";
 import { Tournament } from "src/graphql";
-import { CONSTS } from "src/utils";
-
-const configuration = new Configuration({
-  apiKey: CONSTS.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import { getOpenAIApi } from "./open-ai.service";
 
 const SYSTEM_MESSAGE = `
 You are an assisstant chatbot whose job is to help the user in updating his tournament data.
@@ -22,7 +12,13 @@ The user will provide you with a prompt that can contain one or more commands fr
 RULES:
 - Only use the functions provided to you & with their parameters. Don't invent new functions.
 - Don't make assumptions about what values to plug into functions if not clear. Ask for clarification.
+- Your sole purpose is to update the tournament data. Don't do anything else.
+- If you don't know how to do something, tell the user that you can't & suggest to him contacting the admins.
 `;
+
+export type Functions = {
+  update_tournament: (parameters: Partial<Tournament>) => void;
+};
 
 const availableFunctions: ChatCompletionFunctions[] = [
   {
@@ -52,49 +48,29 @@ const availableFunctions: ChatCompletionFunctions[] = [
   },
 ];
 
-export async function sendCommand(
-  prompt: string,
-  context: ChatCompletionResponseMessage[],
-  current_tournament_data: Partial<Tournament>
-) {
-  let finishedCallingFunctions = false;
+export async function sendCommand(context: ChatCompletionResponseMessage[]) {
+  const openai = getOpenAIApi();
 
-  let responses: ChatCompletionResponseMessage[] = [];
+  const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: SYSTEM_MESSAGE,
+      },
+      ...context.map((m) => ({
+        role: m.role,
+        content: m.content,
+        function_call: m.function_call,
+      })),
+    ],
+    functions: availableFunctions,
+  });
 
-  while (!finishedCallingFunctions) {
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: SYSTEM_MESSAGE,
-        },
-        ...responses,
-        {
-          role: "user",
-          content: prompt,
-        },
-        ...responses,
-      ],
-      functions: availableFunctions,
-    });
+  const finish_reason = response.data.choices[0].finish_reason;
 
-    if (response.data.choices[0].finish_reason === "stop") {
-      finishedCallingFunctions = true;
+  if (finish_reason !== "function_call" && finish_reason !== "stop")
+    throw new Error(`Unexpected finish reason: ${finish_reason}`);
 
-      responses.push(response.data.choices[0].message!);
-    } else if (response.data.choices[0].finish_reason === "function_call") {
-      responses.push(response.data.choices[0].message!);
-    } else {
-      throw new Error(
-        `Unexpected finish reason: ${response.data.choices[0].finish_reason}`
-      );
-    }
-  }
-
-  console.log(responses);
-
-  return {
-    responses,
-  };
+  return response.data.choices[0].message;
 }
