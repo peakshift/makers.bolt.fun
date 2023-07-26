@@ -1,5 +1,9 @@
 import { createContext, useState, useContext, useCallback } from "react";
-import { Tournament, useGetTournamentByIdQuery } from "src/graphql";
+import {
+  Tournament,
+  TournamentMakerDeal,
+  useGetTournamentByIdQuery,
+} from "src/graphql";
 
 interface TournamentContext {
   tournament?: Tournament;
