@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import { FaDiscord } from "react-icons/fa";
+import { GiOstrich } from "react-icons/gi";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -8,7 +10,6 @@ import { useCountdown } from "src/utils/hooks";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { twMerge } from "tailwind-merge";
 import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
-import { TournamentStaticData } from "../../types";
 
 interface Props {
   start_date: string;
@@ -91,18 +92,52 @@ export default function RegisterCard({
         )}
         {contacts.length > 0 && (
           <div className="mt-16">
-            {contacts.map((contact, idx) => (
-              <Button
-                key={idx}
-                color={"gray"}
-                href={contact.url}
-                newTab
-                fullWidth
-                className="mt-8 !text-primary-500"
-              >
-                <span className="align-middle ml-4">Join the chat</span>
-              </Button>
-            ))}
+            {contacts.map((contact, idx) => {
+              if (contact.type.toLowerCase() === "nostr")
+                return (
+                  <Button
+                    key={idx}
+                    color={"none"}
+                    href={contact.url}
+                    newTab
+                    fullWidth
+                    className="mt-8 !text-white bg-violet-600"
+                  >
+                    <span className="align-middle ml-4 flex justify-center gap-12 items-center">
+                      Our Nostr Profile <GiOstrich className="scale-125" />
+                    </span>
+                  </Button>
+                );
+
+              if (contact.type.toLowerCase() === "discord")
+                return (
+                  <Button
+                    key={idx}
+                    color={"none"}
+                    href={contact.url}
+                    newTab
+                    fullWidth
+                    className="mt-8 !text-white bg-violet-600"
+                  >
+                    <span className="align-middle ml-4 flex justify-center gap-12 items-center">
+                      Our Discord Server <FaDiscord />
+                    </span>
+                  </Button>
+                );
+
+              return (
+                <Button
+                  key={idx}
+                  color={"gray"}
+                  href={contact.url}
+                  newTab
+                  fullWidth
+                  className="mt-8 !text-primary-500"
+                >
+                  <span className="align-middle ml-4">Join the chat</span>
+                </Button>
+              );
+            })}
           </div>
         )}
       </div>

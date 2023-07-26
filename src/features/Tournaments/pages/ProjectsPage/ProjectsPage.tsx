@@ -76,6 +76,8 @@ export default function ProjectsPage() {
 
   const myProjectsCount = myParticipationInfo?.projects.length;
 
+  const isRegistered = !!myParticipationInfo;
+
   const currentProjectsCount =
     curTab === "all-projects"
       ? !!query.data?.getProjectsInTournament.projects &&
@@ -123,7 +125,7 @@ export default function ProjectsPage() {
             </button>
           )}
         </div>
-        {projectsSubmissionOpen && (
+        {projectsSubmissionOpen && isRegistered && (
           <Button
             disabled={!isLoggedIn}
             size="sm"
