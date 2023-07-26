@@ -76,8 +76,9 @@ export default function TournamentPreview() {
                         Hacker perks from our partners 🎁
                       </p>
                       <ul className="flex flex-col gap-8">
-                        {tournament.makers_deals.map((deal) => (
+                        {tournament.makers_deals.map((deal, idx) => (
                           <li
+                            key={idx}
                             className={`w-full gap-8 items-center bg-gray-100 rounded ${
                               deal.url && "hover:bg-gray-200"
                             }`}

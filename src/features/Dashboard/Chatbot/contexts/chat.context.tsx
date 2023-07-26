@@ -1,11 +1,12 @@
 import {
+  ChatCompletionFunctions,
+  ChatCompletionRequestMessage,
   ChatCompletionRequestMessageFunctionCall,
   ChatCompletionResponseMessage,
 } from "openai";
 import { createContext, useState, useContext, useCallback } from "react";
-import { Tournament } from "src/graphql";
-import { Functions, sendCommand } from "../lib";
-import { useTournament } from "./tournament.context";
+import YAML from "yaml";
+import { sendCommand } from "../lib/open-ai.service";
 
 export type Message = {
   id: string;
@@ -33,41 +34,48 @@ const context = createContext<ChatContext>(null!);
 
 export const ChatContextProvider = ({
   children,
+  systemMessage,
+  functionsTemplates,
+  functions,
 }: {
   children: React.ReactNode;
+  systemMessage: string;
+  functionsTemplates: ChatCompletionFunctions[];
+  functions: Record<string, Function>;
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const { tournament: currentTournament, updateTournament } = useTournament();
-
   const submitMessage = useCallback<ChatContext["submitMessage"]>(
     async (message: string, options) => {
-      if (!currentTournament) throw new Error("No tournament selected");
-
       const onStatusUpdate = options?.onStatusUpdate || (() => {});
-
-      const functions: Functions = {
-        update_tournament: (tournament) => {
-          updateTournament(tournament);
-        },
-      };
 
       const oldMessages = messages;
 
       const newResponses = [
         { content: message, role: "user" },
-      ] as ChatCompletionResponseMessage[];
+      ] as (ChatCompletionRequestMessage & { internal?: boolean })[];
 
       onStatusUpdate("fetching-response");
 
       let finishedCallingFunctions = false;
 
       while (!finishedCallingFunctions) {
-        const response = await sendCommand([...oldMessages, ...newResponses]);
+        const response = await sendCommand({
+          messages: [...oldMessages, ...newResponses],
+          availableFunctions: functionsTemplates,
+          systemMessage: systemMessage,
+        });
 
         if (response?.function_call) {
-          execFunction(response.function_call);
-          newResponses.push(response);
+          const fnResponse = execFunction(response.function_call);
+          newResponses.push({ ...response, internal: true });
+
+          newResponses.push({
+            content: YAML.stringify(fnResponse ?? "Success"),
+            role: "function",
+            name: response.function_call.name,
+            internal: true,
+          });
         } else if (response?.content) {
           newResponses.push(response);
           finishedCallingFunctions = true;
@@ -75,7 +83,7 @@ export const ChatContextProvider = ({
       }
 
       function execFunction(f: ChatCompletionRequestMessageFunctionCall) {
-        const fn = functions[f.name as keyof Functions];
+        const fn = functions[f.name as string];
         if (!fn) throw new Error(`Function ${f.name} not found`);
         return fn(JSON.parse(f?.arguments as any));
       }
@@ -90,7 +98,7 @@ export const ChatContextProvider = ({
           role: "user",
         },
         ...newResponses
-          .filter((r) => !r.function_call)
+          .filter((r) => !r.internal)
           .filter((r) => r.role === "assistant")
           .map((r) => ({
             id: Math.random().toString(),
@@ -99,7 +107,7 @@ export const ChatContextProvider = ({
           })),
       ]);
     },
-    [currentTournament, messages, updateTournament]
+    [functions, functionsTemplates, messages, systemMessage]
   );
 
   return (
