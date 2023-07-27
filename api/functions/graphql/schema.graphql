@@ -147,11 +147,11 @@ input CreateTournamentInput {
   thumbnail_image: ImageInput!
   title: String!
   tracks: [CreateTournamentTrackInput!]!
-  website: String!
+  website: String
 }
 
 input CreateTournamentJudgeInput {
-  avatar: ImageInput!
+  avatar: ImageInput
   company: String!
   name: String!
 }
@@ -202,7 +202,7 @@ type Hackathon {
 input ImageInput {
   id: String
   name: String
-  url: String!
+  url: String
 }
 
 type LnurlDetails {
@@ -538,7 +538,7 @@ type Tournament {
   thumbnail_image: String!
   title: String!
   tracks: [TournamentTrack!]!
-  website: String!
+  website: String
 }
 
 type TournamentConfig {

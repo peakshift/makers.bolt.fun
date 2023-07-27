@@ -81,10 +81,10 @@ export interface NexusGenInputs {
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
     tracks: NexusGenInputs['CreateTournamentTrackInput'][]; // [CreateTournamentTrackInput!]!
-    website: string; // String!
+    website?: string | null; // String
   }
   CreateTournamentJudgeInput: { // input type
-    avatar: NexusGenInputs['ImageInput']; // ImageInput!
+    avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
     company: string; // String!
     name: string; // String!
   }
@@ -95,7 +95,7 @@ export interface NexusGenInputs {
   ImageInput: { // input type
     id?: string | null; // String
     name?: string | null; // String
-    url: string; // String!
+    url?: string | null; // String
   }
   MakerRoleInput: { // input type
     id: number; // Int!
@@ -459,7 +459,7 @@ export interface NexusGenObjects {
     location: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
     title: string; // String!
-    website: string; // String!
+    website?: string | null; // String
   }
   TournamentConfig: { // root type
     feedFilters?: string[] | null; // [String!]
@@ -907,7 +907,7 @@ export interface NexusGenFieldTypes {
     thumbnail_image: string; // String!
     title: string; // String!
     tracks: NexusGenRootTypes['TournamentTrack'][]; // [TournamentTrack!]!
-    website: string; // String!
+    website: string | null; // String
   }
   TournamentConfig: { // field return type
     feedFilters: string[] | null; // [String!]
