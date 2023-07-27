@@ -8,7 +8,10 @@ const {
   inputObjectType,
   booleanArg,
 } = require("nexus");
-const { resolveImgObjectToUrl } = require("../../../utils/resolveImageUrl");
+const {
+  resolveImgObjectToUrl,
+  findHostedImageById,
+} = require("../../../utils/resolveImageUrl");
 const { prisma } = require("../../../prisma");
 const {
   paginationArgs,
@@ -1033,17 +1036,12 @@ const createTournament = extendType({
           throw new Error("You are not allowed to create a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
-          prisma.hostedImage.findFirstOrThrow({
-            where: {
-              id: Number(input.thumbnail_image.id),
-            },
-          }),
-          prisma.hostedImage.findFirstOrThrow({
-            where: {
-              id: Number(input.cover_image.id),
-            },
-          }),
+          findHostedImageById(input.thumbnail_image),
+          findHostedImageById(input.cover_image),
         ]);
+
+        if (!thumbnail_image_rel || !cover_image_rel)
+          throw new Error("Provided images ids are not valid");
 
         return prisma.tournament.create({
           data: {
@@ -1083,11 +1081,15 @@ const createTournament = extendType({
             },
             judges: {
               createMany: {
-                data: input.judges.map((j) => ({
-                  name: j.name,
-                  company: j.company,
-                  avatar_id: j.avatar && Number(j.avatar.id),
-                })),
+                data: await Promise.all(
+                  input.judges.map(async (j) => ({
+                    name: j.name,
+                    company: j.company,
+                    avatar_id: await findHostedImageById(j.avatar).then(
+                      (i) => i?.id ?? null
+                    ),
+                  }))
+                ),
               },
             },
           },
@@ -1177,20 +1179,8 @@ const updateTournament = extendType({
           throw new Error("You are not allowed to update a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
-          input.thumbnail_image?.id
-            ? prisma.hostedImage.findFirstOrThrow({
-                where: {
-                  id: Number(input.thumbnail_image.id),
-                },
-              })
-            : undefined,
-          input.cover_image?.id
-            ? prisma.hostedImage.findFirstOrThrow({
-                where: {
-                  id: Number(input.cover_image.id),
-                },
-              })
-            : undefined,
+          findHostedImageById(input.thumbnail_image),
+          findHostedImageById(input.cover_image),
         ]);
 
         return prisma.tournament.update({

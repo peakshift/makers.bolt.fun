@@ -95,6 +95,7 @@ export interface NexusGenInputs {
   ImageInput: { // input type
     id?: string | null; // String
     name?: string | null; // String
+    provider_id?: string | null; // String
     url?: string | null; // String
   }
   MakerRoleInput: { // input type

@@ -243,6 +243,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
             telegram: data.telegram,
             github: data.github,
             figma: data.figma,
+            replit: data.replit,
             npub: data.npub,
             lightning_address: data.lightning_address,
             category_id: data.category.id,

@@ -199,9 +199,13 @@ type Hackathon {
   website: String!
 }
 
+"""
+When you want to connect to an already uploaded image, either include the `id` field or the `provider_id` field.
+"""
 input ImageInput {
   id: String
   name: String
+  provider_id: String
   url: String
 }
 
