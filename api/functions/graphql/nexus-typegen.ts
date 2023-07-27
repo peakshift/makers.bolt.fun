@@ -939,7 +939,7 @@ export interface NexusGenFieldTypes {
     question: string; // String!
   }
   TournamentJudge: { // field return type
-    avatar: string; // String!
+    avatar: string | null; // String
     company: string; // String!
     name: string; // String!
   }

@@ -391,7 +391,7 @@ model Tournament {
   start_date          DateTime
   end_date            DateTime
   location            String
-  website             String
+  website             String?
   votes_count         Int          @default(0)
 
   prizes       Json?

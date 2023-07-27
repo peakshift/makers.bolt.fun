@@ -97,7 +97,7 @@ const TournamentJudge = objectType({
   definition(t) {
     t.nonNull.string("name");
     t.nonNull.string("company");
-    t.nonNull.string("avatar", {
+    t.string("avatar", {
       async resolve(parent) {
         return (
           resolveImgObjectToUrl(parent.avatar_rel) ||
@@ -116,7 +116,7 @@ const CreateTournamentJudgeInput = inputObjectType({
   definition(t) {
     t.nonNull.string("name");
     t.nonNull.string("company");
-    t.nonNull.field("avatar", {
+    t.field("avatar", {
       type: ImageInput,
     });
   },
@@ -128,7 +128,7 @@ const UpdateTournamentJudgeInput = inputObjectType({
     t.nonNull.int("id");
     t.nonNull.string("name");
     t.nonNull.string("company");
-    t.nonNull.field("avatar", {
+    t.field("avatar", {
       type: ImageInput,
     });
   },
@@ -362,7 +362,7 @@ const Tournament = objectType({
     t.nonNull.date("start_date");
     t.nonNull.date("end_date");
     t.nonNull.string("location");
-    t.nonNull.string("website");
+    t.string("website");
 
     t.nonNull.int("events_count", {
       resolve(parent) {
@@ -967,7 +967,7 @@ const CreateTournamentInput = inputObjectType({
     t.nonNull.date("end_date");
 
     t.nonNull.string("location");
-    t.nonNull.string("website");
+    t.string("website");
 
     t.nonNull.list.nonNull.field("prizes", {
       type: TournamentPrizeInput,
@@ -1076,16 +1076,18 @@ const createTournament = extendType({
                 data: input.tracks,
               },
             },
-
             faqs: {
               createMany: {
                 data: input.faqs,
               },
             },
-
             judges: {
               createMany: {
-                data: input.judges,
+                data: input.judges.map((j) => ({
+                  name: j.name,
+                  company: j.company,
+                  avatar_id: j.avatar && Number(j.avatar.id),
+                })),
               },
             },
           },

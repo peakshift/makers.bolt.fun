@@ -596,7 +596,7 @@ type TournamentFAQ {
 }
 
 type TournamentJudge {
-  avatar: String!
+  avatar: String
   company: String!
   name: String!
 }
