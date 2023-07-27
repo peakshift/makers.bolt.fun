@@ -15,10 +15,13 @@ import { openModal } from "src/redux/features/modals.slice";
 export default function ProjectsPage() {
   const dispatch = useAppDispatch();
   const {
-    tournamentDetails: { id, title, tracks, end_date },
-    staticData: {
+    tournamentDetails: {
+      id,
+      title,
+      tracks,
       config: { projectsSubmissionOpen },
     },
+
     myParticipationInfo,
   } = useTournament();
   const isLoggedIn = useAppSelector((s) => !!s.user.me);
@@ -73,6 +76,8 @@ export default function ProjectsPage() {
 
   const myProjectsCount = myParticipationInfo?.projects.length;
 
+  const isRegistered = !!myParticipationInfo;
+
   const currentProjectsCount =
     curTab === "all-projects"
       ? !!query.data?.getProjectsInTournament.projects &&
@@ -120,7 +125,7 @@ export default function ProjectsPage() {
             </button>
           )}
         </div>
-        {projectsSubmissionOpen && (
+        {projectsSubmissionOpen && isRegistered && (
           <Button
             disabled={!isLoggedIn}
             size="sm"

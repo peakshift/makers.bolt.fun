@@ -10,6 +10,9 @@ import PostCardHeader, {
   calcTimeSincePosting,
 } from "../PostCardHeader/PostCardHeader";
 import { formatHashtag } from "src/utils/helperFunctions";
+import { marked } from "marked";
+import { purifyHtml } from "src/utils/validation";
+import { MdChatBubble } from "react-icons/md";
 import { FiMessageSquare } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import { nip19 } from "nostr-tools";
@@ -78,24 +81,24 @@ export default function StoryCard({ story, comments }: Props) {
           </Link>
         )}
         <div>
-          <Link to={storyUrl}>
-            <h2 className="text-h5 font-bolder">{story.title}</h2>
-          </Link>
-          <p className="text-body4 text-gray-600 mt-8">{story.excerpt}...</p>
+          <h2 className="text-h4 font-bolder">
+            <Link className="block" to={storyUrl}>
+              {story.title}
+            </Link>
+          </h2>
           <div className="flex flex-wrap gap-8 mt-8">
             {story.tags.map((tag) => (
               <Link
                 to={createRoute({ type: "tag-page", tag: tag.title })}
                 key={tag.id}
               >
-                <Badge className="hover:bg-gray-200" size="sm">
+                <Badge className="hover:bg-gray-200" color="gray" size="sm">
                   {formatHashtag(tag.title)}
                 </Badge>
               </Link>
             ))}
           </div>
-
-          <hr className="my-16 bg-gray-200" />
+          <hr className="my-16 h-0.5 bg-gray-200 border-0 rounded" />
           <div className="flex gap-24 items-center">
             <VoteButton votes={story.votes_count} dense onVote={vote} />
 
@@ -103,14 +106,16 @@ export default function StoryCard({ story, comments }: Props) {
               to={`${storyUrl}#comments`}
               className="text-gray-500 rounded-8 p-8 hover:bg-gray-100"
             >
-              <FiMessageSquare />{" "}
+              <MdChatBubble className="text-body2 text-gray-400 mr-4" />{" "}
               <span className="align-middle">
                 {isLoadingComments ? (
                   <Skeleton width="9ch" />
-                ) : comments.data.length > 0 ? (
+                ) : comments.data.length === 1 ? (
+                  `${comments.data.length} Comment`
+                ) : comments.data.length > 1 ? (
                   `${comments.data.length} Comments`
                 ) : (
-                  "Leave a comment!"
+                  "Drop a comment!"
                 )}
               </span>
             </Link>
@@ -124,22 +129,30 @@ export default function StoryCard({ story, comments }: Props) {
                       <span className="font-bold text-gray-900">
                         {nip19.npubEncode(comment.pubkey).slice(0, 10)}...
                       </span>{" "}
-                      <span className="text-body5 text-gray-400 italic">
+                      <time
+                        dateTime={new Date(
+                          comment.created_at * 1000
+                        ).toISOString()}
+                        className="text-body5 text-gray-400 italic"
+                      >
                         {calcTimeSincePosting(
                           new Date(comment.created_at * 1000).toISOString()
                         )}
-                      </span>
+                      </time>
                     </p>
-                    <p className="text-gray-600 whitespace-pre-line">
-                      {comment.content}
-                    </p>
+                    <div
+                      className="text-gray-600 prose line-clamp-6"
+                      dangerouslySetInnerHTML={{
+                        __html: purifyHtml(marked.parse(comment.content)),
+                      }}
+                    ></div>
                   </li>
                 ))}
               </ul>
               {comments.data.length > 3 && (
                 <Link
                   to={`${storyUrl}#comments`}
-                  className="inline-block mt-24 text-gray-600 font-medium hover:underline "
+                  className="inline-block mt-24 text-gray-600 font-medium hover:bg-gray-200 p-8 rounded"
                 >
                   See all {comments.data.length} comments
                 </Link>

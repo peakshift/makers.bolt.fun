@@ -4,15 +4,9 @@ import { useFeedQuery } from "src/graphql";
 import { useInfiniteQuery, usePreload } from "src/utils/hooks";
 import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
-import FeedTagsFilter, { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
-import SortBy from "./SortBy/SortBy";
+import { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
 import styles from "./styles.module.scss";
-import Button from "src/Components/Button/Button";
-import { FiArrowRight } from "react-icons/fi";
-import { capitalize, randomItem } from "src/utils/helperFunctions";
-import { createRoute } from "src/utils/routing";
 import { useAppDispatch } from "src/utils/hooks";
-import { stageStoryEdit } from "src/redux/features/staging.slice";
 import OgTags from "src/Components/OgTags/OgTags";
 import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
 import SkipLink from "src/Components/SkipLink/SkipLink";
@@ -22,7 +16,6 @@ import { RelayPoolProvider } from "src/lib/nostr";
 function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
   const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
-  const dispatch = useAppDispatch();
 
   const feedQuery = useFeedQuery({
     variables: {
@@ -47,114 +40,49 @@ function FeedPage() {
         description="Founders and makers sharing knwoledge and building on bitcoin"
       />
       <SkipLink id="content">Skip To Content</SkipLink>
-      <div className={`page-container`}>
-        <div className={`w-full ${styles.grid}`}>
-          <aside id="categories" className="no-scrollbar">
-            <div className="md:overflow-y-scroll sticky-side-element flex flex-col gap-16 md:gap-24">
-              <h1
-                className={`${
-                  tagFilter && "hidden"
-                } md:block text-h3 font-bolder order-1`}
+      <div className={`w-full ${styles.grid}`}>
+        <div id="content" className="pt-16 md:pt-0 flex flex-col gap-24">
+          <WelcomeNewMaker />
+          <PostsList
+            isLoading={feedQuery.loading}
+            items={feedQuery.data?.getFeed}
+            isFetching={isFetchingMore}
+            onReachedBottom={fetchMore}
+          />
+        </div>
+        <aside id="side" className="no-scrollbar">
+          <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
+            <a
+              href="https://snort.social/p/npub1funq0ywh32faz0sf7xt97japu8uk687tsysj8gndj4ehe825sq4s70gs0p"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div
+                className="text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden"
+                style={{
+                  backgroundImage: `url("/assets/images/join-discord-card.jpg")`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
               >
-                {randomWelcomeMessage}
-              </h1>
-              <div className="order-3 md:order-2">
-                <Button
-                  href={createRoute({ type: "write-story" })}
-                  color="primary"
-                  fullWidth
-                  onClick={() => dispatch(stageStoryEdit(null))}
-                >
-                  Write a story
-                </Button>
-              </div>
-              <div className="order-2 md:order-3">
-                <FeedTagsFilter
-                  value={tagFilter}
-                  onChange={setTagFilter as any}
-                />
-              </div>
-            </div>
-          </aside>
-          <div id="title">
-            {tagFilter && (
-              <p className="text-body6 text-gray-500 font-medium mb-8">
-                <span
-                  className="cursor-pointer"
-                  onClick={() => setTagFilter(null)}
-                >
-                  Stories{" "}
-                </span>
-                <FiArrowRight />
-                <span> {tagFilter.title}</span>
-              </p>
-            )}
-            <h1 className="text-h2 font-bolder">
-              {tagFilter && (
-                <>
-                  {tagFilter.icon} {capitalize(tagFilter.title)}
-                </>
-              )}
-            </h1>
-          </div>
-          <div id="sort-by">
-            <SortBy filterChanged={setSortByFilter} />
-          </div>
-          <div id="content" className="pt-16 md:pt-0 flex flex-col gap-24">
-            <WelcomeNewMaker />
-            <PostsList
-              isLoading={feedQuery.loading}
-              items={feedQuery.data?.getFeed}
-              isFetching={isFetchingMore}
-              onReachedBottom={fetchMore}
-            />
-          </div>
-          <aside id="side" className="no-scrollbar">
-            <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
-              <TrendingCard />
-              <a
-                href="https://discord.gg/HFqtxavb7x"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  className="min-h-[248px] text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden"
-                  style={{
-                    backgroundImage: `url("/assets/images/join-discord-card.jpg")`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <div className="absolute bg-black inset-0 opacity-10"></div>
-                  <div className="relative flex flex-col gap-24">
-                    <div className="flex flex-col gap-8 text-white">
-                      <img
-                        src={"assets/icons/join-discord.svg"}
-                        className="h-48 max-w-full self-start"
-                        alt=""
-                      />
-                      <p className="text-body2 font-bold">BOLT🔩FUN Discord</p>
-                      <p className="text-body4 font-medium">
-                        Join the Bolt.Fun Community Discord server and connect
-                        with other like minded developers!
-                      </p>
-                    </div>
+                <div className="absolute bg-black inset-0 opacity-10"></div>
+                <div className="relative flex flex-col gap-24">
+                  <div className="flex flex-col gap-8 text-white">
+                    <p className="text-body2 font-bold">BOLT🔩FUN Nostr</p>
+                    <p className="text-body4 font-medium">
+                      Follow BOLT.FUN on Nostr for the latest 🔥 noosts from the
+                      community!
+                    </p>
                   </div>
                 </div>
-              </a>
-            </div>
-          </aside>
-        </div>
+              </div>
+            </a>
+            <TrendingCard />
+          </div>
+        </aside>
       </div>
     </>
   );
 }
 
 export default withProviders(RelayPoolProvider)(FeedPage);
-
-const randomWelcomeMessage = randomItem(
-  "What are you working on today?",
-  "What did you learn today?",
-  "Do you need some help with a design?",
-  "Tell us about your idea!"
-);

@@ -25,7 +25,7 @@ export default function TournamentDetailsPage() {
         <Header />
         <Navigation />
 
-        <div className="content-container !mt-24">
+        <section className="w-full">
           <Routes>
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<OverviewPage />} />
@@ -35,7 +35,7 @@ export default function TournamentDetailsPage() {
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="ideas" element={<IdeasPage />} />
           </Routes>
-        </div>
+        </section>
       </TournamentDetailsContext>
     </div>
   );

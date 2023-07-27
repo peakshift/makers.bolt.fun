@@ -3,7 +3,6 @@ import { useGetHackathonsQuery } from "src/graphql";
 import HackathonsList from "../../Components/HackathonsList/HackathonsList";
 import SortByFilter from "../../Components/SortByFilter/SortByFilter";
 import { Link } from "react-router-dom";
-import { createRoute } from "src/utils/routing";
 import { bannerData } from "src/features/Projects/pages/ExplorePage/Header/Header";
 import OgTags from "src/Components/OgTags/OgTags";
 
@@ -23,7 +22,7 @@ export default function HackathonsPage() {
       <OgTags title="Tournaments" />
       <div className={`page-container`}>
         <div className={`w-full`}>
-          <Link to={createRoute({ type: "tournament", id: 1 })}>
+          <Link to={bannerData.link.url}>
             <div className="rounded-16 min-h-[280px] relative overflow-hidden p-16 md:p-24 flex flex-col items-start justify-end mb-24">
               <img
                 className="w-full h-full object-cover object-center absolute top-0 left-0 z-[-2]"

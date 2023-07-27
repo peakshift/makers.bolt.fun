@@ -134,6 +134,7 @@ export type CreateProjectInput = {
   members: Array<TeamMemberInput>;
   npub?: InputMaybe<Scalars['String']>;
   recruit_roles: Array<Scalars['Int']>;
+  replit?: InputMaybe<Scalars['String']>;
   screenshots: Array<ImageInput>;
   slack?: InputMaybe<Scalars['String']>;
   tagline: Scalars['String'];
@@ -451,6 +452,7 @@ export type Project = {
   npub: Maybe<Scalars['String']>;
   permissions: Array<ProjectPermissionEnum>;
   recruit_roles: Array<MakerRole>;
+  replit: Maybe<Scalars['String']>;
   screenshots: Array<Scalars['String']>;
   slack: Maybe<Scalars['String']>;
   stories: Array<Story>;
@@ -586,7 +588,7 @@ export type QueryGetMakersInTournamentArgs = {
   search: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
 };
 
 
@@ -629,7 +631,7 @@ export type QueryGetTagInfoArgs = {
 
 
 export type QueryGetTournamentByIdArgs = {
-  id: Scalars['Int'];
+  idOrSlug: Scalars['String'];
 };
 
 
@@ -658,12 +660,12 @@ export type QueryProjectsByCategoryArgs = {
 
 
 export type QueryPubkeysOfMakersInTournamentArgs = {
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
 };
 
 
 export type QueryPubkeysOfProjectsInTournamentArgs = {
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
 };
 
 
@@ -795,6 +797,8 @@ export type TeamMemberInput = {
 
 export type Tournament = {
   __typename?: 'Tournament';
+  config: TournamentConfig;
+  contacts: Array<TournamentContact>;
   cover_image: Scalars['String'];
   description: Scalars['String'];
   end_date: Scalars['Date'];
@@ -805,13 +809,32 @@ export type Tournament = {
   judges: Array<TournamentJudge>;
   location: Scalars['String'];
   makers_count: Scalars['Int'];
+  makers_deals: Array<TournamentMakerDeal>;
+  partners: Array<TournamentPartner>;
   prizes: Array<TournamentPrize>;
   projects_count: Scalars['Int'];
+  schedule: Array<TournamentSchedule>;
   start_date: Scalars['Date'];
   thumbnail_image: Scalars['String'];
   title: Scalars['String'];
   tracks: Array<TournamentTrack>;
   website: Scalars['String'];
+};
+
+export type TournamentConfig = {
+  __typename?: 'TournamentConfig';
+  feedFilters: Maybe<Array<Scalars['String']>>;
+  ideasRootNostrEventId: Maybe<Scalars['String']>;
+  mainFeedHashtag: Maybe<Scalars['String']>;
+  projectsSubmissionOpen: Scalars['Boolean'];
+  registerationOpen: Scalars['Boolean'];
+  showFeed: Scalars['Boolean'];
+};
+
+export type TournamentContact = {
+  __typename?: 'TournamentContact';
+  type: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type TournamentEvent = {
@@ -848,6 +871,13 @@ export type TournamentJudge = {
   name: Scalars['String'];
 };
 
+export type TournamentMakerDeal = {
+  __typename?: 'TournamentMakerDeal';
+  description: Scalars['String'];
+  title: Scalars['String'];
+  url: Maybe<Scalars['String']>;
+};
+
 export enum TournamentMakerHackingStatusEnum {
   OpenToConnect = 'OpenToConnect',
   Solo = 'Solo'
@@ -867,11 +897,39 @@ export type TournamentParticipant = {
   user: User;
 };
 
+export type TournamentPartner = {
+  __typename?: 'TournamentPartner';
+  items: Array<TournamentPartnerItem>;
+  title: Scalars['String'];
+};
+
+export type TournamentPartnerItem = {
+  __typename?: 'TournamentPartnerItem';
+  image: Scalars['String'];
+  isBigImage: Maybe<Scalars['Boolean']>;
+  url: Scalars['String'];
+};
+
 export type TournamentPrize = {
   __typename?: 'TournamentPrize';
-  amount: Scalars['String'];
+  additional_prizes: Maybe<Array<TournamentPrizeAdditionalPrize>>;
+  description: Scalars['String'];
   image: Scalars['String'];
+  positions: Array<TournamentPrizePosition>;
   title: Scalars['String'];
+};
+
+export type TournamentPrizeAdditionalPrize = {
+  __typename?: 'TournamentPrizeAdditionalPrize';
+  text: Scalars['String'];
+  url: Maybe<Scalars['String']>;
+};
+
+export type TournamentPrizePosition = {
+  __typename?: 'TournamentPrizePosition';
+  position: Scalars['String'];
+  project: Maybe<Scalars['String']>;
+  reward: Scalars['String'];
 };
 
 export type TournamentProjectsResponse = {
@@ -880,6 +938,22 @@ export type TournamentProjectsResponse = {
   hasNext: Maybe<Scalars['Boolean']>;
   hasPrev: Maybe<Scalars['Boolean']>;
   projects: Array<Project>;
+};
+
+export type TournamentSchedule = {
+  __typename?: 'TournamentSchedule';
+  date: Scalars['String'];
+  events: Array<TournamentScheduleEvent>;
+};
+
+export type TournamentScheduleEvent = {
+  __typename?: 'TournamentScheduleEvent';
+  location: Maybe<Scalars['String']>;
+  time: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: Maybe<Scalars['String']>;
+  url: Maybe<Scalars['String']>;
 };
 
 export type TournamentTrack = {
@@ -904,6 +978,7 @@ export type UpdateProjectInput = {
   members: Array<TeamMemberInput>;
   npub?: InputMaybe<Scalars['String']>;
   recruit_roles: Array<Scalars['Int']>;
+  replit?: InputMaybe<Scalars['String']>;
   screenshots: Array<ImageInput>;
   slack?: InputMaybe<Scalars['String']>;
   tagline: Scalars['String'];
@@ -1256,21 +1331,21 @@ export type GetAllCapabilitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllCapabilitiesQuery = { __typename?: 'Query', getAllCapabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
 
-export type ProjectDetailsFragment = { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
+export type ProjectDetailsFragment = { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> };
 
 export type CreateProjectMutationVariables = Exact<{
   input: InputMaybe<CreateProjectInput>;
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type UpdateProjectMutationVariables = Exact<{
   input: InputMaybe<UpdateProjectInput>;
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'CreateProjectResponse', project: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } } | null };
 
 export type IsValidProjectHashtagQueryVariables = Exact<{
   hashtag: Scalars['String'];
@@ -1291,7 +1366,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, replit: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type SimilarProjectsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -1306,7 +1381,7 @@ export type ProjectDetailsModalQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1314,7 +1389,7 @@ export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetAllRolesQuery = { __typename?: 'Query', getAllMakersRoles: Array<{ __typename?: 'GenericMakerRole', id: number, title: string, icon: string }> };
 
 export type GetMakersInTournamentQueryVariables = Exact<{
-  tournamentId: Scalars['Int'];
+  tournamentIdOrSlug: Scalars['String'];
   take: InputMaybe<Scalars['Int']>;
   skip: InputMaybe<Scalars['Int']>;
   search: InputMaybe<Scalars['String']>;
@@ -1375,11 +1450,11 @@ export type MeTournamentQueryVariables = Exact<{
 export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
-  id: Scalars['Int'];
+  idOrSlug: Scalars['String'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, amount: string, image: string }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, ideasRootNostrEventId: string | null, showFeed: boolean, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type NostrKeysMetadataQueryVariables = Exact<{
   keys: Array<Scalars['String']> | Scalars['String'];
@@ -1455,6 +1530,7 @@ export const ProjectDetailsFragmentDoc = gql`
   slack
   telegram
   figma
+  replit
   npub
   screenshots
   website
@@ -3546,6 +3622,7 @@ export const ProjectDetailsDocument = gql`
     github
     slack
     figma
+    replit
     npub
     telegram
     screenshots
@@ -3697,6 +3774,7 @@ export const ProjectDetailsModalDocument = gql`
     slack
     telegram
     figma
+    replit
     npub
     screenshots
     website
@@ -3801,9 +3879,9 @@ export type GetAllRolesQueryHookResult = ReturnType<typeof useGetAllRolesQuery>;
 export type GetAllRolesLazyQueryHookResult = ReturnType<typeof useGetAllRolesLazyQuery>;
 export type GetAllRolesQueryResult = Apollo.QueryResult<GetAllRolesQuery, GetAllRolesQueryVariables>;
 export const GetMakersInTournamentDocument = gql`
-    query GetMakersInTournament($tournamentId: Int!, $take: Int, $skip: Int, $search: String, $roleId: Int, $openToConnect: Boolean) {
+    query GetMakersInTournament($tournamentIdOrSlug: String!, $take: Int, $skip: Int, $search: String, $roleId: Int, $openToConnect: Boolean) {
   getMakersInTournament(
-    tournamentId: $tournamentId
+    tournamentIdOrSlug: $tournamentIdOrSlug
     take: $take
     skip: $skip
     search: $search
@@ -3850,7 +3928,7 @@ export const GetMakersInTournamentDocument = gql`
  * @example
  * const { data, loading, error } = useGetMakersInTournamentQuery({
  *   variables: {
- *      tournamentId: // value for 'tournamentId'
+ *      tournamentIdOrSlug: // value for 'tournamentIdOrSlug'
  *      take: // value for 'take'
  *      skip: // value for 'skip'
  *      search: // value for 'search'
@@ -4188,8 +4266,8 @@ export type MeTournamentQueryHookResult = ReturnType<typeof useMeTournamentQuery
 export type MeTournamentLazyQueryHookResult = ReturnType<typeof useMeTournamentLazyQuery>;
 export type MeTournamentQueryResult = Apollo.QueryResult<MeTournamentQuery, MeTournamentQueryVariables>;
 export const GetTournamentByIdDocument = gql`
-    query GetTournamentById($id: Int!) {
-  getTournamentById(id: $id) {
+    query GetTournamentById($idOrSlug: String!) {
+  getTournamentById(idOrSlug: $idOrSlug) {
     id
     title
     description
@@ -4204,8 +4282,17 @@ export const GetTournamentByIdDocument = gql`
     projects_count
     prizes {
       title
-      amount
+      description
       image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
     }
     tracks {
       id
@@ -4233,8 +4320,44 @@ export const GetTournamentByIdDocument = gql`
       question
       answer
     }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
   }
-  getMakersInTournament(tournamentId: $id, take: 4) {
+  getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {
     makers {
       user {
         id
@@ -4242,8 +4365,8 @@ export const GetTournamentByIdDocument = gql`
       }
     }
   }
-  pubkeysOfMakersInTournament(tournamentId: $id)
-  pubkeysOfProjectsInTournament(tournamentId: $id)
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: $idOrSlug)
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: $idOrSlug)
 }
     `;
 
@@ -4259,7 +4382,7 @@ export const GetTournamentByIdDocument = gql`
  * @example
  * const { data, loading, error } = useGetTournamentByIdQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      idOrSlug: // value for 'idOrSlug'
  *   },
  * });
  */

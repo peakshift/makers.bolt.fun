@@ -48,6 +48,7 @@ export interface NexusGenInputs {
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
+    replit?: string | null; // String
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
     tagline: string; // String!
@@ -57,6 +58,39 @@ export interface NexusGenInputs {
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
+  }
+  CreateTournamentFAQInput: { // input type
+    answer: string; // String!
+    question: string; // String!
+  }
+  CreateTournamentInput: { // input type
+    config: NexusGenInputs['TournamentConfigInput']; // TournamentConfigInput!
+    contacts: NexusGenInputs['TournamentContactInput'][]; // [TournamentContactInput!]!
+    cover_image: NexusGenInputs['ImageInput']; // ImageInput!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    faqs: NexusGenInputs['CreateTournamentFAQInput'][]; // [CreateTournamentFAQInput!]!
+    judges: NexusGenInputs['CreateTournamentJudgeInput'][]; // [CreateTournamentJudgeInput!]!
+    location: string; // String!
+    makers_deals: NexusGenInputs['TournamentMakerDealInput'][]; // [TournamentMakerDealInput!]!
+    partners: NexusGenInputs['TournamentPartnerInput'][]; // [TournamentPartnerInput!]!
+    prizes: NexusGenInputs['TournamentPrizeInput'][]; // [TournamentPrizeInput!]!
+    schedule: NexusGenInputs['TournamentScheduleInput'][]; // [TournamentScheduleInput!]!
+    slug: string; // String!
+    start_date: NexusGenScalars['Date']; // Date!
+    thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
+    title: string; // String!
+    tracks: NexusGenInputs['CreateTournamentTrackInput'][]; // [CreateTournamentTrackInput!]!
+    website: string; // String!
+  }
+  CreateTournamentJudgeInput: { // input type
+    avatar: NexusGenInputs['ImageInput']; // ImageInput!
+    company: string; // String!
+    name: string; // String!
+  }
+  CreateTournamentTrackInput: { // input type
+    icon: string; // String!
+    title: string; // String!
   }
   ImageInput: { // input type
     id?: string | null; // String
@@ -114,6 +148,60 @@ export interface NexusGenInputs {
     id: number; // Int!
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
   }
+  TournamentConfigInput: { // input type
+    feedFilters?: string[] | null; // [String!]
+    ideasRootNostrEventId?: string | null; // String
+    mainFeedHashtag?: string | null; // String
+    projectsSubmissionOpen: boolean; // Boolean!
+    registerationOpen: boolean; // Boolean!
+    showFeed?: boolean | null; // Boolean
+  }
+  TournamentContactInput: { // input type
+    type: string; // String!
+    url: string; // String!
+  }
+  TournamentMakerDealInput: { // input type
+    description: string; // String!
+    title: string; // String!
+    url?: string | null; // String
+  }
+  TournamentPartnerInput: { // input type
+    items: NexusGenInputs['TournamentPartnerItemInput'][]; // [TournamentPartnerItemInput!]!
+    title: string; // String!
+  }
+  TournamentPartnerItemInput: { // input type
+    image: string; // String!
+    isBigImage?: boolean | null; // Boolean
+    url: string; // String!
+  }
+  TournamentPrizeAdditionalPrizeInput: { // input type
+    text: string; // String!
+    url?: string | null; // String
+  }
+  TournamentPrizeInput: { // input type
+    additional_prizes?: NexusGenInputs['TournamentPrizeAdditionalPrizeInput'][] | null; // [TournamentPrizeAdditionalPrizeInput!]
+    description: string; // String!
+    image: string; // String!
+    positions: NexusGenInputs['TournamentPrizePositionInput'][]; // [TournamentPrizePositionInput!]!
+    title: string; // String!
+  }
+  TournamentPrizePositionInput: { // input type
+    position: string; // String!
+    project?: string | null; // String
+    reward: string; // String!
+  }
+  TournamentScheduleEventInput: { // input type
+    location?: string | null; // String
+    time?: string | null; // String
+    timezone?: string | null; // String
+    title: string; // String!
+    type?: string | null; // String
+    url?: string | null; // String
+  }
+  TournamentScheduleInput: { // input type
+    date: string; // String!
+    events: NexusGenInputs['TournamentScheduleEventInput'][]; // [TournamentScheduleEventInput!]!
+  }
   UpdateProjectInput: { // input type
     capabilities: number[]; // [Int!]!
     category_id: number; // Int!
@@ -129,6 +217,7 @@ export interface NexusGenInputs {
     members: NexusGenInputs['TeamMemberInput'][]; // [TeamMemberInput!]!
     npub?: string | null; // String
     recruit_roles: number[]; // [Int!]!
+    replit?: string | null; // String
     screenshots: NexusGenInputs['ImageInput'][]; // [ImageInput!]!
     slack?: string | null; // String
     tagline: string; // String!
@@ -138,6 +227,21 @@ export interface NexusGenInputs {
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
+  }
+  UpdateTournamentInput: { // input type
+    config?: NexusGenInputs['TournamentConfigInput'] | null; // TournamentConfigInput
+    contacts?: NexusGenInputs['TournamentContactInput'][] | null; // [TournamentContactInput!]
+    description?: string | null; // String
+    end_date?: NexusGenScalars['Date'] | null; // Date
+    id?: number | null; // Int
+    location?: string | null; // String
+    makers_deals?: NexusGenInputs['TournamentMakerDealInput'][] | null; // [TournamentMakerDealInput!]
+    partners?: NexusGenInputs['TournamentPartnerInput'][] | null; // [TournamentPartnerInput!]
+    prizes?: NexusGenInputs['TournamentPrizeInput'][] | null; // [TournamentPrizeInput!]
+    schedule?: NexusGenInputs['TournamentScheduleInput'][] | null; // [TournamentScheduleInput!]
+    start_date?: NexusGenScalars['Date'] | null; // Date
+    title?: string | null; // String
+    website?: string | null; // String
   }
   UpdateTournamentRegistrationInput: { // input type
     email?: string | null; // String
@@ -296,6 +400,7 @@ export interface NexusGenObjects {
     lightning_address?: string | null; // String
     lnurl_callback_url?: string | null; // String
     npub?: string | null; // String
+    replit?: string | null; // String
     slack?: string | null; // String
     tagline: string; // String!
     telegram?: string | null; // String
@@ -356,6 +461,18 @@ export interface NexusGenObjects {
     title: string; // String!
     website: string; // String!
   }
+  TournamentConfig: { // root type
+    feedFilters?: string[] | null; // [String!]
+    ideasRootNostrEventId?: string | null; // String
+    mainFeedHashtag?: string | null; // String
+    projectsSubmissionOpen: boolean; // Boolean!
+    registerationOpen: boolean; // Boolean!
+    showFeed?: boolean | null; // Boolean
+  }
+  TournamentContact: { // root type
+    type: string; // String!
+    url: string; // String!
+  }
   TournamentEvent: { // root type
     description: string; // String!
     ends_at: NexusGenScalars['Date']; // Date!
@@ -368,11 +485,17 @@ export interface NexusGenObjects {
   }
   TournamentFAQ: { // root type
     answer: string; // String!
+    id: number; // Int!
     question: string; // String!
   }
   TournamentJudge: { // root type
     company: string; // String!
     name: string; // String!
+  }
+  TournamentMakerDeal: { // root type
+    description: string; // String!
+    title: string; // String!
+    url?: string | null; // String
   }
   TournamentMakersResponse: { // root type
     hasNext?: boolean | null; // Boolean
@@ -384,15 +507,48 @@ export interface NexusGenObjects {
     is_registered?: boolean | null; // Boolean
     user: NexusGenRootTypes['User']; // User!
   }
-  TournamentPrize: { // root type
-    amount: string; // String!
+  TournamentPartner: { // root type
+    items: NexusGenRootTypes['TournamentPartnerItem'][]; // [TournamentPartnerItem!]!
     title: string; // String!
+  }
+  TournamentPartnerItem: { // root type
+    image: string; // String!
+    isBigImage?: boolean | null; // Boolean
+    url: string; // String!
+  }
+  TournamentPrize: { // root type
+    additional_prizes?: NexusGenRootTypes['TournamentPrizeAdditionalPrize'][] | null; // [TournamentPrizeAdditionalPrize!]
+    description: string; // String!
+    image: string; // String!
+    positions: NexusGenRootTypes['TournamentPrizePosition'][]; // [TournamentPrizePosition!]!
+    title: string; // String!
+  }
+  TournamentPrizeAdditionalPrize: { // root type
+    text: string; // String!
+    url?: string | null; // String
+  }
+  TournamentPrizePosition: { // root type
+    position: string; // String!
+    project?: string | null; // String
+    reward: string; // String!
   }
   TournamentProjectsResponse: { // root type
     allItemsCount?: number | null; // Int
     hasNext?: boolean | null; // Boolean
     hasPrev?: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+  }
+  TournamentSchedule: { // root type
+    date: string; // String!
+    events: NexusGenRootTypes['TournamentScheduleEvent'][]; // [TournamentScheduleEvent!]!
+  }
+  TournamentScheduleEvent: { // root type
+    location?: string | null; // String
+    time?: string | null; // String
+    timezone?: string | null; // String
+    title: string; // String!
+    type?: string | null; // String
+    url?: string | null; // String
   }
   TournamentTrack: { // root type
     icon: string; // String!
@@ -560,6 +716,7 @@ export interface NexusGenFieldTypes {
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
+    createTournament: NexusGenRootTypes['Tournament'] | null; // Tournament
     deleteProject: NexusGenRootTypes['Project'] | null; // Project
     deleteStory: NexusGenRootTypes['Story'] | null; // Story
     donate: NexusGenRootTypes['Donation']; // Donation!
@@ -571,6 +728,7 @@ export interface NexusGenFieldTypes {
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
     updateProfileRoles: NexusGenRootTypes['User'] | null; // User
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
+    updateTournament: NexusGenRootTypes['Tournament'] | null; // Tournament
     updateTournamentRegistration: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     updateUserPreferences: NexusGenRootTypes['User']; // User!
     vote: NexusGenRootTypes['Vote']; // Vote!
@@ -618,6 +776,7 @@ export interface NexusGenFieldTypes {
     npub: string | null; // String
     permissions: NexusGenEnums['ProjectPermissionEnum'][]; // [ProjectPermissionEnum!]!
     recruit_roles: NexusGenRootTypes['MakerRole'][]; // [MakerRole!]!
+    replit: string | null; // String
     screenshots: string[]; // [String!]!
     slack: string | null; // String
     stories: NexusGenRootTypes['Story'][]; // [Story!]!
@@ -727,6 +886,8 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Tournament: { // field return type
+    config: NexusGenRootTypes['TournamentConfig']; // TournamentConfig!
+    contacts: NexusGenRootTypes['TournamentContact'][]; // [TournamentContact!]!
     cover_image: string; // String!
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
@@ -737,13 +898,28 @@ export interface NexusGenFieldTypes {
     judges: NexusGenRootTypes['TournamentJudge'][]; // [TournamentJudge!]!
     location: string; // String!
     makers_count: number; // Int!
+    makers_deals: NexusGenRootTypes['TournamentMakerDeal'][]; // [TournamentMakerDeal!]!
+    partners: NexusGenRootTypes['TournamentPartner'][]; // [TournamentPartner!]!
     prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
     projects_count: number; // Int!
+    schedule: NexusGenRootTypes['TournamentSchedule'][]; // [TournamentSchedule!]!
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: string; // String!
     title: string; // String!
     tracks: NexusGenRootTypes['TournamentTrack'][]; // [TournamentTrack!]!
     website: string; // String!
+  }
+  TournamentConfig: { // field return type
+    feedFilters: string[] | null; // [String!]
+    ideasRootNostrEventId: string | null; // String
+    mainFeedHashtag: string | null; // String
+    projectsSubmissionOpen: boolean; // Boolean!
+    registerationOpen: boolean; // Boolean!
+    showFeed: boolean | null; // Boolean
+  }
+  TournamentContact: { // field return type
+    type: string; // String!
+    url: string; // String!
   }
   TournamentEvent: { // field return type
     description: string; // String!
@@ -759,12 +935,18 @@ export interface NexusGenFieldTypes {
   }
   TournamentFAQ: { // field return type
     answer: string; // String!
+    id: number; // Int!
     question: string; // String!
   }
   TournamentJudge: { // field return type
     avatar: string; // String!
     company: string; // String!
     name: string; // String!
+  }
+  TournamentMakerDeal: { // field return type
+    description: string; // String!
+    title: string; // String!
+    url: string | null; // String
   }
   TournamentMakersResponse: { // field return type
     hasNext: boolean | null; // Boolean
@@ -776,16 +958,48 @@ export interface NexusGenFieldTypes {
     is_registered: boolean | null; // Boolean
     user: NexusGenRootTypes['User']; // User!
   }
-  TournamentPrize: { // field return type
-    amount: string; // String!
-    image: string; // String!
+  TournamentPartner: { // field return type
+    items: NexusGenRootTypes['TournamentPartnerItem'][]; // [TournamentPartnerItem!]!
     title: string; // String!
+  }
+  TournamentPartnerItem: { // field return type
+    image: string; // String!
+    isBigImage: boolean | null; // Boolean
+    url: string; // String!
+  }
+  TournamentPrize: { // field return type
+    additional_prizes: NexusGenRootTypes['TournamentPrizeAdditionalPrize'][] | null; // [TournamentPrizeAdditionalPrize!]
+    description: string; // String!
+    image: string; // String!
+    positions: NexusGenRootTypes['TournamentPrizePosition'][]; // [TournamentPrizePosition!]!
+    title: string; // String!
+  }
+  TournamentPrizeAdditionalPrize: { // field return type
+    text: string; // String!
+    url: string | null; // String
+  }
+  TournamentPrizePosition: { // field return type
+    position: string; // String!
+    project: string | null; // String
+    reward: string; // String!
   }
   TournamentProjectsResponse: { // field return type
     allItemsCount: number | null; // Int
     hasNext: boolean | null; // Boolean
     hasPrev: boolean | null; // Boolean
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+  }
+  TournamentSchedule: { // field return type
+    date: string; // String!
+    events: NexusGenRootTypes['TournamentScheduleEvent'][]; // [TournamentScheduleEvent!]!
+  }
+  TournamentScheduleEvent: { // field return type
+    location: string | null; // String
+    time: string | null; // String
+    timezone: string | null; // String
+    title: string; // String!
+    type: string | null; // String
+    url: string | null; // String
   }
   TournamentTrack: { // field return type
     icon: string; // String!
@@ -988,6 +1202,7 @@ export interface NexusGenFieldTypeNames {
     confirmVote: 'Vote'
     createProject: 'CreateProjectResponse'
     createStory: 'Story'
+    createTournament: 'Tournament'
     deleteProject: 'Project'
     deleteStory: 'Story'
     donate: 'Donation'
@@ -999,6 +1214,7 @@ export interface NexusGenFieldTypeNames {
     updateProfileDetails: 'User'
     updateProfileRoles: 'User'
     updateProject: 'CreateProjectResponse'
+    updateTournament: 'Tournament'
     updateTournamentRegistration: 'ParticipationInfo'
     updateUserPreferences: 'User'
     vote: 'Vote'
@@ -1046,6 +1262,7 @@ export interface NexusGenFieldTypeNames {
     npub: 'String'
     permissions: 'ProjectPermissionEnum'
     recruit_roles: 'MakerRole'
+    replit: 'String'
     screenshots: 'String'
     slack: 'String'
     stories: 'Story'
@@ -1155,6 +1372,8 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
   }
   Tournament: { // field return type name
+    config: 'TournamentConfig'
+    contacts: 'TournamentContact'
     cover_image: 'String'
     description: 'String'
     end_date: 'Date'
@@ -1165,13 +1384,28 @@ export interface NexusGenFieldTypeNames {
     judges: 'TournamentJudge'
     location: 'String'
     makers_count: 'Int'
+    makers_deals: 'TournamentMakerDeal'
+    partners: 'TournamentPartner'
     prizes: 'TournamentPrize'
     projects_count: 'Int'
+    schedule: 'TournamentSchedule'
     start_date: 'Date'
     thumbnail_image: 'String'
     title: 'String'
     tracks: 'TournamentTrack'
     website: 'String'
+  }
+  TournamentConfig: { // field return type name
+    feedFilters: 'String'
+    ideasRootNostrEventId: 'String'
+    mainFeedHashtag: 'String'
+    projectsSubmissionOpen: 'Boolean'
+    registerationOpen: 'Boolean'
+    showFeed: 'Boolean'
+  }
+  TournamentContact: { // field return type name
+    type: 'String'
+    url: 'String'
   }
   TournamentEvent: { // field return type name
     description: 'String'
@@ -1187,12 +1421,18 @@ export interface NexusGenFieldTypeNames {
   }
   TournamentFAQ: { // field return type name
     answer: 'String'
+    id: 'Int'
     question: 'String'
   }
   TournamentJudge: { // field return type name
     avatar: 'String'
     company: 'String'
     name: 'String'
+  }
+  TournamentMakerDeal: { // field return type name
+    description: 'String'
+    title: 'String'
+    url: 'String'
   }
   TournamentMakersResponse: { // field return type name
     hasNext: 'Boolean'
@@ -1204,16 +1444,48 @@ export interface NexusGenFieldTypeNames {
     is_registered: 'Boolean'
     user: 'User'
   }
-  TournamentPrize: { // field return type name
-    amount: 'String'
-    image: 'String'
+  TournamentPartner: { // field return type name
+    items: 'TournamentPartnerItem'
     title: 'String'
+  }
+  TournamentPartnerItem: { // field return type name
+    image: 'String'
+    isBigImage: 'Boolean'
+    url: 'String'
+  }
+  TournamentPrize: { // field return type name
+    additional_prizes: 'TournamentPrizeAdditionalPrize'
+    description: 'String'
+    image: 'String'
+    positions: 'TournamentPrizePosition'
+    title: 'String'
+  }
+  TournamentPrizeAdditionalPrize: { // field return type name
+    text: 'String'
+    url: 'String'
+  }
+  TournamentPrizePosition: { // field return type name
+    position: 'String'
+    project: 'String'
+    reward: 'String'
   }
   TournamentProjectsResponse: { // field return type name
     allItemsCount: 'Int'
     hasNext: 'Boolean'
     hasPrev: 'Boolean'
     projects: 'Project'
+  }
+  TournamentSchedule: { // field return type name
+    date: 'String'
+    events: 'TournamentScheduleEvent'
+  }
+  TournamentScheduleEvent: { // field return type name
+    location: 'String'
+    time: 'String'
+    timezone: 'String'
+    title: 'String'
+    type: 'String'
+    url: 'String'
   }
   TournamentTrack: { // field return type name
     icon: 'String'
@@ -1326,6 +1598,9 @@ export interface NexusGenArgTypes {
     createStory: { // args
       data?: NexusGenInputs['StoryInputType'] | null; // StoryInputType
     }
+    createTournament: { // args
+      data?: NexusGenInputs['CreateTournamentInput'] | null; // CreateTournamentInput
+    }
     deleteProject: { // args
       id: number; // Int!
     }
@@ -1359,6 +1634,9 @@ export interface NexusGenArgTypes {
     }
     updateProject: { // args
       input?: NexusGenInputs['UpdateProjectInput'] | null; // UpdateProjectInput
+    }
+    updateTournament: { // args
+      data?: NexusGenInputs['UpdateTournamentInput'] | null; // UpdateTournamentInput
     }
     updateTournamentRegistration: { // args
       data?: NexusGenInputs['UpdateTournamentRegistrationInput'] | null; // UpdateTournamentRegistrationInput
@@ -1414,7 +1692,7 @@ export interface NexusGenArgTypes {
       search?: string | null; // String
       skip?: number | null; // Int
       take: number | null; // Int
-      tournamentId: number; // Int!
+      tournamentIdOrSlug: string; // String!
     }
     getMyDrafts: { // args
       type: NexusGenEnums['POST_TYPE']; // POST_TYPE!
@@ -1443,7 +1721,7 @@ export interface NexusGenArgTypes {
       tag?: string | null; // String
     }
     getTournamentById: { // args
-      id: number; // Int!
+      idOrSlug: string; // String!
     }
     hottestProjects: { // args
       skip?: number | null; // Int
@@ -1462,10 +1740,10 @@ export interface NexusGenArgTypes {
       take: number | null; // Int
     }
     pubkeysOfMakersInTournament: { // args
-      tournamentId: number; // Int!
+      tournamentIdOrSlug: string; // String!
     }
     pubkeysOfProjectsInTournament: { // args
-      tournamentId: number; // Int!
+      tournamentIdOrSlug: string; // String!
     }
     recentProjectsInTag: { // args
       tagId: number; // Int!

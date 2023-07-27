@@ -67,7 +67,7 @@ export default function ProjectsRow({ title, link, projects }: Props) {
         {link && (
           <Link to={link}>
             <MdDoubleArrow
-              className="text-gray-200 ml-8 hover:cursor-pointer transform scale-y-110 scale-x-125 origin-left"
+              className="text-gray-300 ml-8 hover:cursor-pointer transform scale-y-110 scale-x-125 origin-left"
               aria-label={`show all projects in this category`}
             />
           </Link>

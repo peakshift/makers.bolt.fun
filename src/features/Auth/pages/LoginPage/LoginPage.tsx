@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { Grid } from "react-loader-spinner";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMeQuery } from "src/graphql";
-import { CONSTS } from "src/utils";
 import { QRCodeSVG } from "qrcode.react";
 import { IoRocketOutline } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
@@ -49,11 +48,12 @@ export const useLnurlQuery = () => {
 
 export default function LoginPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [copiedCurrentLnurl, setCopiedCurrentLnurl] = useState(false);
+  const canFetchIsLogged = useRef(true);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const [copied, setCopied] = useState(false);
 
-  const canFetchIsLogged = useRef(true);
   const {
     loadingLnurl,
     data: { lnurl, session_token },
@@ -64,26 +64,17 @@ export default function LoginPage() {
   const clipboard = useCopyToClipboard();
 
   useEffect(() => {
-    setCopied(false);
+    setCopiedCurrentLnurl(false);
   }, [lnurl]);
 
   const meQuery = useMeQuery({
     onCompleted: (data) => {
-      if (data.me) {
-        setIsLoggedIn(true);
-        meQuery.stopPolling();
-        setTimeout(() => {
-          const cameFrom = getPropertyFromUnknown(location.state, "from");
-          const navigateTo = cameFrom ? cameFrom : "/";
-
-          navigate(navigateTo, { replace: true });
-        }, 2000);
-      }
+      if (data.me) setIsLoggedIn(true);
     },
   });
 
   const copyToClipboard = () => {
-    setCopied(true);
+    setCopiedCurrentLnurl(true);
     clipboard(lnurl);
   };
 
@@ -108,6 +99,19 @@ export default function LoginPage() {
 
     return interval;
   }, [refetch, session_token]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      meQuery.stopPolling();
+      const timeout = setTimeout(() => {
+        const cameFrom = getPropertyFromUnknown(location.state, "from");
+        const navigateTo = cameFrom ? cameFrom : "/";
+
+        navigate(navigateTo, { replace: true });
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoggedIn, location.state, meQuery, navigate]);
 
   useEffect(() => {
     let interval: NodeJS.Timer;
@@ -188,10 +192,10 @@ export default function LoginPage() {
             Click to connect <IoRocketOutline />
           </a>
           <Button color="gray" onClick={copyToClipboard}>
-            {copied ? "Copied" : "Copy LNURL"} <FiCopy />
+            {copiedCurrentLnurl ? "Copied!" : "Copy LNURL"} <FiCopy />
           </Button>
           <a
-            href={`https://makers.bolt.fun/story/sign-in-with-lightning--99`}
+            href={`https://bolt.fun/story/sign-in-with-lightning--99`}
             target="_blank"
             rel="noreferrer"
             className="md:col-span-2 block text-body4 text-center text-gray-900 border border-gray-200 rounded-10 px-16 py-12 active:scale-90 transition-transform"
@@ -205,8 +209,8 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>{`makers.bolt.fun`}</title>
-        <meta property="og:title" content={`makers.bolt.fun`} />
+        <title>bolt.fun</title>
+        <meta property="og:title" content="bolt.fun" />
       </Helmet>
       <div className="page-container">
         <div className="min-h-[80vh] flex flex-col justify-center items-center">

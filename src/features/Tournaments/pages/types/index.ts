@@ -1,36 +1,41 @@
 import { Filter } from "nostr-tools";
 import { TrackAndPrizes } from "../OverviewPage/PrizesSection/PrizesSection";
 
+interface Partner {
+  url: string;
+  image: string;
+  isBigImage?: boolean;
+}
+
 export interface TournamentStaticData {
   chat: {
     type: string;
-    link: string;
+    url: string;
   };
 
-  partners: Array<{
-    link: string;
-    image: string;
-    isPrimary?: boolean;
+  partnersList: Array<{
+    title: string;
+    items: Partner[];
   }>;
 
   tracksAndPrizes: Array<TrackAndPrizes>;
 
-  communityPartners?: Array<{
-    link: string;
-    image: string;
-    isPrimary: boolean;
-  }>;
-
   schedule: {
     date: string;
     events: {
-      event: string;
+      title: string;
       time: string | null;
-      timezone: "UTC" | null;
-      location: "BOLT.FUN" | "Youtube" | null;
+      timezone: "UTC" | "PST" | null;
+      location: "BOLT.FUN" | "Youtube" | "Twitch" | null;
       url?: string;
       type: "Hangout" | "Presentation" | "Workshop" | null;
     }[];
+  }[];
+
+  makersDeals?: {
+    title: string;
+    description: string;
+    url?: string;
   }[];
 
   config: {

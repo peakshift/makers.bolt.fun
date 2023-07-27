@@ -11,7 +11,7 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
-import { NavbarLayout } from "./layouts";
+import { SideNavLayout, TopNavLayout } from "./layouts/index";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
@@ -23,7 +23,9 @@ import { Post_Type } from "src/graphql";
 const HomePage = Loadable(
   React.lazy(
     () =>
-      import(/* webpackChunkName: "feed_page" */ "../../features/Home/HomePage")
+      import(
+        /* webpackChunkName: "home_page" */ "../../features/Home/pages/LandingPage/LandingPage"
+      )
   )
 );
 
@@ -47,7 +49,7 @@ const NostrPostDetailsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "post_details_page" */ "../../features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage"
+        /* webpackChunkName: "nostr_post_details_page" */ "../../features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage"
       )
   )
 );
@@ -72,7 +74,7 @@ const AllTopicsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "tag_page" */ "../../features/Posts/pages/AllTopicsPage/AllTopicsPage"
+        /* webpackChunkName: "all_topics_page" */ "../../features/Posts/pages/AllTopicsPage/AllTopicsPage"
       )
   )
 );
@@ -105,7 +107,7 @@ const ProjectPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage"
+        /* webpackChunkName: "project_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage"
       )
   )
 );
@@ -113,7 +115,7 @@ const ListProjectPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ListProjectPage/ListProjectPage"
+        /* webpackChunkName: "list_project_page" */ "src/features/Projects/pages/ListProjectPage/ListProjectPage"
       )
   )
 );
@@ -131,7 +133,7 @@ const TournamentDetailsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "hackathons_page" */ "../../features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage"
+        /* webpackChunkName: "tournament_details_page" */ "../../features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage"
       )
   )
 );
@@ -186,6 +188,24 @@ const HangoutPage = Loadable(
   )
 );
 
+const PrivacyPolicyPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "privacy_policy_page" */ "../../features/Shared/pages/PrivacyPolicyPage/PrivacyPolicyPage"
+      )
+  )
+);
+
+const TermsAndConditionsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "terms_conditions_page" */ "../../features/Shared/pages/TermsAndConditionsPage/TermsAndConditionsPage"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -205,13 +225,56 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           </ProtectedRoute>
         }
       />
-      <Route element={<NavbarLayout />}>
-        <Route path={PAGES_ROUTES.projects.hottest} element={<HottestPage />} />
-        <Route
-          path={PAGES_ROUTES.projects.byCategoryId}
-          element={<CategoryPage />}
-        />
-        <Route path={PAGES_ROUTES.projects.default} element={<ExplorePage />} />
+      <Route element={<TopNavLayout />}>
+        <Route element={<SideNavLayout />}>
+          <Route
+            path={PAGES_ROUTES.projects.hottest}
+            element={<HottestPage />}
+          />
+          <Route
+            path={PAGES_ROUTES.projects.byCategoryId}
+            element={<CategoryPage />}
+          />
+          <Route
+            path={PAGES_ROUTES.projects.default}
+            element={<ExplorePage />}
+          />
+          <Route
+            path={PAGES_ROUTES.blog.tagPage}
+            element={<TagPage />}
+            loader={tagPageLoader(queryClient)}
+          />
+
+          <Route
+            path={PAGES_ROUTES.blog.topicsPage}
+            element={<AllTopicsPage />}
+            loader={allTopicsPageLoader(queryClient)}
+          />
+          <Route
+            path={PAGES_ROUTES.blog.feed}
+            element={<FeedPage />}
+            loader={feedPageLoader(queryClient)}
+          />
+          <Route
+            path={PAGES_ROUTES.blog.catchStory}
+            element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
+          />
+
+          <Route
+            path={PAGES_ROUTES.hackathons.default}
+            element={<HackathonsPage />}
+          />
+
+          <Route
+            path={PAGES_ROUTES.tournament.byId}
+            element={<TournamentDetailsPage />}
+          />
+
+          <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+          <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
+          <Route path={"/Build-On-Bitcoin"} element={<HomePage />} />
+        </Route>
+
         <Route
           path={PAGES_ROUTES.projects.listProject}
           element={<ListProjectPage />}
@@ -233,36 +296,6 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           element={<PostDetailsPage postType={Post_Type.Story} />}
           loader={postDetailsPageLoader(queryClient, { type: Post_Type.Story })}
         />
-        <Route
-          path={PAGES_ROUTES.blog.tagPage}
-          element={<TagPage />}
-          loader={tagPageLoader(queryClient)}
-        />
-
-        <Route
-          path={PAGES_ROUTES.blog.topicsPage}
-          element={<AllTopicsPage />}
-          loader={allTopicsPageLoader(queryClient)}
-        />
-        <Route
-          path={PAGES_ROUTES.blog.feed}
-          element={<FeedPage />}
-          loader={feedPageLoader(queryClient)}
-        />
-        <Route
-          path={PAGES_ROUTES.blog.catchStory}
-          element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
-        />
-
-        <Route
-          path={PAGES_ROUTES.hackathons.default}
-          element={<HackathonsPage />}
-        />
-
-        <Route
-          path={PAGES_ROUTES.tournament.byId}
-          element={<TournamentDetailsPage />}
-        />
 
         <Route path={PAGES_ROUTES.donate.default} element={<DonatePage />} />
 
@@ -279,11 +312,21 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
-        <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+        <Route path={"/privacy-policy"} element={<PrivacyPolicyPage />} />
+        <Route
+          path={"/terms-conditions"}
+          element={<TermsAndConditionsPage />}
+        />
 
         <Route
           path="/"
-          element={<Navigate replace to={PAGES_ROUTES.blog.feed} />}
+          element={
+            <ProtectedRoute
+              notAuthorizedRedirectPath={PAGES_ROUTES.home.default}
+            >
+              <Navigate replace to={PAGES_ROUTES.blog.feed} />
+            </ProtectedRoute>
+          }
         />
       </Route>
     </Route>

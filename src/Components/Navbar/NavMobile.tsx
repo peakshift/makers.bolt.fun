@@ -6,7 +6,7 @@ import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppSelector } from "src/utils/hooks";
-import { FiBell, FiMenu } from "react-icons/fi";
+import { FiBell, FiMenu, FiPlusCircle } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
 import styles from "./styles.module.css";
@@ -14,6 +14,7 @@ import "@szhsin/react-menu/dist/index.css";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
+import { SideNavigation } from "../SideNavigation";
 import NotificationsList from "./NotificationsList/NotificationsList";
 
 const navBtnVariant = {
@@ -132,7 +133,7 @@ export default function NavMobile() {
             </div>
 
             <div className="flex-1 shrink-0 flex gap-4 justify-end">
-              {curUser !== undefined && (
+              {!!curUser && (
                 <NotificationsList
                   menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg flex flex-col gap-4 small-scrollbar"
                   renderOpenListButton={({ hasNewNotifications }) => (
@@ -153,79 +154,82 @@ export default function NavMobile() {
                   )}
                 />
               )}
-              {!!curUser &&
-                (curUser ? (
-                  <Menu
-                    align="end"
-                    offsetY={4}
-                    menuClassName="!p-8 !rounded-12"
-                    menuButton={
-                      <MenuButton>
-                        <Avatar src={curUser.avatar} width={32} />{" "}
-                      </MenuButton>
-                    }
+              {curUser ? (
+                <Menu
+                  align="end"
+                  offsetY={4}
+                  menuClassName="!p-8 !rounded-12"
+                  menuButton={
+                    <MenuButton>
+                      <Avatar src={curUser.avatar} width={32} />{" "}
+                    </MenuButton>
+                  }
+                >
+                  <MenuItem
+                    href={createRoute({
+                      type: "profile",
+                      id: curUser.id,
+                      username: curUser.name,
+                    })}
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate(
+                        createRoute({
+                          type: "profile",
+                          id: curUser.id,
+                          username: curUser.name,
+                        })
+                      );
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
                   >
-                    <MenuItem
-                      href={createRoute({
-                        type: "profile",
-                        id: curUser.id,
-                        username: curUser.name,
-                      })}
-                      onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate(
-                          createRoute({
-                            type: "profile",
-                            id: curUser.id,
-                            username: curUser.name,
-                          })
-                        );
-                      }}
-                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                    >
-                      👾 Profile
-                    </MenuItem>
-                    <MenuItem
-                      href="/edit-profile"
-                      onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate("/edit-profile");
-                      }}
-                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                    >
-                      ⚙️ Settings
-                    </MenuItem>
-                    <MenuItem
-                      href="/logout"
-                      onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate("/logout");
-                      }}
-                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                    >
-                      👋 Logout
-                    </MenuItem>
-                  </Menu>
-                ) : (
-                  <Link
-                    to={PAGES_ROUTES.auth.login}
-                    state={{ from: window.location.pathname }}
+                    👾 Profile
+                  </MenuItem>
+                  <MenuItem
+                    href="/edit-profile"
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/edit-profile");
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
                   >
-                    <Button
-                      size="sm"
-                      color="none"
-                      className="!text-body5 whitespace-nowrap"
-                    >
-                      Connect ⚡
-                    </Button>
-                  </Link>
-                ))}
+                    ⚙️ Settings
+                  </MenuItem>
+                  <MenuItem
+                    href="/logout"
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/logout");
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                  >
+                    👋 Logout
+                  </MenuItem>
+                </Menu>
+              ) : (
+                <Link
+                  to={PAGES_ROUTES.auth.login}
+                  state={{ from: window.location.pathname }}
+                >
+                  <Button
+                    size="sm"
+                    color="none"
+                    className="!text-body5 whitespace-nowrap"
+                    state={{ from: location.pathname }}
+                  >
+                    Sign In ⚡
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </nav>
 
-      <div className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]">
+      <div
+        className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]"
+        style={{ height: "calc(100dvh - 67px)" }}
+      >
         {drawerOpen && (
           <button
             onClick={() => onToggleDrawer()}
@@ -236,187 +240,65 @@ export default function NavMobile() {
         <motion.div
           className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border px-16 flex flex-col"
           variants={navListVariants}
-          style={{ height: "calc(100vh - 67px)" }}
+          style={{ height: "calc(100dvh - 67px)" }}
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
-            <Search onResultClick={() => onToggleDrawer(false)} />
-          </div>
-          <ul className="flex flex-col py-16 gap-16 border-t">
-            <li className="relative">
-              <Link
-                to={"/feed"}
-                className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50"
-              >
-                Feed
-              </Link>
-            </li>
-            <li className="relative">
-              <Link
-                to={"/projects"}
-                className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50"
-              >
-                Projects
-              </Link>
-            </li>
-            <li className="relative">
-              <Link
-                to={createRoute({ type: "hangout" })}
-                className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50"
-              >
-                Hangout{" "}
-                <span className="font-medium text-xs leading-5 rounded text-red-600 bg-red-400/10 px-2 py-0.1">
-                  Live
-                </span>
-              </Link>
-            </li>
-            <li>
-              <button
-                className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50 w-full flex justify-between"
-                onClick={() => toggleEventsOpen()}
-              >
-                Events
-                <motion.span
-                  variants={listArrowVariants}
-                  initial={"closed"}
-                  animate={eventsOpen ? "open" : "closed"}
-                  className="ml-auto"
-                >
-                  <GrFormDown className=" text-gray-400" />
-                </motion.span>
-              </button>
-              {
-                <motion.div
-                  variants={categoriesListVariants}
-                  initial={"closed"}
-                  animate={eventsOpen ? "open" : "closed"}
-                >
-                  <div className="flex flex-col gap-24 pt-16">
-                    <Link
-                      to="/tournaments/2"
-                      className="font-medium flex gap-16 !rounded-12 p-8 group bg-pink-100 hover:bg-purple-100 border-2 border-pink-200 hover:border-purple-200"
-                    >
-                      <div className="shrink-0 bg-white border border-pink-200 group-hover:border-purple-200 w-48 h-48 rounded-full flex justify-center items-center">
-                        <span className="text-body2 shrink-0">🦩</span>
-                      </div>
-                      <div>
-                        <p className="text-body4 text-black font-medium">
-                          Nostr Hack & Design{" "}
-                          <span className="text-red-500 text-body6 bg-red-200 p-4 px-8 rounded-24 font-bold">
-                            Hot! 🔥
-                          </span>
-                        </p>
-                        <p className="text-body5 font-normal text-gray-600 mt-4">
-                          Design & Build cool social things!
-                        </p>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/hackathons"
-                      className="font-medium flex gap-16 !rounded-12"
-                    >
-                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                        <span className="text-body2 shrink-0">👩‍💻</span>
-                      </div>
-                      <div>
-                        <p className="text-body4 text-black font-medium">
-                          Upcoming Hackathons
-                        </p>
-                        <p className="text-body5 font-normal text-gray-600 mt-4">
-                          Take part in hackathons & tournaments
-                        </p>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/tournaments/1"
-                      className="font-medium flex gap-16 !rounded-12 "
-                    >
-                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                        <span className="text-body2 shrink-0">🏆</span>
-                      </div>
-                      <div>
-                        <p className="text-body4 text-black font-medium">
-                          #LegendsOfLightning
-                        </p>
-                        <p className="text-body5 font-normal text-gray-600 mt-4">
-                          In 2022 we put on the largest
-                          <br /> bitcoin hackathon.
-                        </p>
-                      </div>
-                    </Link>
-                    <a
-                      href="mailto:team@peakshift.com"
-                      className="font-medium flex gap-16 !rounded-12"
-                    >
-                      <div className="shrink-0 bg-white border border-gray-100 w-48 h-48 rounded-full flex justify-center items-center">
-                        <span className="text-body2 shrink-0">💬</span>
-                      </div>
-                      <div>
-                        <p className="text-body4 text-black font-medium">
-                          Host a Hackathon
-                        </p>
-                        <p className="text-body5 font-normal text-gray-600 mt-4">
-                          Need some help setting up your own?
-                        </p>
-                      </div>
-                    </a>
-                  </div>
-                </motion.div>
+            {/* <Search onResultClick={() => onToggleDrawer(false)} /> */}
+
+            <Menu
+              align="end"
+              offsetY={4}
+              menuClassName="!p-8 !rounded-12"
+              menuButton={
+                <Button color="gray" size="sm">
+                  <FiPlusCircle className="text-gray-600 mr-8" />
+                  Create
+                </Button>
               }
-            </li>
-            <li className="relative">
-              <a
-                href={"https://bolt.fun/guide/"}
-                target="_blank"
-                rel="noreferrer"
-                className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50"
+            >
+              <MenuItem
+                href={createRoute({
+                  type: "write-story",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >
-                Guide
-              </a>
-            </li>
-            <li className="relative">
-              <Link
-                to={"/donate"}
-                className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50"
+                ✍️ Story
+              </MenuItem>
+              <MenuItem
+                href={createRoute({
+                  type: "write-story",
+                  initData: {
+                    tags: ["get-help"],
+                  },
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
               >
-                Donate
-              </Link>
-            </li>
-            {curUser && (
-              <li className="relative">
-                <Link
-                  to={"/logout"}
-                  className="text-body4 py-8 px-4 w-full inline-block font-bold hover:text-primary-600 active:bg-gray-50"
-                >
-                  Logout 👋
-                </Link>
-              </li>
-            )}
-          </ul>
+                🙋‍♂️ Question
+              </MenuItem>
+              <MenuItem
+                href={createRoute({
+                  type: "edit-project",
+                })}
+                className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+              >
+                🚀 Project
+              </MenuItem>
+            </Menu>
+          </div>
+          <SideNavigation />
           <ul className="px-16 py-16 pb-32 flex flex-wrap gap-y-12  border-t pt-32 mt-auto">
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
               <a href="/#">About Us</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Support</a>
+              <a href="mailto:team@peakshift.com">Contacts</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Press</a>
+              <Link to="/terms-conditions">Terms & Conditions</Link>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Contacts</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Careers</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Sitemap</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Legal</a>
-            </li>
-            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Cookies Settings</a>
+              <Link to="/privacy-policy">Privacy Policy</Link>{" "}
             </li>
           </ul>
         </motion.div>

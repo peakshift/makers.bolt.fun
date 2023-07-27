@@ -1,4 +1,5 @@
 const { parseResolveInfo } = require("graphql-parse-resolve-info");
+const { objectType, inputObjectType } = require("nexus");
 
 /**
  * includeRelationFields
@@ -33,8 +34,40 @@ function toSlug(str) {
 // Used to handle an issue caused by netlify-env-plugin
 const getEnvVarRuntime = (name) => process.env[name];
 
+const createCRUDType = (name, sharedFields) => {
+  const Shared = objectType({
+    name: name,
+    definition(t) {
+      t.nonNull.int("id");
+      sharedFields(t);
+    },
+  });
+
+  const CreateInput = inputObjectType({
+    name: `Create${name}Input`,
+    definition(t) {
+      sharedFields(t);
+    },
+  });
+
+  const UpdateInput = inputObjectType({
+    name: `Update${name}Input`,
+    definition(t) {
+      t.int("id");
+      sharedFields(t);
+    },
+  });
+
+  return {
+    Shared,
+    CreateInput,
+    UpdateInput,
+  };
+};
+
 module.exports = {
   includeRelationFields,
   toSlug,
   getEnvVarRuntime,
+  createCRUDType,
 };

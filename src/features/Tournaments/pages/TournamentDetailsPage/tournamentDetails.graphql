@@ -1,5 +1,5 @@
-query GetTournamentById($id: Int!) {
-  getTournamentById(id: $id) {
+query GetTournamentById($idOrSlug: String!) {
+  getTournamentById(idOrSlug: $idOrSlug) {
     id
     title
     description
@@ -16,8 +16,17 @@ query GetTournamentById($id: Int!) {
 
     prizes {
       title
-      amount
+      description
       image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
     }
     tracks {
       id
@@ -45,9 +54,45 @@ query GetTournamentById($id: Int!) {
       question
       answer
     }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
   }
 
-  getMakersInTournament(tournamentId: $id, take: 4) {
+  getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {
     makers {
       user {
         id
@@ -56,7 +101,7 @@ query GetTournamentById($id: Int!) {
     }
   }
 
-  pubkeysOfMakersInTournament(tournamentId: $id)
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: $idOrSlug)
 
-  pubkeysOfProjectsInTournament(tournamentId: $id)
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: $idOrSlug)
 }

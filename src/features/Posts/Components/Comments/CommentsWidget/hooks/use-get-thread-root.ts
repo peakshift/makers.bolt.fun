@@ -49,7 +49,7 @@ export const useGetThreadRootObject = (props: {
     const fallbackObject = {
       type: "url-fallback",
       url: normalizeURL(
-        `https://makers.bolt.fun` +
+        `https://bolt.fun` +
           createRoute({ type: "story", id: props.story.id ?? -1 })
       ),
     } as const;
@@ -64,7 +64,7 @@ export const useGetThreadRootObject = (props: {
           kinds: [1],
           "#r": [
             normalizeURL(
-              `https://makers.bolt.fun` +
+              `https://bolt.fun` +
                 createRoute({ type: "story", id: props.story.id ?? -1 })
             ),
           ],
@@ -111,7 +111,9 @@ function isValidRootStoryEvent(event: NostrEvent) {
   if (event.tags.some((tag) => tag[0] === "e")) return false;
   if (
     !event.tags.some(
-      (tag) => tag[0] === "client" && tag[1] === "makers.bolt.fun"
+      (tag) =>
+        tag[0] === "client" &&
+        (tag[1] === "makers.bolt.fun" || tag[1] === "bolt.fun")
     )
   )
     return false;

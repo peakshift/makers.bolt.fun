@@ -112,7 +112,7 @@ export default function AddProjectTournamentModal({
       <hr className="bg-gray-200" />
       <div className="flex flex-col gap-24 p-24">
         <p className="text-body4 text-gray-600">
-          Enter your project to #NostrHack.
+          Enter your project to the tournament.
         </p>
 
         <div>
@@ -199,7 +199,7 @@ export default function AddProjectTournamentModal({
               automatically be registered for the Grand Prize, however makers
               can select an additional track to enter.{" "}
               <a
-                href="https://makers.bolt.fun/story/boltfun-tournaments-are-here--107"
+                href="https://bolt.fun/story/boltfun-tournaments-are-here--107"
                 className="text-blue-500"
                 target="_blank"
                 rel="noreferrer"

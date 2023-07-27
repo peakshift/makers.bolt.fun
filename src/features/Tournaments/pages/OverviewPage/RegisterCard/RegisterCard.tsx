@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
+import { FaDiscord } from "react-icons/fa";
+import { GiOstrich } from "react-icons/gi";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { TournamentContact, TournamentPartner } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { useCountdown } from "src/utils/hooks";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
@@ -14,8 +17,8 @@ interface Props {
   avatars: string[];
   isRegistered: boolean;
   isRegistrationOpen?: boolean;
-  partners: { link: string; image: string; isPrimary?: boolean }[];
-  chat: { type: string; link: string };
+  partnersList: TournamentPartner[];
+  contacts: TournamentContact[];
 }
 
 export default function RegisterCard({
@@ -24,8 +27,8 @@ export default function RegisterCard({
   avatars,
   isRegistered,
   isRegistrationOpen,
-  partners,
-  chat,
+  partnersList,
+  contacts,
 }: Props) {
   const counter = useCountdown(start_date);
   const {
@@ -87,15 +90,56 @@ export default function RegisterCard({
             {isRegistered ? "Registered!" : "Register Now"}
           </Button>
         )}
-        <Button
-          color={"gray"}
-          href={chat.link}
-          newTab
-          fullWidth
-          className="mt-8 !text-primary-500"
-        >
-          <span className="align-middle ml-4">Join the chat</span>
-        </Button>
+        {contacts.length > 0 && (
+          <div className="mt-16">
+            {contacts.map((contact, idx) => {
+              if (contact.type.toLowerCase() === "nostr")
+                return (
+                  <Button
+                    key={idx}
+                    color={"none"}
+                    href={contact.url}
+                    newTab
+                    fullWidth
+                    className="mt-8 !text-white bg-violet-600"
+                  >
+                    <span className="align-middle ml-4 flex justify-center gap-12 items-center">
+                      Our Nostr Profile <GiOstrich className="scale-125" />
+                    </span>
+                  </Button>
+                );
+
+              if (contact.type.toLowerCase() === "discord")
+                return (
+                  <Button
+                    key={idx}
+                    color={"none"}
+                    href={contact.url}
+                    newTab
+                    fullWidth
+                    className="mt-8 !text-white bg-violet-600"
+                  >
+                    <span className="align-middle ml-4 flex justify-center gap-12 items-center">
+                      Our Discord Server <FaDiscord />
+                    </span>
+                  </Button>
+                );
+
+              return (
+                <Button
+                  key={idx}
+                  color={"gray"}
+                  href={contact.url}
+                  newTab
+                  fullWidth
+                  className="mt-8 !text-primary-500"
+                >
+                  <span className="align-middle ml-4">Join the chat</span>
+                </Button>
+              );
+            })}
+          </div>
+        )}
       </div>
       {isRegistrationOpen && (
         <div>
@@ -125,29 +169,36 @@ export default function RegisterCard({
           )}
         </div>
       )}
-      <div>
-        <p className="text-body5 text-gray-900 font-medium">
-          Sponsors & collaborators
-        </p>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-y-16 gap-x-10 mt-16">
-          {partners.map((p, idx) => (
-            <a
-              className={twMerge(
-                "aspect-square rounded-16 overflow-hidden border border-gray-200",
-                p.isPrimary && "col-[1/-1] aspect-auto rounded-0 border-none"
-              )}
-              key={idx}
-              href={p.link}
-            >
-              <img
-                src={p.image}
-                className="w-full h-full object-cover"
-                alt=""
-              />
-            </a>
-          ))}
-        </div>
-      </div>
+      <ul className="flex flex-col gap-24">
+        {partnersList.map((partners, idx) => (
+          <li key={idx}>
+            <p className="text-body5 text-gray-900 font-medium">
+              {partners.title}
+            </p>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-y-16 gap-x-10 mt-16">
+              {partners.items.map((p, idx) => (
+                <a
+                  className={twMerge(
+                    "aspect-square rounded-16 overflow-hidden border border-gray-200",
+                    p.isBigImage &&
+                      "col-[1/-1] aspect-auto rounded-0 border-none"
+                  )}
+                  key={idx}
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src={p.image}
+                    className="w-full h-full object-cover"
+                    alt=""
+                  />
+                </a>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 }

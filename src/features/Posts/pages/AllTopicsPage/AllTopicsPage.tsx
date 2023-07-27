@@ -21,7 +21,7 @@ export default function TagPage() {
   return (
     <>
       <OgTags title={`All Topics`} />
-      <div className={`page-container`}>
+      <div>
         <div className="flex flex-wrap mb-24">
           <h1 className="text-h2 font-bolder">All Topics</h1>
         </div>
@@ -30,9 +30,7 @@ export default function TagPage() {
         >
           {tagsSortedByPostCount.map((tag) => (
             <Card key={tag.id} className="flex flex-col gap-16">
-              <span className="text-h1">
-                {tag.icon}
-              </span>
+              <span className="text-h1">{tag.icon}</span>
               <div className="flex flex-col gap-8">
                 <h2 className="text-body2 text-black font-bolder">
                   {formatHashtag(tag.title)}

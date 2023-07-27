@@ -70,10 +70,10 @@
 
   @media screen and (min-width: 768px) {
     gap: 32px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto auto 1fr;
 
-    grid-template-areas: "categories content content side";
+    grid-template-areas: "content content side";
 
     :global {
       #side {

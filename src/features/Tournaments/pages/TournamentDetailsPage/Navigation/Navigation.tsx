@@ -12,7 +12,7 @@ export default function Navigation() {
 
   const {
     tournamentDetails,
-    staticData: {
+    tournamentDetails: {
       config: { showFeed, ideasRootNostrEventId },
     },
   } = useTournament();
@@ -31,7 +31,7 @@ export default function Navigation() {
         hide: !showFeed,
       },
       {
-        text: `Events (${tournamentDetails.events_count})`,
+        text: `Events`,
         path: "events",
       },
       {
@@ -61,18 +61,17 @@ export default function Navigation() {
     [
       showFeed,
       showIdeas,
-      tournamentDetails.events_count,
       tournamentDetails.makers_count,
       tournamentDetails.projects_count,
     ]
   );
 
   return (
-    <div className="w-full bg-white py-16 border-y border-gray-200 sticky-top-element z-10">
+    <nav className="w-full sticky-top-element z-10 py-20 bg-gray-50">
       <div className="content-container">
         <div className="relative group">
           <div className="overflow-hidden" ref={viewportRef}>
-            <div className="select-none w-full flex gap-8 md:gap-16">
+            <div className="select-none w-full flex gap-8 md:gap-16 justify-center">
               {links
                 .filter((link) => !link.hide)
                 .map((link) => (
@@ -103,6 +102,6 @@ export default function Navigation() {
                 </button> */}
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
