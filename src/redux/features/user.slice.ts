@@ -13,12 +13,16 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<StoreState["me"]>) {
+    setMeData(state, action: PayloadAction<StoreState["me"]>) {
       state.me = action.payload;
+    },
+    updateMeData(state, action: PayloadAction<Partial<StoreState["me"]>>) {
+      if (state.me && action.payload)
+        state.me = { ...state.me, ...action.payload };
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setMeData, updateMeData } = userSlice.actions;
 
 export default userSlice.reducer;

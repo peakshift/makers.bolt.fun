@@ -49,14 +49,6 @@ function Navbar() {
 
   const isLargeScreen = useMediaQuery(MEDIA_QUERIES.isMinLarge);
 
-  const user_nostr_key = useAppSelector(
-    (state) => state.user.me?.primary_nostr_key
-  );
-
-  const { notifications, isEmpty } = useNotifications({
-    pubkey: user_nostr_key,
-  });
-
   const updateNavHeight = useCallback(() => {
     const nav = document.querySelector("nav");
     if (nav) {
@@ -77,22 +69,10 @@ function Navbar() {
 
   useResizeListener(updateNavHeight);
 
-  const RenderNotificationsList = () => (
-    <NotificationsList
-      isLoadingNotifications={notifications.length === 0 && !isEmpty}
-      notifications={notifications}
-      noKeyConnected={!user_nostr_key}
-    />
-  );
-
   return (
     <>
       <header className="sticky top-0 left-0 w-full z-[2010]">
-        {isLargeScreen ? (
-          <NavDesktop renderNotificationsList={RenderNotificationsList} />
-        ) : (
-          <NavMobile renderNotificationsList={RenderNotificationsList} />
-        )}
+        {isLargeScreen ? <NavDesktop /> : <NavMobile />}
       </header>
     </>
   );

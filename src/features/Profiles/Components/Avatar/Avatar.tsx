@@ -33,7 +33,7 @@ export default function Avatar({
           width: width,
           aspectRatio: "1/1",
         }}
-        alt={alt ?? "avatar"}
+        alt={alt ?? ""}
       />
       {renderTooltip && visible && (
         <div

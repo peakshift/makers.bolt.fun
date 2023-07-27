@@ -15,6 +15,7 @@ import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import { SideNavigation } from "../SideNavigation";
+import NotificationsList from "./NotificationsList/NotificationsList";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -54,11 +55,7 @@ const listArrowVariants = {
   closed: { rotate: 0 },
 };
 
-interface Props {
-  renderNotificationsList: () => JSX.Element;
-}
-
-export default function NavMobile({ renderNotificationsList }: Props) {
+export default function NavMobile() {
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
   const [eventsOpen, toggleEventsOpen] = useToggle(false);
 
@@ -137,19 +134,25 @@ export default function NavMobile({ renderNotificationsList }: Props) {
 
             <div className="flex-1 shrink-0 flex gap-4 justify-end">
               {!!curUser && (
-                <Menu
-                  align="end"
-                  arrow
-                  menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg small-scrollbar"
-                  viewScroll="initial"
-                  menuButton={
-                    <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
-                      <FiBell />
+                <NotificationsList
+                  menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg flex flex-col gap-4 small-scrollbar"
+                  renderOpenListButton={({ hasNewNotifications }) => (
+                    <IconButton
+                      className="text-gray-900 hover:text-gray-700 group relative"
+                      aria-label="Open Notifications List"
+                      aria-describedby="has-new-notifications"
+                    >
+                      <FiBell className="group-hover:rotate-12 group-hover:scale-110" />
+                      {hasNewNotifications && (
+                        <span
+                          id="has-new-notifications"
+                          className="w-8 block bg-red-500 aspect-square rounded-full absolute top-8 right-8 animate-pulse"
+                          aria-label="has new notifications"
+                        ></span>
+                      )}
                     </IconButton>
-                  }
-                >
-                  {renderNotificationsList()}
-                </Menu>
+                  )}
+                />
               )}
               {curUser ? (
                 <Menu

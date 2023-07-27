@@ -39,6 +39,7 @@ const BaseUser = interfaceType({
       },
     });
     t.nonNull.date("join_date");
+    t.nonNull.date("last_seen_notification_time");
     t.string("role");
     t.string("jobTitle");
     t.string("lightning_address");
@@ -701,6 +702,31 @@ const setUserNostrKeyAsPrimary = extendType({
   },
 });
 
+const updateLastSeenNotificationTime = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("updateLastSeenNotificationTime", {
+      type: "User",
+      args: { timestamp: nonNull(stringArg()) },
+      async resolve(_root, { timestamp }, ctx) {
+        const user = await getUserById(ctx.user?.id);
+
+        // Do some validation
+        if (!user?.id) throw new Error("You have to login");
+
+        return prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            last_seen_notification_time: new Date(timestamp).toISOString(),
+          },
+        });
+      },
+    });
+  },
+});
+
 const WalletKey = objectType({
   name: "WalletKey",
   definition(t) {
@@ -887,4 +913,5 @@ module.exports = {
   linkNostrKey,
   unlinkNostrKey,
   setUserNostrKeyAsPrimary,
+  updateLastSeenNotificationTime,
 };

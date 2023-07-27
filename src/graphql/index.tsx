@@ -50,6 +50,7 @@ export type BaseUser = {
   in_tournament: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
+  last_seen_notification_time: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
@@ -240,6 +241,7 @@ export type Mutation = {
   registerInTournament: Maybe<User>;
   setUserNostrKeyAsPrimary: Maybe<User>;
   unlinkNostrKey: Maybe<User>;
+  updateLastSeenNotificationTime: Maybe<User>;
   updateProfileDetails: Maybe<User>;
   updateProfileRoles: Maybe<User>;
   updateProject: Maybe<CreateProjectResponse>;
@@ -309,6 +311,11 @@ export type MutationSetUserNostrKeyAsPrimaryArgs = {
 
 export type MutationUnlinkNostrKeyArgs = {
   key: Scalars['String'];
+};
+
+
+export type MutationUpdateLastSeenNotificationTimeArgs = {
+  timestamp: Scalars['String'];
 };
 
 
@@ -998,6 +1005,7 @@ export type User = BaseUser & {
   in_tournament: Scalars['Boolean'];
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
+  last_seen_notification_time: Scalars['Date'];
   lightning_address: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
@@ -1080,6 +1088,13 @@ export type NavCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type NavCategoriesQuery = { __typename?: 'Query', allCategories: Array<{ __typename?: 'Category', id: number, title: string, icon: string | null, votes_sum: number }> };
 
+export type UpdateLastSeenNotificationTimeMutationVariables = Exact<{
+  timestamp: Scalars['String'];
+}>;
+
+
+export type UpdateLastSeenNotificationTimeMutation = { __typename?: 'Mutation', updateLastSeenNotificationTime: { __typename?: 'User', id: number, last_seen_notification_time: any } | null };
+
 export type SearchProjectsQueryVariables = Exact<{
   search: Scalars['String'];
 }>;
@@ -1090,7 +1105,7 @@ export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1211,19 +1226,19 @@ export type TagFeedQueryVariables = Exact<{
 
 export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
-export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null };
+export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1287,7 +1302,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1482,6 +1497,7 @@ export const UserBasicInfoFragmentDoc = gql`
   linkedin
   bio
   location
+  last_seen_notification_time
 }
     `;
 export const UserRolesSkillsFragmentDoc = gql`
@@ -1670,6 +1686,40 @@ export function useNavCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type NavCategoriesQueryHookResult = ReturnType<typeof useNavCategoriesQuery>;
 export type NavCategoriesLazyQueryHookResult = ReturnType<typeof useNavCategoriesLazyQuery>;
 export type NavCategoriesQueryResult = Apollo.QueryResult<NavCategoriesQuery, NavCategoriesQueryVariables>;
+export const UpdateLastSeenNotificationTimeDocument = gql`
+    mutation UpdateLastSeenNotificationTime($timestamp: String!) {
+  updateLastSeenNotificationTime(timestamp: $timestamp) {
+    id
+    last_seen_notification_time
+  }
+}
+    `;
+export type UpdateLastSeenNotificationTimeMutationFn = Apollo.MutationFunction<UpdateLastSeenNotificationTimeMutation, UpdateLastSeenNotificationTimeMutationVariables>;
+
+/**
+ * __useUpdateLastSeenNotificationTimeMutation__
+ *
+ * To run a mutation, you first call `useUpdateLastSeenNotificationTimeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLastSeenNotificationTimeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLastSeenNotificationTimeMutation, { data, loading, error }] = useUpdateLastSeenNotificationTimeMutation({
+ *   variables: {
+ *      timestamp: // value for 'timestamp'
+ *   },
+ * });
+ */
+export function useUpdateLastSeenNotificationTimeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLastSeenNotificationTimeMutation, UpdateLastSeenNotificationTimeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateLastSeenNotificationTimeMutation, UpdateLastSeenNotificationTimeMutationVariables>(UpdateLastSeenNotificationTimeDocument, options);
+      }
+export type UpdateLastSeenNotificationTimeMutationHookResult = ReturnType<typeof useUpdateLastSeenNotificationTimeMutation>;
+export type UpdateLastSeenNotificationTimeMutationResult = Apollo.MutationResult<UpdateLastSeenNotificationTimeMutation>;
+export type UpdateLastSeenNotificationTimeMutationOptions = Apollo.BaseMutationOptions<UpdateLastSeenNotificationTimeMutation, UpdateLastSeenNotificationTimeMutationVariables>;
 export const SearchProjectsDocument = gql`
     query SearchProjects($search: String!) {
   searchProjects(search: $search) {
@@ -1717,10 +1767,10 @@ export const MeDocument = gql`
     id
     name
     avatar
-    join_date
     jobTitle
     bio
     primary_nostr_key
+    last_seen_notification_time
   }
 }
     `;
