@@ -17,6 +17,7 @@ const createExpressApp = (router) => {
   app.use(
     cors({
       origin: [
+        "http://tools.bolt.fun",
         "http://localhost:3000",
         "http://localhost:5173",
         "https://studio.apollographql.com",

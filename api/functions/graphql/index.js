@@ -16,6 +16,7 @@ const apolloHandler = server.createHandler({
   expressGetMiddlewareOptions: {
     cors: {
       origin: [
+        "https://tools.bolt.fun",
         "http://localhost:3000",
         "http://localhost:5173",
         "https://studio.apollographql.com",
