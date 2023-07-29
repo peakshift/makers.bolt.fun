@@ -21,11 +21,6 @@ const navItems: NavItem[] = [
     text: "Feed",
   },
   {
-    href: PAGES_ROUTES.blog.topicsPage,
-    icon: "🏷️",
-    text: "Topics",
-  },
-  {
     href: createRoute({ type: "hangout" }),
     icon: "🔊",
     text: "Hangout",
@@ -35,29 +30,43 @@ const navItems: NavItem[] = [
     },
   },
   {
-    href: createRoute({ type: "projects-page" }),
-    icon: "🚀",
-    text: "Explore Projects",
-  },
-  {
     href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
     icon: "🤖",
     text: "#Ai4ALL",
+    badge: {
+      text: "ENDING SOON!",
+      color: "red",
+    },
+  },
+  {
+    href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
+    icon: "🤖",
+    text: "#NostrAsia",
     badge: {
       text: "JOIN!",
       color: "red",
     },
   },
   {
-    href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
-    icon: "🦩",
-    text: "#NostrHack",
+    href: PAGES_ROUTES.blog.topicsPage,
+    icon: "🏷️",
+    text: "Topics",
   },
   {
-    href: createRoute({ type: "tournament", idOrSlug: "legends-of-lightning" }),
-    icon: "🏆",
-    text: "#LegendsOfLightning",
+    href: createRoute({ type: "projects-page" }),
+    icon: "🚀",
+    text: "Explore Projects",
   },
+  // {
+  //   href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
+  //   icon: "🦩",
+  //   text: "#NostrHack",
+  // },
+  // {
+  //   href: createRoute({ type: "tournament", idOrSlug: "legends-of-lightning" }),
+  //   icon: "🏆",
+  //   text: "#LegendsOfLightning",
+  // },
   {
     href: "mailto:team@peakshift.com",
     icon: "💬",
