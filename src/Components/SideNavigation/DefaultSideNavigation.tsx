@@ -12,6 +12,7 @@ type NavItem = {
     text: string;
     color: string;
   };
+  highlighted?: boolean;
 };
 
 const navItems: NavItem[] = [
@@ -21,31 +22,18 @@ const navItems: NavItem[] = [
     text: "Feed",
   },
   {
+    href: createRoute({ type: "tag-page", tag: "intros" }),
+    icon: "👋",
+    text: "Intros",
+  },
+  {
     href: createRoute({ type: "hangout" }),
     icon: "🔊",
     text: "Hangout",
-    badge: {
-      text: "LIVE",
-      color: "red",
-    },
-  },
-  {
-    href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
-    icon: "🤖",
-    text: "#Ai4ALL",
-    badge: {
-      text: "ENDING SOON!",
-      color: "red",
-    },
-  },
-  {
-    href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
-    icon: "🤖",
-    text: "#NostrAsia",
-    badge: {
-      text: "JOIN!",
-      color: "red",
-    },
+    // badge: {
+    //   text: "LIVE",
+    //   color: "red",
+    // },
   },
   {
     href: PAGES_ROUTES.blog.topicsPage,
@@ -57,15 +45,43 @@ const navItems: NavItem[] = [
     icon: "🚀",
     text: "Explore Projects",
   },
+  {
+    href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
+    icon: "🤖",
+    text: "#Ai4ALL",
+    badge: {
+      text: "3 DAYS LEFT!",
+      color: "red",
+    },
+    highlighted: true,
+  },
+  {
+    href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
+    icon: "🦩",
+    text: "#Nostrasia",
+    badge: {
+      text: "NEW!",
+      color: "gray",
+    },
+    highlighted: true,
+  },
   // {
   //   href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
   //   icon: "🦩",
   //   text: "#NostrHack",
+  //   badge: {
+  //     text: "ENDED",
+  //     color: "primary",
+  //   },
   // },
   // {
   //   href: createRoute({ type: "tournament", idOrSlug: "legends-of-lightning" }),
   //   icon: "🏆",
   //   text: "#LegendsOfLightning",
+  //   badge: {
+  //     text: "2022",
+  //     color: "primary",
+  //   },
   // },
   {
     href: "mailto:team@peakshift.com",
@@ -121,7 +137,7 @@ export default function DefaultSideNavigation() {
               className={({ isActive }) =>
                 `flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${
                   isActive ? "bg-slate-200" : "group-hover:bg-slate-100"
-                }`
+                } ${item.highlighted ? "border-2 border-blue-200 bg-blue-50" : ""}`
               }
               to={item.href}
             >
