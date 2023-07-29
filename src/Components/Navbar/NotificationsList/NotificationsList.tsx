@@ -45,7 +45,7 @@ export default function NotificationsList(props: Props) {
     return (
       <div className="flex flex-col items-center py-16 gap-16">
         <p className="text-gray-600 text-center ">
-          To see notifications, please link your nostr public key firts.
+          To see notifications, please link your nostr public key first.
         </p>
         <Button
           href={createRoute({ type: "edit-profile", tab: "nostr" })}
