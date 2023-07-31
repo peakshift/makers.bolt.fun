@@ -50,7 +50,7 @@ const navItems: NavItem[] = [
     icon: "🤖",
     text: "#Ai4ALL",
     badge: {
-      text: "3 DAYS LEFT!",
+      text: "ENDING SOON!",
       color: "red",
     },
     highlighted: true,
