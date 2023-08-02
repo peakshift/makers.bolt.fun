@@ -49,10 +49,6 @@ const navItems: NavItem[] = [
     href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
     icon: "🤖",
     text: "#Ai4ALL",
-    badge: {
-      text: "ENDING SOON!",
-      color: "red",
-    },
     highlighted: true,
   },
   {
@@ -135,8 +131,7 @@ export default function DefaultSideNavigation() {
           ) : (
             <NavLink
               className={({ isActive }) =>
-                `flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${
-                  isActive ? "bg-slate-200" : "group-hover:bg-slate-100"
+                `flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${isActive ? "bg-slate-200" : "group-hover:bg-slate-100"
                 } ${item.highlighted ? "border-2 border-blue-200 bg-blue-50" : ""}`
               }
               to={item.href}
