@@ -83,30 +83,6 @@ export default function NavDesktop() {
             </Menu>
           </div>
 
-          <motion.div
-            animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
-            className="flex"
-          >
-            {/* <Button
-                color="primary"
-                size="md"
-                className="lg:px-40"
-                href="https://airtable.com/shr2VkxarNsIFilDz"
-                newTab
-            >
-                Submit App️
-            </Button> */}
-            {/* {isWalletConnected ?
-                            <Button className="ml-16 py-12 px-16 lg:px-20">Connected <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
-                            : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
-                        } */}
-
-            {currentSection === "apps" && (
-              <IconButton className="mr-16 self-center" onClick={openSearch}>
-                <BsSearch className="scale-125 text-gray-400" />
-              </IconButton>
-            )}
-          </motion.div>
           {!!curUser && (
             <NotificationsList
               menuClassName="!p-8 !rounded-12 !w-[min(90vw,375px)] max-h-[min(50vh,480px)] overflow-y-auto overflow-x-hidden flex flex-col gap-4 small-scrollbar"
@@ -128,6 +104,31 @@ export default function NavDesktop() {
               )}
             />
           )}
+
+          <motion.div
+            animate={searchOpen ? { opacity: 0 } : { opacity: 1 }}
+            className="flex"
+          >
+            {/* <Button
+                color="primary"
+                size="md"
+                className="lg:px-40"
+                href="https://airtable.com/shr2VkxarNsIFilDz"
+                newTab
+            >
+                Submit App️
+            </Button> */}
+            {/* {isWalletConnected ?
+                            <Button className="ml-16 py-12 px-16 lg:px-20">Connected <AiFillThunderbolt className='inline-block text-thunder transform scale-125' /></Button>
+                            : <Button className="ml-16 py-12 px-16 lg:px-20" onClick={onConnectWallet}><AiFillThunderbolt className='inline-block text-thunder transform scale-125' /> Connect Wallet </Button>
+                        } */}
+
+            {currentSection === "projects" && (
+              <IconButton className="self-center" onClick={openSearch}>
+                <BsSearch className="" />
+              </IconButton>
+            )}
+          </motion.div>
           {curUser !== undefined &&
             (curUser ? (
               <Menu
@@ -200,17 +201,17 @@ export default function NavDesktop() {
               animate={
                 searchOpen
                   ? {
-                      opacity: 1,
-                      y: "0",
-                      transition: { type: "spring", stiffness: 70 },
-                    }
+                    opacity: 1,
+                    y: "0",
+                    transition: { type: "spring", stiffness: 70 },
+                  }
                   : {
-                      opacity: 0,
-                      y: "-120px",
-                      transition: {
-                        ease: "easeIn",
-                      },
-                    }
+                    opacity: 0,
+                    y: "-120px",
+                    transition: {
+                      ease: "easeIn",
+                    },
+                  }
               }
               className="absolute top-0 right-0 flex items-center h-full"
             >
