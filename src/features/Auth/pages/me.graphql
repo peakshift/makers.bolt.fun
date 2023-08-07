@@ -3,9 +3,9 @@ query Me {
     id
     name
     avatar
-    join_date
     jobTitle
     bio
     primary_nostr_key
+    last_seen_notification_time
   }
 }

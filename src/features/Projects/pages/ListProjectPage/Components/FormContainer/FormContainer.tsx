@@ -126,6 +126,7 @@ const schema: yup.SchemaOf<IListProjectForm> = yup
     discord: yup.string().url().nullable(),
     github: yup.string().url().nullable(),
     figma: yup.string().url().nullable(),
+    replit: yup.string().url().nullable(),
     slack: yup.string().url().nullable(),
     npub: yup
       .string()
@@ -242,6 +243,7 @@ export default function FormContainer(props: PropsWithChildren<Props>) {
             telegram: data.telegram,
             github: data.github,
             figma: data.figma,
+            replit: data.replit,
             npub: data.npub,
             lightning_address: data.lightning_address,
             category_id: data.category.id,

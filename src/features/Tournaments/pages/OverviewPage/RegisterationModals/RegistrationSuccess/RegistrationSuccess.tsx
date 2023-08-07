@@ -85,7 +85,6 @@ export default function RegistrationSuccess({
             </p>
           </div>
         </div>
-
         <div className="flex flex-col gap-16 w-full mt-24">
           <Button
             fullWidth

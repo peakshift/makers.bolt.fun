@@ -18,13 +18,13 @@ import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/
 import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
-import { Post_Type } from "src/graphql"; 
+import { Post_Type } from "src/graphql";
 
 const HomePage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "feed_page" */ "../../features/Home/pages/LandingPage/LandingPage"
+        /* webpackChunkName: "home_page" */ "../../features/Home/pages/LandingPage/LandingPage"
       )
   )
 );
@@ -49,7 +49,7 @@ const NostrPostDetailsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "post_details_page" */ "../../features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage"
+        /* webpackChunkName: "nostr_post_details_page" */ "../../features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage"
       )
   )
 );
@@ -74,7 +74,7 @@ const AllTopicsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "tag_page" */ "../../features/Posts/pages/AllTopicsPage/AllTopicsPage"
+        /* webpackChunkName: "all_topics_page" */ "../../features/Posts/pages/AllTopicsPage/AllTopicsPage"
       )
   )
 );
@@ -107,7 +107,7 @@ const ProjectPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage"
+        /* webpackChunkName: "project_page" */ "src/features/Projects/pages/ProjectPage/ProjectPage"
       )
   )
 );
@@ -115,7 +115,7 @@ const ListProjectPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "explore_page" */ "src/features/Projects/pages/ListProjectPage/ListProjectPage"
+        /* webpackChunkName: "list_project_page" */ "src/features/Projects/pages/ListProjectPage/ListProjectPage"
       )
   )
 );
@@ -133,7 +133,7 @@ const TournamentDetailsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "hackathons_page" */ "../../features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage"
+        /* webpackChunkName: "tournament_details_page" */ "../../features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsPage"
       )
   )
 );
@@ -184,6 +184,24 @@ const HangoutPage = Loadable(
     () =>
       import(
         /* webpackChunkName: "hangout_page" */ "../../features/Hangout/HangoutPage"
+      )
+  )
+);
+
+const PrivacyPolicyPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "privacy_policy_page" */ "../../features/Shared/pages/PrivacyPolicyPage/PrivacyPolicyPage"
+      )
+  )
+);
+
+const TermsAndConditionsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "terms_conditions_page" */ "../../features/Shared/pages/TermsAndConditionsPage/TermsAndConditionsPage"
       )
   )
 );
@@ -293,6 +311,12 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
+
+        <Route path={"/privacy-policy"} element={<PrivacyPolicyPage />} />
+        <Route
+          path={"/terms-conditions"}
+          element={<TermsAndConditionsPage />}
+        />
 
         <Route
           path="/"

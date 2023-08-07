@@ -7,7 +7,7 @@ import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsCont
 
 export default function ScheduleSection() {
   const {
-    staticData: { schedule },
+    tournamentDetails: { schedule },
   } = useTournament();
 
   return (
@@ -46,7 +46,7 @@ export default function ScheduleSection() {
                     </div>
 
                     <div className="">
-                      <h4 className="text-body3 font-bold">{event.event}</h4>
+                      <h4 className="text-body3 font-bold">{event.title}</h4>
                       <p className="text-body4 text-gray-500">
                         {event.time}
                         {event.timezone && `, ${event.timezone}`}
@@ -56,7 +56,18 @@ export default function ScheduleSection() {
                     <div className="flex flex-shrink-0 text-blue-500 self-center ml-auto">
                       {event.location === "Youtube" && (
                         <a
-                          href={event.url}
+                          href={event.url!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mr-10 flex-shrink-0 text-body3"
+                        >
+                          Watch{" "}
+                          <FaYoutube className="text-red-600 text-body3" />
+                        </a>
+                      )}
+                      {event.location === "Twitch" && (
+                        <a
+                          href={event.url!}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="mr-10 flex-shrink-0 text-body3"

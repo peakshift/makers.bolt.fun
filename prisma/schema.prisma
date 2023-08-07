@@ -169,6 +169,7 @@ model Project {
   telegram            String?
   slack               String?
   figma               String?
+  replit              String?
   npub                String?
   contact_email       String?
   thumbnail_image     String?
@@ -359,18 +360,17 @@ model HostedImage {
   createdAt         DateTime @default(now())
   is_used           Boolean  @default(false)
 
-  ProjectThumbnail       Project?         @relation("Project_Thumbnail")
-  ProjectCoverImage      Project?         @relation("Project_CoverImage")
-  CategoryCoverImage     Category?        @relation("Category_CoverImage")
-  AwardImage             Award?           @relation("Award_Image")
-  HackathonCoverImage    Hackathon?       @relation("Hackathon_CoverImage")
-  StoryCoverImage        Story?           @relation("Story_CoverImage")
-  User                   User?            @relation("User_Avatar")
-  TournamentThumbnail    Tournament?      @relation("Tournament_ThumbnailImage")
-  Tournament_CoverImage  Tournament?      @relation("Tournament_CoverImage")
-  TournamentPrize_Image  TournamentPrize? @relation("TournamentPrize_Image")
-  TournamentJudge_Avatar TournamentJudge? @relation("TournamentJudge_Avatar")
-  TournamentEvent_Image  TournamentEvent? @relation("TournamentEvent_Image")
+  ProjectThumbnail        Project?          @relation("Project_Thumbnail")
+  ProjectCoverImage       Project?          @relation("Project_CoverImage")
+  CategoryCoverImage      Category?         @relation("Category_CoverImage")
+  AwardImage              Award?            @relation("Award_Image")
+  HackathonCoverImage     Hackathon?        @relation("Hackathon_CoverImage")
+  StoryCoverImage         Story?            @relation("Story_CoverImage")
+  User                    User?             @relation("User_Avatar")
+  TournamentThumbnail     Tournament[]      @relation("Tournament_ThumbnailImage")
+  Tournament_CoverImage   Tournament[]      @relation("Tournament_CoverImage")
+  TournamentJudge_Avatara TournamentJudge[] @relation("TournamentJudge_Avatar")
+  TournamentEvent_Image   TournamentEvent[] @relation("TournamentEvent_Image")
 
   @@index([provider_image_id], type: Hash)
   @@index([url], type: Hash)
@@ -381,40 +381,32 @@ model HostedImage {
 // -----------------
 model Tournament {
   id                  Int          @id @default(autoincrement())
-  slug                String?      @unique
+  slug                String       @unique
   title               String
   description         String
-  thumbnail_image     String
-  thumbnail_image_id  Int?         @unique
+  thumbnail_image_id  Int?
   thumbnail_image_rel HostedImage? @relation("Tournament_ThumbnailImage", fields: [thumbnail_image_id], references: [id])
-  cover_image         String
-  cover_image_id      Int?         @unique
+  cover_image_id      Int?
   cover_image_rel     HostedImage? @relation("Tournament_CoverImage", fields: [cover_image_id], references: [id])
   start_date          DateTime
   end_date            DateTime
   location            String
-  website             String
+  website             String?
   votes_count         Int          @default(0)
 
-  prizes       TournamentPrize[]
+  prizes       Json?
+  contacts     Json?
+  partners     Json?
+  schedule     Json?
+  makers_deals Json?
+  config       Json?
+
   tracks       TournamentTrack[]
   judges       TournamentJudge[]
   faqs         TournamentFAQ[]
   events       TournamentEvent[]
   participants TournamentParticipant[]
   projects     TournamentProject[]
-}
-
-model TournamentPrize {
-  id        Int          @id @default(autoincrement())
-  title     String
-  amount    String
-  image     String
-  image_id  Int?         @unique
-  image_rel HostedImage? @relation("TournamentPrize_Image", fields: [image_id], references: [id])
-
-  tournament    Tournament @relation(fields: [tournament_id], references: [id])
-  tournament_id Int
 }
 
 model TournamentTrack {
@@ -432,7 +424,7 @@ model TournamentJudge {
   id         Int          @id @default(autoincrement())
   name       String
   avatar     String
-  avatar_id  Int?         @unique
+  avatar_id  Int?
   avatar_rel HostedImage? @relation("TournamentJudge_Avatar", fields: [avatar_id], references: [id])
   company    String
   twitter    String?
@@ -454,7 +446,7 @@ model TournamentEvent {
   id          Int          @id @default(autoincrement())
   title       String
   image       String
-  image_id    Int?         @unique
+  image_id    Int?
   image_rel   HostedImage? @relation("TournamentEvent_Image", fields: [image_id], references: [id])
   description String
   starts_at   DateTime

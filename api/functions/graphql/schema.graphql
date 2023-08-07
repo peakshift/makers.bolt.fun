@@ -33,6 +33,7 @@ interface BaseUser {
   in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
+  last_seen_notification_time: Date!
   lightning_address: String
   linkedin: String
   location: String
@@ -107,6 +108,7 @@ input CreateProjectInput {
   members: [TeamMemberInput!]!
   npub: String
   recruit_roles: [Int!]!
+  replit: String
   screenshots: [ImageInput!]!
   slack: String
   tagline: String!
@@ -120,6 +122,43 @@ input CreateProjectInput {
 
 type CreateProjectResponse {
   project: Project!
+}
+
+input CreateTournamentFAQInput {
+  answer: String!
+  question: String!
+}
+
+input CreateTournamentInput {
+  config: TournamentConfigInput!
+  contacts: [TournamentContactInput!]!
+  cover_image: ImageInput!
+  description: String!
+  end_date: Date!
+  faqs: [CreateTournamentFAQInput!]!
+  judges: [CreateTournamentJudgeInput!]!
+  location: String!
+  makers_deals: [TournamentMakerDealInput!]!
+  partners: [TournamentPartnerInput!]!
+  prizes: [TournamentPrizeInput!]!
+  schedule: [TournamentScheduleInput!]!
+  slug: String!
+  start_date: Date!
+  thumbnail_image: ImageInput!
+  title: String!
+  tracks: [CreateTournamentTrackInput!]!
+  website: String
+}
+
+input CreateTournamentJudgeInput {
+  avatar: ImageInput
+  company: String!
+  name: String!
+}
+
+input CreateTournamentTrackInput {
+  icon: String!
+  title: String!
 }
 
 """Date custom scalar type"""
@@ -160,10 +199,14 @@ type Hackathon {
   website: String!
 }
 
+"""
+When you want to connect to an already uploaded image, either include the `id` field or the `provider_id` field.
+"""
 input ImageInput {
   id: String
   name: String
-  url: String!
+  provider_id: String
+  url: String
 }
 
 type LnurlDetails {
@@ -200,6 +243,7 @@ type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
+  createTournament(data: CreateTournamentInput): Tournament
   deleteProject(id: Int!): Project
   deleteStory(id: Int!): Story
   donate(amount_in_sat: Int!): Donation!
@@ -207,9 +251,11 @@ type Mutation {
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   setUserNostrKeyAsPrimary(key: String!): User
   unlinkNostrKey(key: String!): User
+  updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
   updateProfileRoles(data: ProfileRolesInput): User
   updateProject(input: UpdateProjectInput): CreateProjectResponse
+  updateTournament(data: UpdateTournamentInput): Tournament
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(userKeys: [UserKeyInputType!]): User!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
@@ -311,6 +357,7 @@ type Project {
   npub: String
   permissions: [ProjectPermissionEnum!]!
   recruit_roles: [MakerRole!]!
+  replit: String
   screenshots: [String!]!
   slack: String
   stories: [Story!]!
@@ -474,6 +521,8 @@ input TeamMemberInput {
 }
 
 type Tournament {
+  config: TournamentConfig!
+  contacts: [TournamentContact!]!
   cover_image: String!
   description: String!
   end_date: Date!
@@ -484,13 +533,44 @@ type Tournament {
   judges: [TournamentJudge!]!
   location: String!
   makers_count: Int!
+  makers_deals: [TournamentMakerDeal!]!
+  partners: [TournamentPartner!]!
   prizes: [TournamentPrize!]!
   projects_count: Int!
+  schedule: [TournamentSchedule!]!
   start_date: Date!
   thumbnail_image: String!
   title: String!
   tracks: [TournamentTrack!]!
-  website: String!
+  website: String
+}
+
+type TournamentConfig {
+  feedFilters: [String!]
+  ideasRootNostrEventId: String
+  mainFeedHashtag: String
+  projectsSubmissionOpen: Boolean!
+  registerationOpen: Boolean!
+  showFeed: Boolean
+}
+
+input TournamentConfigInput {
+  feedFilters: [String!]
+  ideasRootNostrEventId: String
+  mainFeedHashtag: String
+  projectsSubmissionOpen: Boolean!
+  registerationOpen: Boolean!
+  showFeed: Boolean
+}
+
+type TournamentContact {
+  type: String!
+  url: String!
+}
+
+input TournamentContactInput {
+  type: String!
+  url: String!
 }
 
 type TournamentEvent {
@@ -515,13 +595,26 @@ enum TournamentEventTypeEnum {
 
 type TournamentFAQ {
   answer: String!
+  id: Int!
   question: String!
 }
 
 type TournamentJudge {
-  avatar: String!
+  avatar: String
   company: String!
   name: String!
+}
+
+type TournamentMakerDeal {
+  description: String!
+  title: String!
+  url: String
+}
+
+input TournamentMakerDealInput {
+  description: String!
+  title: String!
+  url: String
 }
 
 enum TournamentMakerHackingStatusEnum {
@@ -541,10 +634,64 @@ type TournamentParticipant {
   user: User!
 }
 
-type TournamentPrize {
-  amount: String!
-  image: String!
+type TournamentPartner {
+  items: [TournamentPartnerItem!]!
   title: String!
+}
+
+input TournamentPartnerInput {
+  items: [TournamentPartnerItemInput!]!
+  title: String!
+}
+
+type TournamentPartnerItem {
+  image: String!
+  isBigImage: Boolean
+  url: String!
+}
+
+input TournamentPartnerItemInput {
+  image: String!
+  isBigImage: Boolean
+  url: String!
+}
+
+type TournamentPrize {
+  additional_prizes: [TournamentPrizeAdditionalPrize!]
+  description: String!
+  image: String!
+  positions: [TournamentPrizePosition!]!
+  title: String!
+}
+
+type TournamentPrizeAdditionalPrize {
+  text: String!
+  url: String
+}
+
+input TournamentPrizeAdditionalPrizeInput {
+  text: String!
+  url: String
+}
+
+input TournamentPrizeInput {
+  additional_prizes: [TournamentPrizeAdditionalPrizeInput!]
+  description: String!
+  image: String!
+  positions: [TournamentPrizePositionInput!]!
+  title: String!
+}
+
+type TournamentPrizePosition {
+  position: String!
+  project: String
+  reward: String!
+}
+
+input TournamentPrizePositionInput {
+  position: String!
+  project: String
+  reward: String!
 }
 
 type TournamentProjectsResponse {
@@ -552,6 +699,34 @@ type TournamentProjectsResponse {
   hasNext: Boolean
   hasPrev: Boolean
   projects: [Project!]!
+}
+
+type TournamentSchedule {
+  date: String!
+  events: [TournamentScheduleEvent!]!
+}
+
+type TournamentScheduleEvent {
+  location: String
+  time: String
+  timezone: String
+  title: String!
+  type: String
+  url: String
+}
+
+input TournamentScheduleEventInput {
+  location: String
+  time: String
+  timezone: String
+  title: String!
+  type: String
+  url: String
+}
+
+input TournamentScheduleInput {
+  date: String!
+  events: [TournamentScheduleEventInput!]!
 }
 
 type TournamentTrack {
@@ -575,6 +750,7 @@ input UpdateProjectInput {
   members: [TeamMemberInput!]!
   npub: String
   recruit_roles: [Int!]!
+  replit: String
   screenshots: [ImageInput!]!
   slack: String
   tagline: String!
@@ -584,6 +760,22 @@ input UpdateProjectInput {
   tournaments: [Int!]!
   twitter: String
   website: String!
+}
+
+input UpdateTournamentInput {
+  config: TournamentConfigInput
+  contacts: [TournamentContactInput!]
+  description: String
+  end_date: Date
+  id: Int
+  location: String
+  makers_deals: [TournamentMakerDealInput!]
+  partners: [TournamentPartnerInput!]
+  prizes: [TournamentPrizeInput!]
+  schedule: [TournamentScheduleInput!]
+  start_date: Date
+  title: String
+  website: String
 }
 
 input UpdateTournamentRegistrationInput {
@@ -600,6 +792,7 @@ type User implements BaseUser {
   in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
+  last_seen_notification_time: Date!
   lightning_address: String
   linkedin: String
   location: String

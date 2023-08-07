@@ -15,6 +15,7 @@ import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute, PAGES_ROUTES } from "src/utils/routing";
 import { SideNavigation } from "../SideNavigation";
+import NotificationsList from "./NotificationsList/NotificationsList";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -54,11 +55,7 @@ const listArrowVariants = {
   closed: { rotate: 0 },
 };
 
-interface Props {
-  renderNotificationsList: () => JSX.Element;
-}
-
-export default function NavMobile({ renderNotificationsList }: Props) {
+export default function NavMobile() {
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
   const [eventsOpen, toggleEventsOpen] = useToggle(false);
 
@@ -136,95 +133,103 @@ export default function NavMobile({ renderNotificationsList }: Props) {
             </div>
 
             <div className="flex-1 shrink-0 flex gap-4 justify-end">
-              {curUser !== undefined && (
+              {!!curUser && (
+                <NotificationsList
+                  menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg flex flex-col gap-4 small-scrollbar"
+                  renderOpenListButton={({ hasNewNotifications }) => (
+                    <IconButton
+                      className="text-gray-900 hover:text-gray-700 group relative"
+                      aria-label="Open Notifications List"
+                      aria-describedby="has-new-notifications"
+                    >
+                      <FiBell className="group-hover:rotate-12 group-hover:scale-110" />
+                      {hasNewNotifications && (
+                        <span
+                          id="has-new-notifications"
+                          className="w-8 block bg-red-500 aspect-square rounded-full absolute top-8 right-8 animate-pulse"
+                          aria-label="has new notifications"
+                        ></span>
+                      )}
+                    </IconButton>
+                  )}
+                />
+              )}
+              {curUser ? (
                 <Menu
                   align="end"
-                  arrow
-                  menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg small-scrollbar"
-                  viewScroll="initial"
+                  offsetY={4}
+                  menuClassName="!p-8 !rounded-12"
                   menuButton={
-                    <IconButton className="text-gray-900 hover:text-gray-700 hover:rotate-12">
-                      <FiBell />
-                    </IconButton>
+                    <MenuButton>
+                      <Avatar src={curUser.avatar} width={32} />{" "}
+                    </MenuButton>
                   }
                 >
-                  {renderNotificationsList()}
+                  <MenuItem
+                    href={createRoute({
+                      type: "profile",
+                      id: curUser.id,
+                      username: curUser.name,
+                    })}
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate(
+                        createRoute({
+                          type: "profile",
+                          id: curUser.id,
+                          username: curUser.name,
+                        })
+                      );
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                  >
+                    👾 Profile
+                  </MenuItem>
+                  <MenuItem
+                    href="/edit-profile"
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/edit-profile");
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                  >
+                    ⚙️ Settings
+                  </MenuItem>
+                  <MenuItem
+                    href="/logout"
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/logout");
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                  >
+                    👋 Logout
+                  </MenuItem>
                 </Menu>
+              ) : (
+                <Link
+                  to={PAGES_ROUTES.auth.login}
+                  state={{ from: window.location.pathname }}
+                >
+                  <Button
+                    size="sm"
+                    color="none"
+                    className="!text-body5 whitespace-nowrap"
+                    state={{ from: location.pathname }}
+                  >
+                    Sign In ⚡
+                  </Button>
+                </Link>
               )}
-              {!!curUser &&
-                (curUser ? (
-                  <Menu
-                    align="end"
-                    offsetY={4}
-                    menuClassName="!p-8 !rounded-12"
-                    menuButton={
-                      <MenuButton>
-                        <Avatar src={curUser.avatar} width={32} />{" "}
-                      </MenuButton>
-                    }
-                  >
-                    <MenuItem
-                      href={createRoute({
-                        type: "profile",
-                        id: curUser.id,
-                        username: curUser.name,
-                      })}
-                      onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate(
-                          createRoute({
-                            type: "profile",
-                            id: curUser.id,
-                            username: curUser.name,
-                          })
-                        );
-                      }}
-                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                    >
-                      👾 Profile
-                    </MenuItem>
-                    <MenuItem
-                      href="/edit-profile"
-                      onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate("/edit-profile");
-                      }}
-                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                    >
-                      ⚙️ Settings
-                    </MenuItem>
-                    <MenuItem
-                      href="/logout"
-                      onClick={(e) => {
-                        e.syntheticEvent.preventDefault();
-                        navigate("/logout");
-                      }}
-                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
-                    >
-                      👋 Logout
-                    </MenuItem>
-                  </Menu>
-                ) : (
-                  <Link
-                    to={PAGES_ROUTES.auth.login}
-                    state={{ from: window.location.pathname }}
-                  >
-                    <Button
-                      size="sm"
-                      color="none"
-                      className="!text-body5 whitespace-nowrap"
-                      state={{ from: location.pathname }}
-                    >
-                      Sign In ⚡
-                    </Button>
-                  </Link>
-                ))}
             </div>
           </div>
         </div>
       </nav>
 
-      <div className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]">
+      <div
+        className="fixed left-0 top-[67px] pointer-events-none z-[2010] w-full min-h-[calc(100vh-67px)]"
+        style={{ height: "calc(100dvh - 67px)" }}
+      >
         {drawerOpen && (
           <button
             onClick={() => onToggleDrawer()}
@@ -235,7 +240,7 @@ export default function NavMobile({ renderNotificationsList }: Props) {
         <motion.div
           className="pointer-events-auto bg-white w-full sm:max-w-[400px] overflow-y-scroll absolute left-full  border px-16 flex flex-col"
           variants={navListVariants}
-          style={{ height: "calc(100vh - 67px)" }}
+          style={{ height: "calc(100dvh - 67px)" }}
           animate={drawerOpen ? "show" : "hide"}
         >
           <div className="flex flex-col gap-16 py-16">
@@ -290,7 +295,10 @@ export default function NavMobile({ renderNotificationsList }: Props) {
               <a href="mailto:team@peakshift.com">Contacts</a>
             </li>
             <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
-              <a href="/#">Legal</a>
+              <Link to="/terms-conditions">Terms & Conditions</Link>
+            </li>
+            <li className="text-body4 text-gray-500 hover:text-gray-700 w-1/2">
+              <Link to="/privacy-policy">Privacy Policy</Link>{" "}
             </li>
           </ul>
         </motion.div>

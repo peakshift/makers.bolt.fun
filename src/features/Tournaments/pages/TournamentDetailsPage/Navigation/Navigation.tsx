@@ -12,7 +12,7 @@ export default function Navigation() {
 
   const {
     tournamentDetails,
-    staticData: {
+    tournamentDetails: {
       config: { showFeed, ideasRootNostrEventId },
     },
   } = useTournament();
@@ -31,7 +31,7 @@ export default function Navigation() {
         hide: !showFeed,
       },
       {
-        text: `Events (${tournamentDetails.events_count})`,
+        text: `Events`,
         path: "events",
       },
       {
@@ -61,7 +61,6 @@ export default function Navigation() {
     [
       showFeed,
       showIdeas,
-      tournamentDetails.events_count,
       tournamentDetails.makers_count,
       tournamentDetails.projects_count,
     ]

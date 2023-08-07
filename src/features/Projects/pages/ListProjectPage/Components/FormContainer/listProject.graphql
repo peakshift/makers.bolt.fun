@@ -13,6 +13,7 @@ fragment ProjectDetails on Project {
   slack
   telegram
   figma
+  replit
   npub
   screenshots
   website

@@ -8,7 +8,10 @@ const {
   inputObjectType,
   booleanArg,
 } = require("nexus");
-const { resolveImgObjectToUrl } = require("../../../utils/resolveImageUrl");
+const {
+  resolveImgObjectToUrl,
+  findHostedImageById,
+} = require("../../../utils/resolveImageUrl");
 const { prisma } = require("../../../prisma");
 const {
   paginationArgs,
@@ -17,34 +20,80 @@ const {
 } = require("./helpers");
 const { ApolloError } = require("@apollo/client");
 const { PrismaSelect } = require("@paljs/plugins");
+const {
+  invalidateTournamentProjects,
+} = require("../../../services/cache.service");
+const { ImageInput } = require("./misc");
+const { createCRUDType } = require("../../../utils/helpers");
 const { queueService } = require("../../../services/queue.service");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
   definition(t) {
     t.nonNull.string("title");
-    t.nonNull.string("amount");
-    t.nonNull.string("image", {
-      async resolve(parent) {
-        return (
-          resolveImgObjectToUrl(parent.image_rel) ||
-          prisma.tournamentPrize
-            .findUnique({ where: { id: parent.id } })
-            .image_rel()
-            .then(resolveImgObjectToUrl)
-        );
-      },
+    t.nonNull.string("description");
+    t.nonNull.string("image");
+
+    t.nonNull.list.nonNull.field("positions", {
+      type: objectType({
+        name: "TournamentPrizePosition",
+        definition(t) {
+          t.nonNull.string("position");
+          t.nonNull.string("reward");
+          t.string("project");
+        },
+      }),
+    });
+
+    t.list.nonNull.field("additional_prizes", {
+      type: objectType({
+        name: "TournamentPrizeAdditionalPrize",
+        definition(t) {
+          t.nonNull.string("text");
+          t.string("url");
+        },
+      }),
     });
   },
 });
 
-const TournamentTrack = objectType({
-  name: "TournamentTrack",
+const TournamentPrizeInput = inputObjectType({
+  name: "TournamentPrizeInput",
   definition(t) {
-    t.nonNull.int("id");
     t.nonNull.string("title");
-    t.nonNull.string("icon");
+    t.nonNull.string("description");
+    t.nonNull.string("image");
+
+    t.nonNull.list.nonNull.field("positions", {
+      type: inputObjectType({
+        name: "TournamentPrizePositionInput",
+        definition(t) {
+          t.nonNull.string("position");
+          t.nonNull.string("reward");
+          t.string("project");
+        },
+      }),
+    });
+
+    t.list.nonNull.field("additional_prizes", {
+      type: inputObjectType({
+        name: "TournamentPrizeAdditionalPrizeInput",
+        definition(t) {
+          t.nonNull.string("text");
+          t.string("url");
+        },
+      }),
+    });
   },
+});
+
+const {
+  Shared: TournamentTrack,
+  CreateInput: CreateTournamentTrackInput,
+  UpdateInput: UpdateTournamentTrackInput,
+} = createCRUDType("TournamentTrack", (t) => {
+  t.nonNull.string("title");
+  t.nonNull.string("icon");
 });
 
 const TournamentJudge = objectType({
@@ -52,7 +101,7 @@ const TournamentJudge = objectType({
   definition(t) {
     t.nonNull.string("name");
     t.nonNull.string("company");
-    t.nonNull.string("avatar", {
+    t.string("avatar", {
       async resolve(parent) {
         return (
           resolveImgObjectToUrl(parent.avatar_rel) ||
@@ -66,11 +115,167 @@ const TournamentJudge = objectType({
   },
 });
 
-const TournamentFAQ = objectType({
-  name: "TournamentFAQ",
+const CreateTournamentJudgeInput = inputObjectType({
+  name: "CreateTournamentJudgeInput",
   definition(t) {
-    t.nonNull.string("question");
-    t.nonNull.string("answer");
+    t.nonNull.string("name");
+    t.nonNull.string("company");
+    t.field("avatar", {
+      type: ImageInput,
+    });
+  },
+});
+
+const UpdateTournamentJudgeInput = inputObjectType({
+  name: "UpdateTournamentJudgeInput",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.string("name");
+    t.nonNull.string("company");
+    t.field("avatar", {
+      type: ImageInput,
+    });
+  },
+});
+
+const {
+  Shared: TournamentFAQ,
+  CreateInput: CreateTournamentFAQInput,
+  UpdateInput: UpdateTournamentFAQInput,
+} = createCRUDType("TournamentFAQ", (t) => {
+  t.nonNull.string("question");
+  t.nonNull.string("answer");
+});
+
+const TournamentContact = objectType({
+  name: "TournamentContact",
+  definition(t) {
+    t.nonNull.string("type");
+    t.nonNull.string("url");
+  },
+});
+
+const TournamentContactInput = inputObjectType({
+  name: "TournamentContactInput",
+  definition(t) {
+    t.nonNull.string("type");
+    t.nonNull.string("url");
+  },
+});
+
+const TournamentPartner = objectType({
+  name: "TournamentPartner",
+  definition(t) {
+    t.nonNull.string("title");
+    t.nonNull.list.nonNull.field("items", {
+      type: objectType({
+        name: "TournamentPartnerItem",
+        definition(t) {
+          t.nonNull.string("image");
+          t.nonNull.string("url");
+          t.boolean("isBigImage");
+        },
+      }),
+    });
+  },
+});
+
+const TournamentPartnerInput = inputObjectType({
+  name: "TournamentPartnerInput",
+  definition(t) {
+    t.nonNull.string("title");
+    t.nonNull.list.nonNull.field("items", {
+      type: inputObjectType({
+        name: "TournamentPartnerItemInput",
+        definition(t) {
+          t.nonNull.string("image");
+          t.nonNull.string("url");
+          t.boolean("isBigImage");
+        },
+      }),
+    });
+  },
+});
+
+const TournamentMakerDeal = objectType({
+  name: "TournamentMakerDeal",
+  definition(t) {
+    t.nonNull.string("title");
+    t.nonNull.string("description");
+    t.string("url");
+  },
+});
+
+const TournamentMakerDealInput = inputObjectType({
+  name: "TournamentMakerDealInput",
+  definition(t) {
+    t.nonNull.string("title");
+    t.nonNull.string("description");
+    t.string("url");
+  },
+});
+
+const TournamentConfig = objectType({
+  name: "TournamentConfig",
+  definition(t) {
+    t.nonNull.boolean("registerationOpen");
+    t.nonNull.boolean("projectsSubmissionOpen");
+    t.string("ideasRootNostrEventId");
+    t.boolean("showFeed");
+    t.string("mainFeedHashtag");
+    t.list.nonNull.string("feedFilters");
+  },
+});
+
+const TournamentConfigInput = inputObjectType({
+  name: "TournamentConfigInput",
+  definition(t) {
+    t.nonNull.boolean("registerationOpen");
+    t.nonNull.boolean("projectsSubmissionOpen");
+    t.string("ideasRootNostrEventId");
+    t.boolean("showFeed");
+    t.string("mainFeedHashtag");
+    t.list.nonNull.string("feedFilters");
+  },
+});
+
+const TournamentSchedule = objectType({
+  name: "TournamentSchedule",
+  definition(t) {
+    t.nonNull.string("date");
+    t.nonNull.list.nonNull.field("events", {
+      type: objectType({
+        name: "TournamentScheduleEvent",
+        definition(t) {
+          t.nonNull.string("title");
+          t.string("time");
+          t.string("timezone");
+          t.string("url");
+          t.string("type");
+          t.string("location");
+        },
+      }),
+    });
+  },
+});
+
+const TournamentScheduleInput = inputObjectType({
+  name: "TournamentScheduleInput",
+  definition(t) {
+    t.nonNull.string("date");
+    t.nonNull.list.nonNull.field("events", {
+      type: inputObjectType({
+        name: "TournamentScheduleEventInput",
+        definition(t) {
+          t.nonNull.string("title");
+          t.string("time");
+          t.string("timezone");
+          t.string("url");
+          t.string("type");
+          t.string("location");
+        },
+      }),
+    });
   },
 });
 
@@ -161,7 +366,7 @@ const Tournament = objectType({
     t.nonNull.date("start_date");
     t.nonNull.date("end_date");
     t.nonNull.string("location");
-    t.nonNull.string("website");
+    t.string("website");
 
     t.nonNull.int("events_count", {
       resolve(parent) {
@@ -204,7 +409,7 @@ const Tournament = objectType({
       resolve(parent) {
         return prisma.tournament
           .findUnique({ where: { id: parent.id } })
-          .prizes();
+          .then((t) => t.prizes || []);
       },
     });
     t.nonNull.list.nonNull.field("judges", {
@@ -235,6 +440,51 @@ const Tournament = objectType({
             starts_at: "asc",
           },
         });
+      },
+    });
+
+    t.nonNull.list.nonNull.field("contacts", {
+      type: TournamentContact,
+      resolve(parent) {
+        return prisma.tournament
+          .findUnique({ where: { id: parent.id } })
+          .then((t) => t.contacts || []);
+      },
+    });
+
+    t.nonNull.list.nonNull.field("partners", {
+      type: TournamentPartner,
+      resolve(parent) {
+        return prisma.tournament
+          .findUnique({ where: { id: parent.id } })
+          .then((t) => t.partners || []);
+      },
+    });
+
+    t.nonNull.list.nonNull.field("schedule", {
+      type: TournamentSchedule,
+      resolve(parent) {
+        return prisma.tournament
+          .findUnique({ where: { id: parent.id } })
+          .then((t) => t.schedule || []);
+      },
+    });
+
+    t.nonNull.list.nonNull.field("makers_deals", {
+      type: TournamentMakerDeal,
+      resolve(parent) {
+        return prisma.tournament
+          .findUnique({ where: { id: parent.id } })
+          .then((t) => t.makers_deals || []);
+      },
+    });
+
+    t.nonNull.field("config", {
+      type: TournamentConfig,
+      resolve(parent) {
+        return prisma.tournament
+          .findUnique({ where: { id: parent.id } })
+          .then((t) => t.config || {});
       },
     });
   },
@@ -277,6 +527,7 @@ const getTournamentById = extendType({
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).value;
+
         return prisma.tournament
           .findUnique({
             where,
@@ -702,6 +953,271 @@ const getProjectsInTournament = extendType({
   },
 });
 
+const CreateTournamentInput = inputObjectType({
+  name: "CreateTournamentInput",
+  definition(t) {
+    t.nonNull.string("title");
+    t.nonNull.string("slug");
+    t.nonNull.string("description");
+
+    t.nonNull.field("thumbnail_image", {
+      type: ImageInput,
+    });
+    t.nonNull.field("cover_image", {
+      type: ImageInput,
+    });
+
+    t.nonNull.date("start_date");
+    t.nonNull.date("end_date");
+
+    t.nonNull.string("location");
+    t.string("website");
+
+    t.nonNull.list.nonNull.field("prizes", {
+      type: TournamentPrizeInput,
+    });
+
+    // contacts
+    t.nonNull.list.nonNull.field("contacts", {
+      type: TournamentContactInput,
+    });
+    // partners
+    t.nonNull.list.nonNull.field("partners", {
+      type: TournamentPartnerInput,
+    });
+    // schedule
+    t.nonNull.list.nonNull.field("schedule", {
+      type: TournamentScheduleInput,
+    });
+    // makers deals
+    t.nonNull.list.nonNull.field("makers_deals", {
+      type: TournamentMakerDealInput,
+    });
+
+    // config
+    t.nonNull.field("config", {
+      type: TournamentConfigInput,
+    });
+
+    // tracks
+    t.nonNull.list.nonNull.field("tracks", {
+      type: CreateTournamentTrackInput,
+    });
+
+    // faqs
+    t.nonNull.list.nonNull.field("faqs", {
+      type: CreateTournamentFAQInput,
+    });
+
+    // judges
+    t.nonNull.list.nonNull.field("judges", {
+      type: CreateTournamentJudgeInput,
+    });
+  },
+});
+
+const isAdminUser = (userId) => {
+  return userId === 3 || userId === 37 || userId === 9;
+};
+
+const createTournament = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("createTournament", {
+      type: "Tournament",
+      args: {
+        data: CreateTournamentInput,
+      },
+      async resolve(_root, { data: { id: _, ...input } }, ctx) {
+        const user = ctx.user;
+
+        if (!user?.id) throw new Error("You have to login");
+
+        if (!isAdminUser(user.id))
+          throw new Error("You are not allowed to create a tournament");
+
+        const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
+          findHostedImageById(input.thumbnail_image),
+          findHostedImageById(input.cover_image),
+        ]);
+
+        if (!thumbnail_image_rel || !cover_image_rel)
+          throw new Error("Provided images ids are not valid");
+
+        return prisma.tournament.create({
+          data: {
+            title: input.title,
+            slug: input.slug,
+            description: input.description,
+            location: input.location,
+            website: input.website,
+            start_date: input.start_date,
+            end_date: input.end_date,
+            thumbnail_image_rel: {
+              connect: {
+                id: thumbnail_image_rel.id,
+              },
+            },
+            cover_image_rel: {
+              connect: {
+                id: cover_image_rel.id,
+              },
+            },
+            prizes: input.prizes,
+            contacts: input.contacts,
+            partners: input.partners,
+            schedule: input.schedule,
+            makers_deals: input.makers_deals,
+            config: input.config,
+
+            tracks: {
+              createMany: {
+                data: input.tracks,
+              },
+            },
+            faqs: {
+              createMany: {
+                data: input.faqs,
+              },
+            },
+            judges: {
+              createMany: {
+                data: await Promise.all(
+                  input.judges.map(async (j) => ({
+                    name: j.name,
+                    company: j.company,
+                    avatar_id: await findHostedImageById(j.avatar).then(
+                      (i) => i?.id ?? null
+                    ),
+                  }))
+                ),
+              },
+            },
+          },
+        });
+      },
+    });
+  },
+});
+
+const UpdateTournamentInput = inputObjectType({
+  name: "UpdateTournamentInput",
+  definition(t) {
+    t.int("id");
+    t.string("title");
+    t.string("description");
+
+    // t.field("thumbnail_image", {
+    //   type: ImageInput,
+    // });
+    // t.field("cover_image", {
+    //   type: ImageInput,
+    // });
+
+    t.date("start_date");
+    t.date("end_date");
+
+    t.string("location");
+    t.string("website");
+
+    t.list.nonNull.field("prizes", {
+      type: TournamentPrizeInput,
+    });
+
+    // contacts
+    t.list.nonNull.field("contacts", {
+      type: TournamentContactInput,
+    });
+    // partners
+    t.list.nonNull.field("partners", {
+      type: TournamentPartnerInput,
+    });
+    // schedule
+    t.list.nonNull.field("schedule", {
+      type: TournamentScheduleInput,
+    });
+    // makers deals
+    t.list.nonNull.field("makers_deals", {
+      type: TournamentMakerDealInput,
+    });
+
+    // config
+    t.field("config", {
+      type: TournamentConfigInput,
+    });
+
+    // tracks
+    // t.list.nonNull.field("tracks", {
+    //   type: UpdateTournamentTrackInput,
+    // });
+
+    // faqs
+    // t.list.nonNull.field("faqs", {
+    //   type: UpdateTournamentFAQInput,
+    // });
+
+    // judges
+    // t.list.nonNull.field("judges", {
+    //   type: UpdateTournamentJudgeInput,
+    // });
+  },
+});
+
+const updateTournament = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("updateTournament", {
+      type: "Tournament",
+      args: {
+        data: UpdateTournamentInput,
+      },
+      async resolve(_root, { data: input }, ctx) {
+        const user = ctx.user;
+
+        if (!user?.id) throw new Error("You have to login");
+
+        if (!isAdminUser(user.id))
+          throw new Error("You are not allowed to update a tournament");
+
+        const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
+          findHostedImageById(input.thumbnail_image),
+          findHostedImageById(input.cover_image),
+        ]);
+
+        return prisma.tournament.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            title: input.title,
+            description: input.description,
+            location: input.location,
+            website: input.website,
+            start_date: input.start_date,
+            end_date: input.end_date,
+            thumbnail_image_rel: thumbnail_image_rel && {
+              connect: {
+                id: thumbnail_image_rel.id,
+              },
+            },
+            cover_image_rel: cover_image_rel && {
+              connect: {
+                id: cover_image_rel.id,
+              },
+            },
+            prizes: input.prizes,
+            contacts: input.contacts,
+            partners: input.partners,
+            schedule: input.schedule,
+            makers_deals: input.makers_deals,
+            config: input.config,
+          },
+        });
+      },
+    });
+  },
+});
+
 const RegisterInTournamentInput = inputObjectType({
   name: "RegisterInTournamentInput",
   definition(t) {
@@ -877,14 +1393,18 @@ const addProjectToTournament = extendType({
           },
         });
 
-        await queueService.newProjectSubmittedInTournament({
-          user_id: user.id,
-          project_id,
-          tournament_id,
-          track_id,
-        });
+        const [newParticipationInfo] = await Promise.all([
+          getUserParticipationInfo(user.id, tournament_id),
+          invalidateTournamentProjects().catch(console.log),
+          queueService.newProjectSubmittedInTournament({
+            user_id: user.id,
+            project_id,
+            tournament_id,
+            track_id,
+          }),
+        ]);
 
-        return getUserParticipationInfo(user.id, tournament_id);
+        return newParticipationInfo;
       },
     });
   },
@@ -907,6 +1427,8 @@ module.exports = {
   getTournamentToRegister,
 
   // Mutations
+  createTournament,
+  updateTournament,
   registerInTournament,
   updateTournamentRegistration,
   addProjectToTournament,

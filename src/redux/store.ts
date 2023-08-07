@@ -31,7 +31,7 @@ const createDefaultStore = () =>
 
 let store: ReturnType<typeof createDefaultStore>;
 
-export const createReduxStore = <T>(initalState?: Partial<T>) => {
+export const createReduxStore = (initalState?: Partial<RootState>) => {
   return configureStore({
     reducer: {
       modals: modalsSlice,
@@ -43,7 +43,7 @@ export const createReduxStore = <T>(initalState?: Partial<T>) => {
       user: userSlice,
       staging: stagingSlice,
     },
-    preloadedState: {},
+    preloadedState: initalState,
   });
 };
 
