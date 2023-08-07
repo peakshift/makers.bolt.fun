@@ -19,7 +19,7 @@ function invalidateUserById(id) {
   );
 }
 
-function makeRequest(query) {
+async function makeRequest(query) {
   if (!env.CACHE_PURGE_TOKEN) return null;
   return axios
     .post(
