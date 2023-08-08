@@ -339,6 +339,7 @@ const Tournament = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.string("title");
+    t.nonNull.string("slug");
     t.nonNull.string("description");
     t.nonNull.string("thumbnail_image", {
       async resolve(parent) {
