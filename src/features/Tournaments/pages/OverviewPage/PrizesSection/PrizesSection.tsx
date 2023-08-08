@@ -132,6 +132,24 @@ const renderPrizes = (
   prizeNumber: number
 ) => {
   if (prizes.length === 1) {
+    if (winningProjectsMap?.size) {
+      const [prize1] = prizes;
+
+      const project1 = winningProjectsMap.get(prize1.project ?? "");
+
+      return (
+        <div>
+          <h4 className="text-[32px] leading-[1em] mb-8">
+            {prizes[0].position}
+          </h4>
+          <p className="text-[84px] leading-[1em]" data-attr={prizeNumber + 1}>
+            {prizes[0].reward}
+          </p>
+          <ProjectThumbnail project={project1!} />
+        </div>
+      );
+    }
+
     return (
       <div>
         <h4 className="text-[32px] leading-[1em]">{prizes[0].position}</h4>
@@ -146,6 +164,30 @@ const renderPrizes = (
   }
 
   if (prizes.length === 2) {
+    if (winningProjectsMap?.size) {
+      const [prize1, prize2] = prizes;
+
+      const project1 = winningProjectsMap.get(prize1.project ?? "");
+      const project2 = winningProjectsMap.get(prize2.project ?? "");
+
+      return (
+        <div className="flex flex-col gap-40">
+          <div>
+            <h4 className="text-[32px] leading-[1em] mb-8">
+              {prizes[0].position}
+            </h4>
+            <ProjectThumbnail project={project1!} />
+          </div>
+          <div>
+            <h4 className="text-[20px] leading-[1em] mb-8">
+              {prizes[1].position}
+            </h4>
+            <ProjectThumbnail project={project2!} />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="flex flex-col gap-40">
         <div>

@@ -458,6 +458,7 @@ export interface NexusGenObjects {
     end_date: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     location: string; // String!
+    slug: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
     title: string; // String!
     website?: string | null; // String
@@ -904,6 +905,7 @@ export interface NexusGenFieldTypes {
     prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
     projects_count: number; // Int!
     schedule: NexusGenRootTypes['TournamentSchedule'][]; // [TournamentSchedule!]!
+    slug: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: string; // String!
     title: string; // String!
@@ -1390,6 +1392,7 @@ export interface NexusGenFieldTypeNames {
     prizes: 'TournamentPrize'
     projects_count: 'Int'
     schedule: 'TournamentSchedule'
+    slug: 'String'
     start_date: 'Date'
     thumbnail_image: 'String'
     title: 'String'

@@ -538,6 +538,7 @@ type Tournament {
   prizes: [TournamentPrize!]!
   projects_count: Int!
   schedule: [TournamentSchedule!]!
+  slug: String!
   start_date: Date!
   thumbnail_image: String!
   title: String!

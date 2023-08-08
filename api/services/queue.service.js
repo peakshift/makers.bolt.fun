@@ -10,7 +10,7 @@ function createStoryRootEvent({
   author_nostr_pubkey,
   tags,
 }) {
-  return callQueueApi("/add-job/publish-story-to-nostr", {
+  return callQueueApi("/add-job/nostr/publish-story-event", {
     story: {
       id,
       title,
@@ -25,7 +25,7 @@ function createStoryRootEvent({
 }
 
 function publishProfileVerifiedEvent({ event }) {
-  return callQueueApi("/add-job/publish-profile-verification-to-nostr", {
+  return callQueueApi("/add-job/nostr/publish-profile-verification-event", {
     event,
   });
 }
@@ -36,7 +36,7 @@ function newUserRegisteredInTournament({
   tournament_id,
   email,
 }) {
-  return callQueueApi("/add-job/tournament/new-user-registered", {
+  return callQueueApi("/add-job/emails/new-user-registered-in-tournament", {
     user_id,
     user_name,
     tournament_id,
@@ -50,7 +50,7 @@ function newProjectSubmittedInTournament({
   tournament_id,
   track_id,
 }) {
-  return callQueueApi("/add-job/tournament/new-project-submitted", {
+  return callQueueApi("/add-job/emails/new-project-submitted-to-tournament", {
     user_id,
     project_id,
     tournament_id,
