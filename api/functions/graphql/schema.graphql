@@ -33,6 +33,7 @@ interface BaseUser {
   in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
+  last_seen_notification_time: Date!
   lightning_address: String
   linkedin: String
   location: String
@@ -146,11 +147,11 @@ input CreateTournamentInput {
   thumbnail_image: ImageInput!
   title: String!
   tracks: [CreateTournamentTrackInput!]!
-  website: String!
+  website: String
 }
 
 input CreateTournamentJudgeInput {
-  avatar: ImageInput!
+  avatar: ImageInput
   company: String!
   name: String!
 }
@@ -198,10 +199,14 @@ type Hackathon {
   website: String!
 }
 
+"""
+When you want to connect to an already uploaded image, either include the `id` field or the `provider_id` field.
+"""
 input ImageInput {
   id: String
   name: String
-  url: String!
+  provider_id: String
+  url: String
 }
 
 type LnurlDetails {
@@ -246,6 +251,7 @@ type Mutation {
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   setUserNostrKeyAsPrimary(key: String!): User
   unlinkNostrKey(key: String!): User
+  updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
   updateProfileRoles(data: ProfileRolesInput): User
   updateProject(input: UpdateProjectInput): CreateProjectResponse
@@ -532,11 +538,12 @@ type Tournament {
   prizes: [TournamentPrize!]!
   projects_count: Int!
   schedule: [TournamentSchedule!]!
+  slug: String!
   start_date: Date!
   thumbnail_image: String!
   title: String!
   tracks: [TournamentTrack!]!
-  website: String!
+  website: String
 }
 
 type TournamentConfig {
@@ -594,7 +601,7 @@ type TournamentFAQ {
 }
 
 type TournamentJudge {
-  avatar: String!
+  avatar: String
   company: String!
   name: String!
 }
@@ -757,19 +764,19 @@ input UpdateProjectInput {
 }
 
 input UpdateTournamentInput {
-  config: TournamentConfigInput!
-  contacts: [TournamentContactInput!]!
-  description: String!
-  end_date: Date!
+  config: TournamentConfigInput
+  contacts: [TournamentContactInput!]
+  description: String
+  end_date: Date
   id: Int
-  location: String!
-  makers_deals: [TournamentMakerDealInput!]!
-  partners: [TournamentPartnerInput!]!
-  prizes: [TournamentPrizeInput!]!
-  schedule: [TournamentScheduleInput!]!
-  start_date: Date!
-  title: String!
-  website: String!
+  location: String
+  makers_deals: [TournamentMakerDealInput!]
+  partners: [TournamentPartnerInput!]
+  prizes: [TournamentPrizeInput!]
+  schedule: [TournamentScheduleInput!]
+  start_date: Date
+  title: String
+  website: String
 }
 
 input UpdateTournamentRegistrationInput {
@@ -786,6 +793,7 @@ type User implements BaseUser {
   in_tournament(id: Int!): Boolean!
   jobTitle: String
   join_date: Date!
+  last_seen_notification_time: Date!
   lightning_address: String
   linkedin: String
   location: String

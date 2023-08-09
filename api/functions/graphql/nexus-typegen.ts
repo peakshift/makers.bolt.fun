@@ -81,10 +81,10 @@ export interface NexusGenInputs {
     thumbnail_image: NexusGenInputs['ImageInput']; // ImageInput!
     title: string; // String!
     tracks: NexusGenInputs['CreateTournamentTrackInput'][]; // [CreateTournamentTrackInput!]!
-    website: string; // String!
+    website?: string | null; // String
   }
   CreateTournamentJudgeInput: { // input type
-    avatar: NexusGenInputs['ImageInput']; // ImageInput!
+    avatar?: NexusGenInputs['ImageInput'] | null; // ImageInput
     company: string; // String!
     name: string; // String!
   }
@@ -95,7 +95,8 @@ export interface NexusGenInputs {
   ImageInput: { // input type
     id?: string | null; // String
     name?: string | null; // String
-    url: string; // String!
+    provider_id?: string | null; // String
+    url?: string | null; // String
   }
   MakerRoleInput: { // input type
     id: number; // Int!
@@ -229,19 +230,19 @@ export interface NexusGenInputs {
     website: string; // String!
   }
   UpdateTournamentInput: { // input type
-    config: NexusGenInputs['TournamentConfigInput']; // TournamentConfigInput!
-    contacts: NexusGenInputs['TournamentContactInput'][]; // [TournamentContactInput!]!
-    description: string; // String!
-    end_date: NexusGenScalars['Date']; // Date!
+    config?: NexusGenInputs['TournamentConfigInput'] | null; // TournamentConfigInput
+    contacts?: NexusGenInputs['TournamentContactInput'][] | null; // [TournamentContactInput!]
+    description?: string | null; // String
+    end_date?: NexusGenScalars['Date'] | null; // Date
     id?: number | null; // Int
-    location: string; // String!
-    makers_deals: NexusGenInputs['TournamentMakerDealInput'][]; // [TournamentMakerDealInput!]!
-    partners: NexusGenInputs['TournamentPartnerInput'][]; // [TournamentPartnerInput!]!
-    prizes: NexusGenInputs['TournamentPrizeInput'][]; // [TournamentPrizeInput!]!
-    schedule: NexusGenInputs['TournamentScheduleInput'][]; // [TournamentScheduleInput!]!
-    start_date: NexusGenScalars['Date']; // Date!
-    title: string; // String!
-    website: string; // String!
+    location?: string | null; // String
+    makers_deals?: NexusGenInputs['TournamentMakerDealInput'][] | null; // [TournamentMakerDealInput!]
+    partners?: NexusGenInputs['TournamentPartnerInput'][] | null; // [TournamentPartnerInput!]
+    prizes?: NexusGenInputs['TournamentPrizeInput'][] | null; // [TournamentPrizeInput!]
+    schedule?: NexusGenInputs['TournamentScheduleInput'][] | null; // [TournamentScheduleInput!]
+    start_date?: NexusGenScalars['Date'] | null; // Date
+    title?: string | null; // String
+    website?: string | null; // String
   }
   UpdateTournamentRegistrationInput: { // input type
     email?: string | null; // String
@@ -457,9 +458,10 @@ export interface NexusGenObjects {
     end_date: NexusGenScalars['Date']; // Date!
     id: number; // Int!
     location: string; // String!
+    slug: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
     title: string; // String!
-    website: string; // String!
+    website?: string | null; // String
   }
   TournamentConfig: { // root type
     feedFilters?: string[] | null; // [String!]
@@ -562,6 +564,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     jobTitle?: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    last_seen_notification_time: NexusGenScalars['Date']; // Date!
     lightning_address?: string | null; // String
     linkedin?: string | null; // String
     location?: string | null; // String
@@ -723,6 +726,7 @@ export interface NexusGenFieldTypes {
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
+    updateLastSeenNotificationTime: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
     updateProfileRoles: NexusGenRootTypes['User'] | null; // User
     updateProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
@@ -901,11 +905,12 @@ export interface NexusGenFieldTypes {
     prizes: NexusGenRootTypes['TournamentPrize'][]; // [TournamentPrize!]!
     projects_count: number; // Int!
     schedule: NexusGenRootTypes['TournamentSchedule'][]; // [TournamentSchedule!]!
+    slug: string; // String!
     start_date: NexusGenScalars['Date']; // Date!
     thumbnail_image: string; // String!
     title: string; // String!
     tracks: NexusGenRootTypes['TournamentTrack'][]; // [TournamentTrack!]!
-    website: string; // String!
+    website: string | null; // String
   }
   TournamentConfig: { // field return type
     feedFilters: string[] | null; // [String!]
@@ -937,7 +942,7 @@ export interface NexusGenFieldTypes {
     question: string; // String!
   }
   TournamentJudge: { // field return type
-    avatar: string; // String!
+    avatar: string | null; // String
     company: string; // String!
     name: string; // String!
   }
@@ -1013,6 +1018,7 @@ export interface NexusGenFieldTypes {
     in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    last_seen_notification_time: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
     linkedin: string | null; // String
     location: string | null; // String
@@ -1061,6 +1067,7 @@ export interface NexusGenFieldTypes {
     in_tournament: boolean; // Boolean!
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
+    last_seen_notification_time: NexusGenScalars['Date']; // Date!
     lightning_address: string | null; // String
     linkedin: string | null; // String
     location: string | null; // String
@@ -1206,6 +1213,7 @@ export interface NexusGenFieldTypeNames {
     registerInTournament: 'User'
     setUserNostrKeyAsPrimary: 'User'
     unlinkNostrKey: 'User'
+    updateLastSeenNotificationTime: 'User'
     updateProfileDetails: 'User'
     updateProfileRoles: 'User'
     updateProject: 'CreateProjectResponse'
@@ -1384,6 +1392,7 @@ export interface NexusGenFieldTypeNames {
     prizes: 'TournamentPrize'
     projects_count: 'Int'
     schedule: 'TournamentSchedule'
+    slug: 'String'
     start_date: 'Date'
     thumbnail_image: 'String'
     title: 'String'
@@ -1496,6 +1505,7 @@ export interface NexusGenFieldTypeNames {
     in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
+    last_seen_notification_time: 'Date'
     lightning_address: 'String'
     linkedin: 'String'
     location: 'String'
@@ -1544,6 +1554,7 @@ export interface NexusGenFieldTypeNames {
     in_tournament: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
+    last_seen_notification_time: 'Date'
     lightning_address: 'String'
     linkedin: 'String'
     location: 'String'
@@ -1615,6 +1626,9 @@ export interface NexusGenArgTypes {
     }
     unlinkNostrKey: { // args
       key: string; // String!
+    }
+    updateLastSeenNotificationTime: { // args
+      timestamp: string; // String!
     }
     updateProfileDetails: { // args
       data?: NexusGenInputs['ProfileDetailsInput'] | null; // ProfileDetailsInput

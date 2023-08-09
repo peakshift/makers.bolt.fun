@@ -1,0 +1,6 @@
+mutation UpdateLastSeenNotificationTime($timestamp: String!) {
+  updateLastSeenNotificationTime(timestamp: $timestamp) {
+    id
+    last_seen_notification_time
+  }
+}

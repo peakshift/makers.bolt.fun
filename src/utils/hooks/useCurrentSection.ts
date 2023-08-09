@@ -10,8 +10,8 @@ export const useCurrentSection = () => {
         return 'blog';
     if (location.pathname.startsWith('/hackathons'))
         return 'hackathons';
-    if (location.pathname.startsWith('/apps'))
-        return 'apps';
+    if (location.pathname.startsWith('/projects'))
+        return 'projects';
     if (location.pathname.startsWith('/donate'))
         return 'donate';
     return 'other'

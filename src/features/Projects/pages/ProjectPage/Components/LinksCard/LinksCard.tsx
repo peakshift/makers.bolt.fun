@@ -26,13 +26,6 @@ interface Props {
 export default function LinksCard({ links }: Props) {
   const linksList = [
     {
-      value: links.discord,
-      text: links.discord,
-      icon: FaDiscord,
-      colors: "bg-violet-100 text-violet-900",
-      label: "Discord",
-    },
-    {
       value: links.website,
       text: links.website?.replace(/(^\w+:|^)\/\//, "").replace(/\/$/, ""),
       icon: FiGlobe,
@@ -41,12 +34,11 @@ export default function LinksCard({ links }: Props) {
       label: "Website",
     },
     {
-      value: links.twitter,
-      text: links.twitter,
-      icon: FiTwitter,
-      colors: "bg-blue-100 text-blue-500",
-      url: links.twitter,
-      label: "Twitter",
+      value: links.discord,
+      text: links.discord,
+      icon: FaDiscord,
+      colors: "bg-violet-100 text-violet-900",
+      label: "Discord",
     },
     {
       value: links.github,
@@ -55,6 +47,22 @@ export default function LinksCard({ links }: Props) {
       colors: "bg-gray-200 text-gray-800",
       url: links.github,
       label: "Github",
+    },
+    {
+      value: links.replit,
+      text: links.replit,
+      icon: SiReplit,
+      colors: "bg-orange-100 text-orange-600",
+      url: links.replit,
+      label: "Replit",
+    },
+    {
+      value: links.twitter,
+      text: links.twitter,
+      icon: FiTwitter,
+      colors: "bg-blue-100 text-blue-500",
+      url: links.twitter,
+      label: "Twitter",
     },
     {
       value: links.npub,
@@ -70,14 +78,6 @@ export default function LinksCard({ links }: Props) {
       colors: "bg-pink-100 text-pink-600",
       url: links.figma,
       label: "Figma",
-    },
-    {
-      value: links.replit,
-      text: links.replit,
-      icon: SiReplit,
-      colors: "bg-orange-100 text-orange-600",
-      url: links.replit,
-      label: "Replit",
     },
   ];
 

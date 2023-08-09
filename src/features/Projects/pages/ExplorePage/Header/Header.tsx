@@ -10,19 +10,19 @@ import { IoLocationOutline } from "react-icons/io5";
 export const bannerData = {
   title: (
     <>
-      <p className="text-body1 font-bolder text-white">AI4ALL</p>
+      <p className="text-body1 font-bolder text-white">Nostrasia Hackathon</p>
       <p className="text-body3 font-medium text-white mt-8">
-        1st Jul - 31th Jul, 2023
+        3rd Oct - 3rd Nov, 2023
       </p>
       <p className="text-body4 text-white mt-8">
         <IoLocationOutline className="mr-8" /> Online
       </p>
     </>
   ),
-  img: "https://images-ext-2.discordapp.net/external/RaQ6rDyBvRQzZNXnf0dugeRSjkm-Q6lWjvwQAGAiFHo/https/imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/3b423956-fc1f-49dc-ba8c-1244d055b300/original",
+  img: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/9818c8ea-54f9-49d2-1fb0-0bf62db71500/public",
   link: {
     content: "Registration Open",
-    url: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
+    url: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
     newTab: false,
   },
 };

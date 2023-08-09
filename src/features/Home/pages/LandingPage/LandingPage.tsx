@@ -13,14 +13,14 @@ export default function LandingPage() {
   return (
     <>
       <OgTags
-        title="Build on Bitcoin | BOLT FUN"
+        title="Build On Bitcoin | BOLT FUN"
         description="People are building the future of the internet with Bitcoin. From social networks, to streaming payments, and even custom assets. Now we celebrate 10 years of 0 downtime and fast with layer 2!"
         image={SocialPreviewImage}
       />
       <main
         className="relative isolate md:col-span-3 bg-white rounded
           grid grid-cols-[24px_1fr_24px] md:grid-cols-[80px_1fr_80px]
-          max-md:-mx-16 py-80"
+          max-md:-mx-16 py-80 overflow-hidden border-2 border-gray-100"
       >
         <div className="col-start-2 col-end-3 flex flex-col gap-y-[160px]">
           <div className="absolute w-full inset-x-0 top-0 -z-10">

@@ -22,7 +22,7 @@ module.exports = {
         xl: " 0px 20px 24px -4px rgba(16, 24, 40, 0.1), 0px 8px 8px -4px rgba(16, 24, 40, 0.04)",
         "2xl": "0px 24px 48px -12px rgba(16, 24, 40, 0.25)",
         "3xl": "0px 32px 64px -12px rgba(16, 24, 40, 0.2)",
-        inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+        inner: "inset 0 2px 0px 2px rgba(0, 0, 0, 0.06)",
         none: "none",
       },
       fontSize: {
