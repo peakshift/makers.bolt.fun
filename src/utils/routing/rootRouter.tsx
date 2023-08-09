@@ -206,6 +206,15 @@ const TermsAndConditionsPage = Loadable(
   )
 );
 
+const ChatbotPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "terms_conditions_page" */ "../../features/Dashboard/Chatbot/Chatbot"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -317,6 +326,8 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           path={"/terms-conditions"}
           element={<TermsAndConditionsPage />}
         />
+
+        <Route path={"/admin/chatbot"} element={<ChatbotPage />} />
 
         <Route
           path="/"

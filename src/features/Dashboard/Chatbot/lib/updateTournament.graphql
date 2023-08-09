@@ -1,0 +1,92 @@
+mutation UpdateTournament($data: UpdateTournamentInput) {
+  updateTournament(data: $data) {
+    id
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    events_count
+    makers_count
+    projects_count
+    tracks {
+      id
+      title
+      icon
+    }
+    prizes {
+      title
+      description
+      image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
+    }
+    judges {
+      name
+      company
+      avatar
+    }
+    faqs {
+      question
+      answer
+    }
+    events {
+      id
+      title
+      image
+      description
+      starts_at
+      ends_at
+      location
+      website
+      type
+      links
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
+  }
+}

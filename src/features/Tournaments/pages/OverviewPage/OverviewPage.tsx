@@ -85,6 +85,7 @@ export default function OverviewPage() {
             isRegistrationOpen={tournamentDetails.config.registerationOpen}
             partnersList={tournamentDetails.partners}
             contacts={tournamentDetails.contacts}
+            tournament={tournamentDetails}
           />
         </div>
         <PrizesSection prizes={tournamentDetails.prizes} />

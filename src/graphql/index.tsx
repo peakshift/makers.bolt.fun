@@ -151,6 +151,43 @@ export type CreateProjectResponse = {
   project: Project;
 };
 
+export type CreateTournamentFaqInput = {
+  answer: Scalars['String'];
+  question: Scalars['String'];
+};
+
+export type CreateTournamentInput = {
+  config: TournamentConfigInput;
+  contacts: Array<TournamentContactInput>;
+  cover_image: ImageInput;
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  faqs: Array<CreateTournamentFaqInput>;
+  judges: Array<CreateTournamentJudgeInput>;
+  location: Scalars['String'];
+  makers_deals: Array<TournamentMakerDealInput>;
+  partners: Array<TournamentPartnerInput>;
+  prizes: Array<TournamentPrizeInput>;
+  schedule: Array<TournamentScheduleInput>;
+  slug: Scalars['String'];
+  start_date: Scalars['Date'];
+  thumbnail_image: ImageInput;
+  title: Scalars['String'];
+  tracks: Array<CreateTournamentTrackInput>;
+  website: Scalars['String'];
+};
+
+export type CreateTournamentJudgeInput = {
+  avatar: ImageInput;
+  company: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type CreateTournamentTrackInput = {
+  icon: Scalars['String'];
+  title: Scalars['String'];
+};
+
 export type Donation = {
   __typename?: 'Donation';
   amount: Scalars['Int'];
@@ -234,6 +271,7 @@ export type Mutation = {
   confirmVote: Vote;
   createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
+  createTournament: Maybe<Tournament>;
   deleteProject: Maybe<Project>;
   deleteStory: Maybe<Story>;
   donate: Donation;
@@ -245,6 +283,7 @@ export type Mutation = {
   updateProfileDetails: Maybe<User>;
   updateProfileRoles: Maybe<User>;
   updateProject: Maybe<CreateProjectResponse>;
+  updateTournament: Maybe<Tournament>;
   updateTournamentRegistration: Maybe<ParticipationInfo>;
   updateUserPreferences: User;
   vote: Vote;
@@ -275,6 +314,11 @@ export type MutationCreateProjectArgs = {
 
 export type MutationCreateStoryArgs = {
   data: InputMaybe<StoryInputType>;
+};
+
+
+export type MutationCreateTournamentArgs = {
+  data: InputMaybe<CreateTournamentInput>;
 };
 
 
@@ -331,6 +375,11 @@ export type MutationUpdateProfileRolesArgs = {
 
 export type MutationUpdateProjectArgs = {
   input: InputMaybe<UpdateProjectInput>;
+};
+
+
+export type MutationUpdateTournamentArgs = {
+  data: InputMaybe<UpdateTournamentInput>;
 };
 
 
@@ -828,11 +877,25 @@ export type TournamentConfig = {
   mainFeedHashtag: Maybe<Scalars['String']>;
   projectsSubmissionOpen: Scalars['Boolean'];
   registerationOpen: Scalars['Boolean'];
-  showFeed: Scalars['Boolean'];
+  showFeed: Maybe<Scalars['Boolean']>;
+};
+
+export type TournamentConfigInput = {
+  feedFilters?: InputMaybe<Array<Scalars['String']>>;
+  ideasRootNostrEventId?: InputMaybe<Scalars['String']>;
+  mainFeedHashtag?: InputMaybe<Scalars['String']>;
+  projectsSubmissionOpen: Scalars['Boolean'];
+  registerationOpen: Scalars['Boolean'];
+  showFeed?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type TournamentContact = {
   __typename?: 'TournamentContact';
+  type: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type TournamentContactInput = {
   type: Scalars['String'];
   url: Scalars['String'];
 };
@@ -861,6 +924,7 @@ export enum TournamentEventTypeEnum {
 export type TournamentFaq = {
   __typename?: 'TournamentFAQ';
   answer: Scalars['String'];
+  id: Scalars['Int'];
   question: Scalars['String'];
 };
 
@@ -876,6 +940,12 @@ export type TournamentMakerDeal = {
   description: Scalars['String'];
   title: Scalars['String'];
   url: Maybe<Scalars['String']>;
+};
+
+export type TournamentMakerDealInput = {
+  description: Scalars['String'];
+  title: Scalars['String'];
+  url?: InputMaybe<Scalars['String']>;
 };
 
 export enum TournamentMakerHackingStatusEnum {
@@ -903,10 +973,21 @@ export type TournamentPartner = {
   title: Scalars['String'];
 };
 
+export type TournamentPartnerInput = {
+  items: Array<TournamentPartnerItemInput>;
+  title: Scalars['String'];
+};
+
 export type TournamentPartnerItem = {
   __typename?: 'TournamentPartnerItem';
   image: Scalars['String'];
   isBigImage: Maybe<Scalars['Boolean']>;
+  url: Scalars['String'];
+};
+
+export type TournamentPartnerItemInput = {
+  image: Scalars['String'];
+  isBigImage?: InputMaybe<Scalars['Boolean']>;
   url: Scalars['String'];
 };
 
@@ -925,10 +1006,29 @@ export type TournamentPrizeAdditionalPrize = {
   url: Maybe<Scalars['String']>;
 };
 
+export type TournamentPrizeAdditionalPrizeInput = {
+  text: Scalars['String'];
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type TournamentPrizeInput = {
+  additional_prizes?: InputMaybe<Array<TournamentPrizeAdditionalPrizeInput>>;
+  description: Scalars['String'];
+  image: Scalars['String'];
+  positions: Array<TournamentPrizePositionInput>;
+  title: Scalars['String'];
+};
+
 export type TournamentPrizePosition = {
   __typename?: 'TournamentPrizePosition';
   position: Scalars['String'];
   project: Maybe<Scalars['String']>;
+  reward: Scalars['String'];
+};
+
+export type TournamentPrizePositionInput = {
+  position: Scalars['String'];
+  project?: InputMaybe<Scalars['String']>;
   reward: Scalars['String'];
 };
 
@@ -954,6 +1054,20 @@ export type TournamentScheduleEvent = {
   title: Scalars['String'];
   type: Maybe<Scalars['String']>;
   url: Maybe<Scalars['String']>;
+};
+
+export type TournamentScheduleEventInput = {
+  location?: InputMaybe<Scalars['String']>;
+  time?: InputMaybe<Scalars['String']>;
+  timezone?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  type?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type TournamentScheduleInput = {
+  date: Scalars['String'];
+  events: Array<TournamentScheduleEventInput>;
 };
 
 export type TournamentTrack = {
@@ -987,6 +1101,22 @@ export type UpdateProjectInput = {
   title: Scalars['String'];
   tournaments: Array<Scalars['Int']>;
   twitter?: InputMaybe<Scalars['String']>;
+  website: Scalars['String'];
+};
+
+export type UpdateTournamentInput = {
+  config: TournamentConfigInput;
+  contacts: Array<TournamentContactInput>;
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  id?: InputMaybe<Scalars['Int']>;
+  location: Scalars['String'];
+  makers_deals: Array<TournamentMakerDealInput>;
+  partners: Array<TournamentPartnerInput>;
+  prizes: Array<TournamentPrizeInput>;
+  schedule: Array<TournamentScheduleInput>;
+  start_date: Scalars['Date'];
+  title: Scalars['String'];
   website: Scalars['String'];
 };
 
@@ -1106,6 +1236,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any } | null };
+
+export type UpdateTournamentMutationVariables = Exact<{
+  data: InputMaybe<UpdateTournamentInput>;
+}>;
+
+
+export type UpdateTournamentMutation = { __typename?: 'Mutation', updateTournament: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null } } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1454,7 +1591,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, ideasRootNostrEventId: string | null, showFeed: boolean, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type NostrKeysMetadataQueryVariables = Exact<{
   keys: Array<Scalars['String']> | Scalars['String'];
@@ -1801,6 +1938,126 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UpdateTournamentDocument = gql`
+    mutation UpdateTournament($data: UpdateTournamentInput) {
+  updateTournament(data: $data) {
+    id
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    events_count
+    makers_count
+    projects_count
+    tracks {
+      id
+      title
+      icon
+    }
+    prizes {
+      title
+      description
+      image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
+    }
+    judges {
+      name
+      company
+      avatar
+    }
+    faqs {
+      question
+      answer
+    }
+    events {
+      id
+      title
+      image
+      description
+      starts_at
+      ends_at
+      location
+      website
+      type
+      links
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
+  }
+}
+    `;
+export type UpdateTournamentMutationFn = Apollo.MutationFunction<UpdateTournamentMutation, UpdateTournamentMutationVariables>;
+
+/**
+ * __useUpdateTournamentMutation__
+ *
+ * To run a mutation, you first call `useUpdateTournamentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTournamentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTournamentMutation, { data, loading, error }] = useUpdateTournamentMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateTournamentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTournamentMutation, UpdateTournamentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTournamentMutation, UpdateTournamentMutationVariables>(UpdateTournamentDocument, options);
+      }
+export type UpdateTournamentMutationHookResult = ReturnType<typeof useUpdateTournamentMutation>;
+export type UpdateTournamentMutationResult = Apollo.MutationResult<UpdateTournamentMutation>;
+export type UpdateTournamentMutationOptions = Apollo.BaseMutationOptions<UpdateTournamentMutation, UpdateTournamentMutationVariables>;
 export const DonationsStatsDocument = gql`
     query DonationsStats {
   getDonationsStats {
@@ -4317,6 +4574,7 @@ export const GetTournamentByIdDocument = gql`
       links
     }
     faqs {
+      id
       question
       answer
     }
