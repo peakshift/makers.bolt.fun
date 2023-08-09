@@ -35,11 +35,13 @@ const context = createContext<ChatContext>(null!);
 export const ChatContextProvider = ({
   children,
   systemMessage,
+  getContextMessage,
   functionsTemplates,
   functions,
 }: {
   children: React.ReactNode;
   systemMessage: string;
+  getContextMessage: (options: { input: string }) => Promise<string | null>;
   functionsTemplates: ChatCompletionFunctions[];
   functions: Record<string, Function>;
 }) => {
@@ -59,11 +61,17 @@ export const ChatContextProvider = ({
 
       let finishedCallingFunctions = false;
 
+      const contextMessage = await getContextMessage({
+        input: message,
+      });
+
       while (!finishedCallingFunctions) {
         const response = await sendCommand({
           messages: [...oldMessages, ...newResponses],
           availableFunctions: functionsTemplates,
-          systemMessage: systemMessage,
+          systemMessage:
+            systemMessage +
+            (contextMessage ? `\nContext: ${contextMessage}` : ""),
         });
 
         if (response?.function_call) {

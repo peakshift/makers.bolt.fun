@@ -3,6 +3,7 @@ import {
   ChatCompletionRequestMessage,
   ChatCompletionResponseMessage,
   Configuration,
+  CreateEmbeddingRequest,
   OpenAIApi,
 } from "openai";
 import { CONSTS } from "src/utils";
@@ -68,4 +69,15 @@ export async function sendCommand({
 
     return response.data.choices[0].message;
   }
+}
+
+export async function getEmbeddings(input: string | string[]) {
+  const openai = getOpenAIApi();
+
+  const response = await openai.createEmbedding({
+    model: "text-embedding-ada-002",
+    input,
+  });
+
+  return response.data;
 }

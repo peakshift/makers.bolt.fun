@@ -1,6 +1,15 @@
 import { ChatCompletionFunctions } from "openai";
-import { createContext, useContext, useEffect, useMemo, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Tournament, TournamentMakerDeal } from "src/graphql";
+import YAML from "yaml";
+import { getEmbeddings } from "../lib";
 import { ChatContextProvider } from "./chat.context";
 import { useTournament } from "./tournament.context";
 
@@ -16,6 +25,37 @@ export const TournamentChatbotContextProvider = ({
   const { tournament, updateTournament } = useTournament();
 
   const tournamentRef = useRef(tournament);
+
+  const getContextMessage = useCallback(
+    async ({ input }: { input: string }) => {
+      if (!tournamentRef.current) return null;
+
+      const relatedData = await getRelatedData(input);
+      const dataToInclude = {} as any;
+      console.log(relatedData);
+      relatedData.slice(0, 2).forEach(({ field }) => {
+        if (field === "title")
+          dataToInclude["Tournament Title"] = tournamentRef.current?.title;
+        if (field === "description")
+          dataToInclude["TournamentDescription"] =
+            tournamentRef.current?.description;
+        if (field === "start_date")
+          dataToInclude["Start Date"] = tournamentRef.current?.start_date;
+        if (field === "end_date")
+          dataToInclude["End Date"] = tournamentRef.current?.end_date;
+        if (field === "makers_deals")
+          dataToInclude["Makers Deals"] =
+            tournamentRef.current?.makers_deals.map((d) => ({
+              title: d.title,
+              description: d.description,
+              url: d.url,
+            }));
+      });
+
+      return YAML.stringify(dataToInclude);
+    },
+    []
+  );
 
   useEffect(() => {
     tournamentRef.current = tournament;
@@ -48,28 +88,28 @@ export const TournamentChatbotContextProvider = ({
       set_tournament_info,
       set_tournament_deals,
 
-      get_current_tournament_state: (select) => {
-        const tournament = tournamentRef.current;
+      // get_current_tournament_state: (select) => {
+      //   const tournament = tournamentRef.current;
 
-        if (!tournament) throw new Error("No tournament selected");
+      //   if (!tournament) throw new Error("No tournament selected");
 
-        let result: Partial<Tournament> = {};
+      //   let result: Partial<Tournament> = {};
 
-        for (const [key, include] of Object.entries(select)) {
-          if (include)
-            result[key as keyof Tournament] =
-              tournament[key as keyof Tournament];
-        }
+      //   for (const [key, include] of Object.entries(select)) {
+      //     if (include)
+      //       result[key as keyof Tournament] =
+      //         tournament[key as keyof Tournament];
+      //   }
 
-        if (result.makers_deals)
-          result.makers_deals = result.makers_deals?.map(
-            ({ __typename, ...data }) => data
-          );
+      //   if (result.makers_deals)
+      //     result.makers_deals = result.makers_deals?.map(
+      //       ({ __typename, ...data }) => data
+      //     );
 
-        return {
-          tournament_data: result,
-        };
-      },
+      //   return {
+      //     tournament_data: result,
+      //   };
+      // },
     };
   }, [updateTournament]);
 
@@ -78,6 +118,7 @@ export const TournamentChatbotContextProvider = ({
       <ChatContextProvider
         systemMessage={SYSTEM_MESSAGE}
         functionsTemplates={availableFunctions}
+        getContextMessage={getContextMessage}
         functions={functions}
       >
         {children}
@@ -105,8 +146,8 @@ The user will provide you with a prompt that can contain one or more commands fr
 
 RULES:
 - Never invent new functions. Only use the functions provided to you.
-- Never make assumptions about the values to plug into functions. If not clear, try to check the current tournament data, then ask for clarification.
-- ALWAYS get the current state of the tournament before making updates.
+- Never make assumptions about the values to plug into functions. If not clear, ask user for clarification.
+- Always Use the existing data in the tournament to make decisions.
 - If you don't know how to do something, tell the user that you can't & suggest to him contacting the admins.
 - Don't answer questions or queries not related to updating the tournament data.
 - Don't call the same function twice with the same parameters.
@@ -120,9 +161,9 @@ type SelectTournamentFields = {
 type Functions = {
   set_tournament_info: (parameters: Partial<Tournament>) => void;
   set_tournament_deals: (parameters: { deals: TournamentMakerDeal[] }) => void;
-  get_current_tournament_state: (parameters: SelectTournamentFields) => {
-    tournament_data: Partial<Tournament>;
-  };
+  // get_current_tournament_state: (parameters: SelectTournamentFields) => {
+  //   tournament_data: Partial<Tournament>;
+  // };
 };
 
 const availableFunctions: ChatCompletionFunctions[] = [
@@ -181,35 +222,124 @@ const availableFunctions: ChatCompletionFunctions[] = [
       },
     },
   },
-  {
-    name: "get_current_tournament_state",
-    description:
-      "Get the current state of the tournament selectivly. You will only get the fields you ask for.",
-    parameters: {
-      type: "object",
-      properties: {
-        title: {
-          type: "boolean",
-          description: "Get title or not",
-        },
-        description: {
-          type: "boolean",
-          description: "Get description or not",
-        },
-        start_date: {
-          type: "boolean",
-          description: "Get start date or not",
-        },
-        end_date: {
-          type: "boolean",
-          description: "Get end date or not",
-        },
+  // {
+  //   name: "get_current_tournament_state",
+  //   description:
+  //     "Get the current state of the tournament selectivly. You will only get the fields you ask for.",
+  //   parameters: {
+  //     type: "object",
+  //     properties: {
+  //       title: {
+  //         type: "boolean",
+  //         description: "Get title or not",
+  //       },
+  //       description: {
+  //         type: "boolean",
+  //         description: "Get description or not",
+  //       },
+  //       start_date: {
+  //         type: "boolean",
+  //         description: "Get start date or not",
+  //       },
+  //       end_date: {
+  //         type: "boolean",
+  //         description: "Get end date or not",
+  //       },
 
-        makers_deals: {
-          type: "boolean",
-          description: "Get makers deals or not",
-        },
-      },
-    },
-  },
+  //       makers_deals: {
+  //         type: "boolean",
+  //         description: "Get makers deals or not",
+  //       },
+  //     },
+  //   },
+  // },
 ];
+
+async function getRelatedData(input: string) {
+  // const input1 = [
+  //   "add or update title",
+  //   "add or update description",
+  //   "add or update start and end dates",
+  //   "add or update or delete makers deals",
+  //   // "add or update or delete organizers",
+  //   // "add or update or delete prizes",
+  //   // "add or update or delete schedule",
+  // ];
+
+  const fieldsEmbeddings = await getFieldsEmbeddings();
+
+  const inputEmbedding = await getEmbeddings([input]).then(
+    (res) => res.data[0].embedding
+  );
+
+  const similarities = getSimilarities(
+    inputEmbedding,
+    fieldsEmbeddings.map((f) => f.embeddings)
+  );
+
+  const fieldsSimilarities = fieldsEmbeddings.map((f, i) => ({
+    field: f.field,
+    similarity: similarities[i],
+  }));
+
+  const sortedFields = fieldsSimilarities.sort(
+    (a, b) => b.similarity - a.similarity
+  );
+
+  return sortedFields;
+}
+
+const fields = {
+  title: "add or update title",
+  description: "add or update description",
+  start_date: "add or update start date",
+  end_date: "add or update end date",
+  makers_deals: "add or update makers deals",
+} as const;
+
+let cachedFieldsEmbeddings:
+  | { field: keyof typeof fields; embeddings: number[] }[]
+  | null = null;
+
+async function getFieldsEmbeddings() {
+  if (cachedFieldsEmbeddings === null) {
+    const embeddings = await getEmbeddings(Object.values(fields)).then((res) =>
+      res.data.map((d) => d.embedding)
+    );
+    cachedFieldsEmbeddings = embeddings.map((embedding, i) => ({
+      field: Object.keys(fields)[i] as keyof typeof fields,
+      embeddings: embedding,
+    }));
+  }
+
+  return cachedFieldsEmbeddings;
+}
+
+type Vector = number[];
+
+function getSimilarities(test: Vector, options: Vector[]) {
+  function dotproduct(a: Vector, b: Vector) {
+    let n = 0,
+      lim = Math.min(a.length, b.length);
+    for (let i = 0; i < lim; i++) n += a[i] * b[i];
+    return n;
+  }
+  function norm2(a: Vector) {
+    let sumsqr = 0;
+    for (let i = 0; i < a.length; i++) sumsqr += a[i] * a[i];
+    return Math.sqrt(sumsqr);
+  }
+  function similarity(a: Vector, b: Vector) {
+    return dotproduct(a, b) / norm2(a) / norm2(b);
+  }
+
+  let similarities = [];
+  for (let i = 0; i < options.length; i++) {
+    similarities.push(similarity(test, options[i]));
+  }
+  return similarities;
+}
+
+// getRelatedData(`
+// Make the end date month september
+// `).then((res) => console.log(res));
