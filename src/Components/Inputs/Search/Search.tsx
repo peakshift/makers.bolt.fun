@@ -16,6 +16,7 @@ import {
     Snippet,
     Index
   } from 'react-instantsearch';
+  import VoteButton from 'src/Components/VoteButton/VoteButton';
 
 
 interface Props {
@@ -28,16 +29,29 @@ interface Props {
 
 const HitComponentStories = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center gap-16 py-16">
-            <p>{hit.id}</p>
-            <p>{hit.title}</p>
-            <p>{hit.body}</p>
+        <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80 justify-between">
+            {hit.cover_image ? (
+                <img src={hit.cover_image} alt="story cover" className="h-full rounded-l-12 mr-16" />
+            ) : (
+                <img src="https://via.placeholder.com/1600x900.png?text=No+Cover+Image" alt="story cover" className="h-full rounded-l-12 mr-16" />
+            )}
+            <div className="flex flex-col">
+                <div className="flex gap-2">
+                    <h1 className="font-bold">{hit.title}</h1>
+                    {/* <p className="text-xs font-light opacity-70">by {hit.user}</p> */}
+                </div>
+                <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.excerpt}</p>
+            </div>
+            <div className="px-2 flex flex-col justify-end">
+                {/* <p className="text-xs bg-gray-200 rounded-12 border p-1">Story</p> */}
+                <VoteButton direction="vertical" votes={hit.votes_count} dense={true} />
+            </div>
         </div>
     )
 }
 const HitComponentUsers = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center gap-16 py-16">
+        <div className="flex items-center gap-16 z-100">
             <p>{hit.id}</p>
             <p>{hit.name}</p>
             <p>{hit.lightning_address}</p>
@@ -46,7 +60,7 @@ const HitComponentUsers = ({ hit }: { hit: any }) => {
 }
 const HitComponentTags = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center gap-16 py-16">
+        <div className="flex items-center gap-16 z-100" key={hit.id}>
             <p>{hit.id}</p>
             <p>{hit.title}</p>
             <p>{hit.description}</p>
@@ -55,7 +69,7 @@ const HitComponentTags = ({ hit }: { hit: any }) => {
 }
 const HitComponentCategories = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center gap-16 py-16">
+        <div className="flex items-center gap-16 z-100">
             <p>{hit.id}</p>
             <p>{hit.title}</p>
         </div>
@@ -65,7 +79,7 @@ const HitComponentCategories = ({ hit }: { hit: any }) => {
 function SearchBar({ placeholder }: { placeholder: string }) {
     const { refine } = useSearchBox();
     return (
-        <div className="relative">
+        <div className="relative mb-10">
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FiSearch />
             </span>
@@ -75,7 +89,7 @@ function SearchBar({ placeholder }: { placeholder: string }) {
                     placeholder
                 }
                 className={`pl-40 pr-10 py-10 rounded-12 border-2 border-gray-200 transition-all duration-200 ease-in-out outline-none
-                    focus:outline-[#9E88FF] focus:border-[rgb(179 160 255 / 1)] focus:ring-[rgb(179 160 255 / 0.5)]`}
+                    focus:outline-[#9E88FF] focus:border-[rgb(179 160 255 / 1)] focus:ring-[rgb(179 160 255 / 0.5)] w-[750px] max-w-full`}
             />
         </div>
     );
