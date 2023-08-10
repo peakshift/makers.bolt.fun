@@ -1,6 +1,6 @@
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { FiSearch } from 'react-icons/fi';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import {
     InstantSearch,
@@ -128,15 +128,29 @@ const HitComponentCategories = ({ hit }: { hit: any }) => {
     )
 }
 
-function SearchBar({ placeholder }: { placeholder: string }) {
+function SearchBar({
+    placeholder,
+    searchQuery = '', // Provide a default value for searchQuery
+    onSearchQueryChange = () => {} // Provide a default function for onSearchQueryChange
+}: {
+    placeholder: string;
+    searchQuery?: string;
+    onSearchQueryChange?: (query: string) => void;
+}) {
     const { refine } = useSearchBox();
+    useEffect(() => {
+        if (searchQuery !== undefined) {
+            refine(searchQuery);
+        }
+    }, [searchQuery, refine]);
     return (
         <div className="relative mb-10">
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FiSearch />
             </span>
             <input
-                onChange={e => refine(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => onSearchQueryChange(e.target.value ?? "")}
                 placeholder={
                     placeholder
                 }
@@ -150,7 +164,15 @@ function SearchBar({ placeholder }: { placeholder: string }) {
 export default function Search({
     classes,
     ...props }: Props) {
+    const [searchQuery, setSearchQuery] = useState('');
 
+    const handleSearchQueryChange = (query: string) => {
+        setSearchQuery(query);
+    };
+
+    const clearSearchInput = () => {
+        setSearchQuery('');
+    };
     const searchClient = instantMeiliSearch(
         process.env.REACT_APP_MEILISEARCH_HOST as string,
         process.env.REACT_APP_MEILISEARCH_KEY as string, {
@@ -164,19 +186,30 @@ export default function Search({
         <div className={`${classes?.container}`}>
             <InstantSearch searchClient={searchClient} indexName="Stories">
                 <Configure hitsPerPage={3}/>
-                <SearchBar placeholder={placeholder} />
+                <SearchBar 
+                    placeholder={placeholder} 
+                    searchQuery={searchQuery}
+                    onSearchQueryChange={handleSearchQueryChange}/>
                 <div className="rounded-12 w-fit h-fit absolute">
                     <Index indexName="Stories">
-                        <Hits hitComponent={HitComponentStories} />
+                        <Hits hitComponent={HitComponentStories} onClick={() => {
+                            clearSearchInput()
+                        }}/>
                     </Index>
                     <Index indexName="User">
-                        <Hits hitComponent={HitComponentUsers} />
+                        <Hits hitComponent={HitComponentUsers} onClick={() => {
+                            clearSearchInput()
+                        }}/>
                     </Index>
                     <Index indexName="Tags">
-                        <Hits hitComponent={HitComponentTags} />
+                        <Hits hitComponent={HitComponentTags} onClick={() => {
+                            clearSearchInput()
+                        }}/>
                     </Index>
                     <Index indexName="Category">
-                        <Hits hitComponent={HitComponentCategories} />
+                        <Hits hitComponent={HitComponentCategories} onClick={() => {
+                            clearSearchInput()
+                        }}/>
                     </Index>
                 </div>
             </InstantSearch>
