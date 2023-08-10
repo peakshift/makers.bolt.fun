@@ -89,11 +89,28 @@ const HitComponentUsers = ({ hit }: { hit: any }) => {
 }
 const HitComponentTags = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center gap-16 z-100" key={hit.id}>
-            <p>{hit.id}</p>
-            <p>{hit.title}</p>
-            <p>{hit.description}</p>
-        </div>
+        <Link
+            to={createRoute({ type: "tag-page", tag: hit.title })}
+            key={hit.id}
+        >
+            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80">
+                {hit.icon ? (
+                    <div className="border rounded-full h-[40px] w-[40px] p-2 flex items-center justify-center mx-16">
+                        <p className="text-2xl">{hit.icon}</p>
+                    </div>
+                ) : (
+                    <Avatar src={`https://via.placeholder.com/900x900.png?text=No+Icon`} className="mx-16" />
+                    // <img src="https://via.placeholder.com/900x900.png?text=No+Avatar+Image" alt="user avatar" className="h-full rounded-l-12 mr-16" />
+                )}
+                <div className="flex flex-col">
+                    <div className="flex gap-2">
+                        <h1 className="font-bold">#{hit.title}</h1>
+                        {/* <p className="text-xs font-light opacity-70">by {hit.user}</p> */}
+                    </div>
+                    <p className="line-clamp-2 text-xs font-light text-gray-600 pr-6">{hit.description}</p>
+                </div>
+            </div>
+        </Link>
     )
 }
 const HitComponentCategories = ({ hit }: { hit: any }) => {
