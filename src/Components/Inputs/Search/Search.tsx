@@ -6,7 +6,8 @@ import {
     InstantSearch,
     useSearchBox,
     Hits,
-    Index
+    Index,
+    Configure
   } from 'react-instantsearch';
 import VoteButton from 'src/Components/VoteButton/VoteButton';
 import Sugar from 'sugar';
@@ -31,7 +32,7 @@ const HitComponentStories = ({ hit }: { hit: any }) => {
                 title: hit.title,
             })}
         >
-            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80 justify-between">
+            <div className="flex items-center z-50 border bg-white rounded-12 w-[400px] max-w-full h-80 justify-between">
                 {hit.cover_image ? (
                     <img src={hit.cover_image} alt="story cover" className="h-full rounded-l-12 mr-16" />
                 ) : (
@@ -39,11 +40,11 @@ const HitComponentStories = ({ hit }: { hit: any }) => {
                 )}
                 <div className="flex flex-col">
                     <div className="flex gap-2 items-center">
-                        <h1 className="font-bold">{hit.title}</h1>
-                        <p className="text-xs font-light opacity-70">{Sugar.Date.relative(new Date(hit.createdAt))}</p>
+                        <h1 className="font-bold line-clamp-2">{hit.title}</h1>
                         {/* <p className="text-xs font-light opacity-70">by {hit.user}</p> */}
                     </div>
-                    <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.excerpt}</p>
+                    <p className="text-xs font-light opacity-70">{Sugar.Date.relative(new Date(hit.createdAt))}</p>
+                    {/* <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.excerpt}</p> */}
                 </div>
                 <div className="px-2 flex flex-col justify-end">
                     <VoteButton direction="vertical" votes={hit.votes_count} dense={true} />
@@ -63,7 +64,7 @@ const HitComponentUsers = ({ hit }: { hit: any }) => {
           aria-hidden="true"
           tabIndex={-1}
         >
-            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80">
+            <div className="flex items-center z-50 border bg-white rounded-12 w-[400px] max-w-full h-80">
                 {hit.avatar ? (
                     <Avatar src={hit.avatar} className="mx-16"/>
                 ) : (
@@ -86,7 +87,7 @@ const HitComponentTags = ({ hit }: { hit: any }) => {
             to={createRoute({ type: "tag-page", tag: hit.title })}
             key={hit.id}
         >
-            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80">
+            <div className="flex items-center z-50 border bg-white rounded-12 w-[400px] max-w-full h-80">
                 {hit.icon ? (
                     <div className="border rounded-full h-[40px] w-[40px] p-2 flex items-center justify-center mx-16">
                         <p className="text-2xl">{hit.icon}</p>
@@ -110,7 +111,7 @@ const HitComponentCategories = ({ hit }: { hit: any }) => {
             to={"/projects/category/" + hit.id}
             key={hit.id}
         >
-            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80">
+            <div className="flex items-center z-50 border bg-white rounded-12 w-[400px] max-w-full h-80">
                 {hit.cover_image ? (
                     <img src={hit.cover_image} alt="story cover" className="h-full rounded-l-12 mr-16" />
                 ) : (
@@ -140,7 +141,7 @@ function SearchBar({ placeholder }: { placeholder: string }) {
                     placeholder
                 }
                 className={`pl-40 pr-10 py-10 rounded-12 border-2 border-gray-200 transition-all duration-200 ease-in-out outline-none
-                    focus:outline-[#9E88FF] focus:border-[rgb(179 160 255 / 1)] focus:ring-[rgb(179 160 255 / 0.5)] w-[750px] max-w-full`}
+                    focus:outline-[#9E88FF] focus:border-[rgb(179 160 255 / 1)] focus:ring-[rgb(179 160 255 / 0.5)] w-[400px] max-w-full`}
             />
         </div>
     );
@@ -150,7 +151,6 @@ export default function Search({
     classes,
     ...props }: Props) {
 
-    const [inputValue, setInputValue] = useState("")
     const searchClient = instantMeiliSearch(
         process.env.REACT_APP_MEILISEARCH_HOST as string,
         process.env.REACT_APP_MEILISEARCH_KEY as string, {
@@ -163,19 +163,22 @@ export default function Search({
     return (
         <div className={`${classes?.container}`}>
             <InstantSearch searchClient={searchClient} indexName="Stories">
+                <Configure hitsPerPage={3}/>
                 <SearchBar placeholder={placeholder} />
-                <Index indexName="Stories">
-                    <Hits hitComponent={HitComponentStories} />
-                </Index>
-                <Index indexName="User">
-                    <Hits hitComponent={HitComponentUsers} />
-                </Index>
-                <Index indexName="Tags">
-                    <Hits hitComponent={HitComponentTags} />
-                </Index>
-                <Index indexName="Category">
-                    <Hits hitComponent={HitComponentCategories} />
-                </Index>
+                <div className="rounded-12 w-fit h-fit absolute">
+                    <Index indexName="Stories">
+                        <Hits hitComponent={HitComponentStories} />
+                    </Index>
+                    <Index indexName="User">
+                        <Hits hitComponent={HitComponentUsers} />
+                    </Index>
+                    <Index indexName="Tags">
+                        <Hits hitComponent={HitComponentTags} />
+                    </Index>
+                    <Index indexName="Category">
+                        <Hits hitComponent={HitComponentCategories} />
+                    </Index>
+                </div>
             </InstantSearch>
         </div>
     )

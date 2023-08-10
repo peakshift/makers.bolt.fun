@@ -2,7 +2,6 @@ import { BsSearch } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useAppSelector, useCurrentSection } from "src/utils/hooks";
 import ASSETS from "src/assets";
-import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 import NotificationsList from "./NotificationsList/NotificationsList";
+import Search from "../Inputs/Search/Search";
 
 export default function NavDesktop() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -41,6 +41,9 @@ export default function NavDesktop() {
               alt="BOLT.FUN"
             />
           </Link>
+          <div className="ml-auto pt-2">
+            <Search />
+          </div>
           <div className="ml-auto">
             <Menu
               align="end"
@@ -215,12 +218,12 @@ export default function NavDesktop() {
               }
               className="absolute top-0 right-0 flex items-center h-full"
             >
-              <Search
+              {/* <Search
                 width={326}
                 isOpen={searchOpen}
                 onClose={() => setSearchOpen(false)}
                 onResultClick={() => setSearchOpen(false)}
-              />
+              /> */}
             </motion.div>
           </div>
         </div>
