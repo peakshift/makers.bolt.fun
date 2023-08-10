@@ -1,8 +1,3 @@
-
-import AsyncSelect from 'react-select/async';
-import { OnChangeValue, StylesConfig, components, OptionProps } from "react-select";
-import { SearchUsersDocument, SearchUsersQuery, SearchUsersQueryResult } from "src/graphql";
-import { apolloClient } from "src/utils/apollo";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { FiSearch } from 'react-icons/fi';
 import { useState } from 'react';
@@ -16,7 +11,10 @@ import {
     Snippet,
     Index
   } from 'react-instantsearch';
-  import VoteButton from 'src/Components/VoteButton/VoteButton';
+import VoteButton from 'src/Components/VoteButton/VoteButton';
+import Sugar from 'sugar';
+import { Link } from "react-router-dom";
+import { createRoute } from "src/utils/routing";
 
 
 interface Props {
@@ -29,33 +27,64 @@ interface Props {
 
 const HitComponentStories = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80 justify-between">
-            {hit.cover_image ? (
-                <img src={hit.cover_image} alt="story cover" className="h-full rounded-l-12 mr-16" />
-            ) : (
-                <img src="https://via.placeholder.com/1600x900.png?text=No+Cover+Image" alt="story cover" className="h-full rounded-l-12 mr-16" />
-            )}
-            <div className="flex flex-col">
-                <div className="flex gap-2">
-                    <h1 className="font-bold">{hit.title}</h1>
-                    {/* <p className="text-xs font-light opacity-70">by {hit.user}</p> */}
+        <Link
+            to={createRoute({
+                type: "story",
+                id: hit.id,
+                title: hit.title,
+            })}
+        >
+            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80 justify-between">
+                {hit.cover_image ? (
+                    <img src={hit.cover_image} alt="story cover" className="h-full rounded-l-12 mr-16" />
+                ) : (
+                    <img src="https://via.placeholder.com/1600x900.png?text=No+Cover+Image" alt="story cover" className="h-full rounded-l-12 mr-16" />
+                )}
+                <div className="flex flex-col">
+                    <div className="flex gap-2 items-center">
+                        <h1 className="font-bold">{hit.title}</h1>
+                        <p className="text-xs font-light opacity-70">{Sugar.Date.relative(new Date(hit.createdAt))}</p>
+                        {/* <p className="text-xs font-light opacity-70">by {hit.user}</p> */}
+                    </div>
+                    <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.excerpt}</p>
                 </div>
-                <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.excerpt}</p>
+                <div className="px-2 flex flex-col justify-end">
+                    {/* <p className="text-xs bg-gray-200 rounded-12 border p-1">Story</p> */}
+                    <VoteButton direction="vertical" votes={hit.votes_count} dense={true} />
+                </div>
             </div>
-            <div className="px-2 flex flex-col justify-end">
-                {/* <p className="text-xs bg-gray-200 rounded-12 border p-1">Story</p> */}
-                <VoteButton direction="vertical" votes={hit.votes_count} dense={true} />
-            </div>
-        </div>
+        </Link>
     )
 }
 const HitComponentUsers = ({ hit }: { hit: any }) => {
     return (
-        <div className="flex items-center gap-16 z-100">
-            <p>{hit.id}</p>
-            <p>{hit.name}</p>
-            <p>{hit.lightning_address}</p>
-        </div>
+        <Link
+          to={createRoute({
+            type: "profile",
+            id: hit.id,
+            username: hit.name,
+          })}
+          aria-hidden="true"
+          tabIndex={-1}
+        >
+            <div className="flex items-center my-2 z-100 border bg-white rounded-12 w-[750px] max-w-full h-80">
+                {hit.avatar ? (
+                    <Avatar src={hit.avatar} className="mx-16"/>
+                    // <img src={hit.avatar} alt="user avatar" className="h-full rounded-l-12 mr-16" />
+                ) : (
+                    <Avatar src={"https://via.placeholder.com/900x900.png?text=No+Avatar+Image"} className="mx-16" />
+                    // <img src="https://via.placeholder.com/900x900.png?text=No+Avatar+Image" alt="user avatar" className="h-full rounded-l-12 mr-16" />
+                )}
+                <div className="flex flex-col">
+                    <div className="flex gap-2">
+                        <h1 className="font-bold">{hit.name}</h1>
+                        {/* <p className="text-xs font-light opacity-70">by {hit.user}</p> */}
+                    </div>
+                    <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.jobTitle}</p>
+                    <p className="line-clamp-2 text-xs font-light text-gray-600">Joined {Sugar.Date.relative(new Date(hit.join_date))}</p>
+                </div>
+            </div>
+        </Link>
     )
 }
 const HitComponentTags = ({ hit }: { hit: any }) => {
