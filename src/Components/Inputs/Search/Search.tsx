@@ -196,8 +196,6 @@ export default function Search({ classes, ...props }: Props) {
   const clearSearchInput = () => {
     setSearchQuery("");
   };
-
-  console.log(process.env);
   const searchClient = instantMeiliSearch(
     process.env.REACT_APP_MEILISEARCH_HOST as string,
     process.env.REACT_APP_MEILISEARCH_KEY as string,
