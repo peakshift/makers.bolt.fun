@@ -40,7 +40,7 @@ const HitComponentStories = () => {
                         })}
                     >
                         <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 justify-between transition">
-                            <div className="flex">
+                            <div className="flex items-center">
                                 {hit.cover_image ? (
                                     <Avatar src={hit.cover_image} className="m-14"/>
                                 ) : (
