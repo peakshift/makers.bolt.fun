@@ -1,8 +1,8 @@
 // @ts-nocheck
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { FiSearch } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import { FiSearch } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import {
     InstantSearch,
     useSearchBox,
@@ -16,11 +16,11 @@ import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 
 interface Props {
-    classes?: {
-        container?: string
-        input?: string
-    }
-    placeholder?: string,
+  classes?: {
+    container?: string;
+    input?: string;
+  };
+  placeholder?: string;
 }
 
 const HitComponentStories = () => {
@@ -169,58 +169,55 @@ const HitComponentCategories = () => {
 }
 
 function SearchBar({
-    placeholder,
-    searchQuery = '', // Provide a default value for searchQuery
-    onSearchQueryChange = () => {} // Provide a default function for onSearchQueryChange
+  placeholder,
+  searchQuery = "", // Provide a default value for searchQuery
+  onSearchQueryChange = () => {}, // Provide a default function for onSearchQueryChange
 }: {
-    placeholder: string;
-    searchQuery?: string;
-    onSearchQueryChange?: (query: string) => void;
+  placeholder: string;
+  searchQuery?: string;
+  onSearchQueryChange?: (query: string) => void;
 }) {
-    const { refine } = useSearchBox();
-    useEffect(() => {
-        if (searchQuery !== undefined) {
-            refine(searchQuery);
-        }
-    }, [searchQuery, refine]);
-    return (
-        <div className="relative mb-10">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FiSearch />
-            </span>
-            <input
-                value={searchQuery}
-                onChange={(e) => onSearchQueryChange(e.target.value ?? "")}
-                placeholder={
-                    placeholder
-                }
-                className={`pl-40 pr-10 py-10 rounded-12 border-2 border-gray-200 transition-all duration-200 ease-in-out outline-none
+  const { refine } = useSearchBox();
+  useEffect(() => {
+    if (searchQuery !== undefined) {
+      refine(searchQuery);
+    }
+  }, [searchQuery, refine]);
+  return (
+    <div className="relative mb-10">
+      <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <FiSearch />
+      </span>
+      <input
+        value={searchQuery}
+        onChange={(e) => onSearchQueryChange(e.target.value ?? "")}
+        placeholder={placeholder}
+        className={`pl-40 pr-10 py-10 rounded-12 border-2 border-gray-200 transition-all duration-200 ease-in-out outline-none
                     focus:outline-[#9E88FF] focus:border-[rgb(179 160 255 / 1)] focus:ring-[rgb(179 160 255 / 0.5)] w-[400px] max-w-full`}
-            />
-        </div>
-    );
+      />
+    </div>
+  );
 }
 
-export default function Search({
-    classes,
-    ...props }: Props) {
-    const [searchQuery, setSearchQuery] = useState('');
+export default function Search({ classes, ...props }: Props) {
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const handleSearchQueryChange = (query: string) => {
-        setSearchQuery(query);
-    };
+  const handleSearchQueryChange = (query: string) => {
+    setSearchQuery(query);
+  };
 
-    const clearSearchInput = () => {
-        setSearchQuery('');
-    };
-    const searchClient = instantMeiliSearch(
-        process.env.REACT_APP_MEILISEARCH_HOST as string,
-        process.env.REACT_APP_MEILISEARCH_KEY as string, {
-            placeholderSearch: false,
-            primaryKey: 'id',
-        }
-    );
-    const placeholder = props.placeholder ?? "Search for anything"
+  const clearSearchInput = () => {
+    setSearchQuery("");
+  };
+  const searchClient = instantMeiliSearch(
+    process.env.REACT_APP_MEILISEARCH_HOST as string,
+    process.env.REACT_APP_MEILISEARCH_KEY as string,
+    {
+      placeholderSearch: false,
+      primaryKey: "id",
+    }
+  );
+  const placeholder = props.placeholder ?? "Search for anything";
 
     return (
         <div className={`${classes?.container}`}>
@@ -258,7 +255,7 @@ export default function Search({
                         </Index>
                     </div>
                 </div>
-            </InstantSearch>
-        </div>
-    )
+        </InstantSearch>
+    </div>
+  );
 }
