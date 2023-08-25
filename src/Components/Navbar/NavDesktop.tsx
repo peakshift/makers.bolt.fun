@@ -41,7 +41,7 @@ export default function NavDesktop() {
               alt="BOLT.FUN"
             />
           </Link>
-          <div className="ml-auto pt-2">
+          <div className="ml-auto pt-2 max-w-[400px] grow">
             <Search />
           </div>
           <div className="ml-auto">
@@ -204,17 +204,17 @@ export default function NavDesktop() {
               animate={
                 searchOpen
                   ? {
-                    opacity: 1,
-                    y: "0",
-                    transition: { type: "spring", stiffness: 70 },
-                  }
+                      opacity: 1,
+                      y: "0",
+                      transition: { type: "spring", stiffness: 70 },
+                    }
                   : {
-                    opacity: 0,
-                    y: "-120px",
-                    transition: {
-                      ease: "easeIn",
-                    },
-                  }
+                      opacity: 0,
+                      y: "-120px",
+                      transition: {
+                        ease: "easeIn",
+                      },
+                    }
               }
               className="absolute top-0 right-0 flex items-center h-full"
             >
