@@ -36,12 +36,12 @@ export default function NavDesktop() {
         <div className="flex items-center gap-16">
           <Link to="/">
             <img
-              className="h-40 mr-40 lg:mr-64 cursor-pointer"
+              className="h-40 mr-40 cursor-pointer"
               src={ASSETS.Logo}
               alt="BOLT.FUN"
             />
           </Link>
-          <div className="ml-auto pt-2 max-w-[400px] grow">
+          <div className="ml-auto pt-2 mr-40 grow">
             <Search />
           </div>
           <div className="ml-auto">
@@ -51,7 +51,7 @@ export default function NavDesktop() {
               menuClassName="!p-8 !border-gray-300 !border-2 !shadow-none !rounded-lg !border-solid"
               menuButton={
                 <Button color="secondary" size="sm">
-                  <span className="align-middle">Create</span>{" "}
+                  <span className="align-middle">Write</span>{" "}
                   <FiPlus className="text-primary-500 mr-8" />
                 </Button>
               }

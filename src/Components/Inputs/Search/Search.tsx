@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiX } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import {
@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 import { calcTimeSincePosting } from "src/features/Posts/Components/PostCard/PostCardHeader/PostCardHeader";
 import IconButton from "src/Components/IconButton/IconButton";
-import { FaTimes } from "react-icons/fa";
 
 interface Props {
   classes?: {
@@ -30,7 +29,7 @@ const HitComponentStories = () => {
   return (
     <div>
       {hits.length > 0 ? (
-        <p className="font-light p-2 opacity-70 text-sm">Stories</p>
+        <p className="font-medium px-16 py-8 text-sm">📝 Stories</p>
       ) : null}
       {hits.map((hit) => {
         return (
@@ -81,7 +80,7 @@ const HitComponentUsers = () => {
   return (
     <div>
       {hits.length > 0 ? (
-        <p className="font-light p-2 opacity-70 text-sm">Users</p>
+        <p className="font-medium px-16 py-8 text-sm">👷‍♀️ Makers</p>
       ) : null}
       {hits.map((hit) => {
         return (
@@ -132,7 +131,7 @@ const HitComponentProjects = () => {
   return (
     <div>
       {hits.length > 0 ? (
-        <p className="font-light p-2 opacity-70 text-sm">Projects</p>
+        <p className="font-medium px-16 py-8 text-sm">🚀 Projects</p>
       ) : null}
       {hits.map((hit) => {
         return (
@@ -259,14 +258,14 @@ function SearchBar({
   }, [searchQuery, refine]);
   return (
     <div className="relative mb-10">
-      <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-600">
         <FiSearch />
       </span>
       <input
         value={searchQuery}
         onChange={(e) => onSearchQueryChange(e.target.value ?? "")}
         placeholder={placeholder}
-        className={`pl-40 pr-10 py-10 rounded-12 border-2 border-gray-200 transition-all duration-200 ease-in-out outline-none
+        className={`pl-40 pr-10 py-10 rounded-12 bg-gray-100 transition-all duration-200 ease-in-out outline-none
                     focus:outline-[#9E88FF] focus:border-[rgb(179 160 255 / 1)] focus:ring-[rgb(179 160 255 / 0.5)] w-full`}
       />
       {searchQuery && (
@@ -275,7 +274,7 @@ function SearchBar({
           aria-label="clear search"
           onClick={() => onSearchQueryChange("")}
         >
-          <FaTimes />
+          <FiX />
         </IconButton>
       )}
     </div>
@@ -323,15 +322,15 @@ export default function Search({ classes, ...props }: Props) {
           onSearchQueryChange={handleSearchQueryChange}
         />
         {!!searchQuery && (
-          <div className="rounded-12 h-fit w-full absolute bg-white max-h-96 overflow-scroll overflow-x-hidden">
+          <div className="rounded-12 border-2 border-gray-200 h-fit w-full absolute bg-white max-h-96 overflow-scroll overflow-x-hidden">
             <div className="p-16 w-full">
-              <p className="text-body5 font-medium mb-8">Show Only:</p>
+              <p className="text-body5 font-medium mb-8">Show Only</p>
               <div className="flex flex-wrap gap-8 ">
                 <button
                   onClick={() => toggleFilter("stories")}
                   className={`p-4 px-12 text-body5 bg-gray-100 rounded-4 ${
                     showOnly === "stories" &&
-                    "outline outline-1 font-bold outline-primary-500 text-primary-500"
+                    "outline outline-1 outline-primary-500 text-primary-500"
                   }`}
                 >
                   Stories
@@ -340,7 +339,7 @@ export default function Search({ classes, ...props }: Props) {
                   onClick={() => toggleFilter("projects")}
                   className={`p-4 px-12 text-body5 bg-gray-100 rounded-4 ${
                     showOnly === "projects" &&
-                    "outline outline-1 font-bold outline-primary-500 text-primary-500"
+                    "outline outline-1 outline-primary-500 text-primary-500"
                   }`}
                 >
                   Projects
@@ -349,10 +348,10 @@ export default function Search({ classes, ...props }: Props) {
                   onClick={() => toggleFilter("users")}
                   className={`p-4 px-12 text-body5 bg-gray-100 rounded-4 ${
                     showOnly === "users" &&
-                    "outline outline-1 font-bold outline-primary-500 text-primary-500"
+                    "outline outline-1 outline-primary-500 text-primary-500"
                   }`}
                 >
-                  Users
+                  Makers
                 </button>
               </div>
             </div>

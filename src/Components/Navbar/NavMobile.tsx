@@ -253,7 +253,7 @@ export default function NavMobile() {
               menuButton={
                 <Button color="gray" size="sm">
                   <FiPlusCircle className="text-gray-600 mr-8" />
-                  Create
+                  Write
                 </Button>
               }
             >
