@@ -4,16 +4,17 @@ import { FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import {
-    InstantSearch,
-    useSearchBox,
-    Index,
-    Configure,
-    useHits
-  } from 'react-instantsearch';
-import VoteButton from 'src/Components/VoteButton/VoteButton';
-import Sugar from 'sugar';
+  InstantSearch,
+  useSearchBox,
+  Index,
+  Configure,
+  useHits,
+} from "react-instantsearch";
+import VoteButton from "src/Components/VoteButton/VoteButton";
+import Sugar from "sugar";
 import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
+import { calcTimeSincePosting } from "src/features/Posts/Components/PostCard/PostCardHeader/PostCardHeader";
 
 interface Props {
   classes?: {
@@ -24,149 +25,176 @@ interface Props {
 }
 
 const HitComponentStories = () => {
-    const {hits} = useHits();
-    return (
-        <div>
-            {hits.length > 0 ? (
-                <p className="font-light p-2 opacity-70 text-sm">Stories</p>
-            ) : null}
-            {hits.map((hit) => {
-                return (
-                    <Link
-                        to={createRoute({
-                            type: "story",
-                            id: hit.id,
-                            title: hit.title,
-                        })}
-                    >
-                        <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 justify-between transition">
-                            <div className="flex items-center">
-                                {hit.cover_image ? (
-                                    <Avatar src={hit.cover_image} className="m-14"/>
-                                ) : (
-                                    <Avatar src="https://via.placeholder.com/1600x900.png?text=No+Cover+Image" className="m-14"/>
-                                )}
-                                <div className="flex flex-col">
-                                    <h1 className="font-bold line-clamp-2">{hit.title}</h1>
-                                    <p className="text-xs font-light opacity-70">{Sugar.Date.relative(new Date(hit.createdAt))}</p>
-                                </div>
-                            </div>
-                            <div className="px-2 flex flex-col justify-end">
-                                <VoteButton direction="vertical" votes={hit.votes_count} dense={true} />
-                            </div>
-                        </div>
-                    </Link>
-                )
+  const { hits } = useHits();
+  return (
+    <div>
+      {hits.length > 0 ? (
+        <p className="font-light p-2 opacity-70 text-sm">Stories</p>
+      ) : null}
+      {hits.map((hit) => {
+        return (
+          <Link
+            to={createRoute({
+              type: "story",
+              id: hit.id,
+              title: hit.title,
             })}
-            
-        </div>
-    )
-}
+          >
+            <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 justify-between transition">
+              <div className="flex items-center">
+                {hit.cover_image ? (
+                  <Avatar src={hit.cover_image} className="m-14" />
+                ) : (
+                  <Avatar
+                    src="https://via.placeholder.com/1600x900.png?text=No+Cover+Image"
+                    className="m-14"
+                  />
+                )}
+                <div className="flex flex-col">
+                  <h1 className="font-bold line-clamp-2">{hit.title}</h1>
+
+                  <time
+                    dateTime={props.date}
+                    className="text-xs font-light opacity-70"
+                  >
+                    {calcTimeSincePosting(props.date)}
+                  </time>
+                </div>
+              </div>
+              <div className="px-2 flex flex-col justify-end">
+                <VoteButton
+                  direction="vertical"
+                  votes={hit.votes_count}
+                  dense={true}
+                />
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
 const HitComponentUsers = () => {
-    const {hits} = useHits();
-    return (
-        <div>
-            {hits.length > 0 ? (
-                <p className="font-light p-2 opacity-70 text-sm">Users</p>
-            ) : null}
-            {hits.map((hit) => {
-                return (
-                    <Link
-                        to={createRoute({
-                            type: "profile",
-                            id: hit.id,
-                            username: hit.name,
-                        })}
-                        aria-hidden="true"
-                        tabIndex={-1}
-                        >
-                            <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
-                                {hit.avatar ? (
-                                    <Avatar src={hit.avatar} className="m-14"/>
-                                ) : (
-                                    <Avatar src={"https://via.placeholder.com/900x900.png?text=No+Avatar+Image"} className="m-14" />
-                                )}
-                                <div className="flex flex-col">
-                                    <div className="flex gap-2">
-                                        <h1 className="font-bold max-w-fit break-all pr-2 line-clamp-2">{hit.name}</h1>
-                                    </div>
-                                    <p className="line-clamp-2 text-xs font-light text-gray-600">{hit.jobTitle}</p>
-                                    <p className="line-clamp-2 text-xs font-light text-gray-600">Joined {Sugar.Date.relative(new Date(hit.join_date))}</p>
-                                </div>
-                            </div>
-                        </Link>
-                )
+  const { hits } = useHits();
+  return (
+    <div>
+      {hits.length > 0 ? (
+        <p className="font-light p-2 opacity-70 text-sm">Users</p>
+      ) : null}
+      {hits.map((hit) => {
+        return (
+          <Link
+            to={createRoute({
+              type: "profile",
+              id: hit.id,
+              username: hit.name,
             })}
-        </div> 
-    )
-}
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
+              {hit.avatar ? (
+                <Avatar src={hit.avatar} className="m-14" />
+              ) : (
+                <Avatar
+                  src={
+                    "https://via.placeholder.com/900x900.png?text=No+Avatar+Image"
+                  }
+                  className="m-14"
+                />
+              )}
+              <div className="flex flex-col">
+                <div className="flex gap-2">
+                  <h1 className="font-bold max-w-fit break-all pr-2 line-clamp-2">
+                    {hit.name}
+                  </h1>
+                </div>
+                <p className="line-clamp-2 text-xs font-light text-gray-600">
+                  {hit.jobTitle}
+                </p>
+                {/* <p className="line-clamp-2 text-xs font-light text-gray-600">
+                  Joined {Sugar.Date.relative(new Date(hit.join_date))}
+                </p> */}
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
 const HitComponentTags = () => {
-    const { hits } = useHits();
-    return (
-        <div>
-            {hits.length > 0 ? (
-                <p className="font-light p-2 opacity-70 text-sm">Tags</p>
-            ) : null}
-            {hits.map((hit) => {
-                return (
-                    <Link
-                        to={createRoute({ type: "tag-page", tag: hit.title })}
-                        key={hit.id}
-                    >
-                        <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
-                            {hit.icon ? (
-                                <div className="border rounded-full h-[40px] w-[40px] p-2 flex items-center justify-center m-14">
-                                    <p className="text-2xl">{hit.icon}</p>
-                                </div>
-                            ) : (
-                                <Avatar src={`https://via.placeholder.com/900x900.png?text=No+Icon`} className="m-14" />
-                            )}
-                            <div className="flex flex-col">
-                                <div className="flex gap-2">
-                                    <h1 className="font-bold">#{hit.title}</h1>
-                                </div>
-                                <p className="line-clamp-2 text-xs font-light text-gray-600 pr-6">{hit.description}</p>
-                            </div>
-                        </div>
-                    </Link>
-                )
-            })}
-        </div>
-        
-    )
-}
+  const { hits } = useHits();
+  return (
+    <div>
+      {hits.length > 0 ? (
+        <p className="font-light p-2 opacity-70 text-sm">Tags</p>
+      ) : null}
+      {hits.map((hit) => {
+        return (
+          <Link
+            to={createRoute({ type: "tag-page", tag: hit.title })}
+            key={hit.id}
+          >
+            <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
+              {hit.icon ? (
+                <div className="border rounded-full h-[40px] w-[40px] p-2 flex items-center justify-center m-14">
+                  <p className="text-2xl">{hit.icon}</p>
+                </div>
+              ) : (
+                <Avatar
+                  src={`https://via.placeholder.com/900x900.png?text=No+Icon`}
+                  className="m-14"
+                />
+              )}
+              <div className="flex flex-col">
+                <div className="flex gap-2">
+                  <h1 className="font-bold">#{hit.title}</h1>
+                </div>
+                <p className="line-clamp-2 text-xs font-light text-gray-600 pr-6">
+                  {hit.description}
+                </p>
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
 const HitComponentCategories = () => {
-    const {hits} = useHits();
-    return (
-        <div>
-            {hits.length > 0 ? (
-                <p className="font-light p-2 opacity-70 text-sm">Categories</p>
-            ) : null}
-            {hits.map((hit) => {
-                return (
-                    <Link
-                        to={"/projects/category/" + hit.id}
-                        key={hit.id}
-                    >
-                        <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
-                            {hit.cover_image ? (
-                                <Avatar src={hit.cover_image} className="m-14" />
-                            ) : (
-                                <Avatar src={`https://via.placeholder.com/900x900.png?text=No+Icon`} className="m-14" />
-                            )}
-                            <div className="flex flex-col">
-                                <div className="flex gap-2">
-                                    <h1 className="font-bold">{hit.title}</h1>
-                                    <p className="">{hit.icon}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
-                )
-            })}
-        </div> 
-    )
-}
+  const { hits } = useHits();
+  return (
+    <div>
+      {hits.length > 0 ? (
+        <p className="font-light p-2 opacity-70 text-sm">Categories</p>
+      ) : null}
+      {hits.map((hit) => {
+        return (
+          <Link to={"/projects/category/" + hit.id} key={hit.id}>
+            <div className="flex items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
+              {hit.cover_image ? (
+                <Avatar src={hit.cover_image} className="m-14" />
+              ) : (
+                <Avatar
+                  src={`https://via.placeholder.com/900x900.png?text=No+Icon`}
+                  className="m-14"
+                />
+              )}
+              <div className="flex flex-col">
+                <div className="flex gap-2">
+                  <h1 className="font-bold">{hit.title}</h1>
+                  <p className="">{hit.icon}</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
 
 function SearchBar({
   placeholder,
@@ -219,43 +247,50 @@ export default function Search({ classes, ...props }: Props) {
   );
   const placeholder = props.placeholder ?? "Search for anything";
 
-    return (
-        <div className={`${classes?.container}`}>
-            <InstantSearch searchClient={searchClient} indexName="Stories">
-                <Configure hitsPerPage={3}/>
-                <SearchBar 
-                    placeholder={placeholder} 
-                    searchQuery={searchQuery}
-                    onSearchQueryChange={handleSearchQueryChange}/>
-                <div className="rounded-12 w-fit h-fit absolute bg-white max-h-96 overflow-scroll overflow-x-hidden">
-                    <div onClick={() => {
-                                clearSearchInput()
-                            }}>
-                        <Index indexName="Stories">
-                            <HitComponentStories/>
-                        </Index>
-                    </div>
-                    <div onClick={() => {
-                                clearSearchInput()
-                            }}>
-                        <Index indexName="User">
-                            <HitComponentUsers />
-                        </Index>
-                    </div>
-                    <div onClick={() => {
-                                clearSearchInput()
-                            }}>
-                        <Index indexName="Tags">
-                            <HitComponentTags />
-                        </Index>
-                    </div>
-                    <div>
-                        <Index indexName="Category">
-                            <HitComponentCategories />
-                        </Index>
-                    </div>
-                </div>
-        </InstantSearch>
+  return (
+    <div className={`${classes?.container}`}>
+      <InstantSearch searchClient={searchClient} indexName="Stories">
+        <Configure hitsPerPage={3} />
+        <SearchBar
+          placeholder={placeholder}
+          searchQuery={searchQuery}
+          onSearchQueryChange={handleSearchQueryChange}
+        />
+        <div className="rounded-12 w-fit h-fit absolute bg-white max-h-96 overflow-scroll overflow-x-hidden">
+          <div
+            onClick={() => {
+              clearSearchInput();
+            }}
+          >
+            <Index indexName="Stories">
+              <HitComponentStories />
+            </Index>
+          </div>
+          <div
+            onClick={() => {
+              clearSearchInput();
+            }}
+          >
+            <Index indexName="User">
+              <HitComponentUsers />
+            </Index>
+          </div>
+          <div
+            onClick={() => {
+              clearSearchInput();
+            }}
+          >
+            <Index indexName="Tags">
+              <HitComponentTags />
+            </Index>
+          </div>
+          <div>
+            <Index indexName="Category">
+              <HitComponentCategories />
+            </Index>
+          </div>
+        </div>
+      </InstantSearch>
     </div>
   );
 }
