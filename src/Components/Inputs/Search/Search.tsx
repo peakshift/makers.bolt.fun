@@ -54,10 +54,10 @@ const HitComponentStories = () => {
                   <h1 className="font-bold line-clamp-2">{hit.title}</h1>
 
                   <time
-                    dateTime={props.date}
+                    dateTime={hit.createdAt}
                     className="text-xs font-light opacity-70"
                   >
-                    {calcTimeSincePosting(props.date)}
+                    {calcTimeSincePosting(hit.createdAt)}
                   </time>
                 </div>
               </div>
