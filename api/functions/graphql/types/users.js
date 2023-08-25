@@ -489,7 +489,7 @@ const updateProfileDetails = extendType({
         }
 
         // Preprocess & insert
-        const updatedUser = prisma.user.update({
+        const updatedUser = await prisma.user.update({
           where: {
             id: user.id,
           },

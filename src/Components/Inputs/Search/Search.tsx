@@ -11,7 +11,6 @@ import {
   useHits,
 } from "react-instantsearch";
 import VoteButton from "src/Components/VoteButton/VoteButton";
-import Sugar from "sugar";
 import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 import { calcTimeSincePosting } from "src/features/Posts/Components/PostCard/PostCardHeader/PostCardHeader";
@@ -34,6 +33,7 @@ const HitComponentStories = () => {
       {hits.map((hit) => {
         return (
           <Link
+            key={hit.id}
             to={createRoute({
               type: "story",
               id: hit.id,
@@ -85,6 +85,7 @@ const HitComponentUsers = () => {
       {hits.map((hit) => {
         return (
           <Link
+            key={hit.id}
             to={createRoute({
               type: "profile",
               id: hit.id,
@@ -124,6 +125,49 @@ const HitComponentUsers = () => {
     </div>
   );
 };
+
+const HitComponentProjects = () => {
+  const { hits } = useHits();
+  return (
+    <div>
+      {hits.length > 0 ? (
+        <p className="font-light p-2 opacity-70 text-sm">Projects</p>
+      ) : null}
+      {hits.map((hit) => {
+        return (
+          <Link
+            key={hit.id}
+            to={createRoute({
+              type: "project",
+              tag: hit.hashtag,
+            })}
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <div className="flex p-16 gap-16 items-center z-50 bg-white w-[400px] max-w-full h-80 hover:bg-gray-100 transition">
+              <img
+                src={hit.thumbnail_image!}
+                alt={hit.title}
+                draggable="false"
+                className="flex-shrink-0 w-40 h-40 bg-gray-200 border-0 rounded-full hover:cursor-pointer"
+              ></img>
+              <div className="justify-around items-start min-w-0 flex-1 hover:cursor-pointer">
+                <p className="text-body4 w-full font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
+                  {hit.title}
+                </p>
+                <p className="text-body5 text-gray-600 font-light my-[5px]">
+                  {hit.category.title}
+                </p>
+                {/* <span className="chip-small bg-warning-50 text-yellow-700 font-light text-body5 py-[3px] px-10"> <MdLocalFireDepartment className='inline-block text-fire transform text-body4 align-middle' /> {numberFormatter(project.votes_count)} </span> */}
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+};
+
 const HitComponentTags = () => {
   const { hits } = useHits();
   return (
@@ -227,6 +271,15 @@ function SearchBar({
   );
 }
 
+const searchClient = instantMeiliSearch(
+  process.env.REACT_APP_MEILISEARCH_HOST as string,
+  process.env.REACT_APP_MEILISEARCH_KEY as string,
+  {
+    placeholderSearch: false,
+    primaryKey: "id",
+  }
+);
+
 export default function Search({ classes, ...props }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -237,14 +290,7 @@ export default function Search({ classes, ...props }: Props) {
   const clearSearchInput = () => {
     setSearchQuery("");
   };
-  const searchClient = instantMeiliSearch(
-    process.env.REACT_APP_MEILISEARCH_HOST as string,
-    process.env.REACT_APP_MEILISEARCH_KEY as string,
-    {
-      placeholderSearch: false,
-      primaryKey: "id",
-    }
-  );
+
   const placeholder = props.placeholder ?? "Search for anything";
 
   return (
@@ -271,7 +317,16 @@ export default function Search({ classes, ...props }: Props) {
               clearSearchInput();
             }}
           >
-            <Index indexName="User">
+            <Index indexName="Projects">
+              <HitComponentProjects />
+            </Index>
+          </div>
+          <div
+            onClick={() => {
+              clearSearchInput();
+            }}
+          >
+            <Index indexName="Users">
               <HitComponentUsers />
             </Index>
           </div>
