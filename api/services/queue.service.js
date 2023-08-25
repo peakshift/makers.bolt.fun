@@ -70,17 +70,19 @@ function callQueueApi(url, data) {
 
 const searchIndexService = {
   createStory: (story) => {
+    const { id } = story;
     return callQueueApi("/add-job/search/sync-with-search-db", {
       type: "story",
       action: "create",
-      data: story,
+      data: { id },
     });
   },
   updateStory: (story) => {
+    const { id } = story;
     return callQueueApi("/add-job/search/sync-with-search-db", {
       type: "story",
       action: "update",
-      data: story,
+      data: { id },
     });
   },
   deleteStory: (storyId) => {
@@ -92,17 +94,19 @@ const searchIndexService = {
   },
 
   createProject: (project) => {
+    const { id } = project;
     return callQueueApi("/add-job/search/sync-with-search-db", {
       type: "project",
       action: "create",
-      data: project,
+      data: { id },
     });
   },
   updateProject: (project) => {
+    const { id } = project;
     return callQueueApi("/add-job/search/sync-with-search-db", {
       type: "project",
       action: "update",
-      data: project,
+      data: { id },
     });
   },
   deleteProject: (projectId) => {
@@ -114,17 +118,19 @@ const searchIndexService = {
   },
 
   createUser: (user) => {
+    const { id } = user;
     return callQueueApi("/add-job/search/sync-with-search-db", {
       type: "user",
       action: "create",
-      data: user,
+      data: { id },
     });
   },
   updateUser: (user) => {
+    const { id } = user;
     return callQueueApi("/add-job/search/sync-with-search-db", {
       type: "user",
       action: "update",
-      data: user,
+      data: { id },
     });
   },
   deleteUser: (userId) => {
