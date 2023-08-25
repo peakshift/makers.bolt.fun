@@ -68,6 +68,78 @@ function callQueueApi(url, data) {
   });
 }
 
-const queueService = { createStoryRootEvent, publishProfileVerifiedEvent };
+const searchIndexService = {
+  createStory: (story) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "story",
+      action: "create",
+      data: story,
+    });
+  },
+  updateStory: (story) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "story",
+      action: "update",
+      data: story,
+    });
+  },
+  deleteStory: (storyId) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "story",
+      action: "delete",
+      data: { id: storyId },
+    });
+  },
+
+  createProject: (project) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "project",
+      action: "create",
+      data: project,
+    });
+  },
+  updateProject: (project) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "project",
+      action: "update",
+      data: project,
+    });
+  },
+  deleteProject: (projectId) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "project",
+      action: "delete",
+      data: { id: projectId },
+    });
+  },
+
+  createUser: (user) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "user",
+      action: "create",
+      data: user,
+    });
+  },
+  updateUser: (user) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "user",
+      action: "update",
+      data: user,
+    });
+  },
+  deleteUser: (userId) => {
+    return callQueueApi("/add-job/search/sync-with-search-db", {
+      type: "user",
+      action: "delete",
+      data: { id: userId },
+    });
+  },
+};
+
+const queueService = {
+  createStoryRootEvent,
+  publishProfileVerifiedEvent,
+  searchIndexService,
+};
 
 module.exports = { queueService };

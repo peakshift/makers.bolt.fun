@@ -23,6 +23,7 @@ const { ImageInput } = require("./misc");
 const { Story } = require("./post");
 const { MakerRole } = require("./users");
 const { PrismaSelect } = require("@paljs/plugins");
+const { queueService } = require("../../../services/queue.service");
 
 const Project = objectType({
   name: "Project",
@@ -880,6 +881,8 @@ const createProject = extendType({
             throw new ApolloError("Unexpected error happened...");
           });
 
+        await queueService.searchIndexService.createProject(project);
+
         return { project };
       },
     });
@@ -1217,6 +1220,8 @@ const updateProject = extendType({
             logError(error);
           });
 
+          await queueService.searchIndexService.updateProject(updatedProject);
+
           return { project: updatedProject };
         } catch (error) {
           logError(error);
@@ -1304,6 +1309,8 @@ const deleteProject = extendType({
           },
         });
         await deleteImages(imagesToDelete);
+
+        await queueService.searchIndexService.deleteProject(deletedProject.id);
 
         return deletedProject;
       },
