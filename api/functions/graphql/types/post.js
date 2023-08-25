@@ -613,6 +613,9 @@ const createStory = extendType({
                 logError(error);
                 throw new ApolloError("Unexpected error happened...");
               });
+            _promisesList.push(
+              queueService.searchIndexService.updateStory(createdStory)
+            );
           } else {
             createdStory = await prisma.story
               .create({
@@ -659,6 +662,9 @@ const createStory = extendType({
                 logError(error);
                 throw new ApolloError("Unexpected error happened...");
               });
+            _promisesList.push(
+              queueService.searchIndexService.createStory(createdStory)
+            );
           }
 
           if (!was_published && createdStory.is_published)
@@ -749,7 +755,10 @@ const deleteStory = extendType({
         const imagesToDelete = oldPost.body_image_ids;
         if (oldPost.cover_image_id) imagesToDelete.push(oldPost.cover_image_id);
 
-        await deleteImages(imagesToDelete);
+        await Promise.all([
+          deleteImages(imagesToDelete),
+          queueService.searchIndexService.deleteStory(id),
+        ]);
 
         return deletedPost;
       },

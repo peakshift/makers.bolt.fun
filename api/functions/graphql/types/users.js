@@ -489,7 +489,7 @@ const updateProfileDetails = extendType({
         }
 
         // Preprocess & insert
-        return prisma.user.update({
+        const updatedUser = await prisma.user.update({
           where: {
             id: user.id,
           },
@@ -502,6 +502,10 @@ const updateProfileDetails = extendType({
             avatar: "",
           }),
         });
+
+        await queueService.searchIndexService.updateUser(updatedUser);
+
+        return updatedUser;
       },
     });
   },

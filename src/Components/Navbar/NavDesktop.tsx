@@ -2,7 +2,6 @@ import { BsSearch } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useAppSelector, useCurrentSection } from "src/utils/hooks";
 import ASSETS from "src/assets";
-import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 import NotificationsList from "./NotificationsList/NotificationsList";
+import Search from "../Inputs/Search/Search";
 
 export default function NavDesktop() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -36,11 +36,14 @@ export default function NavDesktop() {
         <div className="flex items-center gap-16">
           <Link to="/">
             <img
-              className="h-40 mr-40 lg:mr-64 cursor-pointer"
+              className="h-40 mr-40 cursor-pointer"
               src={ASSETS.Logo}
               alt="BOLT.FUN"
             />
           </Link>
+          <div className="ml-auto pt-2 mr-40 grow">
+            <Search />
+          </div>
           <div className="ml-auto">
             <Menu
               align="end"
@@ -48,7 +51,7 @@ export default function NavDesktop() {
               menuClassName="!p-8 !border-gray-300 !border-2 !shadow-none !rounded-lg !border-solid"
               menuButton={
                 <Button color="secondary" size="sm">
-                  <span className="align-middle">Create</span>{" "}
+                  <span className="align-middle">Write</span>{" "}
                   <FiPlus className="text-primary-500 mr-8" />
                 </Button>
               }
@@ -201,26 +204,26 @@ export default function NavDesktop() {
               animate={
                 searchOpen
                   ? {
-                    opacity: 1,
-                    y: "0",
-                    transition: { type: "spring", stiffness: 70 },
-                  }
+                      opacity: 1,
+                      y: "0",
+                      transition: { type: "spring", stiffness: 70 },
+                    }
                   : {
-                    opacity: 0,
-                    y: "-120px",
-                    transition: {
-                      ease: "easeIn",
-                    },
-                  }
+                      opacity: 0,
+                      y: "-120px",
+                      transition: {
+                        ease: "easeIn",
+                      },
+                    }
               }
               className="absolute top-0 right-0 flex items-center h-full"
             >
-              <Search
+              {/* <Search
                 width={326}
                 isOpen={searchOpen}
                 onClose={() => setSearchOpen(false)}
                 onResultClick={() => setSearchOpen(false)}
-              />
+              /> */}
             </motion.div>
           </div>
         </div>
