@@ -125,11 +125,10 @@ model UserEmail {
   user_id Int?
 }
 
-model OTP {
-  id      Int    @id @default(autoincrement())
-  otp     String
-  address String
-
+model Otp {
+  id        Int      @id @default(autoincrement())
+  otp       String
+  address   String
   expiresAt DateTime
 }
 
