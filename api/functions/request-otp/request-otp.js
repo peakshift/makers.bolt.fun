@@ -20,7 +20,7 @@ const requestOTP = async (req, res) => {
 
     await queueService.emailService.sendOTP(email, generatedOTP);
 
-    return res.status(200).send("OTP sent");
+    return res.status(200).json({ status: "OK", message: "OTP sent" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Unexpected error happened, please try again");

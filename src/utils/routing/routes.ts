@@ -182,6 +182,7 @@ export const PAGES_ROUTES = {
   },
   auth: {
     login: "/login",
+    loginEmail: "/login-email",
     logout: "/logout",
   },
 };

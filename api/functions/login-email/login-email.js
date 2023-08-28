@@ -20,7 +20,7 @@ const loginEmail = async (req, res) => {
     });
 
     if (!otpExist) {
-      return res.status(401).json({ status: "ERROR", reason: "Invalid OTP" });
+      return res.status(401).json({ status: "ERROR", message: "Invalid OTP" });
     }
 
     const isExpired = otpExist.expiresAt < new Date();
@@ -28,7 +28,7 @@ const loginEmail = async (req, res) => {
     if (isExpired) {
       return res
         .status(401)
-        .json({ status: "ERROR", reason: "OTP Expired. Request New One." });
+        .json({ status: "ERROR", message: "OTP Expired. Request New One." });
     }
 
     const [userExist] = await Promise.all([

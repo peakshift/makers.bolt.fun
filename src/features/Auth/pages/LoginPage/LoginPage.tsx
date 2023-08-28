@@ -203,14 +203,23 @@ export default function LoginPage() {
             What is a lightning wallet?
           </a>
         </div>
+        <div className="relative w-full">
+          <hr className="border-gray-400 absolute top-1/2 left-0 w-full -translate-y-1/2" />
+          <span className="text-gray-500 text-center relative bg-white p-4 block w-min mx-auto">
+            OR
+          </span>
+        </div>
+        <Button color="gray" fullWidth href="/login-email">
+          Login with Email 📧
+        </Button>
       </div>
     );
 
   return (
     <>
       <Helmet>
-        <title>bolt.fun</title>
-        <meta property="og:title" content="bolt.fun" />
+        <title>Login to BOLT.FUN</title>
+        <meta property="og:title" content="Login to BOLT.FUN" />
       </Helmet>
       <div className="page-container">
         <div className="min-h-[80vh] flex flex-col justify-center items-center">
