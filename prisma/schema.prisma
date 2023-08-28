@@ -117,8 +117,8 @@ model UserNostrKey {
 }
 
 model UserEmail {
-  email     String   @id
-  name      String   @default("My new wallet key")
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
   createdAt DateTime @default(now())
 
   user    User? @relation(fields: [user_id], references: [id])
