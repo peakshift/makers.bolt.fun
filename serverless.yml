@@ -69,6 +69,13 @@ functions:
           path: login-email
           method: post
 
+  link-email:
+    handler: api/functions/link-email/link-email.handler
+    events:
+      - http:
+          path: link-email
+          method: post
+
   # Nostr-Related Functions
   # ----------------------------
   nostr-sign-event:
