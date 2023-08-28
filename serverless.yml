@@ -55,6 +55,20 @@ functions:
           path: is-logged-in
           method: get
 
+  request-otp:
+    handler: api/functions/request-otp/request-otp.handler
+    events:
+      - http:
+          path: request-otp
+          method: post
+
+  login-email:
+    handler: api/functions/login-email/login-email.handler
+    events:
+      - http:
+          path: login-email
+          method: post
+
   # Nostr-Related Functions
   # ----------------------------
   nostr-sign-event:
