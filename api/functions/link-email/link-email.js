@@ -2,13 +2,19 @@ const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
 const { prisma } = require("../../prisma");
-const {
-  generateAuthToken,
-  getAuthCookieConfig,
-  createNewUser,
-} = require("../../auth/utils/helperFuncs");
 
-const loginEmail = async (req, res) => {
+const extractUserFromCookie = require("../../utils/extractUserFromCookie");
+
+const linkEmail = async (req, res) => {
+  const user = await extractUserFromCookie(
+    req.headers.cookie ?? req.headers.Cookie
+  );
+
+  if (!user)
+    return res
+      .status(401)
+      .json({ status: "ERROR", reason: "Not Authenticated" });
+
   const { email, otp } = req.body;
 
   try {
@@ -31,41 +37,25 @@ const loginEmail = async (req, res) => {
         .json({ status: "ERROR", reason: "OTP Expired. Request New One." });
     }
 
-    const [userExist] = await Promise.all([
-      prisma.userEmail.findFirst({
-        where: {
-          email,
-        },
-      }),
+    await Promise.all([
       prisma.otp.delete({
         where: {
           id: otpExist.id,
         },
       }),
+
+      prisma.userEmail.upsert({
+        where: {
+          email,
+        },
+        update: {
+          email,
+          user_id: user.id,
+        },
+      }),
     ]);
 
-    let userId = userExist.user_id;
-
-    if (!userId) {
-      userId = (await createNewUser()).id;
-
-      await prisma.userEmail.create({
-        data: {
-          email,
-          user_id: userId,
-        },
-      });
-    }
-
-    const authToken = await generateAuthToken(userId, null);
-
-    const cookieConfig = getAuthCookieConfig();
-
-    return res
-      .status(200)
-      .set("Cache-Control", "no-store")
-      .cookie("Authorization", authToken, cookieConfig)
-      .json({ logged_in: true });
+    return res.status(200).json({ status: "OK" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Unexpected error happened, please try again");
@@ -76,10 +66,10 @@ let app;
 
 if (process.env.LOCAL) {
   app = createExpressApp();
-  app.post("/login-email", loginEmail);
+  app.post("/login-email", linkEmail);
 } else {
   const router = express.Router();
-  router.post("/login-email", loginEmail);
+  router.post("/login-email", linkEmail);
   app = createExpressApp(router);
 }
 
