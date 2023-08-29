@@ -2,6 +2,9 @@ import { toSlug } from "../helperFunctions";
 
 type RouteOptions =
   | {
+      type: "login";
+    }
+  | {
       type: "post";
       id: string | number;
       postType: string;
@@ -68,6 +71,8 @@ type RouteOptions =
     };
 
 export function createRoute(options: RouteOptions) {
+  if (options.type === "login") return "/login";
+
   if (
     (options.type === "post" && options.postType.toLowerCase() === "story") ||
     options.type === "story"
