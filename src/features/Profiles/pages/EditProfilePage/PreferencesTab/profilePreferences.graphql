@@ -10,17 +10,27 @@ query MyProfilePreferences {
       }
       default_nostr_prv_key
       default_nostr_pub_key
+      emails {
+        email
+        createdAt
+      }
     }
   }
 }
 
-mutation UpdateUserPreferences($walletsKeys: [UserKeyInputType!]) {
-  updateUserPreferences(userKeys: $walletsKeys) {
+mutation UpdateUserPreferences(
+  $newKeys: [UserKeyInputType!]
+  $newEmails: [UserEmailInputType!]
+) {
+  updateUserPreferences(newKeys: $newKeys, newEmails: $newEmails) {
     id
     private_data {
       walletsKeys {
         key
         name
+      }
+      emails {
+        email
       }
       default_nostr_prv_key
       default_nostr_pub_key

@@ -55,3 +55,22 @@ export async function loginWithEmailOTP(email: string, otp: string) {
 
   return data;
 }
+
+export async function linkEmailToAccount(email: string, otp: string) {
+  const res = await fetch(CONSTS.apiEndpoint + "/link-email", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, otp }),
+  });
+
+  const data = await res.json();
+
+  if (res.status !== 200) {
+    throw data;
+  }
+
+  return data;
+}

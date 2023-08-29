@@ -213,6 +213,7 @@ export const users: User[] = [
           createdAt: new Date(2022, 6, 2).toISOString(),
         },
       ],
+      emails: [],
     },
   },
   {
@@ -269,6 +270,7 @@ export const users: User[] = [
           createdAt: new Date(2022, 6, 2).toISOString(),
         },
       ],
+      emails: [],
     },
   },
   {
@@ -325,6 +327,7 @@ export const users: User[] = [
           createdAt: new Date(2022, 6, 2).toISOString(),
         },
       ],
+      emails: [],
     },
   },
   {
@@ -381,6 +384,7 @@ export const users: User[] = [
           createdAt: new Date(2022, 6, 2).toISOString(),
         },
       ],
+      emails: [],
     },
   },
 ];

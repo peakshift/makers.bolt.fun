@@ -44,7 +44,7 @@ const loginEmail = async (req, res) => {
       }),
     ]);
 
-    let userId = userExist.user_id;
+    let userId = userExist?.user_id;
 
     if (!userId) {
       userId = (await createNewUser()).id;

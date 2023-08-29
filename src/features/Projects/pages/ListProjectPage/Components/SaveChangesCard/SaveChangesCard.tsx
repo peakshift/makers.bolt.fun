@@ -94,7 +94,7 @@ export default function SaveChangesCard(props: Props) {
               project: {
                 id: data.id!,
                 name: data.title,
-                img: data.thumbnail_image.url,
+                img: data.thumbnail_image.url!,
                 tagline: data.tagline,
               },
             },
@@ -161,7 +161,7 @@ export default function SaveChangesCard(props: Props) {
       {wrapLink(
         <div className="flex gap-8 items-center">
           {img ? (
-            <Avatar width={48} src={img.url} />
+            <Avatar width={48} src={img.url!} />
           ) : (
             <div className="bg-gray-50 border border-gray-200 rounded-full w-48 h-48 shrink-0"></div>
           )}

@@ -26,7 +26,7 @@ const linkEmail = async (req, res) => {
     });
 
     if (!otpExist) {
-      return res.status(401).json({ status: "ERROR", reason: "Invalid OTP" });
+      return res.status(401).json({ status: "ERROR", message: "Invalid OTP" });
     }
 
     const isExpired = otpExist.expiresAt < new Date();
@@ -34,7 +34,7 @@ const linkEmail = async (req, res) => {
     if (isExpired) {
       return res
         .status(401)
-        .json({ status: "ERROR", reason: "OTP Expired. Request New One." });
+        .json({ status: "ERROR", message: "OTP Expired. Request New One." });
     }
 
     await Promise.all([
@@ -43,10 +43,13 @@ const linkEmail = async (req, res) => {
           id: otpExist.id,
         },
       }),
-
       prisma.userEmail.upsert({
         where: {
           email,
+        },
+        create: {
+          email,
+          user_id: user.id,
         },
         update: {
           email,
@@ -66,10 +69,10 @@ let app;
 
 if (process.env.LOCAL) {
   app = createExpressApp();
-  app.post("/login-email", linkEmail);
+  app.post("/link-email", linkEmail);
 } else {
   const router = express.Router();
-  router.post("/login-email", linkEmail);
+  router.post("/link-email", linkEmail);
   app = createExpressApp(router);
 }
 

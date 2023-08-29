@@ -15,7 +15,6 @@ import { createRoute } from "src/utils/routing";
 
 export default function LoginWithEmail() {
   const [emailInput, setEmailInput] = useState("");
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -144,27 +143,6 @@ export default function LoginWithEmail() {
               />
             </div>
           </div>
-
-          <div className="flex gap-8">
-            <input
-              id="terms"
-              type="checkbox"
-              checked={acceptedTerms}
-              onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className="input-checkbox self-center"
-            />
-            <label htmlFor="terms" className="text-body5 text-gray-600">
-              I have read the{" "}
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="text-primary-500"
-                href="/terms-conditions"
-              >
-                Terms & Conditions
-              </a>
-            </label>
-          </div>
           {otpSent && (
             <div>
               <p className="text-gray-900">
@@ -194,7 +172,7 @@ export default function LoginWithEmail() {
           )}
           {!otpSent && (
             <Button
-              disabled={!emailValid || !acceptedTerms}
+              disabled={!emailValid}
               fullWidth
               color="primary"
               className="mt-16"

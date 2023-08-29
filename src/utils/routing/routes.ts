@@ -62,7 +62,7 @@ type RouteOptions =
     }
   | {
       type: "edit-profile";
-      tab?: "basic-info" | "roles-skills" | "nostr" | "auth";
+      tab?: "basic-info" | "roles-skills" | "nostr" | "security";
     }
   | {
       type: "tournament";
