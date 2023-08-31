@@ -10,7 +10,11 @@ const express = require("express");
 const jose = require("jose");
 const { JWT_SECRET } = require("../../utils/consts");
 const { generatePrivateKey, getPublicKey } = require("../../utils/nostr-tools");
-const { getUserByPubKey } = require("../../auth/utils/helperFuncs");
+const {
+  getUserByPubKey,
+  generateAuthToken,
+  createNewUser,
+} = require("../../auth/utils/helperFuncs");
 const { logError } = require("../../utils/logger");
 
 const loginHandler = async (req, res) => {
@@ -102,31 +106,8 @@ const loginHandler = async (req, res) => {
         });
         user = oldAccount;
       } else {
-        const nostr_prv_key = generatePrivateKey();
-        const nostr_pub_key = getPublicKey(nostr_prv_key);
+        user = await createNewUser(key);
 
-        const avatar = await prisma.hostedImage.create({
-          data: {
-            filename: "avatar.svg",
-            provider: "external",
-            is_used: true,
-            url: `https://avatars.dicebear.com/api/bottts/${key}.svg`,
-            provider_image_id: "",
-          },
-        });
-
-        user = await prisma.user.create({
-          data: {
-            pubKey: key,
-            name: key,
-            avatar_id: avatar.id,
-            nostr_prv_key,
-            nostr_pub_key,
-          },
-          select: {
-            id: true,
-          },
-        });
         await prisma.userKey.create({
           data: {
             key,
@@ -140,16 +121,7 @@ const loginHandler = async (req, res) => {
     // calc the hash of k1
     const hash = createHash(k1);
 
-    // generate the auth jwt token
-    const hour = 3600000;
-    const maxAge = 30 * 24 * hour;
-
-    const authToken = await new jose.SignJWT({ pubKey: key, userId: user.id })
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime(maxAge)
-      //TODO: Set audience, issuer
-      .sign(Buffer.from(JWT_SECRET, "utf-8"));
+    const authToken = await generateAuthToken(user.id, key);
 
     // associate the auth token with the hash in the db
     await associateTokenToHash(hash, authToken);
@@ -157,12 +129,10 @@ const loginHandler = async (req, res) => {
     return res.status(200).json({ status: "OK" });
   } catch (error) {
     logError(error);
-    return res
-      .status(500)
-      .json({
-        status: "ERROR",
-        reason: "Unexpected error happened, please try again",
-      });
+    return res.status(500).json({
+      status: "ERROR",
+      reason: "Unexpected error happened, please try again",
+    });
   }
 };
 
