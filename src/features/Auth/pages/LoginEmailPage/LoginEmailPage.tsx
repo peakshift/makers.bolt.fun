@@ -81,7 +81,7 @@ export default function LoginPage() {
 
   const onRequestOTP = () => {
     setLoading(true);
-    requestOTP(emailInput)
+    requestOTP({ email: emailInput })
       .then((res) => {
         setOtpSent(true);
         setLoading(false);

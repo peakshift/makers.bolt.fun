@@ -30,6 +30,14 @@ const nostrService = {
       event,
     });
   },
+
+  sendDMToUser: ({ message, recipient_nostr_pubkey, relay }) => {
+    return callQueueApi("/add-job/nostr/send-dm", {
+      dm: message,
+      recipient_nostr_pubkey,
+      relay,
+    });
+  },
 };
 
 module.exports = nostrService;

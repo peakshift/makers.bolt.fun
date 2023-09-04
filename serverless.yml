@@ -62,11 +62,11 @@ functions:
           path: request-otp
           method: post
 
-  login-email:
-    handler: api/functions/login-email/login-email.handler
+  login-otp:
+    handler: api/functions/login-otp/login-otp.handler
     events:
       - http:
-          path: login-email
+          path: login-otp
           method: post
 
   link-email:

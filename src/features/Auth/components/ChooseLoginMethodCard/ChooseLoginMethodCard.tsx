@@ -1,9 +1,10 @@
 import { FaBolt } from "react-icons/fa";
+import { GiOstrich } from "react-icons/gi";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import Button from "src/Components/Button/Button";
 
 interface Props {
-  onChooseLoginMethod: (method: "lightning" | "email") => void;
+  onChooseLoginMethod: (method: "lightning" | "email" | "nostr") => void;
 }
 
 export default function ChooseLoginMethodCard({ onChooseLoginMethod }: Props) {
@@ -29,6 +30,14 @@ export default function ChooseLoginMethodCard({ onChooseLoginMethod }: Props) {
           onClick={() => onChooseLoginMethod("email")}
         >
           <MdOutlineAlternateEmail /> Login with Email
+        </Button>
+        <Button
+          color="none"
+          fullWidth
+          className="!text-white bg-violet-600"
+          onClick={() => onChooseLoginMethod("nostr")}
+        >
+          <GiOstrich /> Login with Nostr
         </Button>
       </div>
     </div>

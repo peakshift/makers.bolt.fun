@@ -1,19 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Grid } from "react-loader-spinner";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import { useMeQuery } from "src/graphql";
-import { QRCodeSVG } from "qrcode.react";
-import { IoRocketOutline } from "react-icons/io5";
-import Button from "src/Components/Button/Button";
-import { FiCopy } from "react-icons/fi";
-import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
-import { getPropertyFromUnknown, trimText } from "src/utils/helperFunctions";
-import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
-import { useErrorHandler } from "react-error-boundary";
+import { useSearchParams } from "react-router-dom";
+import { fetchLnurlAuth } from "src/api/auth";
 import ChooseLoginMethodCard from "../../components/ChooseLoginMethodCard/ChooseLoginMethodCard";
 import LoginWithLightning from "../../components/LoginWithLightning/LoginWithLightning";
 import LoginWithEmail from "../../components/LoginWithEmail/LoginWithEmail";
+import LoginWithNostr from "../../components/LoginWithNostr/LoginWithNostr";
 
 export const useLnurlQuery = () => {
   const [loading, setLoading] = useState(true);
@@ -52,14 +44,18 @@ export const useLnurlQuery = () => {
 export default function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [loginMethod, setLoginMethod] = useState<"lightning" | "email" | null>(
-    () => {
-      const loginMethod = searchParams.get("type");
-      if (loginMethod === "lightning" || loginMethod === "email")
-        return loginMethod;
-      return null;
-    }
-  );
+  const [loginMethod, setLoginMethod] = useState<
+    "lightning" | "email" | "nostr" | null
+  >(() => {
+    const loginMethod = searchParams.get("type");
+    if (
+      loginMethod === "lightning" ||
+      loginMethod === "email" ||
+      loginMethod === "nostr"
+    )
+      return loginMethod;
+    return null;
+  });
 
   const loginMethodSearchQuery = searchParams.get("type");
 
@@ -67,7 +63,7 @@ export default function LoginPage() {
     if (!loginMethodSearchQuery) setLoginMethod(null);
   }, [loginMethodSearchQuery]);
 
-  const handleChooseLoginMethod = (method: "lightning" | "email") => {
+  const handleChooseLoginMethod = (method: "lightning" | "email" | "nostr") => {
     setLoginMethod(method);
     setSearchParams({ type: method });
   };
@@ -88,6 +84,7 @@ export default function LoginPage() {
             )}
             {loginMethod === "lightning" && <LoginWithLightning />}
             {loginMethod === "email" && <LoginWithEmail />}
+            {loginMethod === "nostr" && <LoginWithNostr />}
           </div>
         </div>
       </div>
