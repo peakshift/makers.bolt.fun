@@ -147,8 +147,10 @@ export default function LoginWithNostr() {
             <span className="flex-1"></span>
           </h2>
           <p className="text-gray-600">
-            Enter your nostr public key or NIP05 below, & we will send you a DM
-            containing an OTP (One Time Password) that you can use to login.
+            Enter your nostr{" "}
+            <span className="font-bold">public key or NIP05</span> below, & we
+            will send you a DM containing an OTP (One Time Password) that you
+            can use to login.
           </p>
           <div>
             <label htmlFor="pubkey" className="text-body5">
