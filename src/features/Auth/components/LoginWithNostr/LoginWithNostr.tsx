@@ -62,13 +62,17 @@ export default function LoginWithNostr() {
     setPubkeyValid(!!hexKey);
 
     if (!hexKey) throw new Error("Invalid Nostr Public Key or NIP05");
-    await requestOTP({ nostrPubkey: pubkeyInput, relay: relayUrlInput });
+
+    await requestOTP({ nostrPubkey: hexKey, relay: relayUrlInput.trim() });
     setOtpSent(true);
     NotificationsService.info("OTP sent");
   };
 
   const submitOTP = async () => {
-    await loginWithNostrOTP(pubkeyInput, otpInput.trim());
+    const hexKey = await getHexPubkey(pubkeyInput.trim());
+    if (!hexKey) throw new Error("Invalid Nostr Public Key or NIP05");
+
+    await loginWithNostrOTP(hexKey, otpInput.trim());
     await refetch();
   };
 
