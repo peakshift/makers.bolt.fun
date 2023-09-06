@@ -11,7 +11,7 @@ export function UpcomingTournamentCard({
   description,
 }: UpcomingTournamentCardProps) {
   return (
-    <div className="h-[300px] w-full flex flex-col justify-between bg-gradient-to-r from-indigo-500 to-gray-900 rounded-xl">
+    <div className="flex flex-col justify-between w-full bg-gradient-to-r from-indigo-500 to-gray-900 rounded-xl">
       <div className="flex justify-between p-16">
         <div className="text-xs text-white font-semibold py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
           NOV 3
@@ -21,7 +21,7 @@ export function UpcomingTournamentCard({
         </button>
       </div>
 
-      <div className="w-full backdrop-blur-lg bg-white/[2%]">
+      <div className="w-full backdrop-blur-lg bg-white/[2%] mt-64">
         <div className="p-16">
           <p className="text-xs font-semibold text-white">{type}</p>
           <p className="mt-4 font-semibold text-white">{title}</p>
