@@ -175,7 +175,7 @@ export default function LoginWithLightning() {
               <FaArrowLeft />
             </IconButton>
           </span>
-          <span className="text-center">Login with Lightning ⚡</span>
+          <span className="text-center">Sign-in with Lightning ⚡</span>
           <span className="flex-1"></span>
         </h2>
         <a href={`lightning:${lnurl}`}>
@@ -194,7 +194,7 @@ export default function LoginWithLightning() {
         </a>
         <p className="text-gray-600 text-body4 text-center">
           Scan this QR code or copy + paste it to your lightning wallet. Or
-          click to login with your browser's wallet.
+          click to sign-in with your browser's wallet.
         </p>
         <div className="w-full grid md:grid-cols-2 gap-16">
           <a

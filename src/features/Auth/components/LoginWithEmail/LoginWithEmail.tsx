@@ -126,7 +126,7 @@ export default function LoginWithEmail() {
                 <FaArrowLeft />
               </IconButton>
             </span>
-            <span className="text-center">Login with Email 📧</span>
+            <span className="text-center">Sign-in with Email 📧</span>
             <span className="flex-1"></span>
           </h2>
           <div>
