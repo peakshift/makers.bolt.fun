@@ -50,6 +50,9 @@ type RouteOptions =
       type: "projects-page";
     }
   | {
+      type: "events-page";
+    }
+  | {
       type: "hangout";
     }
   | {
@@ -138,6 +141,8 @@ export function createRoute(options: RouteOptions) {
 
   if (options.type === "projects-page") return "/projects";
 
+  if (options.type === "events-page") return "/events";
+
   if (options.type === "project") return `/project/${options.tag}`;
 
   if (options.type === "edit-project")
@@ -155,6 +160,7 @@ export const PAGES_ROUTES = {
     projectPage: "/project/:tag",
     catchProject: "/project",
   },
+  events: { default: "/events" },
   hangout: {
     default: "/hangout",
   },
