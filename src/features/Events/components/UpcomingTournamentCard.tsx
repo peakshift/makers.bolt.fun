@@ -3,15 +3,22 @@ type UpcomingTournamentCardProps = {
   title: string;
   description: string;
   date: Date;
+  imageSrc: string;
 };
 
 export function UpcomingTournamentCard({
   type,
   title,
   description,
+  imageSrc,
 }: UpcomingTournamentCardProps) {
   return (
-    <div className="flex flex-col justify-between w-full bg-gradient-to-r from-indigo-500 to-gray-900 rounded-xl">
+    <div className="relative flex flex-col justify-between w-full overflow-hidden rounded-xl">
+      <img
+        src={imageSrc}
+        className="absolute top-0 left-0 object-cover w-full h-full overflow-hidden rounded-xl"
+        alt=""
+      />
       <div className="flex justify-between p-16">
         <div className="text-xs text-white font-semibold py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
           NOV 3
@@ -21,13 +28,13 @@ export function UpcomingTournamentCard({
         </button>
       </div>
 
-      <div className="w-full backdrop-blur-lg bg-white/[2%] mt-64">
+      <div className="w-full backdrop-blur-sm  bg-[#000000]/[20%] mt-64">
         <div className="p-16">
-          <p className="text-xs font-semibold text-white">{type}</p>
-          <p className="mt-4 font-semibold text-white">{title}</p>
+          <p className="text-xs font-medium text-white">{type}</p>
+          <p className="mt-4 font-medium text-white">{title}</p>
           <p className="mt-4 text-sm text-gray-200">{description}</p>
         </div>
-        <div className="h-px w-full bg-white/[8%]" />
+        <div className="h-px  w-[calc(100%-32px)] bg-white/[8%]" />
         <div className="flex justify-between p-16">
           <div className="flex">
             <img
