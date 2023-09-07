@@ -1,9 +1,12 @@
+import { Link } from "react-router-dom";
+
 type CompletedTournamentCardProps = {
   title: string;
   description: string;
   imageSrc: string;
   date: string;
   emoji: string;
+  linkTo: string;
 };
 
 export function CompletedTournamentCard({
@@ -12,9 +15,13 @@ export function CompletedTournamentCard({
   imageSrc,
   date,
   emoji,
+  linkTo,
 }: CompletedTournamentCardProps) {
   return (
-    <div className="flex flex-col p-8 hover:bg-slate-100 rounded-2xl">
+    <Link
+      to={linkTo}
+      className="flex flex-col p-8 hover:bg-slate-100 rounded-2xl"
+    >
       <div className="relative">
         <img
           className="w-full h-[160px] object-cover rounded-xl"
@@ -46,6 +53,6 @@ export function CompletedTournamentCard({
         {/*   /> */}
         {/* </div> */}
       </div>
-    </div>
+    </Link>
   );
 }

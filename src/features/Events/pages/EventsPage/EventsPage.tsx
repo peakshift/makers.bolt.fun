@@ -38,6 +38,7 @@ export function EventsPage() {
             imageSrc="assets/images/ai4all.png"
             date="JULY 1 - 31"
             emoji="🛠️"
+            linkTo="/tournaments/ai4all"
           />
           <CompletedTournamentCard
             title="Nostr Hack Week"
@@ -45,6 +46,7 @@ export function EventsPage() {
             imageSrc="assets/images/nostr-hack-week.png"
             date="MARCH 11 - 18"
             emoji="💬"
+            linkTo="/tournaments/nostr-hack"
           />
           <CompletedTournamentCard
             title="Legends of Lightning"
@@ -52,6 +54,7 @@ export function EventsPage() {
             imageSrc="assets/images/legends-of-lightning.png"
             date="OCT 12 - DEC 7 2022"
             emoji="🛠️"
+            linkTo="/tournaments/legends-of-lightning"
           />
           <CompletedTournamentCard
             title="Shock the Web 2"
@@ -59,6 +62,7 @@ export function EventsPage() {
             imageSrc="assets/images/shock-the-web-2.png"
             date="JUNE 16 - 19"
             emoji="🛠️"
+            linkTo="https://guide.bolt.fun/hackathons/shock-the-web-2"
           />
           <CompletedTournamentCard
             title="Shock the Web"
@@ -66,6 +70,7 @@ export function EventsPage() {
             imageSrc="assets/images/shock-the-web.png"
             date="MARCH 22 - 28"
             emoji="💬"
+            linkTo="https://guide.bolt.fun/hackathons/shock-the-web"
           />
         </div>
       </main>
