@@ -48,7 +48,7 @@ export default function LoginWithEmail() {
 
   const onRequestOTP = () => {
     setLoading(true);
-    requestOTP(emailInput)
+    requestOTP({ email: emailInput })
       .then((res) => {
         setOtpSent(true);
         setLoading(false);
@@ -126,7 +126,7 @@ export default function LoginWithEmail() {
                 <FaArrowLeft />
               </IconButton>
             </span>
-            <span className="text-center">Login with Email 📧</span>
+            <span className="text-center">Sign-in with Email 📧</span>
             <span className="flex-1"></span>
           </h2>
           <div>
@@ -155,7 +155,7 @@ export default function LoginWithEmail() {
                   onChange={(e) => setOtpInput(e.target.value)}
                   type="text"
                   placeholder="XXXXXX"
-                  className="input-text"
+                  className="input-text tracking-[.7em]"
                 />
               </div>
               <p className="mt-8 text-body5 text-gray-700">

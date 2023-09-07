@@ -8,13 +8,18 @@ const {
   createNewUser,
 } = require("../../auth/utils/helperFuncs");
 
-const loginEmail = async (req, res) => {
-  const { email, otp } = req.body;
+const loginOTP = async (req, res) => {
+  const { email, nostr_pubkey, otp } = req.body;
+
+  if (!email && !otp)
+    return res
+      .status(400)
+      .json({ status: "ERROR", message: "No email or nostr_pubkey provided" });
 
   try {
     const otpExist = await prisma.otp.findFirst({
       where: {
-        address: email,
+        address: email || nostr_pubkey,
         otp: otp,
       },
     });
@@ -31,30 +36,58 @@ const loginEmail = async (req, res) => {
         .json({ status: "ERROR", message: "OTP Expired. Request New One." });
     }
 
-    const [userExist] = await Promise.all([
-      prisma.userEmail.findFirst({
+    // const userExist = !!email ? prisma.userEmail.findFirst({
+    //   where: {
+    //     email,
+    //   },
+
+    // }): prisma.userNostrPubkey.findFirst({
+    //   where: {
+    //     nostr_pubkey,
+    //   },
+    // });
+
+    let exisingUser;
+
+    if (email) {
+      exisingUser = await prisma.userEmail.findFirst({
         where: {
           email,
         },
-      }),
-      prisma.otp.delete({
+      });
+    } else if (nostr_pubkey) {
+      exisingUser = await prisma.userNostrKey.findFirst({
         where: {
-          id: otpExist.id,
+          key: nostr_pubkey,
         },
-      }),
-    ]);
+      });
+    }
 
-    let userId = userExist?.user_id;
+    await prisma.otp.delete({
+      where: {
+        id: otpExist.id,
+      },
+    });
+
+    let userId = exisingUser?.user_id;
 
     if (!userId) {
       userId = (await createNewUser()).id;
 
-      await prisma.userEmail.create({
-        data: {
-          email,
-          user_id: userId,
-        },
-      });
+      if (email)
+        await prisma.userEmail.create({
+          data: {
+            email,
+            user_id: userId,
+          },
+        });
+      else if (nostr_pubkey)
+        await prisma.userNostrKey.create({
+          data: {
+            key: nostr_pubkey,
+            user_id: userId,
+          },
+        });
     }
 
     const authToken = await generateAuthToken(userId, null);
@@ -76,10 +109,10 @@ let app;
 
 if (process.env.LOCAL) {
   app = createExpressApp();
-  app.post("/login-email", loginEmail);
+  app.post("/login-otp", loginOTP);
 } else {
   const router = express.Router();
-  router.post("/login-email", loginEmail);
+  router.post("/login-otp", loginOTP);
   app = createExpressApp(router);
 }
 

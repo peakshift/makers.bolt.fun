@@ -5,20 +5,32 @@ const { prisma } = require("../../prisma");
 const { queueService } = require("../../services/queue-service");
 
 const requestOTP = async (req, res) => {
-  const { email } = req.body;
+  const { email, nostrPubkey, relay } = req.body;
 
   const generatedOTP = generateOTP(6);
+
+  if (!email && !nostrPubkey)
+    return res
+      .status(400)
+      .json({ status: "ERROR", message: "No email or nostrPubkey provided" });
 
   try {
     await prisma.otp.create({
       data: {
-        address: email,
+        address: email || nostrPubkey,
         otp: generatedOTP,
         expiresAt: new Date(Date.now() + 5 * 60000), // 5 minutes
       },
     });
 
-    await queueService.emailService.sendOTP(email, generatedOTP);
+    if (email) await queueService.emailService.sendOTP(email, generatedOTP);
+    else if (nostrPubkey) {
+      await queueService.nostrService.sendDMToUser({
+        message: NOSTR_DM_TEMPLATE(generatedOTP),
+        recipient_nostr_pubkey: nostrPubkey,
+        relay,
+      });
+    }
 
     return res.status(200).json({ status: "OK", message: "OTP sent" });
   } catch (error) {
@@ -53,3 +65,10 @@ function generateOTP(length = 6) {
   }
   return OTP;
 }
+
+const NOSTR_DM_TEMPLATE = (otp) =>
+  `Hi!
+This is your OTP: ${otp} that you can use to login to BOLT.FUN.
+
+If you didn't request this OTP, please ignore this message. & NEVER share this code with anyone else.
+`;
