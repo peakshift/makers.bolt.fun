@@ -20,6 +20,7 @@ export function EventsPage() {
             description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
             imageSrc="assets/images/legends_of_lightning.png"
             date="NOV 3"
+            organizerImageSrc="assets/images/fulgur.png"
           />
           <UpcomingTournamentCard
             type="🏆 TOURNAMENT"
@@ -27,6 +28,7 @@ export function EventsPage() {
             description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
             imageSrc="assets/images/nostaria.png"
             date="HAPPENING NOW"
+            organizerImageSrc="assets/images/nostr-world.png"
           />
         </div>
         <div className="w-full h-px my-32 bg-gray-200" />

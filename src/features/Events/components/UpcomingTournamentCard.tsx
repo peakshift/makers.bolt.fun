@@ -4,6 +4,7 @@ type UpcomingTournamentCardProps = {
   description: string;
   imageSrc: string;
   date: string;
+  organizerImageSrc: string;
 };
 
 export function UpcomingTournamentCard({
@@ -12,6 +13,7 @@ export function UpcomingTournamentCard({
   description,
   imageSrc,
   date,
+  organizerImageSrc,
 }: UpcomingTournamentCardProps) {
   return (
     <div className="relative flex flex-col justify-between w-full overflow-hidden rounded-xl">
@@ -37,16 +39,18 @@ export function UpcomingTournamentCard({
         </div>
         <div className="h-px  w-[calc(100%-32px)] bg-white/[8%]" />
         <div className="flex justify-between p-16">
-          <div className="flex">
+          <div className="flex items-center">
             <img
               src="assets/images/events-avatar.png"
               alt="Bolt Fun logo"
               className="w-40 h-40"
             />
-            <div className="flex flex-col justify-between ml-12">
-              <p className="text-sm font-semibold text-white">BOLT🔩FUN</p>
-              <p className="text-xs text-gray-200">Organiser</p>
-            </div>
+            <img
+              src={organizerImageSrc}
+              alt="Co-organizer logo"
+              className="w-40 h-40 -ml-[14px] border-2 border-slate-800 rounded-xl"
+            />
+            <p className="ml-12 text-sm text-white">Organizers</p>
           </div>
           <button className="py-12 text-xs font-semibold text-white rounded-lg bg-violet-500 px-36">
             Register
