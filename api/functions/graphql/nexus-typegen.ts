@@ -96,7 +96,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     name?: string | null; // String
     provider_id?: string | null; // String
-    url?: string | null; // String
+    url: string; // String!
   }
   MakerRoleInput: { // input type
     id: number; // Int!
@@ -248,6 +248,9 @@ export interface NexusGenInputs {
     email?: string | null; // String
     hacking_status?: NexusGenEnums['TournamentMakerHackingStatusEnum'] | null; // TournamentMakerHackingStatusEnum
   }
+  UserEmailInputType: { // input type
+    email: string; // String!
+  }
   UserKeyInputType: { // input type
     key: string; // String!
     name: string; // String!
@@ -348,6 +351,10 @@ export interface NexusGenObjects {
     start_date: NexusGenScalars['Date']; // Date!
     title: string; // String!
     website: string; // String!
+  }
+  LinkedEmail: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
+    email: string; // String!
   }
   LnurlDetails: { // root type
     commentAllowed?: number | null; // Int
@@ -696,6 +703,10 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     website: string; // String!
   }
+  LinkedEmail: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
+    email: string; // String!
+  }
   LnurlDetails: { // field return type
     commentAllowed: number | null; // Int
     maxSendable: number | null; // Int
@@ -1040,6 +1051,7 @@ export interface NexusGenFieldTypes {
     default_nostr_prv_key: string | null; // String
     default_nostr_pub_key: string | null; // String
     email: string | null; // String
+    emails: NexusGenRootTypes['LinkedEmail'][]; // [LinkedEmail!]!
     id: number; // Int!
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
   }
@@ -1182,6 +1194,10 @@ export interface NexusGenFieldTypeNames {
     tags: 'Tag'
     title: 'String'
     website: 'String'
+  }
+  LinkedEmail: { // field return type name
+    createdAt: 'Date'
+    email: 'String'
   }
   LnurlDetails: { // field return type name
     commentAllowed: 'Int'
@@ -1527,6 +1543,7 @@ export interface NexusGenFieldTypeNames {
     default_nostr_prv_key: 'String'
     default_nostr_pub_key: 'String'
     email: 'String'
+    emails: 'LinkedEmail'
     id: 'Int'
     walletsKeys: 'WalletKey'
   }
@@ -1647,7 +1664,8 @@ export interface NexusGenArgTypes {
       tournament_id: number; // Int!
     }
     updateUserPreferences: { // args
-      userKeys?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]
+      newEmails?: NexusGenInputs['UserEmailInputType'][] | null; // [UserEmailInputType!]
+      newKeys?: NexusGenInputs['UserKeyInputType'][] | null; // [UserKeyInputType!]
     }
     vote: { // args
       amount_in_sat: number; // Int!

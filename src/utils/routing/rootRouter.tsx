@@ -154,6 +154,16 @@ const LoginPage = Loadable(
       )
   )
 );
+
+const LoginEmailPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "login_email_page" */ "../../features/Auth/pages/LoginEmailPage/LoginEmailPage"
+      )
+  )
+);
+
 const LogoutPage = Loadable(
   React.lazy(
     () =>
@@ -310,6 +320,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
 
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
+        <Route
+          path={PAGES_ROUTES.auth.loginEmail}
+          element={<LoginEmailPage />}
+        />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
         <Route path={"/privacy-policy"} element={<PrivacyPolicyPage />} />

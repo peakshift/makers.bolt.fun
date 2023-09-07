@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Grid } from "react-loader-spinner";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useMeQuery } from "src/graphql";
 import { QRCodeSVG } from "qrcode.react";
 import { IoRocketOutline } from "react-icons/io5";
@@ -11,6 +11,9 @@ import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { getPropertyFromUnknown, trimText } from "src/utils/helperFunctions";
 import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 import { useErrorHandler } from "react-error-boundary";
+import ChooseLoginMethodCard from "../../components/ChooseLoginMethodCard/ChooseLoginMethodCard";
+import LoginWithLightning from "../../components/LoginWithLightning/LoginWithLightning";
+import LoginWithEmail from "../../components/LoginWithEmail/LoginWithEmail";
 
 export const useLnurlQuery = () => {
   const [loading, setLoading] = useState(true);
@@ -47,174 +50,45 @@ export const useLnurlQuery = () => {
 };
 
 export default function LoginPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [copiedCurrentLnurl, setCopiedCurrentLnurl] = useState(false);
-  const canFetchIsLogged = useRef(true);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const {
-    loadingLnurl,
-    data: { lnurl, session_token },
-    error,
-  } = useLnurlQuery();
-
-  useErrorHandler(error);
-  const clipboard = useCopyToClipboard();
-
-  useEffect(() => {
-    setCopiedCurrentLnurl(false);
-  }, [lnurl]);
-
-  const meQuery = useMeQuery({
-    onCompleted: (data) => {
-      if (data.me) setIsLoggedIn(true);
-    },
-  });
-
-  const copyToClipboard = () => {
-    setCopiedCurrentLnurl(true);
-    clipboard(lnurl);
-  };
-
-  const refetch = meQuery.refetch;
-  const startPolling = useCallback(() => {
-    const interval = setInterval(() => {
-      if (canFetchIsLogged.current === false) return;
-
-      canFetchIsLogged.current = false;
-      fetchIsLoggedIn(session_token)
-        .then((is_logged_in) => {
-          if (is_logged_in) {
-            clearInterval(interval);
-            refetch();
-          }
-        })
-        .catch()
-        .finally(() => {
-          canFetchIsLogged.current = true;
-        });
-    }, 2000);
-
-    return interval;
-  }, [refetch, session_token]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      meQuery.stopPolling();
-      const timeout = setTimeout(() => {
-        const cameFrom = getPropertyFromUnknown(location.state, "from");
-        const navigateTo = cameFrom ? cameFrom : "/";
-
-        navigate(navigateTo, { replace: true });
-      }, 2000);
-      return () => clearTimeout(timeout);
+  const [loginMethod, setLoginMethod] = useState<"lightning" | "email" | null>(
+    () => {
+      const loginMethod = searchParams.get("type");
+      if (loginMethod === "lightning" || loginMethod === "email")
+        return loginMethod;
+      return null;
     }
-  }, [isLoggedIn, location.state, meQuery, navigate]);
+  );
+
+  const loginMethodSearchQuery = searchParams.get("type");
 
   useEffect(() => {
-    let interval: NodeJS.Timer;
-    if (lnurl) interval = startPolling();
+    if (!loginMethodSearchQuery) setLoginMethod(null);
+  }, [loginMethodSearchQuery]);
 
-    return () => {
-      canFetchIsLogged.current = true;
-      clearInterval(interval);
-    };
-  }, [lnurl, startPolling]);
-
-  let content = <></>;
-
-  if (error)
-    content = (
-      <div className="flex flex-col gap-24 items-center">
-        <p className="text-body3 text-red-500 font-bold">
-          Something wrong happened...
-        </p>
-        <a href="/login" className="text body4 text-gray-500 hover:underline">
-          Refresh the page
-        </a>
-      </div>
-    );
-  else if (loadingLnurl)
-    content = (
-      <div className="flex flex-col gap-24 items-center">
-        <Grid color="var(--primary)" width="150" />
-        <p className="text-body3 font-bold">Fetching Lnurl-Auth...</p>
-      </div>
-    );
-  else if (isLoggedIn)
-    content = (
-      <div className="flex flex-col justify-center items-center">
-        <h3 className="text-body4">
-          Hey there{" "}
-          <span className="font-bold">
-            @{trimText(meQuery.data?.me?.name, 10)}!!
-          </span>{" "}
-          👋
-        </h3>
-        <img
-          src={meQuery.data?.me?.avatar}
-          className="w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200 mt-24"
-          alt=""
-        />
-      </div>
-    );
-  else
-    content = (
-      <div className="max-w-[442px] bg-white border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-24 items-center">
-        <h2 className="text-h5 font-bold text-center">
-          Login with lightning ⚡
-        </h2>
-        <a href={`lightning:${lnurl}`}>
-          <QRCodeSVG
-            width={280}
-            height={280}
-            value={lnurl}
-            bgColor="transparent"
-            imageSettings={{
-              src: "/assets/images/nut_3d.png",
-              width: 16,
-              height: 16,
-              excavate: true,
-            }}
-          />
-        </a>
-        <p className="text-gray-600 text-body4 text-center">
-          Scan this QR code or copy + paste it to your lightning wallet. Or
-          click to login with your browser's wallet.
-        </p>
-        <div className="w-full grid md:grid-cols-2 gap-16">
-          <a
-            href={`lightning:${lnurl}`}
-            className="block text-body4 text-center text-white bg-primary-500 hover:bg-primary-600 rounded-10 px-16 py-12 active:scale-90 transition-transform"
-          >
-            Click to connect <IoRocketOutline />
-          </a>
-          <Button color="gray" onClick={copyToClipboard}>
-            {copiedCurrentLnurl ? "Copied!" : "Copy LNURL"} <FiCopy />
-          </Button>
-          <a
-            href={`https://bolt.fun/story/sign-in-with-lightning--99`}
-            target="_blank"
-            rel="noreferrer"
-            className="md:col-span-2 block text-body4 text-center text-gray-900 border border-gray-200 rounded-10 px-16 py-12 active:scale-90 transition-transform"
-          >
-            What is a lightning wallet?
-          </a>
-        </div>
-      </div>
-    );
+  const handleChooseLoginMethod = (method: "lightning" | "email") => {
+    setLoginMethod(method);
+    setSearchParams({ type: method });
+  };
 
   return (
     <>
       <Helmet>
-        <title>bolt.fun</title>
-        <meta property="og:title" content="bolt.fun" />
+        <title>Login to BOLT.FUN</title>
+        <meta property="og:title" content="Login to BOLT.FUN" />
       </Helmet>
       <div className="page-container">
         <div className="min-h-[80vh] flex flex-col justify-center items-center">
-          {content}
+          <div className="max-w-[442px] w-full">
+            {loginMethod === null && (
+              <ChooseLoginMethodCard
+                onChooseLoginMethod={handleChooseLoginMethod}
+              />
+            )}
+            {loginMethod === "lightning" && <LoginWithLightning />}
+            {loginMethod === "email" && <LoginWithEmail />}
+          </div>
         </div>
       </div>
     </>

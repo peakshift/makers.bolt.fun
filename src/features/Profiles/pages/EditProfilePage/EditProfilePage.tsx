@@ -29,7 +29,7 @@ const links = [
   {
     icon: "🔐",
     text: "Security",
-    path: "auth",
+    path: "security",
   },
 ];
 
@@ -108,7 +108,7 @@ export default function EditProfilePage() {
               <Route path="basic-info" element={<BasicProfileInfoTab />} />
               <Route path="roles-skills" element={<RolesSkillsTab />} />
               <Route path="nostr" element={<NostrSettingsTab />} />
-              <Route path="auth" element={<PreferencesTab />} />
+              <Route path="security" element={<PreferencesTab />} />
             </Routes>
           </main>
         </div>

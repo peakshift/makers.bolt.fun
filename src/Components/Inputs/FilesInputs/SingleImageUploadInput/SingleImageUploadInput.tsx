@@ -12,16 +12,14 @@ import { getMockSenderEnhancer } from "@rpldy/mock-sender";
 import { NotificationsService } from "src/services";
 import { useIsDraggingOnElement } from "src/utils/hooks";
 import { fetchUploadImageUrl } from "src/api/uploading";
+import { ImageInput } from "src/graphql";
+import { Override } from "src/utils/interfaces";
 
 const mockSenderEnhancer = getMockSenderEnhancer({
   delay: 1500,
 });
 
-export interface ImageType {
-  id?: string | null;
-  name?: string | null;
-  url: string;
-}
+export type ImageType = Override<ImageInput, { url: string }>;
 
 type RenderPropArgs = {
   isUploading?: boolean;
