@@ -19,14 +19,14 @@ export function EventsPage() {
             title="Legends Of Lightning II"
             description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
             imageSrc="assets/images/legends_of_lightning.png"
-            date={new Date()}
+            date="NOV 3"
           />
           <UpcomingTournamentCard
             type="🏆 TOURNAMENT"
             title="Nostrasia Hackathon"
             description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
             imageSrc="assets/images/nostaria.png"
-            date={new Date()}
+            date="HAPPENING NOW"
           />
         </div>
         <div className="w-full h-px my-32 bg-gray-200" />

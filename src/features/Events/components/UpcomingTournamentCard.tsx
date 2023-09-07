@@ -2,8 +2,8 @@ type UpcomingTournamentCardProps = {
   type: string;
   title: string;
   description: string;
-  date: Date;
   imageSrc: string;
+  date: string;
 };
 
 export function UpcomingTournamentCard({
@@ -11,6 +11,7 @@ export function UpcomingTournamentCard({
   title,
   description,
   imageSrc,
+  date,
 }: UpcomingTournamentCardProps) {
   return (
     <div className="relative flex flex-col justify-between w-full overflow-hidden rounded-xl">
@@ -19,9 +20,9 @@ export function UpcomingTournamentCard({
         className="absolute top-0 left-0 object-cover w-full h-full overflow-hidden rounded-xl"
         alt=""
       />
-      <div className="flex justify-between p-16">
-        <div className="text-xs text-white font-semibold py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
-          NOV 3
+      <div className="relative flex justify-between p-16 z-5">
+        <div className="text-xs text-white backdrop-blur-sm font-medium py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
+          {date}
         </div>
         <button>
           <img src="assets/icons/upload-icon.svg" alt="upload-icon" />
