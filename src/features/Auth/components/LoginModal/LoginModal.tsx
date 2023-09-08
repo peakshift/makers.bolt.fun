@@ -4,29 +4,24 @@ import {
   modalCardVariants,
 } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { IoClose } from "react-icons/io5";
-import { useAppDispatch } from "src/utils/hooks";
 import ChooseLoginMethods from "src/features/Auth/components/ChooseLoginMethods/ChooseLoginMethods";
 import { ComponentProps, useCallback, useState } from "react";
-import { Direction, replaceModal } from "src/redux/features/modals.slice";
-import ChooseLoginMethodCard from "src/features/Auth/components/ChooseLoginMethodCard/ChooseLoginMethodCard";
 import LoginWithEmail from "src/features/Auth/components/LoginWithEmail/LoginWithEmail";
 import LoginWithLightning from "src/features/Auth/components/LoginWithLightning/LoginWithLightning";
 import LoginWithNostr from "src/features/Auth/components/LoginWithNostr/LoginWithNostr";
-import { NotificationsService } from "src/services";
-import { useMeTournamentQuery } from "src/graphql";
+import { useMeQuery } from "src/graphql";
+import { trimText } from "src/utils/helperFunctions";
 
-interface Props extends ModalCard {
-  tournamentId: number;
-}
+interface Props extends ModalCard {}
 
 export default function LinkingAccountModal({
   onClose,
   direction,
-  tournamentId,
   ...props
 }: Props) {
   const [loginMethod, setLoginMethod] =
     useState<"lightning" | "email" | "nostr" | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleChooseLoginMethod: ComponentProps<
     typeof ChooseLoginMethods
@@ -34,31 +29,18 @@ export default function LinkingAccountModal({
     setLoginMethod(method);
   };
 
-  const meQuery = useMeTournamentQuery({
-    variables: {
-      id: tournamentId,
-    },
+  const meQuery = useMeQuery({
     onCompleted: (data) => {
       if (data.me) {
-        const already_registerd = !!data.tournamentParticipationInfo;
-        if (already_registerd) {
+        setIsLoggedIn(true);
+        setTimeout(() => {
           onClose?.();
-          NotificationsService.info("You are already registered");
-        } else
-          dispatch(
-            replaceModal({
-              Modal: "RegisterTournamet_RegistrationDetails",
-              direction: Direction.NEXT,
-              props: { tournamentId },
-            })
-          );
+        }, 2000);
       }
     },
   });
 
   const refetch = meQuery.refetch;
-
-  const dispatch = useAppDispatch();
 
   const onLogin = useCallback(() => {
     refetch();
@@ -86,35 +68,43 @@ export default function LinkingAccountModal({
       )}
       <hr className="bg-gray-200" />
       <div className=" p-16 md:p-24">
-        {loginMethod === null && (
-          <p className="text-gray-600 text-body4 text-left mb-16">
-            To register for this tournament, you need a maker profile. Luckily,
-            this is very easy!
-            <br />
-            To sign in or create an account, choose one of the methods below.
-          </p>
-        )}
-        {loginMethod === null && (
+        {!isLoggedIn && loginMethod === null && (
           <ChooseLoginMethods onChooseLoginMethod={handleChooseLoginMethod} />
         )}
 
-        {loginMethod === "lightning" && (
+        {!isLoggedIn && loginMethod === "lightning" && (
           <LoginWithLightning
             onLogin={onLogin}
             onGoBack={() => setLoginMethod(null)}
           />
         )}
-        {loginMethod === "email" && (
+        {!isLoggedIn && loginMethod === "email" && (
           <LoginWithEmail
             onLogin={onLogin}
             onGoBack={() => setLoginMethod(null)}
           />
         )}
-        {loginMethod === "nostr" && (
+        {!isLoggedIn && loginMethod === "nostr" && (
           <LoginWithNostr
             onLogin={onLogin}
             onGoBack={() => setLoginMethod(null)}
           />
+        )}
+        {isLoggedIn && (
+          <div className="flex flex-col justify-center items-center">
+            <h3 className="text-body4">
+              Hey there{" "}
+              <span className="font-bold">
+                @{trimText(meQuery.data?.me?.name, 10)}!!
+              </span>{" "}
+              👋
+            </h3>
+            <img
+              src={meQuery.data?.me?.avatar}
+              className="w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200 mt-24"
+              alt=""
+            />
+          </div>
         )}
       </div>
     </motion.div>

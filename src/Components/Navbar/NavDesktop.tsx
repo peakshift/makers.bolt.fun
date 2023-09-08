@@ -1,6 +1,10 @@
 import { BsSearch } from "react-icons/bs";
 import { motion } from "framer-motion";
-import { useAppSelector, useCurrentSection } from "src/utils/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCurrentSection,
+} from "src/utils/hooks";
 import ASSETS from "src/assets";
 import IconButton from "../IconButton/IconButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +17,7 @@ import { createRoute } from "src/utils/routing";
 import Button from "../Button/Button";
 import NotificationsList from "./NotificationsList/NotificationsList";
 import Search from "../Inputs/Search/Search";
+import { openModal } from "src/redux/features/modals.slice";
 
 export default function NavDesktop() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -24,11 +29,19 @@ export default function NavDesktop() {
   const openSearch = () => {
     setSearchOpen(true);
   };
-
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
 
   const currentSection = useCurrentSection();
   const navigate = useNavigate();
+
+  const openLoginModal = () => {
+    dispatch(
+      openModal({
+        Modal: "LoginModal",
+      })
+    );
+  };
 
   return (
     <nav className="bg-white border-b-2 py-16 w-full min-w-full">
@@ -189,8 +202,8 @@ export default function NavDesktop() {
               <Button
                 size="sm"
                 color="white"
-                href="/login"
-                state={{ from: pathname }}
+                onClick={openLoginModal}
+                // state={{ from: pathname }}
               >
                 Sign in 🔑
               </Button>
