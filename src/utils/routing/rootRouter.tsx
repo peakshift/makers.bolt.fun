@@ -19,6 +19,7 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 import { Post_Type } from "src/graphql";
+import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
 
 const HomePage = Loadable(
   React.lazy(
@@ -249,6 +250,12 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             path={PAGES_ROUTES.projects.default}
             element={<ExplorePage />}
           />
+
+          <Route
+            path={PAGES_ROUTES.tournament.default}
+            element={<EventsPage />}
+          />
+
           <Route
             path={PAGES_ROUTES.blog.tagPage}
             element={<TagPage />}
