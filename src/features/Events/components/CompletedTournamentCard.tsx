@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 
 type CompletedTournamentCardProps = {
   title: string;
-  description: string;
   imageSrc: string;
   date: string;
   emoji: string;
@@ -11,7 +10,6 @@ type CompletedTournamentCardProps = {
 
 export function CompletedTournamentCard({
   title,
-  description,
   imageSrc,
   date,
   emoji,
@@ -40,7 +38,6 @@ export function CompletedTournamentCard({
 
       <div className="mt-16">
         <p className="text-lg font-semibold text-slate-900">{title}</p>
-        <p className="mt-4 text-sm text-slate-600">{description}</p>
         {/* <p className="mt-8 text-xs font-medium text-slate-600">Hosted by</p> */}
         {/* <div className="flex mt-8 gap-x-4"> */}
         {/*   <Avatar */}

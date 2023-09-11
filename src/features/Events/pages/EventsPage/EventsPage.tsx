@@ -36,7 +36,6 @@ export function EventsPage() {
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-32 gap-y-32">
           <CompletedTournamentCard
             title="Ai4ALL"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur."
             imageSrc="assets/images/ai4all.png"
             date="JULY 1 - 31"
             emoji="🛠️"
@@ -44,7 +43,6 @@ export function EventsPage() {
           />
           <CompletedTournamentCard
             title="Nostr Hack Week"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur."
             imageSrc="assets/images/nostr-hack-week.png"
             date="MARCH 11 - 18"
             emoji="💬"
@@ -52,7 +50,6 @@ export function EventsPage() {
           />
           <CompletedTournamentCard
             title="Legends of Lightning"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur."
             imageSrc="assets/images/legends-of-lightning.png"
             date="OCT 12 - DEC 7 2022"
             emoji="🛠️"
@@ -60,7 +57,6 @@ export function EventsPage() {
           />
           <CompletedTournamentCard
             title="Shock the Web 2"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur."
             imageSrc="assets/images/shock-the-web-2.png"
             date="JUNE 16 - 19"
             emoji="🛠️"
@@ -68,7 +64,6 @@ export function EventsPage() {
           />
           <CompletedTournamentCard
             title="Shock the Web"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur."
             imageSrc="assets/images/shock-the-web.png"
             date="MARCH 22 - 28"
             emoji="💬"
