@@ -46,9 +46,9 @@ const navItems: NavItem[] = [
     text: "Explore Projects",
   },
   {
-    href: createRoute({ type: "events-page" }),
-    icon: "🗓️",
-    text: "Events",
+    href: createRoute({ type: "tournaments" }),
+    icon: "🏆",
+    text: "Tournaments",
   },
   {
     href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),

@@ -1,19 +1,21 @@
+import { Link } from "react-router-dom";
+
 type UpcomingTournamentCardProps = {
   type: string;
   title: string;
-  description: string;
   imageSrc: string;
   date: string;
   organizerImageSrc: string;
+  linkTo: string;
 };
 
 export function UpcomingTournamentCard({
   type,
   title,
-  description,
   imageSrc,
   date,
   organizerImageSrc,
+  linkTo,
 }: UpcomingTournamentCardProps) {
   return (
     <div className="relative flex flex-col justify-between w-full overflow-hidden rounded-xl">
@@ -23,7 +25,7 @@ export function UpcomingTournamentCard({
         alt=""
       />
       <div className="relative flex justify-between p-16 z-5">
-        <div className="text-xs text-white backdrop-blur-sm font-medium py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
+        <div className="text-xs text-white backdrop-blur-md font-medium py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
           {date}
         </div>
         <button>
@@ -35,7 +37,6 @@ export function UpcomingTournamentCard({
         <div className="p-16">
           <p className="text-xs font-medium text-white">{type}</p>
           <p className="mt-4 font-medium text-white">{title}</p>
-          <p className="mt-4 text-sm text-gray-200">{description}</p>
         </div>
         <div className="h-px  w-[calc(100%-32px)] bg-white/[8%]" />
         <div className="flex justify-between p-16">
@@ -52,9 +53,12 @@ export function UpcomingTournamentCard({
             />
             <p className="ml-12 text-sm text-white">Organizers</p>
           </div>
-          <button className="py-12 text-xs font-semibold text-white rounded-lg bg-violet-500 px-36">
+          <Link
+            className="py-12 text-xs font-semibold text-white rounded-lg bg-violet-500 hover:bg-violet-600 transition px-36"
+            to={linkTo}
+          >
             Register
-          </button>
+          </Link>
         </div>
       </div>
     </div>

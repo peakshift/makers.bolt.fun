@@ -17,18 +17,18 @@ export function EventsPage() {
           <UpcomingTournamentCard
             type="🏆 TOURNAMENT"
             title="Legends Of Lightning II"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
             imageSrc="assets/images/legends_of_lightning.png"
-            date="NOV 3"
+            date="5th Oct - 17th Dec"
             organizerImageSrc="assets/images/fulgur.png"
+            linkTo="/tournaments/legends-of-lightning-vol2"
           />
           <UpcomingTournamentCard
             type="🏆 TOURNAMENT"
             title="Nostrasia Hackathon"
-            description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
             imageSrc="assets/images/nostaria.png"
-            date="HAPPENING NOW"
+            date="3rd Oct - 3rd Nov"
             organizerImageSrc="assets/images/nostr-world.png"
+            linkTo="/tournaments/nostrasia"
           />
         </div>
         <div className="w-full h-px my-32 bg-gray-200" />
@@ -40,7 +40,7 @@ export function EventsPage() {
             imageSrc="assets/images/ai4all.png"
             date="JULY 1 - 31"
             emoji="🛠️"
-            linkTo="/tournaments/ai4all"
+            linkTo="tournaments/ai4all"
           />
           <CompletedTournamentCard
             title="Nostr Hack Week"
@@ -48,7 +48,7 @@ export function EventsPage() {
             imageSrc="assets/images/nostr-hack-week.png"
             date="MARCH 11 - 18"
             emoji="💬"
-            linkTo="/tournaments/nostr-hack"
+            linkTo="tournaments/nostr-hack"
           />
           <CompletedTournamentCard
             title="Legends of Lightning"

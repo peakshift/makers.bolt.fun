@@ -251,7 +251,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             element={<ExplorePage />}
           />
 
-          <Route path={PAGES_ROUTES.events.default} element={<EventsPage />} />
+          <Route
+            path={PAGES_ROUTES.tournament.default}
+            element={<EventsPage />}
+          />
 
           <Route
             path={PAGES_ROUTES.blog.tagPage}

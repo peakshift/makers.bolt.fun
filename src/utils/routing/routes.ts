@@ -50,7 +50,7 @@ type RouteOptions =
       type: "projects-page";
     }
   | {
-      type: "events-page";
+      type: "tournaments";
     }
   | {
       type: "hangout";
@@ -141,7 +141,7 @@ export function createRoute(options: RouteOptions) {
 
   if (options.type === "projects-page") return "/projects";
 
-  if (options.type === "events-page") return "/events";
+  if (options.type === "tournaments") return "/tournaments";
 
   if (options.type === "project") return `/project/${options.tag}`;
 
@@ -160,7 +160,6 @@ export const PAGES_ROUTES = {
     projectPage: "/project/:tag",
     catchProject: "/project",
   },
-  events: { default: "/events" },
   hangout: {
     default: "/hangout",
   },
@@ -186,6 +185,7 @@ export const PAGES_ROUTES = {
     byId: "/profile/:id/*",
   },
   tournament: {
+    default: "/tournaments",
     byId: "/tournaments/:id/*",
   },
   home: {
