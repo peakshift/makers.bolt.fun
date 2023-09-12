@@ -39,7 +39,7 @@ function EventCard({ imgSrc, type, title, className = "" }: EventCardProps) {
           className="object-cover w-full h-full rounded-lg"
           alt=""
         />
-        <div className="absolute backdrop-blur-md rounded-lg bg-white/[2%] bottom-0 left-0 w-full">
+        <div className="absolute backdrop-blur-md rounded-lg rounded-t-none bg-white/[2%] bottom-0 left-0 w-full">
           <div className="relative z-10 w-full">
             <div className="p-12">
               <p className="text-[10px] font-medium text-slate-200">{type}</p>
@@ -262,10 +262,10 @@ export function LandingPage() {
       </div>
       <div className="max-w-2xl mx-auto text-center">
         <div className="mt-32 text-lg font-bold text-slate-700 leading-7">
-          We are community of innovative makers and{" "}
+          We are{" "}
           <div className="relative inline">
             vibrant
-            <div className="hidden md:block absolute -left-1 -top-[24px]">
+            <div className="absolute -left-1 -top-[24px]">
               <VibrantDrawingSVG />
             </div>{" "}
           </div>
@@ -318,7 +318,7 @@ export function LandingPage() {
             <ChipStack />
           </div>
 
-          <div className="flex flex-col items-center justify-between w-full md:flex-row py-28">
+          <div className="flex flex-col items-center justify-between w-full py-24 md:flex-row">
             <div>
               <div className="p-8 rounded-lg bg-slate-800 w-max">
                 <img src="assets/icons/target.svg" alt="target icon" />
@@ -379,7 +379,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-between xl:flex-row py-28">
+          <div className="flex flex-col items-center justify-between py-24 xl:flex-row">
             <div className="w-full xl:w-1/2">
               <img src="assets/images/hangout.png" className="w-full" alt="" />
             </div>
@@ -407,7 +407,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="py-28">
+          <div className="py-24">
             <CommunityInvitationCard />
           </div>
         </div>
