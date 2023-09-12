@@ -28,9 +28,6 @@ export function UpcomingTournamentCard({
         <div className="text-xs text-white backdrop-blur-md font-medium py-4 px-8 bg-white/[16%] rounded-lg flex items-center justify-center">
           {date}
         </div>
-        <button>
-          <img src="assets/icons/upload-icon.svg" alt="upload-icon" />
-        </button>
       </div>
 
       <div className="w-full backdrop-blur-sm  bg-[#000000]/[20%] mt-64">
