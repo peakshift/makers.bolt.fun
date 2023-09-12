@@ -39,21 +39,21 @@ export function EventsPage() {
             imageSrc="assets/images/ai4all.png"
             date="JULY 1 - 31"
             emoji="🛠️"
-            linkTo="tournaments/ai4all"
+            linkTo="ai4all"
           />
           <CompletedTournamentCard
             title="Nostr Hack Week"
             imageSrc="assets/images/nostr-hack-week.png"
             date="MARCH 11 - 18"
             emoji="💬"
-            linkTo="tournaments/nostr-hack"
+            linkTo="nostr-hack"
           />
           <CompletedTournamentCard
             title="Legends of Lightning"
             imageSrc="assets/images/legends-of-lightning.png"
             date="OCT 12 - DEC 7 2022"
             emoji="🛠️"
-            linkTo="/tournaments/legends-of-lightning"
+            linkTo="legends-of-lightning"
           />
           <CompletedTournamentCard
             title="Shock the Web 2"
