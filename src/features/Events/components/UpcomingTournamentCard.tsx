@@ -30,7 +30,7 @@ export function UpcomingTournamentCard({
         </div>
       </div>
 
-      <div className="w-full backdrop-blur-sm  bg-[#000000]/[20%] mt-64">
+      <div className="w-full backdrop-blur-sm bg-[#000000]/[20%] mt-64">
         <div className="p-16">
           <p className="text-xs font-medium text-white">{type}</p>
           <p className="mt-4 font-medium text-white">{title}</p>

@@ -38,19 +38,16 @@ function EventCard({ imgSrc, type, title, className = "" }: EventCardProps) {
           className="object-cover w-full h-full rounded-lg"
           alt=""
         />
-        <div className="absolute bottom-0 left-0 w-full">
-          <div className="relative">
-            <div className="absolute inset-0 backdrop-blur-md bg-white/[2%]" />
-            <div className="relative z-10 w-full">
-              <div className="p-12">
-                <p className="text-[10px] font-medium text-slate-200">{type}</p>
-                <p className="mt-4 text-sm font-medium text-white">{title}</p>
-              </div>
-              <div className="h-px mx-auto w-[calc(100%-32px)] bg-white/[8%]" />
-              <div className="flex items-center p-12 gap-x-8">
-                <div className="w-[6px] h-[6px] rounded-full bg-amber-500" />
-                <p className="text-sm font-medium text-amber-500">Completed</p>
-              </div>
+        <div className="absolute backdrop-blur-md rounded-lg bg-white/[2%] bottom-0 left-0 w-full">
+          <div className="relative z-10 w-full">
+            <div className="p-12">
+              <p className="text-[10px] font-medium text-slate-200">{type}</p>
+              <p className="mt-4 text-sm font-medium text-white">{title}</p>
+            </div>
+            <div className="h-px mx-auto w-[calc(100%-32px)] bg-white/[8%]" />
+            <div className="flex items-center p-12 gap-x-8">
+              <div className="w-[6px] h-[6px] rounded-full bg-amber-500" />
+              <p className="text-sm font-medium text-amber-500">Completed</p>
             </div>
           </div>
         </div>
@@ -244,7 +241,7 @@ const FunDrawingSVG = () => {
 
 export function LandingPage() {
   return (
-    <main className="bg-white rounded-xl">
+    <main className="bg-white border border-gray-200 rounded-xl">
       <div className="relative">
         <img
           className="w-full rounded-xl"
@@ -267,7 +264,7 @@ export function LandingPage() {
           We are community of innovative makers and{" "}
           <div className="relative inline">
             vibrant
-            <div className="absolute -left-1 -top-[24px]">
+            <div className="hidden md:block absolute -left-1 -top-[24px]">
               <VibrantDrawingSVG />
             </div>{" "}
           </div>
@@ -279,13 +276,12 @@ export function LandingPage() {
             </div>{" "}
           </div>
           . on our platform visionaries showcase projects, exchange insights,
-          and battle it out for
+          and battle it out for&nbsp;
           <div className="relative inline">
-            {" "}
             FUN
-            <div className="absolute left-[16px] top-[24px]">
+            <div className="hidden md:block absolute left-[16px] top-[24px]">
               <FunDrawingSVG />
-            </div>{" "}
+            </div>
           </div>
           &nbsp;at tournaments we host.
         </div>
@@ -374,13 +370,11 @@ export function LandingPage() {
           </div>
 
           <div className="flex flex-col items-center justify-between xl:flex-row py-28">
-            <img
-              src="assets/images/hangout.png"
-              className="h-full xl:h-[360px] 2xl:h-[400px]"
-              alt=""
-            />
+            <div className="w-full xl:w-1/2">
+              <img src="assets/images/hangout.png" className="w-full" alt="" />
+            </div>
 
-            <div className="flex flex-col items-end w-full mt-32 xl:mt-0">
+            <div className="flex flex-col items-end w-full mt-32 xl:w-1/2 xl:mt-0">
               <div className="p-8 rounded-lg bg-slate-800 w-max">
                 <img src="assets/icons/video-icon.svg" alt="target icon" />
               </div>
