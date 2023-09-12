@@ -45,16 +45,21 @@ function EventCard({
           className="object-cover w-full h-full rounded-lg"
           alt=""
         />
-        <div className="absolute bottom-0 left-0 w-full backdrop-blur-md bg-white/[2%]">
-          <div className="p-12">
-            <p className="text-[10px] font-medium text-slate-200">{type}</p>
-            <p className="mt-4 text-sm font-medium text-white">{title}</p>
-            <p className="mt-4 text-[10px] text-slate-200">{description}</p>
-          </div>
-          <div className="h-px w-[calc(100%-32px)] bg-white/[8%]" />
-          <div className="flex items-center p-12 gap-x-8">
-            <div className="w-[6px] h-[6px] rounded-full bg-amber-500" />
-            <p className="text-sm font-medium text-amber-500">Completed</p>
+        <div className="absolute bottom-0 left-0 w-full">
+          <div className="relative">
+            <div className="absolute inset-0 backdrop-blur-md bg-white/[2%]" />
+            <div className="relative z-10 w-full">
+              <div className="p-12">
+                <p className="text-[10px] font-medium text-slate-200">{type}</p>
+                <p className="mt-4 text-sm font-medium text-white">{title}</p>
+                <p className="mt-4 text-[10px] text-slate-200">{description}</p>
+              </div>
+              <div className="h-px mx-auto w-[calc(100%-32px)] bg-white/[8%]" />
+              <div className="flex items-center p-12 gap-x-8">
+                <div className="w-[6px] h-[6px] rounded-full bg-amber-500" />
+                <p className="text-sm font-medium text-amber-500">Completed</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -122,11 +127,11 @@ export function LandingPage() {
     <main className="bg-white rounded-xl">
       <div className="relative">
         <img
-          className="w-full rounded-xl h-[580px]"
+          className="w-full rounded-xl"
           src="assets/images/landing-page-bg.png"
           alt=""
         />
-        <div className="absolute top-1/4 text-center -translate-y-[35%] left-1/2 -translate-x-1/2 uppercase text-[#212649] text-3xl sm:text-4xl md:text-6xl font-black">
+        <div className="absolute top-1/4 text-center -translate-y-[35%] left-1/2 -translate-x-1/2 uppercase text-[#212649] text-2xl xs:text-3xl sm:!text-5xl md:!text-6xl font-black">
           <h1>this fall...</h1>
           <h1 className="whitespace-nowrap"> fun is mandatory!</h1>
         </div>
@@ -178,7 +183,7 @@ export function LandingPage() {
                 <img src="assets/icons/target.svg" alt="target icon" />
               </div>
 
-              <p className="bg-gradient-to-r whitespace-nowrap from-[#1571EC] mt-12 to-violet-400 text-[40px] bg-clip-text text-transparent font-extrabold">
+              <p className="bg-gradient-to-r from-[#1571EC] mt-12 to-violet-400 text-[40px] bg-clip-text text-transparent font-extrabold">
                 Attend + Compete
               </p>
               <p className="mt-16 text-lg font-medium max-w-[400px] text-slate-600 text-wrap">
@@ -199,7 +204,7 @@ export function LandingPage() {
                 </button>
               </div>
             </div>
-            <div className="relative flex justify-end mt-32 ml-[100px] md:mt-0">
+            <div className="relative flex justify-end mt-32 ml-[125px] md:mt-0">
               <EventCard
                 imgSrc="assets/images/legends-of-lightning.png"
                 className="scale-[78%] z-[5]"
