@@ -19,6 +19,7 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 import { Post_Type } from "src/graphql";
+import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
 
 const HomePage = Loadable(
@@ -287,7 +288,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             element={<TournamentDetailsPage />}
           />
 
-          <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+          <Route path={PAGES_ROUTES.home.default} element={<LandingPage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
           <Route path={"/Build-On-Bitcoin"} element={<HomePage />} />
         </Route>
