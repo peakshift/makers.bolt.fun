@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { JoinTheCommunityCard } from "../Home/pages/LandingPage/LandingPage";
+import { CommunityInvitationCard } from "src/Components/CommunityInvitationCard/CummunityInvitationCard";
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
@@ -242,7 +242,7 @@ const FunDrawingSVG = () => {
 
 export function LandingPage() {
   return (
-    <main className="bg-white border border-gray-200 rounded-xl">
+    <main className="bg-white border-2 border-gray-200 rounded-xl">
       <div className="relative">
         <img
           className="w-full rounded-xl"
@@ -408,7 +408,7 @@ export function LandingPage() {
           </div>
 
           <div className="py-28">
-            <JoinTheCommunityCard />
+            <CommunityInvitationCard />
           </div>
         </div>
       </div>

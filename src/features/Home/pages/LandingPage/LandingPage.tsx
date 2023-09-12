@@ -1,49 +1,12 @@
 import OgTags from "src/Components/OgTags/OgTags";
 import BgImage from "./assets/bg.jpg";
-import ConfettiImage from "./assets/confetti.png";
 import SocialPreviewImage from "./assets/social-preview.jpg";
-import CreateProfileImage from "./assets/create-profile.png";
 import BTCPragueImage from "./assets/btc-prague.png";
 import Button from "src/Components/Button/Button";
 import resourcesData from "./resources.json";
 import { FaChevronRight } from "react-icons/fa";
-import { PAGES_ROUTES, createRoute } from "src/utils/routing";
-
-export function JoinTheCommunityCard() {
-  return (
-    <section className="relative p-16 text-center bg-gray-800 rounded-16 md:p-32 isolate">
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <img src={ConfettiImage} alt="" className="" />
-        <div className="absolute inset-0 bg-gray-800 rounded-16 bg-opacity-40"></div>
-      </div>
-      <div className="relative flex flex-col gap-12">
-        <h2 className="text-transparent text-body1 font-bolder bg-gradient-to-r from-blue-500 to-violet-400 bg-clip-text ">
-          Join the community
-        </h2>
-        <p className="text-white text-body3">
-          Proof of work starts with you. Share your work, build in public, win
-          bounties and take part in hackathons and tournaments! Sign up and
-          introduce yourself to the community.
-        </p>
-        <img
-          src={CreateProfileImage}
-          alt=""
-          className="self-center max-w-[300px]"
-        />
-        <Button
-          href={PAGES_ROUTES.auth.login}
-          color="primary"
-          className="self-center !px-64 -mt-40"
-        >
-          Sign up
-        </Button>
-        <p className="text-gray-200">
-          And become a part of the most FUN developers community!
-        </p>
-      </div>
-    </section>
-  );
-}
+import { createRoute } from "src/utils/routing";
+import { CommunityInvitationCard } from "src/Components/CommunityInvitationCard/CummunityInvitationCard";
 
 export default function LandingPage() {
   return (
@@ -163,7 +126,7 @@ export default function LandingPage() {
               </ul>
             </section>
           ))}
-          <JoinTheCommunityCard />
+          <CommunityInvitationCard />
         </div>
       </main>
     </>
