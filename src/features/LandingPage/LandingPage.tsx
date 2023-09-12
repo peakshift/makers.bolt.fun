@@ -12,17 +12,10 @@ type EventCardProps = {
   imgSrc: string;
   type: string;
   title: string;
-  description: string;
   className?: string;
 };
 
-function EventCard({
-  imgSrc,
-  type,
-  title,
-  description,
-  className = "",
-}: EventCardProps) {
+function EventCard({ imgSrc, type, title, className = "" }: EventCardProps) {
   return (
     <div
       className={
@@ -52,7 +45,6 @@ function EventCard({
               <div className="p-12">
                 <p className="text-[10px] font-medium text-slate-200">{type}</p>
                 <p className="mt-4 text-sm font-medium text-white">{title}</p>
-                <p className="mt-4 text-[10px] text-slate-200">{description}</p>
               </div>
               <div className="h-px mx-auto w-[calc(100%-32px)] bg-white/[8%]" />
               <div className="flex items-center p-12 gap-x-8">
@@ -210,7 +202,6 @@ export function LandingPage() {
                 className="scale-[78%] z-[5]"
                 type="🏆  TOURNAMENT"
                 title="Ai4ALL"
-                description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
               />
 
               <div className="absolute top-0 z-10 right-52 xl:right-64">
@@ -220,7 +211,6 @@ export function LandingPage() {
                     className="absolute top-0 z-10 right-52 xl:right-64"
                     type="🏆  TOURNAMENT"
                     title="Ai4ALL"
-                    description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
                   />
 
                   <EventCard
@@ -228,7 +218,6 @@ export function LandingPage() {
                     className="scale-[90%]"
                     type="🏆  TOURNAMENT"
                     title="Ai4ALL"
-                    description="Lorem ipsum dolor sit amet consectetur. Consectetur auctor olor sit amet consectetur. "
                   />
                 </div>
               </div>
