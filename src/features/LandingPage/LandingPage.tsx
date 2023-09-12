@@ -26,7 +26,7 @@ function EventCard({ imgSrc, type, title, className = "" }: EventCardProps) {
       <div className="relative w-full h-full">
         <div className="absolute flex top-12 right-12 gap-x-8">
           <div className="p-8 ml-auto rounded-full backdrop-blur-xl bg-white/[16%] w-max">
-            <img src="assets/icons/upload-icon.svg" alt="upload icon" />
+            <img src="assets/icons/home-upload-icon.svg" alt="upload icon" />
           </div>
           <div className="p-8 ml-auto rounded-full backdrop-blur-xl bg-white/[16%] w-max">
             <img src="assets/icons/close-icon.svg" alt="close icon" />
