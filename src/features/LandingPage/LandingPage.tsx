@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { JoinTheCommunityCard } from "../Home/pages/LandingPage/LandingPage";
 
 function Chip({ children }: { children: React.ReactNode }) {
@@ -305,9 +306,12 @@ export function LandingPage() {
                 topics and discussions. Discover guides, tutorials, and
                 challenges!
               </p>
-              <button className="px-32 py-12 mt-32 font-medium text-white border rounded-xl text-md border-neutral-200 bg-slate-800">
+              <Link
+                className="block px-32 py-12 mt-32 ml-auto font-medium text-white border w-max rounded-xl text-md border-neutral-200 bg-slate-800"
+                to="/topics"
+              >
                 View topics 🏷
-              </button>
+              </Link>
             </div>
           </div>
           <div className="block lg:hidden">
@@ -333,12 +337,18 @@ export function LandingPage() {
                 <p>Conferences 🤝</p>
               </div>
               <div className="flex flex-col items-start mt-32 md:items-center gap-y-8 md:gap-y-0 md:gap-x-12 md:flex-row">
-                <button className="px-32 py-12 font-medium text-white border whitespace-nowrap rounded-xl text-md border-neutral-200 bg-slate-800">
+                <Link
+                  className="block px-32 py-12 font-medium text-white border whitespace-nowrap rounded-xl text-md border-neutral-200 bg-slate-800"
+                  to="/tournaments"
+                >
                   Explore events
-                </button>
-                <button className="px-32 py-12 font-medium border whitespace-nowrap text-slate-600 rounded-xl text-md border-violet-500 bg-slate-100">
+                </Link>
+                <a
+                  className="px-32 py-12 font-medium border whitespace-nowrap text-slate-600 rounded-xl text-md border-violet-500 bg-slate-100"
+                  href="mailto:team@peakshift.com"
+                >
                   Host a hackathon
-                </button>
+                </a>
               </div>
             </div>
             <div className="relative flex justify-end mt-32 ml-[125px] md:mt-0">
@@ -387,9 +397,12 @@ export function LandingPage() {
                 popular topics, collaborate, and more!
               </p>
               <div className="flex items-center mt-32">
-                <button className="px-32 py-12 font-medium text-white border whitespace-nowrap rounded-xl text-md border-neutral-200 bg-slate-800">
+                <Link
+                  className="block px-32 py-12 font-medium text-white border whitespace-nowrap rounded-xl text-md border-neutral-200 bg-slate-800"
+                  to="/hangout"
+                >
                   Check it out
-                </button>
+                </Link>
               </div>
             </div>
           </div>
