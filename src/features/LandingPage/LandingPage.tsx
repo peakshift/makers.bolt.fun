@@ -262,29 +262,29 @@ export function LandingPage() {
       </div>
       <div className="max-w-2xl mx-auto text-center">
         <div className="mt-32 text-lg font-bold text-slate-700 leading-7">
-          We are{" "}
+          We're a{" "}
           <div className="relative inline">
             vibrant
             <div className="absolute -left-1 -top-[24px]">
               <VibrantDrawingSVG />
-            </div>{" "}
+            </div>
           </div>
-          community of innovative makers and{" "}
+          {" "}community of innovative makers and{" "}
           <div className="relative inline">
             technologists
             <div className="absolute -top-[4px] left-0">
               <img src="assets/icons/hand-circle-icon.svg" alt="" />
-            </div>{" "}
+            </div>
           </div>
-          . on our platform visionaries showcase projects, exchange insights,
-          and battle it out for&nbsp;
+          . This is your playground to meet other visionaries, ask questions, showcase projects, exchange insights,
+          and sometimes battle it out for{" "}
           <div className="relative inline">
             FUN
             <div className="hidden md:block absolute left-[16px] top-[24px]">
               <FunDrawingSVG />
             </div>
           </div>
-          &nbsp;at tournaments we host.
+          {" "}at tournaments.
         </div>
       </div>
       <div className="relative w-full">

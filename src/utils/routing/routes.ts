@@ -191,6 +191,9 @@ export const PAGES_ROUTES = {
   home: {
     default: "/home",
   },
+  landingPage: {
+    buildOnBitcoin: "/Build-On-Bitcoin",
+  },
   auth: {
     login: "/login",
     loginEmail: "/login-email",

@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
   {
     href: PAGES_ROUTES.blog.feed,
     icon: "📰",
-    text: "Feed",
+    text: "Community Feed",
   },
   {
     href: createRoute({ type: "tag-page", tag: "intros" }),
@@ -27,13 +27,19 @@ const navItems: NavItem[] = [
     text: "Intros",
   },
   {
-    href: createRoute({ type: "hangout" }),
-    icon: "🔊",
-    text: "Hangout",
-    // badge: {
-    //   text: "LIVE",
-    //   color: "red",
-    // },
+    href: createRoute({ type: "tag-page", tag: "get-help" }),
+    icon: "🙋‍♀️",
+    text: "Questions",
+  },
+  {
+    href: createRoute({ type: "tournaments" }),
+    icon: "🏆",
+    text: "Tournaments",
+    badge: {
+      text: "2",
+      color: "red",
+    },
+    highlighted: true,
   },
   {
     href: PAGES_ROUTES.blog.topicsPage,
@@ -41,31 +47,36 @@ const navItems: NavItem[] = [
     text: "Topics",
   },
   {
+    href: createRoute({ type: "hangout" }),
+    icon: "🔊",
+    text: "Hangout",
+  },
+  {
     href: createRoute({ type: "projects-page" }),
     icon: "🚀",
     text: "Explore Projects",
   },
   {
-    href: createRoute({ type: "tournaments" }),
-    icon: "🏆",
-    text: "Tournaments",
+    href: PAGES_ROUTES.landingPage.buildOnBitcoin,
+    icon: "🧰",
+    text: "#BuildOnBitcoin",
   },
-  {
-    href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
-    icon: "🦩",
-    text: "#Nostrasia",
-    badge: {
-      text: "REGISTER!",
-      color: "red",
-    },
-    highlighted: true,
-  },
-  {
-    href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
-    icon: "🤖",
-    text: "#Ai4ALL",
-    highlighted: false,
-  },
+  // {
+  //   href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
+  //   icon: "🦩",
+  //   text: "#Nostrasia",
+  //   badge: {
+  //     text: "REGISTER!",
+  //     color: "red",
+  //   },
+  //   highlighted: true,
+  // },
+  // {
+  //   href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
+  //   icon: "🤖",
+  //   text: "#Ai4ALL",
+  //   highlighted: false,
+  // },
   // {
   //   href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
   //   icon: "🦩",
