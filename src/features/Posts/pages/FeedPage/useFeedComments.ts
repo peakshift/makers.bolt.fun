@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { NostrEvent, useRelayPool } from "src/lib/nostr";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { NostrEvent, useMetaData, useRelayPool } from "src/lib/nostr";
 import { insertEventIntoDescendingList } from "src/lib/nostr/helpers";
 import { useDebounce } from "use-debounce";
 
@@ -23,6 +23,20 @@ export const useFeedComments = ({ events_ids }: Props) => {
     useState<PostsToComments>({});
   const [postsToComments] = useDebounce(postsToCommentsImmediate, 1000, {
     maxWait: 3000,
+  });
+
+  const pubkeysUsed = useMemo(
+    () =>
+      Object.values(postsToComments)
+        .map(({ data }) => data)
+        .flat()
+        .map((x) => x.pubkey)
+        .filter(Boolean) as string[],
+    [postsToComments]
+  );
+
+  const { profilesData } = useMetaData({
+    pubkeys: pubkeysUsed,
   });
 
   const postsToCommentsRef = useRef<PostsToComments>({});
@@ -120,5 +134,5 @@ export const useFeedComments = ({ events_ids }: Props) => {
     [events_ids, relayPool]
   );
 
-  return { postsToComments };
+  return { postsToComments, profilesData };
 };
