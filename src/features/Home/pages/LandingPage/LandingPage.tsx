@@ -1,13 +1,12 @@
 import OgTags from "src/Components/OgTags/OgTags";
 import BgImage from "./assets/bg.jpg";
-import ConfettiImage from "./assets/confetti.png";
 import SocialPreviewImage from "./assets/social-preview.jpg";
-import CreateProfileImage from "./assets/create-profile.png";
 import BTCPragueImage from "./assets/btc-prague.png";
 import Button from "src/Components/Button/Button";
 import resourcesData from "./resources.json";
 import { FaChevronRight } from "react-icons/fa";
-import { PAGES_ROUTES, createRoute } from "src/utils/routing";
+import { createRoute } from "src/utils/routing";
+import { CommunityInvitationCard } from "src/Components/CommunityInvitationCard/CummunityInvitationCard";
 
 export default function LandingPage() {
   return (
@@ -23,16 +22,16 @@ export default function LandingPage() {
           max-md:-mx-16 py-80 overflow-hidden border-2 border-gray-100"
       >
         <div className="col-start-2 col-end-3 flex flex-col gap-y-[160px]">
-          <div className="absolute w-full inset-x-0 top-0 -z-10">
+          <div className="absolute inset-x-0 top-0 w-full -z-10">
             <img src={BgImage} alt="" className="w-full" />{" "}
             <div className="bg-gradient-to-b from-transparent via-[#f8f8f863] to-40% absolute inset-0"></div>
           </div>
           <header className="relative md:py-80">
-            <div className="flex flex-col gap-32 text-center items-center">
+            <div className="flex flex-col items-center text-center gap-32">
               <h1 className="text-h2 md:text-[55px] md:leading-[140%] text-primary-500 bg-gradient-to-r from-blue-500 to-violet-400 font-bolder bg-clip-text text-transparent inline-block">
                 #BuildOnBitcoin
               </h1>
-              <p className="text-body2 font-medium mb-8 text-gray-800 drop-shadow-sm">
+              <p className="mb-8 font-medium text-gray-800 text-body2 drop-shadow-sm">
                 People are building the future of the internet with Bitcoin.
                 From social networks, to streaming payments, and even custom
                 assets.
@@ -49,7 +48,7 @@ export default function LandingPage() {
                     },
                   })}
                   color="none"
-                  className="bg-gray-700 text-white px-32"
+                  className="px-32 text-white bg-gray-700"
                 >
                   Introduce yourself 🚀
                 </Button>
@@ -61,12 +60,12 @@ export default function LandingPage() {
                     },
                   })}
                   color="none"
-                  className="bg-gray-700 text-white px-32"
+                  className="px-32 text-white bg-gray-700"
                 >
                   Ask a question 🙋‍♂️
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-32 items-center mt-16">
+              <div className="flex flex-wrap items-center mt-16 gap-32">
                 <span className="text-gray-500 uppercase">announced at</span>
                 <img
                   src={BTCPragueImage}
@@ -76,7 +75,7 @@ export default function LandingPage() {
               </div>
             </div>
           </header>
-          {/* <button className="my-32 px-32 py-24 bg-gray-900 text-white flex gap-16 text-left rounded-16">
+          {/* <button className="flex px-32 py-24 my-32 text-left text-white bg-gray-900 gap-16 rounded-16">
             <div>
               <p className="text-body2 font-bolder">AI4ALL Hackathon ⚡️</p>
               <p className="">
@@ -86,16 +85,16 @@ export default function LandingPage() {
           </button> */}
           {resourcesData.data.map((item) => (
             <section key={item.title} className="relative">
-              <h2 className="text-h3 md:text-h2 text-center font-bolder mb-24">
+              <h2 className="mb-24 text-center text-h3 md:text-h2 font-bolder">
                 {item.title}
               </h2>
-              <p className="text-body3 text-center">{item.description}</p>
-              <ul className="flex flex-wrap justify-between gap-24 mt-64">
+              <p className="text-center text-body3">{item.description}</p>
+              <ul className="flex flex-wrap justify-between mt-64 gap-24">
                 {item.links.map((link) => (
                   <li key={link.title} className="basis-[240px] grow">
                     <a
                       href={link.link}
-                      className="p-24 rounded h-full flex flex-col gap-8 hover:outline"
+                      className="flex flex-col h-full p-24 rounded gap-8 hover:outline"
                       style={{
                         backgroundColor: link.color ?? "#F1F5F9",
                         outlineColor: `color-mix(in srgb, ${link.color} 80%, #292e41)`,
@@ -110,15 +109,15 @@ export default function LandingPage() {
                       {link.logo && (
                         <img
                           src={link.logo}
-                          className="w-40 aspect-square rounded-8 object-cover"
+                          className="object-cover w-40 aspect-square rounded-8"
                           alt=""
                         />
                       )}
-                      <p className="text-body2 font-bolder text-gray-700">
+                      <p className="text-gray-700 text-body2 font-bolder">
                         {link.title}
                       </p>
                       <p className="text-gray-700">{link.description}</p>
-                      <p className="text-gray-900 font-bolder mt-auto">
+                      <p className="mt-auto text-gray-900 font-bolder">
                         {link.linkCTA ?? "Learn More"} <FaChevronRight />
                       </p>
                     </a>
@@ -127,37 +126,7 @@ export default function LandingPage() {
               </ul>
             </section>
           ))}
-          <section className="bg-gray-800 rounded-16 p-16 md:p-32 text-center  relative isolate">
-            <div className="absolute inset-0 flex flex-col justify-center items-center">
-              <img src={ConfettiImage} alt="" className="" />
-              <div className="bg-gray-800 rounded-16 bg-opacity-40 absolute inset-0"></div>
-            </div>
-            <div className="flex flex-col gap-12 relative">
-              <h2 className="text-body1 font-bolder bg-gradient-to-r from-blue-500 to-violet-400 bg-clip-text text-transparent ">
-                Join the community
-              </h2>
-              <p className="text-body3 text-white">
-                Proof of work starts with you. Share your work, build in public,
-                win bounties and take part in hackathons and tournaments! Sign
-                up and introduce yourself to the community.
-              </p>
-              <img
-                src={CreateProfileImage}
-                alt=""
-                className="self-center max-w-[300px]"
-              />
-              <Button
-                href={PAGES_ROUTES.auth.login}
-                color="primary"
-                className="self-center !px-64 -mt-40"
-              >
-                Sign up
-              </Button>
-              <p className="text-gray-200">
-                And become a part of the most FUN developers community!
-              </p>
-            </div>
-          </section>
+          <CommunityInvitationCard />
         </div>
       </main>
     </>

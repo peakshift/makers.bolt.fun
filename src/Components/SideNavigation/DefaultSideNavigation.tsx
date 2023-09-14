@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
   {
     href: PAGES_ROUTES.blog.feed,
     icon: "📰",
-    text: "Feed",
+    text: "Community Feed",
   },
   {
     href: createRoute({ type: "tag-page", tag: "intros" }),
@@ -27,13 +27,19 @@ const navItems: NavItem[] = [
     text: "Intros",
   },
   {
-    href: createRoute({ type: "hangout" }),
-    icon: "🔊",
-    text: "Hangout",
-    // badge: {
-    //   text: "LIVE",
-    //   color: "red",
-    // },
+    href: createRoute({ type: "tag-page", tag: "get-help" }),
+    icon: "🙋‍♀️",
+    text: "Questions",
+  },
+  {
+    href: createRoute({ type: "tournaments" }),
+    icon: "🏆",
+    text: "Tournaments",
+    badge: {
+      text: "2",
+      color: "red",
+    },
+    highlighted: true,
   },
   {
     href: PAGES_ROUTES.blog.topicsPage,
@@ -41,26 +47,36 @@ const navItems: NavItem[] = [
     text: "Topics",
   },
   {
+    href: createRoute({ type: "hangout" }),
+    icon: "🔊",
+    text: "Hangout",
+  },
+  {
     href: createRoute({ type: "projects-page" }),
     icon: "🚀",
     text: "Explore Projects",
   },
   {
-    href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
-    icon: "🦩",
-    text: "#Nostrasia",
-    badge: {
-      text: "REGISTER!",
-      color: "red",
-    },
-    highlighted: true,
+    href: PAGES_ROUTES.landingPage.buildOnBitcoin,
+    icon: "🧰",
+    text: "#BuildOnBitcoin",
   },
-  {
-    href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
-    icon: "🤖",
-    text: "#Ai4ALL",
-    highlighted: false,
-  },
+  // {
+  //   href: createRoute({ type: "tournament", idOrSlug: "nostrasia" }),
+  //   icon: "🦩",
+  //   text: "#Nostrasia",
+  //   badge: {
+  //     text: "REGISTER!",
+  //     color: "red",
+  //   },
+  //   highlighted: true,
+  // },
+  // {
+  //   href: createRoute({ type: "tournament", idOrSlug: "ai4all" }),
+  //   icon: "🤖",
+  //   text: "#Ai4ALL",
+  //   highlighted: false,
+  // },
   // {
   //   href: createRoute({ type: "tournament", idOrSlug: "nostr-hack" }),
   //   icon: "🦩",
@@ -100,18 +116,18 @@ const navItems: NavItem[] = [
 
 export default function DefaultSideNavigation() {
   return (
-    <ul className="flex flex-col gap-8 mb-16">
+    <ul className="flex flex-col mb-16 gap-8">
       {navItems.map((item) => (
         <li className="group" key={item.href}>
           {item.isExternal ? (
             <a
-              className="flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform group-hover:bg-slate-100"
+              className="flex items-center font-bold cursor-pointer text-slate-700 rounded-8 active:scale-95 transition-transform group-hover:bg-slate-100"
               href={item.href}
               target="_blank"
               rel="noreferrer"
             >
               <span
-                className="bg-slate-50 group-hover:bg-slate-100 rounded-8 w-40 h-40 text-center py-8"
+                className="w-40 h-40 py-8 text-center bg-slate-50 group-hover:bg-slate-100 rounded-8"
                 aria-hidden
               >
                 {item.icon}
@@ -131,13 +147,16 @@ export default function DefaultSideNavigation() {
           ) : (
             <NavLink
               className={({ isActive }) =>
-                `flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${isActive ? "bg-slate-200" : "group-hover:bg-slate-100"
-                } ${item.highlighted ? "border-2 border-blue-200 bg-blue-50" : ""}`
+                `flex items-center text-slate-700 rounded-8 cursor-pointer font-bold active:scale-95 transition-transform ${
+                  isActive ? "bg-slate-200" : "group-hover:bg-slate-100"
+                } ${
+                  item.highlighted ? "border-2 border-blue-200 bg-blue-50" : ""
+                }`
               }
               to={item.href}
             >
               <span
-                className="rounded-8 w-40 h-40 text-center py-8"
+                className="w-40 h-40 py-8 text-center rounded-8"
                 aria-hidden
               >
                 {item.icon}

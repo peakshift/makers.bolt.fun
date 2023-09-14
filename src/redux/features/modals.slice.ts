@@ -36,6 +36,7 @@ import { UpdateNostrProfileModal } from "src/features/Posts/Components/Comments/
 import { ConnectNostrIdToProfileModal } from "src/features/Profiles/pages/EditProfilePage/NostrSettingsTab/ConnectNostrIdToProfileModal";
 import { LinkingNewEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingNewEmailModal";
 import { RemoveEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveEmailModal";
+import { LoginModal } from "src/features/Auth/components/LoginModal";
 
 export enum Direction {
   START,
@@ -57,6 +58,7 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+  LoginModal,
 
   // Tournaments
   EventModal,

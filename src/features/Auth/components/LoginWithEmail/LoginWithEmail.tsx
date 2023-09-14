@@ -13,38 +13,17 @@ import IconButton from "src/Components/IconButton/IconButton";
 import { FaArrowLeft } from "react-icons/fa";
 import { createRoute } from "src/utils/routing";
 
-export default function LoginWithEmail() {
+interface Props {
+  onLogin: () => void;
+  onGoBack: () => void;
+}
+
+export default function LoginWithEmail({ onLogin, onGoBack }: Props) {
   const [emailInput, setEmailInput] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [otpInput, setOtpInput] = useState("");
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const meQuery = useMeQuery({
-    onCompleted: (data) => {
-      if (data.me) setIsLoggedIn(true);
-    },
-  });
-
-  const refetch = meQuery.refetch;
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      meQuery.stopPolling();
-      const timeout = setTimeout(() => {
-        const cameFrom = getPropertyFromUnknown(location.state, "from");
-        const navigateTo = cameFrom ? cameFrom : "/";
-
-        navigate(navigateTo, { replace: true });
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [isLoggedIn, location.state, meQuery, navigate]);
 
   const onRequestOTP = () => {
     setLoading(true);
@@ -62,7 +41,7 @@ export default function LoginWithEmail() {
     try {
       setLoading(true);
       await loginWithEmailOTP(emailInput, otpInput.trim());
-      await refetch();
+      onLogin();
     } catch (error) {
       NotificationsService.error(
         extractErrorMessage(error) ??
@@ -92,113 +71,88 @@ export default function LoginWithEmail() {
 
   let content = <></>;
 
-  if (isLoggedIn)
-    content = (
-      <div className="flex flex-col justify-center items-center">
-        <h3 className="text-body4">
-          Hey there{" "}
-          <span className="font-bold">
-            @{trimText(meQuery.data?.me?.name, 10)}!!
-          </span>{" "}
-          👋
-        </h3>
-        <img
-          src={meQuery.data?.me?.avatar}
-          className="w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200 mt-24"
-          alt=""
-        />
-      </div>
-    );
-  else
-    content = (
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-[442px] bg-white border-2 border-gray-200 rounded-16 p-16 items-stretch"
-      >
-        <div className="flex flex-col gap-24">
-          <h2 className="text-h4 font-bold flex flex-wrap w-full gap-8 items-center text-gray-700">
-            <span className="flex-1 min-w-min">
-              <IconButton
-                aria-label="Go back"
-                href={createRoute({ type: "login" })}
-                className=""
-              >
-                <FaArrowLeft />
-              </IconButton>
-            </span>
-            <span className="text-center">Sign-in with Email 📧</span>
-            <span className="flex-1"></span>
-          </h2>
+  content = (
+    <form onSubmit={onSubmit}>
+      <div className="flex flex-col gap-24">
+        <h2 className="text-h5 font-bold flex flex-wrap w-full gap-8 items-center text-gray-700">
+          <span className="flex-1 min-w-min">
+            <IconButton aria-label="Go back" onClick={onGoBack} className="">
+              <FaArrowLeft />
+            </IconButton>
+          </span>
+          <span className="text-center">Sign-in with Email 📧</span>
+          <span className="flex-1"></span>
+        </h2>
+        <div>
+          <label htmlFor="email" className="text-body5">
+            Your Email
+          </label>
+          <div className="input-wrapper mt-8 relative">
+            <input
+              id="email"
+              value={emailInput}
+              onChange={onChangeEmail}
+              type="email"
+              className="input-text"
+            />
+          </div>
+        </div>
+        {otpSent && (
           <div>
-            <label htmlFor="email" className="text-body5">
-              Your Email
-            </label>
-            <div className="input-wrapper mt-8 relative">
+            <p className="text-gray-900">
+              A 6-digits OTP has been sent to your email, please verify it
+              below.
+            </p>
+            <div className="input-wrapper mt-16 relative">
               <input
-                id="email"
-                value={emailInput}
-                onChange={onChangeEmail}
-                type="email"
-                className="input-text"
+                value={otpInput}
+                onChange={(e) => setOtpInput(e.target.value)}
+                type="text"
+                placeholder="XXXXXX"
+                className="input-text tracking-[.7em]"
               />
             </div>
+            <p className="mt-8 text-body5 text-gray-700">
+              Didn't Receive it yet?{" "}
+              <button
+                onClick={onRequestOTP}
+                type="button"
+                className="text-primary-500 underline"
+              >
+                Send Again
+              </button>
+            </p>
           </div>
-          {otpSent && (
-            <div>
-              <p className="text-gray-900">
-                A 6-digits OTP has been sent to your email, please verify it
-                below.
-              </p>
-              <div className="input-wrapper mt-16 relative">
-                <input
-                  value={otpInput}
-                  onChange={(e) => setOtpInput(e.target.value)}
-                  type="text"
-                  placeholder="XXXXXX"
-                  className="input-text tracking-[.7em]"
-                />
-              </div>
-              <p className="mt-8 text-body5 text-gray-700">
-                Didn't Receive it yet?{" "}
-                <button
-                  onClick={onRequestOTP}
-                  type="button"
-                  className="text-primary-500 underline"
-                >
-                  Send Again
-                </button>
-              </p>
-            </div>
-          )}
-          {!otpSent && (
-            <Button
-              disabled={!emailValid}
-              fullWidth
-              color="primary"
-              className="mt-16"
-              isLoading={loading}
-              type="submit"
-            >
-              Continue
-            </Button>
-          )}
-          {otpSent && (
-            <Button
-              disabled={!emailValid || otpInput.trim().length < 6}
-              fullWidth
-              color="primary"
-              className="mt-16"
-              isLoading={loading}
-              type="submit"
-            >
-              Submit
-            </Button>
-          )}
-        </div>
-      </form>
-    );
+        )}
+        {!otpSent && (
+          <Button
+            disabled={!emailValid}
+            fullWidth
+            color="primary"
+            className="mt-16"
+            isLoading={loading}
+            type="submit"
+          >
+            Continue
+          </Button>
+        )}
+        {otpSent && (
+          <Button
+            disabled={!emailValid || otpInput.trim().length < 6}
+            fullWidth
+            color="primary"
+            className="mt-16"
+            isLoading={loading}
+            type="submit"
+          >
+            Submit
+          </Button>
+        )}
+      </div>
+    </form>
+  );
 
-  return <div>{content}</div>;
+  return <>{content}</>;
 }
 
 const validateEmail = (email: string) => {

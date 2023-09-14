@@ -1,13 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Grid } from "react-loader-spinner";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useMeQuery } from "src/graphql";
 import { QRCodeSVG } from "qrcode.react";
 import { IoRocketOutline } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
 import { FiCopy } from "react-icons/fi";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
-import { getPropertyFromUnknown, trimText } from "src/utils/helperFunctions";
 import { fetchIsLoggedIn, fetchLnurlAuth } from "src/api/auth";
 import { useErrorHandler } from "react-error-boundary";
 import IconButton from "src/Components/IconButton/IconButton";
@@ -48,13 +45,14 @@ export const useLnurlQuery = () => {
   };
 };
 
-export default function LoginWithLightning() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+interface Props {
+  onLogin: () => void;
+  onGoBack: () => void;
+}
+
+export default function LoginWithLightning({ onLogin, onGoBack }: Props) {
   const [copiedCurrentLnurl, setCopiedCurrentLnurl] = useState(false);
   const canFetchIsLogged = useRef(true);
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const {
     loadingLnurl,
@@ -69,18 +67,11 @@ export default function LoginWithLightning() {
     setCopiedCurrentLnurl(false);
   }, [lnurl]);
 
-  const meQuery = useMeQuery({
-    onCompleted: (data) => {
-      if (data.me) setIsLoggedIn(true);
-    },
-  });
-
   const copyToClipboard = () => {
     setCopiedCurrentLnurl(true);
     clipboard(lnurl);
   };
 
-  const refetch = meQuery.refetch;
   const startPolling = useCallback(() => {
     const interval = setInterval(() => {
       if (canFetchIsLogged.current === false) return;
@@ -90,7 +81,7 @@ export default function LoginWithLightning() {
         .then((is_logged_in) => {
           if (is_logged_in) {
             clearInterval(interval);
-            refetch();
+            onLogin();
           }
         })
         .catch()
@@ -100,20 +91,7 @@ export default function LoginWithLightning() {
     }, 2000);
 
     return interval;
-  }, [refetch, session_token]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      meQuery.stopPolling();
-      const timeout = setTimeout(() => {
-        const cameFrom = getPropertyFromUnknown(location.state, "from");
-        const navigateTo = cameFrom ? cameFrom : "/";
-
-        navigate(navigateTo, { replace: true });
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [isLoggedIn, location.state, meQuery, navigate]);
+  }, [onLogin, session_token]);
 
   useEffect(() => {
     let interval: NodeJS.Timer;
@@ -145,33 +123,12 @@ export default function LoginWithLightning() {
         <p className="text-body3 font-bold">Fetching Lnurl-Auth...</p>
       </div>
     );
-  else if (isLoggedIn)
-    content = (
-      <div className="flex flex-col justify-center items-center">
-        <h3 className="text-body4">
-          Hey there{" "}
-          <span className="font-bold">
-            @{trimText(meQuery.data?.me?.name, 10)}!!
-          </span>{" "}
-          👋
-        </h3>
-        <img
-          src={meQuery.data?.me?.avatar}
-          className="w-80 h-80 object-cover rounded-full outline outline-2 outline-gray-200 mt-24"
-          alt=""
-        />
-      </div>
-    );
   else
     content = (
-      <div className="max-w-[442px] bg-white border-2 border-gray-200 rounded-16 p-16 flex flex-col gap-24 items-center">
-        <h2 className="text-h4 font-bold flex flex-wrap w-full gap-8 items-center text-gray-700">
+      <div className="flex flex-col gap-24 items-center">
+        <h2 className="text-h5 font-bold flex flex-wrap w-full gap-8 items-center text-gray-700">
           <span className="flex-1 min-w-min">
-            <IconButton
-              aria-label="Go back"
-              href={createRoute({ type: "login" })}
-              className=""
-            >
+            <IconButton aria-label="Go back" onClick={onGoBack} className="">
               <FaArrowLeft />
             </IconButton>
           </span>
@@ -218,5 +175,5 @@ export default function LoginWithLightning() {
       </div>
     );
 
-  return <div>{content}</div>;
+  return <>{content}</>;
 }
