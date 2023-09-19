@@ -22,7 +22,7 @@ const { PrismaSelect } = require("@paljs/plugins");
 const {
   sendNewStoryNotification,
 } = require("../../../services/notifications.service");
-const { queueService } = require("../../../services/queue.service");
+const { queueService } = require("../../../services/queue-service");
 const { toSlug } = require("../../../utils/helpers");
 const env = require("../../../utils/consts");
 
@@ -679,7 +679,7 @@ const createStory = extendType({
                 );
                 console.log(err);
               }),
-              queueService
+              queueService.nostrService
                 .createStoryRootEvent({
                   id: createdStory.id,
                   title: createdStory.title,

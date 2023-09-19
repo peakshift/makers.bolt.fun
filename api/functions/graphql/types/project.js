@@ -23,7 +23,7 @@ const { ImageInput } = require("./misc");
 const { Story } = require("./post");
 const { MakerRole } = require("./users");
 const { PrismaSelect } = require("@paljs/plugins");
-const { queueService } = require("../../../services/queue.service");
+const { queueService } = require("../../../services/queue-service");
 
 const Project = objectType({
   name: "Project",

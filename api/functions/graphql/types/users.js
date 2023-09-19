@@ -22,7 +22,7 @@ const {
   verifySignature,
   validateEvent,
 } = require("../../../utils/nostr-tools");
-const { queueService } = require("../../../services/queue.service");
+const { queueService } = require("../../../services/queue-service");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -591,7 +591,7 @@ const linkNostrKey = extendType({
         });
 
         await Promise.allSettled([
-          queueService.publishProfileVerifiedEvent({ event }),
+          queueService.nostrService.publishProfileVerifiedEvent({ event }),
         ]);
 
         return prisma.user.findUnique({
