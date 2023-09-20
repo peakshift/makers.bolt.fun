@@ -417,7 +417,7 @@ const usersByNostrKeys = extendType({
         keys: nonNull(list(nonNull(stringArg()))),
       },
       async resolve(parent, { keys }, ctx) {
-        return prisma.userNostrKey
+        const keysConnectedByUsers = prisma.userNostrKey
           .findMany({
             where: {
               key: {
@@ -435,6 +435,27 @@ const usersByNostrKeys = extendType({
           .then((data) =>
             data.map((item) => ({ key: item.key, user: item.user }))
           );
+
+        const keysGeneratedByDefault = prisma.user
+          .findMany({
+            where: {
+              nostr_pub_key: {
+                in: keys,
+              },
+            },
+            include: {
+              avatar_rel: true,
+            },
+          })
+          .then((data) =>
+            data.map((item) => ({ key: item.nostr_pub_key, user: item }))
+          );
+
+        return Promise.all([keysConnectedByUsers, keysGeneratedByDefault]).then(
+          (data) => {
+            return [...data[0], ...data[1]];
+          }
+        );
       },
     });
   },
