@@ -34,7 +34,7 @@ export default function TagProjectInput({
 
     const query = useMyProjectsQuery()
 
-    const placeholder = props.placeholder ?? <div className="flex gap-8 items-center text-gray-500"> <span className="w-32 h-32 bg-gray-50 border border-gray-100 rounded-full flex justify-center items-center"><FiPlus /></span> Tag a project </div>
+    const placeholder = props.placeholder ?? <div className="flex gap-8 items-center text-gray-500"> <span className="w-32 h-32 bg-gray-50 border border-gray-100 rounded-full flex justify-center items-center"><FiPlus /></span> Link a project </div>
 
     const handleChange = (newValue: OnChangeValue<Project, false>,) => {
         props.onChange?.(newValue);
