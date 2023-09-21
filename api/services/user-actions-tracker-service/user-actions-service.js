@@ -57,21 +57,76 @@ async function processUserActionsQueue() {
     },
   });
 
-  const promises = [];
+  const allTrxsPromises = [];
   const updateFailReasonPromises = [];
 
-  const actionsIdsProcessed = [];
+  const actionTypeIdtoBadgesCache = {};
 
-  for (const action of actions) {
-    const handler = actionsHandlers[action.actionType.name];
-    if (handler) {
-      promises.push(
-        handler(action.actionPayload)
-          .then(() => {
-            actionsIdsProcessed.push(action.id);
+  await Promise.all(
+    actions.map(async (action) => {
+      // the things needed to be done for each action are:
+      // 0. run any custom action handlers
+      // 1. upsert the user badges progress
+      // 2. update the action status to completed
+      // 3. update the action status to failed if something went wrong
+
+      try {
+        const handler = actionsHandlers[action.actionType.name];
+
+        if (handler) await handler(action.actionPayload);
+
+        let trxPromises = [];
+
+        // get the list of badges that should be incremented on this action (& cache them)
+        let badgesTrackingThisAction =
+          actionTypeIdtoBadgesCache[action.actionType.id];
+        if (!badgesTrackingThisAction) {
+          badgesTrackingThisAction = await prisma.badge.findMany({
+            where: {
+              incrementOnActionId: action.actionType.id,
+            },
+          });
+          actionTypeIdtoBadgesCache[action.actionType.id] =
+            badgesTrackingThisAction;
+        }
+
+        for (const badge of badgesTrackingThisAction) {
+          trxPromises.push(
+            prisma.userBadgeProgress.upsert({
+              create: {
+                badgeId: badge.id,
+                userId: action.user_id,
+                progress: 1,
+              },
+              update: {
+                progress: {
+                  increment: 1,
+                },
+              },
+              where: {
+                userId_badgeId: {
+                  badgeId: badge.id,
+                  userId: action.user_id,
+                },
+              },
+            })
+          );
+        }
+
+        trxPromises.push(
+          prisma.userAction.update({
+            where: {
+              id: action.id,
+            },
+            data: {
+              status: "completed",
+              failReason: null,
+            },
           })
-          .catch((error) => {
-            console.log(error);
+        );
+
+        allTrxsPromises.push(
+          prisma.$transaction(trxPromises).catch((reason) => {
             updateFailReasonPromises.push(
               prisma.userAction.update({
                 where: {
@@ -79,47 +134,31 @@ async function processUserActionsQueue() {
                 },
                 data: {
                   status: "failed",
-                  failReason: error.message,
+                  failReason: reason.message,
                 },
               })
             );
           })
-      );
-    } else {
-      console.warn(
-        "No handler found for action of type: ",
-        action.actionType.name
-      );
-      updateFailReasonPromises.push(
-        prisma.userAction.update({
-          where: {
-            id: action.id,
-          },
-          data: {
-            status: "failed",
-            failReason: "No handler found for this action type",
-          },
-        })
-      );
-    }
-  }
+        );
+      } catch (error) {
+        updateFailReasonPromises.push(
+          prisma.userAction.update({
+            where: {
+              id: action.id,
+            },
+            data: {
+              status: "failed",
+              failReason: error.message,
+            },
+          })
+        );
+      }
+    })
+  );
 
-  await Promise.all(promises);
+  await Promise.all(allTrxsPromises);
 
-  await Promise.all([
-    prisma.userAction.updateMany({
-      where: {
-        id: {
-          in: actionsIdsProcessed,
-        },
-      },
-      data: {
-        status: "completed",
-        failReason: null,
-      },
-    }),
-    ...updateFailReasonPromises,
-  ]);
+  await Promise.all([updateFailReasonPromises]);
 }
 
 const userActionsService = {
