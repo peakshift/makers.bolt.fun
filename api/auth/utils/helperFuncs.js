@@ -87,10 +87,19 @@ const createNewUser = async (pubKey) => {
   });
 };
 
+function verifyInternalAuthHeader(authHeader) {
+  const authToken = authHeader?.split(" ")[1];
+  if (authToken !== env.INTERNAL_FUNCTIONS_API_TOKEN) {
+    return false;
+  }
+  return true;
+}
+
 module.exports = {
   getUserByPubKey,
   getUserById,
   generateAuthToken,
   getAuthCookieConfig,
   createNewUser,
+  verifyInternalAuthHeader,
 };

@@ -21,6 +21,8 @@ const env = envsafe(
         (process.env.URL ?? "http://localhost:8888") +
         (ON_NETLIFY ? "/.netlify/functions" : "/dev"),
     }),
+
+    INTERNAL_FUNCTIONS_API_TOKEN: str(),
     NETLIFY: bool({
       default: !!ON_NETLIFY,
     }),
