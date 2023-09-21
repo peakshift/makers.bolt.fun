@@ -554,8 +554,8 @@ model UserAction {
   user    User @relation(fields: [user_id], references: [id])
   user_id Int
 
-  createdAt   DateTime @default(now())
-  isProcessed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  status    String   @default("pending") // pending, completed, failed
 }
 
 // -----------------
