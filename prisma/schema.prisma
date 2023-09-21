@@ -549,6 +549,8 @@ model UserAction {
   actionTypeId  Int
   actionPayload Json
 
+  failReason String?
+
   user    User @relation(fields: [user_id], references: [id])
   user_id Int
 
