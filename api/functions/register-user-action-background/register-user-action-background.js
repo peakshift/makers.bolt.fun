@@ -3,6 +3,8 @@ const { createExpressApp } = require("../../modules");
 const express = require("express");
 const { prisma } = require("../../prisma");
 const { verifyInternalAuthHeader } = require("../../auth/utils/helperFuncs");
+const { default: axios } = require("axios");
+const env = require("../../utils/consts");
 
 const registerUserAction = async (req, res) => {
   const authHeader = req.headers.authorization;
@@ -40,6 +42,10 @@ const registerUserAction = async (req, res) => {
       },
     });
 
+    await triggerProcessingFunction().catch((err) => {
+      console.log("Error triggering processing function", err);
+    });
+
     return res
       .status(200)
       .json({ status: "OK", message: "User Action Created" });
@@ -64,3 +70,7 @@ const handler = serverless(app);
 exports.handler = async (event, context) => {
   return await handler(event, context);
 };
+
+async function triggerProcessingFunction() {
+  await axios.post(env.FUNCTIONS_URL + "/process-pending-users-actions");
+}

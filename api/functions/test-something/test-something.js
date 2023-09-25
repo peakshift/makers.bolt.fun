@@ -15,13 +15,13 @@ const testSomething = async (req, res) => {
   const {} = req.body;
 
   try {
-    // await userActionsService.registerAction(
-    //   userActionsService.actionsCreator.publishedStory({
-    //     storyId: 1,
-    //     userId: 9,
-    //   })
-    // );
-    await userActionsService.processUserActionsQueue();
+    await userActionsService.registerAction(
+      userActionsService.actionsCreator.publishedStory({
+        storyId: 1,
+        userId: 9,
+      })
+    );
+    // await userActionsService.processUserActionsQueue();
 
     return res.status(200).json({ status: "OK", message: "Done" });
   } catch (error) {
