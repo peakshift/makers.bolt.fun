@@ -24,8 +24,24 @@ type Award {
   url: String!
 }
 
+type Badge {
+  badgeDefinitionNostrEventId: String
+  description: String!
+  id: Int!
+  image: String!
+  slug: String!
+  title: String!
+}
+
+type BadgeProgress {
+  current: Int
+  isCompleted: Boolean!
+  totalNeeded: Int
+}
+
 interface BaseUser {
   avatar: String!
+  badges: [UserBadge!]!
   bio: String
   discord: String
   github: String
@@ -791,6 +807,7 @@ input UpdateTournamentRegistrationInput {
 
 type User implements BaseUser {
   avatar: String!
+  badges: [UserBadge!]!
   bio: String
   discord: String
   github: String
@@ -815,6 +832,12 @@ type User implements BaseUser {
   tournaments: [Tournament!]!
   twitter: String
   website: String
+}
+
+type UserBadge {
+  badge: Badge!
+  id: String!
+  progress: BadgeProgress
 }
 
 input UserEmailInputType {

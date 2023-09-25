@@ -119,6 +119,74 @@ const BaseUser = interfaceType({
           .then((d) => d.map((item) => item.project));
       },
     });
+
+    t.nonNull.list.nonNull.field("badges", {
+      type: UserBadge,
+      resolve: async (parent, _, ctx) => {
+        const userId = ctx.user?.id;
+
+        const isSelf = userId === parent.id;
+
+        if (!isSelf) {
+          const userBadges = await prisma.userBadge.findMany({
+            where: {
+              userId: parent.id,
+            },
+            include: {
+              badge: true,
+            },
+          });
+
+          return userBadges.map((item) => ({
+            id: `${item.badge.id}-${item.userId}`,
+            badge: item.badge,
+            progress: {
+              isCompleted: true,
+            },
+          }));
+        } else {
+          const [allBadges, myBadgesProgress] = await Promise.all([
+            prisma.badge.findMany({
+              include: {
+                UserBadge: {
+                  where: {
+                    userId: parent.id,
+                  },
+                },
+              },
+            }),
+            prisma.userBadgeProgress
+              .findMany({
+                where: {
+                  userId: parent.id,
+                },
+              })
+              .then((data) =>
+                data.reduce(
+                  (acc, curr) => ({ ...acc, [curr.badgeId]: curr }),
+                  {}
+                )
+              ),
+          ]);
+
+          return allBadges.map((badge) => {
+            const userHasThisBadge = badge.UserBadge.length > 0;
+
+            const badgeUserProgress = myBadgesProgress[badge.id];
+            return {
+              id: `${badge.id}-${parent.id}`,
+              badge,
+              progress: {
+                isCompleted: userHasThisBadge,
+                totalNeeded: badge.incrementsNeeded,
+                current: badgeUserProgress?.progress,
+              },
+            };
+          });
+        }
+      },
+    });
+
     t.nonNull.list.nonNull.field("similar_makers", {
       type: "User",
       resolve(parent) {
@@ -233,6 +301,40 @@ const getAllMakersSkills = extendType({
       async resolve(parent, args, context) {
         return prisma.skill.findMany();
       },
+    });
+  },
+});
+
+const Badge = objectType({
+  name: "Badge",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.string("title");
+    t.nonNull.string("slug");
+    t.nonNull.string("image");
+    t.nonNull.string("description");
+    t.string("badgeDefinitionNostrEventId");
+  },
+});
+
+const BadgeProgress = objectType({
+  name: "BadgeProgress",
+  definition(t) {
+    t.nonNull.boolean("isCompleted");
+    t.int("totalNeeded");
+    t.int("current");
+  },
+});
+
+const UserBadge = objectType({
+  name: "UserBadge",
+  definition(t) {
+    t.nonNull.string("id");
+    t.nonNull.field("badge", {
+      type: Badge,
+    });
+    t.field("progress", {
+      type: BadgeProgress,
     });
   },
 });

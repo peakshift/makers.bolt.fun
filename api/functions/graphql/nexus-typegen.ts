@@ -290,6 +290,19 @@ export interface NexusGenObjects {
     title: string; // String!
     url: string; // String!
   }
+  Badge: { // root type
+    badgeDefinitionNostrEventId?: string | null; // String
+    description: string; // String!
+    id: number; // Int!
+    image: string; // String!
+    slug: string; // String!
+    title: string; // String!
+  }
+  BadgeProgress: { // root type
+    current?: number | null; // Int
+    isCompleted: boolean; // Boolean!
+    totalNeeded?: number | null; // Int
+  }
   Bounty: { // root type
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
@@ -580,6 +593,11 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     website?: string | null; // String
   }
+  UserBadge: { // root type
+    badge: NexusGenRootTypes['Badge']; // Badge!
+    id: string; // String!
+    progress?: NexusGenRootTypes['BadgeProgress'] | null; // BadgeProgress
+  }
   UserPrivateData: { // root type
     default_nostr_prv_key?: string | null; // String
     default_nostr_pub_key?: string | null; // String
@@ -630,6 +648,19 @@ export interface NexusGenFieldTypes {
     project: NexusGenRootTypes['Project']; // Project!
     title: string; // String!
     url: string; // String!
+  }
+  Badge: { // field return type
+    badgeDefinitionNostrEventId: string | null; // String
+    description: string; // String!
+    id: number; // Int!
+    image: string; // String!
+    slug: string; // String!
+    title: string; // String!
+  }
+  BadgeProgress: { // field return type
+    current: number | null; // Int
+    isCompleted: boolean; // Boolean!
+    totalNeeded: number | null; // Int
   }
   Bounty: { // field return type
     applicants_count: number; // Int!
@@ -1022,6 +1053,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     avatar: string; // String!
+    badges: NexusGenRootTypes['UserBadge'][]; // [UserBadge!]!
     bio: string | null; // String
     discord: string | null; // String
     github: string | null; // String
@@ -1046,6 +1078,11 @@ export interface NexusGenFieldTypes {
     tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     twitter: string | null; // String
     website: string | null; // String
+  }
+  UserBadge: { // field return type
+    badge: NexusGenRootTypes['Badge']; // Badge!
+    id: string; // String!
+    progress: NexusGenRootTypes['BadgeProgress'] | null; // BadgeProgress
   }
   UserPrivateData: { // field return type
     default_nostr_prv_key: string | null; // String
@@ -1072,6 +1109,7 @@ export interface NexusGenFieldTypes {
   }
   BaseUser: { // field return type
     avatar: string; // String!
+    badges: NexusGenRootTypes['UserBadge'][]; // [UserBadge!]!
     bio: string | null; // String
     discord: string | null; // String
     github: string | null; // String
@@ -1122,6 +1160,19 @@ export interface NexusGenFieldTypeNames {
     project: 'Project'
     title: 'String'
     url: 'String'
+  }
+  Badge: { // field return type name
+    badgeDefinitionNostrEventId: 'String'
+    description: 'String'
+    id: 'Int'
+    image: 'String'
+    slug: 'String'
+    title: 'String'
+  }
+  BadgeProgress: { // field return type name
+    current: 'Int'
+    isCompleted: 'Boolean'
+    totalNeeded: 'Int'
   }
   Bounty: { // field return type name
     applicants_count: 'Int'
@@ -1514,6 +1565,7 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     avatar: 'String'
+    badges: 'UserBadge'
     bio: 'String'
     discord: 'String'
     github: 'String'
@@ -1538,6 +1590,11 @@ export interface NexusGenFieldTypeNames {
     tournaments: 'Tournament'
     twitter: 'String'
     website: 'String'
+  }
+  UserBadge: { // field return type name
+    badge: 'Badge'
+    id: 'String'
+    progress: 'BadgeProgress'
   }
   UserPrivateData: { // field return type name
     default_nostr_prv_key: 'String'
@@ -1564,6 +1621,7 @@ export interface NexusGenFieldTypeNames {
   }
   BaseUser: { // field return type name
     avatar: 'String'
+    badges: 'UserBadge'
     bio: 'String'
     discord: 'String'
     github: 'String'
