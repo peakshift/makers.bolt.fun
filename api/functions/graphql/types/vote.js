@@ -7,12 +7,12 @@ const {
   arg,
   enumType,
 } = require("nexus");
-// const { parsePaymentRequest } = require("invoices");
-const { getPaymetRequestForItem, hexToUint8Array } = require("./helpers");
+const { hexToUint8Array } = require("./helpers");
 const { createHash } = require("crypto");
 const { prisma } = require("../../../prisma");
 const { CONSTS } = require("../../../utils");
 const cacheService = require("../../../services/cache.service");
+const { LightningAddress } = require("alby-tools");
 
 // the types of items we can vote to
 const VOTE_ITEM_TYPE = enumType({
@@ -139,13 +139,14 @@ const voteMutation = extendType({
         const lightning_address =
           (await getLightningAddress(item_id, item_type)) ||
           CONSTS.BOLT_FUN_LIGHTNING_ADDRESS;
-        const pr = await getPaymetRequestForItem(
-          lightning_address,
-          args.amount_in_sat
-        );
-        // const invoice = parsePaymentRequest({ request: pr });
 
-        const invoice = "whatever";
+        const ln = new LightningAddress(lightning_address);
+        await ln.fetch();
+
+        const invoice = await ln.requestInvoice({
+          satoshi: args.amount_in_sat,
+          comment: "Tip from BOLT.FUN",
+        });
 
         // #TODO remove votes rows that get added but not confirmed after some time
         // maybe using a scheduler, timeout, or whatever mean available
@@ -155,8 +156,8 @@ const voteMutation = extendType({
             item_type: item_type,
             item_id: item_id,
             amount_in_sat: amount_in_sat,
-            payment_request: pr,
-            payment_hash: invoice.id,
+            payment_request: invoice.paymentRequest,
+            payment_hash: invoice.paymentHash,
             user_id: user?.id,
           },
         });

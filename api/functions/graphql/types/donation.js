@@ -1,9 +1,9 @@
 const { createHash } = require("crypto");
-// const { parsePaymentRequest } = require('invoices');
 const { intArg, objectType, stringArg, extendType, nonNull } = require("nexus");
 const { prisma } = require("../../../prisma");
 const { CONSTS } = require("../../../utils");
-const { getPaymetRequestForItem, hexToUint8Array } = require("./helpers");
+const { hexToUint8Array } = require("./helpers");
+const { LightningAddress } = require("alby-tools");
 
 const Donation = objectType({
   name: "Donation",
@@ -35,18 +35,20 @@ const donateMutation = extendType({
       resolve: async (_, args) => {
         const { amount_in_sat } = args;
         const lightning_address = CONSTS.BOLT_FUN_LIGHTNING_ADDRESS;
-        const pr = await getPaymetRequestForItem(
-          lightning_address,
-          args.amount_in_sat
-        );
-        // const invoice = parsePaymentRequest({ request: pr });
-        const invoice = "whatever";
+
+        const ln = new LightningAddress(lightning_address);
+        await ln.fetch();
+
+        const invoice = await ln.requestInvoice({
+          satoshi: args.amount_in_sat,
+          comment: "Donation to BOLT.FUN",
+        });
 
         return prisma.donation.create({
           data: {
             amount: amount_in_sat,
-            payment_request: pr,
-            payment_hash: invoice.id,
+            payment_request: invoice.paymentRequest,
+            payment_hash: invoice.paymentHash,
           },
         });
       },
