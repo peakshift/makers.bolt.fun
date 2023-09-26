@@ -3,6 +3,7 @@ const { intArg, objectType, stringArg, extendType, nonNull } = require("nexus");
 const { prisma } = require("../../../prisma");
 const { CONSTS } = require("../../../utils");
 const { hexToUint8Array } = require("./helpers");
+require("cross-fetch/polyfill");
 const { LightningAddress } = require("alby-tools");
 
 const Donation = objectType({
