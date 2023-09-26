@@ -12,7 +12,6 @@ const { createHash } = require("crypto");
 const { prisma } = require("../../../prisma");
 const { CONSTS } = require("../../../utils");
 const cacheService = require("../../../services/cache.service");
-require("cross-fetch/polyfill");
 const { LightningAddress } = require("alby-tools");
 
 // the types of items we can vote to
