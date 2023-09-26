@@ -7,7 +7,7 @@ const {
   arg,
   enumType,
 } = require("nexus");
-const { parsePaymentRequest } = require("invoices");
+// const { parsePaymentRequest } = require("invoices");
 const { getPaymetRequestForItem, hexToUint8Array } = require("./helpers");
 const { createHash } = require("crypto");
 const { prisma } = require("../../../prisma");
@@ -143,7 +143,9 @@ const voteMutation = extendType({
           lightning_address,
           args.amount_in_sat
         );
-        const invoice = parsePaymentRequest({ request: pr });
+        // const invoice = parsePaymentRequest({ request: pr });
+
+        const invoice = "whatever";
 
         // #TODO remove votes rows that get added but not confirmed after some time
         // maybe using a scheduler, timeout, or whatever mean available
