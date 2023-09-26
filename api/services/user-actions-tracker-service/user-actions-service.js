@@ -17,9 +17,9 @@ const actionsCreator = {
     type: ACTIONS_TYPES.updatedProfile,
     payload: { userId },
   }),
-  commentedOnStory: ({ storyId, userId }) => ({
+  commentedOnStory: ({ storyId, nostrEventId, userId }) => ({
     type: ACTIONS_TYPES.commentedOnStory,
-    payload: { storyId, userId },
+    payload: { storyId, nostrEventId, userId },
   }),
 };
 
