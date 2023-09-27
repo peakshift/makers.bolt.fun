@@ -54,7 +54,7 @@ export function UpcomingTournamentCard({
             className="py-12 text-xs font-semibold text-white rounded-lg bg-violet-500 hover:bg-violet-600 transition px-36"
             to={linkTo}
           >
-            Register
+            View Details
           </Link>
         </div>
       </div>

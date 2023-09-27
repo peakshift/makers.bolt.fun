@@ -67,7 +67,7 @@ function TagPage() {
                   onClick={() => setSearchParams({ feed: "bolt-fun" })}
                   role="button"
                 >
-                  Bolt.Fun Feed
+                  BOLT.FUN Feed
                 </li>
                 <li
                   className={` 
