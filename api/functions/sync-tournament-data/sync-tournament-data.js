@@ -55,10 +55,32 @@ const syncTournamentData = async (req, res) => {
       url: contact.url,
     }));
 
-    const schedule = body.data.schedule?.map((entry) => ({
-      date: entry.date,
-      events: entry.events.map((event) => ({
-        // title: string;
+    const scheduleMap = body.data.schedule
+      ?.sort((a, b) => {
+        const timeA = new Date(a.time);
+        const timeB = new Date(b.time);
+        return timeA - timeB;
+      })
+      .reduce((acc, entry) => {
+        const date = new Date(entry.time);
+        const day = new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "numeric",
+        }).format(date);
+
+        if (!acc[day]) {
+          acc[day] = [];
+        }
+
+        // Push the item to the corresponding day's array
+        acc[day].push(entry);
+
+        return acc;
+      }, {});
+
+    const schedule = Object.keys(scheduleMap).map((key) => ({
+      date: key,
+      events: scheduleMap[key].map((event) => ({
         title: event.title,
         time: event.time,
         timezone: event.timezone,
