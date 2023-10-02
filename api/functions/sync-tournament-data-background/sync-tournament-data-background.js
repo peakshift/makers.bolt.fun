@@ -6,6 +6,7 @@ const { prisma } = require("../../prisma");
 const cacheService = require("../../services/cache.service");
 const { verifyWebhookSignature } = require("@hygraph/utils");
 const { default: axios } = require("axios");
+const env = require("../../utils/consts");
 
 const syncTournamentData = async (req, res) => {
   const body = req.body;
@@ -256,17 +257,10 @@ function requestAssetsData(assets_ids) {
 `;
 
   return axios
-    .post(
-      "https://api-eu-central-1-shared-euc1-02.hygraph.com/v2/cll4zrir304g301ul1d2b0ly5/master",
-      {
-        query: query,
-      }
-    )
-    .then((response) => {
-      // Handle the GraphQL response here
-      console.log(response.data.data.assets);
-      return response.data.data.assets;
+    .post(env.HYGRAPH_READ_API, {
+      query: query,
     })
+    .then((response) => response.data.data.assets)
     .catch((error) => {
       console.error(error);
     });
