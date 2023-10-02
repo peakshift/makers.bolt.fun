@@ -5,6 +5,7 @@ const CONSTS = require("../../utils/consts");
 const { prisma } = require("../../prisma");
 const cacheService = require("../../services/cache.service");
 const { verifyWebhookSignature } = require("@hygraph/utils");
+const { default: axios } = require("axios");
 
 const syncTournamentData = async (req, res) => {
   const body = req.body;
@@ -19,8 +20,12 @@ const syncTournamentData = async (req, res) => {
   if (!isValid) return res.status(401).send("Unauthorized Access");
 
   // make sure it's the update operation on the Tournament Model
-  if (body.operation !== "update" || body.data.__typename !== "Tournament")
-    return res.status(400).send("Bad Request");
+  if (body.operation !== "publish" || body.data.__typename !== "Tournament")
+    return res
+      .status(400)
+      .send(
+        "__typename has to be 'Tournament' & operation has to be 'publish'"
+      );
 
   try {
     // extract new data from req.body
@@ -28,7 +33,15 @@ const syncTournamentData = async (req, res) => {
     const { title, description, start_date, end_date, location, website } =
       body.data;
 
-    console.log(body.data);
+    // create assets map
+    const assets_ids = extractAssetIds(body.data);
+    const assets = await requestAssetsData(assets_ids);
+    const assetsMap = assets.reduce((acc, asset) => {
+      acc[asset.id] = asset;
+      return acc;
+    }, {});
+
+    console.log(assetsMap);
 
     const config = {
       registerationOpen: body.data.config?.registerationOpen ?? false,
@@ -181,3 +194,54 @@ const handler = serverless(app);
 exports.handler = async (event, context) => {
   return await handler(event, context);
 };
+
+function extractAssetIds(data) {
+  const assetIds = [];
+
+  function traverse(obj) {
+    if (obj && typeof obj === "object") {
+      if (Array.isArray(obj)) {
+        obj.forEach((item) => traverse(item));
+      } else if (obj.__typename === "Asset" && obj.id) {
+        assetIds.push(obj.id);
+      } else {
+        for (const key in obj) {
+          traverse(obj[key]);
+        }
+      }
+    }
+  }
+
+  traverse(data);
+
+  return assetIds;
+}
+
+function requestAssetsData(assets_ids) {
+  const query = `
+  query MyQuery {
+    assets(
+      where: { id_in: [${assets_ids.map((id) => `"${id}"`).join(", ")}] }
+    ) {
+      url(transformation: { document: { output: { format: jpg } } })
+      id
+      mimeType
+    }
+  }
+`;
+
+  return axios
+    .post(
+      "https://api-eu-central-1-shared-euc1-02.hygraph.com/v2/cll4zrir304g301ul1d2b0ly5/master",
+      {
+        query: query,
+      }
+    )
+    .then((response) => {
+      // Handle the GraphQL response here
+      console.log(response.data.data.assets);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
