@@ -28,21 +28,23 @@ const syncTournamentData = async (req, res) => {
     const { title, description, start_date, end_date, location, website } =
       body.data;
 
+    console.log(body.data);
+
     const config = {
-      registerationOpen: body.data.config.registerationOpen ?? false,
-      projectsSubmissionOpen: body.data.config.projectsSubmissionOpen ?? false,
-      ideasRootNostrEventId: body.data.config.ideasRootNostrEventId,
-      showFeed: body.data.config.showFeed,
-      mainFeedHashtag: body.data.config.mainFeedHashtag,
-      feedFilters: body.data.config.feedFilters ?? [],
+      registerationOpen: body.data.config?.registerationOpen ?? false,
+      projectsSubmissionOpen: body.data.config?.projectsSubmissionOpen ?? false,
+      ideasRootNostrEventId: body.data.config?.ideasRootNostrEventId,
+      showFeed: body.data.config?.showFeed,
+      mainFeedHashtag: body.data.config?.mainFeedHashtag,
+      feedFilters: body.data.config?.feedFilters ?? [],
     };
 
-    const contacts = body.data.contacts.map((contact) => ({
+    const contacts = body.data.contacts?.map((contact) => ({
       type: contact.type,
       url: contact.url,
     }));
 
-    const schedule = body.data.schedule.map((entry) => ({
+    const schedule = body.data.schedule?.map((entry) => ({
       date: entry.date,
       events: entry.events.map((event) => ({
         // title: string;
@@ -55,7 +57,7 @@ const syncTournamentData = async (req, res) => {
       })),
     }));
 
-    const partners = body.data.partnersList.map((list) => ({
+    const partners = body.data.partnersList?.map((list) => ({
       title: list.title, // e.g. "Sponsors"
       items: list.items.map((item) => ({
         title: item.title,
@@ -65,7 +67,7 @@ const syncTournamentData = async (req, res) => {
       })),
     }));
 
-    const makers_deals = body.data.makersDeals.map((deal) => ({
+    const makers_deals = body.data.makersDeals?.map((deal) => ({
       title: deal.title,
       description: deal.description,
       url: deal.url,
