@@ -41,8 +41,6 @@ const syncTournamentData = async (req, res) => {
       return acc;
     }, {});
 
-    console.log(assetsMap);
-
     const config = {
       registerationOpen: body.data.config?.registerationOpen ?? false,
       projectsSubmissionOpen: body.data.config?.projectsSubmissionOpen ?? false,
@@ -62,11 +60,11 @@ const syncTournamentData = async (req, res) => {
       events: entry.events.map((event) => ({
         // title: string;
         title: event.title,
-        // time: string | null;
-        // timezone: "UTC" | "PST" | null;
-        // location: "BOLT.FUN" | "Youtube" | "Twitch" | null;
-        // url?: string;
-        // type: "Hangout" | "Presentation" | "Workshop" | null;
+        time: event.time,
+        timezone: event.timezone,
+        type: event.type,
+        location: event.location,
+        url: event.url,
       })),
     }));
 
@@ -74,7 +72,7 @@ const syncTournamentData = async (req, res) => {
       title: list.title, // e.g. "Sponsors"
       items: list.items.map((item) => ({
         title: item.title,
-        image: item.image,
+        image: assetsMap[item.image.id].url,
         url: item.url,
         isBigImage: item.isBigImage,
       })),
@@ -86,35 +84,39 @@ const syncTournamentData = async (req, res) => {
       url: deal.url,
     }));
 
-    const prizes = body.data.prizes.map((prize) => ({
-      title: prize.title,
-      description: prize.description,
-      image: prize.image,
-      positions: prize.positions.map((position) => ({
-        position: position.position,
-        reward: position.reward,
-        project: position.project, // optional
-      })),
-      additional_prizes: prize.additional_prizes.map((additional_prize) => ({
-        text: additional_prize.text,
-        url: additional_prize.url,
-      })),
-    }));
+    // const prizes = body.data.prizes.map((prize) => ({
+    //   title: prize.title,
+    //   description: prize.description,
+    //   image: prize.image,
+    //   positions: prize.positions.map((position) => ({
+    //     position: position.position,
+    //     reward: position.reward,
+    //     project: position.project, // optional
+    //   })),
+    //   additional_prizes: prize.additional_prizes.map((additional_prize) => ({
+    //     text: additional_prize.text,
+    //     url: additional_prize.url,
+    //   })),
+    // }));
 
     let [cover_image_rel, thumbnail_image_rel] = await Promise.all([
-      prisma.hostedImage.findFirst({
-        where: {
-          provider_image_id: body.data.cover_image.id,
-        },
-      }),
-      prisma.hostedImage.findFirst({
-        where: {
-          provider_image_id: body.data.thumbnail_image.id,
-        },
-      }),
+      body.data.cover_image?.id
+        ? prisma.hostedImage.findFirst({
+            where: {
+              provider_image_id: body.data.cover_image.id,
+            },
+          })
+        : undefined,
+      body.data.thumbnail_image?.id
+        ? prisma.hostedImage.findFirst({
+            where: {
+              provider_image_id: body.data.thumbnail_image.id,
+            },
+          })
+        : undefined,
     ]);
 
-    if (!cover_image_rel) {
+    if (!cover_image_rel && body.data.cover_image?.id) {
       cover_image_rel = await prisma.hostedImage.create({
         data: {
           provider_image_id: body.data.cover_image.id,
@@ -126,7 +128,7 @@ const syncTournamentData = async (req, res) => {
       });
     }
 
-    if (!thumbnail_image_rel) {
+    if (!thumbnail_image_rel && body.data.thumbnail_image?.id) {
       thumbnail_image_rel = await prisma.hostedImage.create({
         data: {
           provider_image_id: body.data.thumbnail_image.id,
@@ -145,27 +147,28 @@ const syncTournamentData = async (req, res) => {
       data: {
         title,
         description,
-        start_date,
-        end_date,
-        location,
-        website,
-
+        // start_date,
+        // end_date,
+        // location,
+        // website,
+        // judges:{
+        // }
         config,
         schedule,
         contacts,
         partners,
         makers_deals,
-        prizes,
-        cover_image_rel: {
-          connect: {
-            id: cover_image_rel.id,
-          },
-        },
-        thumbnail_image_rel: {
-          connect: {
-            id: thumbnail_image_rel.id,
-          },
-        },
+        // prizes,
+        // cover_image_rel: {
+        //   connect: {
+        //     id: cover_image_rel.id,
+        //   },
+        // },
+        // thumbnail_image_rel: {
+        //   connect: {
+        //     id: thumbnail_image_rel.id,
+        //   },
+        // },
       },
     });
 
@@ -240,6 +243,7 @@ function requestAssetsData(assets_ids) {
     .then((response) => {
       // Handle the GraphQL response here
       console.log(response.data.data.assets);
+      return response.data.data.assets;
     })
     .catch((error) => {
       console.error(error);
