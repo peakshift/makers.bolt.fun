@@ -168,10 +168,10 @@ let app;
 
 if (process.env.LOCAL) {
   app = createExpressApp();
-  app.post("/on-tournament-update", syncTournamentData);
+  app.post("/sync-tournament-data", syncTournamentData);
 } else {
   const router = express.Router();
-  router.post("/on-tournament-update", syncTournamentData);
+  router.post("/sync-tournament-data", syncTournamentData);
   app = createExpressApp(router);
 }
 
