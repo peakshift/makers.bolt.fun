@@ -28,9 +28,28 @@ const syncTournamentData = async (req, res) => {
         "__typename has to be 'Tournament' & operation has to be 'publish'"
       );
 
-  try {
-    // extract new data from req.body
+  const currentTournamentData = await prisma.tournament.findFirst({
+    where: {
+      slug: body.data.slug,
+    },
+    include: {
+      cover_image_rel: true,
+      thumbnail_image_rel: true,
+      judges: true,
+      events: true,
+      faqs: true,
+      tracks: true,
+    },
+  });
 
+  if (!currentTournamentData) {
+    return res.status(404).send("Tournament not found");
+  }
+
+  try {
+    const cleanupJobs = [];
+
+    // extract new data from req.body
     const { title, description, start_date, end_date, location, website } =
       body.data;
 
@@ -73,7 +92,6 @@ const syncTournamentData = async (req, res) => {
           acc[day] = [];
         }
 
-        // Push the item to the corresponding day's array
         acc[day].push(entry);
 
         return acc;
@@ -122,46 +140,84 @@ const syncTournamentData = async (req, res) => {
     //   })),
     // }));
 
-    let [cover_image_rel, thumbnail_image_rel] = await Promise.all([
-      body.data.cover_image?.id
-        ? prisma.hostedImage.findFirst({
-            where: {
-              provider_image_id: body.data.cover_image.id,
-            },
-          })
-        : undefined,
-      body.data.thumbnail_image?.id
-        ? prisma.hostedImage.findFirst({
-            where: {
-              provider_image_id: body.data.thumbnail_image.id,
-            },
-          })
-        : undefined,
-    ]);
+    let updatedCoverImage = undefined;
 
-    if (!cover_image_rel && body.data.cover_image?.id) {
-      cover_image_rel = await prisma.hostedImage.create({
+    if (
+      body.data.cover_image?.id &&
+      currentTournamentData.cover_image_rel.provider_image_id !==
+        body.data.cover_image.id
+    ) {
+      cleanupJobs.push(
+        prisma.hostedImage.update({
+          where: {
+            id: currentTournamentData.cover_image_rel.id,
+          },
+          data: {
+            is_used: false,
+          },
+        })
+      );
+
+      updatedCoverImage = await prisma.hostedImage.create({
         data: {
           provider_image_id: body.data.cover_image.id,
-          url: body.data.cover_image.url,
-          filename: body.data.cover_image.filename ?? "default.png",
+          url: assetsMap[body.data.cover_image.id].url,
+          filename: "default.png",
           provider: "Hygraph",
           is_used: true,
         },
       });
     }
 
-    if (!thumbnail_image_rel && body.data.thumbnail_image?.id) {
-      thumbnail_image_rel = await prisma.hostedImage.create({
+    let updatedThumbnailImage = undefined;
+
+    if (
+      body.data.thumbnail_image?.id &&
+      currentTournamentData.thumbnail_image_rel.provider_image_id !==
+        body.data.thumbnail_image.id
+    ) {
+      cleanupJobs.push(
+        prisma.hostedImage.update({
+          where: {
+            id: currentTournamentData.thumbnail_image_rel.id,
+          },
+          data: {
+            is_used: false,
+          },
+        })
+      );
+
+      updatedThumbnailImage = await prisma.hostedImage.create({
         data: {
           provider_image_id: body.data.thumbnail_image.id,
-          url: body.data.thumbnail_image.url,
-          filename: body.data.thumbnail_image.filename ?? "default.png",
+          url: assetsMap[body.data.thumbnail_image.id].url,
+          filename: "default.png",
           provider: "Hygraph",
           is_used: true,
         },
       });
     }
+
+    cleanupJobs.push(
+      prisma.tournamentJudge.deleteMany({
+        where: {
+          id: {
+            in: currentTournamentData.judges.map((j) => j.id),
+          },
+        },
+      })
+    );
+
+    const updatedJudges = await prisma.tournamentJudge.createMany({
+      data: body.data.judges.map((judge) => ({
+        name: judge.name,
+        avatar: assetsMap[judge.avatar.id].url,
+        twitter: judge.twitter,
+        company: judge.company,
+        judge_id: judge.id,
+        tournament_id: currentTournamentData.id,
+      })),
+    });
 
     const { id } = await prisma.tournament.update({
       where: {
@@ -170,33 +226,40 @@ const syncTournamentData = async (req, res) => {
       data: {
         title,
         description,
+        cover_image_rel: updatedCoverImage
+          ? {
+              connect: {
+                id: updatedCoverImage.id,
+              },
+            }
+          : undefined,
+        thumbnail_image_rel: updatedThumbnailImage
+          ? {
+              connect: {
+                id: updatedThumbnailImage.id,
+              },
+            }
+          : undefined,
         // start_date,
         // end_date,
         // location,
         // website,
-        // judges:{
-        // }
+        judges: {
+          set: updatedJudges.map((judge) => ({ id: judge.id })),
+        },
         config,
         schedule,
         contacts,
         partners,
         makers_deals,
         // prizes,
-        // cover_image_rel: {
-        //   connect: {
-        //     id: cover_image_rel.id,
-        //   },
-        // },
-        // thumbnail_image_rel: {
-        //   connect: {
-        //     id: thumbnail_image_rel.id,
-        //   },
-        // },
       },
     });
 
-    // Invalidate the cache for the tournament
-    await cacheService.invalidateTournamentById(id);
+    cleanupJobs.push(cacheService.invalidateTournamentById(id));
+
+    // do any post-cleanup
+    await Promise.all(cleanupJobs);
 
     return res.status(200).send("Success");
   } catch (error) {
