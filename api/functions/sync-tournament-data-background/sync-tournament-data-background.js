@@ -208,15 +208,21 @@ const syncTournamentData = async (req, res) => {
       })
     );
 
-    const updatedJudges = await prisma.tournamentJudge.createMany({
-      data: body.data.judges.map((judge) => ({
-        name: judge.name,
-        avatar: assetsMap[judge.avatar.id].url,
-        twitter: judge.twitter,
-        company: judge.company,
-        tournament_id: currentTournamentData.id,
-      })),
-    });
+    const updatedJudges = await Promise.all(
+      body.data.judges.map((judge) =>
+        prisma.tournamentJudge.create({
+          data: {
+            name: judge.name,
+            avatar: assetsMap[judge.avatar.id].url,
+            twitter: judge.twitter,
+            company: judge.company,
+            tournament_id: currentTournamentData.id,
+          },
+        })
+      )
+    );
+
+    console.log(updatedJudges);
 
     const { id } = await prisma.tournament.update({
       where: {
