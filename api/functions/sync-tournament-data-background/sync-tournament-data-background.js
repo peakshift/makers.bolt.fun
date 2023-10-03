@@ -163,7 +163,7 @@ const syncTournamentData = async (req, res) => {
           provider_image_id: body.data.cover_image.id,
           url: assetsMap[body.data.cover_image.id].url,
           filename: "default.png",
-          provider: "Hygraph",
+          provider: "external",
           is_used: true,
         },
       });
@@ -192,27 +192,11 @@ const syncTournamentData = async (req, res) => {
           provider_image_id: body.data.thumbnail_image.id,
           url: assetsMap[body.data.thumbnail_image.id].url,
           filename: "default.png",
-          provider: "Hygraph",
+          provider: "external",
           is_used: true,
         },
       });
     }
-
-    // const updatedJudges = await Promise.all(
-    //   body.data.judges.map((judge) =>
-    //     prisma.tournamentJudge.create({
-    //       data: {
-    //         name: judge.name,
-    //         avatar: assetsMap[judge.avatar.id].url,
-    //         twitter: judge.twitter,
-    //         company: judge.company,
-    //         tournament_id: currentTournamentData.id,
-    //       },
-    //     })
-    //   )
-    // );
-
-    // console.log(updatedJudges);
 
     const { id } = await prisma.tournament.update({
       where: {
