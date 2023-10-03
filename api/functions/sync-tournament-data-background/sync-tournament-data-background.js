@@ -198,31 +198,21 @@ const syncTournamentData = async (req, res) => {
       });
     }
 
-    cleanupJobs.push(
-      prisma.tournamentJudge.deleteMany({
-        where: {
-          id: {
-            in: currentTournamentData.judges.map((j) => j.id),
-          },
-        },
-      })
-    );
+    // const updatedJudges = await Promise.all(
+    //   body.data.judges.map((judge) =>
+    //     prisma.tournamentJudge.create({
+    //       data: {
+    //         name: judge.name,
+    //         avatar: assetsMap[judge.avatar.id].url,
+    //         twitter: judge.twitter,
+    //         company: judge.company,
+    //         tournament_id: currentTournamentData.id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    const updatedJudges = await Promise.all(
-      body.data.judges.map((judge) =>
-        prisma.tournamentJudge.create({
-          data: {
-            name: judge.name,
-            avatar: assetsMap[judge.avatar.id].url,
-            twitter: judge.twitter,
-            company: judge.company,
-            tournament_id: currentTournamentData.id,
-          },
-        })
-      )
-    );
-
-    console.log(updatedJudges);
+    // console.log(updatedJudges);
 
     const { id } = await prisma.tournament.update({
       where: {
@@ -250,7 +240,15 @@ const syncTournamentData = async (req, res) => {
         // location,
         // website,
         judges: {
-          set: updatedJudges.map((judge) => ({ id: judge.id })),
+          deleteMany: {},
+          createMany: {
+            data: body.data.judges.map((j) => ({
+              name: j.name,
+              avatar: assetsMap[j.avatar.id].url,
+              twitter: j.twitter,
+              company: j.company,
+            })),
+          },
         },
         config,
         schedule,
