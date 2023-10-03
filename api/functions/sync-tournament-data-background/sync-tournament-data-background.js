@@ -214,7 +214,6 @@ const syncTournamentData = async (req, res) => {
         avatar: assetsMap[judge.avatar.id].url,
         twitter: judge.twitter,
         company: judge.company,
-        judge_id: judge.id,
         tournament_id: currentTournamentData.id,
       })),
     });
