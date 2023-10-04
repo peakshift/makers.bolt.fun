@@ -1,7 +1,6 @@
 const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
-const { prisma } = require("../../prisma");
 const { enumType } = require("nexus");
 
 const TournamentEventTypeEnum = enumType({
@@ -13,7 +12,6 @@ const TournamentEventTypeEnum = enumType({
     OnlineMeetup: 3,
   },
 });
-
 const testSomething = async (req, res) => {
   // first, do some validation to make sure the function has been invoked internally
 

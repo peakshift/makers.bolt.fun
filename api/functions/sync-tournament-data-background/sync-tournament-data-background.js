@@ -336,7 +336,7 @@ function requestAssetsData(assets_ids) {
 `;
 
   return axios
-    .post(env.HYGRAPH_READ_API, {
+    .post(env.HYGRAPH_CONTENT_API, {
       query: query,
     })
     .then((response) => response.data.data.assets)
