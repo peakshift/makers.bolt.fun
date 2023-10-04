@@ -2,6 +2,17 @@ const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
 const { prisma } = require("../../prisma");
+const { enumType } = require("nexus");
+
+const TournamentEventTypeEnum = enumType({
+  name: "TournamentEventTypeEnum",
+  members: {
+    TwitterSpace: 0,
+    Workshop: 1,
+    IRLMeetup: 2,
+    OnlineMeetup: 3,
+  },
+});
 
 const testSomething = async (req, res) => {
   // first, do some validation to make sure the function has been invoked internally
@@ -12,50 +23,8 @@ const testSomething = async (req, res) => {
   // }
 
   const {} = req.body;
-
-  const updatedJudgesData = [
-    {
-      id: 51,
-      name: "MTG 2",
-      avatar:
-        "https://media.graphassets.com/output=format:jpg/STc2CaobT2GeB7pJ9TYz",
-      avatar_id: null,
-      company: "Peak Shift",
-      twitter: "mtg",
-      tournament_id: 8,
-    },
-    // {
-    //   id: 52,
-    //   name: "Johns",
-    //   avatar:
-    //     "https://media.graphassets.com/output=format:jpg/DVdqnjkQQZqZhs5L9hd5",
-    //   avatar_id: null,
-    //   company: "Peak Shift",
-    //   twitter: "@johns",
-    //   tournament_id: 8,
-    // },
-  ];
-
   try {
-    await prisma.tournament.update({
-      where: {
-        slug: "test-tournament",
-      },
-      data: {
-        judges: {
-          deleteMany: {},
-          createMany: {
-            data: updatedJudgesData.map((j) => ({
-              name: j.name,
-              avatar: j.avatar,
-              twitter: j.twitter,
-              company: j.company,
-            })),
-          },
-        },
-      },
-    });
-
+    console.log(TournamentEventTypeEnum.value.members["Workshop"]);
     return res.status(200).json({ status: "OK", message: "Done" });
   } catch (error) {
     console.log(error);

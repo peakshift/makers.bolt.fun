@@ -8,6 +8,7 @@ const { verifyWebhookSignature } = require("@hygraph/utils");
 const { default: axios } = require("axios");
 const env = require("../../utils/consts");
 const { async } = require("q");
+const { TournamentEventTypeEnum } = require("../graphql/types/tournament");
 
 const syncTournamentData = async (req, res) => {
   const body = req.body;
@@ -246,7 +247,7 @@ const syncTournamentData = async (req, res) => {
               ends_at: e.ends_at,
               location: e.location,
               website: e.website,
-              type: e.type,
+              type: TournamentEventTypeEnum.value.members[e.type],
               image: providerIdToHostedImageMap[e.image.id].url,
               image_rel: {
                 connect: {
