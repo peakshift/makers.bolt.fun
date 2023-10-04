@@ -221,8 +221,8 @@ const syncTournamentData = async (req, res) => {
               },
             }
           : undefined,
-        start_date,
-        end_date,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
         // location,
         // website,
         judges: {
