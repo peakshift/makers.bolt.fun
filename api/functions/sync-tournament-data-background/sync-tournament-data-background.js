@@ -239,6 +239,7 @@ const syncTournamentData = async (req, res) => {
           },
         },
         events: {
+          deleteMany: {},
           createMany: {
             data: body.data.events.map((e) => ({
               title: e.title,
@@ -249,11 +250,7 @@ const syncTournamentData = async (req, res) => {
               website: e.website,
               type: TournamentEventTypeEnum.value.members[e.type],
               image: providerIdToHostedImageMap[e.image.id].url,
-              image_rel: {
-                connect: {
-                  id: providerIdToHostedImageMap[e.image.id].id,
-                },
-              },
+              image_id: providerIdToHostedImageMap[e.image.id].id,
             })),
           },
         },
