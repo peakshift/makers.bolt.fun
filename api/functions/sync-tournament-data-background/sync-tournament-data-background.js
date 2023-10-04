@@ -61,6 +61,54 @@ const syncTournamentData = async (req, res) => {
       return acc;
     }, {});
 
+    // create hosted images map
+    const providerIdToHostedImageMap = await prisma.hostedImage
+      .findMany({
+        where: {
+          provider_image_id: {
+            in: assets_ids,
+          },
+        },
+      })
+      .then((images) => {
+        return images.reduce((acc, image) => {
+          acc[image.provider_image_id] = image;
+          return acc;
+        }, {});
+      });
+
+    const assetsToBeCreated = assets_ids
+      .filter((id) => {
+        return !providerIdToHostedImageMap[id];
+      })
+      .map((id) => {
+        return {
+          provider_image_id: id,
+          url: assetsMap[id].url,
+          filename: "default.png",
+          provider: "external",
+          is_used: true,
+        };
+      });
+
+    await prisma.hostedImage
+      .createMany({
+        data: assetsToBeCreated,
+      })
+      .then(() => {
+        const newlyCreatedHostedImages = prisma.hostedImage.findMany({
+          where: {
+            provider_image_id: {
+              in: assetsToBeCreated.map((image) => image.provider_image_id),
+            },
+          },
+        });
+
+        newlyCreatedHostedImages.forEach((image) => {
+          providerIdToHostedImageMap[image.provider_image_id] = image;
+        });
+      });
+
     const config = {
       registerationOpen: body.data.config?.registerationOpen ?? false,
       projectsSubmissionOpen: body.data.config?.projectsSubmissionOpen ?? false,
@@ -142,61 +190,14 @@ const syncTournamentData = async (req, res) => {
 
     let updatedCoverImage = undefined;
 
-    if (
-      body.data.cover_image?.id &&
-      currentTournamentData.cover_image_rel.provider_image_id !==
-        body.data.cover_image.id
-    ) {
-      cleanupJobs.push(
-        prisma.hostedImage.update({
-          where: {
-            id: currentTournamentData.cover_image_rel.id,
-          },
-          data: {
-            is_used: false,
-          },
-        })
-      );
-
-      updatedCoverImage = await prisma.hostedImage.create({
-        data: {
-          provider_image_id: body.data.cover_image.id,
-          url: assetsMap[body.data.cover_image.id].url,
-          filename: "default.png",
-          provider: "external",
-          is_used: true,
-        },
-      });
-    }
+    if (body.data.cover_image?.id)
+      updatedCoverImage = providerIdToHostedImageMap[body.data.cover_image.id];
 
     let updatedThumbnailImage = undefined;
 
-    if (
-      body.data.thumbnail_image?.id &&
-      currentTournamentData.thumbnail_image_rel.provider_image_id !==
-        body.data.thumbnail_image.id
-    ) {
-      cleanupJobs.push(
-        prisma.hostedImage.update({
-          where: {
-            id: currentTournamentData.thumbnail_image_rel.id,
-          },
-          data: {
-            is_used: false,
-          },
-        })
-      );
-
-      updatedThumbnailImage = await prisma.hostedImage.create({
-        data: {
-          provider_image_id: body.data.thumbnail_image.id,
-          url: assetsMap[body.data.thumbnail_image.id].url,
-          filename: "default.png",
-          provider: "external",
-          is_used: true,
-        },
-      });
-    }
+    if (body.data.thumbnail_image?.id)
+      updatedThumbnailImage =
+        providerIdToHostedImageMap[body.data.thumbnail_image.id];
 
     const { id } = await prisma.tournament.update({
       where: {
@@ -219,8 +220,8 @@ const syncTournamentData = async (req, res) => {
               },
             }
           : undefined,
-        // start_date,
-        // end_date,
+        start_date,
+        end_date,
         // location,
         // website,
         judges: {
@@ -228,9 +229,29 @@ const syncTournamentData = async (req, res) => {
           createMany: {
             data: body.data.judges.map((j) => ({
               name: j.name,
-              avatar: assetsMap[j.avatar.id].url,
+              avatar: providerIdToHostedImageMap[j.avatar.id].url,
+              avatar_id: providerIdToHostedImageMap[j.avatar.id].id,
               twitter: j.twitter,
               company: j.company,
+            })),
+          },
+        },
+        events: {
+          createMany: {
+            data: body.data.events.map((e) => ({
+              title: e.title,
+              description: e.description,
+              starts_at: e.starts_at,
+              ends_at: e.ends_at,
+              location: e.location,
+              website: e.website,
+              type: e.type,
+              image: providerIdToHostedImageMap[e.image.id].url,
+              image_rel: {
+                connect: {
+                  id: providerIdToHostedImageMap[e.image.id].id,
+                },
+              },
             })),
           },
         },
