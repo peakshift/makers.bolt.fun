@@ -7,6 +7,7 @@ const cacheService = require("../../services/cache.service");
 const { verifyWebhookSignature } = require("@hygraph/utils");
 const { default: axios } = require("axios");
 const env = require("../../utils/consts");
+const { async } = require("q");
 
 const syncTournamentData = async (req, res) => {
   const body = req.body;
@@ -95,8 +96,8 @@ const syncTournamentData = async (req, res) => {
       .createMany({
         data: assetsToBeCreated,
       })
-      .then(() => {
-        const newlyCreatedHostedImages = prisma.hostedImage.findMany({
+      .then(async () => {
+        const newlyCreatedHostedImages = await prisma.hostedImage.findMany({
           where: {
             provider_image_id: {
               in: assetsToBeCreated.map((image) => image.provider_image_id),
