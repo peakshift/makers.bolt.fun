@@ -238,6 +238,15 @@ const syncTournamentData = async (req, res) => {
             })),
           },
         },
+        faqs: {
+          deleteMany: {},
+          createMany: {
+            data: body.data.faqs.map((f) => ({
+              question: f.question,
+              answer: f.answer,
+            })),
+          },
+        },
         events: {
           deleteMany: {},
           createMany: {
