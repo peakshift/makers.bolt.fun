@@ -1,17 +1,7 @@
 const serverless = require("serverless-http");
 const { createExpressApp } = require("../../modules");
 const express = require("express");
-const { enumType } = require("nexus");
 
-const TournamentEventTypeEnum = enumType({
-  name: "TournamentEventTypeEnum",
-  members: {
-    TwitterSpace: 0,
-    Workshop: 1,
-    IRLMeetup: 2,
-    OnlineMeetup: 3,
-  },
-});
 const testSomething = async (req, res) => {
   // first, do some validation to make sure the function has been invoked internally
 
@@ -22,7 +12,6 @@ const testSomething = async (req, res) => {
 
   const {} = req.body;
   try {
-    console.log(TournamentEventTypeEnum.value.members["Workshop"]);
     return res.status(200).json({ status: "OK", message: "Done" });
   } catch (error) {
     console.log(error);
