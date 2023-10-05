@@ -31,9 +31,12 @@ import { ProjectAddedModal } from "src/features/Tournaments/pages/ProjectsPage/P
 import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals";
 
 import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
-import ConnectNostrAccountModal from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import UpdateNostrProfileModal from "src/features/Posts/Components/Comments/CommentsWidget/components/UpdateNostrProfileModal/UpdateNostrProfileModal";
-import ConnectNostrIdToProfileModal from "src/features/Profiles/pages/EditProfilePage/NostrSettingsTab/ConnectNostrIdToProfileModal/ConnectNostrIdToProfileModal";
+import { ConnectNostrAccountModal } from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal";
+import { UpdateNostrProfileModal } from "src/features/Posts/Components/Comments/CommentsWidget/components/UpdateNostrProfileModal";
+import { ConnectNostrIdToProfileModal } from "src/features/Profiles/pages/EditProfilePage/NostrSettingsTab/ConnectNostrIdToProfileModal";
+import { LinkingNewEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingNewEmailModal";
+import { RemoveEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveEmailModal";
+import { LoginModal } from "src/features/Auth/components/LoginModal";
 
 export enum Direction {
   START,
@@ -55,6 +58,7 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+  LoginModal,
 
   // Tournaments
   EventModal,
@@ -75,6 +79,8 @@ export const ALL_MODALS = {
   // User Wallets Keys
   LinkingAccountModal,
   RemoveWalletKeyModal,
+  LinkingNewEmailModal,
+  RemoveEmailModal,
 
   // Nostr
   ConnectNostrAccountModal,

@@ -2,6 +2,9 @@ import { toSlug } from "../helperFunctions";
 
 type RouteOptions =
   | {
+      type: "login";
+    }
+  | {
       type: "post";
       id: string | number;
       postType: string;
@@ -47,6 +50,9 @@ type RouteOptions =
       type: "projects-page";
     }
   | {
+      type: "tournaments";
+    }
+  | {
       type: "hangout";
     }
   | {
@@ -59,7 +65,7 @@ type RouteOptions =
     }
   | {
       type: "edit-profile";
-      tab?: "basic-info" | "roles-skills" | "nostr" | "auth";
+      tab?: "basic-info" | "roles-skills" | "nostr" | "security";
     }
   | {
       type: "tournament";
@@ -68,6 +74,8 @@ type RouteOptions =
     };
 
 export function createRoute(options: RouteOptions) {
+  if (options.type === "login") return "/login";
+
   if (
     (options.type === "post" && options.postType.toLowerCase() === "story") ||
     options.type === "story"
@@ -133,6 +141,8 @@ export function createRoute(options: RouteOptions) {
 
   if (options.type === "projects-page") return "/projects";
 
+  if (options.type === "tournaments") return "/tournaments";
+
   if (options.type === "project") return `/project/${options.tag}`;
 
   if (options.type === "edit-project")
@@ -175,13 +185,18 @@ export const PAGES_ROUTES = {
     byId: "/profile/:id/*",
   },
   tournament: {
+    default: "/tournaments",
     byId: "/tournaments/:id/*",
   },
   home: {
     default: "/home",
   },
+  landingPage: {
+    buildOnBitcoin: "/Build-On-Bitcoin",
+  },
   auth: {
     login: "/login",
+    loginEmail: "/login-email",
     logout: "/logout",
   },
 };

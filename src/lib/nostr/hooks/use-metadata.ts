@@ -8,12 +8,10 @@ import {
 } from "react";
 import { useRelayPool } from "./use-relays-pool";
 import { nip05 } from "nostr-tools";
-import {
-  NostrKeysMetadataQuery,
-  useNostrKeysMetadataLazyQuery,
-} from "src/graphql";
+import { NostrKeysMetadataDocument, NostrKeysMetadataQuery } from "src/graphql";
 import { getProfileDataFromMetaData } from "../helpers";
 import { NostrEvent, NostrProfile } from "../types";
+import { useApolloClient } from "@apollo/client";
 
 export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
   const { relayPool } = useRelayPool();
@@ -26,7 +24,7 @@ export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
     Record<string, NostrKeysMetadataQuery["usersByNostrKeys"][number]["user"]>
   >({});
 
-  const [getMetadataFromApi] = useNostrKeysMetadataLazyQuery();
+  const apolloClient = useApolloClient();
 
   const profilesData = useMemo(() => {
     let result: Record<string, NostrProfile> = {};
@@ -113,8 +111,13 @@ export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
       pubkeysToFetch.forEach((k) => (metadataFetching.current[k] = true));
 
       fetchMetadata(pubkeysToFetch);
-      getMetadataFromApi({ variables: { keys: pubkeysToFetch } }).then(
-        ({ data }) => {
+
+      apolloClient
+        .query<NostrKeysMetadataQuery>({
+          query: NostrKeysMetadataDocument,
+          variables: { keys: pubkeysToFetch },
+        })
+        .then(({ data }) => {
           if (data) {
             const newEntries = data.usersByNostrKeys.reduce(
               (acc, cur) => ({ ...acc, [cur.key]: cur.user }),
@@ -122,10 +125,9 @@ export const useMetaData = ({ pubkeys }: { pubkeys: string[] }) => {
             );
             setUsersDataFromApi((curr) => ({ ...curr, ...newEntries }));
           }
-        }
-      );
+        });
     }
-  }, [fetchMetadata, getMetadataFromApi, pubkeys, relayPool]);
+  }, [apolloClient, fetchMetadata, pubkeys, relayPool]);
 
   async function fetchNIP05(pubkey: string, meta: any) {
     if (meta && meta.nip05)

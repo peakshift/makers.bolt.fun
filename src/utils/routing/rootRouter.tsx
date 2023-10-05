@@ -19,6 +19,8 @@ import ErrorPage from "src/Components/Errors/ErrorPage/ErrorPage";
 import { allTopicsPageLoader } from "src/features/Posts/pages/AllTopicsPage/allTopicsPage.loader";
 import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loader";
 import { Post_Type } from "src/graphql";
+import { LandingPage } from "src/features/LandingPage/LandingPage";
+import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
 
 const HomePage = Loadable(
   React.lazy(
@@ -154,6 +156,16 @@ const LoginPage = Loadable(
       )
   )
 );
+
+const LoginEmailPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "login_email_page" */ "../../features/Auth/pages/LoginEmailPage/LoginEmailPage"
+      )
+  )
+);
+
 const LogoutPage = Loadable(
   React.lazy(
     () =>
@@ -239,6 +251,12 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             path={PAGES_ROUTES.projects.default}
             element={<ExplorePage />}
           />
+
+          <Route
+            path={PAGES_ROUTES.tournament.default}
+            element={<EventsPage />}
+          />
+
           <Route
             path={PAGES_ROUTES.blog.tagPage}
             element={<TagPage />}
@@ -270,9 +288,9 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             element={<TournamentDetailsPage />}
           />
 
-          <Route path={PAGES_ROUTES.home.default} element={<HomePage />} />
+          <Route path={PAGES_ROUTES.home.default} element={<LandingPage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
-          <Route path={"/Build-On-Bitcoin"} element={<HomePage />} />
+          <Route path={PAGES_ROUTES.landingPage.buildOnBitcoin} element={<HomePage />} />
         </Route>
 
         <Route
@@ -310,6 +328,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.profile.byId} element={<ProfilePage />} />
 
         <Route path={PAGES_ROUTES.auth.login} element={<LoginPage />} />
+        <Route
+          path={PAGES_ROUTES.auth.loginEmail}
+          element={<LoginEmailPage />}
+        />
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
         <Route path={"/privacy-policy"} element={<PrivacyPolicyPage />} />

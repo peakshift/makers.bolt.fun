@@ -120,7 +120,7 @@ export default function RegisterCard({
                     className="mt-8 !text-white bg-violet-600"
                   >
                     <span className="align-middle ml-4 flex justify-center gap-12 items-center">
-                      Our Discord Server <FaDiscord />
+                      Join our Discord <FaDiscord />
                     </span>
                   </Button>
                 );

@@ -206,7 +206,12 @@ input ImageInput {
   id: String
   name: String
   provider_id: String
-  url: String
+  url: String!
+}
+
+type LinkedEmail {
+  createdAt: Date!
+  email: String!
 }
 
 type LnurlDetails {
@@ -257,7 +262,7 @@ type Mutation {
   updateProject(input: UpdateProjectInput): CreateProjectResponse
   updateTournament(data: UpdateTournamentInput): Tournament
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
-  updateUserPreferences(userKeys: [UserKeyInputType!]): User!
+  updateUserPreferences(newEmails: [UserEmailInputType!], newKeys: [UserKeyInputType!]): User!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
 }
 
@@ -812,6 +817,10 @@ type User implements BaseUser {
   website: String
 }
 
+input UserEmailInputType {
+  email: String!
+}
+
 input UserKeyInputType {
   key: String!
   name: String!
@@ -821,6 +830,7 @@ type UserPrivateData {
   default_nostr_prv_key: String
   default_nostr_pub_key: String
   email: String
+  emails: [LinkedEmail!]!
   id: Int!
   walletsKeys: [WalletKey!]!
 }

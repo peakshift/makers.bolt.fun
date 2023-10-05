@@ -32,7 +32,7 @@ We are using serverless functions to serve our GraphQl endpoint to the client ap
 
 ## Running locally
 
-To run the project locally with your own local DB, you will need to first put a few env variables in an env file that should be created in /envs/server directory, named `local.env`
+To run the project locally with your own local Postgres DB, you will need to first put a few env variables in an env file that should be created in /envs/server directory, named `local.env`
 
 The required variables that needs to be put there are:
 
@@ -45,7 +45,7 @@ CLOUDFLARE_IMAGE_ACCOUNT_ID = "FOR UPLOADING IMAGES"
 CLOUDFLARE_IMAGE_API_KEY = "FOR UPLOADING IMAGES"
 CLOUDFLARE_IMAGE_ACCOUNT_HASH = "FOR UPLOADING IMAGES"
 ```
-
+For generating the JWT Secret we recommend using: https://www.grc.com/passwords.htm.
 Then you need to run the migrations against your database.
 use the command:
 
@@ -70,3 +70,23 @@ Create a migration from the schema.prisma file
 `prisma migrate deploy`
 
 Apply pending migrations to the database
+
+## Meilisearch
+
+We have integrated Meilisearch to our backend to provide a better search experience for our users. To run Meilisearch locally, go [here](https://www.meilisearch.com/docs/learn/getting_started/quick_start). To migrate data to Meilisearch, export your Database Tables, User, Stories, Tags, and Categories to JSON files. Many tools exist to do this but we recommend [Beekeeper Studio](https://www.beekeeperstudio.io/). Export your data to JSON files into the `/tools` directory. Install the requirements by doing 
+
+`python3 -m pip install -r requirements.txt`
+
+Then add your environment variables to a `.env` file in the `/tools` directory. The required variables are:
+
+```
+MEILISEARCH_HOST=
+MEILISEARCH_API_KEY=
+```
+
+Then run the migration script with
+
+`python3 migrateMeilisearch.py`
+
+If the files are large, this process may take awhile.
+

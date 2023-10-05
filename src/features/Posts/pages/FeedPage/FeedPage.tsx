@@ -6,16 +6,19 @@ import PostsList from "../../Components/PostsList/PostsList";
 import TrendingCard from "../../Components/TrendingCard/TrendingCard";
 import { FilterTag } from "./PopularTagsFilter/FeedTagsFilter";
 import styles from "./styles.module.scss";
-import { useAppDispatch } from "src/utils/hooks";
 import OgTags from "src/Components/OgTags/OgTags";
 import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
 import SkipLink from "src/Components/SkipLink/SkipLink";
 import { withProviders } from "src/utils/hoc";
 import { RelayPoolProvider } from "src/lib/nostr";
+import { BillboardTemplate } from "src/Components/Ads/BillboardTemplate";
+import { useGetRandomBillboardItem } from "./useGetRandomBillboardItem";
 
 function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
   const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
+
+  const randomBillboardItem = useGetRandomBillboardItem();
 
   const feedQuery = useFeedQuery({
     variables: {
@@ -29,6 +32,7 @@ function FeedPage() {
     feedQuery,
     "getFeed"
   );
+
   useUpdateEffect(variablesChanged, [sortByFilter, tagFilter]);
 
   usePreload("PostPage");
@@ -52,6 +56,7 @@ function FeedPage() {
         </div>
         <aside id="side" className="no-scrollbar">
           <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
+            <BillboardTemplate content={randomBillboardItem} />
             <a
               href="https://snort.social/p/npub1funq0ywh32faz0sf7xt97japu8uk687tsysj8gndj4ehe825sq4s70gs0p"
               target="_blank"

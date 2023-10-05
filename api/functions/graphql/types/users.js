@@ -22,7 +22,7 @@ const {
   verifySignature,
   validateEvent,
 } = require("../../../utils/nostr-tools");
-const { queueService } = require("../../../services/queue.service");
+const { queueService } = require("../../../services/queue-service");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -299,6 +299,20 @@ const UserPrivateData = objectType({
           );
       },
     });
+
+    t.nonNull.list.nonNull.field("emails", {
+      type: LinkedEmail,
+      resolve: (parent) => {
+        return prisma.userEmail.findMany({
+          where: {
+            user_id: parent.id,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        });
+      },
+    });
   },
 });
 
@@ -403,7 +417,7 @@ const usersByNostrKeys = extendType({
         keys: nonNull(list(nonNull(stringArg()))),
       },
       async resolve(parent, { keys }, ctx) {
-        return prisma.userNostrKey
+        const keysConnectedByUsers = prisma.userNostrKey
           .findMany({
             where: {
               key: {
@@ -421,6 +435,27 @@ const usersByNostrKeys = extendType({
           .then((data) =>
             data.map((item) => ({ key: item.key, user: item.user }))
           );
+
+        const keysGeneratedByDefault = prisma.user
+          .findMany({
+            where: {
+              nostr_pub_key: {
+                in: keys,
+              },
+            },
+            include: {
+              avatar_rel: true,
+            },
+          })
+          .then((data) =>
+            data.map((item) => ({ key: item.nostr_pub_key, user: item }))
+          );
+
+        return Promise.all([keysConnectedByUsers, keysGeneratedByDefault]).then(
+          (data) => {
+            return [...data[0], ...data[1]];
+          }
+        );
       },
     });
   },
@@ -489,7 +524,7 @@ const updateProfileDetails = extendType({
         }
 
         // Preprocess & insert
-        return prisma.user.update({
+        const updatedUser = await prisma.user.update({
           where: {
             id: user.id,
           },
@@ -502,6 +537,10 @@ const updateProfileDetails = extendType({
             avatar: "",
           }),
         });
+
+        await queueService.searchIndexService.updateUser(updatedUser);
+
+        return updatedUser;
       },
     });
   },
@@ -573,7 +612,7 @@ const linkNostrKey = extendType({
         });
 
         await Promise.allSettled([
-          queueService.publishProfileVerifiedEvent({ event }),
+          queueService.nostrService.publishProfileVerifiedEvent({ event }),
         ]);
 
         return prisma.user.findUnique({
@@ -737,6 +776,14 @@ const WalletKey = objectType({
   },
 });
 
+const LinkedEmail = objectType({
+  name: "LinkedEmail",
+  definition(t) {
+    t.nonNull.string("email");
+    t.nonNull.date("createdAt");
+  },
+});
+
 const NostrKey = objectType({
   name: "NostrKey",
   definition(t) {
@@ -755,60 +802,100 @@ const UserKeyInputType = inputObjectType({
   },
 });
 
+const UserEmailInputType = inputObjectType({
+  name: "UserEmailInputType",
+  definition(t) {
+    t.nonNull.string("email");
+  },
+});
+
 const updateUserPreferences = extendType({
   type: "Mutation",
   definition(t) {
     t.nonNull.field("updateUserPreferences", {
       type: "User",
-      args: { userKeys: list(nonNull(UserKeyInputType)) },
+      args: {
+        newKeys: list(nonNull(UserKeyInputType)),
+        newEmails: list(nonNull(UserEmailInputType)),
+      },
       async resolve(_root, args, ctx) {
         const user = ctx.user;
         if (!user?.id) throw new Error("You have to login");
 
-        //Update the userkeys
-        //--------------------
-
-        // Check if all the sent keys belong to the user
-        const userKeys = (
-          await prisma.userKey.findMany({
+        // Check if all the sent keys & emails belong to the user
+        const [currentKeys, currentEmails] = await Promise.all([
+          prisma.userKey.findMany({
             where: {
               AND: {
                 user_id: {
                   equals: user.id,
                 },
                 key: {
-                  in: args.userKeys.map((i) => i.key),
+                  in: args.newKeys.map((i) => i.key),
                 },
               },
             },
-            select: {
-              key: true,
+          }),
+          prisma.userEmail.findMany({
+            where: {
+              AND: {
+                user_id: {
+                  equals: user.id,
+                },
+                email: {
+                  in: args.newEmails.map((i) => i.email),
+                },
+              },
             },
-          })
-        ).map((i) => i.key);
+          }),
+        ]);
 
         const newKeys = [];
-        for (let i = 0; i < args.userKeys.length; i++) {
-          const item = args.userKeys[i];
-          if (userKeys.includes(item.key)) newKeys.push(item);
+        for (let i = 0; i < args.newKeys.length; i++) {
+          const item = args.newKeys[i];
+
+          const found = currentKeys.find((k) => k.key === item.key);
+          if (found) newKeys.push(found);
         }
 
-        if (newKeys.length === 0)
-          throw new Error("You can't delete all your wallets keys");
+        const newEmails = [];
+        for (let i = 0; i < args.newEmails.length; i++) {
+          const item = args.newEmails[i];
 
-        await prisma.userKey.deleteMany({
-          where: {
-            user_id: user.id,
-          },
-        });
+          const found = currentEmails.find((e) => e.email === item.email);
+          if (found) newEmails.push(found);
+        }
 
-        await prisma.userKey.createMany({
-          data: newKeys.map((i) => ({
-            user_id: user.id,
-            key: i.key,
-            name: i.name,
-          })),
-        });
+        if (newKeys.length === 0 && newEmails.length === 0)
+          throw new Error("You can't delete all your sign in methods");
+
+        await prisma.$transaction([
+          prisma.userKey.deleteMany({
+            where: {
+              user_id: user.id,
+            },
+          }),
+          prisma.userKey.createMany({
+            data: newKeys.map((i) => ({
+              user_id: i.user_id,
+              key: i.key,
+              name: i.name,
+              createdAt: i.createdAt,
+            })),
+          }),
+          prisma.userEmail.deleteMany({
+            where: {
+              user_id: user.id,
+            },
+          }),
+          prisma.userEmail.createMany({
+            data: newEmails.map((i) => ({
+              user_id: i.user_id,
+              email: i.email,
+              createdAt: i.createdAt,
+            })),
+          }),
+        ]);
 
         return prisma.user.findUnique({ where: { id: user.id } });
       },

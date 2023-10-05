@@ -89,6 +89,7 @@ module.exports = {
         primary: ["2px solid #7B61FF", "1px"],
       },
       screens: {
+        xs: "400px",
         "max-md": { max: THEME.screens.md + "px" },
       },
     },

@@ -47,7 +47,7 @@ function getUrlFromProvider(provider, providerImageId, variant = null) {
   throw new Error("Hosting images provider not supported");
 }
 
-function findHostedImageById({ id, providerId }) {
+function findHostedImageById({ id, provider_id }) {
   if (id && !Number.isNaN(Number(id)))
     return prisma.hostedImage.findUnique({
       where: {
@@ -55,10 +55,10 @@ function findHostedImageById({ id, providerId }) {
       },
     });
 
-  if (providerId)
+  if (provider_id)
     return prisma.hostedImage.findFirst({
       where: {
-        provider_image_id: providerId,
+        provider_image_id: provider_id,
       },
     });
 }

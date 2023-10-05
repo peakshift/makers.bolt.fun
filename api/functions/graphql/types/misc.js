@@ -8,7 +8,7 @@ const ImageInput = inputObjectType({
     t.string("id");
     t.string("provider_id");
     t.string("name");
-    t.string("url");
+    t.nonNull.string("url");
   },
 });
 

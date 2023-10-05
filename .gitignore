@@ -34,3 +34,9 @@ yarn-error.log*
 TODO
 TODO.md
 NOTES
+.venv
+pycache
+Category.json
+Stories.json
+Tags.json
+User.json
