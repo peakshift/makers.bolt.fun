@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import OgTags from "src/Components/OgTags/OgTags";
-import { useAppSelector } from "src/utils/hooks";
+import { useAppSelector, useNavigateBack } from "src/utils/hooks";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import { FiArrowLeft } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { PAGES_ROUTES } from "src/utils/routing";
 
 /*
 TODO
@@ -12,7 +11,9 @@ TODO
 
 export default function HangoutPage() {
   const me = useAppSelector((state) => state.user.me);
-  const navigate = useNavigate();
+
+  const navigateBack = useNavigateBack(PAGES_ROUTES.blog.feed);
+
   return (
     <>
       <OgTags
@@ -24,7 +25,7 @@ export default function HangoutPage() {
           <div className="">
             <button
               className={`w-48 aspect-square bg-primary-600 rounded-12 border-2 border-transparent justify-around items-center text-white hover:bg-primary-400 active:bg-primary-400`}
-              onClick={() => navigate(-1)}
+              onClick={navigateBack}
             >
               <FiArrowLeft className={"text-body3"} />
             </button>
