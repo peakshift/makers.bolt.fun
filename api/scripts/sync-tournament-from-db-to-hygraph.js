@@ -88,7 +88,7 @@ mutation MyMutation(
           data: {
             title: ""
             time: "2023-11-01T00:00:00Z"
-            eventLocation: Youtube
+            location: Youtube
             timezone: UTC
             type: Hangout
             url: ""
@@ -388,7 +388,7 @@ async function run() {
                 data: {
                   title: scheduleItem.title,
                   time: scheduleItem.time,
-                  eventLocation: scheduleItem.eventLocation,
+                  location: scheduleItem.location,
                   timezone: scheduleItem.timezone,
                   type: scheduleItem.type,
                   url: scheduleItem.url,
