@@ -21,7 +21,7 @@ import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
 import { RemoveWalletKeyModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveWalletKeyModal";
 import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingAccountModal";
-import { EventModal } from "src/features/Tournaments/pages/EventsPage/EventModal";
+import { EventModal } from "src/features/Tournaments/pages/WorkshopsPage/EventModal";
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";

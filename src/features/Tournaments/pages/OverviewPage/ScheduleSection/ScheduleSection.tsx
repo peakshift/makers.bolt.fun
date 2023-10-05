@@ -12,7 +12,15 @@ export default function ScheduleSection() {
     tournamentDetails: { schedule },
   } = useTournament();
 
-  console.log(schedule);
+  if (!schedule || schedule.length === 0)
+    return (
+      <div>
+        <p className="text-center py-24 text-gray-500 font-medium text-body3">
+          Schedule is being finalized. You will be updated as soon as we have it
+          ready. 🙌
+        </p>
+      </div>
+    );
 
   return (
     <div>
