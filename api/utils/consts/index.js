@@ -51,6 +51,13 @@ const env = envsafe(
     }),
     BF_QUEUES_SERVICE_USERNAME: str(),
     BF_QUEUES_SERVICE_PASS: str(),
+
+    HYGRAPH_CONTENT_API: url({
+      default: "",
+    }),
+    HYGRAPH_WEBHOOKS_SECRET: str({
+      default: "",
+    }),
   },
   {
     strict: true,

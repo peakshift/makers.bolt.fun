@@ -106,7 +106,7 @@ functions:
           path: pubkeys-to-users
           method: post
 
-  # Nostr-Related Functions
+  # Misc
   # ----------------------------
   on-job-success:
     handler: api/functions/on-job-success/on-job-success.handler
@@ -120,4 +120,11 @@ functions:
     events:
       - http:
           path: upload-image-url
+          method: post
+
+  test-something:
+    handler: api/functions/test-something/test-something.handler
+    events:
+      - http:
+          path: test-something
           method: post
