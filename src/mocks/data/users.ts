@@ -161,7 +161,7 @@ const tournaments = [
 export const users: User[] = [
   {
     id: 123,
-    avatar: "https://avatars.dicebear.com/api/bottts/Mtgmtg.svg",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Mtgmtg.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Mtg",
     github: "MTG2000",
@@ -218,7 +218,7 @@ export const users: User[] = [
   },
   {
     id: 441,
-    avatar: "https://avatars.dicebear.com/api/bottts/Eduardu.svg",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Eduardu.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Edward P",
     github: "barefoot_88",
@@ -275,7 +275,7 @@ export const users: User[] = [
   },
   {
     id: 422,
-    avatar: "https://avatars.dicebear.com/api/bottts/Johns.svg",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Johns.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Johns Beharry",
     github: "johnsbehhary",
@@ -332,7 +332,7 @@ export const users: User[] = [
   },
   {
     id: 511,
-    avatar: "https://avatars.dicebear.com/api/bottts/Carlos.svg",
+    avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Carlos.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
     name: "Mohammed Taher ",
     github: "MTG2000",

@@ -46,7 +46,7 @@ export function getProfileDataFromMetaData(
     pubkey,
     name: nip19.npubEncode(pubkey),
     about: null,
-    image: `https://avatars.dicebear.com/api/identicon/${pubkey}.svg`,
+    image: `https://api.dicebear.com/7.x/identicon/svg?seed=${pubkey}`,
     lightning_address: null,
     nip05: null,
     link: "nostr:" + nip19.npubEncode(pubkey),

@@ -68,7 +68,7 @@ const createNewUser = async (pubKey) => {
       filename: "avatar.svg",
       provider: "external",
       is_used: true,
-      url: `https://avatars.dicebear.com/api/bottts/${seed}.svg`,
+      url: `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`,
       provider_image_id: "",
     },
   });

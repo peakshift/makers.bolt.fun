@@ -59,19 +59,20 @@ async function generateNostrKeys() {
 
 async function main() {
   // console.log("Purging old data");
-  await purge();
-  await createUsers();
-  await fillUserKeysTable();
-  await createCategories();
-  await createTags();
-  await createProjects();
-  await createStories();
-  await createHackathons();
-  await createRoles();
-  await createSkills();
-  await createTournament();
-  await migrateOldImages();
-  await createCapabilities();
+  // await purge();
+  // await createUsers();
+  // await fillUserKeysTable();
+  // await createCategories();
+  // await createTags();
+  // await createProjects();
+  // await createStories();
+  // await createHackathons();
+  // await createRoles();
+  // await createSkills();
+  // await createTournament();
+  // await migrateOldImages();
+  // await createCapabilities();
+  // await updateUsersAvatarUrls();
 }
 
 async function migrateOldImages() {
@@ -628,6 +629,53 @@ async function createHashtags() {
       },
     });
   }
+}
+
+async function updateUsersAvatarUrls() {
+  // 1. get all hosted images that starts with 'https://avatars.dicebear.com/api/bottts'
+  const hostedImagesToUpdate = await prisma.hostedImage.findMany({
+    where: {
+      url: {
+        startsWith: "https://avatars.dicebear.com/api/bottts",
+      },
+    },
+  });
+
+  // extract the seed from the end of the url after the /botts/ part
+  // and make the url: https://api.dicebear.com/7.x/bottts/svg?seed={SEED}
+  const hostedImagesToUpdateWithNewUrl = hostedImagesToUpdate.map((img) => {
+    const seed = img.url.split("/").pop().replace(".svg", "");
+
+    return {
+      ...img,
+      url: `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`,
+    };
+  });
+
+  console.log("Updating ", hostedImagesToUpdateWithNewUrl.length, " images");
+  // 2. update the hosted images with the new url
+
+  const allPromises = hostedImagesToUpdateWithNewUrl.map((img) =>
+    prisma.hostedImage.update({
+      where: { id: img.id },
+      data: { url: img.url },
+    })
+  );
+
+  // split into batches of 30 items
+  const allPromisesBatches = [];
+  while (allPromises.length) {
+    allPromisesBatches.push(allPromises.splice(0, 30));
+  }
+
+  console.log("Updating ", allPromisesBatches.length, " batches");
+  // run the batches in sequence
+  for (let i = 0; i < allPromisesBatches.length; i++) {
+    console.log("Updating batch ", i);
+    await Promise.all(allPromisesBatches[i]);
+  }
+
+  console.log("DONE!");
 }
 
 main()
