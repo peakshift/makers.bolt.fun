@@ -41,8 +41,26 @@ export type Award = {
   url: Scalars['String'];
 };
 
+export type Badge = {
+  __typename?: 'Badge';
+  badgeDefinitionNostrEventId: Maybe<Scalars['String']>;
+  description: Scalars['String'];
+  id: Scalars['Int'];
+  image: Scalars['String'];
+  slug: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type BadgeProgress = {
+  __typename?: 'BadgeProgress';
+  current: Maybe<Scalars['Int']>;
+  isCompleted: Scalars['Boolean'];
+  totalNeeded: Maybe<Scalars['Int']>;
+};
+
 export type BaseUser = {
   avatar: Scalars['String'];
+  badges: Array<UserBadge>;
   bio: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -1138,6 +1156,7 @@ export type UpdateTournamentRegistrationInput = {
 export type User = BaseUser & {
   __typename?: 'User';
   avatar: Scalars['String'];
+  badges: Array<UserBadge>;
   bio: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -1167,6 +1186,13 @@ export type User = BaseUser & {
 
 export type UserIn_TournamentArgs = {
   id: Scalars['Int'];
+};
+
+export type UserBadge = {
+  __typename?: 'UserBadge';
+  badge: Badge;
+  id: Scalars['String'];
+  progress: Maybe<BadgeProgress>;
 };
 
 export type UserEmailInputType = {
@@ -1448,7 +1474,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, totalNeeded: number | null, current: number | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -3337,6 +3363,22 @@ export const ProfileDocument = gql`
       thumbnail_image
       start_date
       end_date
+    }
+    badges {
+      id
+      badge {
+        id
+        title
+        slug
+        image
+        description
+        badgeDefinitionNostrEventId
+      }
+      progress {
+        isCompleted
+        totalNeeded
+        current
+      }
     }
     projects {
       id

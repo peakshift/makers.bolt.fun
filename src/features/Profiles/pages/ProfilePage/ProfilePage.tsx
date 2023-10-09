@@ -16,6 +16,7 @@ import MakerProjectsCard from "./MakerProjectsCard/MakerProjectsCard";
 import OgTags from "src/Components/OgTags/OgTags";
 import { withProviders } from "src/utils/hoc";
 import { RelayPoolProvider } from "src/lib/nostr";
+import BadgesCard from "./BadgesCard/BadgesCard";
 
 function ProfilePage() {
   const { id } = useParams();
@@ -65,6 +66,10 @@ function ProfilePage() {
               </aside>
               <main className="min-w-0">
                 <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
+                <BadgesCard
+                  badges={profileQuery.data.profile.badges}
+                  isOwner={isOwner}
+                />
                 <StoriesCard
                   stories={profileQuery.data.profile.stories}
                   isOwner={isOwner}
@@ -94,6 +99,10 @@ function ProfilePage() {
                 />
                 <MakerProjectsCard
                   projects={profileQuery.data.profile.projects}
+                  isOwner={isOwner}
+                />
+                <BadgesCard
+                  badges={profileQuery.data.profile.badges}
                   isOwner={isOwner}
                 />
                 <StoriesCard

@@ -40,6 +40,7 @@ const postUploadImageUrl = async (req, res) => {
       .status(200)
       .json({ id: hostedImage.id, uploadURL: uploadUrl.uploadURL });
   } catch (error) {
+    console.log(error);
     res.status(500).send("Unexpected error happened, please try again");
   }
 };

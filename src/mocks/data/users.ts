@@ -185,6 +185,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -242,6 +243,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -299,6 +301,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -356,6 +359,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
