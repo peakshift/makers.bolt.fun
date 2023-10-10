@@ -34,6 +34,7 @@ type Badge {
 }
 
 type BadgeProgress {
+  badgeAwardNostrEventId: String
   current: Int
   isCompleted: Boolean!
   totalNeeded: Int

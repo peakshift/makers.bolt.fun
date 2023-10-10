@@ -29,6 +29,7 @@ query profile($profileId: Int!) {
       }
       progress {
         isCompleted
+        badgeAwardNostrEventId
         totalNeeded
         current
       }

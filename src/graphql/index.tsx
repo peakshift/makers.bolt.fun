@@ -53,6 +53,7 @@ export type Badge = {
 
 export type BadgeProgress = {
   __typename?: 'BadgeProgress';
+  badgeAwardNostrEventId: Maybe<Scalars['String']>;
   current: Maybe<Scalars['Int']>;
   isCompleted: Scalars['Boolean'];
   totalNeeded: Maybe<Scalars['Int']>;
@@ -1474,7 +1475,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, totalNeeded: number | null, current: number | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, badgeAwardNostrEventId: string | null, totalNeeded: number | null, current: number | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -3376,6 +3377,7 @@ export const ProfileDocument = gql`
       }
       progress {
         isCompleted
+        badgeAwardNostrEventId
         totalNeeded
         current
       }

@@ -1,4 +1,4 @@
-import React from "react";
+import Button from "src/Components/Button/Button";
 import { BadgeProgress, UserBadge } from "src/graphql";
 
 interface Props {
@@ -7,7 +7,15 @@ interface Props {
 }
 
 export default function BadgeCard({ userBadge, showProgress }: Props) {
-  if (showProgress)
+  if (showProgress) {
+    if (!userBadge.progress) throw new Error("Progress is null");
+
+    const isCompleted =
+      userBadge.progress.isCompleted ||
+      (userBadge.progress.current &&
+        userBadge.progress.totalNeeded &&
+        userBadge.progress.current >= userBadge.progress.totalNeeded);
+
     return (
       <div className="bg-gray-100 py-8 px-16 rounded">
         <div className="flex gap-8">
@@ -24,30 +32,58 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
           </div>
         </div>
         <div>
-          {hasProgressBar(userBadge.progress) && (
-            <div className="mt-8">
-              <div className="relative bg-white h-16 rounded p-[2px] border-2 border-gray-200">
-                <div
-                  className="bg-primary-500 rounded-16 h-full origin-left"
-                  style={{
-                    width: `${
-                      getProgressPercentage(userBadge.progress) * 100
-                    }%`,
-                  }}
-                ></div>
-              </div>
-              <div className="flex justify-end">
+          <div className="mt-8">
+            <div className="relative bg-white h-16 rounded p-[2px] border-2 border-gray-200">
+              <div
+                className={`${
+                  isCompleted ? "bg-green-400" : "bg-primary-500"
+                } rounded-16 h-full origin-left`}
+                style={{
+                  width: `${
+                    isCompleted
+                      ? 100
+                      : getProgressPercentage(userBadge.progress) * 100
+                  }%`,
+                }}
+              ></div>
+            </div>
+            <div className="flex items-center mt-8 gap-8">
+              {isCompleted ? (
+                <>
+                  {userBadge.progress.badgeAwardNostrEventId ? (
+                    <p className="text-body4 font-bold text-green-500 mx-auto">
+                      Completed!
+                    </p>
+                  ) : (
+                    <Button size="sm" color="primary" className="mx-auto my-16">
+                      Claim Your Nostr Badge! 🎖️
+                    </Button>
+                  )}
+                </>
+              ) : (
                 <p className="text-body5 text-gray-500 mt-8 ml-auto">
                   <span className="sr-only">Progress: </span>
                   {userBadge.progress.current ?? 0} /{" "}
-                  {userBadge.progress.totalNeeded}
+                  {userBadge.progress.totalNeeded ?? 1}
                 </p>
-              </div>
+              )}
             </div>
-          )}
+            {userBadge.progress.badgeAwardNostrEventId && (
+              <Button
+                color="primary"
+                variant="text"
+                fullWidth
+                newTab
+                href={`https://badges.page/b/${userBadge.progress.badgeAwardNostrEventId}`}
+              >
+                View Nostr Badge 🎖️
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     );
+  }
 
   return (
     <div className="bg-gray-100 py-8 px-16 rounded h-full">
@@ -68,10 +104,10 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
   );
 }
 
-function hasProgressBar(
+function progressNotNull(
   progress: UserBadge["progress"]
 ): progress is BadgeProgress {
-  return Boolean(progress?.totalNeeded && progress.totalNeeded > 1);
+  return Boolean(progress);
 }
 
 function getProgressPercentage(progress: BadgeProgress) {

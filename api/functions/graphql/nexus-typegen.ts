@@ -299,6 +299,7 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   BadgeProgress: { // root type
+    badgeAwardNostrEventId?: string | null; // String
     current?: number | null; // Int
     isCompleted: boolean; // Boolean!
     totalNeeded?: number | null; // Int
@@ -658,6 +659,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   BadgeProgress: { // field return type
+    badgeAwardNostrEventId: string | null; // String
     current: number | null; // Int
     isCompleted: boolean; // Boolean!
     totalNeeded: number | null; // Int
@@ -1170,6 +1172,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   BadgeProgress: { // field return type name
+    badgeAwardNostrEventId: 'String'
     current: 'Int'
     isCompleted: 'Boolean'
     totalNeeded: 'Int'
