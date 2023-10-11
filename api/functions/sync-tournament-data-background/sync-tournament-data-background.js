@@ -114,6 +114,7 @@ const syncTournamentData = async (req, res) => {
     const config = {
       registerationOpen: body.data.config?.registerationOpen ?? false,
       projectsSubmissionOpen: body.data.config?.projectsSubmissionOpen ?? false,
+      projectsSubmissionClosesOn: body.data.config?.projectsSubmissionClosesOn,
       ideasRootNostrEventId: body.data.config?.ideasRootNostrEventId,
       showFeed: body.data.config?.showFeed,
       mainFeedHashtag: body.data.config?.mainFeedHashtag,

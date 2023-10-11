@@ -32,7 +32,11 @@ export default function RegisterCard({
 }: Props) {
   const counter = useCountdown(start_date);
   const {
-    tournamentDetails: { id: tournamentId, end_date },
+    tournamentDetails: {
+      id: tournamentId,
+      end_date,
+      config: { projectsSubmissionClosesOn },
+    },
   } = useTournament();
 
   const isLoggedIn = useAppSelector((state) => !!state.user.me);
@@ -149,7 +153,8 @@ export default function RegisterCard({
               <span>&#8226;</span>
               <span className="font-medium text-body5">Live</span>
               <span className="font-medium text-body6 text-gray-500 ml-auto">
-                entries close {dayjs(end_date).format("Do MMM")}
+                entries close{" "}
+                {dayjs(projectsSubmissionClosesOn ?? end_date).format("Do MMM")}
               </span>
             </div>
           ) : (

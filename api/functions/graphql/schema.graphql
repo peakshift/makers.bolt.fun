@@ -555,6 +555,7 @@ type TournamentConfig {
   feedFilters: [String!]
   ideasRootNostrEventId: String
   mainFeedHashtag: String
+  projectsSubmissionClosesOn: Date
   projectsSubmissionOpen: Boolean!
   registerationOpen: Boolean!
   showFeed: Boolean
