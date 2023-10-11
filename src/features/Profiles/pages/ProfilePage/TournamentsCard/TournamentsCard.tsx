@@ -44,7 +44,7 @@ export default function TournamentsCard({
               <li key={item.tournament.id}>
                 <Link
                   to={"/tournaments/" + item.tournament.id}
-                  className="flex gap-16 items-center"
+                  className="flex gap-16 items-start"
                 >
                   <img
                     src={item.tournament.thumbnail_image}
@@ -55,6 +55,11 @@ export default function TournamentsCard({
                     <p className="text-gray-900 font-medium">
                       {item.tournament.title}
                     </p>
+                    {item.track && (
+                      <p className="text-body5 text-gray-500 font-medium">
+                        {item.track.title} Track {item.track.icon}
+                      </p>
+                    )}
                     <p
                       className={`
                                     text-body5 font-medium
@@ -74,13 +79,6 @@ export default function TournamentsCard({
                     </p>
                   </div>
                 </Link>
-                {item.track && (
-                  <div className="mt-8 text-body5 text-gray-500">
-                    <span className="font-medium">
-                      {item.track.icon} {item.track.title} Track
-                    </span>
-                  </div>
-                )}
               </li>
             );
           })}
