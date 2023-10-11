@@ -175,20 +175,20 @@ const syncTournamentData = async (req, res) => {
       url: deal.url,
     }));
 
-    // const prizes = body.data.prizes.map((prize) => ({
-    //   title: prize.title,
-    //   description: prize.description,
-    //   image: prize.image,
-    //   positions: prize.positions.map((position) => ({
-    //     position: position.position,
-    //     reward: position.reward,
-    //     project: position.project, // optional
-    //   })),
-    //   additional_prizes: prize.additional_prizes.map((additional_prize) => ({
-    //     text: additional_prize.text,
-    //     url: additional_prize.url,
-    //   })),
-    // }));
+    const prizes = body.data.prizes?.map((prize) => ({
+      title: prize.title,
+      description: prize.description,
+      image: prize.image,
+      positions: prize.positions.map((position) => ({
+        position: position.position,
+        reward: position.reward,
+        project: position.project, // optional
+      })),
+      additional_prizes: prize.additional_prizes.map((additional_prize) => ({
+        text: additional_prize.text,
+        url: additional_prize.url,
+      })),
+    }));
 
     let updatedCoverImage = undefined;
 
@@ -268,7 +268,7 @@ const syncTournamentData = async (req, res) => {
         contacts,
         partners,
         makers_deals,
-        // prizes,
+        prizes,
       },
     });
 
