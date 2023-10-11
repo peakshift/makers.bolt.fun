@@ -425,6 +425,10 @@ export interface NexusGenObjects {
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
     user: NexusGenRootTypes['User']; // User!
   }
+  ProjectTournament: { // root type
+    tournament: NexusGenRootTypes['Tournament']; // Tournament!
+    track: NexusGenRootTypes['TournamentTrack']; // TournamentTrack!
+  }
   Query: {};
   Question: { // root type
     body: string; // String!
@@ -799,7 +803,7 @@ export interface NexusGenFieldTypes {
     telegram: string | null; // String
     thumbnail_image: string | null; // String
     title: string; // String!
-    tournaments: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
+    tournaments: NexusGenRootTypes['ProjectTournament'][]; // [ProjectTournament!]!
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
@@ -811,6 +815,10 @@ export interface NexusGenFieldTypes {
   ProjectMember: { // field return type
     role: NexusGenEnums['TEAM_MEMBER_ROLE']; // TEAM_MEMBER_ROLE!
     user: NexusGenRootTypes['User']; // User!
+  }
+  ProjectTournament: { // field return type
+    tournament: NexusGenRootTypes['Tournament']; // Tournament!
+    track: NexusGenRootTypes['TournamentTrack']; // TournamentTrack!
   }
   Query: { // field return type
     activeUsers: NexusGenRootTypes['User'][]; // [User!]!
@@ -1292,7 +1300,7 @@ export interface NexusGenFieldTypeNames {
     telegram: 'String'
     thumbnail_image: 'String'
     title: 'String'
-    tournaments: 'Tournament'
+    tournaments: 'ProjectTournament'
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
@@ -1304,6 +1312,10 @@ export interface NexusGenFieldTypeNames {
   ProjectMember: { // field return type name
     role: 'TEAM_MEMBER_ROLE'
     user: 'User'
+  }
+  ProjectTournament: { // field return type name
+    tournament: 'Tournament'
+    track: 'TournamentTrack'
   }
   Query: { // field return type name
     activeUsers: 'User'

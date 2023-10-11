@@ -519,7 +519,7 @@ export type Project = {
   telegram: Maybe<Scalars['String']>;
   thumbnail_image: Maybe<Scalars['String']>;
   title: Scalars['String'];
-  tournaments: Array<Tournament>;
+  tournaments: Array<ProjectTournament>;
   twitter: Maybe<Scalars['String']>;
   votes_count: Scalars['Int'];
   website: Scalars['String'];
@@ -553,6 +553,12 @@ export enum ProjectPermissionEnum {
   UpdateInfo = 'UpdateInfo',
   UpdateMembers = 'UpdateMembers'
 }
+
+export type ProjectTournament = {
+  __typename?: 'ProjectTournament';
+  tournament: Tournament;
+  track: TournamentTrack;
+};
 
 export type Query = {
   __typename?: 'Query';
@@ -1513,7 +1519,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, replit: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, replit: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'ProjectTournament', tournament: { __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }, track: { __typename?: 'TournamentTrack', title: string, icon: string } }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type SimilarProjectsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -3826,11 +3832,17 @@ export const ProjectDetailsDocument = gql`
       }
     }
     tournaments {
-      id
-      title
-      thumbnail_image
-      start_date
-      end_date
+      tournament {
+        id
+        title
+        thumbnail_image
+        start_date
+        end_date
+      }
+      track {
+        title
+        icon
+      }
     }
     capabilities {
       id

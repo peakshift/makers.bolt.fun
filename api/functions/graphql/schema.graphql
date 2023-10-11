@@ -371,7 +371,7 @@ type Project {
   telegram: String
   thumbnail_image: String
   title: String!
-  tournaments: [Tournament!]!
+  tournaments: [ProjectTournament!]!
   twitter: String
   votes_count: Int!
   website: String!
@@ -397,6 +397,11 @@ enum ProjectPermissionEnum {
   UpdateAdmins
   UpdateInfo
   UpdateMembers
+}
+
+type ProjectTournament {
+  tournament: Tournament!
+  track: TournamentTrack!
 }
 
 type Query {

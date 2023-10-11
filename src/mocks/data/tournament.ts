@@ -601,6 +601,7 @@ Bitcoin development can seem scary for new developers coming in, but it doesn't 
     config: {
       registerationOpen: true,
       projectsSubmissionOpen: true,
+      projectsSubmissionClosesOn: null,
       ideasRootNostrEventId: null,
       showFeed: false,
       mainFeedHashtag: null,
