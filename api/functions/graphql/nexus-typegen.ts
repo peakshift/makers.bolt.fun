@@ -478,7 +478,7 @@ export interface NexusGenObjects {
     feedFilters?: string[] | null; // [String!]
     ideasRootNostrEventId?: string | null; // String
     mainFeedHashtag?: string | null; // String
-    projectsSubmissionClosesOn?: NexusGenScalars['Date'] | null; // Date
+    projectsSubmissionClosesOn?: string | null; // String
     projectsSubmissionOpen: boolean; // Boolean!
     registerationOpen: boolean; // Boolean!
     showFeed?: boolean | null; // Boolean
@@ -936,7 +936,7 @@ export interface NexusGenFieldTypes {
     feedFilters: string[] | null; // [String!]
     ideasRootNostrEventId: string | null; // String
     mainFeedHashtag: string | null; // String
-    projectsSubmissionClosesOn: NexusGenScalars['Date'] | null; // Date
+    projectsSubmissionClosesOn: string | null; // String
     projectsSubmissionOpen: boolean; // Boolean!
     registerationOpen: boolean; // Boolean!
     showFeed: boolean | null; // Boolean
@@ -1433,7 +1433,7 @@ export interface NexusGenFieldTypeNames {
     feedFilters: 'String'
     ideasRootNostrEventId: 'String'
     mainFeedHashtag: 'String'
-    projectsSubmissionClosesOn: 'Date'
+    projectsSubmissionClosesOn: 'String'
     projectsSubmissionOpen: 'Boolean'
     registerationOpen: 'Boolean'
     showFeed: 'Boolean'

@@ -220,7 +220,7 @@ const TournamentConfig = objectType({
   definition(t) {
     t.nonNull.boolean("registerationOpen");
     t.nonNull.boolean("projectsSubmissionOpen");
-    t.date("projectsSubmissionClosesOn");
+    t.string("projectsSubmissionClosesOn");
     t.string("ideasRootNostrEventId");
     t.boolean("showFeed");
     t.string("mainFeedHashtag");
