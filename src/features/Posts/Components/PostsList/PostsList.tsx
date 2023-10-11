@@ -27,7 +27,7 @@ export default function PostsList(props: Props) {
     [props.items]
   );
 
-  const { postsToComments } = useFeedComments({
+  const { postsToComments, profilesData } = useFeedComments({
     events_ids: postsIds,
   });
 
@@ -54,7 +54,12 @@ export default function PostsList(props: Props) {
   return (
     <div ref={ref} className="flex flex-col gap-24">
       {props.items?.map((post) => (
-        <PostCard key={post.id} post={post} postsToComments={postsToComments} />
+        <PostCard
+          key={post.id}
+          post={post}
+          postsToComments={postsToComments}
+          commentsProfilesData={profilesData}
+        />
       ))}
       {props.isFetching && <PostCardSkeleton />}
     </div>

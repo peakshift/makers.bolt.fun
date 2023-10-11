@@ -25,6 +25,7 @@ interface Props {
   profilesData: Record<string, NostrProfile>;
   myProfile: NostrProfile | null;
   currentDepth?: number;
+  isDisconnected?: boolean;
 }
 
 const MAX_REPLIES_DEPTH = 3;
@@ -38,6 +39,7 @@ export default function Thread({
   replyTo,
   myProfile,
   currentDepth = 0,
+  isDisconnected = false,
 }: Props) {
   const [replyOpen, setReplyOpen] = useState(false);
   const [repliesCollapsed, toggleRepliesCollapsed] = useToggle(false);
@@ -130,10 +132,12 @@ export default function Thread({
                     replyTo={thread.id}
                     publishEvent={publishEvent}
                     myProfile={myProfile}
+                    isDisconnected={isDisconnected}
                   />
                 ))}
               {replyOpen && (
                 <AddComment
+                  isDisconnected={isDisconnected}
                   avatar={myProfile?.image}
                   autoFocus
                   placeholder="Leave a reply..."

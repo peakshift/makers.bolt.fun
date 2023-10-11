@@ -5,7 +5,7 @@ import Button from "../Button/Button";
 import ASSETS from "src/assets";
 import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
-import { useAppSelector } from "src/utils/hooks";
+import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { FiBell, FiMenu, FiPlusCircle } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToggle } from "@react-hookz/web";
@@ -13,9 +13,10 @@ import styles from "./styles.module.css";
 import "@szhsin/react-menu/dist/index.css";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
-import { createRoute, PAGES_ROUTES } from "src/utils/routing";
+import { createRoute } from "src/utils/routing";
 import { SideNavigation } from "../SideNavigation";
 import NotificationsList from "./NotificationsList/NotificationsList";
+import { openModal } from "src/redux/features/modals.slice";
 
 const navBtnVariant = {
   menuHide: { rotate: 90, opacity: 0 },
@@ -56,6 +57,8 @@ const listArrowVariants = {
 };
 
 export default function NavMobile() {
+  const dispatch = useAppDispatch();
+
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
   const [eventsOpen, toggleEventsOpen] = useToggle(false);
 
@@ -88,6 +91,14 @@ export default function NavMobile() {
     else {
       navigate("#nav-menu");
     }
+  };
+
+  const openLoginModal = () => {
+    dispatch(
+      openModal({
+        Modal: "LoginModal",
+      })
+    );
   };
 
   return (
@@ -207,19 +218,14 @@ export default function NavMobile() {
                   </MenuItem>
                 </Menu>
               ) : (
-                <Link
-                  to={PAGES_ROUTES.auth.login}
-                  state={{ from: window.location.pathname }}
+                <Button
+                  size="sm"
+                  color="none"
+                  className="!text-body5 whitespace-nowrap"
+                  onClick={openLoginModal}
                 >
-                  <Button
-                    size="sm"
-                    color="none"
-                    className="!text-body5 whitespace-nowrap"
-                    state={{ from: location.pathname }}
-                  >
-                    Sign In ⚡
-                  </Button>
-                </Link>
+                  Sign in 🔑
+                </Button>
               )}
             </div>
           </div>
@@ -253,7 +259,7 @@ export default function NavMobile() {
               menuButton={
                 <Button color="gray" size="sm">
                   <FiPlusCircle className="text-gray-600 mr-8" />
-                  Create
+                  Write
                 </Button>
               }
             >

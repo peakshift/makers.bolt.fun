@@ -77,7 +77,7 @@ Join our FUN community of builders and designers
           onClick={onClose}
         />
         <h2 className="text-h5 font-bold text-center">
-          Link a Nostr Key to Bolt.Fun Profile
+          Link a Nostr Key to BOLT.FUN Profile
         </h2>
       </div>
       <hr className="bg-gray-200" />

@@ -12,11 +12,14 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { NotificationsService } from "src/services";
 import { NetworkStatus } from "@apollo/client";
+import LinkedEmailsCard from "./LinkedEmailsCard/LinkedEmailsCard";
 
 interface Props {}
 
-export type IProfilePreferencesForm =
-  NonNullable<UpdateUserPreferencesMutationVariables>;
+export type IProfilePreferencesForm = NonNullable<{
+  walletsKeys: UpdateUserPreferencesMutationVariables["newKeys"];
+  emails: UpdateUserPreferencesMutationVariables["newEmails"];
+}>;
 
 const schema: yup.SchemaOf<IProfilePreferencesForm> = yup
   .object({
@@ -32,25 +35,36 @@ const schema: yup.SchemaOf<IProfilePreferencesForm> = yup
           .required()
       )
       .required(),
+    emails: yup
+      .array()
+      .of(
+        yup
+          .object()
+          .shape({
+            email: yup.string().required(),
+          })
+          .required()
+      )
+      .required(),
   })
   .required();
 
 export default function PreferencesTab() {
-  const {
-    formState: { isDirty },
-    handleSubmit,
-    reset,
-    control,
-  } = useForm<IProfilePreferencesForm>({
+  const { handleSubmit, reset, control } = useForm<IProfilePreferencesForm>({
     defaultValues: {
       walletsKeys: [],
+      emails: [],
     },
     resolver: yupResolver(schema),
   });
 
   const query = useMyProfilePreferencesQuery({
     onCompleted: (data) => {
-      if (data.me) reset({ ...data.me, ...data.me.private_data });
+      if (data.me)
+        reset({
+          walletsKeys: data.me.private_data.walletsKeys,
+          emails: data.me.private_data.emails,
+        });
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -63,6 +77,7 @@ export default function PreferencesTab() {
 
   const onSubmit: SubmitHandler<IProfilePreferencesForm> = (data) => {
     if (!Array.isArray(data.walletsKeys)) return;
+    if (!Array.isArray(data.emails)) return;
 
     const toastId = toast.loading(
       "Saving changes...",
@@ -71,13 +86,14 @@ export default function PreferencesTab() {
 
     mutate({
       variables: {
-        walletsKeys: data.walletsKeys.map(({ key, name }) => ({ key, name })),
+        newKeys: data.walletsKeys.map(({ key, name }) => ({ key, name })),
+        newEmails: data.emails.map(({ email }) => ({ email })),
       },
       onCompleted: ({ updateUserPreferences }) => {
         if (updateUserPreferences) {
           reset({
-            ...updateUserPreferences,
-            ...updateUserPreferences.private_data,
+            walletsKeys: updateUserPreferences.private_data.walletsKeys,
+            emails: updateUserPreferences.private_data.emails,
           });
           toast.update(toastId, {
             render: "Saved changes successfully",
@@ -106,6 +122,19 @@ export default function PreferencesTab() {
           name="walletsKeys"
           render={({ field: { onChange, value } }) => (
             <LinkedAccountsCard
+              value={value as any}
+              onChange={(v) => {
+                onChange(v);
+                handleSubmit(onSubmit)();
+              }}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="emails"
+          render={({ field: { onChange, value } }) => (
+            <LinkedEmailsCard
               value={value as any}
               onChange={(v) => {
                 onChange(v);

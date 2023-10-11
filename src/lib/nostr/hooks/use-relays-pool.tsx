@@ -92,7 +92,12 @@ export const useRelayPoolStatus = (relayPool: RelayPool | null) => {
     return () => clearInterval(interval);
   }, [relayPool]);
 
+  const isOpen = Array.from(relaysStatus.values()).some(
+    (status) => status === WebSocket.OPEN
+  );
+
   return {
     relaysStatus,
+    isOpen,
   };
 };

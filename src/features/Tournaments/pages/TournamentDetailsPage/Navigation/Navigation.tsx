@@ -31,8 +31,12 @@ export default function Navigation() {
         hide: !showFeed,
       },
       {
-        text: `Events`,
-        path: "events",
+        text: `Schedule`,
+        path: "schedule",
+      },
+      {
+        text: `Workshops`,
+        path: "workshops",
       },
       {
         text: `Makers (${tournamentDetails.makers_count})`,

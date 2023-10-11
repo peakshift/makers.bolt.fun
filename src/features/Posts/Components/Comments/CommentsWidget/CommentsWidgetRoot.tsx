@@ -49,7 +49,8 @@ export default function CommentsWidgetRoot({
   hideProfileSettingsBtn,
 }: Props) {
   const { relayPool, updateRelays } = useRelayPool();
-  const { relaysStatus } = useRelayPoolStatus(relayPool);
+  const { relaysStatus, isOpen: isConnectionOpen } =
+    useRelayPoolStatus(relayPool);
 
   const dispatch = useAppDispatch();
   const [showRelays, setShowRelays] = useState(false);
@@ -236,7 +237,7 @@ export default function CommentsWidgetRoot({
           <div className="mt-24 relative">
             <div className={!true ? "blur-[2px]" : ""}>
               <AddComment
-                //   isDisconnected={connectionStatus.status !== 'Connected'}
+                isDisconnected={!isConnectionOpen}
                 placeholder={inputPlaceholder ?? "Leave a comment..."}
                 onSubmit={publishEvent}
                 avatar={myProfile?.image}
@@ -259,6 +260,7 @@ export default function CommentsWidgetRoot({
               profilesData={profilesData}
               relays={relaysUrls}
               publishEvent={publishEvent}
+              isDisconnected={!isConnectionOpen}
             />
           ))}
           {/* {commentsTree.map((comment) => (

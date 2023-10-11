@@ -15,3 +15,4 @@ export * from "./usePrompt";
 export * from "./useIsDraggingOnElement";
 export * from "./useLazyRef";
 export * from "./useCountdown";
+export * from "./useNavigateBack";

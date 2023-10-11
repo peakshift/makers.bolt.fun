@@ -6,7 +6,7 @@ import { useTournament } from "../TournamentDetailsPage/TournamentDetailsContext
 import EventCard from "./EventCard/EventCard";
 import EventsFilters from "./EventsFilters/EventsFilters";
 
-export default function EventsPage() {
+export default function WorkshopsPage() {
   const [searchFilter, setSearchFilter] = useState("");
   const [eventFilter, setEventFilter] =
     useState<TournamentEventTypeEnum | null>(null);
@@ -16,13 +16,18 @@ export default function EventsPage() {
 
   return (
     <div className="pb-42 flex flex-col gap-36">
+      {events.length === 0 && (
+        <p className="text-center py-24 text-gray-500 font-medium text-body3">
+          Events not listed yet. Please check back later. 🙏
+        </p>
+      )}
       {events.length > 0 && (
         <div>
           <div className="flex gap-24 justify-between">
             <h2 className="text-body1 font-bolder text-gray-900 mb-24">
-              Events 📆
+              Workshops ⚒️
             </h2>
-            <Button
+            {/* <Button
               size="sm"
               variant="text"
               href="https://airtable.com/shrjVx8MjLfl8zyXD"
@@ -31,7 +36,7 @@ export default function EventsPage() {
               className="ml-auto"
             >
               List an event
-            </Button>
+            </Button> */}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">
             <EventsFilters
@@ -58,7 +63,6 @@ export default function EventsPage() {
           </div>
         </div>
       )}
-      <ScheduleSection />
     </div>
   );
 }

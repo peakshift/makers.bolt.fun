@@ -21,7 +21,7 @@ import { ModalCard } from "src/Components/Modals/ModalsContainer/ModalsContainer
 import { ConfirmModal } from "src/Components/Modals/ConfirmModal";
 import { RemoveWalletKeyModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveWalletKeyModal";
 import { LinkingAccountModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingAccountModal";
-import { EventModal } from "src/features/Tournaments/pages/EventsPage/EventModal";
+import { EventModal } from "src/features/Tournaments/pages/WorkshopsPage/EventModal";
 import { ComponentProps } from "react";
 import { generateId } from "src/utils/helperFunctions";
 import { NoWeblnModal } from "src/Components/Modals/NoWeblnModal";
@@ -31,9 +31,12 @@ import { ProjectAddedModal } from "src/features/Tournaments/pages/ProjectsPage/P
 import { RegistrationModals } from "src/features/Tournaments/pages/OverviewPage/RegisterationModals";
 
 import { InsertImageModal } from "src/Components/Modals/InsertImageModal";
-import ConnectNostrAccountModal from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal/ConnectNostrAccountModal";
-import UpdateNostrProfileModal from "src/features/Posts/Components/Comments/CommentsWidget/components/UpdateNostrProfileModal/UpdateNostrProfileModal";
-import ConnectNostrIdToProfileModal from "src/features/Profiles/pages/EditProfilePage/NostrSettingsTab/ConnectNostrIdToProfileModal/ConnectNostrIdToProfileModal";
+import { ConnectNostrAccountModal } from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal";
+import { UpdateNostrProfileModal } from "src/features/Posts/Components/Comments/CommentsWidget/components/UpdateNostrProfileModal";
+import { ConnectNostrIdToProfileModal } from "src/features/Profiles/pages/EditProfilePage/NostrSettingsTab/ConnectNostrIdToProfileModal";
+import { LinkingNewEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingNewEmailModal";
+import { RemoveEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveEmailModal";
+import { LoginModal } from "src/features/Auth/components/LoginModal";
 
 export enum Direction {
   START,
@@ -55,6 +58,7 @@ export const ALL_MODALS = {
   Claim_CopySignatureCard,
   Claim_SubmittedCard,
   Claim_FundWithdrawCard,
+  LoginModal,
 
   // Tournaments
   EventModal,
@@ -75,6 +79,8 @@ export const ALL_MODALS = {
   // User Wallets Keys
   LinkingAccountModal,
   RemoveWalletKeyModal,
+  LinkingNewEmailModal,
+  RemoveEmailModal,
 
   // Nostr
   ConnectNostrAccountModal,

@@ -19,6 +19,12 @@ function invalidateUserById(id) {
   );
 }
 
+async function invalidateTournamentById(id) {
+  return makeRequest(
+    `mutation { _purgeType(type: "Tournament", keyFields: [{name: "id", value: "${id}" }]) }`
+  );
+}
+
 async function makeRequest(query) {
   if (!env.CACHE_PURGE_TOKEN) return null;
   return axios
@@ -41,6 +47,7 @@ async function makeRequest(query) {
 
 const cacheService = {
   invalidateStoryById,
+  invalidateTournamentById,
   invalidateUserById,
   invalidateTournamentProjects,
 };

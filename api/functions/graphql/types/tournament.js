@@ -105,6 +105,7 @@ const TournamentJudge = objectType({
       async resolve(parent) {
         return (
           resolveImgObjectToUrl(parent.avatar_rel) ||
+          parent.avatar ||
           prisma.tournamentJudge
             .findUnique({ where: { id: parent.id } })
             .avatar_rel()
@@ -1051,7 +1052,7 @@ const createTournament = extendType({
             slug: input.slug,
             description: input.description,
             location: input.location,
-            website: input.website,
+            website: input.website ?? "",
             start_date: input.start_date,
             end_date: input.end_date,
             thumbnail_image_rel: {

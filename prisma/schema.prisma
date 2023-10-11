@@ -87,6 +87,7 @@ model User {
   donations                Donation[]
   userKeys                 UserKey[]
   userNostrKeys            UserNostrKey[]
+  userEmails               UserEmail[]
   skills                   Skill[]
   roles                    UsersOnWorkRoles[]
   projects                 ProjectMember[]
@@ -113,6 +114,22 @@ model UserNostrKey {
 
   user    User? @relation(fields: [user_id], references: [id])
   user_id Int?
+}
+
+model UserEmail {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
+}
+
+model Otp {
+  id        Int      @id @default(autoincrement())
+  otp       String
+  address   String
+  expiresAt DateTime
 }
 
 model UsersOnWorkRoles {

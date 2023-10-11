@@ -16,7 +16,7 @@ import { MdChatBubble } from "react-icons/md";
 import { FiMessageSquare } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import { nip19 } from "nostr-tools";
-import { NostrEvent } from "src/lib/nostr";
+import { NostrEvent, NostrProfile } from "src/lib/nostr";
 
 export type StoryCardType = Pick<
   Story,
@@ -41,8 +41,13 @@ interface Props {
     state: "fetching" | "fetched";
     data: NostrEvent[];
   };
+  commentsProfilesData: Record<string, NostrProfile>;
 }
-export default function StoryCard({ story, comments }: Props) {
+export default function StoryCard({
+  story,
+  comments,
+  commentsProfilesData,
+}: Props) {
   const { vote } = useVote({
     itemId: story.id,
     itemType: Vote_Item_Type.Story,
@@ -127,7 +132,8 @@ export default function StoryCard({ story, comments }: Props) {
                   <li key={comment.id}>
                     <p>
                       <span className="font-bold text-gray-900">
-                        {nip19.npubEncode(comment.pubkey).slice(0, 10)}...
+                        {commentsProfilesData[comment.pubkey]?.name ??
+                          "Anonymous"}
                       </span>{" "}
                       <time
                         dateTime={new Date(

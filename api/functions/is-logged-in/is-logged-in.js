@@ -5,6 +5,7 @@ const jose = require("jose");
 const { JWT_SECRET } = require("../../utils/consts");
 const lnurlAuthService = require("../../auth/services/lnurlAuth.service");
 const env = require("../../utils/consts");
+const { getAuthCookieConfig } = require("../../auth/utils/helperFuncs");
 
 const isLoggedInHandler = async (req, res) => {
   try {
@@ -27,21 +28,8 @@ const isLoggedInHandler = async (req, res) => {
         lnurlAuthService.removeExpiredHashes(),
       ]);
 
-      const cookieConfig = env.FUNCTIONS_URL.startsWith(
-        "https://master--boltfun.netlify.app"
-      )
-        ? {
-            maxAge: 3600000 * 24 * 30,
-            secure: true,
-            httpOnly: true,
-            domain: `.bolt.fun`,
-          }
-        : {
-            maxAge: 3600000 * 24 * 30,
-            secure: true,
-            httpOnly: true,
-            sameSite: "none",
-          };
+      const cookieConfig = getAuthCookieConfig();
+
       return res
         .status(200)
         .set("Cache-Control", "no-store")

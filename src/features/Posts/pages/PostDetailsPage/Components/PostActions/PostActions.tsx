@@ -1,24 +1,16 @@
 import { FiArrowLeft } from "react-icons/fi";
-import { MdIosShare } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import VoteButton from "src/Components/VoteButton/VoteButton";
 import { Post } from "src/features/Posts/types";
 import { Vote_Item_Type } from "src/graphql";
-import { useVote } from "src/utils/hooks";
+import { useNavigateBack, useVote } from "src/utils/hooks";
+import { PAGES_ROUTES } from "src/utils/routing";
 
 interface Props {
   post: Pick<Post, "id" | "votes_count" | "__typename">;
 }
 
 export default function PostActions({ post }: Props) {
-  const actions = [
-    {
-      icon: MdIosShare,
-      value: "--",
-    },
-  ];
-
-  const navigate = useNavigate();
+  const navigateBack = useNavigateBack(PAGES_ROUTES.blog.feed);
 
   const { vote } = useVote({
     itemId: post.id,
@@ -31,7 +23,7 @@ export default function PostActions({ post }: Props) {
         className={`
             hidden lg:flex w-full aspect-square bg-white rounded-12 border-2 border-gray-200 justify-around items-center text-gray-500 hover:bg-gray-50 active:bg-gray-100
             `}
-        onClick={() => navigate(-1)}
+        onClick={navigateBack}
       >
         <FiArrowLeft className={"text-body1"} />
       </button>

@@ -48,10 +48,12 @@ export default function PrizesSection({ prizes }: Props) {
     return map;
   }, [winningProjects]);
 
+  if (prizes.length === 0) return null;
+
   return (
     <div>
       <h2 className="text-body1 font-bolder text-gray-900 mb-16">
-        {prizes.length > 0 ? "Prizes & Tracks" : "Prizes"}
+        Prizes & Tracks
       </h2>
       <div className="flex flex-col gap-16">
         {prizes.map((prize, prizeNumber) => (
