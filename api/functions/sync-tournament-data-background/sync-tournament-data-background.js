@@ -232,10 +232,10 @@ const syncTournamentData = async (req, res) => {
           createMany: {
             data: body.data.judges.map((j) => ({
               name: j.name,
-              avatar: providerIdToHostedImageMap[j.avatar.id].url,
-              avatar_id: providerIdToHostedImageMap[j.avatar.id].id,
+              avatar: providerIdToHostedImageMap[j.avatar.id]?.url ?? "",
+              avatar_id: providerIdToHostedImageMap[j.avatar.id]?.id,
               twitter: j.twitter,
-              company: j.company,
+              company: j.company ?? "",
             })),
           },
         },

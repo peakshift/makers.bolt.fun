@@ -99,7 +99,8 @@ const TournamentJudge = objectType({
   name: "TournamentJudge",
   definition(t) {
     t.nonNull.string("name");
-    t.nonNull.string("company");
+    t.string("company");
+    t.string("twitter");
     t.string("avatar", {
       async resolve(parent) {
         return (
