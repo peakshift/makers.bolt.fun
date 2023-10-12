@@ -10,7 +10,7 @@ import { FiLink } from "react-icons/fi";
 import "react-popper-tooltip/dist/styles.css";
 import { useAppSelector } from "src/utils/hooks";
 import { replaceMentionsWithLinks } from "src/features/Posts/pages/NostrPostDetailsPage/NostrPostDetailsPage";
-import { extractImageFromContent } from "src/lib/nostr/helpers";
+import { extractImagesFromContent } from "src/lib/nostr/helpers";
 import { Tooltip } from "react-tooltip";
 import LinkDuo from "src/Components/LinkDuo/LinkDuo";
 import { NostrEvent, NostrProfile } from "src/lib/nostr";
@@ -39,7 +39,7 @@ export default function CommentCard({
 
   const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
 
-  const { image, content } = extractImageFromContent(comment.content);
+  const { images, content } = extractImagesFromContent(comment.content);
   const contentWithMentionsLinks = replaceMentionsWithLinks(
     content,
     comment.tags
@@ -96,17 +96,21 @@ export default function CommentCard({
           <Tooltip id="nostr-link" />
         </a>
       </div>
-      {image && (
-        <div>
-          <img src={image} alt="" className="max-h-[50vh]" />
-        </div>
-      )}
       <div
         className="text-body4 mt-16 whitespace-pre-line break-words [&_a]:text-blue-400 [&_a]:underline"
         dangerouslySetInnerHTML={{
           __html: purifyHtml(marked.parse(contentWithMentionsLinks)),
         }}
       ></div>
+      {images.length > 0 && (
+        <ul className="flex flex-col gap-16">
+          {images.map((image, idx) => (
+            <li key={idx}>
+              <img src={image} alt="" className="max-h-[50vh]" />
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="flex gap-24 items-center">
         {/* <VoteButton
           votes={-1}

@@ -218,3 +218,32 @@ export function extractImageFromContent(content: string) {
   const new_content = imgIdx !== -1 ? content.slice(0, imgIdx) : content;
   return { content: new_content, image };
 }
+
+export function extractImagesFromContent(content: string) {
+  // extract image from note's end if it's there
+  const { content: _content, image } = extractImageFromContent(content);
+
+  // handle markdown images in the content
+  const imageRegex = /!\[[^\]]*\]\((.*?)\)/g;
+
+  // Use a regular expression to find all image tags in the markdown text
+  const imageTags = _content.match(imageRegex);
+
+  // Extract image URLs from image tags
+  const images =
+    imageTags
+      ?.map((tag) => {
+        const matches = tag.match(/!\[[^\]]*\]\((.*?)\)/);
+        if (matches && matches.length > 1) {
+          return matches[1];
+        }
+        return null;
+      })
+      .filter((url): url is string => !!url) ?? [];
+
+  if (image) images.push(image);
+
+  const contentWithoutImages = _content.replace(imageRegex, "");
+
+  return { content: contentWithoutImages, images };
+}

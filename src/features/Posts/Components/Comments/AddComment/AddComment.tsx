@@ -21,6 +21,7 @@ import Button from "src/Components/Button/Button";
 import { InvalidContentHandler } from "remirror";
 import { useNostrComments } from "../CommentsWidget/useNostrComments";
 import { NotificationsService } from "src/services";
+import { uploadImage } from "src/Components/Inputs/FilesInputs/upload-image";
 
 interface Props {
   initialContent?: string;
@@ -56,7 +57,6 @@ export default function AddComment({
     return extension;
   }, []);
   const valueRef = useRef<string>("");
-
   const extensions = useCallback(
     () => [
       new PlaceholderExtension({ placeholder }),
@@ -66,7 +66,25 @@ export default function AddComment({
       new CodeBlockExtension({
         supportedLanguages: [javascript, typescript],
       }),
-      new ImageExtension({ enableResizing: true }),
+
+      new ImageExtension({
+        uploadHandler(files) {
+          return files
+            .filter(
+              (file) =>
+                file.file.type.startsWith("image/") &&
+                file.file.size < 1024 * 1024 * 5
+            )
+            .map(
+              (file) => () =>
+                uploadImage(file.file).then((data) => ({
+                  src: data.src,
+                  fileName: file.file.name,
+                }))
+            );
+        },
+        enableResizing: false,
+      }),
       new MarkdownExtension({ copyAsMarkdown: false }),
       /**
        * `HardBreakExtension` allows us to create a newline inside paragraphs.

@@ -613,8 +613,9 @@ type TournamentFAQ {
 
 type TournamentJudge {
   avatar: String
-  company: String!
+  company: String
   name: String!
+  twitter: String
 }
 
 type TournamentMakerDeal {

@@ -503,8 +503,9 @@ export interface NexusGenObjects {
     question: string; // String!
   }
   TournamentJudge: { // root type
-    company: string; // String!
+    company?: string | null; // String
     name: string; // String!
+    twitter?: string | null; // String
   }
   TournamentMakerDeal: { // root type
     description: string; // String!
@@ -964,8 +965,9 @@ export interface NexusGenFieldTypes {
   }
   TournamentJudge: { // field return type
     avatar: string | null; // String
-    company: string; // String!
+    company: string | null; // String
     name: string; // String!
+    twitter: string | null; // String
   }
   TournamentMakerDeal: { // field return type
     description: string; // String!
@@ -1463,6 +1465,7 @@ export interface NexusGenFieldTypeNames {
     avatar: 'String'
     company: 'String'
     name: 'String'
+    twitter: 'String'
   }
   TournamentMakerDeal: { // field return type name
     description: 'String'
