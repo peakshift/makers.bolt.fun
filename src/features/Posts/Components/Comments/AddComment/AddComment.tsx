@@ -83,6 +83,7 @@ export default function AddComment({
                 }))
             );
         },
+
         enableResizing: false,
       }),
       new MarkdownExtension({ copyAsMarkdown: false }),
