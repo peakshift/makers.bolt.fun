@@ -21,14 +21,15 @@ interface Props {
     content: string;
     button: string;
   }>;
+  expandAll?: boolean;
 }
 
-export default function Accordion({ items, classes }: Props) {
+export default function Accordion({ items, classes, expandAll }: Props) {
   return (
     <AccordionContainer
       allowZeroExpanded
       allowMultipleExpanded
-      preExpanded={items.map((item, idx) => item.id ?? idx)}
+      preExpanded={expandAll ? items.map((item, idx) => item.id ?? idx) : []}
     >
       {items.map((item, idx) => (
         <AccordionItem

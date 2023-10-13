@@ -104,6 +104,7 @@ export default function ScheduleSection() {
               </div>
             ),
           }))}
+          expandAll
         />
       </Card>
     </div>
