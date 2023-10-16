@@ -168,51 +168,53 @@ function StoryPageContent({ story }: Props) {
         ></div>
         <PostImagesLightbox contentDomRef={storyContentDomRef} />
       </Card>
-      <section>
-        <h3 className="text-body2 font-bolder">⚡Tipped by:</h3>
-        <ul className="flex flex-wrap items-stretch gap-8 pt-16">
-          {toSort(
-            story.votes.voters,
-            (v1, v2) => v2.amount_voted - v1.amount_voted
-          ).map((voter) => (
-            <li key={voter.user.id}>
-              <div
-                className={`rounded-48 relative align-middle px-12 py-4 text-body4 flex items-center gap-8  text-gray-700 
+      {story.votes.total > 0 && (
+        <section>
+          <h3 className="text-body2 font-bolder">⚡Tipped by:</h3>
+          <ul className="flex flex-wrap items-stretch gap-8 pt-16">
+            {toSort(
+              story.votes.voters,
+              (v1, v2) => v2.amount_voted - v1.amount_voted
+            ).map((voter) => (
+              <li key={voter.user.id}>
+                <div
+                  className={`rounded-48 relative align-middle px-12 py-4 text-body4 flex items-center gap-8  text-gray-700 
                 ${getTipColor(voter.amount_voted)}
                 `}
-              >
-                <span className="text-fire font-bold">
-                  {numberFormatter(voter.amount_voted)}
-                </span>
-                sats by
-                <Link
-                  to={createRoute({
-                    type: "profile",
-                    id: voter.user.id,
-                    username: voter.user.name,
-                  })}
                 >
-                  <Avatar src={voter.user.avatar} width={32} />
-                </Link>
-              </div>
-            </li>
-          ))}
-          {story.votes.total_anonymous_votes > 0 && (
-            <li>
-              <div
-                className={`rounded-48 relative align-middle px-12 py-4 text-body4 flex items-center gap-8 h-full  text-gray-700 
+                  <span className="text-fire font-bold">
+                    {numberFormatter(voter.amount_voted)}
+                  </span>
+                  sats by
+                  <Link
+                    to={createRoute({
+                      type: "profile",
+                      id: voter.user.id,
+                      username: voter.user.name,
+                    })}
+                  >
+                    <Avatar src={voter.user.avatar} width={32} />
+                  </Link>
+                </div>
+              </li>
+            ))}
+            {story.votes.total_anonymous_votes > 0 && (
+              <li>
+                <div
+                  className={`rounded-48 relative align-middle px-12 py-4 text-body4 flex items-center gap-8 h-full  text-gray-700 
                 ${getTipColor(1)}
                 `}
-              >
-                <span className="text-fire font-bold">
-                  {numberFormatter(story.votes.total_anonymous_votes)}
-                </span>
-                sats anonymously
-              </div>
-            </li>
-          )}
-        </ul>
-      </section>
+                >
+                  <span className="text-fire font-bold">
+                    {numberFormatter(story.votes.total_anonymous_votes)}
+                  </span>
+                  sats anonymously
+                </div>
+              </li>
+            )}
+          </ul>
+        </section>
+      )}
       <div id="comments" className="mt-10 comments_col">
         <Suspense
           fallback={
