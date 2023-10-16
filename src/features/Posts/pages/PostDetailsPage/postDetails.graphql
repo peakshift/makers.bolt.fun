@@ -27,19 +27,18 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         thumbnail_image
         hashtag
       }
-      # comments_count
-      # comments {
-      #   id
-      #   created_at
-      #   body
-      #   votes_count
-      #   parentId
-      #   author {
-      #     id
-      #     name
-      #     avatar
-      #   }
-      # }
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
     }
     ... on Bounty {
       id

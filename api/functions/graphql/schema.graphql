@@ -67,6 +67,7 @@ type Bounty implements PostBase {
   title: String!
   type: String!
   updatedAt: Date!
+  votes: Votes
   votes_count: Int!
 }
 
@@ -311,6 +312,7 @@ interface PostBase {
   is_published: Boolean
   title: String!
   updatedAt: Date!
+  votes: Votes
   votes_count: Int!
 }
 
@@ -456,6 +458,7 @@ type Question implements PostBase {
   title: String!
   type: String!
   updatedAt: Date!
+  votes: Votes
   votes_count: Int!
 }
 
@@ -488,6 +491,7 @@ type Story implements PostBase {
   title: String!
   type: String!
   updatedAt: Date!
+  votes: Votes
   votes_count: Int!
 }
 
@@ -859,6 +863,17 @@ type Vote {
   paid: Boolean!
   payment_hash: String!
   payment_request: String!
+}
+
+type Voter {
+  amount_voted: Int!
+  user: User!
+}
+
+type Votes {
+  total: Int!
+  total_anonymous_votes: Int!
+  voters: [Voter!]!
 }
 
 type WalletKey {
