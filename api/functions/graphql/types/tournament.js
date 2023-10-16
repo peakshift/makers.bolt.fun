@@ -25,6 +25,7 @@ const {
 } = require("../../../services/cache.service");
 const { ImageInput } = require("./misc");
 const { createCRUDType } = require("../../../utils/helpers");
+const { queueService } = require("../../../services/queue-service");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
@@ -1245,10 +1246,10 @@ const registerInTournament = extendType({
         { tournament_id, data: { email, hacking_status } },
         ctx
       ) {
-        const user = ctx.user;
+        const user_id = ctx.user?.id;
 
         // Do some validation
-        if (!user?.id) throw new Error("You have to login");
+        if (!user_id) throw new Error("You have to login");
 
         // Email verification here:
         // ....
@@ -1257,7 +1258,7 @@ const registerInTournament = extendType({
         const alreadyRegistered = await prisma.tournamentParticipant.findFirst({
           where: {
             tournament_id,
-            user_id: user.id,
+            user_id,
           },
           include: {
             user: true,
@@ -1266,19 +1267,55 @@ const registerInTournament = extendType({
 
         if (alreadyRegistered) return alreadyRegistered.user;
 
-        return prisma.tournamentParticipant
-          .create({
+        const tournamentParticpation =
+          await prisma.tournamentParticipant.create({
             data: {
               tournament_id,
-              user_id: user.id,
+              user_id,
               email,
               hacking_status,
             },
             include: {
-              user: true,
+              user: {
+                include: {
+                  userNostrKeys: true,
+                },
+              },
+              tournament: {
+                select: {
+                  title: true,
+                },
+              },
             },
+          });
+
+        const primaryNostrKey = tournamentParticpation.user.userNostrKeys.find(
+          (k) => k.is_primary
+        );
+
+        let postRegistrationJobs = [];
+
+        if (primaryNostrKey)
+          postRegistrationJobs.push(
+            queueService.nostrService.sendDMToUser({
+              recipient_nostr_pubkey: primaryNostrKey.key,
+              message: `Hey!
+You have successfully registered in ${tournamentParticpation.tournament.title} tournament!`,
+            })
+          );
+
+        postRegistrationJobs.push(
+          queueService.emailService.newUserRegisteredInTournament({
+            user_id: tournamentParticpation.user.id,
+            user_name: tournamentParticpation.user.name,
+            tournament_id,
+            email,
           })
-          .then((data) => data.user);
+        );
+
+        await Promise.all(postRegistrationJobs);
+
+        return tournamentParticpation.user;
       },
     });
   },
@@ -1390,6 +1427,12 @@ const addProjectToTournament = extendType({
         const [newParticipationInfo] = await Promise.all([
           getUserParticipationInfo(user.id, tournament_id),
           invalidateTournamentProjects().catch(console.log),
+          queueService.emailService.newProjectSubmittedInTournament({
+            user_id: user.id,
+            project_id,
+            tournament_id,
+            track_id,
+          }),
         ]);
 
         return newParticipationInfo;

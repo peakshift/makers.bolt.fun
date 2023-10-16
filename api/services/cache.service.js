@@ -19,13 +19,13 @@ function invalidateUserById(id) {
   );
 }
 
-function invalidateTournamentById(id) {
+async function invalidateTournamentById(id) {
   return makeRequest(
     `mutation { _purgeType(type: "Tournament", keyFields: [{name: "id", value: "${id}" }]) }`
   );
 }
 
-function makeRequest(query) {
+async function makeRequest(query) {
   if (!env.CACHE_PURGE_TOKEN) return null;
   return axios
     .post(
