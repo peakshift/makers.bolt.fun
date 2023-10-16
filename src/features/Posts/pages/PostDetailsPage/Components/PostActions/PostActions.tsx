@@ -6,10 +6,11 @@ import { useNavigateBack, useVote } from "src/utils/hooks";
 import { PAGES_ROUTES } from "src/utils/routing";
 
 interface Props {
-  post: Pick<Post, "id" | "votes_count" | "__typename">;
+  post: Pick<Post, "id" | "__typename">;
+  total_votes: number;
 }
 
-export default function PostActions({ post }: Props) {
+export default function PostActions({ post, total_votes }: Props) {
   const navigateBack = useNavigateBack(PAGES_ROUTES.blog.feed);
 
   const { vote } = useVote({
@@ -36,7 +37,7 @@ export default function PostActions({ post }: Props) {
             </ul> */}
       <ul className="bg-white rounded-12 p-16 border-2 border-gray-200 flex justify-around md:flex-col gap-32">
         <VoteButton
-          votes={post.votes_count}
+          votes={total_votes}
           onVote={vote}
           direction="vertical"
           fillType="upDown"

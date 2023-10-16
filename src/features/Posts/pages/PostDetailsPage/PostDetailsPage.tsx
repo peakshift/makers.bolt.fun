@@ -45,7 +45,7 @@ export default function PostDetailsPage(props: Props) {
           <div className="grid w-full grid-cols-[116px_1fr_calc(min(30%,326px))] gap-32">
             <aside className="no-scrollbar fill-container">
               <div className="sticky-side-element">
-                <PostActions post={post} />
+                <PostActions post={post} total_votes={post.votes.total} />
               </div>
             </aside>
             <main className="flex flex-col gap-32 min-w-0">
@@ -61,7 +61,7 @@ export default function PostDetailsPage(props: Props) {
         ) : (
           <div className="flex flex-col gap-32">
             <PageContent post={post} />
-            <PostActions post={post} />
+            <PostActions post={post} total_votes={post.votes.total} />
             <AuthorCard author={post.author} />
             <TrendingCard />
           </div>

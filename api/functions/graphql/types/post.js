@@ -98,7 +98,7 @@ const PostBase = interfaceType({
     t.nonNull.int("votes_count");
     t.boolean("is_published");
 
-    t.field("votes", {
+    t.nonNull.field("votes", {
       type: Votes,
       resolve: async (parent) => {
         const votes = await prisma.vote.findMany({

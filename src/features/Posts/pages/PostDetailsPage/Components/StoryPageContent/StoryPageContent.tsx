@@ -14,7 +14,11 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { createRoute } from "src/utils/routing";
 import { NotificationsService } from "src/services";
 import OgTags from "src/Components/OgTags/OgTags";
-import { formatHashtag } from "src/utils/helperFunctions";
+import {
+  formatHashtag,
+  numberFormatter,
+  toSort,
+} from "src/utils/helperFunctions";
 import { Link } from "react-router-dom";
 import { lazy, Suspense, useRef } from "react";
 import { RotatingLines } from "react-loader-spinner";
@@ -23,6 +27,7 @@ import { withProviders } from "src/utils/hoc";
 import { Tooltip } from "react-tooltip";
 import PostImagesLightbox from "../PostImagesLightbox/PostImagesLightbox";
 import { purifyHtml } from "src/utils/validation";
+import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 
 const CommentsWidgetRoot = lazy(
   () =>
@@ -163,6 +168,51 @@ function StoryPageContent({ story }: Props) {
         ></div>
         <PostImagesLightbox contentDomRef={storyContentDomRef} />
       </Card>
+      <section>
+        <h3 className="text-body2 font-bolder">⚡Tipped by:</h3>
+        <ul className="flex flex-wrap items-stretch gap-8 pt-16">
+          {toSort(
+            story.votes.voters,
+            (v1, v2) => v2.amount_voted - v1.amount_voted
+          ).map((voter) => (
+            <li key={voter.user.id}>
+              <div
+                className={`rounded-48 relative align-middle px-12 py-4 text-body4 flex items-center gap-8  text-gray-700 
+                ${getTipColor(voter.amount_voted)}
+                `}
+              >
+                <span className="text-fire font-bold">
+                  {numberFormatter(voter.amount_voted)}
+                </span>
+                sats by
+                <Link
+                  to={createRoute({
+                    type: "profile",
+                    id: voter.user.id,
+                    username: voter.user.name,
+                  })}
+                >
+                  <Avatar src={voter.user.avatar} width={32} />
+                </Link>
+              </div>
+            </li>
+          ))}
+          {story.votes.total_anonymous_votes > 0 && (
+            <li>
+              <div
+                className={`rounded-48 relative align-middle px-12 py-4 text-body4 flex items-center gap-8 h-full  text-gray-700 
+                ${getTipColor(1)}
+                `}
+              >
+                <span className="text-fire font-bold">
+                  {numberFormatter(story.votes.total_anonymous_votes)}
+                </span>
+                sats anonymously
+              </div>
+            </li>
+          )}
+        </ul>
+      </section>
       <div id="comments" className="mt-10 comments_col">
         <Suspense
           fallback={
@@ -187,3 +237,9 @@ function StoryPageContent({ story }: Props) {
 }
 
 export default withProviders(RelayPoolProvider)(StoryPageContent);
+
+function getTipColor(amount: number) {
+  if (amount > 5000) return "bg-cyan-300/40";
+  if (amount > 1000) return "bg-yellow-300/60";
+  return "bg-gray-300/60";
+}

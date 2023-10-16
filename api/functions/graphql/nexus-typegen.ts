@@ -662,7 +662,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     type: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
-    votes: NexusGenRootTypes['Votes'] | null; // Votes
+    votes: NexusGenRootTypes['Votes']; // Votes!
     votes_count: number; // Int!
   }
   BountyApplication: { // field return type
@@ -882,7 +882,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     type: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
-    votes: NexusGenRootTypes['Votes'] | null; // Votes
+    votes: NexusGenRootTypes['Votes']; // Votes!
     votes_count: number; // Int!
   }
   Story: { // field return type
@@ -901,7 +901,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     type: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
-    votes: NexusGenRootTypes['Votes'] | null; // Votes
+    votes: NexusGenRootTypes['Votes']; // Votes!
     votes_count: number; // Int!
   }
   Tag: { // field return type
@@ -1137,7 +1137,7 @@ export interface NexusGenFieldTypes {
     is_published: boolean | null; // Boolean
     title: string; // String!
     updatedAt: NexusGenScalars['Date']; // Date!
-    votes: NexusGenRootTypes['Votes'] | null; // Votes
+    votes: NexusGenRootTypes['Votes']; // Votes!
     votes_count: number; // Int!
   }
 }
