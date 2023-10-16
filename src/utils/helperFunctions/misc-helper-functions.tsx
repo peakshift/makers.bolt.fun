@@ -88,3 +88,7 @@ export async function lightningAddressToPR(
       return prResponse.data.pr as string;
     });
 }
+
+export function toSort<T>(arr: T[], sortFn: (a: T, b: T) => number) {
+  return [...arr].sort(sortFn);
+}
