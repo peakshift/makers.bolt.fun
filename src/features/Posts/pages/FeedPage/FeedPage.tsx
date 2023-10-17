@@ -11,14 +11,25 @@ import WelcomeNewMaker from "./WelcomeNewMaker/WelcomeNewMaker";
 import SkipLink from "src/Components/SkipLink/SkipLink";
 import { withProviders } from "src/utils/hoc";
 import { RelayPoolProvider } from "src/lib/nostr";
-import { BillboardTemplate } from "src/Components/Ads/BillboardTemplate";
+import { RotatingBillboardBig } from "src/Components/Ads/RotatingBillboardBig";
 import { useGetRandomBillboardItem } from "./useGetRandomBillboardItem";
+import { BIG_BILLBOARD_DATA_ITEMS } from "./ads/big-billboard-data";
+import { SMALL_BILLBOARD_DATA_ITEMS } from "./ads/small-billboard-data";
+import RotatingBillboardSmall from "src/Components/Ads/RotatingBillboardSmall/RotatingBillboardSmall";
 
 function FeedPage() {
   const [sortByFilter, setSortByFilter] = useState<string | null>("recent");
   const [tagFilter, setTagFilter] = useState<FilterTag | null>(null);
 
-  const randomBillboardItem = useGetRandomBillboardItem();
+  const randomBigBillboardItem = useGetRandomBillboardItem(
+    BIG_BILLBOARD_DATA_ITEMS
+  );
+  const randomSmallBillboardItem = useGetRandomBillboardItem(
+    SMALL_BILLBOARD_DATA_ITEMS,
+    {
+      intervalInSeconds: 45,
+    }
+  );
 
   const feedQuery = useFeedQuery({
     variables: {
@@ -56,32 +67,8 @@ function FeedPage() {
         </div>
         <aside id="side" className="no-scrollbar">
           <div className="pb-16 flex flex-col gap-24 overflow-y-auto sticky-side-element">
-            <BillboardTemplate content={randomBillboardItem} />
-            <a
-              href="https://snort.social/p/npub1funq0ywh32faz0sf7xt97japu8uk687tsysj8gndj4ehe825sq4s70gs0p"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className="text-white flex flex-col justify-end p-24 rounded-12 relative overflow-hidden"
-                style={{
-                  backgroundImage: `url("/assets/images/join-discord-card.jpg")`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div className="absolute bg-black inset-0 opacity-10"></div>
-                <div className="relative flex flex-col gap-24">
-                  <div className="flex flex-col gap-8 text-white">
-                    <p className="text-body2 font-bold">BOLT🔩FUN Nostr</p>
-                    <p className="text-body4 font-medium">
-                      Follow BOLT.FUN on Nostr for the latest 🔥 noosts from the
-                      community!
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
+            <RotatingBillboardBig content={randomBigBillboardItem} />
+            <RotatingBillboardSmall content={randomSmallBillboardItem} />
             <TrendingCard />
           </div>
         </aside>
