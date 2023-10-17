@@ -22,6 +22,6 @@ export const SMALL_BILLBOARD_DATA_ITEMS = shuffle([
     description: "Co-working for bitcoin startups on the Atlanta Beltline",
     bgImageUrl: "https://i.imgur.com/JuprxNC.jpg",
     thumbnailImageUrl: "https://i.imgur.com/J45NFja.png",
-    href: "https://twitter.com/atlbitlab",
+    href: "https://bolt.fun/t/atl-bitlab",
   },
 ] as BillboardItem[]);
