@@ -6,6 +6,9 @@ import Accordion from "src/Components/Accordion/Accordion";
 import Card from "src/Components/Card/Card";
 import { createRoute } from "src/utils/routing";
 import { useTournament } from "../../TournamentDetailsPage/TournamentDetailsContext";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export default function ScheduleSection() {
   const {
@@ -61,8 +64,9 @@ export default function ScheduleSection() {
                       <div className="">
                         <h4 className="text-body3 font-bold">{event.title}</h4>
                         <p className="text-body4 text-gray-500">
-                          {dayjs(event.time).format("h:mm A")}
-                          {event.timezone && `, ${event.timezone}`}
+                          {dayjs(event.time).utc().format("h:mm A")}
+                          {event.timezone && ` ${event.timezone}`} /{" "}
+                          {dayjs(event.time).format("h:mm A")} (Local)
                         </p>
                       </div>
 
