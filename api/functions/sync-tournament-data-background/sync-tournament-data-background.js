@@ -128,12 +128,12 @@ const syncTournamentData = async (req, res) => {
 
     const scheduleMap = body.data.schedule
       ?.sort((a, b) => {
-        const timeA = new Date(a.time);
-        const timeB = new Date(b.time);
+        const timeA = getScheduleTime(a);
+        const timeB = getScheduleTime(b);
         return timeA - timeB;
       })
       .reduce((acc, entry) => {
-        const date = new Date(entry.time);
+        const date = getScheduleTime(entry);
         const day = new Intl.DateTimeFormat("en-US", {
           month: "long",
           day: "numeric",
@@ -152,8 +152,8 @@ const syncTournamentData = async (req, res) => {
       date: key,
       events: scheduleMap[key].map((event) => ({
         title: event.title,
-        time: event.time,
-        timezone: event.timezone,
+        time: getScheduleTime(event).toISOString(),
+        timezone: "UTC",
         type: event.type,
         location: event.location,
         url: event.url,
@@ -348,4 +348,28 @@ function requestAssetsData(assets_ids) {
     .catch((error) => {
       console.error(error);
     });
+}
+
+function getScheduleTime(item) {
+  if (item.timeInUtc) {
+    const regex = /^(\d{4})\/(\d{1,2})\/(\d{1,2}) (\d{1,2}):(\d{1,2})$/;
+
+    const match = item.timeInUtc.match(regex);
+
+    if (match) {
+      const year = parseInt(match[1]);
+      const month = parseInt(match[2]);
+      const day = parseInt(match[3]);
+      const hour = parseInt(match[4]);
+      const minute = parseInt(match[5]);
+
+      const date = new Date(Date.UTC(year, month - 1, day, hour, minute));
+      return date;
+    } else {
+      console.log(
+        "Received invalid utc date format from hygraph: " + item.timeInUtc
+      );
+    }
+  }
+  return new Date(item.time);
 }
