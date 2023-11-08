@@ -13,9 +13,7 @@ import { formatHashtag } from "src/utils/helperFunctions";
 import { marked } from "marked";
 import { purifyHtml } from "src/utils/validation";
 import { MdChatBubble } from "react-icons/md";
-import { FiMessageSquare } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
-import { nip19 } from "nostr-tools";
 import { NostrEvent, NostrProfile } from "src/lib/nostr";
 
 export type StoryCardType = Pick<
