@@ -331,6 +331,7 @@ function requestAssetsData(assets_ids) {
   const query = `
   query MyQuery {
     assets(
+      first: 100,
       where: { id_in: [${assets_ids.map((id) => `"${id}"`).join(", ")}] }
     ) {
       url(transformation: { document: { output: { format: jpg } } })

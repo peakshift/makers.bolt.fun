@@ -108,6 +108,13 @@ functions:
 
   # Misc
   # ----------------------------
+  sync-tournament-data-background:
+    handler: api/functions/sync-tournament-data-background/sync-tournament-data-background.handler
+    events:
+      - http:
+          path: sync-tournament-data-background
+          method: post
+
   on-job-success:
     handler: api/functions/on-job-success/on-job-success.handler
     events:
