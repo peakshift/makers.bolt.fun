@@ -16,7 +16,7 @@ interface Props {
   content: BillboardItem;
 }
 
-export default function BillboardTemplate({
+export default function RotatingBillboardBig({
   content: {
     campaign,
     bgImageUrl,

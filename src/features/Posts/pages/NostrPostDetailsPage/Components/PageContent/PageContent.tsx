@@ -58,7 +58,7 @@ export default function PageContent({ author, post, articleFields }: Props) {
                 width={32}
                 src={
                   author?.image ??
-                  `https://avatars.dicebear.com/api/identicon/${author?.pubkey}.svg`
+                  `https://api.dicebear.com/7.x/identicon/svg?seed=${author?.pubkey}`
                 }
               />
             </LinkDuo>

@@ -62,11 +62,17 @@ query ProjectDetails($projectId: Int, $projectTag: String) {
       }
     }
     tournaments {
-      id
-      title
-      thumbnail_image
-      start_date
-      end_date
+      tournament {
+        id
+        title
+        thumbnail_image
+        start_date
+        end_date
+      }
+      track {
+        title
+        icon
+      }
     }
     capabilities {
       id

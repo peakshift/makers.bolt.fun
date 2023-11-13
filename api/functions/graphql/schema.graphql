@@ -84,6 +84,7 @@ type Bounty implements PostBase {
   title: String!
   type: String!
   updatedAt: Date!
+  votes: Votes!
   votes_count: Int!
 }
 
@@ -328,6 +329,7 @@ interface PostBase {
   is_published: Boolean
   title: String!
   updatedAt: Date!
+  votes: Votes!
   votes_count: Int!
 }
 
@@ -388,7 +390,7 @@ type Project {
   telegram: String
   thumbnail_image: String
   title: String!
-  tournaments: [Tournament!]!
+  tournaments: [ProjectTournament!]!
   twitter: String
   votes_count: Int!
   website: String!
@@ -414,6 +416,11 @@ enum ProjectPermissionEnum {
   UpdateAdmins
   UpdateInfo
   UpdateMembers
+}
+
+type ProjectTournament {
+  tournament: Tournament!
+  track: TournamentTrack!
 }
 
 type Query {
@@ -468,6 +475,7 @@ type Question implements PostBase {
   title: String!
   type: String!
   updatedAt: Date!
+  votes: Votes!
   votes_count: Int!
 }
 
@@ -500,6 +508,7 @@ type Story implements PostBase {
   title: String!
   type: String!
   updatedAt: Date!
+  votes: Votes!
   votes_count: Int!
 }
 
@@ -572,6 +581,7 @@ type TournamentConfig {
   feedFilters: [String!]
   ideasRootNostrEventId: String
   mainFeedHashtag: String
+  projectsSubmissionClosesOn: String
   projectsSubmissionOpen: Boolean!
   registerationOpen: Boolean!
   showFeed: Boolean
@@ -624,8 +634,9 @@ type TournamentFAQ {
 
 type TournamentJudge {
   avatar: String
-  company: String!
+  company: String
   name: String!
+  twitter: String
 }
 
 type TournamentMakerDeal {
@@ -876,6 +887,17 @@ type Vote {
   paid: Boolean!
   payment_hash: String!
   payment_request: String!
+}
+
+type Voter {
+  amount_voted: Int!
+  user: User!
+}
+
+type Votes {
+  total: Int!
+  total_anonymous_votes: Int!
+  voters: [Voter!]!
 }
 
 type WalletKey {

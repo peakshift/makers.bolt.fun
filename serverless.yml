@@ -144,3 +144,10 @@ functions:
       - http:
           path: test-something
           method: post
+
+  test-something:
+    handler: api/functions/test-something/test-something.handler
+    events:
+      - http:
+          path: test-something
+          method: post

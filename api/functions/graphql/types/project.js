@@ -161,16 +161,22 @@ const Project = objectType({
     });
 
     t.nonNull.list.nonNull.field("tournaments", {
-      type: "Tournament",
+      type: ProjectTournament,
       resolve: (parent) => {
         return prisma.tournamentProject
           .findMany({
             where: { project_id: parent.id },
             include: {
               tournament: true,
+              track: true,
             },
           })
-          .then((res) => res.map((item) => item.tournament));
+          .then((res) =>
+            res.map((item) => ({
+              tournament: item.tournament,
+              track: item.track,
+            }))
+          );
       },
     });
 
@@ -284,6 +290,18 @@ const ProjectMember = objectType({
     });
     t.nonNull.field("role", {
       type: TEAM_MEMBER_ROLE,
+    });
+  },
+});
+
+const ProjectTournament = objectType({
+  name: "ProjectTournament",
+  definition(t) {
+    t.nonNull.field("tournament", {
+      type: "Tournament",
+    });
+    t.nonNull.field("track", {
+      type: "TournamentTrack",
     });
   },
 });

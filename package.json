@@ -5,8 +5,9 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@hookform/resolvers": "^2.8.8",
+    "@hygraph/utils": "^1.2.1",
     "@jitsi/react-sdk": "^1.3.0",
-    "@meilisearch/instant-meilisearch": "^0.13.4",
+    "@meilisearch/instant-meilisearch": "^0.13.6",
     "@netlify/functions": "^2.0.2",
     "@noble/secp256k1": "^1.6.3",
     "@paljs/plugins": "^4.1.0",
@@ -127,7 +128,8 @@
     "db:seed": "prisma db seed",
     "db:gui": "prisma studio",
     "netlify:start": "netlify dev",
-    "netlify:invoke": "netlify functions:invoke clean-db-scheduled"
+    "netlify:invoke": "netlify functions:invoke clean-db-scheduled",
+    "fill-data": "env-cmd -f ./envs/server/prod.env node api/scripts/sync-tournament-from-db-to-hygraph.js"
   },
   "prisma": {
     "seed": "node prisma/seed/index.js"

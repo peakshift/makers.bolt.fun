@@ -80,26 +80,54 @@ export const useVote = (params: Params) => {
                   try {
                     const { item_id, item_type, amount_in_sat } =
                       data!.confirmVote;
-                    const { votes_count } = cache.readFragment<{
-                      votes_count: number;
-                    }>({
-                      id: `${item_type}:${item_id}`,
-                      fragment: gql`
-                                            fragment My${item_type} on ${item_type} {
-                                            votes_count
-                                        }`,
-                    }) ?? { votes_count: 0 };
-                    cache.writeFragment({
-                      id: `${item_type}:${item_id}`,
-                      fragment: gql`
-                                            fragment My${item_type} on ${item_type} {
-                                            votes_count
-                                        }
-                                        `,
-                      data: {
-                        votes_count: votes_count + amount_in_sat,
+
+                    cache.updateFragment(
+                      {
+                        id: `${item_type}:${item_id}`,
+                        fragment: gql`
+                                      fragment ${item_type}VotesCount on ${item_type} {
+                                        votes_count 
+                                      }`,
                       },
-                    });
+                      (data) => {
+                        if (!data) return null;
+
+                        return {
+                          votes_count: data.votes_count + amount_in_sat,
+                        };
+                      }
+                    );
+
+                    cache.updateFragment(
+                      {
+                        id: `${item_type}:${item_id}`,
+                        fragment: gql`
+                                      fragment ${item_type}VotesTotal on ${item_type} {
+                                        votes {
+                                          total 
+                                          total_anonymous_votes
+                                          voters {
+                                            user {
+                                              id
+                                              name
+                                              avatar
+                                            }
+                                            amount_voted
+                                          }
+                                          }
+                                      }`,
+                      },
+                      (data) => {
+                        if (!data) return null;
+
+                        return {
+                          votes: {
+                            ...data.votes,
+                            total: data.votes.total + amount_in_sat,
+                          },
+                        };
+                      }
+                    );
                   } catch (error) {
                     onError?.(error);
                   }

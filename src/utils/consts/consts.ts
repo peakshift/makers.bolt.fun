@@ -1,8 +1,9 @@
 const DEFAULT_RELAYS = [
   "wss://nostr.bolt.fun",
   "wss://nostr-pub.wellorder.net",
-  "wss://nostr.drss.io",
   "wss://relay.damus.io",
+  "wss://relay.primal.net",
+  "wss://nostr.mutinywallet.com",
 ];
 
 const CONSTS = {

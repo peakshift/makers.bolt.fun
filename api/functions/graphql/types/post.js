@@ -63,6 +63,27 @@ const Author = objectType({
   },
 });
 
+const Voter = objectType({
+  name: "Voter",
+  definition(t) {
+    t.nonNull.field("user", {
+      type: "User",
+    });
+    t.nonNull.int("amount_voted");
+  },
+});
+
+const Votes = objectType({
+  name: "Votes",
+  definition(t) {
+    t.nonNull.int("total");
+    t.nonNull.int("total_anonymous_votes");
+    t.nonNull.list.nonNull.field("voters", {
+      type: Voter,
+    });
+  },
+});
+
 const PostBase = interfaceType({
   name: "PostBase",
   resolveType(item) {
@@ -77,6 +98,47 @@ const PostBase = interfaceType({
     t.nonNull.string("excerpt");
     t.nonNull.int("votes_count");
     t.boolean("is_published");
+
+    t.nonNull.field("votes", {
+      type: Votes,
+      resolve: async (parent) => {
+        const votes = await prisma.vote.findMany({
+          where: {
+            item_type: parent.type,
+            item_id: parent.id,
+          },
+          select: {
+            amount_in_sat: true,
+            user: true,
+          },
+        });
+
+        const total = votes.reduce((acc, curr) => acc + curr.amount_in_sat, 0);
+
+        const uniqueVoters = {};
+        let total_anonymous_votes = 0;
+
+        votes.forEach((vote) => {
+          if (vote.user) {
+            if (!uniqueVoters[vote.user.id]) {
+              uniqueVoters[vote.user.id] = {
+                user: vote.user,
+                amount_voted: 0,
+              };
+            }
+            uniqueVoters[vote.user.id].amount_voted += vote.amount_in_sat;
+          } else {
+            total_anonymous_votes += vote.amount_in_sat;
+          }
+        });
+
+        return {
+          total,
+          total_anonymous_votes,
+          voters: Object.values(uniqueVoters),
+        };
+      },
+    });
   },
 });
 

@@ -1,24 +1,17 @@
 import { FiArrowLeft } from "react-icons/fi";
-import { MdIosShare } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import VoteButton from "src/Components/VoteButton/VoteButton";
 import { Post } from "src/features/Posts/types";
 import { Vote_Item_Type } from "src/graphql";
-import { useVote } from "src/utils/hooks";
+import { useNavigateBack, useVote } from "src/utils/hooks";
+import { PAGES_ROUTES } from "src/utils/routing";
 
 interface Props {
-  post: Pick<Post, "id" | "votes_count" | "__typename">;
+  post: Pick<Post, "id" | "__typename">;
+  total_votes: number;
 }
 
-export default function PostActions({ post }: Props) {
-  const actions = [
-    {
-      icon: MdIosShare,
-      value: "--",
-    },
-  ];
-
-  const navigate = useNavigate();
+export default function PostActions({ post, total_votes }: Props) {
+  const navigateBack = useNavigateBack(PAGES_ROUTES.blog.feed);
 
   const { vote } = useVote({
     itemId: post.id,
@@ -31,7 +24,7 @@ export default function PostActions({ post }: Props) {
         className={`
             hidden lg:flex w-full aspect-square bg-white rounded-12 border-2 border-gray-200 justify-around items-center text-gray-500 hover:bg-gray-50 active:bg-gray-100
             `}
-        onClick={() => navigate(-1)}
+        onClick={navigateBack}
       >
         <FiArrowLeft className={"text-body1"} />
       </button>
@@ -44,7 +37,7 @@ export default function PostActions({ post }: Props) {
             </ul> */}
       <ul className="bg-white rounded-12 p-16 border-2 border-gray-200 flex justify-around md:flex-col gap-32">
         <VoteButton
-          votes={post.votes_count}
+          votes={total_votes}
           onVote={vote}
           direction="vertical"
           fillType="upDown"

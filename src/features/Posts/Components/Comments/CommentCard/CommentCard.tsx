@@ -39,7 +39,9 @@ export default function CommentCard({
 
   const isMobile = useAppSelector((s) => s.ui.isMobileDevice);
 
-  const { image, content } = extractImageFromContent(comment.content);
+  const { image: imageAtTheEnd, content } = extractImageFromContent(
+    comment.content
+  );
   const contentWithMentionsLinks = replaceMentionsWithLinks(
     content,
     comment.tags
@@ -64,7 +66,7 @@ export default function CommentCard({
             width={32}
             src={
               author.image ??
-              `https://avatars.dicebear.com/api/identicon/${author.pubkey}.svg`
+              `https://api.dicebear.com/7.x/identicon/svg?seed=${author.pubkey}`
             }
           />
         </LinkDuo>
@@ -96,17 +98,13 @@ export default function CommentCard({
           <Tooltip id="nostr-link" />
         </a>
       </div>
-      {image && (
-        <div>
-          <img src={image} alt="" className="max-h-[50vh]" />
-        </div>
-      )}
       <div
         className="text-body4 mt-16 whitespace-pre-line break-words [&_a]:text-blue-400 [&_a]:underline"
         dangerouslySetInnerHTML={{
           __html: purifyHtml(marked.parse(contentWithMentionsLinks)),
         }}
       ></div>
+      {imageAtTheEnd && <img src={imageAtTheEnd} alt="" className="mt-16" />}
       <div className="flex gap-24 items-center">
         {/* <VoteButton
           votes={-1}

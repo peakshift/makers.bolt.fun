@@ -109,6 +109,7 @@ export type Bounty = PostBase & {
   title: Scalars['String'];
   type: Scalars['String'];
   updatedAt: Scalars['Date'];
+  votes: Votes;
   votes_count: Scalars['Int'];
 };
 
@@ -476,6 +477,7 @@ export type PostBase = {
   is_published: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
   updatedAt: Scalars['Date'];
+  votes: Votes;
   votes_count: Scalars['Int'];
 };
 
@@ -538,7 +540,7 @@ export type Project = {
   telegram: Maybe<Scalars['String']>;
   thumbnail_image: Maybe<Scalars['String']>;
   title: Scalars['String'];
-  tournaments: Array<Tournament>;
+  tournaments: Array<ProjectTournament>;
   twitter: Maybe<Scalars['String']>;
   votes_count: Scalars['Int'];
   website: Scalars['String'];
@@ -572,6 +574,12 @@ export enum ProjectPermissionEnum {
   UpdateInfo = 'UpdateInfo',
   UpdateMembers = 'UpdateMembers'
 }
+
+export type ProjectTournament = {
+  __typename?: 'ProjectTournament';
+  tournament: Tournament;
+  track: TournamentTrack;
+};
 
 export type Query = {
   __typename?: 'Query';
@@ -795,6 +803,7 @@ export type Question = PostBase & {
   title: Scalars['String'];
   type: Scalars['String'];
   updatedAt: Scalars['Date'];
+  votes: Votes;
   votes_count: Scalars['Int'];
 };
 
@@ -828,6 +837,7 @@ export type Story = PostBase & {
   title: Scalars['String'];
   type: Scalars['String'];
   updatedAt: Scalars['Date'];
+  votes: Votes;
   votes_count: Scalars['Int'];
 };
 
@@ -904,6 +914,7 @@ export type TournamentConfig = {
   feedFilters: Maybe<Array<Scalars['String']>>;
   ideasRootNostrEventId: Maybe<Scalars['String']>;
   mainFeedHashtag: Maybe<Scalars['String']>;
+  projectsSubmissionClosesOn: Maybe<Scalars['String']>;
   projectsSubmissionOpen: Scalars['Boolean'];
   registerationOpen: Scalars['Boolean'];
   showFeed: Maybe<Scalars['Boolean']>;
@@ -960,8 +971,9 @@ export type TournamentFaq = {
 export type TournamentJudge = {
   __typename?: 'TournamentJudge';
   avatar: Maybe<Scalars['String']>;
-  company: Scalars['String'];
+  company: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  twitter: Maybe<Scalars['String']>;
 };
 
 export type TournamentMakerDeal = {
@@ -1235,6 +1247,19 @@ export type Vote = {
   payment_request: Scalars['String'];
 };
 
+export type Voter = {
+  __typename?: 'Voter';
+  amount_voted: Scalars['Int'];
+  user: User;
+};
+
+export type Votes = {
+  __typename?: 'Votes';
+  total: Scalars['Int'];
+  total_anonymous_votes: Scalars['Int'];
+  voters: Array<Voter>;
+};
+
 export type WalletKey = {
   __typename?: 'WalletKey';
   createdAt: Scalars['Date'];
@@ -1379,7 +1404,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, votes_count: number, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> } } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
 
 export type GetTagInfoQueryVariables = Exact<{
   tag: InputMaybe<Scalars['String']>;
@@ -1539,7 +1564,7 @@ export type ProjectDetailsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, replit: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+export type ProjectDetailsQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, figma: string | null, replit: string | null, npub: string | null, telegram: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, awards: Array<{ __typename?: 'Award', title: string, image: string, url: string, id: number }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'ProjectTournament', tournament: { __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }, track: { __typename?: 'TournamentTrack', title: string, icon: string } }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
 export type SimilarProjectsQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -1627,7 +1652,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string, avatar: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type NostrKeysMetadataQueryVariables = Exact<{
   keys: Array<Scalars['String']> | Scalars['String'];
@@ -2644,7 +2669,18 @@ export const PostDetailsDocument = gql`
         id
         title
       }
-      votes_count
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
       type
       cover_image
       is_published
@@ -2672,7 +2708,18 @@ export const PostDetailsDocument = gql`
         id
         title
       }
-      votes_count
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
       type
       cover_image
       deadline
@@ -2705,7 +2752,18 @@ export const PostDetailsDocument = gql`
         id
         title
       }
-      votes_count
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
       type
     }
   }
@@ -3869,11 +3927,17 @@ export const ProjectDetailsDocument = gql`
       }
     }
     tournaments {
-      id
-      title
-      thumbnail_image
-      start_date
-      end_date
+      tournament {
+        id
+        title
+        thumbnail_image
+        start_date
+        end_date
+      }
+      track {
+        title
+        icon
+      }
     }
     capabilities {
       id
@@ -4501,6 +4565,7 @@ export const GetTournamentByIdDocument = gql`
       name
       company
       avatar
+      twitter
     }
     events {
       id
@@ -4550,6 +4615,7 @@ export const GetTournamentByIdDocument = gql`
     config {
       registerationOpen
       projectsSubmissionOpen
+      projectsSubmissionClosesOn
       ideasRootNostrEventId
       showFeed
       mainFeedHashtag

@@ -37,6 +37,7 @@ query GetTournamentById($idOrSlug: String!) {
       name
       company
       avatar
+      twitter
     }
     events {
       id
@@ -86,6 +87,7 @@ query GetTournamentById($idOrSlug: String!) {
     config {
       registerationOpen
       projectsSubmissionOpen
+      projectsSubmissionClosesOn
       ideasRootNostrEventId
       showFeed
       mainFeedHashtag

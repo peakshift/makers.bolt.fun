@@ -16,7 +16,18 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         id
         title
       }
-      votes_count
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
       type
       cover_image
       is_published
@@ -27,19 +38,6 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         thumbnail_image
         hashtag
       }
-      # comments_count
-      # comments {
-      #   id
-      #   created_at
-      #   body
-      #   votes_count
-      #   parentId
-      #   author {
-      #     id
-      #     name
-      #     avatar
-      #   }
-      # }
     }
     ... on Bounty {
       id
@@ -57,7 +55,18 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         id
         title
       }
-      votes_count
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
       type
       cover_image
       deadline
@@ -90,7 +99,18 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
         id
         title
       }
-      votes_count
+      votes {
+        total
+        total_anonymous_votes
+        voters {
+          user {
+            id
+            name
+            avatar
+          }
+          amount_voted
+        }
+      }
       type
       # answers_count
       # comments {

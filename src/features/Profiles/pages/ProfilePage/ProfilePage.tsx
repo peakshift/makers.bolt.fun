@@ -60,7 +60,9 @@ function ProfilePage() {
                   isOwner={isOwner}
                 />
                 <TournamentsCard
-                  tournaments={profileQuery.data.profile.tournaments}
+                  tournaments={profileQuery.data.profile.tournaments.map(
+                    (t) => ({ tournament: t, track: null })
+                  )}
                   isOwner={isOwner}
                 />
               </aside>
