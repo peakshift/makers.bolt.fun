@@ -651,6 +651,9 @@ const unlinkNostrKey = extendType({
 
         if (!keyExist) throw new Error("This user doesn't have this key");
 
+        if (keyExist.is_default_generated_key)
+          throw new Error("You can't delete your default generated key");
+
         await prisma.userNostrKey.delete({
           where: {
             key,
@@ -791,6 +794,7 @@ const NostrKey = objectType({
     t.nonNull.string("label");
     t.nonNull.date("createdAt");
     t.nonNull.boolean("is_primary");
+    t.nonNull.boolean("is_default_generated_key");
   },
 });
 

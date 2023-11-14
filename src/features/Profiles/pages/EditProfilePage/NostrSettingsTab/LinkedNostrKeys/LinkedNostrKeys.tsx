@@ -98,13 +98,19 @@ export default function LinkedNostrKeys({ keys }: Props) {
                   <div className="flex basis-full gap-8 items-center min-w-0">
                     <Avatar width={32} src={nostrProfile.image} />
                     <div className="overflow-hidden">
-                      <p className="font-bold overflow-hidden whitespace-nowrap text-ellipsis">
+                      <p className="flex flex-wrap gap-8 font-bold overflow-hidden whitespace-nowrap text-ellipsis">
                         {nostrKey.is_primary && (
-                          <Badge color="primary" size="sm" className="mr-8">
+                          <Badge color="primary" size="sm" className="">
                             Primary Key
                           </Badge>
                         )}
+
                         {nostrProfile.name}
+                        {nostrKey.is_default_generated_key && (
+                          <span className="text-gray-400">
+                            (Default Generated Key)
+                          </span>
+                        )}
                       </p>
                       <p className="text-gray-500 overflow-hidden text-ellipsis">
                         {nip19.npubEncode(nostrKey.key)}
@@ -131,17 +137,19 @@ export default function LinkedNostrKeys({ keys }: Props) {
                         Set as Primary
                       </Button>
                     )}
-                    <Button
-                      size="sm"
-                      color="red"
-                      variant="outline"
-                      onClick={() => handleDeleteConnection(nostrKey.key)}
-                    >
-                      <span className="align-middle mr-8" aria-hidden>
-                        Unlink Key
-                      </span>
-                      <FiTrash2 aria-hidden />
-                    </Button>
+                    {!nostrKey.is_default_generated_key && (
+                      <Button
+                        size="sm"
+                        color="red"
+                        variant="outline"
+                        onClick={() => handleDeleteConnection(nostrKey.key)}
+                      >
+                        <span className="align-middle mr-8" aria-hidden>
+                          Unlink Key
+                        </span>
+                        <FiTrash2 aria-hidden />
+                      </Button>
+                    )}
                   </div>
                 </li>
               );
