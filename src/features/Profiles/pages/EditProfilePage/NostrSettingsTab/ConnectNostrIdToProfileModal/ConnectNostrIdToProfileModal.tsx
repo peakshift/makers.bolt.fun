@@ -5,12 +5,10 @@ import {
 } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { IoClose } from "react-icons/io5";
 import Button from "src/Components/Button/Button";
-import { useAppSelector } from "src/utils/hooks";
 import { NotificationsService } from "src/services";
-import { useLinkNewNostrKeyMutation } from "src/graphql";
 import { extractErrorMessage } from "src/utils/helperFunctions";
-import { CONSTS } from "src/utils";
-import { UnsignedNostrEvent } from "src/lib/nostr";
+import { useLinkNostrExtensionKeyToProfile } from "./useLinkNostrKeyToProfile";
+import { connectNostrExtensionToCommentingWidget } from "src/features/Posts/Components/Comments/CommentsWidget/components/ConnectNostrAccountModal/ConnectNostrAccountModal";
 
 interface Props extends ModalCard {}
 
@@ -18,47 +16,22 @@ export default function ConnectNostrIdToProfileModal({
   onClose,
   direction,
 }: Props) {
-  const me = useAppSelector((s) => s.user.me);
-  const [mutate] = useLinkNewNostrKeyMutation();
+  const { link: linkNostrExtensionKeyToProfile } =
+    useLinkNostrExtensionKeyToProfile();
 
   const clickVerify = async () => {
-    if (window.nostr) {
-      try {
-        const pubkey = await window.nostr.getPublicKey();
-        const event: UnsignedNostrEvent = {
-          kind: 1,
-          created_at: Math.round(Date.now() / 1000),
-          content: `Verifying my #BOLTFUN account on Nostr
-
-My Maker Profile: https://makers.bolt.fun/profile/${me?.id}
-
-Join our FUN community of builders and designers
-#[0] 
-
-#BuildOnNostr #BuildOnBitcoin`,
-          pubkey,
-          tags: [["p", CONSTS.BF_NOSTR_PUBKEY]],
-        };
-
-        const signedEvent = await window.nostr.signEvent(event);
-
-        mutate({
-          variables: {
-            event: signedEvent,
-          },
-          onCompleted: (data) => {
-            onClose?.();
-            NotificationsService.success("Key Linked Successfully!");
-          },
-        }).catch((err) => {
-          const msg = extractErrorMessage(err);
-          NotificationsService.error(msg ?? "Something wrong happened...");
-        });
-      } catch (error) {
-        NotificationsService.error("User rejected operation");
-      }
-    } else {
-      NotificationsService.error("No nostr extension was found...");
+    try {
+      await linkNostrExtensionKeyToProfile();
+      const connectionObject = await connectNostrExtensionToCommentingWidget();
+      localStorage.setItem(
+        "nostr-connection",
+        JSON.stringify(connectionObject)
+      );
+      onClose?.();
+      NotificationsService.success("Key Linked Successfully!");
+    } catch (error) {
+      const message = extractErrorMessage(error);
+      NotificationsService.error(message ?? "Something wrong happened...");
     }
   };
 
