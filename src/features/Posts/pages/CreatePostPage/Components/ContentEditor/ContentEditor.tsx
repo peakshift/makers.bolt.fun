@@ -24,10 +24,11 @@ import {
 } from "remirror/extensions";
 import { ExtensionPriority, InvalidContentHandler } from "remirror";
 import { EditorComponent, Remirror, useRemirror } from "@remirror/react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import TextEditorComponents from "src/Components/Inputs/TextEditor";
 import Toolbar from "./Toolbar";
 import { uploadImage } from "src/Components/Inputs/FilesInputs/upload-image";
+import RawMarkdownEditor from "../RawMarkdownEditor/RawMarkdownEditor";
 
 const turndownService = new TurndownService();
 turndownService.keep(["iframe"]);
@@ -36,13 +37,18 @@ interface Props {
   placeholder?: string;
   initialContent?: () => string;
   name?: string;
+  onTriggerReset?: () => void;
 }
 
 export default function ContentEditor({
   placeholder,
   initialContent,
   name,
+  onTriggerReset,
 }: Props) {
+  const [editorMode, setEditorMode] =
+    useState<"rich-text" | "raw-md">("rich-text");
+
   const onError: InvalidContentHandler = useCallback(
     ({ json, invalidContent, transformers }) => {
       // Automatically remove all invalid nodes and marks.
@@ -113,12 +119,35 @@ export default function ContentEditor({
     onError,
   });
 
+  const switchEditorMode = () => {
+    if (editorMode === "rich-text") {
+      setEditorMode("raw-md");
+    } else {
+      onTriggerReset?.();
+      setEditorMode("rich-text");
+    }
+  };
+
   return (
     <div className={`remirror-theme ${styles.wrapper} post-body bg-white`}>
       <Remirror manager={manager} initialContent={initialContent?.()}>
         <TextEditorComponents.SaveModule name={name} />
-        <Toolbar />
-        <EditorComponent />
+        <Toolbar disabled={editorMode === "raw-md"} />
+        <div className={editorMode !== "rich-text" ? "hidden" : ""}>
+          <EditorComponent />
+        </div>
+        {editorMode === "raw-md" && <RawMarkdownEditor name={name} />}
+        <div className="bg-gray-100 py-8 px-12 flex justify-end">
+          <button
+            className="text-blue-400 font-bold"
+            onClick={switchEditorMode}
+            type="button"
+          >
+            {editorMode === "rich-text"
+              ? "Switch to Raw Markdown"
+              : "Switch to Rich Text"}
+          </button>
+        </div>
       </Remirror>
     </div>
   );
