@@ -256,6 +256,7 @@ export default function StoryForm(props: Props) {
               <ContentEditor
                 key={resetKey}
                 initialContent={() => getValues().body}
+                onTriggerReset={() => setResetKey((v) => v + 1)}
                 placeholder="Write your story content here..."
                 name="body"
               />
