@@ -1,5 +1,5 @@
 import { Control, useController } from "react-hook-form";
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
 
 interface Props {
   control?: Control;
@@ -15,11 +15,11 @@ export default function RawMarkdownEditor(props: Props) {
   });
 
   return (
-    <div className={`${styles["grow-wrap"]}`} data-replicated-value={value}>
+    <div className={`${styles["grow-wrap"]}`}>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full h-full p-16 pt-32"
+        className="w-full p-16 pt-32"
         placeholder={`Write your **stroy** content in raw markdown here...
         `}
       />
