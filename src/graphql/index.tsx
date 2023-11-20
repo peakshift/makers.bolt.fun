@@ -1377,7 +1377,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, createdAt: any, body: string, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, body: string, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> } } | { __typename?: 'Story', id: number, title: string, createdAt: any, body: string, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> } } | { __typename?: 'Story', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
 
 export type GetTagInfoQueryVariables = Exact<{
   tag: InputMaybe<Scalars['String']>;
@@ -2629,6 +2629,7 @@ export const PostDetailsDocument = gql`
     ... on Story {
       id
       title
+      excerpt
       createdAt
       author {
         id
@@ -2668,6 +2669,7 @@ export const PostDetailsDocument = gql`
     ... on Bounty {
       id
       title
+      excerpt
       createdAt
       author {
         id
@@ -2712,6 +2714,7 @@ export const PostDetailsDocument = gql`
     ... on Question {
       id
       title
+      excerpt
       createdAt
       author {
         id
