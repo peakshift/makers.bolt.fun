@@ -220,6 +220,7 @@ export default function AboutCard({ user, isOwner }: Props) {
               <ul className="flex flex-col gap-12">
                 {[...user.nostr_keys]
                   .sort((k1, k2) => (k1.is_primary ? -1 : 1))
+                  .filter((k) => k.is_primary)
                   .map((nostrKey) => {
                     const nostrProfile = getProfileDataFromMetaData(
                       metadata,
