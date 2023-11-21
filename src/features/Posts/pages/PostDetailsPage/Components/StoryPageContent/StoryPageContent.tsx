@@ -51,11 +51,7 @@ function StoryPageContent({ story }: Props) {
 
   return (
     <>
-      <OgTags
-        title={story.title}
-        description={story.body.slice(0, 50)}
-        image={story.cover_image}
-      />
+      <OgTags image={story.cover_image} />
       <Card id="content" onlyMd className="relative max">
         <div className="flex justify-between items-center flex-wrap mb-16">
           <PostPageHeader
