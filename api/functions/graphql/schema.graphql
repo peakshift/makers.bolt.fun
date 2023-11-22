@@ -24,19 +24,29 @@ type Award {
   url: String!
 }
 
+type AwardedBadgeMetadata {
+  emoji: String
+  label: String
+  value: String
+}
+
 type Badge {
   badgeDefinitionNostrEventId: String
+  color: String
   description: String!
   id: Int!
   image: String!
   slug: String!
   title: String!
+  winningDescriptionTemplate: String
 }
 
 type BadgeProgress {
+  awardedAt: Date
   badgeAwardNostrEventId: String
   current: Int
   isCompleted: Boolean!
+  metaData: [AwardedBadgeMetadata!]
   totalNeeded: Int
 }
 

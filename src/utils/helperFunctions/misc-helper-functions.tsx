@@ -92,3 +92,26 @@ export async function lightningAddressToPR(
 export function toSort<T>(arr: T[], sortFn: (a: T, b: T) => number) {
   return [...arr].sort(sortFn);
 }
+
+export function addOpacityToHexColor(color: string, opacity: number) {
+  if (color.startsWith("#")) color = color.substring(1);
+
+  //if it has an alpha, remove it
+  if (color.length > 6) color = color.substring(0, color.length - 2);
+
+  //if it is a 3 digit hex, convert to 6
+  if (color.length === 3)
+    color = color
+      .split("")
+      .map((h) => h + h)
+      .join("");
+
+  // coerce values so ti is between 0 and 1.
+  const _opacity = Math.round(Math.min(Math.max(opacity, 0), 1) * 255);
+  let opacityHex = _opacity.toString(16).toUpperCase();
+
+  // opacities near 0 need a trailing 0
+  if (opacityHex.length == 1) opacityHex = "0" + opacityHex;
+
+  return "#" + color + opacityHex;
+}

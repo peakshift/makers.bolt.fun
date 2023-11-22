@@ -143,6 +143,8 @@ const BaseUser = interfaceType({
             progress: {
               isCompleted: true,
               badgeAwardNostrEventId: item.badgeAwardNostrEventId,
+              awardedAt: item.awardedAt,
+              metaData: item.metaData,
             },
           }));
         } else {
@@ -172,16 +174,18 @@ const BaseUser = interfaceType({
 
           return allBadges.map((badge) => {
             const userHasThisBadge = badge.UserBadge.length > 0;
+            const useBadge = badge.UserBadge[0];
             const badgeUserProgress = myBadgesProgress[badge.id];
             return {
               id: `${badge.id}-${parent.id}`,
               badge,
               progress: {
                 isCompleted: userHasThisBadge,
-                badgeAwardNostrEventId:
-                  badge.UserBadge[0]?.badgeAwardNostrEventId,
+                badgeAwardNostrEventId: useBadge?.badgeAwardNostrEventId,
                 totalNeeded: badge.incrementsNeeded,
                 current: badgeUserProgress?.progress,
+                awardedAt: useBadge?.awardedAt,
+                metaData: useBadge?.metaData,
               },
             };
           });
@@ -315,7 +319,18 @@ const Badge = objectType({
     t.nonNull.string("slug");
     t.nonNull.string("image");
     t.nonNull.string("description");
+    t.string("winningDescriptionTemplate");
+    t.string("color");
     t.string("badgeDefinitionNostrEventId");
+  },
+});
+
+const AwardedBadgeMetadata = objectType({
+  name: "AwardedBadgeMetadata",
+  definition(t) {
+    t.string("emoji");
+    t.string("label");
+    t.string("value");
   },
 });
 
@@ -323,9 +338,13 @@ const BadgeProgress = objectType({
   name: "BadgeProgress",
   definition(t) {
     t.nonNull.boolean("isCompleted");
+    t.date("awardedAt");
     t.string("badgeAwardNostrEventId");
     t.int("totalNeeded");
     t.int("current");
+    t.list.nonNull.field("metaData", {
+      type: AwardedBadgeMetadata,
+    });
   },
 });
 

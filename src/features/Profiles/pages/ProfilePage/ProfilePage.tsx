@@ -70,6 +70,7 @@ function ProfilePage() {
                 <AboutCard user={profileQuery.data.profile} isOwner={isOwner} />
                 <BadgesCard
                   badges={profileQuery.data.profile.badges}
+                  username={profileQuery.data.profile.name}
                   isOwner={isOwner}
                 />
                 <StoriesCard
@@ -105,6 +106,7 @@ function ProfilePage() {
                 />
                 <BadgesCard
                   badges={profileQuery.data.profile.badges}
+                  username={profileQuery.data.profile.name}
                   isOwner={isOwner}
                 />
                 <StoriesCard

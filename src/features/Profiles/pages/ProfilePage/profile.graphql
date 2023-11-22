@@ -25,6 +25,8 @@ query profile($profileId: Int!) {
         slug
         image
         description
+        color
+        winningDescriptionTemplate
         badgeDefinitionNostrEventId
       }
       progress {
@@ -32,6 +34,12 @@ query profile($profileId: Int!) {
         badgeAwardNostrEventId
         totalNeeded
         current
+        awardedAt
+        metaData {
+          emoji
+          label
+          value
+        }
       }
     }
     projects {

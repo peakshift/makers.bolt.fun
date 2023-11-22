@@ -90,6 +90,8 @@ async function processUserActionsQueue() {
             badgesTrackingThisAction;
         }
 
+        const badgesWithProgressThatIncremented = {};
+
         for (const badge of badgesTrackingThisAction) {
           trxPromises.push(
             prisma.userBadgeProgress.upsert({
@@ -111,6 +113,10 @@ async function processUserActionsQueue() {
               },
             })
           );
+          badgesWithProgressThatIncremented[`${badge.id}_${action.user_id}`] = {
+            badgeId: badge.id,
+            userId: action.user_id,
+          };
         }
 
         trxPromises.push(
@@ -126,19 +132,25 @@ async function processUserActionsQueue() {
         );
 
         allTrxsPromises.push(
-          prisma.$transaction(trxPromises).catch((reason) => {
-            updateFailReasonPromises.push(
-              prisma.userAction.update({
-                where: {
-                  id: action.id,
-                },
-                data: {
-                  status: "failed",
-                  failReason: reason.message,
-                },
-              })
-            );
-          })
+          prisma
+            .$transaction(trxPromises)
+            // .then(()=>{
+            //   Object.values(badgesWithProgressThatIncremented).map(async ({badgeId,userId}) => {
+            //     const badgeIncrementsNeeded = await prisma.badge.findUnique({
+            // })
+            .catch((reason) => {
+              updateFailReasonPromises.push(
+                prisma.userAction.update({
+                  where: {
+                    id: action.id,
+                  },
+                  data: {
+                    status: "failed",
+                    failReason: reason.message,
+                  },
+                })
+              );
+            })
         );
       } catch (error) {
         updateFailReasonPromises.push(

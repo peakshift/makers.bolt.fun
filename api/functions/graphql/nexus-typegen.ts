@@ -290,18 +290,27 @@ export interface NexusGenObjects {
     title: string; // String!
     url: string; // String!
   }
+  AwardedBadgeMetadata: { // root type
+    emoji?: string | null; // String
+    label?: string | null; // String
+    value?: string | null; // String
+  }
   Badge: { // root type
     badgeDefinitionNostrEventId?: string | null; // String
+    color?: string | null; // String
     description: string; // String!
     id: number; // Int!
     image: string; // String!
     slug: string; // String!
     title: string; // String!
+    winningDescriptionTemplate?: string | null; // String
   }
   BadgeProgress: { // root type
+    awardedAt?: NexusGenScalars['Date'] | null; // Date
     badgeAwardNostrEventId?: string | null; // String
     current?: number | null; // Int
     isCompleted: boolean; // Boolean!
+    metaData?: NexusGenRootTypes['AwardedBadgeMetadata'][] | null; // [AwardedBadgeMetadata!]
     totalNeeded?: number | null; // Int
   }
   Bounty: { // root type
@@ -665,18 +674,27 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     url: string; // String!
   }
+  AwardedBadgeMetadata: { // field return type
+    emoji: string | null; // String
+    label: string | null; // String
+    value: string | null; // String
+  }
   Badge: { // field return type
     badgeDefinitionNostrEventId: string | null; // String
+    color: string | null; // String
     description: string; // String!
     id: number; // Int!
     image: string; // String!
     slug: string; // String!
     title: string; // String!
+    winningDescriptionTemplate: string | null; // String
   }
   BadgeProgress: { // field return type
+    awardedAt: NexusGenScalars['Date'] | null; // Date
     badgeAwardNostrEventId: string | null; // String
     current: number | null; // Int
     isCompleted: boolean; // Boolean!
+    metaData: NexusGenRootTypes['AwardedBadgeMetadata'][] | null; // [AwardedBadgeMetadata!]
     totalNeeded: number | null; // Int
   }
   Bounty: { // field return type
@@ -1197,18 +1215,27 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     url: 'String'
   }
+  AwardedBadgeMetadata: { // field return type name
+    emoji: 'String'
+    label: 'String'
+    value: 'String'
+  }
   Badge: { // field return type name
     badgeDefinitionNostrEventId: 'String'
+    color: 'String'
     description: 'String'
     id: 'Int'
     image: 'String'
     slug: 'String'
     title: 'String'
+    winningDescriptionTemplate: 'String'
   }
   BadgeProgress: { // field return type name
+    awardedAt: 'Date'
     badgeAwardNostrEventId: 'String'
     current: 'Int'
     isCompleted: 'Boolean'
+    metaData: 'AwardedBadgeMetadata'
     totalNeeded: 'Int'
   }
   Bounty: { // field return type name

@@ -8,12 +8,18 @@ import { useAppDispatch } from "src/utils/hooks";
 import BadgeCard from "./BadgeCard";
 
 interface Props {
+  username: string;
   isOwner?: boolean;
   badges: User["badges"];
   onlyMd?: boolean;
 }
 
-export default function BadgesCard({ badges, isOwner, onlyMd }: Props) {
+export default function BadgesCard({
+  badges,
+  isOwner,
+  username,
+  onlyMd,
+}: Props) {
   const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
 
@@ -56,12 +62,18 @@ export default function BadgesCard({ badges, isOwner, onlyMd }: Props) {
         dispatch(
           openModal({
             Modal: "ViewBadgeModal",
-            props: { badge: userBadge.badge },
+            props: {
+              badge: userBadge.badge,
+              issuedBadgeMetaData: userBadge.progress?.metaData,
+              awardedAt: userBadge.progress?.awardedAt,
+              isOwner,
+              username,
+            },
           })
         );
       }
     }
-  }, [badges, dispatch, openBadgeSearchParam]);
+  }, [badges, dispatch, isOwner, openBadgeSearchParam, username]);
 
   if (badges.length === 0 && !isOwner) return null;
 
@@ -80,7 +92,12 @@ export default function BadgesCard({ badges, isOwner, onlyMd }: Props) {
         >
           {sortedBadgesList.map((badge) => (
             <li key={badge.id}>
-              <BadgeCard showProgress={!isOwner} userBadge={badge} />
+              <BadgeCard
+                userBadge={badge}
+                isOwner={!!isOwner}
+                username={username}
+                showProgress={!isOwner}
+              />
             </li>
           ))}
         </ul>

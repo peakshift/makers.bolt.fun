@@ -1,15 +1,22 @@
 import Button from "src/Components/Button/Button";
 import { BadgeProgress, UserBadge } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
+import { addOpacityToHexColor } from "src/utils/helperFunctions";
 import { useAppDispatch } from "src/utils/hooks";
 
 interface Props {
+  username: string;
   userBadge: UserBadge;
   showProgress?: boolean;
-  isOwner?: boolean;
+  isOwner: boolean;
 }
 
-export default function BadgeCard({ userBadge, showProgress, isOwner }: Props) {
+export default function BadgeCard({
+  userBadge,
+  showProgress,
+  isOwner,
+  username,
+}: Props) {
   const dispatch = useAppDispatch();
 
   const openBadgeModal = () => {
@@ -18,7 +25,10 @@ export default function BadgeCard({ userBadge, showProgress, isOwner }: Props) {
         Modal: "ViewBadgeModal",
         props: {
           badge: userBadge.badge,
+          issuedBadgeMetaData: userBadge.progress?.metaData,
+          awardedAt: userBadge.progress?.awardedAt,
           isOwner,
+          username,
         },
       })
     );
@@ -106,8 +116,20 @@ export default function BadgeCard({ userBadge, showProgress, isOwner }: Props) {
   return (
     <button
       onClick={openBadgeModal}
-      className="block w-full bg-gray-100 p-20 rounded h-full"
+      className="block w-full bg-white p-20 rounded h-full relative overflow-hidden isolate border-2"
+      style={{
+        borderColor: addOpacityToHexColor(
+          userBadge.badge.color ?? "#e4e7ec",
+          0.3
+        ),
+      }}
     >
+      <div
+        className="absolute inset-0 -z-10 opacity-20"
+        style={{
+          backgroundColor: userBadge.badge.color ?? "gray",
+        }}
+      ></div>
       <div className="flex flex-col items-center text-center gap-8">
         <img
           src={userBadge.badge.image}
