@@ -79,15 +79,7 @@ export default function BadgeCard({
               ></div>
             </div>
             <div className="flex items-center mt-8 gap-8">
-              {isCompleted ? (
-                <>
-                  {!userBadge.progress.badgeAwardNostrEventId && (
-                    <Button size="sm" color="primary" variant="text">
-                      Request a Nostr Badge 🎖️
-                    </Button>
-                  )}
-                </>
-              ) : (
+              {!isCompleted && (
                 <p className="text-body5 text-gray-500 mt-8 ml-auto">
                   <span className="sr-only">Progress: </span>
                   {userBadge.progress.current ?? 0} /{" "}

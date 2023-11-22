@@ -85,7 +85,7 @@ export default function BadgesCard({
       {sortedBadgesList.length > 0 && (
         <ul
           className={
-            !isOwner
+            isOwner
               ? "flex flex-col gap-16"
               : "grid grid-cols-1 md:grid-cols-2 gap-16"
           }
@@ -96,7 +96,7 @@ export default function BadgesCard({
                 userBadge={badge}
                 isOwner={!!isOwner}
                 username={username}
-                showProgress={!isOwner}
+                showProgress={isOwner}
               />
             </li>
           ))}
