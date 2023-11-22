@@ -14,17 +14,4 @@ export const BIG_BILLBOARD_DATA_ITEMS = shuffle([
     cta: "🏆 View Tournament",
     href: "/tournaments/legends-of-lightning-vol2",
   },
-  {
-    campaign: "NostrasiaHackathon",
-    bgImageUrl:
-      "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/833eb817-cfb1-4759-7468-b1c58e59ad00/original",
-    bgColor: "bg-[#5B0A8E]",
-    textColor: "text-white",
-    logo: "https://imagedelivery.net/wyrwp3c-j0gDDUWgnE7lig/671ae048-d426-4697-c680-6c270f106600/original",
-    title: "$4000 in prizes to build on Nostr",
-    description:
-      "Build tools, marketplaces, or bring your community to Nostr from 3rd Oct - 3rd Nov",
-    cta: "🏆 View Tournament",
-    href: "/tournaments/nostrasia",
-  },
 ] as BillboardItem[]);

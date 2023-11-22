@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
     icon: "🏆",
     text: "Tournaments",
     badge: {
-      text: "2",
+      text: "1",
       color: "red",
     },
     highlighted: true,

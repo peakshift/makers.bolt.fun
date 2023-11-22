@@ -22,18 +22,17 @@ export function EventsPage() {
             organizerImageSrc="assets/images/fulgur.png"
             linkTo="/tournaments/legends-of-lightning-vol2"
           />
-          <UpcomingTournamentCard
-            type="🏆 TOURNAMENT"
-            title="Nostrasia Hackathon"
-            imageSrc="assets/images/nostaria.png"
-            date="3rd Oct - 3rd Nov"
-            organizerImageSrc="assets/images/nostr-world.png"
-            linkTo="/tournaments/nostrasia"
-          />
         </div>
         <div className="w-full h-px my-32 bg-gray-200" />
         <h1 className="text-2xl font-bold">Completed</h1>
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-32 gap-y-32">
+          <CompletedTournamentCard
+            title="Nostrasia Hackathon"
+            imageSrc="assets/images/nostaria.png"
+            date="OCT 3 - NOV 3"
+            emoji="🛠️"
+            linkTo="nostrasia"
+          />
           <CompletedTournamentCard
             title="Ai4ALL"
             imageSrc="assets/images/ai4all.png"
