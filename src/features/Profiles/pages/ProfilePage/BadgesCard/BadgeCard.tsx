@@ -1,12 +1,29 @@
 import Button from "src/Components/Button/Button";
 import { BadgeProgress, UserBadge } from "src/graphql";
+import { openModal } from "src/redux/features/modals.slice";
+import { useAppDispatch } from "src/utils/hooks";
 
 interface Props {
   userBadge: UserBadge;
   showProgress?: boolean;
+  isOwner?: boolean;
 }
 
-export default function BadgeCard({ userBadge, showProgress }: Props) {
+export default function BadgeCard({ userBadge, showProgress, isOwner }: Props) {
+  const dispatch = useAppDispatch();
+
+  const openBadgeModal = () => {
+    dispatch(
+      openModal({
+        Modal: "ViewBadgeModal",
+        props: {
+          badge: userBadge.badge,
+          isOwner,
+        },
+      })
+    );
+  };
+
   if (showProgress) {
     if (!userBadge.progress) throw new Error("Progress is null");
 
@@ -17,7 +34,11 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
         userBadge.progress.current >= userBadge.progress.totalNeeded);
 
     return (
-      <div className="bg-gray-100 py-8 px-16 rounded">
+      <div
+        className={`border-violet-200 border-2 py-8 px-16 rounded
+      ${isCompleted ? "bg-violet-50" : "bg-gray-100"}
+      `}
+      >
         <div className="flex gap-8">
           <img
             src={userBadge.badge.image}
@@ -50,13 +71,9 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
             <div className="flex items-center mt-8 gap-8">
               {isCompleted ? (
                 <>
-                  {userBadge.progress.badgeAwardNostrEventId ? (
-                    <p className="text-body4 font-bold text-green-500 mx-auto">
-                      Completed!
-                    </p>
-                  ) : (
-                    <Button size="sm" color="primary" className="mx-auto my-16">
-                      Claim Your Nostr Badge! 🎖️
+                  {!userBadge.progress.badgeAwardNostrEventId && (
+                    <Button size="sm" color="primary" variant="text">
+                      Request a Nostr Badge 🎖️
                     </Button>
                   )}
                 </>
@@ -68,15 +85,16 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
                 </p>
               )}
             </div>
-            {userBadge.progress.badgeAwardNostrEventId && (
+            {userBadge.progress.isCompleted && (
               <Button
-                color="primary"
-                variant="text"
+                color="none"
+                className="mt-16 bg-gray-600/10 hover:bg-gray-600/5"
                 fullWidth
                 newTab
-                href={`https://badges.page/b/${userBadge.progress.badgeAwardNostrEventId}`}
+                onClick={openBadgeModal}
+                // href={`https://badges.page/b/${userBadge.progress.badgeAwardNostrEventId}`}
               >
-                View Nostr Badge 🎖️
+                View Badge
               </Button>
             )}
           </div>
@@ -86,7 +104,10 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
   }
 
   return (
-    <div className="bg-gray-100 py-8 px-16 rounded h-full">
+    <button
+      onClick={openBadgeModal}
+      className="block w-full bg-gray-100 p-20 rounded h-full"
+    >
       <div className="flex flex-col items-center text-center gap-8">
         <img
           src={userBadge.badge.image}
@@ -100,7 +121,7 @@ export default function BadgeCard({ userBadge, showProgress }: Props) {
           </p>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
