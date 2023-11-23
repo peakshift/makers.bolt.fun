@@ -14,6 +14,8 @@ interface Props {
   onlyMd?: boolean;
 }
 
+let firstTimeMount = true;
+
 export default function BadgesCard({
   badges,
   isOwner,
@@ -22,8 +24,6 @@ export default function BadgesCard({
 }: Props) {
   const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
-
-  const justMounted = useRef(true);
 
   const openBadgeSearchParam = searchParams.get("badge");
 
@@ -48,9 +48,14 @@ export default function BadgesCard({
     return b2ProgressPercentage - b1ProgressPercentage;
   });
 
+  const earnedBadges = sortedBadgesList.filter((b) => b.progress?.isCompleted);
+  const inProgressBadges = sortedBadgesList.filter(
+    (b) => !b.progress?.isCompleted
+  );
+
   useEffect(() => {
-    if (justMounted.current) {
-      justMounted.current = false;
+    if (firstTimeMount) {
+      firstTimeMount = false;
     } else return;
 
     if (openBadgeSearchParam) {
@@ -82,7 +87,62 @@ export default function BadgesCard({
       <p className="text-body2 font-bolder mb-16 text-center">
         🏅 Achievements
       </p>
-      {sortedBadgesList.length > 0 && (
+
+      {isOwner && sortedBadgesList.length > 0 && (
+        <div className="flex flex-col gap-16">
+          {earnedBadges.length > 0 && (
+            <div>
+              <p className="text-body2 font-bolder text-gray-600 mb-16 text-center">
+                Earned
+              </p>
+              <ul
+                className={
+                  isOwner
+                    ? "flex flex-col gap-16"
+                    : "grid grid-cols-1 md:grid-cols-2 gap-24"
+                }
+              >
+                {earnedBadges.map((badge) => (
+                  <li key={badge.id}>
+                    <BadgeCard
+                      userBadge={badge}
+                      isOwner={!!isOwner}
+                      username={username}
+                      showProgress={isOwner}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {inProgressBadges.length > 0 && (
+            <div>
+              <p className="text-body2 font-bolder text-gray-600 mb-16 text-center">
+                In progress
+              </p>
+              <ul
+                className={
+                  isOwner
+                    ? "flex flex-col gap-16"
+                    : "grid grid-cols-1 md:grid-cols-2 gap-24"
+                }
+              >
+                {inProgressBadges.map((badge) => (
+                  <li key={badge.id}>
+                    <BadgeCard
+                      userBadge={badge}
+                      isOwner={!!isOwner}
+                      username={username}
+                      showProgress={isOwner}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+      {!isOwner && sortedBadgesList.length > 0 && (
         <ul
           className={
             isOwner
@@ -101,7 +161,7 @@ export default function BadgesCard({
             </li>
           ))}
         </ul>
-      )}{" "}
+      )}
     </div>
   );
 }

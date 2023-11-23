@@ -44,10 +44,12 @@ export default function BadgeCard({
         userBadge.progress.current >= userBadge.progress.totalNeeded);
 
     return (
-      <div
-        className={`border-violet-200 border-2 p-20 rounded
-      ${isCompleted ? "bg-violet-50" : "bg-gray-100"}
+      <button
+        className={`border-violet-200 border-2 p-20 rounded w-full disabled:opacity-100
+      ${isCompleted ? "bg-violet-50 hover:bg-violet-100" : "bg-gray-100"}
       `}
+        onClick={openBadgeModal}
+        disabled={!isCompleted}
       >
         <div className="flex items-center gap-8">
           <img
@@ -55,25 +57,27 @@ export default function BadgeCard({
             alt=""
             className="w-64 h-64 rounded object-contain"
           />
-          <div className="grow">
+          <div className="grow text-left">
             <p className="text-body3 font-medium">{userBadge.badge.title}</p>
             <p className="font-medium text-gray-500">
               {userBadge.badge.description}
             </p>
-            <div className="mt-8 relative bg-white h-16 rounded p-[2px] border-2 border-gray-200">
-              <div
-                className={`${
-                  isCompleted ? "bg-green-400" : "bg-primary-500"
-                } rounded-16 h-full origin-left`}
-                style={{
-                  width: `${
-                    isCompleted
-                      ? 100
-                      : getProgressPercentage(userBadge.progress) * 100
-                  }%`,
-                }}
-              ></div>
-            </div>
+            {!isCompleted && (
+              <div className="mt-8 relative bg-white h-16 rounded p-[2px] border-2 border-gray-200">
+                <div
+                  className={`${
+                    isCompleted ? "bg-green-400" : "bg-primary-500"
+                  } rounded-16 h-full origin-left`}
+                  style={{
+                    width: `${
+                      isCompleted
+                        ? 100
+                        : getProgressPercentage(userBadge.progress) * 100
+                    }%`,
+                  }}
+                ></div>
+              </div>
+            )}
           </div>
         </div>
         <div className="mt-8">
@@ -86,20 +90,8 @@ export default function BadgeCard({
               </p>
             )}
           </div>
-          {userBadge.progress.isCompleted && (
-            <Button
-              color="none"
-              className="mt-16 bg-gray-600/10 hover:bg-gray-600/5"
-              fullWidth
-              newTab
-              onClick={openBadgeModal}
-              // href={`https://badges.page/b/${userBadge.progress.badgeAwardNostrEventId}`}
-            >
-              View Badge
-            </Button>
-          )}
         </div>
-      </div>
+      </button>
     );
   }
 

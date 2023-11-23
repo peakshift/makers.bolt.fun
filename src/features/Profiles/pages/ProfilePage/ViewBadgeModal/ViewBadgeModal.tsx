@@ -121,8 +121,8 @@ export default function ViewBadgeModal({
           </div>
         )}
 
-        {isOwner && (
-          <div className="flex flex-col gap-12 w-full">
+        <div className="flex flex-col gap-12 w-full mt-auto">
+          {isOwner && (
             <Button
               color="none"
               fullWidth
@@ -131,18 +131,18 @@ export default function ViewBadgeModal({
             >
               Request Nostr Badge
             </Button>
-            <Button
-              color="none"
-              variant="outline"
-              fullWidth
-              className="text-white"
-              style={{ borderColor: color, color: color }}
-              onClick={onShare}
-            >
-              Share
-            </Button>
-          </div>
-        )}
+          )}
+          <Button
+            color="none"
+            variant="outline"
+            fullWidth
+            className="text-white"
+            style={{ borderColor: color, color: color }}
+            onClick={onShare}
+          >
+            Share
+          </Button>
+        </div>
       </div>
     </motion.div>
   );
