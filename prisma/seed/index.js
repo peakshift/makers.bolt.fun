@@ -58,8 +58,6 @@ async function generateNostrKeys() {
 }
 
 async function main() {
-  // console.log("Purging old data");
-  // await purge();
   // await createUsers();
   // await fillUserKeysTable();
   // await createCategories();
@@ -73,6 +71,7 @@ async function main() {
   // await migrateOldImages();
   // await createCapabilities();
   // await updateUsersAvatarUrls();
+  await addUsersGeneratedNostrKeysToUserNostrKeysTable();
 }
 
 async function migrateOldImages() {
@@ -676,6 +675,54 @@ async function updateUsersAvatarUrls() {
   }
 
   console.log("DONE!");
+}
+
+async function addUsersGeneratedNostrKeysToUserNostrKeysTable() {
+  const allUsers = await prisma.user.findMany({
+    select: {
+      id: true,
+      nostr_pub_key: true,
+    },
+  });
+
+  const dataBatches = splitDataIntoBatches(allUsers, 50);
+
+  const existingKeys = await prisma.userNostrKey.findMany({
+    select: {
+      key: true,
+    },
+  });
+
+  const existingKeysSet = new Set(existingKeys.map((k) => k.key));
+
+  const allPromisesBatches = dataBatches.map((batch) =>
+    prisma.userNostrKey.createMany({
+      data: batch
+        .map((u) => ({
+          key: u.nostr_pub_key,
+          user_id: u.id,
+          is_default_generated_key: true,
+        }))
+        .filter((k) => existingKeysSet.has(k.key) === false),
+    })
+  );
+
+  console.log("Updating ", allPromisesBatches.length, " batches");
+  // run the batches in sequence
+  for (let i = 0; i < allPromisesBatches.length; i++) {
+    console.log("Updating batch ", i);
+    await allPromisesBatches[i];
+  }
+
+  console.log("DONE!");
+}
+
+function splitDataIntoBatches(data, batchSize) {
+  const batches = [];
+  while (data.length) {
+    batches.push(data.splice(0, batchSize));
+  }
+  return batches;
 }
 
 main()

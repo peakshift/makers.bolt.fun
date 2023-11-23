@@ -15,6 +15,7 @@ import { createRoute } from "src/utils/routing";
 interface Props {
   renderOpenListButton: (args: {
     hasNewNotifications?: boolean;
+    isNostrKeySet?: boolean;
   }) => JSX.Element;
   menuClassName?: string;
 }
@@ -46,20 +47,25 @@ export default function NotificationsList(props: Props) {
     notifications.length > 0 &&
     notifications[0].created_at > lastSeenNotificationUnixTime;
 
+  const primaryNostrKeySet = !!myUser.primary_nostr_key;
+
   let content = <></>;
 
   if (!myUser.primary_nostr_key)
     content = (
-      <div className="flex flex-col items-center py-16 gap-16">
-        <p className="text-gray-600 text-center ">
-          To see notifications, please link your nostr public key first.
+      <div className="flex flex-col py-16 gap-8 px-16">
+        <p className="font-bold">💡 Set up your notifications</p>
+        <p className="text-gray-600">
+          In order to know when someone comments on your posts, replies to your
+          comments, ...etc, please link a nostr key to your account & mark it as{" "}
+          <b>primary</b>.
         </p>
         <Button
           href={createRoute({ type: "edit-profile", tab: "nostr" })}
           size="sm"
           color="primary"
         >
-          Link Nostr Key <span aria-hidden>🔑</span>
+          Link a Nostr Key <span aria-hidden>🔑</span>
         </Button>
       </div>
     );
@@ -241,7 +247,10 @@ export default function NotificationsList(props: Props) {
       align="end"
       arrow
       menuClassName={props.menuClassName}
-      menuButton={props.renderOpenListButton({ hasNewNotifications })}
+      menuButton={props.renderOpenListButton({
+        hasNewNotifications,
+        isNostrKeySet: primaryNostrKeySet,
+      })}
       aria-label="Notifications List"
     >
       {content}

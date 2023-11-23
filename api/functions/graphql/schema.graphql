@@ -279,6 +279,7 @@ input NostrEventInput {
 
 type NostrKey {
   createdAt: Date!
+  is_default_generated_key: Boolean!
   is_primary: Boolean!
   key: String!
   label: String!

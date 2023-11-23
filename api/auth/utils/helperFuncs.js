@@ -80,6 +80,12 @@ const createNewUser = async (pubKey) => {
       avatar_id: avatar.id,
       nostr_prv_key,
       nostr_pub_key,
+      userNostrKeys: {
+        create: {
+          key: nostr_pub_key,
+          is_default_generated_key: true,
+        },
+      },
     },
     select: {
       id: true,

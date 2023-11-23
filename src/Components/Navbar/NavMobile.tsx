@@ -147,13 +147,23 @@ export default function NavMobile() {
               {!!curUser && (
                 <NotificationsList
                   menuClassName="!p-8 !rounded-12 !w-[min(80vw,375px)] max-h-[min(80vh,480px)] overflow-y-auto overflow-x-hidden drop-shadow-lg flex flex-col gap-4 small-scrollbar"
-                  renderOpenListButton={({ hasNewNotifications }) => (
+                  renderOpenListButton={({
+                    hasNewNotifications,
+                    isNostrKeySet,
+                  }) => (
                     <IconButton
                       className="text-gray-900 hover:text-gray-700 group relative"
                       aria-label="Open Notifications List"
                       aria-describedby="has-new-notifications"
                     >
                       <FiBell className="group-hover:rotate-12 group-hover:scale-110" />
+                      {!isNostrKeySet && (
+                        <span
+                          id="has-new-notifications"
+                          className="w-8 block bg-orange-400-500 aspect-square rounded-full absolute top-8 right-8 animate-pulse"
+                          aria-label="has a message"
+                        ></span>
+                      )}
                       {hasNewNotifications && (
                         <span
                           id="has-new-notifications"
