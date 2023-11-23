@@ -48,79 +48,117 @@ const actionsHandlers = {
 };
 
 async function processUserActionsQueue() {
-  const actions = await prisma.userAction.findMany({
-    where: {
-      status: "pending",
-    },
-    include: {
-      actionType: true,
-    },
-  });
-
-  const allTrxsPromises = [];
-  const updateFailReasonPromises = [];
-
   const actionTypeIdtoBadgesCache = {};
 
-  await Promise.all(
-    actions.map(async (action) => {
-      // the things needed to be done for each action are:
-      // 0. run any custom action handlers
-      // 1. upsert the user badges progress
-      // 2. update the action status to completed
-      // 3. update the action status to failed if something went wrong
+  let handledAllBendingActions = false;
 
-      try {
-        const handler = actionsHandlers[action.actionType.name];
-
-        if (handler) await handler(action.actionPayload);
-
-        let trxPromises = [];
-
-        // get the list of badges that should be incremented on this action (& cache them)
-        let badgesTrackingThisAction =
-          actionTypeIdtoBadgesCache[action.actionType.id];
-        if (!badgesTrackingThisAction) {
-          badgesTrackingThisAction = await prisma.badge.findMany({
-            where: {
-              incrementOnActionId: action.actionType.id,
+  while (!handledAllBendingActions) {
+    await prisma.$transaction(
+      // eslint-disable-next-line no-loop-func
+      async (prisma) => {
+        const action = await prisma.userAction.findFirst({
+          where: {
+            status: "pending",
+          },
+          include: {
+            actionType: true,
+            user: {
+              select: {
+                badges: {
+                  select: {
+                    badgeId: true,
+                  },
+                },
+              },
             },
-          });
-          actionTypeIdtoBadgesCache[action.actionType.id] =
-            badgesTrackingThisAction;
+          },
+        });
+
+        if (!action) {
+          handledAllBendingActions = true;
+          return;
         }
 
-        const badgesWithProgressThatIncremented = {};
+        try {
+          const handler = actionsHandlers[action.actionType.name];
 
-        for (const badge of badgesTrackingThisAction) {
-          trxPromises.push(
-            prisma.userBadgeProgress.upsert({
-              create: {
-                badgeId: badge.id,
-                userId: action.user_id,
-                progress: 1,
-              },
-              update: {
-                progress: {
-                  increment: 1,
-                },
-              },
+          // run any custom action handlers
+          if (handler) await handler(action.actionPayload);
+
+          // get the list of badges that should be incremented on this action (& cache them)
+          let badgesTrackingThisAction =
+            actionTypeIdtoBadgesCache[action.actionType.id];
+          if (!badgesTrackingThisAction) {
+            badgesTrackingThisAction = await prisma.badge.findMany({
               where: {
-                userId_badgeId: {
-                  badgeId: badge.id,
-                  userId: action.user_id,
-                },
+                incrementOnActionId: action.actionType.id,
               },
+            });
+            actionTypeIdtoBadgesCache[action.actionType.id] =
+              badgesTrackingThisAction;
+          }
+
+          await Promise.all(
+            badgesTrackingThisAction.map(async (badge) => {
+              if (
+                action.user.badges.find(
+                  (userBadge) => userBadge.badgeId === badge.id
+                )
+              )
+                return;
+
+              // upsert the user badges progress
+              return (
+                prisma.userBadgeProgress
+                  .upsert({
+                    create: {
+                      badgeId: badge.id,
+                      userId: action.user_id,
+                      progress: 1,
+                    },
+                    update: {
+                      progress: {
+                        increment: 1,
+                      },
+                    },
+                    where: {
+                      userId_badgeId: {
+                        badgeId: badge.id,
+                        userId: action.user_id,
+                      },
+                    },
+                    select: {
+                      badge: {
+                        select: {
+                          id: true,
+                          incrementsNeeded: true,
+                        },
+                      },
+                      progress: true,
+                    },
+                  })
+
+                  // Create the badge if the progress is enough
+                  .then(({ progress, badge: { id, incrementsNeeded } }) => {
+                    if (progress >= incrementsNeeded) {
+                      return prisma.userBadge.createMany({
+                        data: [
+                          {
+                            badgeId: id,
+                            userId: action.user_id,
+                          },
+                        ],
+                        skipDuplicates: true,
+                      });
+                    }
+
+                    return true;
+                  })
+              );
             })
           );
-          badgesWithProgressThatIncremented[`${badge.id}_${action.user_id}`] = {
-            badgeId: badge.id,
-            userId: action.user_id,
-          };
-        }
 
-        trxPromises.push(
-          prisma.userAction.update({
+          await prisma.userAction.update({
             where: {
               id: action.id,
             },
@@ -128,33 +166,11 @@ async function processUserActionsQueue() {
               status: "completed",
               failReason: null,
             },
-          })
-        );
-
-        allTrxsPromises.push(
-          prisma
-            .$transaction(trxPromises)
-            // .then(()=>{
-            //   Object.values(badgesWithProgressThatIncremented).map(async ({badgeId,userId}) => {
-            //     const badgeIncrementsNeeded = await prisma.badge.findUnique({
-            // })
-            .catch((reason) => {
-              updateFailReasonPromises.push(
-                prisma.userAction.update({
-                  where: {
-                    id: action.id,
-                  },
-                  data: {
-                    status: "failed",
-                    failReason: reason.message,
-                  },
-                })
-              );
-            })
-        );
-      } catch (error) {
-        updateFailReasonPromises.push(
-          prisma.userAction.update({
+          });
+        } catch (error) {
+          console.log(error);
+          // update the action status to failed if something went wrong
+          await prisma.userAction.update({
             where: {
               id: action.id,
             },
@@ -162,15 +178,14 @@ async function processUserActionsQueue() {
               status: "failed",
               failReason: error.message,
             },
-          })
-        );
-      }
-    })
-  );
+          });
+        }
+      },
+      { timeout: 10 * 1000 }
+    );
+  }
 
-  await Promise.all(allTrxsPromises);
-
-  await Promise.all([updateFailReasonPromises]);
+  return;
 }
 
 const userActionsService = {

@@ -21,7 +21,7 @@ const testSomething = async (req, res) => {
         userId: 9,
       })
     );
-    // await userActionsService.processUserActionsQueue();
+    await userActionsService.processUserActionsQueue();
 
     return res.status(200).json({ status: "OK", message: "Done" });
   } catch (error) {
