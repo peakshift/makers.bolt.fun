@@ -103,7 +103,7 @@ export default function ViewBadgeModal({
                     <div
                       className="w-48 h-48 rounded-full flex flex-col items-center justify-center"
                       style={{
-                        backgroundColor: addOpacityToHexColor(color, 0.7),
+                        backgroundColor: addOpacityToHexColor(color, 0.4),
                       }}
                     >
                       {metaData.emoji}

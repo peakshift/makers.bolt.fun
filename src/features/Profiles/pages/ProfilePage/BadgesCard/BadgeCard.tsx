@@ -45,26 +45,22 @@ export default function BadgeCard({
 
     return (
       <div
-        className={`border-violet-200 border-2 py-8 px-16 rounded
+        className={`border-violet-200 border-2 p-20 rounded
       ${isCompleted ? "bg-violet-50" : "bg-gray-100"}
       `}
       >
-        <div className="flex gap-8">
+        <div className="flex items-center gap-8">
           <img
             src={userBadge.badge.image}
             alt=""
             className="w-64 h-64 rounded object-contain"
           />
-          <div>
-            <p className="font-medium">{userBadge.badge.title}</p>
-            <p className="font-medium text-body5 text-gray-500">
+          <div className="grow">
+            <p className="text-body3 font-medium">{userBadge.badge.title}</p>
+            <p className="font-medium text-gray-500">
               {userBadge.badge.description}
             </p>
-          </div>
-        </div>
-        <div>
-          <div className="mt-8">
-            <div className="relative bg-white h-16 rounded p-[2px] border-2 border-gray-200">
+            <div className="mt-8 relative bg-white h-16 rounded p-[2px] border-2 border-gray-200">
               <div
                 className={`${
                   isCompleted ? "bg-green-400" : "bg-primary-500"
@@ -78,28 +74,30 @@ export default function BadgeCard({
                 }}
               ></div>
             </div>
-            <div className="flex items-center mt-8 gap-8">
-              {!isCompleted && (
-                <p className="text-body5 text-gray-500 mt-8 ml-auto">
-                  <span className="sr-only">Progress: </span>
-                  {userBadge.progress.current ?? 0} /{" "}
-                  {userBadge.progress.totalNeeded ?? 1}
-                </p>
-              )}
-            </div>
-            {userBadge.progress.isCompleted && (
-              <Button
-                color="none"
-                className="mt-16 bg-gray-600/10 hover:bg-gray-600/5"
-                fullWidth
-                newTab
-                onClick={openBadgeModal}
-                // href={`https://badges.page/b/${userBadge.progress.badgeAwardNostrEventId}`}
-              >
-                View Badge
-              </Button>
+          </div>
+        </div>
+        <div className="mt-8">
+          <div className="flex items-center gap-8">
+            {!isCompleted && (
+              <p className="text-body5 text-gray-500 font-medium ml-auto">
+                <span className="sr-only">Progress: </span>
+                {userBadge.progress.current ?? 0} /{" "}
+                {userBadge.progress.totalNeeded ?? 1}
+              </p>
             )}
           </div>
+          {userBadge.progress.isCompleted && (
+            <Button
+              color="none"
+              className="mt-16 bg-gray-600/10 hover:bg-gray-600/5"
+              fullWidth
+              newTab
+              onClick={openBadgeModal}
+              // href={`https://badges.page/b/${userBadge.progress.badgeAwardNostrEventId}`}
+            >
+              View Badge
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -108,7 +106,7 @@ export default function BadgeCard({
   return (
     <button
       onClick={openBadgeModal}
-      className="block w-full bg-white p-20 rounded h-full relative overflow-hidden isolate border-2"
+      className="block w-full bg-white p-20 rounded h-full relative overflow-hidden isolate border-2 group"
       style={{
         borderColor: addOpacityToHexColor(
           userBadge.badge.color ?? "#e4e7ec",
@@ -117,20 +115,20 @@ export default function BadgeCard({
       }}
     >
       <div
-        className="absolute inset-0 -z-10 opacity-20"
+        className="absolute inset-0 -z-10 opacity-20 group-hover:opacity-30"
         style={{
           backgroundColor: userBadge.badge.color ?? "gray",
         }}
       ></div>
-      <div className="flex flex-col items-center text-center gap-8">
+      <div className="flex flex-col h-full items-center justify-start text-center gap-8">
         <img
           src={userBadge.badge.image}
           alt=""
           className="w-64 h-64 rounded object-contain"
         />
         <div>
-          <p className="font-medium">{userBadge.badge.title}</p>
-          <p className="font-medium text-body5 text-gray-500">
+          <p className="font-medium text-body4">{userBadge.badge.title}</p>
+          <p className="font-medium text-body4 text-gray-600 mt-8 line-clamp-3">
             {userBadge.badge.description}
           </p>
         </div>

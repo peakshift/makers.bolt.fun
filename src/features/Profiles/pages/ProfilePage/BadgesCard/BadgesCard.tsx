@@ -87,7 +87,7 @@ export default function BadgesCard({
           className={
             isOwner
               ? "flex flex-col gap-16"
-              : "grid grid-cols-1 md:grid-cols-2 gap-16"
+              : "grid grid-cols-1 md:grid-cols-2 gap-24"
           }
         >
           {sortedBadgesList.map((badge) => (
