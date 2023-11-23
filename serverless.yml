@@ -122,6 +122,13 @@ functions:
           path: on-job-success
           method: post
 
+  on-queue-callback:
+    handler: api/functions/on-queue-callback/on-queue-callback.handler
+    events:
+      - http:
+          path: on-queue-callback
+          method: post
+
   upload-image-url:
     handler: api/functions/upload-image-url/upload-image-url.handler
     events:
