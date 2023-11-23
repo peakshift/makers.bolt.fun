@@ -568,9 +568,12 @@ model Badge {
   slug                        String  @unique
   title                       String
   description                 String
+  winningDescriptionTemplate  String?
   image                       String
   badgeDefinitionNostrEventId String?
   incrementsNeeded            Int     @default(1)
+  color                       String?
+  isAdminIssuedOnly           Boolean @default(false)
 
   incrementOnAction   UserActionType? @relation(fields: [incrementOnActionId], references: [id])
   incrementOnActionId Int?
@@ -599,8 +602,8 @@ model UserBadge {
   userId Int
 
   badgeAwardNostrEventId String?
-
-  awardedAt DateTime @default(now())
+  metaData               Json?
+  awardedAt              DateTime @default(now())
 
   @@id([userId, badgeId])
 }
