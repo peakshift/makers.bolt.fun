@@ -573,6 +573,7 @@ model Badge {
   badgeDefinitionNostrEventId String?
   incrementsNeeded            Int     @default(1)
   color                       String?
+  isAdminIssuedOnly           Boolean @default(false)
 
   incrementOnAction   UserActionType? @relation(fields: [incrementOnActionId], references: [id])
   incrementOnActionId Int?

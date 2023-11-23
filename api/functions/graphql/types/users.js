@@ -172,23 +172,31 @@ const BaseUser = interfaceType({
               ),
           ]);
 
-          return allBadges.map((badge) => {
-            const userHasThisBadge = badge.UserBadge.length > 0;
-            const useBadge = badge.UserBadge[0];
-            const badgeUserProgress = myBadgesProgress[badge.id];
-            return {
-              id: `${badge.id}-${parent.id}`,
-              badge,
-              progress: {
-                isCompleted: userHasThisBadge,
-                badgeAwardNostrEventId: useBadge?.badgeAwardNostrEventId,
-                totalNeeded: badge.incrementsNeeded,
-                current: badgeUserProgress?.progress,
-                awardedAt: useBadge?.awardedAt,
-                metaData: useBadge?.metaData,
-              },
-            };
-          });
+          return allBadges
+            .filter((badge) => {
+              const userHasThisBadge = badge.UserBadge.length > 0;
+              const isAdminIssuedOnlyBadge = badge.isAdminIssuedOnly;
+
+              return !isAdminIssuedOnlyBadge || userHasThisBadge;
+            })
+            .map((badge) => {
+              const userHasThisBadge = badge.UserBadge.length > 0;
+              const userBadge = badge.UserBadge[0];
+              const badgeUserProgress = myBadgesProgress[badge.id];
+
+              return {
+                id: `${badge.id}-${parent.id}`,
+                badge,
+                progress: {
+                  isCompleted: userHasThisBadge,
+                  badgeAwardNostrEventId: userBadge?.badgeAwardNostrEventId,
+                  totalNeeded: badge.incrementsNeeded,
+                  current: badgeUserProgress?.progress,
+                  awardedAt: userBadge?.awardedAt,
+                  metaData: userBadge?.metaData,
+                },
+              };
+            });
         }
       },
     });
@@ -338,10 +346,10 @@ const BadgeProgress = objectType({
   name: "BadgeProgress",
   definition(t) {
     t.nonNull.boolean("isCompleted");
-    t.date("awardedAt");
-    t.string("badgeAwardNostrEventId");
     t.int("totalNeeded");
     t.int("current");
+    t.date("awardedAt");
+    t.string("badgeAwardNostrEventId");
     t.list.nonNull.field("metaData", {
       type: AwardedBadgeMetadata,
     });
