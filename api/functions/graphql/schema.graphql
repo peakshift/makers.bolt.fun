@@ -441,6 +441,7 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!
+  getAllBadges: [Badge!]!
   getAllCapabilities: [Capability!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!

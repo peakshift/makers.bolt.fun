@@ -893,6 +893,7 @@ export interface NexusGenFieldTypes {
     allCategories: NexusGenRootTypes['Category'][]; // [Category!]!
     allProjects: NexusGenRootTypes['Project'][]; // [Project!]!
     checkValidProjectHashtag: boolean; // Boolean!
+    getAllBadges: NexusGenRootTypes['Badge'][]; // [Badge!]!
     getAllCapabilities: NexusGenRootTypes['Capability'][]; // [Capability!]!
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getAllMakersRoles: NexusGenRootTypes['GenericMakerRole'][]; // [GenericMakerRole!]!
@@ -1436,6 +1437,7 @@ export interface NexusGenFieldTypeNames {
     allCategories: 'Category'
     allProjects: 'Project'
     checkValidProjectHashtag: 'Boolean'
+    getAllBadges: 'Badge'
     getAllCapabilities: 'Capability'
     getAllHackathons: 'Hackathon'
     getAllMakersRoles: 'GenericMakerRole'

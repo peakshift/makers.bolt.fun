@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import Card from "src/Components/Card/Card";
 import { User } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { toSort } from "src/utils/helperFunctions";
 import { useAppDispatch } from "src/utils/hooks";
 import BadgeCard from "./BadgeCard";
+import BadgeCardWithProgress from "./BadgeCardWithProgress";
 
 interface Props {
   username: string;
@@ -95,20 +95,13 @@ export default function BadgesCard({
               <p className="text-body2 font-bolder text-gray-600 mb-16 text-center">
                 Earned
               </p>
-              <ul
-                className={
-                  isOwner
-                    ? "flex flex-col gap-16"
-                    : "grid grid-cols-1 md:grid-cols-2 gap-24"
-                }
-              >
+              <ul className={"flex flex-col gap-16"}>
                 {earnedBadges.map((badge) => (
                   <li key={badge.id}>
-                    <BadgeCard
+                    <BadgeCardWithProgress
                       userBadge={badge}
                       isOwner={!!isOwner}
                       username={username}
-                      showProgress={isOwner}
                     />
                   </li>
                 ))}
@@ -129,11 +122,11 @@ export default function BadgesCard({
               >
                 {inProgressBadges.map((badge) => (
                   <li key={badge.id}>
-                    <BadgeCard
+                    {" "}
+                    <BadgeCardWithProgress
                       userBadge={badge}
                       isOwner={!!isOwner}
                       username={username}
-                      showProgress={isOwner}
                     />
                   </li>
                 ))}
@@ -143,20 +136,13 @@ export default function BadgesCard({
         </div>
       )}
       {!isOwner && sortedBadgesList.length > 0 && (
-        <ul
-          className={
-            isOwner
-              ? "flex flex-col gap-16"
-              : "grid grid-cols-1 md:grid-cols-2 gap-24"
-          }
-        >
+        <ul className={"grid grid-cols-1 md:grid-cols-2 gap-24"}>
           {sortedBadgesList.map((badge) => (
             <li key={badge.id}>
               <BadgeCard
-                userBadge={badge}
-                isOwner={!!isOwner}
+                badge={badge.badge}
                 username={username}
-                showProgress={isOwner}
+                useBadgeProgress={badge.progress}
               />
             </li>
           ))}

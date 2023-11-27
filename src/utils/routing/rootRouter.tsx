@@ -11,7 +11,7 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
-import { SideNavLayout, TopNavLayout } from "./layouts/index";
+import { ProtectedLayout, SideNavLayout, TopNavLayout } from "./layouts/index";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
@@ -148,6 +148,7 @@ const DonatePage = Loadable(
       )
   )
 );
+
 const LoginPage = Loadable(
   React.lazy(
     () =>
@@ -214,6 +215,15 @@ const TermsAndConditionsPage = Loadable(
     () =>
       import(
         /* webpackChunkName: "terms_conditions_page" */ "../../features/Shared/pages/TermsAndConditionsPage/TermsAndConditionsPage"
+      )
+  )
+);
+
+const AdminManageBadgesPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_manage_badges_page" */ "../../features/AdminDashboard/pages/ManageBadgesPage/ManageBadgesPage"
       )
   )
 );
@@ -290,7 +300,14 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
           <Route path={PAGES_ROUTES.home.default} element={<LandingPage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
-          <Route path={PAGES_ROUTES.landingPage.buildOnBitcoin} element={<HomePage />} />
+          <Route
+            path={PAGES_ROUTES.landingPage.buildOnBitcoin}
+            element={<HomePage />}
+          />
+        </Route>
+
+        <Route element={<ProtectedLayout />}>
+          <Route path="/admin/badges" element={<AdminManageBadgesPage />} />
         </Route>
 
         <Route

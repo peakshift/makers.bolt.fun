@@ -601,6 +601,7 @@ export type Query = {
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   checkValidProjectHashtag: Scalars['Boolean'];
+  getAllBadges: Array<Badge>;
   getAllCapabilities: Array<Capability>;
   getAllHackathons: Array<Hackathon>;
   getAllMakersRoles: Array<GenericMakerRole>;
@@ -1314,6 +1315,11 @@ export type SearchProjectsQueryVariables = Exact<{
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string | null, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
 
+export type GetAllBadgesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }> };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1975,6 +1981,47 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const GetAllBadgesDocument = gql`
+    query GetAllBadges {
+  getAllBadges {
+    id
+    title
+    slug
+    image
+    description
+    color
+    winningDescriptionTemplate
+    badgeDefinitionNostrEventId
+  }
+}
+    `;
+
+/**
+ * __useGetAllBadgesQuery__
+ *
+ * To run a query within a React component, call `useGetAllBadgesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllBadgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllBadgesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllBadgesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllBadgesQuery, GetAllBadgesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllBadgesQuery, GetAllBadgesQueryVariables>(GetAllBadgesDocument, options);
+      }
+export function useGetAllBadgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllBadgesQuery, GetAllBadgesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllBadgesQuery, GetAllBadgesQueryVariables>(GetAllBadgesDocument, options);
+        }
+export type GetAllBadgesQueryHookResult = ReturnType<typeof useGetAllBadgesQuery>;
+export type GetAllBadgesLazyQueryHookResult = ReturnType<typeof useGetAllBadgesLazyQuery>;
+export type GetAllBadgesQueryResult = Apollo.QueryResult<GetAllBadgesQuery, GetAllBadgesQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
