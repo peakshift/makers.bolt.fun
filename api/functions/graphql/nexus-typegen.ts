@@ -398,6 +398,7 @@ export interface NexusGenObjects {
   Mutation: {};
   NostrKey: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
+    is_default_generated_key: boolean; // Boolean!
     is_primary: boolean; // Boolean!
     key: string; // String!
     label: string; // String!
@@ -815,6 +816,7 @@ export interface NexusGenFieldTypes {
   }
   NostrKey: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
+    is_default_generated_key: boolean; // Boolean!
     is_primary: boolean; // Boolean!
     key: string; // String!
     label: string; // String!
@@ -1356,6 +1358,7 @@ export interface NexusGenFieldTypeNames {
   }
   NostrKey: { // field return type name
     createdAt: 'Date'
+    is_default_generated_key: 'Boolean'
     is_primary: 'Boolean'
     key: 'String'
     label: 'String'
@@ -1780,7 +1783,7 @@ export interface NexusGenArgTypes {
       tournament_id: number; // Int!
     }
     setUserNostrKeyAsPrimary: { // args
-      key: string; // String!
+      key?: string | null; // String
     }
     unlinkNostrKey: { // args
       key: string; // String!

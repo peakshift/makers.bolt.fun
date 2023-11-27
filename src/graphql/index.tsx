@@ -388,7 +388,7 @@ export type MutationRegisterInTournamentArgs = {
 
 
 export type MutationSetUserNostrKeyAsPrimaryArgs = {
-  key: Scalars['String'];
+  key: InputMaybe<Scalars['String']>;
 };
 
 
@@ -453,6 +453,7 @@ export type NostrEventInput = {
 export type NostrKey = {
   __typename?: 'NostrKey';
   createdAt: Scalars['Date'];
+  is_default_generated_key: Scalars['Boolean'];
   is_primary: Scalars['Boolean'];
   key: Scalars['String'];
   label: Scalars['String'];
@@ -1456,7 +1457,7 @@ export type MyNostrKeysQuery = { __typename?: 'Query', me: { __typename?: 'User'
 export type MyNostrSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, private_data: { __typename?: 'UserPrivateData', default_nostr_prv_key: string | null, default_nostr_pub_key: string | null } } | null };
+export type MyNostrSettingsQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean, is_default_generated_key: boolean }>, private_data: { __typename?: 'UserPrivateData', default_nostr_prv_key: string | null, default_nostr_pub_key: string | null } } | null };
 
 export type LinkNewNostrKeyMutationVariables = Exact<{
   event: InputMaybe<NostrEventInput>;
@@ -1473,7 +1474,7 @@ export type UnlinkNostrKeyMutationVariables = Exact<{
 export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, primary_nostr_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
 
 export type SetUserNostrKeyAsPrimaryMutationVariables = Exact<{
-  key: Scalars['String'];
+  key: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -1511,7 +1512,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, badgeAwardNostrEventId: string | null, totalNeeded: number | null, current: number | null, awardedAt: any | null, metaData: Array<{ __typename?: 'AwardedBadgeMetadata', emoji: string | null, label: string | null, value: string | null }> | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, badgeAwardNostrEventId: string | null, totalNeeded: number | null, current: number | null, awardedAt: any | null, metaData: Array<{ __typename?: 'AwardedBadgeMetadata', emoji: string | null, label: string | null, value: string | null }> | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean, is_default_generated_key: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -3081,6 +3082,7 @@ export const MyNostrSettingsDocument = gql`
       createdAt
       label
       is_primary
+      is_default_generated_key
     }
     private_data {
       default_nostr_prv_key
@@ -3197,7 +3199,7 @@ export type UnlinkNostrKeyMutationHookResult = ReturnType<typeof useUnlinkNostrK
 export type UnlinkNostrKeyMutationResult = Apollo.MutationResult<UnlinkNostrKeyMutation>;
 export type UnlinkNostrKeyMutationOptions = Apollo.BaseMutationOptions<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>;
 export const SetUserNostrKeyAsPrimaryDocument = gql`
-    mutation SetUserNostrKeyAsPrimary($key: String!) {
+    mutation SetUserNostrKeyAsPrimary($key: String) {
   setUserNostrKeyAsPrimary(key: $key) {
     id
     primary_nostr_key
@@ -3481,6 +3483,7 @@ export const ProfileDocument = gql`
       createdAt
       label
       is_primary
+      is_default_generated_key
     }
     ...UserBasicInfo
     ...UserRolesSkills

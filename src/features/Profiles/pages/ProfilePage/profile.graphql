@@ -64,6 +64,7 @@ query profile($profileId: Int!) {
       createdAt
       label
       is_primary
+      is_default_generated_key
     }
     ...UserBasicInfo
     ...UserRolesSkills

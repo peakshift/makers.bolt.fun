@@ -93,6 +93,16 @@ export function toSort<T>(arr: T[], sortFn: (a: T, b: T) => number) {
   return [...arr].sort(sortFn);
 }
 
+export function overrideErrorMessage(msg: string, errorToOverride: any) {
+  let err = new Error(msg);
+  for (let prop in errorToOverride) {
+    if (prop !== "message") {
+      (err as any)[prop] = errorToOverride[prop];
+    }
+  }
+  return err;
+}
+
 export function addOpacityToHexColor(color: string, opacity: number) {
   if (color.startsWith("#")) color = color.substring(1);
 

@@ -13,7 +13,7 @@ export default function GeneratedKeysCard({
 }: Props) {
   return (
     <Card>
-      <p className="text-body2 font-bold">🔐 Your BOLT.FUN's Generated Keys</p>
+      <p className="text-body2 font-bold">🔐 Your BOLT.FUN's Generated Key</p>
       <p className="mt-8 text-body4 text-gray-600">
         Using any nostr-powered feature in the website (like commenting)
         requires having a nostr key.
@@ -25,7 +25,7 @@ export default function GeneratedKeysCard({
         <br />
         But for the users who don't want to have to manage their keys & prefer
         the easier way, we generate a default pair of keys and store them in our
-        DB for you.
+        database for you.
       </p>
 
       <div className="mt-24 flex flex-col gap-16">

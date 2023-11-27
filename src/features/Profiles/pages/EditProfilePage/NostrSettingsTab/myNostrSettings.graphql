@@ -6,6 +6,7 @@ query MyNostrSettings {
       createdAt
       label
       is_primary
+      is_default_generated_key
     }
     private_data {
       default_nostr_prv_key
@@ -40,7 +41,7 @@ mutation UnlinkNostrKey($key: String!) {
   }
 }
 
-mutation SetUserNostrKeyAsPrimary($key: String!) {
+mutation SetUserNostrKeyAsPrimary($key: String) {
   setUserNostrKeyAsPrimary(key: $key) {
     id
     primary_nostr_key
