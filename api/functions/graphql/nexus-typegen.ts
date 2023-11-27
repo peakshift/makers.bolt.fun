@@ -58,6 +58,7 @@ export interface NexusGenInputs {
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
+    youtube?: string | null; // String
   }
   CreateTournamentFAQInput: { // input type
     answer: string; // String!
@@ -228,6 +229,7 @@ export interface NexusGenInputs {
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
+    youtube?: string | null; // String
   }
   UpdateTournamentInput: { // input type
     config?: NexusGenInputs['TournamentConfigInput'] | null; // TournamentConfigInput
@@ -440,6 +442,7 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+    youtube?: string | null; // String
   }
   ProjectInTournament: { // root type
     project: NexusGenRootTypes['Project']; // Project!
@@ -871,6 +874,7 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+    youtube: string | null; // String
   }
   ProjectInTournament: { // field return type
     project: NexusGenRootTypes['Project']; // Project!
@@ -1413,6 +1417,7 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
+    youtube: 'String'
   }
   ProjectInTournament: { // field return type name
     project: 'Project'

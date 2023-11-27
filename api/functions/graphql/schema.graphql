@@ -146,6 +146,7 @@ input CreateProjectInput {
   tournaments: [Int!]!
   twitter: String
   website: String!
+  youtube: String
 }
 
 type CreateProjectResponse {
@@ -405,6 +406,7 @@ type Project {
   twitter: String
   votes_count: Int!
   website: String!
+  youtube: String
 }
 
 type ProjectInTournament {
@@ -805,6 +807,7 @@ input UpdateProjectInput {
   tournaments: [Int!]!
   twitter: String
   website: String!
+  youtube: String
 }
 
 input UpdateTournamentInput {
