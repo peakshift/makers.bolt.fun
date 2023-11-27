@@ -55,7 +55,7 @@ export default function BadgeCard({
           <img
             src={userBadge.badge.image}
             alt=""
-            className="w-64 h-64 rounded object-contain"
+            className="w-64 h-64 rounded object-contain drop-shadow-md"
           />
           <div className="grow text-left">
             <p className="text-body3 font-medium">{userBadge.badge.title}</p>
@@ -116,7 +116,7 @@ export default function BadgeCard({
         <img
           src={userBadge.badge.image}
           alt=""
-          className="w-64 h-64 rounded object-contain"
+          className="w-64 h-64 rounded object-contain drop-shadow-md"
         />
         <div>
           <p className="font-medium text-body4">{userBadge.badge.title}</p>

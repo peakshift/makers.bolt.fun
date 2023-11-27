@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef } from "react";
+import { useRef } from "react";
 
 export const useLazyRef = <T>(init: () => T) => {
   const ref = useRef<T>(null!);

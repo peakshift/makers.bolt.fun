@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useMeQuery } from "src/graphql";
+import { useState } from "react";
 import Button from "src/Components/Button/Button";
-import {
-  extractErrorMessage,
-  getPropertyFromUnknown,
-  trimText,
-} from "src/utils/helperFunctions";
+import { extractErrorMessage } from "src/utils/helperFunctions";
 import { loginWithEmailOTP, requestOTP } from "src/api/auth";
 import { NotificationsService } from "src/services";
 import IconButton from "src/Components/IconButton/IconButton";
 import { FaArrowLeft } from "react-icons/fa";
-import { createRoute } from "src/utils/routing";
 
 interface Props {
   onLogin: () => void;

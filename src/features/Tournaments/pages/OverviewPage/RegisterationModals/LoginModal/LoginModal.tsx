@@ -8,7 +8,6 @@ import { useAppDispatch } from "src/utils/hooks";
 import ChooseLoginMethods from "src/features/Auth/components/ChooseLoginMethods/ChooseLoginMethods";
 import { ComponentProps, useCallback, useState } from "react";
 import { Direction, replaceModal } from "src/redux/features/modals.slice";
-import ChooseLoginMethodCard from "src/features/Auth/components/ChooseLoginMethodCard/ChooseLoginMethodCard";
 import LoginWithEmail from "src/features/Auth/components/LoginWithEmail/LoginWithEmail";
 import LoginWithLightning from "src/features/Auth/components/LoginWithLightning/LoginWithLightning";
 import LoginWithNostr from "src/features/Auth/components/LoginWithNostr/LoginWithNostr";

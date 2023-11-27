@@ -4,7 +4,6 @@ import utc from "dayjs/plugin/utc";
 import React from "react";
 import { Helmet } from "react-helmet";
 import { IoLocationOutline } from "react-icons/io5";
-import { getSpanDate } from "src/utils/helperFunctions";
 import { useTournament } from "../TournamentDetailsContext";
 dayjs.extend(advancedFormat);
 dayjs.extend(utc);

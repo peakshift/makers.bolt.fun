@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, PropsWithChildren, useContext } from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
@@ -88,25 +82,3 @@ export const useTournament = () => {
 export const getCurrentTournamentStaticData = () => {
   return currentTournamentStaticData;
 };
-
-async function getStaticData(title: string) {
-  let dataPromise;
-
-  if (title.search(/legends of lightning/i) !== -1)
-    dataPromise = import(
-      "../OverviewPage/LegendsOfLightningOverviewPage/lol-tournament-data"
-    );
-  else if (title.search(/nostr/i) !== -1)
-    dataPromise = import(
-      "../OverviewPage/NostrHackWeekOverviewPage/nostr-hack-tournament-data"
-    );
-  else if (title.search(/ai4all/i) !== -1)
-    dataPromise = import(
-      "../OverviewPage/AI4ALLOverviewPage/a4a-tournament-data"
-    );
-  else throw new Error("Unknown Tournament");
-
-  const { default: data } = await dataPromise;
-
-  return data as TournamentStaticData;
-}

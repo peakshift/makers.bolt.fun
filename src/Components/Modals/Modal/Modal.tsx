@@ -20,6 +20,7 @@ export default function Modal({ onClose, children, ...props }: Props) {
 
   const onAfterClose = () => {
     dispatch(removeClosedModal(props.id));
+    document.body.style.overflow = "unset";
   };
 
   return (
@@ -29,6 +30,7 @@ export default function Modal({ onClose, children, ...props }: Props) {
       overlayClassName="fixed w-full inset-0 overflow-x-hidden z-[2020] no-scrollbar"
       className=" "
       closeTimeoutMS={1000}
+      onAfterOpen={() => (document.body.style.overflow = "hidden")}
       onAfterClose={onAfterClose}
       contentElement={(_props, children) => (
         <div

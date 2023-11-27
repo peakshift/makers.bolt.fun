@@ -67,7 +67,7 @@ export default function ViewBadgeModal({
       initial="initial"
       animate="animate"
       exit="exit"
-      className="modal-card !overflow-auto max-w-[442px] min-h-screen xs:min-h-0 rounded-xl relative flex flex-col overscroll-contain"
+      className="modal-card !overflow-auto max-w-[442px] min-h-screen xs:min-h-0 rounded-xl relative flex flex-col"
     >
       <div
         className="absolute inset-0 -z-10 opacity-20"

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MeQuery, User } from "src/graphql";
+import { MeQuery } from "src/graphql";
 
 interface StoreState {
   me: MeQuery["me"] | undefined;

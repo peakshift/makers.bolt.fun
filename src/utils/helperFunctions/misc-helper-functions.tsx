@@ -111,7 +111,7 @@ export function addOpacityToHexColor(color: string, opacity: number) {
   let opacityHex = _opacity.toString(16).toUpperCase();
 
   // opacities near 0 need a trailing 0
-  if (opacityHex.length == 1) opacityHex = "0" + opacityHex;
+  if (opacityHex.length === 1) opacityHex = "0" + opacityHex;
 
   return "#" + color + opacityHex;
 }
