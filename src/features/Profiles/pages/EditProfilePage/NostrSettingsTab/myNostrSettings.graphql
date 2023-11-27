@@ -41,7 +41,7 @@ mutation UnlinkNostrKey($key: String!) {
   }
 }
 
-mutation SetUserNostrKeyAsPrimary($key: String!) {
+mutation SetUserNostrKeyAsPrimary($key: String) {
   setUserNostrKeyAsPrimary(key: $key) {
     id
     primary_nostr_key

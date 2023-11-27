@@ -255,7 +255,7 @@ type Mutation {
   donate(amount_in_sat: Int!): Donation!
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
-  setUserNostrKeyAsPrimary(key: String!): User
+  setUserNostrKeyAsPrimary(key: String): User
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User

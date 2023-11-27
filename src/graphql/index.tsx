@@ -358,7 +358,7 @@ export type MutationRegisterInTournamentArgs = {
 
 
 export type MutationSetUserNostrKeyAsPrimaryArgs = {
-  key: Scalars['String'];
+  key: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1436,7 +1436,7 @@ export type UnlinkNostrKeyMutationVariables = Exact<{
 export type UnlinkNostrKeyMutation = { __typename?: 'Mutation', unlinkNostrKey: { __typename?: 'User', id: number, primary_nostr_key: string | null, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean }> } | null };
 
 export type SetUserNostrKeyAsPrimaryMutationVariables = Exact<{
-  key: Scalars['String'];
+  key: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -3161,7 +3161,7 @@ export type UnlinkNostrKeyMutationHookResult = ReturnType<typeof useUnlinkNostrK
 export type UnlinkNostrKeyMutationResult = Apollo.MutationResult<UnlinkNostrKeyMutation>;
 export type UnlinkNostrKeyMutationOptions = Apollo.BaseMutationOptions<UnlinkNostrKeyMutation, UnlinkNostrKeyMutationVariables>;
 export const SetUserNostrKeyAsPrimaryDocument = gql`
-    mutation SetUserNostrKeyAsPrimary($key: String!) {
+    mutation SetUserNostrKeyAsPrimary($key: String) {
   setUserNostrKeyAsPrimary(key: $key) {
     id
     primary_nostr_key

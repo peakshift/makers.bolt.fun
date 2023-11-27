@@ -1695,7 +1695,7 @@ export interface NexusGenArgTypes {
       tournament_id: number; // Int!
     }
     setUserNostrKeyAsPrimary: { // args
-      key: string; // String!
+      key?: string | null; // String
     }
     unlinkNostrKey: { // args
       key: string; // String!

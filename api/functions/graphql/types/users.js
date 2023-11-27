@@ -695,7 +695,7 @@ const setUserNostrKeyAsPrimary = extendType({
   definition(t) {
     t.field("setUserNostrKeyAsPrimary", {
       type: "User",
-      args: { key: nonNull(stringArg()) },
+      args: { key: stringArg() },
       async resolve(_root, args, ctx) {
         const { key } = args;
         const user = await getUserById(ctx.user?.id);
@@ -703,16 +703,7 @@ const setUserNostrKeyAsPrimary = extendType({
         // Do some validation
         if (!user?.id) throw new Error("You have to login");
 
-        const keyExist = await prisma.userNostrKey.findFirst({
-          where: {
-            user_id: user.id,
-            key,
-          },
-        });
-
-        if (!keyExist) throw new Error("This user doesn't have this key");
-
-        await prisma.$transaction([
+        const trxOperations = [
           prisma.userNostrKey.updateMany({
             where: {
               user_id: user.id,
@@ -721,15 +712,22 @@ const setUserNostrKeyAsPrimary = extendType({
               is_primary: false,
             },
           }),
-          prisma.userNostrKey.update({
-            where: {
-              key,
-            },
-            data: {
-              is_primary: true,
-            },
-          }),
-        ]);
+        ];
+
+        if (key) {
+          trxOperations.push(
+            prisma.userNostrKey.update({
+              where: {
+                key: key ?? "",
+              },
+              data: {
+                is_primary: true,
+              },
+            })
+          );
+        }
+
+        await prisma.$transaction(trxOperations);
 
         return prisma.user.findUnique({
           where: {
