@@ -30,7 +30,7 @@ import { IoMdClose } from "react-icons/io";
 import { sortMembersByRole } from "src/features/Projects/utils/helperFunctions";
 import { GiOstrich } from "react-icons/gi";
 import { Tooltip } from "react-tooltip";
-import { SiReplit } from "react-icons/si";
+import { SiReplit, SiYoutube } from "react-icons/si";
 
 interface Props extends ModalCard {
   projectId: number;
@@ -111,6 +111,14 @@ export default function ProjectDetailsCard({
       colors: "bg-blue-100 text-blue-500",
       url: project.twitter,
       label: "Twitter",
+    },
+    {
+      value: project.youtube,
+      text: project.youtube,
+      icon: SiYoutube,
+      colors: "bg-red-100 text-red-600",
+      url: project.youtube,
+      label: "Youtube",
     },
     {
       value: project.github,

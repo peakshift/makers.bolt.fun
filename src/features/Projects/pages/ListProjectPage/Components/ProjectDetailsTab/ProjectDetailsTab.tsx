@@ -3,7 +3,7 @@ import Card from "src/Components/Card/Card";
 import { FaDiscord, FaFigma, FaSlack, FaTelegram } from "react-icons/fa";
 import { GiOstrich } from "react-icons/gi";
 import { FiGithub, FiTwitter } from "react-icons/fi";
-import { SiReplit } from "react-icons/si";
+import { SiReplit, SiYoutube } from "react-icons/si";
 import CategoriesInput from "../CategoriesInput/CategoriesInput";
 import CapabilitiesInput from "../CapabilitiesInput/CapabilitiesInput";
 import { IListProjectForm } from "../FormContainer/FormContainer";
@@ -249,6 +249,24 @@ export default function ProjectDetailsTab(props: Props) {
               </p>
             )}
           </div>
+
+          <div>
+            <TextInput
+              className="mt-8"
+              isError={!!errors.youtube}
+              renderBefore={() => (
+                <SiYoutube className="text-red-500 text-body2 pl-16 py-0 w-auto shrink-0 self-center" />
+              )}
+              aria-label="Youtube Link"
+              placeholder="https://www.youtube.com/watch?v=XXXXXX"
+              {...register("youtube")}
+            />
+            {errors.youtube && (
+              <p className="input-error" role="alert">
+                {errors.youtube.message}
+              </p>
+            )}
+          </div>
           <div>
             <TextInput
               className="mt-8"
@@ -317,6 +335,7 @@ export default function ProjectDetailsTab(props: Props) {
               </p>
             )}
           </div>
+
           <div>
             <TextInput
               className="mt-8"

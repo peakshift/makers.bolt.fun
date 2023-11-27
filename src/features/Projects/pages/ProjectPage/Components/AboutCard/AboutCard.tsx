@@ -36,6 +36,7 @@ interface Props {
     | "github"
     | "figma"
     | "replit"
+    | "youtube"
     | "npub"
     | "twitter"
     | "slack"
