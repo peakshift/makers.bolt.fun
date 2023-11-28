@@ -3,6 +3,7 @@ const jose = require("jose");
 const { JWT_SECRET } = require("../../utils/consts");
 const env = require("../../utils/consts");
 const { generatePrivateKey, getPublicKey } = require("../../utils/nostr-tools");
+const { adminUsersIds } = require("./consts");
 
 const getUserByPubKey = (pubKey) => {
   if (!pubKey) return null;
@@ -101,6 +102,10 @@ function verifyInternalAuthHeader(authHeader) {
   return true;
 }
 
+function isAdmin(userId) {
+  return adminUsersIds.includes(userId);
+}
+
 module.exports = {
   getUserByPubKey,
   getUserById,
@@ -108,4 +113,5 @@ module.exports = {
   getAuthCookieConfig,
   createNewUser,
   verifyInternalAuthHeader,
+  isAdmin,
 };

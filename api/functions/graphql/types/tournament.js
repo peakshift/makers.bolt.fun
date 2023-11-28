@@ -26,6 +26,7 @@ const {
 const { ImageInput } = require("./misc");
 const { createCRUDType } = require("../../../utils/helpers");
 const { queueService } = require("../../../services/queue-service");
+const { isAdmin } = require("../../../auth/utils/helperFuncs");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
@@ -1020,10 +1021,6 @@ const CreateTournamentInput = inputObjectType({
   },
 });
 
-const isAdminUser = (userId) => {
-  return userId === 3 || userId === 37 || userId === 9;
-};
-
 const createTournament = extendType({
   type: "Mutation",
   definition(t) {
@@ -1037,7 +1034,7 @@ const createTournament = extendType({
 
         if (!user?.id) throw new Error("You have to login");
 
-        if (!isAdminUser(user.id))
+        if (!isAdmin(user.id))
           throw new Error("You are not allowed to create a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
@@ -1180,7 +1177,7 @@ const updateTournament = extendType({
 
         if (!user?.id) throw new Error("You have to login");
 
-        if (!isAdminUser(user.id))
+        if (!isAdmin(user.id))
           throw new Error("You are not allowed to update a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([

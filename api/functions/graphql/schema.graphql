@@ -58,6 +58,7 @@ interface BaseUser {
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
+  is_admin: Boolean
   jobTitle: String
   join_date: Date!
   last_seen_notification_time: Date!
@@ -119,6 +120,17 @@ type Category {
   project: [Project!]!
   title: String!
   votes_sum: Int!
+}
+
+input CreateOrUpdateBadgeInput {
+  badgeDefinitionNostrEventId: String
+  color: String
+  description: String!
+  id: Int
+  image: String!
+  slug: String!
+  title: String!
+  winningDescriptionTemplate: String
 }
 
 input CreateProjectInput {
@@ -275,6 +287,7 @@ type Mutation {
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  createOrUpdateBadge(input: CreateOrUpdateBadgeInput): Badge
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
   createTournament(data: CreateTournamentInput): Tournament
@@ -441,10 +454,12 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!
+  getAllBadges: [Badge!]!
   getAllCapabilities: [Capability!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!
   getAllMakersSkills: [MakerSkill!]!
+  getBadgeById(idOrSlug: String!): Badge!
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
@@ -839,6 +854,7 @@ type User implements BaseUser {
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
+  is_admin: Boolean
   jobTitle: String
   join_date: Date!
   last_seen_notification_time: Date!

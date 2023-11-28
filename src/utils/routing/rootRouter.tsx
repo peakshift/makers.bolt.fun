@@ -11,7 +11,7 @@ import { Loadable } from "./loadable";
 import { ApolloClient, useApolloClient } from "@apollo/client";
 import { PAGES_ROUTES } from "./routes";
 import ProtectedRoute from "src/Components/ProtectedRoute/ProtectedRoute";
-import { SideNavLayout, TopNavLayout } from "./layouts/index";
+import { ProtectedLayout, SideNavLayout, TopNavLayout } from "./layouts/index";
 import { tagPageLoader } from "src/features/Posts/pages/TagPage/tagPage.loader";
 import App from "src/App";
 import { postDetailsPageLoader } from "src/features/Posts/pages/PostDetailsPage/postDetailsPage.loader";
@@ -21,6 +21,9 @@ import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loade
 import { Post_Type } from "src/graphql";
 import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
+import { updateBadgeDetailsLoader } from "src/features/AdminDashboard/pages/CreateBadgePage/updateBadgeDetails.loader";
+import { badgeDetailsLoader } from "src/features/AdminDashboard/pages/BadgeDetailsPage/badgeDetails.loader";
+import { manageBadgesLoader } from "src/features/AdminDashboard/pages/ManageBadgesPage/manageBadges.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -148,6 +151,7 @@ const DonatePage = Loadable(
       )
   )
 );
+
 const LoginPage = Loadable(
   React.lazy(
     () =>
@@ -214,6 +218,51 @@ const TermsAndConditionsPage = Loadable(
     () =>
       import(
         /* webpackChunkName: "terms_conditions_page" */ "../../features/Shared/pages/TermsAndConditionsPage/TermsAndConditionsPage"
+      )
+  )
+);
+
+const AdminDashboardPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_dashboard_page" */ "../../features/AdminDashboard/pages/AdminDashboard/AdminDashboard"
+      )
+  )
+);
+
+const AdminManageBadgesPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_manage_badges_page" */ "../../features/AdminDashboard/pages/ManageBadgesPage/ManageBadgesPage"
+      )
+  )
+);
+
+const AdminCreateBadgePage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_create_badge_page" */ "../../features/AdminDashboard/pages/CreateBadgePage/CreateBadgePage"
+      )
+  )
+);
+
+const AdminUpdateBadgePage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_update_badge_page" */ "../../features/AdminDashboard/pages/CreateBadgePage/UpdateBadgePage"
+      )
+  )
+);
+
+const BadgeDetailsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "badge_details_page" */ "../../features/AdminDashboard/pages/BadgeDetailsPage/BadgeDetailsPage"
       )
   )
 );
@@ -290,7 +339,35 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
           <Route path={PAGES_ROUTES.home.default} element={<LandingPage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
-          <Route path={PAGES_ROUTES.landingPage.buildOnBitcoin} element={<HomePage />} />
+          <Route
+            path={PAGES_ROUTES.landingPage.buildOnBitcoin}
+            element={<HomePage />}
+          />
+        </Route>
+
+        <Route element={<ProtectedLayout onlyAdmins />}>
+          {/* <Route path="/admin/badges" element={<AdminManageBadgesPage />} /> */}
+          <Route path="admin">
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="badges">
+              <Route path="create" element={<AdminCreateBadgePage />} />
+              <Route
+                path=":idOrSlug/update"
+                element={<AdminUpdateBadgePage />}
+                loader={updateBadgeDetailsLoader(queryClient)}
+              />
+              <Route
+                path=":idOrSlug"
+                element={<BadgeDetailsPage />}
+                loader={badgeDetailsLoader(queryClient)}
+              />
+              <Route
+                index
+                element={<AdminManageBadgesPage />}
+                loader={manageBadgesLoader(queryClient)}
+              />
+            </Route>
+          </Route>
         </Route>
 
         <Route

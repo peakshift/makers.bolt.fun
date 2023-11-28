@@ -1,0 +1,12 @@
+mutation CreateOrUpdateBadge($input: CreateOrUpdateBadgeInput) {
+  createOrUpdateBadge(input: $input) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+  }
+}

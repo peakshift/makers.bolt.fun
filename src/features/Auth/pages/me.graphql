@@ -7,5 +7,6 @@ query Me {
     bio
     primary_nostr_key
     last_seen_notification_time
+    is_admin
   }
 }

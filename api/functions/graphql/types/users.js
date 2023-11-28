@@ -10,7 +10,7 @@ const {
   list,
   enumType,
 } = require("nexus");
-const { getUserById } = require("../../../auth/utils/helperFuncs");
+const { getUserById, isAdmin } = require("../../../auth/utils/helperFuncs");
 const { removeNulls, defaultPrismaSelectFields } = require("./helpers");
 const { ImageInput } = require("./misc");
 const { Tournament } = require("./tournament");
@@ -23,6 +23,7 @@ const {
   validateEvent,
 } = require("../../../utils/nostr-tools");
 const { queueService } = require("../../../services/queue-service");
+const { UserBadge } = require("./badges");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -41,6 +42,11 @@ const BaseUser = interfaceType({
     t.nonNull.date("join_date");
     t.nonNull.date("last_seen_notification_time");
     t.string("role");
+    t.boolean("is_admin", {
+      resolve: (parent) => {
+        return isAdmin(parent.id);
+      },
+    });
     t.string("jobTitle");
     t.string("lightning_address");
     t.string("website");
@@ -315,56 +321,6 @@ const getAllMakersSkills = extendType({
       async resolve(parent, args, context) {
         return prisma.skill.findMany();
       },
-    });
-  },
-});
-
-const Badge = objectType({
-  name: "Badge",
-  definition(t) {
-    t.nonNull.int("id");
-    t.nonNull.string("title");
-    t.nonNull.string("slug");
-    t.nonNull.string("image");
-    t.nonNull.string("description");
-    t.string("winningDescriptionTemplate");
-    t.string("color");
-    t.string("badgeDefinitionNostrEventId");
-  },
-});
-
-const AwardedBadgeMetadata = objectType({
-  name: "AwardedBadgeMetadata",
-  definition(t) {
-    t.string("emoji");
-    t.string("label");
-    t.string("value");
-  },
-});
-
-const BadgeProgress = objectType({
-  name: "BadgeProgress",
-  definition(t) {
-    t.nonNull.boolean("isCompleted");
-    t.int("totalNeeded");
-    t.int("current");
-    t.date("awardedAt");
-    t.string("badgeAwardNostrEventId");
-    t.list.nonNull.field("metaData", {
-      type: AwardedBadgeMetadata,
-    });
-  },
-});
-
-const UserBadge = objectType({
-  name: "UserBadge",
-  definition(t) {
-    t.nonNull.string("id");
-    t.nonNull.field("badge", {
-      type: Badge,
-    });
-    t.field("progress", {
-      type: BadgeProgress,
     });
   },
 });
