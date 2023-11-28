@@ -1,4 +1,3 @@
-import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import OgTags from "src/Components/OgTags/OgTags";
@@ -14,8 +13,8 @@ export default function ManageBadgesPage() {
     <>
       <OgTags title={"Manage Badges"} description={""} />
       <div className={`page-container`}>
-        <h1 className="text-h1 font-bolder mb-24">Manage Badges 🎖️</h1>
-        <div className="flex justify-end mb-24">
+        <div className="flex flex-wrap justify-between items-center gap-16 mb-24">
+          <h1 className="text-h1 font-bolder">Manage Badges 🎖️</h1>
           <Button href="create" color="primary" size="sm">
             Create New Badge
           </Button>

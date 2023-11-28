@@ -23,6 +23,7 @@ import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
 import { updateBadgeDetailsLoader } from "src/features/AdminDashboard/pages/CreateBadgePage/updateBadgeDetails.loader";
 import { badgeDetailsLoader } from "src/features/AdminDashboard/pages/BadgeDetailsPage/badgeDetails.loader";
+import { manageBadgesLoader } from "src/features/AdminDashboard/pages/ManageBadgesPage/manageBadges.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -221,6 +222,15 @@ const TermsAndConditionsPage = Loadable(
   )
 );
 
+const AdminDashboardPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_dashboard_page" */ "../../features/AdminDashboard/pages/AdminDashboard/AdminDashboard"
+      )
+  )
+);
+
 const AdminManageBadgesPage = Loadable(
   React.lazy(
     () =>
@@ -338,6 +348,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route element={<ProtectedLayout onlyAdmins />}>
           {/* <Route path="/admin/badges" element={<AdminManageBadgesPage />} /> */}
           <Route path="admin">
+            <Route index element={<AdminDashboardPage />} />
             <Route path="badges">
               <Route path="create" element={<AdminCreateBadgePage />} />
               <Route
@@ -350,7 +361,11 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
                 element={<BadgeDetailsPage />}
                 loader={badgeDetailsLoader(queryClient)}
               />
-              <Route index element={<AdminManageBadgesPage />} />
+              <Route
+                index
+                element={<AdminManageBadgesPage />}
+                loader={manageBadgesLoader(queryClient)}
+              />
             </Route>
           </Route>
         </Route>
