@@ -1,4 +1,12 @@
-const { objectType, extendType } = require("nexus");
+const { ApolloError } = require("apollo-server-lambda");
+const {
+  objectType,
+  extendType,
+  inputObjectType,
+  stringArg,
+  nonNull,
+} = require("nexus");
+const { isAdmin } = require("../../../auth/utils/helperFuncs");
 const { prisma } = require("../../../prisma");
 
 const Badge = objectType({
@@ -75,6 +83,98 @@ const getAllBadges = extendType({
   },
 });
 
+const getBadgeById = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("getBadgeById", {
+      type: Badge,
+      args: { idOrSlug: nonNull(stringArg()) },
+      resolve: (_, { idOrSlug }) => {
+        let where = {};
+
+        if (isNaN(idOrSlug)) where = { slug: idOrSlug };
+        else where = { id: parseInt(idOrSlug) };
+
+        return prisma.badge.findUnique({
+          where,
+        });
+      },
+    });
+  },
+});
+
+const CreateOrUpdateBadgeInput = inputObjectType({
+  name: "CreateOrUpdateBadgeInput",
+  definition(t) {
+    t.int("id");
+    t.nonNull.string("title");
+    t.nonNull.string("slug");
+    t.nonNull.string("image");
+    t.nonNull.string("description");
+    t.string("winningDescriptionTemplate");
+    t.string("color");
+    t.string("badgeDefinitionNostrEventId");
+  },
+});
+
+const createOrUpdateBadge = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("createOrUpdateBadge", {
+      type: Badge,
+      args: { input: CreateOrUpdateBadgeInput },
+      async resolve(_root, args, ctx) {
+        let {
+          id,
+          title,
+          slug,
+          image,
+          description,
+          winningDescriptionTemplate,
+          color,
+          badgeDefinitionNostrEventId,
+        } = args.input;
+
+        const user = ctx.user;
+
+        // Do some validation
+        if (!user?.id) throw new ApolloError("Not Authenticated");
+
+        if (isAdmin(user.id)) throw new ApolloError("Not Authorized");
+
+        if (!id) {
+          // Create
+          return await prisma.badge.create({
+            data: {
+              title,
+              slug,
+              image,
+              description,
+              winningDescriptionTemplate,
+              color,
+              badgeDefinitionNostrEventId,
+            },
+          });
+        } else {
+          // Update
+          return await prisma.badge.update({
+            where: { id },
+            data: {
+              title,
+              slug,
+              image,
+              description,
+              winningDescriptionTemplate,
+              color,
+              badgeDefinitionNostrEventId,
+            },
+          });
+        }
+      },
+    });
+  },
+});
+
 module.exports = {
   // Types
   Badge,
@@ -83,4 +183,7 @@ module.exports = {
   UserBadge,
   // Queries
   getAllBadges,
+  getBadgeById,
+  // Mutations
+  createOrUpdateBadge,
 };

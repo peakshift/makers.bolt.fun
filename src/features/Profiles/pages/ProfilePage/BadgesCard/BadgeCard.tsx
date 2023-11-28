@@ -7,12 +7,14 @@ interface Props {
   badge: Badge;
   username: string;
   useBadgeProgress?: Pick<BadgeProgress, "metaData" | "awardedAt"> | null;
+  onClick?: () => void;
 }
 
 export default function BadgeCard({
   badge,
   useBadgeProgress,
   username,
+  onClick,
 }: Props) {
   const dispatch = useAppDispatch();
 
@@ -31,9 +33,14 @@ export default function BadgeCard({
     );
   };
 
+  const handleClick = () => {
+    if (onClick) return onClick();
+    openBadgeModal();
+  };
+
   return (
     <button
-      onClick={openBadgeModal}
+      onClick={handleClick}
       className="block w-full bg-white p-20 rounded h-full relative overflow-hidden isolate border-2 group"
       style={{
         borderColor: addOpacityToHexColor(badge.color ?? "#e4e7ec", 0.3),

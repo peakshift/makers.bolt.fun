@@ -1,4 +1,4 @@
-const adminUsersIds = ["9", "37"];
+const adminUsersIds = [3, 9, 37];
 
 module.exports = {
   adminUsersIds,

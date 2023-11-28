@@ -102,8 +102,8 @@ function verifyInternalAuthHeader(authHeader) {
   return true;
 }
 
-function isAdmin(user) {
-  return adminUsersIds.includes(user.id);
+function isAdmin(userId) {
+  return adminUsersIds.includes(userId);
 }
 
 module.exports = {

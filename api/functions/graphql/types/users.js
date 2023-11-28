@@ -10,7 +10,7 @@ const {
   list,
   enumType,
 } = require("nexus");
-const { getUserById } = require("../../../auth/utils/helperFuncs");
+const { getUserById, isAdmin } = require("../../../auth/utils/helperFuncs");
 const { removeNulls, defaultPrismaSelectFields } = require("./helpers");
 const { ImageInput } = require("./misc");
 const { Tournament } = require("./tournament");
@@ -42,6 +42,11 @@ const BaseUser = interfaceType({
     t.nonNull.date("join_date");
     t.nonNull.date("last_seen_notification_time");
     t.string("role");
+    t.boolean("is_admin", {
+      resolve: (parent) => {
+        return isAdmin(parent.id);
+      },
+    });
     t.string("jobTitle");
     t.string("lightning_address");
     t.string("website");

@@ -5,7 +5,7 @@ import {
 } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { IoClose } from "react-icons/io5";
 import { Badge, BadgeProgress } from "src/graphql";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Button from "src/Components/Button/Button";
 import IconButton from "src/Components/IconButton/IconButton";
 import { useSearchParams } from "react-router-dom";
@@ -36,8 +36,6 @@ export default function ViewBadgeModal({
   const [, setSearchParams] = useSearchParams();
   const copyToClipboard = useCopyToClipboard();
 
-  const color = badge.color ?? DEFAULT_COLOR;
-
   useEffect(() => {
     setSearchParams({ badge: badge.slug }, { replace: true });
 
@@ -45,6 +43,44 @@ export default function ViewBadgeModal({
       setSearchParams({}, { replace: true });
     };
   }, [badge.slug, setSearchParams]);
+
+  const onShare = () => {
+    copyToClipboard(window.location.href);
+    NotificationsService.info("Copied URL to clipboard");
+  };
+
+  return (
+    <motion.div
+      custom={direction}
+      variants={modalCardVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="modal-card !overflow-auto max-w-[442px] min-h-screen xs:min-h-0 rounded-xl"
+    >
+      <ViewBadgeCard
+        badge={badge}
+        username={username}
+        issuedBadgeMetaData={issuedBadgeMetaData}
+        awardedAt={awardedAt}
+        isOwner={isOwner}
+        onClose={onClose}
+      />
+    </motion.div>
+  );
+}
+
+export const ViewBadgeCard = ({
+  badge,
+  username,
+  issuedBadgeMetaData,
+  awardedAt,
+  isOwner,
+  onClose,
+}: Props) => {
+  const copyToClipboard = useCopyToClipboard();
+
+  const color = badge.color ?? DEFAULT_COLOR;
 
   const onShare = () => {
     copyToClipboard(window.location.href);
@@ -61,14 +97,7 @@ export default function ViewBadgeModal({
     });
 
   return (
-    <motion.div
-      custom={direction}
-      variants={modalCardVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="modal-card !overflow-auto max-w-[442px] min-h-screen xs:min-h-0 rounded-xl relative flex flex-col"
-    >
+    <div className="relative flex flex-col">
       <div
         className="absolute inset-0 -z-10 opacity-20"
         style={{
@@ -144,6 +173,6 @@ export default function ViewBadgeModal({
           </Button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
-}
+};

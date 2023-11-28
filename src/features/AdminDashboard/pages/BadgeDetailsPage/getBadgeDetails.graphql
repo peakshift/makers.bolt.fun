@@ -1,0 +1,12 @@
+query GetBadgeDetails($idOrSlug: String!) {
+  getBadgeById(idOrSlug: $idOrSlug) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+  }
+}

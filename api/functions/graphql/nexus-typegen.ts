@@ -33,6 +33,16 @@ export interface NexusGenInputs {
     tournament_id: number; // Int!
     track_id: number; // Int!
   }
+  CreateOrUpdateBadgeInput: { // input type
+    badgeDefinitionNostrEventId?: string | null; // String
+    color?: string | null; // String
+    description: string; // String!
+    id?: number | null; // Int
+    image: string; // String!
+    slug: string; // String!
+    title: string; // String!
+    winningDescriptionTemplate?: string | null; // String
+  }
   CreateProjectInput: { // input type
     capabilities: number[]; // [Int!]!
     category_id: number; // Int!
@@ -798,6 +808,7 @@ export interface NexusGenFieldTypes {
     addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
+    createOrUpdateBadge: NexusGenRootTypes['Badge'] | null; // Badge
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
     createTournament: NexusGenRootTypes['Tournament'] | null; // Tournament
@@ -898,6 +909,7 @@ export interface NexusGenFieldTypes {
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getAllMakersRoles: NexusGenRootTypes['GenericMakerRole'][]; // [GenericMakerRole!]!
     getAllMakersSkills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
+    getBadgeById: NexusGenRootTypes['Badge']; // Badge!
     getCategory: NexusGenRootTypes['Category']; // Category!
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -1110,6 +1122,7 @@ export interface NexusGenFieldTypes {
     github: string | null; // String
     id: number; // Int!
     in_tournament: boolean; // Boolean!
+    is_admin: boolean | null; // Boolean
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     last_seen_notification_time: NexusGenScalars['Date']; // Date!
@@ -1175,6 +1188,7 @@ export interface NexusGenFieldTypes {
     github: string | null; // String
     id: number; // Int!
     in_tournament: boolean; // Boolean!
+    is_admin: boolean | null; // Boolean
     jobTitle: string | null; // String
     join_date: NexusGenScalars['Date']; // Date!
     last_seen_notification_time: NexusGenScalars['Date']; // Date!
@@ -1342,6 +1356,7 @@ export interface NexusGenFieldTypeNames {
     addProjectToTournament: 'ParticipationInfo'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
+    createOrUpdateBadge: 'Badge'
     createProject: 'CreateProjectResponse'
     createStory: 'Story'
     createTournament: 'Tournament'
@@ -1442,6 +1457,7 @@ export interface NexusGenFieldTypeNames {
     getAllHackathons: 'Hackathon'
     getAllMakersRoles: 'GenericMakerRole'
     getAllMakersSkills: 'MakerSkill'
+    getBadgeById: 'Badge'
     getCategory: 'Category'
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
@@ -1654,6 +1670,7 @@ export interface NexusGenFieldTypeNames {
     github: 'String'
     id: 'Int'
     in_tournament: 'Boolean'
+    is_admin: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     last_seen_notification_time: 'Date'
@@ -1719,6 +1736,7 @@ export interface NexusGenFieldTypeNames {
     github: 'String'
     id: 'Int'
     in_tournament: 'Boolean'
+    is_admin: 'Boolean'
     jobTitle: 'String'
     join_date: 'Date'
     last_seen_notification_time: 'Date'
@@ -1763,6 +1781,9 @@ export interface NexusGenArgTypes {
     confirmVote: { // args
       payment_request: string; // String!
       preimage: string; // String!
+    }
+    createOrUpdateBadge: { // args
+      input?: NexusGenInputs['CreateOrUpdateBadgeInput'] | null; // CreateOrUpdateBadgeInput
     }
     createProject: { // args
       input?: NexusGenInputs['CreateProjectInput'] | null; // CreateProjectInput
@@ -1846,6 +1867,9 @@ export interface NexusGenArgTypes {
     getAllHackathons: { // args
       sortBy?: string | null; // String
       tag?: number | null; // Int
+    }
+    getBadgeById: { // args
+      idOrSlug: string; // String!
     }
     getCategory: { // args
       id: number; // Int!

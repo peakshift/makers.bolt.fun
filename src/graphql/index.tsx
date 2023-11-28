@@ -78,6 +78,7 @@ export type BaseUser = {
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
+  is_admin: Maybe<Scalars['Boolean']>;
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   last_seen_notification_time: Scalars['Date'];
@@ -148,6 +149,17 @@ export type Category = {
   project: Array<Project>;
   title: Scalars['String'];
   votes_sum: Scalars['Int'];
+};
+
+export type CreateOrUpdateBadgeInput = {
+  badgeDefinitionNostrEventId?: InputMaybe<Scalars['String']>;
+  color?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  image: Scalars['String'];
+  slug: Scalars['String'];
+  title: Scalars['String'];
+  winningDescriptionTemplate?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateProjectInput = {
@@ -309,6 +321,7 @@ export type Mutation = {
   addProjectToTournament: Maybe<ParticipationInfo>;
   confirmDonation: Donation;
   confirmVote: Vote;
+  createOrUpdateBadge: Maybe<Badge>;
   createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
   createTournament: Maybe<Tournament>;
@@ -344,6 +357,11 @@ export type MutationConfirmDonationArgs = {
 export type MutationConfirmVoteArgs = {
   payment_request: Scalars['String'];
   preimage: Scalars['String'];
+};
+
+
+export type MutationCreateOrUpdateBadgeArgs = {
+  input: InputMaybe<CreateOrUpdateBadgeInput>;
 };
 
 
@@ -606,6 +624,7 @@ export type Query = {
   getAllHackathons: Array<Hackathon>;
   getAllMakersRoles: Array<GenericMakerRole>;
   getAllMakersSkills: Array<MakerSkill>;
+  getBadgeById: Badge;
   getCategory: Category;
   getDonationsStats: DonationsStats;
   getFeed: Array<Post>;
@@ -661,6 +680,11 @@ export type QueryCheckValidProjectHashtagArgs = {
 export type QueryGetAllHackathonsArgs = {
   sortBy: InputMaybe<Scalars['String']>;
   tag: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetBadgeByIdArgs = {
+  idOrSlug: Scalars['String'];
 };
 
 
@@ -1191,6 +1215,7 @@ export type User = BaseUser & {
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
+  is_admin: Maybe<Scalars['Boolean']>;
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   last_seen_notification_time: Scalars['Date'];
@@ -1315,6 +1340,20 @@ export type SearchProjectsQueryVariables = Exact<{
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string | null, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
 
+export type GetBadgeDetailsQueryVariables = Exact<{
+  idOrSlug: Scalars['String'];
+}>;
+
+
+export type GetBadgeDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null } };
+
+export type CreateOrUpdateBadgeMutationVariables = Exact<{
+  input: InputMaybe<CreateOrUpdateBadgeInput>;
+}>;
+
+
+export type CreateOrUpdateBadgeMutation = { __typename?: 'Mutation', createOrUpdateBadge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null } | null };
+
 export type GetAllBadgesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1323,7 +1362,7 @@ export type GetAllBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any, is_admin: boolean | null } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1444,19 +1483,19 @@ export type TagFeedQueryVariables = Exact<{
 
 export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
-export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any };
+export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1521,7 +1560,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, badgeAwardNostrEventId: string | null, totalNeeded: number | null, current: number | null, awardedAt: any | null, metaData: Array<{ __typename?: 'AwardedBadgeMetadata', emoji: string | null, label: string | null, value: string | null }> | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean, is_default_generated_key: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, badgeAwardNostrEventId: string | null, totalNeeded: number | null, current: number | null, awardedAt: any | null, metaData: Array<{ __typename?: 'AwardedBadgeMetadata', emoji: string | null, label: string | null, value: string | null }> | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean, is_default_generated_key: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1717,6 +1756,7 @@ export const UserBasicInfoFragmentDoc = gql`
   bio
   location
   last_seen_notification_time
+  is_admin
 }
     `;
 export const UserRolesSkillsFragmentDoc = gql`
@@ -1981,6 +2021,88 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const GetBadgeDetailsDocument = gql`
+    query GetBadgeDetails($idOrSlug: String!) {
+  getBadgeById(idOrSlug: $idOrSlug) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+  }
+}
+    `;
+
+/**
+ * __useGetBadgeDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetBadgeDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBadgeDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBadgeDetailsQuery({
+ *   variables: {
+ *      idOrSlug: // value for 'idOrSlug'
+ *   },
+ * });
+ */
+export function useGetBadgeDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>(GetBadgeDetailsDocument, options);
+      }
+export function useGetBadgeDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>(GetBadgeDetailsDocument, options);
+        }
+export type GetBadgeDetailsQueryHookResult = ReturnType<typeof useGetBadgeDetailsQuery>;
+export type GetBadgeDetailsLazyQueryHookResult = ReturnType<typeof useGetBadgeDetailsLazyQuery>;
+export type GetBadgeDetailsQueryResult = Apollo.QueryResult<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>;
+export const CreateOrUpdateBadgeDocument = gql`
+    mutation CreateOrUpdateBadge($input: CreateOrUpdateBadgeInput) {
+  createOrUpdateBadge(input: $input) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+  }
+}
+    `;
+export type CreateOrUpdateBadgeMutationFn = Apollo.MutationFunction<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>;
+
+/**
+ * __useCreateOrUpdateBadgeMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateBadgeMutation, { data, loading, error }] = useCreateOrUpdateBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateBadgeMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>(CreateOrUpdateBadgeDocument, options);
+      }
+export type CreateOrUpdateBadgeMutationHookResult = ReturnType<typeof useCreateOrUpdateBadgeMutation>;
+export type CreateOrUpdateBadgeMutationResult = Apollo.MutationResult<CreateOrUpdateBadgeMutation>;
+export type CreateOrUpdateBadgeMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>;
 export const GetAllBadgesDocument = gql`
     query GetAllBadges {
   getAllBadges {
@@ -2032,6 +2154,7 @@ export const MeDocument = gql`
     bio
     primary_nostr_key
     last_seen_notification_time
+    is_admin
   }
 }
     `;

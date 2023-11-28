@@ -31,7 +31,8 @@ export default function ProtectedRoute({
       />
     );
 
-  if (onlyAdmins) return <Navigate to={notAllowedRedirectPath} replace />;
+  if (onlyAdmins && !user.is_admin)
+    return <Navigate to={notAllowedRedirectPath} replace />;
 
   if (isAllowed && !isAllowed(user)) {
     return <Navigate to={notAllowedRedirectPath} replace />;
