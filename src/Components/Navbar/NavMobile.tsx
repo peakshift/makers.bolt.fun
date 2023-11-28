@@ -179,6 +179,22 @@ export default function NavMobile() {
                     </MenuButton>
                   }
                 >
+                  {curUser.is_admin && (
+                    <MenuItem
+                      href={createRoute({
+                        type: "profile",
+                        id: curUser.id,
+                        username: curUser.name,
+                      })}
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/admin");
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      👨🏻‍💼 Admin
+                    </MenuItem>
+                  )}
                   <MenuItem
                     href={createRoute({
                       type: "profile",
