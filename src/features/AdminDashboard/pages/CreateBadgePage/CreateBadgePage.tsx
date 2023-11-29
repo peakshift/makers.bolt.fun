@@ -9,6 +9,8 @@ import CreateBadgeForm from "./CreateBadgeForm";
 import PreviewBadgeCard from "./PreviewBadgeCard";
 import { useNavigate } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
+import { useNavigateBack } from "src/utils/hooks";
+import { FiArrowLeft } from "react-icons/fi";
 
 const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
   .object({
@@ -28,6 +30,9 @@ const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
 export type CreateBadgeFormType = yup.InferType<typeof schema>;
 
 export default function CreateBadgePage() {
+  const navigateBack = useNavigateBack(
+    createRoute({ type: "admin-badges", page: "list" })
+  );
   const navigate = useNavigate();
   const formMethods = useForm<CreateBadgeFormType>({
     resolver: yupResolver(schema) as Resolver<CreateBadgeFormType>,
@@ -49,6 +54,14 @@ export default function CreateBadgePage() {
     <>
       <OgTags title={"Create New Badge"} description={""} />
       <div className={`page-container`}>
+        <button
+          className={`
+       w-max p-8 rounded flex justify-center items-center gap-8 text-gray-500 hover:bg-gray-50 active:bg-gray-100
+        `}
+          onClick={navigateBack}
+        >
+          <FiArrowLeft /> Back
+        </button>
         <h1 className="text-h1 font-bolder mb-24">Create New Badge</h1>
         <FormProvider {...formMethods}>
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(300px,520px)_minmax(420px,1fr)] gap-24 items-center">

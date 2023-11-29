@@ -1,13 +1,17 @@
-import { FiEdit2 } from "react-icons/fi";
+import { FiArrowLeft, FiEdit2 } from "react-icons/fi";
 import Skeleton from "react-loading-skeleton";
 import { useParams } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import { ViewBadgeCard } from "src/features/Profiles/pages/ProfilePage/ViewBadgeModal/ViewBadgeModal";
 import { useGetBadgeDetailsQuery } from "src/graphql";
+import { useNavigateBack } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
 
 export default function BadgeDetailsPage() {
+  const navigateBack = useNavigateBack(
+    createRoute({ type: "admin-badges", page: "list" })
+  );
   const { idOrSlug } = useParams<{ idOrSlug: string }>();
 
   if (!idOrSlug) throw new Error("idOrSlug is required");
@@ -23,6 +27,14 @@ export default function BadgeDetailsPage() {
 
   return (
     <div className="page-container">
+      <button
+        className={`
+       w-max p-8 rounded flex justify-center items-center gap-8 text-gray-500 hover:bg-gray-50 active:bg-gray-100
+        `}
+        onClick={navigateBack}
+      >
+        <FiArrowLeft /> Back
+      </button>
       <div className="flex flex-col gap-24">
         <div className="max-w-[420px] rounded-xl overflow-hidden mx-auto w-full">
           {" "}

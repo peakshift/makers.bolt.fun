@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { createRoute } from "src/utils/routing";
 
 const links = [
   {
     icon: "🎖️",
     label: "Manage Badges",
-    url: "badges",
+    url: createRoute({ type: "admin-badges", page: "list" }),
   },
 ];
 

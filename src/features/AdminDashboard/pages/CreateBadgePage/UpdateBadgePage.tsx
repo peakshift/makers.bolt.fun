@@ -1,9 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, Resolver, useForm } from "react-hook-form";
+import { FiArrowLeft } from "react-icons/fi";
 import { useLoaderData } from "react-router-dom";
 import OgTags from "src/Components/OgTags/OgTags";
 
 import { CreateOrUpdateBadgeInput } from "src/graphql";
+import { useNavigateBack } from "src/utils/hooks";
+import { createRoute } from "src/utils/routing";
 import * as yup from "yup";
 import CreateBadgeForm from "./CreateBadgeForm";
 import PreviewBadgeCard from "./PreviewBadgeCard";
@@ -32,6 +35,14 @@ export default function UpdateBadgePage() {
 
   const badgeData = loaderData.getBadgeById;
 
+  const navigateBack = useNavigateBack(
+    createRoute({
+      type: "admin-badges",
+      page: "details",
+      idOrSlug: badgeData.id,
+    })
+  );
+
   const formMethods = useForm<CreateBadgeFormType>({
     resolver: yupResolver(schema) as Resolver<CreateBadgeFormType>,
     defaultValues: {
@@ -54,6 +65,14 @@ export default function UpdateBadgePage() {
     <>
       <OgTags title={"Update Badge"} description={""} />
       <div className={`page-container`}>
+        <button
+          className={`
+       w-max p-8 rounded flex justify-center items-center gap-8 text-gray-500 hover:bg-gray-50 active:bg-gray-100
+        `}
+          onClick={navigateBack}
+        >
+          <FiArrowLeft /> Back
+        </button>
         <h1 className="text-h1 font-bolder mb-24">Update Badge</h1>
         <FormProvider {...formMethods}>
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(300px,520px)_minmax(420px,1fr)] gap-24 items-center">
