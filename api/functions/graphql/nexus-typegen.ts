@@ -39,6 +39,9 @@ export interface NexusGenInputs {
     description: string; // String!
     id?: number | null; // Int
     image: string; // String!
+    incrementOnActionId?: number | null; // Int
+    incrementsNeeded?: number | null; // Int
+    isAdminIssuedOnly: boolean; // Boolean!
     slug: string; // String!
     title: string; // String!
     winningDescriptionTemplate?: string | null; // String
@@ -313,6 +316,8 @@ export interface NexusGenObjects {
     description: string; // String!
     id: number; // Int!
     image: string; // String!
+    incrementsNeeded?: number | null; // Int
+    isAdminIssuedOnly: boolean; // Boolean!
     slug: string; // String!
     title: string; // String!
     winningDescriptionTemplate?: string | null; // String
@@ -623,6 +628,10 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     website?: string | null; // String
   }
+  UserActionType: { // root type
+    id: number; // Int!
+    name: string; // String!
+  }
   UserBadge: { // root type
     badge: NexusGenRootTypes['Badge']; // Badge!
     id: string; // String!
@@ -699,6 +708,9 @@ export interface NexusGenFieldTypes {
     description: string; // String!
     id: number; // Int!
     image: string; // String!
+    incrementOnAction: NexusGenRootTypes['UserActionType'] | null; // UserActionType
+    incrementsNeeded: number | null; // Int
+    isAdminIssuedOnly: boolean; // Boolean!
     slug: string; // String!
     title: string; // String!
     winningDescriptionTemplate: string | null; // String
@@ -909,6 +921,7 @@ export interface NexusGenFieldTypes {
     getAllHackathons: NexusGenRootTypes['Hackathon'][]; // [Hackathon!]!
     getAllMakersRoles: NexusGenRootTypes['GenericMakerRole'][]; // [GenericMakerRole!]!
     getAllMakersSkills: NexusGenRootTypes['MakerSkill'][]; // [MakerSkill!]!
+    getAllUserActionTypes: NexusGenRootTypes['UserActionType'][]; // [UserActionType!]!
     getBadgeById: NexusGenRootTypes['Badge']; // Badge!
     getCategory: NexusGenRootTypes['Category']; // Category!
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
@@ -1143,6 +1156,10 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     website: string | null; // String
   }
+  UserActionType: { // field return type
+    id: number; // Int!
+    name: string; // String!
+  }
   UserBadge: { // field return type
     badge: NexusGenRootTypes['Badge']; // Badge!
     id: string; // String!
@@ -1247,6 +1264,9 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     id: 'Int'
     image: 'String'
+    incrementOnAction: 'UserActionType'
+    incrementsNeeded: 'Int'
+    isAdminIssuedOnly: 'Boolean'
     slug: 'String'
     title: 'String'
     winningDescriptionTemplate: 'String'
@@ -1457,6 +1477,7 @@ export interface NexusGenFieldTypeNames {
     getAllHackathons: 'Hackathon'
     getAllMakersRoles: 'GenericMakerRole'
     getAllMakersSkills: 'MakerSkill'
+    getAllUserActionTypes: 'UserActionType'
     getBadgeById: 'Badge'
     getCategory: 'Category'
     getDonationsStats: 'DonationsStats'
@@ -1690,6 +1711,10 @@ export interface NexusGenFieldTypeNames {
     tournaments: 'Tournament'
     twitter: 'String'
     website: 'String'
+  }
+  UserActionType: { // field return type name
+    id: 'Int'
+    name: 'String'
   }
   UserBadge: { // field return type name
     badge: 'Badge'

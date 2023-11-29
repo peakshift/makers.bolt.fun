@@ -1,4 +1,4 @@
-query GetAllBadges {
+query ManageBadges {
   getAllBadges {
     id
     title

@@ -1,4 +1,3 @@
-import React from "react";
 import { useFormContext } from "react-hook-form";
 import { ViewBadgeCard } from "src/features/Profiles/pages/ProfilePage/ViewBadgeModal/ViewBadgeModal";
 import { Badge } from "src/graphql";
@@ -19,7 +18,7 @@ export default function PreviewBadgeCard() {
             {
               id: 1,
               ...formValues,
-            } as Badge
+            } as unknown as Badge
           }
           username="John Doe"
           isOwner

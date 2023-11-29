@@ -17,8 +17,11 @@ const schema: yup.SchemaOf<CreateOrUpdateBadgeInput> = yup
     description: yup.string().required().min(10),
     image: yup.string().required(),
     color: yup.string(),
+    isAdminIssuedOnly: yup.boolean().required(),
     winningDescriptionTemplate: yup.string().required(),
     badgeDefinitionNostrEventId: yup.string().nullable(),
+    incrementsNeeded: yup.number().nullable(),
+    incrementOnActionId: yup.number().nullable(),
   })
   .required();
 
@@ -40,6 +43,10 @@ export default function UpdateBadgePage() {
       color: badgeData.color,
       winningDescriptionTemplate: badgeData.winningDescriptionTemplate,
       badgeDefinitionNostrEventId: badgeData.badgeDefinitionNostrEventId,
+      isAdminIssuedOnly: badgeData.isAdminIssuedOnly,
+      incrementsNeeded: badgeData.incrementsNeeded,
+      incrementOnActionId:
+        (badgeData.incrementOnAction?.id.toString() as any) ?? null,
     },
   });
 

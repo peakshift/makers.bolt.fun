@@ -8,5 +8,11 @@ query GetBadgeDetails($idOrSlug: String!) {
     winningDescriptionTemplate
     color
     badgeDefinitionNostrEventId
+    isAdminIssuedOnly
+    incrementsNeeded
+    incrementOnAction {
+      id
+      name
+    }
   }
 }

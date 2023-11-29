@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { User } from "src/graphql";
+import { ProfileQuery } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { toSort } from "src/utils/helperFunctions";
 import { useAppDispatch } from "src/utils/hooks";
@@ -10,7 +10,7 @@ import BadgeCardWithProgress from "./BadgeCardWithProgress";
 interface Props {
   username: string;
   isOwner?: boolean;
-  badges: User["badges"];
+  badges: NonNullable<ProfileQuery["profile"]>["badges"];
   onlyMd?: boolean;
 }
 

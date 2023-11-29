@@ -3,6 +3,7 @@ import Button from "src/Components/Button/Button";
 import { useCreateOrUpdateBadgeMutation } from "src/graphql";
 import { NotificationsService } from "src/services";
 import { extractErrorMessage } from "src/utils/helperFunctions";
+import BadgeTypeInput from "./BadgeTypeInput";
 import { CreateBadgeFormType } from "./CreateBadgePage";
 
 interface Props {
@@ -19,7 +20,6 @@ export default function CreateBadgeForm({ badgeId }: Props) {
   const [mutate, { loading }] = useCreateOrUpdateBadgeMutation();
 
   const onSubmit: SubmitHandler<CreateBadgeFormType> = async (data) => {
-    console.log("HELLO", data);
     if (loading) return console.log("loading");
     try {
       await mutate({
@@ -141,9 +141,10 @@ export default function CreateBadgeForm({ badgeId }: Props) {
           </p>
         )}
       </div>
+      <BadgeTypeInput />
       <div>
         <label htmlFor="image-input" className="text-body5 mt-16">
-          Badge Definition Nostr Event Id
+          Badge Definition Event Id on Nostr
         </label>
         <div className="input-wrapper mt-8 relative">
           <input

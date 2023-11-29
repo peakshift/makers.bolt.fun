@@ -17,9 +17,21 @@ const Badge = objectType({
     t.nonNull.string("slug");
     t.nonNull.string("image");
     t.nonNull.string("description");
+    t.nonNull.boolean("isAdminIssuedOnly");
     t.string("winningDescriptionTemplate");
     t.string("color");
     t.string("badgeDefinitionNostrEventId");
+    t.int("incrementsNeeded");
+    t.field("incrementOnAction", {
+      type: UserActionType,
+      resolve: async (parent) => {
+        return prisma.badge
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .incrementOnAction();
+      },
+    });
   },
 });
 
@@ -59,6 +71,14 @@ const UserBadge = objectType({
   },
 });
 
+const UserActionType = objectType({
+  name: "UserActionType",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.string("name");
+  },
+});
+
 const getAllBadges = extendType({
   type: "Query",
   definition(t) {
@@ -78,6 +98,19 @@ const getAllBadges = extendType({
             badgeDefinitionNostrEventId: true,
           },
         });
+      },
+    });
+  },
+});
+
+const getAllUserActionTypes = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.field("getAllUserActionTypes", {
+      type: UserActionType,
+      args: {},
+      resolve: (_) => {
+        return prisma.userActionType.findMany();
       },
     });
   },
@@ -111,9 +144,12 @@ const CreateOrUpdateBadgeInput = inputObjectType({
     t.nonNull.string("slug");
     t.nonNull.string("image");
     t.nonNull.string("description");
+    t.nonNull.boolean("isAdminIssuedOnly");
     t.string("winningDescriptionTemplate");
     t.string("color");
     t.string("badgeDefinitionNostrEventId");
+    t.int("incrementOnActionId");
+    t.int("incrementsNeeded");
   },
 });
 
@@ -133,6 +169,9 @@ const createOrUpdateBadge = extendType({
           winningDescriptionTemplate,
           color,
           badgeDefinitionNostrEventId,
+          incrementOnActionId,
+          incrementsNeeded,
+          isAdminIssuedOnly,
         } = args.input;
 
         const user = ctx.user;
@@ -140,7 +179,17 @@ const createOrUpdateBadge = extendType({
         // Do some validation
         if (!user?.id) throw new ApolloError("Not Authenticated");
 
-        if (isAdmin(user.id)) throw new ApolloError("Not Authorized");
+        if (!isAdmin(user.id)) throw new ApolloError("Not Authorized");
+
+        if (isAdminIssuedOnly) {
+          incrementOnActionId = null;
+          incrementsNeeded = 1;
+        } else {
+          if (!incrementOnActionId || !incrementsNeeded)
+            throw new ApolloError(
+              "incrementOnActionId and incrementsNeeded are required"
+            );
+        }
 
         if (!id) {
           // Create
@@ -153,12 +202,17 @@ const createOrUpdateBadge = extendType({
               winningDescriptionTemplate,
               color,
               badgeDefinitionNostrEventId,
+              isAdminIssuedOnly,
+              incrementOnActionId,
+              incrementsNeeded,
             },
           });
         } else {
           // Update
           return await prisma.badge.update({
-            where: { id },
+            where: {
+              id,
+            },
             data: {
               title,
               slug,
@@ -167,6 +221,15 @@ const createOrUpdateBadge = extendType({
               winningDescriptionTemplate,
               color,
               badgeDefinitionNostrEventId,
+              isAdminIssuedOnly,
+              incrementOnAction: incrementOnActionId
+                ? {
+                    connect: { id: incrementOnActionId },
+                  }
+                : {
+                    disconnect: true,
+                  },
+              incrementsNeeded,
             },
           });
         }
@@ -184,6 +247,7 @@ module.exports = {
   // Queries
   getAllBadges,
   getBadgeById,
+  getAllUserActionTypes,
   // Mutations
   createOrUpdateBadge,
 };

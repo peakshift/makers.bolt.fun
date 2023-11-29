@@ -36,6 +36,9 @@ type Badge {
   description: String!
   id: Int!
   image: String!
+  incrementOnAction: UserActionType
+  incrementsNeeded: Int
+  isAdminIssuedOnly: Boolean!
   slug: String!
   title: String!
   winningDescriptionTemplate: String
@@ -128,6 +131,9 @@ input CreateOrUpdateBadgeInput {
   description: String!
   id: Int
   image: String!
+  incrementOnActionId: Int
+  incrementsNeeded: Int
+  isAdminIssuedOnly: Boolean!
   slug: String!
   title: String!
   winningDescriptionTemplate: String
@@ -459,6 +465,7 @@ type Query {
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!
   getAllMakersSkills: [MakerSkill!]!
+  getAllUserActionTypes: [UserActionType!]!
   getBadgeById(idOrSlug: String!): Badge!
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
@@ -874,6 +881,11 @@ type User implements BaseUser {
   tournaments: [Tournament!]!
   twitter: String
   website: String
+}
+
+type UserActionType {
+  id: Int!
+  name: String!
 }
 
 type UserBadge {

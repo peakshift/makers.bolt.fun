@@ -55,6 +55,9 @@ export type Badge = {
   description: Scalars['String'];
   id: Scalars['Int'];
   image: Scalars['String'];
+  incrementOnAction: Maybe<UserActionType>;
+  incrementsNeeded: Maybe<Scalars['Int']>;
+  isAdminIssuedOnly: Scalars['Boolean'];
   slug: Scalars['String'];
   title: Scalars['String'];
   winningDescriptionTemplate: Maybe<Scalars['String']>;
@@ -157,6 +160,9 @@ export type CreateOrUpdateBadgeInput = {
   description: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   image: Scalars['String'];
+  incrementOnActionId?: InputMaybe<Scalars['Int']>;
+  incrementsNeeded?: InputMaybe<Scalars['Int']>;
+  isAdminIssuedOnly: Scalars['Boolean'];
   slug: Scalars['String'];
   title: Scalars['String'];
   winningDescriptionTemplate?: InputMaybe<Scalars['String']>;
@@ -624,6 +630,7 @@ export type Query = {
   getAllHackathons: Array<Hackathon>;
   getAllMakersRoles: Array<GenericMakerRole>;
   getAllMakersSkills: Array<MakerSkill>;
+  getAllUserActionTypes: Array<UserActionType>;
   getBadgeById: Badge;
   getCategory: Category;
   getDonationsStats: DonationsStats;
@@ -1242,6 +1249,12 @@ export type UserIn_TournamentArgs = {
   id: Scalars['Int'];
 };
 
+export type UserActionType = {
+  __typename?: 'UserActionType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
 export type UserBadge = {
   __typename?: 'UserBadge';
   badge: Badge;
@@ -1345,7 +1358,7 @@ export type GetBadgeDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetBadgeDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null } };
+export type GetBadgeDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null } };
 
 export type CreateOrUpdateBadgeMutationVariables = Exact<{
   input: InputMaybe<CreateOrUpdateBadgeInput>;
@@ -1354,10 +1367,15 @@ export type CreateOrUpdateBadgeMutationVariables = Exact<{
 
 export type CreateOrUpdateBadgeMutation = { __typename?: 'Mutation', createOrUpdateBadge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null } | null };
 
-export type GetAllBadgesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetUserActionTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }> };
+export type GetUserActionTypesQuery = { __typename?: 'Query', getAllUserActionTypes: Array<{ __typename?: 'UserActionType', id: number, name: string }> };
+
+export type ManageBadgesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ManageBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2032,6 +2050,12 @@ export const GetBadgeDetailsDocument = gql`
     winningDescriptionTemplate
     color
     badgeDefinitionNostrEventId
+    isAdminIssuedOnly
+    incrementsNeeded
+    incrementOnAction {
+      id
+      name
+    }
   }
 }
     `;
@@ -2103,8 +2127,43 @@ export function useCreateOrUpdateBadgeMutation(baseOptions?: Apollo.MutationHook
 export type CreateOrUpdateBadgeMutationHookResult = ReturnType<typeof useCreateOrUpdateBadgeMutation>;
 export type CreateOrUpdateBadgeMutationResult = Apollo.MutationResult<CreateOrUpdateBadgeMutation>;
 export type CreateOrUpdateBadgeMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>;
-export const GetAllBadgesDocument = gql`
-    query GetAllBadges {
+export const GetUserActionTypesDocument = gql`
+    query GetUserActionTypes {
+  getAllUserActionTypes {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetUserActionTypesQuery__
+ *
+ * To run a query within a React component, call `useGetUserActionTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserActionTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserActionTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserActionTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>(GetUserActionTypesDocument, options);
+      }
+export function useGetUserActionTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>(GetUserActionTypesDocument, options);
+        }
+export type GetUserActionTypesQueryHookResult = ReturnType<typeof useGetUserActionTypesQuery>;
+export type GetUserActionTypesLazyQueryHookResult = ReturnType<typeof useGetUserActionTypesLazyQuery>;
+export type GetUserActionTypesQueryResult = Apollo.QueryResult<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>;
+export const ManageBadgesDocument = gql`
+    query ManageBadges {
   getAllBadges {
     id
     title
@@ -2119,31 +2178,31 @@ export const GetAllBadgesDocument = gql`
     `;
 
 /**
- * __useGetAllBadgesQuery__
+ * __useManageBadgesQuery__
  *
- * To run a query within a React component, call `useGetAllBadgesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllBadgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useManageBadgesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useManageBadgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllBadgesQuery({
+ * const { data, loading, error } = useManageBadgesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetAllBadgesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllBadgesQuery, GetAllBadgesQueryVariables>) {
+export function useManageBadgesQuery(baseOptions?: Apollo.QueryHookOptions<ManageBadgesQuery, ManageBadgesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllBadgesQuery, GetAllBadgesQueryVariables>(GetAllBadgesDocument, options);
+        return Apollo.useQuery<ManageBadgesQuery, ManageBadgesQueryVariables>(ManageBadgesDocument, options);
       }
-export function useGetAllBadgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllBadgesQuery, GetAllBadgesQueryVariables>) {
+export function useManageBadgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ManageBadgesQuery, ManageBadgesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllBadgesQuery, GetAllBadgesQueryVariables>(GetAllBadgesDocument, options);
+          return Apollo.useLazyQuery<ManageBadgesQuery, ManageBadgesQueryVariables>(ManageBadgesDocument, options);
         }
-export type GetAllBadgesQueryHookResult = ReturnType<typeof useGetAllBadgesQuery>;
-export type GetAllBadgesLazyQueryHookResult = ReturnType<typeof useGetAllBadgesLazyQuery>;
-export type GetAllBadgesQueryResult = Apollo.QueryResult<GetAllBadgesQuery, GetAllBadgesQueryVariables>;
+export type ManageBadgesQueryHookResult = ReturnType<typeof useManageBadgesQuery>;
+export type ManageBadgesLazyQueryHookResult = ReturnType<typeof useManageBadgesLazyQuery>;
+export type ManageBadgesQueryResult = Apollo.QueryResult<ManageBadgesQuery, ManageBadgesQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

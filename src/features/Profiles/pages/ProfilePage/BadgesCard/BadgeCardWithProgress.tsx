@@ -1,10 +1,25 @@
-import { BadgeProgress, UserBadge } from "src/graphql";
+import { Badge, BadgeProgress, UserBadge } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { useAppDispatch } from "src/utils/hooks";
+import { Override } from "src/utils/interfaces";
 
 interface Props {
   username: string;
-  userBadge: UserBadge;
+  userBadge: Override<
+    UserBadge,
+    {
+      badge: Pick<
+        Badge,
+        | "id"
+        | "title"
+        | "slug"
+        | "color"
+        | "image"
+        | "description"
+        | "winningDescriptionTemplate"
+      >;
+    }
+  >;
   isOwner: boolean;
 }
 

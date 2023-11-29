@@ -15,8 +15,11 @@ const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
     description: yup.string().required().min(10),
     image: yup.string().required(),
     color: yup.string(),
+    isAdminIssuedOnly: yup.boolean().required(),
     winningDescriptionTemplate: yup.string().required(),
     badgeDefinitionNostrEventId: yup.string().nullable(),
+    incrementsNeeded: yup.number().nullable(),
+    incrementOnActionId: yup.number().nullable(),
   })
   .required();
 
@@ -33,6 +36,9 @@ export default function CreateBadgePage() {
       color: "#8B5CF6",
       winningDescriptionTemplate: "",
       badgeDefinitionNostrEventId: null,
+      isAdminIssuedOnly: true,
+      incrementsNeeded: null,
+      incrementOnActionId: null,
     },
   });
 

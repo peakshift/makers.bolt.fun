@@ -4,7 +4,16 @@ import { addOpacityToHexColor } from "src/utils/helperFunctions";
 import { useAppDispatch } from "src/utils/hooks";
 
 interface Props {
-  badge: Badge;
+  badge: Pick<
+    Badge,
+    | "id"
+    | "title"
+    | "slug"
+    | "color"
+    | "image"
+    | "description"
+    | "winningDescriptionTemplate"
+  >;
   username: string;
   useBadgeProgress?: Pick<BadgeProgress, "metaData" | "awardedAt"> | null;
   onClick?: () => void;

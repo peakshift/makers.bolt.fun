@@ -3,9 +3,9 @@ const { prisma } = require("../../prisma");
 const env = require("../../utils/consts");
 
 const ACTIONS_TYPES = {
-  publishedStory: "publishedStory",
-  updatedProfile: "updatedProfile",
-  commentedOnStory: "commentedOnStory",
+  publishedStory: "Publish Story",
+  updatedProfile: "Updated Profile",
+  commentedOnStory: "Leave a Comment",
 };
 
 const actionsCreator = {

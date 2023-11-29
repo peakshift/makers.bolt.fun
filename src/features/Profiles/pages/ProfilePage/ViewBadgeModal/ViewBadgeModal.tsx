@@ -15,7 +15,10 @@ import { addOpacityToHexColor } from "src/utils/helperFunctions";
 import dayjs from "dayjs";
 
 interface Props extends ModalCard {
-  badge: Badge;
+  badge: Pick<
+    Badge,
+    "id" | "title" | "winningDescriptionTemplate" | "image" | "color" | "slug"
+  >;
   username: string;
   issuedBadgeMetaData?: BadgeProgress["metaData"];
   awardedAt?: BadgeProgress["awardedAt"];

@@ -10,3 +10,10 @@ mutation CreateOrUpdateBadge($input: CreateOrUpdateBadgeInput) {
     badgeDefinitionNostrEventId
   }
 }
+
+query GetUserActionTypes {
+  getAllUserActionTypes {
+    id
+    name
+  }
+}

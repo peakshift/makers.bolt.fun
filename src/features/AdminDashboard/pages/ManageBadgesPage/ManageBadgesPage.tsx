@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import OgTags from "src/Components/OgTags/OgTags";
 import BadgeCard from "src/features/Profiles/pages/ProfilePage/BadgesCard/BadgeCard";
-import { useGetAllBadgesQuery } from "src/graphql";
+import { useManageBadgesQuery } from "src/graphql";
 
 export default function ManageBadgesPage() {
-  const allBadgesQuery = useGetAllBadgesQuery();
+  const query = useManageBadgesQuery();
 
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function ManageBadgesPage() {
           </Button>
         </div>
         <ul className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-24">
-          {allBadgesQuery.data?.getAllBadges.map((badge) => (
+          {query.data?.getAllBadges.map((badge) => (
             <li key={badge.id}>
               <BadgeCard
                 badge={badge}

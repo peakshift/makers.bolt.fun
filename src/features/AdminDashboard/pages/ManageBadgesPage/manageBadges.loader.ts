@@ -1,14 +1,14 @@
 import { createLoader } from "src/utils/routing/helpers";
 import {
-  GetAllBadgesDocument,
-  GetAllBadgesQuery,
-  GetAllBadgesQueryVariables,
+  ManageBadgesDocument,
+  ManageBadgesQuery,
+  ManageBadgesQueryVariables,
 } from "src/graphql";
 
-export type LoaderData = GetAllBadgesQuery;
+export type LoaderData = ManageBadgesQuery;
 
-export const manageBadgesLoader = createLoader<GetAllBadgesQueryVariables>(
+export const manageBadgesLoader = createLoader<ManageBadgesQueryVariables>(
   () => ({
-    query: GetAllBadgesDocument,
+    query: ManageBadgesDocument,
   })
 );
