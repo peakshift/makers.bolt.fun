@@ -3,6 +3,7 @@ import Button from "src/Components/Button/Button";
 import OgTags from "src/Components/OgTags/OgTags";
 import BadgeCard from "src/features/Profiles/pages/ProfilePage/BadgesCard/BadgeCard";
 import { useManageBadgesQuery } from "src/graphql";
+import { createRoute } from "src/utils/routing";
 
 export default function ManageBadgesPage() {
   const query = useManageBadgesQuery();
@@ -15,7 +16,14 @@ export default function ManageBadgesPage() {
       <div className={`page-container`}>
         <div className="flex flex-wrap justify-between items-center gap-16 mb-24">
           <h1 className="text-h1 font-bolder">Manage Badges 🎖️</h1>
-          <Button href="create" color="primary" size="sm">
+          <Button
+            href={createRoute({
+              type: "admin-badges",
+              page: "create",
+            })}
+            color="primary"
+            size="sm"
+          >
             Create New Badge
           </Button>
         </div>
@@ -26,7 +34,13 @@ export default function ManageBadgesPage() {
                 badge={badge}
                 username={"John Doe"}
                 onClick={() => {
-                  navigate(`${badge.slug}`);
+                  navigate(
+                    createRoute({
+                      type: "admin-badges",
+                      page: "details",
+                      idOrSlug: badge.id,
+                    })
+                  );
                 }}
               />
             </li>

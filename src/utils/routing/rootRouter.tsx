@@ -346,7 +346,6 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         </Route>
 
         <Route element={<ProtectedLayout onlyAdmins />}>
-          {/* <Route path="/admin/badges" element={<AdminManageBadgesPage />} /> */}
           <Route path="admin">
             <Route index element={<AdminDashboardPage />} />
             <Route path="badges">

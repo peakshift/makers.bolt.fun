@@ -5,6 +5,7 @@ import Button from "src/Components/Button/Button";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import { ViewBadgeCard } from "src/features/Profiles/pages/ProfilePage/ViewBadgeModal/ViewBadgeModal";
 import { useGetBadgeDetailsQuery } from "src/graphql";
+import { createRoute } from "src/utils/routing";
 
 export default function BadgeDetailsPage() {
   const { idOrSlug } = useParams<{ idOrSlug: string }>();
@@ -31,7 +32,14 @@ export default function BadgeDetailsPage() {
           />
         </div>
         <div className="mx-auto">
-          <Button href="update" color="gray">
+          <Button
+            href={createRoute({
+              type: "admin-badges",
+              page: "update",
+              idOrSlug: badgeDetailsQuery.data?.getBadgeById.id,
+            })}
+            color="gray"
+          >
             {" "}
             Edit Badge Data <FiEdit2 className="ml-4" />
           </Button>

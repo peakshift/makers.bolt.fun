@@ -1,7 +1,7 @@
 import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
-import { useCreateOrUpdateBadgeMutation } from "src/graphql";
+import { Badge, useCreateOrUpdateBadgeMutation } from "src/graphql";
 import { NotificationsService } from "src/services";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import BadgeTypeInput from "./BadgeTypeInput";
@@ -9,9 +9,10 @@ import { CreateBadgeFormType } from "./CreateBadgePage";
 
 interface Props {
   badgeId?: number;
+  onCreated?: (badge: Partial<Badge>) => void;
 }
 
-export default function CreateBadgeForm({ badgeId }: Props) {
+export default function CreateBadgeForm({ badgeId, onCreated }: Props) {
   const {
     register,
     formState: { errors },
@@ -24,7 +25,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
   const onSubmit: SubmitHandler<CreateBadgeFormType> = async (data) => {
     if (loading) return console.log("loading");
     try {
-      await mutate({
+      const res = await mutate({
         variables: {
           input: {
             ...data,
@@ -32,9 +33,13 @@ export default function CreateBadgeForm({ badgeId }: Props) {
           },
         },
       });
+      const badgeData = res.data?.createOrUpdateBadge;
       NotificationsService.success(
         badgeId ? "Badge updated successfully" : "Badge created successfully"
       );
+      if (badgeId && badgeData) {
+        onCreated?.(badgeData);
+      }
     } catch (error) {
       NotificationsService.error(
         extractErrorMessage(error) ?? "Something went wrong"

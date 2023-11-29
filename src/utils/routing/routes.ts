@@ -71,6 +71,11 @@ type RouteOptions =
       type: "tournament";
       idOrSlug: string | number;
       tab?: "overview" | "events" | "makers" | "projects";
+    }
+  | {
+      type: "admin-badges";
+      page?: "list" | "create" | "update" | "details";
+      idOrSlug?: string | number;
     };
 
 export function createRoute(options: RouteOptions) {
@@ -147,6 +152,14 @@ export function createRoute(options: RouteOptions) {
 
   if (options.type === "edit-project")
     return `/projects/list-project` + (options.id ? `?id=${options.id}` : "");
+
+  if (options.type === "admin-badges") {
+    if (options.page === "list") return "/admin/badges";
+    if (options.page === "create") return "/admin/badges/create";
+    if (options.page === "update")
+      return `/admin/badges/${options.idOrSlug}/update`;
+    if (options.page === "details") return `/admin/badges/${options.idOrSlug}`;
+  }
 
   return "";
 }

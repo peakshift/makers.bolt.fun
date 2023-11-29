@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, Resolver, useForm } from "react-hook-form";
-import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
 import DefaultBadgeImage from "./default-badge-image.svg";
 
@@ -8,6 +7,8 @@ import { CreateOrUpdateBadgeInput } from "src/graphql";
 import * as yup from "yup";
 import CreateBadgeForm from "./CreateBadgeForm";
 import PreviewBadgeCard from "./PreviewBadgeCard";
+import { useNavigate } from "react-router-dom";
+import { createRoute } from "src/utils/routing";
 
 const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
   .object({
@@ -27,6 +28,7 @@ const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
 export type CreateBadgeFormType = yup.InferType<typeof schema>;
 
 export default function CreateBadgePage() {
+  const navigate = useNavigate();
   const formMethods = useForm<CreateBadgeFormType>({
     resolver: yupResolver(schema) as Resolver<CreateBadgeFormType>,
     defaultValues: {
@@ -51,7 +53,17 @@ export default function CreateBadgePage() {
         <FormProvider {...formMethods}>
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(300px,520px)_minmax(420px,1fr)] gap-24 items-center">
             <div className="">
-              <CreateBadgeForm />
+              <CreateBadgeForm
+                onCreated={(createdBadge) =>
+                  navigate(
+                    createRoute({
+                      type: "admin-badges",
+                      page: "details",
+                      idOrSlug: createdBadge.slug,
+                    })
+                  )
+                }
+              />
             </div>
             <div>
               <PreviewBadgeCard />
