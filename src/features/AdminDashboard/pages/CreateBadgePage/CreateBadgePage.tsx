@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, Resolver, useForm } from "react-hook-form";
 import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
+import DefaultBadgeImage from "./default-badge-image.svg";
 
 import { CreateOrUpdateBadgeInput } from "src/graphql";
 import * as yup from "yup";
@@ -32,7 +33,7 @@ export default function CreateBadgePage() {
       title: "",
       slug: "",
       description: "",
-      image: "",
+      image: DefaultBadgeImage,
       color: "#8B5CF6",
       winningDescriptionTemplate: "",
       badgeDefinitionNostrEventId: null,

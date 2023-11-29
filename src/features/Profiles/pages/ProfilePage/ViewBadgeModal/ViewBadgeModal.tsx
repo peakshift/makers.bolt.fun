@@ -107,7 +107,7 @@ export const ViewBadgeCard = ({
           backgroundColor: color,
         }}
       ></div>
-      <div className="p-24">
+      <div className="p-24 py-36">
         <IconButton
           className="absolute text-body2 top-24 right-24"
           style={{ color: color }}

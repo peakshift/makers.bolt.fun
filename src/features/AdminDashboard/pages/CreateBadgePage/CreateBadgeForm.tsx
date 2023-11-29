@@ -1,5 +1,6 @@
-import { SubmitHandler, useFormContext } from "react-hook-form";
+import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
+import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 import { useCreateOrUpdateBadgeMutation } from "src/graphql";
 import { NotificationsService } from "src/services";
 import { extractErrorMessage } from "src/utils/helperFunctions";
@@ -15,6 +16,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
     register,
     formState: { errors },
     handleSubmit,
+    control,
   } = useFormContext<CreateBadgeFormType>();
 
   const [mutate, { loading }] = useCreateOrUpdateBadgeMutation();
@@ -43,7 +45,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-16">
       <div>
-        <label htmlFor="title-input" className="text-body5 mt-16">
+        <label htmlFor="title-input" className="text-body5">
           Title<sup className="text-red-500">*</sup>
         </label>
         <div className="input-wrapper mt-8 relative">
@@ -59,7 +61,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
         {errors.title && <p className="input-error">{errors.title.message}</p>}
       </div>
       <div>
-        <label htmlFor="description-input" className="text-body5 mt-16">
+        <label htmlFor="description-input" className="text-body5">
           Description<sup className="text-red-500">*</sup>
         </label>
         <div className="input-wrapper mt-8 relative">
@@ -77,7 +79,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
       </div>
 
       <div>
-        <label htmlFor="slug-input" className="text-body5 mt-16">
+        <label htmlFor="slug-input" className="text-body5">
           Slug<sup className="text-red-500">*</sup>
         </label>
         <div className="input-wrapper mt-8 relative">
@@ -93,23 +95,28 @@ export default function CreateBadgeForm({ badgeId }: Props) {
       </div>
 
       <div>
-        <label htmlFor="image-input" className="text-body5 mt-16">
-          Image URL<sup className="text-red-500">*</sup>
+        <label htmlFor="image-input" className="text-body5">
+          Image<sup className="text-red-500">*</sup>
         </label>
-        <div className="input-wrapper mt-8 relative">
-          <input
-            id="image-input"
-            type="text"
-            className="input-text"
-            placeholder="e.g. https://imgur.com/XXXXXX.png"
-            {...register("image")}
+
+        <div className="mt-16">
+          <Controller
+            control={control}
+            name="image"
+            render={({ field: { onChange, value } }) => (
+              <AvatarInput
+                value={{ url: value }}
+                onChange={(data) => onChange(data?.url)}
+                width={120}
+              />
+            )}
           />
         </div>
         {errors.image && <p className="input-error">{errors.image.message}</p>}
       </div>
 
       <div>
-        <label htmlFor="color-input" className="text-body5 mt-16">
+        <label htmlFor="color-input" className="text-body5">
           Color
         </label>
         <div className="mt-8 relative">
@@ -123,7 +130,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
         {errors.color && <p className="input-error">{errors.color.message}</p>}
       </div>
       <div>
-        <label htmlFor="winning-template-input" className="text-body5 mt-16">
+        <label htmlFor="winning-template-input" className="text-body5">
           Winning Description Template
         </label>
         <div className="input-wrapper mt-8 relative">
@@ -143,7 +150,7 @@ export default function CreateBadgeForm({ badgeId }: Props) {
       </div>
       <BadgeTypeInput />
       <div>
-        <label htmlFor="image-input" className="text-body5 mt-16">
+        <label htmlFor="image-input" className="text-body5">
           Badge Definition Event Id on Nostr
         </label>
         <div className="input-wrapper mt-8 relative">

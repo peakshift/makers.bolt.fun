@@ -23,7 +23,7 @@ export default function BadgeDetailsPage() {
   return (
     <div className="page-container">
       <div className="flex flex-col gap-24">
-        <div className="max-w-[440px] mx-auto">
+        <div className="max-w-[420px] rounded-xl overflow-hidden mx-auto w-full">
           {" "}
           <ViewBadgeCard
             badge={badgeDetailsQuery.data?.getBadgeById!}
