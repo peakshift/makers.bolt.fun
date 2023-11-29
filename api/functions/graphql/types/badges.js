@@ -8,6 +8,7 @@ const {
 } = require("nexus");
 const { isAdmin } = require("../../../auth/utils/helperFuncs");
 const { prisma } = require("../../../prisma");
+const { toSlug } = require("../../../utils/helpers");
 
 const Badge = objectType({
   name: "Badge",
@@ -160,6 +161,9 @@ const createOrUpdateBadge = extendType({
       type: Badge,
       args: { input: CreateOrUpdateBadgeInput },
       async resolve(_root, args, ctx) {
+        const user = ctx.user;
+        if (!isAdmin(user?.id)) throw new ApolloError("Not Authorized");
+
         let {
           id,
           title,
@@ -174,12 +178,7 @@ const createOrUpdateBadge = extendType({
           isAdminIssuedOnly,
         } = args.input;
 
-        const user = ctx.user;
-
-        // Do some validation
-        if (!user?.id) throw new ApolloError("Not Authenticated");
-
-        if (!isAdmin(user.id)) throw new ApolloError("Not Authorized");
+        slug = toSlug(slug);
 
         if (isAdminIssuedOnly) {
           incrementOnActionId = null;
@@ -189,10 +188,23 @@ const createOrUpdateBadge = extendType({
             throw new ApolloError(
               "incrementOnActionId and incrementsNeeded are required"
             );
+
+          if (incrementsNeeded < 1)
+            throw new ApolloError("incrementsNeeded must be greater than 0");
         }
 
         if (!id) {
-          // Create
+          // Create New Badge
+
+          const slugExists = await prisma.badge.findUnique({
+            where: {
+              slug,
+            },
+          });
+
+          if (slugExists)
+            throw new ApolloError("A badge with this slug already exists");
+
           return await prisma.badge.create({
             data: {
               title,

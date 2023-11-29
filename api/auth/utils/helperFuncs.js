@@ -103,6 +103,7 @@ function verifyInternalAuthHeader(authHeader) {
 }
 
 function isAdmin(userId) {
+  if (!userId) return false;
   return adminUsersIds.includes(userId);
 }
 
