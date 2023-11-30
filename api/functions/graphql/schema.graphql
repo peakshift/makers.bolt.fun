@@ -119,6 +119,7 @@ input CreateProjectInput {
   tournaments: [Int!]!
   twitter: String
   website: String!
+  youtube: String
 }
 
 type CreateProjectResponse {
@@ -255,7 +256,7 @@ type Mutation {
   donate(amount_in_sat: Int!): Donation!
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
-  setUserNostrKeyAsPrimary(key: String!): User
+  setUserNostrKeyAsPrimary(key: String): User
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
@@ -279,6 +280,7 @@ input NostrEventInput {
 
 type NostrKey {
   createdAt: Date!
+  is_default_generated_key: Boolean!
   is_primary: Boolean!
   key: String!
   label: String!
@@ -377,6 +379,7 @@ type Project {
   twitter: String
   votes_count: Int!
   website: String!
+  youtube: String
 }
 
 type ProjectInTournament {
@@ -777,6 +780,7 @@ input UpdateProjectInput {
   tournaments: [Int!]!
   twitter: String
   website: String!
+  youtube: String
 }
 
 input UpdateTournamentInput {

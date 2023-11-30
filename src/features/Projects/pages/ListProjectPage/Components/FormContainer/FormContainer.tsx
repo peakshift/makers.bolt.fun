@@ -127,6 +127,7 @@ const schema: yup.SchemaOf<IListProjectForm> = yup
     github: yup.string().url().nullable(),
     figma: yup.string().url().nullable(),
     replit: yup.string().url().nullable(),
+    youtube: yup.string().url().nullable(),
     slack: yup.string().url().nullable(),
     npub: yup
       .string()

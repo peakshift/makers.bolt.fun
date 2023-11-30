@@ -6,7 +6,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NotificationsService } from "src/services";
 import { GiOstrich } from "react-icons/gi";
 import { Tooltip } from "react-tooltip";
-import { SiReplit } from "react-icons/si";
+import { SiReplit, SiYoutube } from "react-icons/si";
 
 interface Props {
   links: Pick<
@@ -19,6 +19,7 @@ interface Props {
     | "telegram"
     | "figma"
     | "replit"
+    | "youtube"
     | "npub"
   >;
 }
@@ -47,6 +48,14 @@ export default function LinksCard({ links }: Props) {
       colors: "bg-gray-200 text-gray-800",
       url: links.github,
       label: "Github",
+    },
+    {
+      value: links.youtube,
+      text: links.youtube,
+      icon: SiYoutube,
+      colors: "bg-red-100 text-red-600",
+      url: links.youtube,
+      label: "Youtube",
     },
     {
       value: links.replit,

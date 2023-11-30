@@ -15,6 +15,7 @@ query ProjectDetailsModal($projectId: Int, $projectTag: String) {
     telegram
     figma
     replit
+    youtube
     npub
     screenshots
     website

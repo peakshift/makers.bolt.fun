@@ -17,6 +17,7 @@ import { extractErrorMessage } from "src/utils/helperFunctions";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Link } from "react-router-dom";
 import { PAGES_ROUTES } from "src/utils/routing";
+import { useLinkNostrExtensionKeyToProfile } from "src/features/Profiles/pages/EditProfilePage/NostrSettingsTab/ConnectNostrIdToProfileModal/useLinkNostrKeyToProfile";
 
 export type NostrAccountConnection =
   | {
@@ -48,8 +49,13 @@ export default function ConnectNostrAccountModal({
     skip: !isLoggedIn,
   });
 
+  const { link: linkNostrExtensionKeyToProfile } =
+    useLinkNostrExtensionKeyToProfile();
+
   const dispatch = useAppDispatch();
   const [prvkeyInput, setPrvkeyInput] = useState("");
+
+  const [linkKeyToMyProfile, setLinkKeyToMyProfile] = useState(true);
 
   const [activeTab, setActiveTab] =
     useState<"extension" | "generated" | "inputted">("generated");
@@ -57,9 +63,11 @@ export default function ConnectNostrAccountModal({
   const connect = async () => {
     let connectionObject: NostrAccountConnection;
     try {
-      if (activeTab === "extension")
-        connectionObject = await connectToNostrExtension();
-      else if (activeTab === "generated")
+      if (activeTab === "extension") {
+        connectionObject = await connectNostrExtensionToCommentingWidget();
+
+        if (linkKeyToMyProfile) await linkNostrExtensionKeyToProfile();
+      } else if (activeTab === "generated")
         connectionObject = await connectGeneratedKeys();
       else if (activeTab === "inputted")
         connectionObject = await connectInputtedKey();
@@ -314,6 +322,18 @@ export default function ConnectNostrAccountModal({
               *If you are using Alby, make sure to generate a nostr private key
               first in the extension's settings page.
             </p>
+            <div className="flex items-center gap-8">
+              <input
+                id="terms"
+                type="checkbox"
+                checked={linkKeyToMyProfile}
+                onChange={(e) => setLinkKeyToMyProfile(e.target.checked)}
+                className="input-checkbox self-center"
+              />
+              <label htmlFor="terms" className="text-body4 text-gray-600">
+                Link key to my profile.
+              </label>
+            </div>
 
             <Button
               fullWidth
@@ -383,24 +403,6 @@ export default function ConnectNostrAccountModal({
     </motion.div>
   );
 
-  async function connectToNostrExtension() {
-    if (window.nostr) {
-      try {
-        const pubkey = await window.nostr.getPublicKey();
-        return {
-          type: "nostr-ext",
-          pubkey,
-        } as NostrAccountConnection;
-      } catch (err) {
-        throw new Error("Permission to get public key rejected");
-      }
-    } else {
-      throw new Error(
-        "Couldn't find a nostr supporting extension in your browser"
-      );
-    }
-  }
-
   function connectInputtedKey() {
     if (!isValidPrivateKey(prvkeyInput))
       throw new Error("You need to provide a valid private key");
@@ -427,6 +429,24 @@ export default function ConnectNostrAccountModal({
       type: "generated-keys",
       pubkey,
     } as NostrAccountConnection;
+  }
+}
+
+export async function connectNostrExtensionToCommentingWidget() {
+  if (window.nostr) {
+    try {
+      const pubkey = await window.nostr.getPublicKey();
+      return {
+        type: "nostr-ext",
+        pubkey,
+      } as NostrAccountConnection;
+    } catch (err) {
+      throw new Error("Permission to get public key rejected");
+    }
+  } else {
+    throw new Error(
+      "Couldn't find a nostr supporting extension in your browser"
+    );
   }
 }
 

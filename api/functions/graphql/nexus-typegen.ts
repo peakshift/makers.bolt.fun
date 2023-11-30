@@ -58,6 +58,7 @@ export interface NexusGenInputs {
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
+    youtube?: string | null; // String
   }
   CreateTournamentFAQInput: { // input type
     answer: string; // String!
@@ -228,6 +229,7 @@ export interface NexusGenInputs {
     tournaments: number[]; // [Int!]!
     twitter?: string | null; // String
     website: string; // String!
+    youtube?: string | null; // String
   }
   UpdateTournamentInput: { // input type
     config?: NexusGenInputs['TournamentConfigInput'] | null; // TournamentConfigInput
@@ -375,6 +377,7 @@ export interface NexusGenObjects {
   Mutation: {};
   NostrKey: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
+    is_default_generated_key: boolean; // Boolean!
     is_primary: boolean; // Boolean!
     key: string; // String!
     label: string; // String!
@@ -416,6 +419,7 @@ export interface NexusGenObjects {
     twitter?: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+    youtube?: string | null; // String
   }
   ProjectInTournament: { // root type
     project: NexusGenRootTypes['Project']; // Project!
@@ -764,6 +768,7 @@ export interface NexusGenFieldTypes {
   }
   NostrKey: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
+    is_default_generated_key: boolean; // Boolean!
     is_primary: boolean; // Boolean!
     key: string; // String!
     label: string; // String!
@@ -818,6 +823,7 @@ export interface NexusGenFieldTypes {
     twitter: string | null; // String
     votes_count: number; // Int!
     website: string; // String!
+    youtube: string | null; // String
   }
   ProjectInTournament: { // field return type
     project: NexusGenRootTypes['Project']; // Project!
@@ -1275,6 +1281,7 @@ export interface NexusGenFieldTypeNames {
   }
   NostrKey: { // field return type name
     createdAt: 'Date'
+    is_default_generated_key: 'Boolean'
     is_primary: 'Boolean'
     key: 'String'
     label: 'String'
@@ -1329,6 +1336,7 @@ export interface NexusGenFieldTypeNames {
     twitter: 'String'
     votes_count: 'Int'
     website: 'String'
+    youtube: 'String'
   }
   ProjectInTournament: { // field return type name
     project: 'Project'
@@ -1692,7 +1700,7 @@ export interface NexusGenArgTypes {
       tournament_id: number; // Int!
     }
     setUserNostrKeyAsPrimary: { // args
-      key: string; // String!
+      key?: string | null; // String
     }
     unlinkNostrKey: { // args
       key: string; // String!
