@@ -8,6 +8,7 @@ const {
 } = require("nexus");
 const { isAdmin } = require("../../../auth/utils/helperFuncs");
 const { prisma } = require("../../../prisma");
+const cacheService = require("../../../services/cache.service");
 const { toSlug } = require("../../../utils/helpers");
 
 const Badge = objectType({
@@ -212,6 +213,8 @@ const createOrUpdateBadge = extendType({
             throw new ApolloError("incrementsNeeded must be greater than 0");
         }
 
+        let newBadgeData = null;
+
         if (!id) {
           // Create New Badge
 
@@ -224,7 +227,7 @@ const createOrUpdateBadge = extendType({
           if (slugExists)
             throw new ApolloError("A badge with this slug already exists");
 
-          return await prisma.badge.create({
+          newBadgeData = await prisma.badge.create({
             data: {
               title,
               slug,
@@ -240,7 +243,7 @@ const createOrUpdateBadge = extendType({
           });
         } else {
           // Update
-          return await prisma.badge.update({
+          newBadgeData = await prisma.badge.update({
             where: {
               id,
             },
@@ -264,6 +267,10 @@ const createOrUpdateBadge = extendType({
             },
           });
         }
+
+        await cacheService.invalidateBadgeById(newBadgeData.id);
+
+        return newBadgeData;
       },
     });
   },
@@ -338,6 +345,8 @@ const createMakerBadge = extendType({
             })),
           }),
         ]);
+
+        await cacheService.invalidateBadgeById(badge_id);
 
         return prisma.badge.findUnique({
           where: {
