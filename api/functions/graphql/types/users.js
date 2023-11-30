@@ -448,7 +448,10 @@ const searchUsers = extendType({
       args: {
         value: nonNull(stringArg()),
       },
-      async resolve(_, { value }) {
+      async resolve(_, { value }, context, info) {
+        const select = new PrismaSelect(info, {
+          defaultFields: defaultPrismaSelectFields,
+        }).valueWithFilter("User");
         return prisma.user.findMany({
           where: {
             name: {
@@ -456,6 +459,7 @@ const searchUsers = extendType({
               mode: "insensitive",
             },
           },
+          ...select,
         });
       },
     });

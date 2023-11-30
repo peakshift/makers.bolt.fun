@@ -117,104 +117,108 @@ export default function IssueBadgeToMakerModal({
 
         <div className="flex flex-col gap-16">
           <p className="text-body1 font-bold">Metadata</p>
-
-          <ul className="flex flex-col gap-8">
-            {metadataEntries.map((entry) => (
-              <li key={entry.id} className="flex items-end gap-8">
-                <div className="grid grid-cols-[60px_1fr_1fr] gap-8">
-                  <div className="min-w-0">
-                    <label htmlFor="emoji-input" className="text-body5">
-                      Emoji<sup className="text-red-500">*</sup>
-                    </label>
-                    <div className="input-wrapper mt-8 relative">
-                      <input
-                        id="emoji-input"
-                        autoFocus
-                        type="text"
-                        className="input-text !py-4 !px-8 !rounded-sm"
-                        placeholder=""
-                        required
-                        value={
-                          metadataEntries.find((e) => e.id === entry.id)?.emoji
-                        }
-                        onChange={(event) =>
-                          setMetadataEntries((curr) =>
-                            curr.map((e) =>
-                              e.id === entry.id
-                                ? { ...e, emoji: event.target.value }
-                                : e
+          {metadataEntries.length > 0 && (
+            <ul className="flex flex-col gap-8">
+              {metadataEntries.map((entry) => (
+                <li key={entry.id} className="flex items-end gap-8">
+                  <div className="grid grid-cols-[60px_1fr_1fr] gap-8">
+                    <div className="min-w-0">
+                      <label htmlFor="emoji-input" className="text-body5">
+                        Emoji<sup className="text-red-500">*</sup>
+                      </label>
+                      <div className="input-wrapper mt-8 relative">
+                        <input
+                          id="emoji-input"
+                          autoFocus
+                          type="text"
+                          className="input-text !py-4 !px-8 !rounded-sm"
+                          placeholder=""
+                          required
+                          value={
+                            metadataEntries.find((e) => e.id === entry.id)
+                              ?.emoji
+                          }
+                          onChange={(event) =>
+                            setMetadataEntries((curr) =>
+                              curr.map((e) =>
+                                e.id === entry.id
+                                  ? { ...e, emoji: event.target.value }
+                                  : e
+                              )
                             )
-                          )
-                        }
-                      />
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="min-w-0">
+                      <label htmlFor="label-input" className="text-body5">
+                        Label
+                      </label>
+                      <div className="input-wrapper mt-8 relative">
+                        <input
+                          id="label-input"
+                          type="text"
+                          className="input-text !py-4 !px-8 !rounded-sm"
+                          placeholder="Project"
+                          value={
+                            metadataEntries.find((e) => e.id === entry.id)
+                              ?.label
+                          }
+                          onChange={(event) =>
+                            setMetadataEntries((curr) =>
+                              curr.map((e) =>
+                                e.id === entry.id
+                                  ? { ...e, label: event.target.value }
+                                  : e
+                              )
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="min-w-0">
+                      <label htmlFor="value-input" className="text-body5">
+                        Value<sup className="text-red-500">*</sup>
+                      </label>
+                      <div className="input-wrapper mt-8 relative">
+                        <input
+                          id="value-input"
+                          type="text"
+                          className="input-text !py-4 !px-8 !rounded-sm"
+                          placeholder="BOLT🔩FUN"
+                          required
+                          value={
+                            metadataEntries.find((e) => e.id === entry.id)
+                              ?.value
+                          }
+                          onChange={(event) =>
+                            setMetadataEntries((curr) =>
+                              curr.map((e) =>
+                                e.id === entry.id
+                                  ? { ...e, value: event.target.value }
+                                  : e
+                              )
+                            )
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="min-w-0">
-                    <label htmlFor="label-input" className="text-body5">
-                      Label
-                    </label>
-                    <div className="input-wrapper mt-8 relative">
-                      <input
-                        id="label-input"
-                        type="text"
-                        className="input-text !py-4 !px-8 !rounded-sm"
-                        placeholder="Project"
-                        value={
-                          metadataEntries.find((e) => e.id === entry.id)?.label
-                        }
-                        onChange={(event) =>
-                          setMetadataEntries((curr) =>
-                            curr.map((e) =>
-                              e.id === entry.id
-                                ? { ...e, label: event.target.value }
-                                : e
-                            )
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="min-w-0">
-                    <label htmlFor="value-input" className="text-body5">
-                      Value<sup className="text-red-500">*</sup>
-                    </label>
-                    <div className="input-wrapper mt-8 relative">
-                      <input
-                        id="value-input"
-                        type="text"
-                        className="input-text !py-4 !px-8 !rounded-sm"
-                        placeholder="BOLT🔩FUN"
-                        required
-                        value={
-                          metadataEntries.find((e) => e.id === entry.id)?.value
-                        }
-                        onChange={(event) =>
-                          setMetadataEntries((curr) =>
-                            curr.map((e) =>
-                              e.id === entry.id
-                                ? { ...e, value: event.target.value }
-                                : e
-                            )
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-                <IconButton
-                  className="text-gray-500 ml-auto"
-                  aria-label="Remove maker"
-                  onClick={() =>
-                    setMetadataEntries((curr) =>
-                      curr.filter((e) => e.id !== entry.id)
-                    )
-                  }
-                >
-                  <IoClose />
-                </IconButton>
-              </li>
-            ))}
-          </ul>
+                  <IconButton
+                    className="text-gray-500 ml-auto"
+                    aria-label="Remove maker"
+                    onClick={() =>
+                      setMetadataEntries((curr) =>
+                        curr.filter((e) => e.id !== entry.id)
+                      )
+                    }
+                  >
+                    <IoClose />
+                  </IconButton>
+                </li>
+              ))}
+            </ul>
+          )}
 
           <Button
             size="sm"
@@ -231,8 +235,14 @@ export default function IssueBadgeToMakerModal({
           </Button>
         </div>
 
-        <Button color="primary" fullWidth isLoading={loading} type="submit">
-          Submit
+        <Button
+          color="primary"
+          disabled={makers.length === 0}
+          fullWidth
+          isLoading={loading}
+          type="submit"
+        >
+          Issue Badge
         </Button>
       </form>
     </motion.div>
