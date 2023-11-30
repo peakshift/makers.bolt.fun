@@ -31,6 +31,7 @@ type AwardedBadgeMetadata {
 }
 
 type Badge {
+  awardedTo: [User!]!
   badgeDefinitionNostrEventId: String
   color: String
   description: String!
@@ -42,6 +43,12 @@ type Badge {
   slug: String!
   title: String!
   winningDescriptionTemplate: String
+}
+
+input BadgeMetadataInput {
+  emoji: String
+  label: String
+  value: String
 }
 
 type BadgeProgress {
@@ -123,6 +130,12 @@ type Category {
   project: [Project!]!
   title: String!
   votes_sum: Int!
+}
+
+input CreateMakerBadgeInput {
+  badge_id: Int!
+  metaData: [BadgeMetadataInput!]!
+  user_ids: [Int!]!
 }
 
 input CreateOrUpdateBadgeInput {
@@ -293,6 +306,7 @@ type Mutation {
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  createMakerBadge(input: CreateMakerBadgeInput): Badge
   createOrUpdateBadge(input: CreateOrUpdateBadgeInput): Badge
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story

@@ -17,3 +17,22 @@ query GetUserActionTypes {
     name
   }
 }
+
+query GetBadgeToEditDetails($idOrSlug: String!) {
+  getBadgeById(idOrSlug: $idOrSlug) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+    isAdminIssuedOnly
+    incrementsNeeded
+    incrementOnAction {
+      id
+      name
+    }
+  }
+}

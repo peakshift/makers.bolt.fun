@@ -14,5 +14,11 @@ query GetBadgeDetails($idOrSlug: String!) {
       id
       name
     }
+    awardedTo {
+      id
+      name
+      jobTitle
+      avatar
+    }
   }
 }

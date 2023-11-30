@@ -1,0 +1,11 @@
+mutation IssueMakerBadge($input: CreateMakerBadgeInput) {
+  createMakerBadge(input: $input) {
+    id
+    awardedTo {
+      id
+      name
+      jobTitle
+      avatar
+    }
+  }
+}

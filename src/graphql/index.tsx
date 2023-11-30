@@ -50,6 +50,7 @@ export type AwardedBadgeMetadata = {
 
 export type Badge = {
   __typename?: 'Badge';
+  awardedTo: Array<User>;
   badgeDefinitionNostrEventId: Maybe<Scalars['String']>;
   color: Maybe<Scalars['String']>;
   description: Scalars['String'];
@@ -61,6 +62,12 @@ export type Badge = {
   slug: Scalars['String'];
   title: Scalars['String'];
   winningDescriptionTemplate: Maybe<Scalars['String']>;
+};
+
+export type BadgeMetadataInput = {
+  emoji?: InputMaybe<Scalars['String']>;
+  label?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
 };
 
 export type BadgeProgress = {
@@ -152,6 +159,12 @@ export type Category = {
   project: Array<Project>;
   title: Scalars['String'];
   votes_sum: Scalars['Int'];
+};
+
+export type CreateMakerBadgeInput = {
+  badge_id: Scalars['Int'];
+  metaData: Array<BadgeMetadataInput>;
+  user_ids: Array<Scalars['Int']>;
 };
 
 export type CreateOrUpdateBadgeInput = {
@@ -327,6 +340,7 @@ export type Mutation = {
   addProjectToTournament: Maybe<ParticipationInfo>;
   confirmDonation: Donation;
   confirmVote: Vote;
+  createMakerBadge: Maybe<Badge>;
   createOrUpdateBadge: Maybe<Badge>;
   createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
@@ -363,6 +377,11 @@ export type MutationConfirmDonationArgs = {
 export type MutationConfirmVoteArgs = {
   payment_request: Scalars['String'];
   preimage: Scalars['String'];
+};
+
+
+export type MutationCreateMakerBadgeArgs = {
+  input: InputMaybe<CreateMakerBadgeInput>;
 };
 
 
@@ -1353,12 +1372,19 @@ export type SearchProjectsQueryVariables = Exact<{
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string | null, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
 
+export type IssueMakerBadgeMutationVariables = Exact<{
+  input: InputMaybe<CreateMakerBadgeInput>;
+}>;
+
+
+export type IssueMakerBadgeMutation = { __typename?: 'Mutation', createMakerBadge: { __typename?: 'Badge', id: number, awardedTo: Array<{ __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string }> } | null };
+
 export type GetBadgeDetailsQueryVariables = Exact<{
   idOrSlug: Scalars['String'];
 }>;
 
 
-export type GetBadgeDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null } };
+export type GetBadgeDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null, awardedTo: Array<{ __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string }> } };
 
 export type CreateOrUpdateBadgeMutationVariables = Exact<{
   input: InputMaybe<CreateOrUpdateBadgeInput>;
@@ -1371,6 +1397,13 @@ export type GetUserActionTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetUserActionTypesQuery = { __typename?: 'Query', getAllUserActionTypes: Array<{ __typename?: 'UserActionType', id: number, name: string }> };
+
+export type GetBadgeToEditDetailsQueryVariables = Exact<{
+  idOrSlug: Scalars['String'];
+}>;
+
+
+export type GetBadgeToEditDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null } };
 
 export type ManageBadgesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2039,6 +2072,45 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const IssueMakerBadgeDocument = gql`
+    mutation IssueMakerBadge($input: CreateMakerBadgeInput) {
+  createMakerBadge(input: $input) {
+    id
+    awardedTo {
+      id
+      name
+      jobTitle
+      avatar
+    }
+  }
+}
+    `;
+export type IssueMakerBadgeMutationFn = Apollo.MutationFunction<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>;
+
+/**
+ * __useIssueMakerBadgeMutation__
+ *
+ * To run a mutation, you first call `useIssueMakerBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIssueMakerBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [issueMakerBadgeMutation, { data, loading, error }] = useIssueMakerBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useIssueMakerBadgeMutation(baseOptions?: Apollo.MutationHookOptions<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>(IssueMakerBadgeDocument, options);
+      }
+export type IssueMakerBadgeMutationHookResult = ReturnType<typeof useIssueMakerBadgeMutation>;
+export type IssueMakerBadgeMutationResult = Apollo.MutationResult<IssueMakerBadgeMutation>;
+export type IssueMakerBadgeMutationOptions = Apollo.BaseMutationOptions<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>;
 export const GetBadgeDetailsDocument = gql`
     query GetBadgeDetails($idOrSlug: String!) {
   getBadgeById(idOrSlug: $idOrSlug) {
@@ -2055,6 +2127,12 @@ export const GetBadgeDetailsDocument = gql`
     incrementOnAction {
       id
       name
+    }
+    awardedTo {
+      id
+      name
+      jobTitle
+      avatar
     }
   }
 }
@@ -2162,6 +2240,54 @@ export function useGetUserActionTypesLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetUserActionTypesQueryHookResult = ReturnType<typeof useGetUserActionTypesQuery>;
 export type GetUserActionTypesLazyQueryHookResult = ReturnType<typeof useGetUserActionTypesLazyQuery>;
 export type GetUserActionTypesQueryResult = Apollo.QueryResult<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>;
+export const GetBadgeToEditDetailsDocument = gql`
+    query GetBadgeToEditDetails($idOrSlug: String!) {
+  getBadgeById(idOrSlug: $idOrSlug) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+    isAdminIssuedOnly
+    incrementsNeeded
+    incrementOnAction {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBadgeToEditDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetBadgeToEditDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBadgeToEditDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBadgeToEditDetailsQuery({
+ *   variables: {
+ *      idOrSlug: // value for 'idOrSlug'
+ *   },
+ * });
+ */
+export function useGetBadgeToEditDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>(GetBadgeToEditDetailsDocument, options);
+      }
+export function useGetBadgeToEditDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>(GetBadgeToEditDetailsDocument, options);
+        }
+export type GetBadgeToEditDetailsQueryHookResult = ReturnType<typeof useGetBadgeToEditDetailsQuery>;
+export type GetBadgeToEditDetailsLazyQueryHookResult = ReturnType<typeof useGetBadgeToEditDetailsLazyQuery>;
+export type GetBadgeToEditDetailsQueryResult = Apollo.QueryResult<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>;
 export const ManageBadgesDocument = gql`
     query ManageBadges {
   getAllBadges {

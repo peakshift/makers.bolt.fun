@@ -33,6 +33,16 @@ export interface NexusGenInputs {
     tournament_id: number; // Int!
     track_id: number; // Int!
   }
+  BadgeMetadataInput: { // input type
+    emoji?: string | null; // String
+    label?: string | null; // String
+    value?: string | null; // String
+  }
+  CreateMakerBadgeInput: { // input type
+    badge_id: number; // Int!
+    metaData: NexusGenInputs['BadgeMetadataInput'][]; // [BadgeMetadataInput!]!
+    user_ids: number[]; // [Int!]!
+  }
   CreateOrUpdateBadgeInput: { // input type
     badgeDefinitionNostrEventId?: string | null; // String
     color?: string | null; // String
@@ -703,6 +713,7 @@ export interface NexusGenFieldTypes {
     value: string | null; // String
   }
   Badge: { // field return type
+    awardedTo: NexusGenRootTypes['User'][]; // [User!]!
     badgeDefinitionNostrEventId: string | null; // String
     color: string | null; // String
     description: string; // String!
@@ -820,6 +831,7 @@ export interface NexusGenFieldTypes {
     addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
+    createMakerBadge: NexusGenRootTypes['Badge'] | null; // Badge
     createOrUpdateBadge: NexusGenRootTypes['Badge'] | null; // Badge
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
@@ -1259,6 +1271,7 @@ export interface NexusGenFieldTypeNames {
     value: 'String'
   }
   Badge: { // field return type name
+    awardedTo: 'User'
     badgeDefinitionNostrEventId: 'String'
     color: 'String'
     description: 'String'
@@ -1376,6 +1389,7 @@ export interface NexusGenFieldTypeNames {
     addProjectToTournament: 'ParticipationInfo'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
+    createMakerBadge: 'Badge'
     createOrUpdateBadge: 'Badge'
     createProject: 'CreateProjectResponse'
     createStory: 'Story'
@@ -1806,6 +1820,9 @@ export interface NexusGenArgTypes {
     confirmVote: { // args
       payment_request: string; // String!
       preimage: string; // String!
+    }
+    createMakerBadge: { // args
+      input?: NexusGenInputs['CreateMakerBadgeInput'] | null; // CreateMakerBadgeInput
     }
     createOrUpdateBadge: { // args
       input?: NexusGenInputs['CreateOrUpdateBadgeInput'] | null; // CreateOrUpdateBadgeInput

@@ -1,14 +1,14 @@
 import { createLoader } from "src/utils/routing/helpers";
 import {
-  GetBadgeDetailsDocument,
-  GetBadgeDetailsQuery,
-  GetBadgeDetailsQueryVariables,
+  GetBadgeToEditDetailsDocument,
+  GetBadgeToEditDetailsQuery,
+  GetBadgeToEditDetailsQueryVariables,
 } from "src/graphql";
 
-export type LoaderData = GetBadgeDetailsQuery;
+export type LoaderData = GetBadgeToEditDetailsQuery;
 
 export const updateBadgeDetailsLoader =
-  createLoader<GetBadgeDetailsQueryVariables>(({ params }) => ({
-    query: GetBadgeDetailsDocument,
+  createLoader<GetBadgeToEditDetailsQueryVariables>(({ params }) => ({
+    query: GetBadgeToEditDetailsDocument,
     variables: { idOrSlug: params.idOrSlug! },
   }));
