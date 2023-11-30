@@ -1,6 +1,7 @@
 import { Nullable } from "remirror";
 import CopyToClipboard from "src/Components/CopyToClipboard/CopyToClipboard";
 import Card from "src/Components/Card/Card";
+import { nip19 } from "nostr-tools";
 
 interface Props {
   nostr_pub_key: Nullable<string>;
@@ -41,7 +42,7 @@ export default function GeneratedKeysCard({
                 readOnly
               />
 
-              <CopyToClipboard text={nostr_prv_key} />
+              <CopyToClipboard text={nip19.nsecEncode(nostr_prv_key)} />
             </div>
           </div>
         )}
@@ -54,7 +55,9 @@ export default function GeneratedKeysCard({
               defaultValue={nostr_pub_key!}
               readOnly
             />
-            <CopyToClipboard text={nostr_pub_key ?? ""} />
+            <CopyToClipboard
+              text={nostr_pub_key ? nip19.npubEncode(nostr_pub_key) : ""}
+            />
           </div>
         </div>
       </div>
