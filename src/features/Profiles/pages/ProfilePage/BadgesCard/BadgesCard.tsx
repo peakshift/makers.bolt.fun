@@ -11,6 +11,7 @@ interface Props {
   username: string;
   isOwner?: boolean;
   badges: NonNullable<ProfileQuery["profile"]>["badges"];
+  nostrKeys?: NonNullable<ProfileQuery["profile"]>["nostr_keys"];
   onlyMd?: boolean;
 }
 
@@ -18,6 +19,7 @@ let firstTimeMount = true;
 
 export default function BadgesCard({
   badges,
+  nostrKeys,
   isOwner,
   username,
   onlyMd,
@@ -102,6 +104,7 @@ export default function BadgesCard({
                       userBadge={badge}
                       isOwner={!!isOwner}
                       username={username}
+                      nostrKeys={nostrKeys}
                     />
                   </li>
                 ))}

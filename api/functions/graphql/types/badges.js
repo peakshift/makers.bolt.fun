@@ -358,6 +358,169 @@ const createMakerBadge = extendType({
   },
 });
 
+const RequestNostrBadgeInput = inputObjectType({
+  name: "RequestNostrBadgeInput",
+  definition(t) {
+    t.nonNull.int("badgeId");
+    t.nonNull.string("publicKeyToAward");
+  },
+});
+
+const requestNostrBadge = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("requestNostrBadge", {
+      type: "Boolean",
+      args: {
+        input: RequestNostrBadgeInput,
+      },
+      resolve: async (_, { input }, ctx) => {
+        const userId = ctx.user?.id;
+
+        if (!userId) throw new ApolloError("Not Authorized");
+
+        const { badgeId, publicKeyToAward } = input;
+        const alreadyRequested = await prisma.nostrBadgeRequest.findFirst({
+          where: {
+            badgeId,
+            userId,
+          },
+        });
+
+        if (alreadyRequested)
+          throw new ApolloError(
+            "There's already a pending request for this badge"
+          );
+
+        try {
+          await prisma.nostrBadgeRequest.create({
+            data: {
+              badgeId,
+              userId,
+              publicKeyToAward,
+            },
+          });
+          return true;
+        } catch (error) {
+          console.error(error);
+          throw new ApolloError("Failed to request Nostr Badge");
+        }
+      },
+    });
+  },
+});
+
+const NostrBadgeRequest = objectType({
+  name: "NostrBadgeRequest",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.field("badge", {
+      type: Badge,
+    });
+    t.nonNull.field("user", {
+      type: "User",
+    });
+    t.nonNull.string("publicKeyToAward");
+    t.nonNull.date("createdAt");
+  },
+});
+
+const getPendingNostrBadgeRequests = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.list.nonNull.field("getPendingNostrBadgeRequests", {
+      type: NostrBadgeRequest,
+      args: {},
+      resolve: (_, __, ctx) => {
+        const isAdminUser = isAdmin(ctx.user?.id);
+
+        if (!isAdminUser) throw new ApolloError("Not Authorized");
+
+        return prisma.nostrBadgeRequest.findMany({
+          include: {
+            badge: true,
+            user: true,
+          },
+          where: {
+            isFullfilled: false,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        });
+      },
+    });
+  },
+});
+
+const AwardNostrBadgeInput = inputObjectType({
+  name: "AwardNostrBadgeInput",
+  definition(t) {
+    t.nonNull.int("nostrBadgeRequestId");
+    t.nonNull.string("awardEventId");
+  },
+});
+
+const awardNostrBadge = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("awardNostrBadge", {
+      type: "Boolean",
+      args: {
+        input: AwardNostrBadgeInput,
+      },
+      resolve: async (_, { input }, ctx) => {
+        const isAdminUser = isAdmin(ctx.user?.id);
+
+        if (!isAdminUser) throw new ApolloError("Not Authorized");
+
+        const { nostrBadgeRequestId, awardEventId } = input;
+
+        const nostrBadgeRequest = await prisma.nostrBadgeRequest.findUnique({
+          where: {
+            id: nostrBadgeRequestId,
+          },
+          include: {
+            badge: true,
+            user: true,
+          },
+        });
+
+        if (!nostrBadgeRequest)
+          throw new ApolloError("Nostr Badge Request not found");
+
+        try {
+          await prisma.nostrBadgeRequest.update({
+            where: {
+              id: nostrBadgeRequestId,
+            },
+            data: {
+              isFullfilled: true,
+            },
+          });
+
+          await prisma.userBadge.update({
+            where: {
+              userId_badgeId: {
+                badgeId: nostrBadgeRequest.badgeId,
+                userId: nostrBadgeRequest.userId,
+              },
+            },
+            data: {
+              badgeAwardNostrEventId: awardEventId,
+            },
+          });
+
+          return true;
+        } catch (error) {
+          console.error(error);
+          throw new ApolloError("Failed to award Nostr Badge");
+        }
+      },
+    });
+  },
+});
+
 module.exports = {
   // Types
   Badge,
@@ -368,7 +531,10 @@ module.exports = {
   getAllBadges,
   getBadgeById,
   getAllUserActionTypes,
+  getPendingNostrBadgeRequests,
   // Mutations
   createOrUpdateBadge,
   createMakerBadge,
+  requestNostrBadge,
+  awardNostrBadge,
 };

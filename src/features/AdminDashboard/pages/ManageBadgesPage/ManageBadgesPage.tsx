@@ -6,6 +6,7 @@ import BadgeCard from "src/features/Profiles/pages/ProfilePage/BadgesCard/BadgeC
 import { useManageBadgesQuery } from "src/graphql";
 import { useNavigateBack } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
+import PendingNostrBadgesRequestsList from "./PendingNostrBadgesRequests/PendingNostrBadgesRequestsList";
 
 export default function ManageBadgesPage() {
   const query = useManageBadgesQuery();
@@ -17,46 +18,57 @@ export default function ManageBadgesPage() {
     <>
       <OgTags title={"Manage Badges"} description={""} />
       <div className={`page-container`}>
-        <button
-          className={`
-           w-max p-8 rounded flex justify-center items-center gap-8 text-gray-500 hover:bg-gray-50 active:bg-gray-100
+        <section>
+          <div className="flex flex-wrap items-center gap-16 mb-24">
+            <button
+              className={`
+           w-48 aspect-square rounded self-center flex flex-col justify-center items-center gap-8 text-gray-900 bg-white hover:bg-gray-50 active:bg-gray-100 border-2 border-gray-200
             `}
-          onClick={navigateBack}
-        >
-          <FiArrowLeft /> Back
-        </button>
-        <div className="flex flex-wrap justify-between items-center gap-16 mb-24">
-          <h1 className="text-h1 font-bolder">Manage Badges 🎖️</h1>
-          <Button
-            href={createRoute({
-              type: "admin-badges",
-              page: "create",
-            })}
-            color="primary"
-            size="sm"
-          >
-            Create New Badge
-          </Button>
-        </div>
-        <ul className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-24">
-          {query.data?.getAllBadges.map((badge) => (
-            <li key={badge.id}>
-              <BadgeCard
-                badge={badge}
-                username={"John Doe"}
-                onClick={() => {
-                  navigate(
-                    createRoute({
-                      type: "admin-badges",
-                      page: "details",
-                      idOrSlug: badge.id,
-                    })
-                  );
-                }}
-              />
-            </li>
-          ))}
-        </ul>
+              onClick={navigateBack}
+            >
+              <FiArrowLeft />
+            </button>
+            <h1 className="text-h1 font-bolder">Manage Badges 🎖️</h1>
+            <Button
+              href={createRoute({
+                type: "admin-badges",
+                page: "create",
+              })}
+              color="primary"
+              size="sm"
+              className="ml-auto"
+            >
+              Create New Badge
+            </Button>
+          </div>
+          <ul className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-24">
+            {query.data?.getAllBadges.map((badge) => (
+              <li key={badge.id}>
+                <BadgeCard
+                  badge={badge}
+                  username={"John Doe"}
+                  onClick={() => {
+                    navigate(
+                      createRoute({
+                        type: "admin-badges",
+                        page: "details",
+                        idOrSlug: badge.id,
+                      })
+                    );
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section className="mt-48">
+          <h1 className="text-h1 font-bolder mb-24">
+            Pending Nostr Badge Requests
+          </h1>
+          <PendingNostrBadgesRequestsList
+            pendingRequests={query.data?.getPendingNostrBadgeRequests}
+          />
+        </section>
       </div>
     </>
   );

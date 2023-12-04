@@ -33,6 +33,10 @@ export interface NexusGenInputs {
     tournament_id: number; // Int!
     track_id: number; // Int!
   }
+  AwardNostrBadgeInput: { // input type
+    awardEventId: string; // String!
+    nostrBadgeRequestId: number; // Int!
+  }
   BadgeMetadataInput: { // input type
     emoji?: string | null; // String
     label?: string | null; // String
@@ -159,6 +163,10 @@ export interface NexusGenInputs {
   RegisterInTournamentInput: { // input type
     email: string; // String!
     hacking_status: NexusGenEnums['TournamentMakerHackingStatusEnum']; // TournamentMakerHackingStatusEnum!
+  }
+  RequestNostrBadgeInput: { // input type
+    badgeId: number; // Int!
+    publicKeyToAward: string; // String!
   }
   StoryInputType: { // input type
     body: string; // String!
@@ -423,6 +431,13 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   Mutation: {};
+  NostrBadgeRequest: { // root type
+    badge: NexusGenRootTypes['Badge']; // Badge!
+    createdAt: NexusGenScalars['Date']; // Date!
+    id: number; // Int!
+    publicKeyToAward: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   NostrKey: { // root type
     createdAt: NexusGenScalars['Date']; // Date!
     is_default_generated_key: boolean; // Boolean!
@@ -829,6 +844,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     addProjectToTournament: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
+    awardNostrBadge: boolean | null; // Boolean
     confirmDonation: NexusGenRootTypes['Donation']; // Donation!
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createMakerBadge: NexusGenRootTypes['Badge'] | null; // Badge
@@ -841,6 +857,7 @@ export interface NexusGenFieldTypes {
     donate: NexusGenRootTypes['Donation']; // Donation!
     linkNostrKey: NexusGenRootTypes['User'] | null; // User
     registerInTournament: NexusGenRootTypes['User'] | null; // User
+    requestNostrBadge: boolean | null; // Boolean
     setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
     updateLastSeenNotificationTime: NexusGenRootTypes['User'] | null; // User
@@ -851,6 +868,13 @@ export interface NexusGenFieldTypes {
     updateTournamentRegistration: NexusGenRootTypes['ParticipationInfo'] | null; // ParticipationInfo
     updateUserPreferences: NexusGenRootTypes['User']; // User!
     vote: NexusGenRootTypes['Vote']; // Vote!
+  }
+  NostrBadgeRequest: { // field return type
+    badge: NexusGenRootTypes['Badge']; // Badge!
+    createdAt: NexusGenScalars['Date']; // Date!
+    id: number; // Int!
+    publicKeyToAward: string; // String!
+    user: NexusGenRootTypes['User']; // User!
   }
   NostrKey: { // field return type
     createdAt: NexusGenScalars['Date']; // Date!
@@ -941,6 +965,7 @@ export interface NexusGenFieldTypes {
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getMakersInTournament: NexusGenRootTypes['TournamentMakersResponse']; // TournamentMakersResponse!
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
+    getPendingNostrBadgeRequests: NexusGenRootTypes['NostrBadgeRequest'][]; // [NostrBadgeRequest!]!
     getPostById: NexusGenRootTypes['Post']; // Post!
     getProject: NexusGenRootTypes['Project']; // Project!
     getProjectsById: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -1387,6 +1412,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     addProjectToTournament: 'ParticipationInfo'
+    awardNostrBadge: 'Boolean'
     confirmDonation: 'Donation'
     confirmVote: 'Vote'
     createMakerBadge: 'Badge'
@@ -1399,6 +1425,7 @@ export interface NexusGenFieldTypeNames {
     donate: 'Donation'
     linkNostrKey: 'User'
     registerInTournament: 'User'
+    requestNostrBadge: 'Boolean'
     setUserNostrKeyAsPrimary: 'User'
     unlinkNostrKey: 'User'
     updateLastSeenNotificationTime: 'User'
@@ -1409,6 +1436,13 @@ export interface NexusGenFieldTypeNames {
     updateTournamentRegistration: 'ParticipationInfo'
     updateUserPreferences: 'User'
     vote: 'Vote'
+  }
+  NostrBadgeRequest: { // field return type name
+    badge: 'Badge'
+    createdAt: 'Date'
+    id: 'Int'
+    publicKeyToAward: 'String'
+    user: 'User'
   }
   NostrKey: { // field return type name
     createdAt: 'Date'
@@ -1499,6 +1533,7 @@ export interface NexusGenFieldTypeNames {
     getLnurlDetailsForProject: 'LnurlDetails'
     getMakersInTournament: 'TournamentMakersResponse'
     getMyDrafts: 'Post'
+    getPendingNostrBadgeRequests: 'NostrBadgeRequest'
     getPostById: 'Post'
     getProject: 'Project'
     getProjectsById: 'Project'
@@ -1813,6 +1848,9 @@ export interface NexusGenArgTypes {
     addProjectToTournament: { // args
       input?: NexusGenInputs['AddProjectToTournamentInput'] | null; // AddProjectToTournamentInput
     }
+    awardNostrBadge: { // args
+      input?: NexusGenInputs['AwardNostrBadgeInput'] | null; // AwardNostrBadgeInput
+    }
     confirmDonation: { // args
       payment_request: string; // String!
       preimage: string; // String!
@@ -1851,6 +1889,9 @@ export interface NexusGenArgTypes {
     registerInTournament: { // args
       data?: NexusGenInputs['RegisterInTournamentInput'] | null; // RegisterInTournamentInput
       tournament_id: number; // Int!
+    }
+    requestNostrBadge: { // args
+      input?: NexusGenInputs['RequestNostrBadgeInput'] | null; // RequestNostrBadgeInput
     }
     setUserNostrKeyAsPrimary: { // args
       key?: string | null; // String

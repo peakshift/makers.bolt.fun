@@ -41,6 +41,11 @@ export type Award = {
   url: Scalars['String'];
 };
 
+export type AwardNostrBadgeInput = {
+  awardEventId: Scalars['String'];
+  nostrBadgeRequestId: Scalars['Int'];
+};
+
 export type AwardedBadgeMetadata = {
   __typename?: 'AwardedBadgeMetadata';
   emoji: Maybe<Scalars['String']>;
@@ -338,6 +343,7 @@ export type MakerSkillInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addProjectToTournament: Maybe<ParticipationInfo>;
+  awardNostrBadge: Maybe<Scalars['Boolean']>;
   confirmDonation: Donation;
   confirmVote: Vote;
   createMakerBadge: Maybe<Badge>;
@@ -350,6 +356,7 @@ export type Mutation = {
   donate: Donation;
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
+  requestNostrBadge: Maybe<Scalars['Boolean']>;
   setUserNostrKeyAsPrimary: Maybe<User>;
   unlinkNostrKey: Maybe<User>;
   updateLastSeenNotificationTime: Maybe<User>;
@@ -365,6 +372,11 @@ export type Mutation = {
 
 export type MutationAddProjectToTournamentArgs = {
   input: InputMaybe<AddProjectToTournamentInput>;
+};
+
+
+export type MutationAwardNostrBadgeArgs = {
+  input: InputMaybe<AwardNostrBadgeInput>;
 };
 
 
@@ -431,6 +443,11 @@ export type MutationRegisterInTournamentArgs = {
 };
 
 
+export type MutationRequestNostrBadgeArgs = {
+  input: InputMaybe<RequestNostrBadgeInput>;
+};
+
+
 export type MutationSetUserNostrKeyAsPrimaryArgs = {
   key: InputMaybe<Scalars['String']>;
 };
@@ -482,6 +499,15 @@ export type MutationVoteArgs = {
   amount_in_sat: Scalars['Int'];
   item_id: Scalars['Int'];
   item_type: Vote_Item_Type;
+};
+
+export type NostrBadgeRequest = {
+  __typename?: 'NostrBadgeRequest';
+  badge: Badge;
+  createdAt: Scalars['Date'];
+  id: Scalars['Int'];
+  publicKeyToAward: Scalars['String'];
+  user: User;
 };
 
 export type NostrEventInput = {
@@ -657,6 +683,7 @@ export type Query = {
   getLnurlDetailsForProject: LnurlDetails;
   getMakersInTournament: TournamentMakersResponse;
   getMyDrafts: Array<Post>;
+  getPendingNostrBadgeRequests: Array<NostrBadgeRequest>;
   getPostById: Post;
   getProject: Project;
   getProjectsById: Array<Project>;
@@ -875,6 +902,11 @@ export type Question = PostBase & {
 export type RegisterInTournamentInput = {
   email: Scalars['String'];
   hacking_status: TournamentMakerHackingStatusEnum;
+};
+
+export type RequestNostrBadgeInput = {
+  badgeId: Scalars['Int'];
+  publicKeyToAward: Scalars['String'];
 };
 
 export enum RoleLevelEnum {
@@ -1405,10 +1437,17 @@ export type GetBadgeToEditDetailsQueryVariables = Exact<{
 
 export type GetBadgeToEditDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null } };
 
+export type AwardNostrBadgeMutationVariables = Exact<{
+  input: InputMaybe<AwardNostrBadgeInput>;
+}>;
+
+
+export type AwardNostrBadgeMutation = { __typename?: 'Mutation', awardNostrBadge: boolean | null };
+
 export type ManageBadgesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ManageBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }> };
+export type ManageBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }>, getPendingNostrBadgeRequests: Array<{ __typename?: 'NostrBadgeRequest', id: number, createdAt: any, publicKeyToAward: string, badge: { __typename?: 'Badge', id: number, image: string, title: string, badgeDefinitionNostrEventId: string | null }, user: { __typename?: 'User', id: number, name: string, avatar: string } }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1605,6 +1644,13 @@ export type UpdateUserRolesSkillsMutationVariables = Exact<{
 
 
 export type UpdateUserRolesSkillsMutation = { __typename?: 'Mutation', updateProfileRoles: { __typename?: 'User', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+
+export type RequestNostrBadgeMutationVariables = Exact<{
+  input: InputMaybe<RequestNostrBadgeInput>;
+}>;
+
+
+export type RequestNostrBadgeMutation = { __typename?: 'Mutation', requestNostrBadge: boolean | null };
 
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
@@ -2288,6 +2334,37 @@ export function useGetBadgeToEditDetailsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetBadgeToEditDetailsQueryHookResult = ReturnType<typeof useGetBadgeToEditDetailsQuery>;
 export type GetBadgeToEditDetailsLazyQueryHookResult = ReturnType<typeof useGetBadgeToEditDetailsLazyQuery>;
 export type GetBadgeToEditDetailsQueryResult = Apollo.QueryResult<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>;
+export const AwardNostrBadgeDocument = gql`
+    mutation AwardNostrBadge($input: AwardNostrBadgeInput) {
+  awardNostrBadge(input: $input)
+}
+    `;
+export type AwardNostrBadgeMutationFn = Apollo.MutationFunction<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>;
+
+/**
+ * __useAwardNostrBadgeMutation__
+ *
+ * To run a mutation, you first call `useAwardNostrBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAwardNostrBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [awardNostrBadgeMutation, { data, loading, error }] = useAwardNostrBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAwardNostrBadgeMutation(baseOptions?: Apollo.MutationHookOptions<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>(AwardNostrBadgeDocument, options);
+      }
+export type AwardNostrBadgeMutationHookResult = ReturnType<typeof useAwardNostrBadgeMutation>;
+export type AwardNostrBadgeMutationResult = Apollo.MutationResult<AwardNostrBadgeMutation>;
+export type AwardNostrBadgeMutationOptions = Apollo.BaseMutationOptions<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>;
 export const ManageBadgesDocument = gql`
     query ManageBadges {
   getAllBadges {
@@ -2299,6 +2376,22 @@ export const ManageBadgesDocument = gql`
     color
     winningDescriptionTemplate
     badgeDefinitionNostrEventId
+  }
+  getPendingNostrBadgeRequests {
+    id
+    createdAt
+    publicKeyToAward
+    badge {
+      id
+      image
+      title
+      badgeDefinitionNostrEventId
+    }
+    user {
+      id
+      name
+      avatar
+    }
   }
 }
     `;
@@ -3775,6 +3868,37 @@ export function useUpdateUserRolesSkillsMutation(baseOptions?: Apollo.MutationHo
 export type UpdateUserRolesSkillsMutationHookResult = ReturnType<typeof useUpdateUserRolesSkillsMutation>;
 export type UpdateUserRolesSkillsMutationResult = Apollo.MutationResult<UpdateUserRolesSkillsMutation>;
 export type UpdateUserRolesSkillsMutationOptions = Apollo.BaseMutationOptions<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>;
+export const RequestNostrBadgeDocument = gql`
+    mutation RequestNostrBadge($input: RequestNostrBadgeInput) {
+  requestNostrBadge(input: $input)
+}
+    `;
+export type RequestNostrBadgeMutationFn = Apollo.MutationFunction<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>;
+
+/**
+ * __useRequestNostrBadgeMutation__
+ *
+ * To run a mutation, you first call `useRequestNostrBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestNostrBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestNostrBadgeMutation, { data, loading, error }] = useRequestNostrBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRequestNostrBadgeMutation(baseOptions?: Apollo.MutationHookOptions<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>(RequestNostrBadgeDocument, options);
+      }
+export type RequestNostrBadgeMutationHookResult = ReturnType<typeof useRequestNostrBadgeMutation>;
+export type RequestNostrBadgeMutationResult = Apollo.MutationResult<RequestNostrBadgeMutation>;
+export type RequestNostrBadgeMutationOptions = Apollo.BaseMutationOptions<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>;
 export const ProfileDocument = gql`
     query profile($profileId: Int!) {
   profile(id: $profileId) {

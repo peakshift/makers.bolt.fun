@@ -1,4 +1,4 @@
-import { Badge, BadgeProgress, UserBadge } from "src/graphql";
+import { Badge, BadgeProgress, ProfileQuery, UserBadge } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
 import { useAppDispatch } from "src/utils/hooks";
 import { Override } from "src/utils/interfaces";
@@ -20,11 +20,13 @@ interface Props {
       >;
     }
   >;
+  nostrKeys?: NonNullable<ProfileQuery["profile"]>["nostr_keys"];
   isOwner: boolean;
 }
 
 export default function BadgeCardWithProgress({
   userBadge,
+  nostrKeys,
   isOwner,
   username,
 }: Props) {
@@ -40,6 +42,7 @@ export default function BadgeCardWithProgress({
           awardedAt: userBadge.progress?.awardedAt,
           isOwner,
           username,
+          nostrKeys,
         },
       })
     );

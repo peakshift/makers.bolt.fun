@@ -72,6 +72,9 @@ function ProfilePage() {
                   badges={profileQuery.data.profile.badges}
                   username={profileQuery.data.profile.name}
                   isOwner={isOwner}
+                  nostrKeys={
+                    isOwner ? profileQuery.data.profile.nostr_keys : undefined
+                  }
                 />
                 <StoriesCard
                   stories={profileQuery.data.profile.stories}
@@ -108,6 +111,9 @@ function ProfilePage() {
                   badges={profileQuery.data.profile.badges}
                   username={profileQuery.data.profile.name}
                   isOwner={isOwner}
+                  nostrKeys={
+                    isOwner ? profileQuery.data.profile.nostr_keys : undefined
+                  }
                 />
                 <StoriesCard
                   stories={profileQuery.data.profile.stories}

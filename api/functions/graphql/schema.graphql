@@ -24,6 +24,11 @@ type Award {
   url: String!
 }
 
+input AwardNostrBadgeInput {
+  awardEventId: String!
+  nostrBadgeRequestId: Int!
+}
+
 type AwardedBadgeMetadata {
   emoji: String
   label: String
@@ -304,6 +309,7 @@ input MakerSkillInput {
 
 type Mutation {
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
+  awardNostrBadge(input: AwardNostrBadgeInput): Boolean
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createMakerBadge(input: CreateMakerBadgeInput): Badge
@@ -316,6 +322,7 @@ type Mutation {
   donate(amount_in_sat: Int!): Donation!
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
+  requestNostrBadge(input: RequestNostrBadgeInput): Boolean
   setUserNostrKeyAsPrimary(key: String): User
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
@@ -326,6 +333,14 @@ type Mutation {
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(newEmails: [UserEmailInputType!], newKeys: [UserKeyInputType!]): User!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
+}
+
+type NostrBadgeRequest {
+  badge: Badge!
+  createdAt: Date!
+  id: Int!
+  publicKeyToAward: String!
+  user: User!
 }
 
 input NostrEventInput {
@@ -487,6 +502,7 @@ type Query {
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentIdOrSlug: String!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
+  getPendingNostrBadgeRequests: [NostrBadgeRequest!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int, tag: String): Project!
   getProjectsById(ids: [String!]!): [Project!]!
@@ -531,6 +547,11 @@ type Question implements PostBase {
 input RegisterInTournamentInput {
   email: String!
   hacking_status: TournamentMakerHackingStatusEnum!
+}
+
+input RequestNostrBadgeInput {
+  badgeId: Int!
+  publicKeyToAward: String!
 }
 
 enum RoleLevelEnum {

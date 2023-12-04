@@ -4,15 +4,29 @@ import {
   modalCardVariants,
 } from "src/Components/Modals/ModalsContainer/ModalsContainer";
 import { IoClose } from "react-icons/io5";
-import { Badge, BadgeProgress } from "src/graphql";
-import { useEffect } from "react";
+import {
+  Badge,
+  BadgeProgress,
+  ProfileQuery,
+  useRequestNostrBadgeMutation,
+} from "src/graphql";
+import { useEffect, useState } from "react";
 import Button from "src/Components/Button/Button";
 import IconButton from "src/Components/IconButton/IconButton";
 import { useSearchParams } from "react-router-dom";
 import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { NotificationsService } from "src/services";
-import { addOpacityToHexColor } from "src/utils/helperFunctions";
+import {
+  addOpacityToHexColor,
+  extractErrorMessage,
+} from "src/utils/helperFunctions";
 import dayjs from "dayjs";
+import { useMetaData } from "src/lib/nostr";
+import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
+import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
+import { nip19 } from "nostr-tools";
+import BadgeComponent from "src/Components/Badge/Badge";
+import { RelayPoolProvider } from "src/lib/nostr";
 
 interface Props extends ModalCard {
   badge: Pick<
@@ -23,6 +37,7 @@ interface Props extends ModalCard {
   issuedBadgeMetaData?: BadgeProgress["metaData"];
   awardedAt?: BadgeProgress["awardedAt"];
   isOwner?: boolean;
+  nostrKeys?: NonNullable<ProfileQuery["profile"]>["nostr_keys"];
 }
 
 const DEFAULT_COLOR = "#8B5CF6";
@@ -33,6 +48,7 @@ export default function ViewBadgeModal({
   issuedBadgeMetaData,
   awardedAt,
   isOwner,
+  nostrKeys,
   onClose,
   direction,
 }: Props) {
@@ -61,14 +77,17 @@ export default function ViewBadgeModal({
       exit="exit"
       className="modal-card !overflow-auto max-w-[442px] min-h-screen xs:min-h-0 rounded-xl"
     >
-      <ViewBadgeCard
-        badge={badge}
-        username={username}
-        issuedBadgeMetaData={issuedBadgeMetaData}
-        awardedAt={awardedAt}
-        isOwner={isOwner}
-        onClose={onClose}
-      />
+      <RelayPoolProvider>
+        <ViewBadgeCard
+          badge={badge}
+          username={username}
+          issuedBadgeMetaData={issuedBadgeMetaData}
+          awardedAt={awardedAt}
+          isOwner={isOwner}
+          nostrKeys={nostrKeys}
+          onClose={onClose}
+        />
+      </RelayPoolProvider>
     </motion.div>
   );
 }
@@ -79,9 +98,20 @@ export const ViewBadgeCard = ({
   issuedBadgeMetaData,
   awardedAt,
   isOwner,
+  nostrKeys,
   onClose,
 }: Props) => {
   const copyToClipboard = useCopyToClipboard();
+  const { metadata } = useMetaData({
+    pubkeys: nostrKeys?.map((k) => k.key) ?? [],
+  });
+
+  const [requestBadge, requestBadgeMutationStatus] =
+    useRequestNostrBadgeMutation();
+
+  const [showRequestNostrBadgeInput, setShowRequestNostrBadgeInput] =
+    useState(false);
+  const [selectedPubkey, setSelectedPubkey] = useState<string>();
 
   const color = badge.color ?? DEFAULT_COLOR;
 
@@ -98,6 +128,27 @@ export const ViewBadgeCard = ({
       label: null,
       value: `Unlocked ${dayjs(awardedAt).format("MMM D, YYYY")}`,
     });
+
+  const onSendRequestBadge = async () => {
+    if (!selectedPubkey) return;
+
+    try {
+      await requestBadge({
+        variables: {
+          input: {
+            badgeId: badge.id,
+            publicKeyToAward: selectedPubkey,
+          },
+        },
+      });
+      NotificationsService.success("Your request has been sent");
+      setShowRequestNostrBadgeInput(false);
+    } catch (error) {
+      NotificationsService.error(
+        extractErrorMessage(error) ?? "Something unexpected went wrong"
+      );
+    }
+  };
 
   return (
     <div className="relative flex flex-col">
@@ -153,28 +204,124 @@ export const ViewBadgeCard = ({
           </div>
         )}
 
-        <div className="flex flex-col gap-12 w-full mt-auto">
-          {isOwner && (
+        {showRequestNostrBadgeInput && (
+          <>
+            <div className="py-24 max-w-full">
+              <p className="mb-24">
+                To get a nostr badge, please choose which public key you want
+                the badge to be issued to. Please note that this can{" "}
+                <strong>NOT</strong> be changed later.
+              </p>
+              {nostrKeys && nostrKeys.length > 0 ? (
+                <ul className="flex flex-col gap-12 max-w-full">
+                  {[...nostrKeys]
+                    .sort((k1, k2) => (k1.is_primary ? -1 : 1))
+                    .map((nostrKey) => {
+                      const nostrProfile = getProfileDataFromMetaData(
+                        metadata,
+                        nostrKey.key
+                      );
+                      return (
+                        <li key={nostrKey.key} className="">
+                          <button
+                            className={`bg-gray-100 rounded p-16 flex gap-12 max-w-full border-2 ${
+                              selectedPubkey === nostrKey.key
+                                ? " border-primary-500"
+                                : ""
+                            } `}
+                            onClick={() => setSelectedPubkey(nostrKey.key)}
+                          >
+                            {/* <div className="flex basis-full gap-8 items-center min-w-0"> */}
+                            <Avatar width={40} src={nostrProfile.image} />
+                            <div className="overflow-hidden">
+                              <p className="flex flex-wrap gap-8 font-bold overflow-hidden whitespace-nowrap text-ellipsis">
+                                {nostrKey.is_primary && (
+                                  <BadgeComponent
+                                    color="primary"
+                                    size="sm"
+                                    className="flex items-center"
+                                  >
+                                    Primary Key
+                                  </BadgeComponent>
+                                )}
+                                {nostrKey.is_default_generated_key && (
+                                  <BadgeComponent
+                                    color="black"
+                                    size="sm"
+                                    className="flex items-center"
+                                  >
+                                    Generated by BOLT.FUN
+                                  </BadgeComponent>
+                                )}
+                                {nostrProfile.name}
+                              </p>
+                              <p className="text-gray-500 overflow-hidden text-ellipsis">
+                                {nip19.npubEncode(nostrKey.key)}
+                              </p>
+                            </div>
+                            {/* </div>  */}
+                          </button>
+                        </li>
+                      );
+                    })}
+                </ul>
+              ) : (
+                <p className="text-gray-600 font-bold">
+                  You don't have any Nostr keys linked yet...
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-12 w-full mt-auto">
+              <Button
+                color="none"
+                fullWidth
+                disabled={!selectedPubkey}
+                className="text-white mt-auto"
+                onClick={onSendRequestBadge}
+                style={{ backgroundColor: color }}
+                isLoading={requestBadgeMutationStatus.loading}
+              >
+                Send Request for Nostr Badge
+              </Button>
+              <Button
+                color="none"
+                fullWidth
+                onClick={() => setShowRequestNostrBadgeInput(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </>
+        )}
+
+        {!showRequestNostrBadgeInput && (
+          <div className="flex flex-col gap-12 w-full mt-auto">
+            {isOwner && (
+              <Button
+                color="none"
+                fullWidth
+                className="text-white mt-auto"
+                onClick={() => {
+                  setShowRequestNostrBadgeInput(true);
+                  setSelectedPubkey(nostrKeys?.[0].key);
+                }}
+                style={{ backgroundColor: color }}
+              >
+                Request Nostr Badge
+              </Button>
+            )}
             <Button
               color="none"
+              variant="outline"
               fullWidth
-              className="text-white mt-auto"
-              style={{ backgroundColor: color }}
+              className="text-white"
+              style={{ borderColor: color, color: color }}
+              onClick={onShare}
             >
-              Request Nostr Badge
+              Share
             </Button>
-          )}
-          <Button
-            color="none"
-            variant="outline"
-            fullWidth
-            className="text-white"
-            style={{ borderColor: color, color: color }}
-            onClick={onShare}
-          >
-            Share
-          </Button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
