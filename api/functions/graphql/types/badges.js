@@ -9,6 +9,7 @@ const {
 const { isAdmin } = require("../../../auth/utils/helperFuncs");
 const { prisma } = require("../../../prisma");
 const cacheService = require("../../../services/cache.service");
+const { queueService } = require("../../../services/queue-service");
 const { toSlug } = require("../../../utils/helpers");
 
 const Badge = objectType({
@@ -509,6 +510,14 @@ const awardNostrBadge = extendType({
             data: {
               badgeAwardNostrEventId: awardEventId,
             },
+          });
+
+          await queueService.nostrService.sendDMToUser({
+            message: `Congrats! You've been awarded your '${nostrBadgeRequest.badge.title}' badge!
+
+The badge award event ID is: ${awardEventId}
+`,
+            recipient_nostr_pubkey: nostrBadgeRequest.publicKeyToAward,
           });
 
           return true;

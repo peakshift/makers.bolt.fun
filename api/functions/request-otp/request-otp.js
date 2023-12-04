@@ -26,7 +26,7 @@ const requestOTP = async (req, res) => {
     if (email) await queueService.emailService.sendOTP(email, generatedOTP);
     else if (nostrPubkey) {
       await queueService.nostrService.sendDMToUser({
-        message: NOSTR_DM_TEMPLATE(generatedOTP),
+        message: NOSTR_OTP_DM_TEMPLATE(generatedOTP),
         recipient_nostr_pubkey: nostrPubkey,
         relay,
       });
@@ -66,7 +66,7 @@ function generateOTP(length = 6) {
   return OTP;
 }
 
-const NOSTR_DM_TEMPLATE = (otp) =>
+const NOSTR_OTP_DM_TEMPLATE = (otp) =>
   `Hi!
 This is your OTP: ${otp} that you can use to login to BOLT.FUN.
 
