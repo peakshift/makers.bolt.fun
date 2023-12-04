@@ -38,7 +38,7 @@ export default function PostDetailsPage(props: Props) {
 
   return (
     <>
-      <OgTags title={post.title} description={post.body.slice(0, 50)} />
+      <OgTags title={post.title} description={post.excerpt} />
       <ScrollToTop />
       <div className={`page-container max-md:bg-white`}>
         {isLargeScreen ? (

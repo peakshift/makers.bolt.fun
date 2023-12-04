@@ -3,6 +3,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
     ... on Story {
       id
       title
+      excerpt
       createdAt
       author {
         id
@@ -42,6 +43,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
     ... on Bounty {
       id
       title
+      excerpt
       createdAt
       author {
         id
@@ -86,6 +88,7 @@ query PostDetails($id: Int!, $type: POST_TYPE!) {
     ... on Question {
       id
       title
+      excerpt
       createdAt
       author {
         id
