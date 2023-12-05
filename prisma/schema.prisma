@@ -98,6 +98,7 @@ model User {
   actions                  UserAction[]
   badgesProgress           UserBadgeProgress[]
   badges                   UserBadge[]
+  nostrBadgeRequests       NostrBadgeRequest[]
 }
 
 model UserKey {
@@ -579,8 +580,9 @@ model Badge {
   incrementOnAction   UserActionType? @relation(fields: [incrementOnActionId], references: [id])
   incrementOnActionId Int?
 
-  usersProgress UserBadgeProgress[]
-  UserBadge     UserBadge[]
+  usersProgress      UserBadgeProgress[]
+  UserBadge          UserBadge[]
+  nostrBadgeRequests NostrBadgeRequest[]
 }
 
 model UserBadgeProgress {
@@ -607,4 +609,20 @@ model UserBadge {
   awardedAt              DateTime @default(now())
 
   @@id([userId, badgeId])
+}
+
+model NostrBadgeRequest {
+  id Int @id @default(autoincrement())
+
+  badge   Badge @relation(fields: [badgeId], references: [id])
+  badgeId Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  publicKeyToAward String
+  isFullfilled     Boolean  @default(false)
+  createdAt        DateTime @default(now())
+
+  @@unique([userId, badgeId])
 }
