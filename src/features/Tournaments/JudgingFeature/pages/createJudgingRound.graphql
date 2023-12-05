@@ -1,0 +1,20 @@
+mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
+  createOrUpdateJudgingRound(input: $input) {
+    id
+    title
+    description
+    end_date
+    createdAt
+    tournament {
+      title
+      id
+    }
+    projects {
+      id
+    }
+    judges {
+      id
+      name
+    }
+  }
+}

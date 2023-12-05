@@ -93,6 +93,14 @@ query GetTournamentById($idOrSlug: String!) {
       mainFeedHashtag
       feedFilters
     }
+
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
+    }
   }
 
   getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {

@@ -510,7 +510,7 @@ type Query {
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
-  getJudgingRounds(judgingRoundId: String!): TournamentJudgingRound!
+  getJudgingRoundById(judgingRoundId: String!): TournamentJudgingRound!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentIdOrSlug: String!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!

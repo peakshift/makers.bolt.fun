@@ -76,10 +76,10 @@ const TournamentJudgingRound = objectType({
   },
 });
 
-const getTournamentJudgingRoundById = extendType({
+const getJudgingRoundById = extendType({
   type: "Query",
   definition(t) {
-    t.nonNull.field("getJudgingRounds", {
+    t.nonNull.field("getJudgingRoundById", {
       type: TournamentJudgingRound,
       args: {
         judgingRoundId: nonNull(stringArg()),
@@ -284,7 +284,7 @@ module.exports = {
   // Types
   TournamentJudgingRound,
   // Queries
-  getTournamentJudgingRoundById,
+  getJudgingRoundById,
   // Mutations
   createOrUpdateJudgingRound,
 };
