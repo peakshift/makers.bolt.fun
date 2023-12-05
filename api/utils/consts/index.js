@@ -58,6 +58,8 @@ const env = envsafe(
       devDefault: "http://localhost:3001",
     }),
     HYGRAPH_WEBHOOKS_SECRET: str({
+      allowEmpty: true,
+      default: "",
       devDefault: "SUPER_SECRET",
     }),
   },

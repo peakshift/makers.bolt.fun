@@ -105,7 +105,7 @@ export default function LinkedNostrKeys({ keys }: Props) {
                       <p className="flex flex-wrap gap-8 font-bold overflow-hidden whitespace-nowrap text-ellipsis">
                         {nostrKey.is_primary && (
                           <Badge
-                            color="primary"
+                            color="black"
                             size="sm"
                             className="flex items-center"
                           >
@@ -121,7 +121,7 @@ export default function LinkedNostrKeys({ keys }: Props) {
                         )}
                         {nostrKey.is_default_generated_key && (
                           <Badge
-                            color="black"
+                            color="primary"
                             size="sm"
                             className="flex items-center"
                           >

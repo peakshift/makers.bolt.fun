@@ -763,6 +763,16 @@ const createStory = extendType({
                 .catch((err) => {
                   console.log("Error happened while posting to queue service:");
                   console.log(err);
+                }),
+              queueService.aiService
+                .generateStoryOgSummary({
+                  id: createdStory.id,
+                  title: createdStory.title,
+                  body: createdStory.body,
+                })
+                .catch((err) => {
+                  console.log("Error happened while posting to queue service:");
+                  console.log(err);
                 })
             );
 
