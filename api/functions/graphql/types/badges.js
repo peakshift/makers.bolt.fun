@@ -512,13 +512,17 @@ const awardNostrBadge = extendType({
             },
           });
 
-          await queueService.nostrService.sendDMToUser({
-            message: `Congrats! You've been awarded your '${nostrBadgeRequest.badge.title}' badge!
-
-The badge award event ID is: ${awardEventId}
-`,
-            recipient_nostr_pubkey: nostrBadgeRequest.publicKeyToAward,
-          });
+          try {
+            await queueService.nostrService.sendDMToUser({
+              message: `Congrats! You've been awarded your '${nostrBadgeRequest.badge.title}' badge!
+  
+  The badge award event ID is: ${awardEventId}
+  `,
+              recipient_nostr_pubkey: nostrBadgeRequest.publicKeyToAward,
+            });
+          } catch (error) {
+            console.error(error);
+          }
 
           return true;
         } catch (error) {

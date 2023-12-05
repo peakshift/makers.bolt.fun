@@ -15,7 +15,10 @@ interface Props {
     | "winningDescriptionTemplate"
   >;
   username: string;
-  useBadgeProgress?: Pick<BadgeProgress, "metaData" | "awardedAt"> | null;
+  useBadgeProgress?: Pick<
+    BadgeProgress,
+    "metaData" | "awardedAt" | "badgeAwardNostrEventId"
+  > | null;
   onClick?: () => void;
 }
 
@@ -35,6 +38,7 @@ export default function BadgeCard({
           badge: badge,
           issuedBadgeMetaData: useBadgeProgress?.metaData,
           awardedAt: useBadgeProgress?.awardedAt,
+          badgeAwardNostrEventId: useBadgeProgress?.badgeAwardNostrEventId,
           isOwner: false,
           username,
         },

@@ -40,6 +40,7 @@ export default function BadgeCardWithProgress({
           badge: userBadge.badge,
           issuedBadgeMetaData: userBadge.progress?.metaData,
           awardedAt: userBadge.progress?.awardedAt,
+          badgeAwardNostrEventId: userBadge.progress?.badgeAwardNostrEventId,
           isOwner,
           username,
           nostrKeys,

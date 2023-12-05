@@ -36,6 +36,7 @@ interface Props extends ModalCard {
   username: string;
   issuedBadgeMetaData?: BadgeProgress["metaData"];
   awardedAt?: BadgeProgress["awardedAt"];
+  badgeAwardNostrEventId?: BadgeProgress["badgeAwardNostrEventId"];
   isOwner?: boolean;
   nostrKeys?: NonNullable<ProfileQuery["profile"]>["nostr_keys"];
 }
@@ -49,6 +50,7 @@ export default function ViewBadgeModal({
   awardedAt,
   isOwner,
   nostrKeys,
+  badgeAwardNostrEventId,
   onClose,
   direction,
 }: Props) {
@@ -82,6 +84,7 @@ export default function ViewBadgeModal({
           badge={badge}
           username={username}
           issuedBadgeMetaData={issuedBadgeMetaData}
+          badgeAwardNostrEventId={badgeAwardNostrEventId}
           awardedAt={awardedAt}
           isOwner={isOwner}
           nostrKeys={nostrKeys}
@@ -99,6 +102,7 @@ export const ViewBadgeCard = ({
   awardedAt,
   isOwner,
   nostrKeys,
+  badgeAwardNostrEventId,
   onClose,
 }: Props) => {
   const copyToClipboard = useCopyToClipboard();
@@ -296,7 +300,7 @@ export const ViewBadgeCard = ({
 
         {!showRequestNostrBadgeInput && (
           <div className="flex flex-col gap-12 w-full mt-auto">
-            {isOwner && (
+            {isOwner && !badgeAwardNostrEventId && (
               <Button
                 color="none"
                 fullWidth
@@ -308,6 +312,27 @@ export const ViewBadgeCard = ({
                 style={{ backgroundColor: color }}
               >
                 Request Nostr Badge
+              </Button>
+            )}
+            {badgeAwardNostrEventId && (
+              <Button
+                color="none"
+                fullWidth
+                className="text-white mt-auto"
+                onClick={() => {
+                  copyToClipboard(
+                    nip19.neventEncode({
+                      id: badgeAwardNostrEventId,
+                    })
+                  );
+                  NotificationsService.info("Copied to clipboard", {
+                    icon: "📋",
+                  });
+                }}
+                newTab
+                style={{ backgroundColor: color }}
+              >
+                Copy Nostr Badge Award Id
               </Button>
             )}
             <Button

@@ -56,6 +56,17 @@ export default function PendingNostrBadgeRequestCard({ request }: Props) {
             nostrBadgeRequestId: request.id,
           },
         },
+        update: (cache) => {
+          cache.modify({
+            fields: {
+              getPendingNostrBadgeRequests: (existing) => {
+                return existing.filter(
+                  (d: any) => d.__ref !== `NostrBadgeRequest:${request.id}`
+                );
+              },
+            },
+          });
+        },
       });
       NotificationsService.success("Badge awarded successfully");
     } catch (error) {
