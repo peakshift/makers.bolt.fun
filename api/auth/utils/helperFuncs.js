@@ -3,7 +3,7 @@ const jose = require("jose");
 const { JWT_SECRET } = require("../../utils/consts");
 const env = require("../../utils/consts");
 const { generatePrivateKey, getPublicKey } = require("../../utils/nostr-tools");
-const { adminUsersIds } = require("./consts");
+const { adminUsersIds, tournamentOrganizers } = require("./consts");
 
 const getUserByPubKey = (pubKey) => {
   if (!pubKey) return null;
@@ -107,6 +107,14 @@ function isAdmin(userId) {
   return adminUsersIds.includes(userId);
 }
 
+function isTournamentOrganizer(userId, tournamentId) {
+  if (!userId || !tournamentId) return false;
+
+  return true;
+
+  return tournamentOrganizers[tournamentId]?.includes(userId);
+}
+
 module.exports = {
   getUserByPubKey,
   getUserById,
@@ -115,4 +123,5 @@ module.exports = {
   createNewUser,
   verifyInternalAuthHeader,
   isAdmin,
+  isTournamentOrganizer,
 };

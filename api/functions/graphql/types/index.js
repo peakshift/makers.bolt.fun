@@ -7,6 +7,7 @@ const vote = require("./vote");
 const post = require("./post");
 const users = require("./users");
 const hackathon = require("./hackathon");
+const judgingRounds = require("./judging-rounds");
 const tournament = require("./tournament");
 const donation = require("./donation");
 const tag = require("./tag");
@@ -22,6 +23,7 @@ module.exports = {
   ...post,
   ...users,
   ...hackathon,
+  ...judgingRounds,
   ...tournament,
   ...donation,
 };

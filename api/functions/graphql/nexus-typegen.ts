@@ -60,6 +60,15 @@ export interface NexusGenInputs {
     title: string; // String!
     winningDescriptionTemplate?: string | null; // String
   }
+  CreateOrUpdateJudgingRoundInput: { // input type
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    id?: string | null; // String
+    judges_ids: number[]; // [Int!]!
+    projects_ids: number[]; // [Int!]!
+    title: string; // String!
+    tournament_id: number; // Int!
+  }
   CreateProjectInput: { // input type
     capabilities: number[]; // [Int!]!
     category_id: number; // Int!
@@ -574,6 +583,13 @@ export interface NexusGenObjects {
     name: string; // String!
     twitter?: string | null; // String
   }
+  TournamentJudgingRound: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    id: string; // String!
+    title: string; // String!
+  }
   TournamentMakerDeal: { // root type
     description: string; // String!
     title: string; // String!
@@ -849,6 +865,7 @@ export interface NexusGenFieldTypes {
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createMakerBadge: NexusGenRootTypes['Badge'] | null; // Badge
     createOrUpdateBadge: NexusGenRootTypes['Badge'] | null; // Badge
+    createOrUpdateJudgingRound: NexusGenRootTypes['TournamentJudgingRound'] | null; // TournamentJudgingRound
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
     createTournament: NexusGenRootTypes['Tournament'] | null; // Tournament
@@ -962,6 +979,7 @@ export interface NexusGenFieldTypes {
     getCategory: NexusGenRootTypes['Category']; // Category!
     getDonationsStats: NexusGenRootTypes['DonationsStats']; // DonationsStats!
     getFeed: NexusGenRootTypes['Post'][]; // [Post!]!
+    getJudgingRounds: NexusGenRootTypes['TournamentJudgingRound']; // TournamentJudgingRound!
     getLnurlDetailsForProject: NexusGenRootTypes['LnurlDetails']; // LnurlDetails!
     getMakersInTournament: NexusGenRootTypes['TournamentMakersResponse']; // TournamentMakersResponse!
     getMyDrafts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -1051,6 +1069,7 @@ export interface NexusGenFieldTypes {
     faqs: NexusGenRootTypes['TournamentFAQ'][]; // [TournamentFAQ!]!
     id: number; // Int!
     judges: NexusGenRootTypes['TournamentJudge'][]; // [TournamentJudge!]!
+    judging_rounds: NexusGenRootTypes['TournamentJudgingRound'][]; // [TournamentJudgingRound!]!
     location: string; // String!
     makers_count: number; // Int!
     makers_deals: NexusGenRootTypes['TournamentMakerDeal'][]; // [TournamentMakerDeal!]!
@@ -1100,6 +1119,16 @@ export interface NexusGenFieldTypes {
     company: string | null; // String
     name: string; // String!
     twitter: string | null; // String
+  }
+  TournamentJudgingRound: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
+    description: string; // String!
+    end_date: NexusGenScalars['Date']; // Date!
+    id: string; // String!
+    judges: NexusGenRootTypes['User'][]; // [User!]!
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
+    title: string; // String!
+    tournament: NexusGenRootTypes['Tournament']; // Tournament!
   }
   TournamentMakerDeal: { // field return type
     description: string; // String!
@@ -1417,6 +1446,7 @@ export interface NexusGenFieldTypeNames {
     confirmVote: 'Vote'
     createMakerBadge: 'Badge'
     createOrUpdateBadge: 'Badge'
+    createOrUpdateJudgingRound: 'TournamentJudgingRound'
     createProject: 'CreateProjectResponse'
     createStory: 'Story'
     createTournament: 'Tournament'
@@ -1530,6 +1560,7 @@ export interface NexusGenFieldTypeNames {
     getCategory: 'Category'
     getDonationsStats: 'DonationsStats'
     getFeed: 'Post'
+    getJudgingRounds: 'TournamentJudgingRound'
     getLnurlDetailsForProject: 'LnurlDetails'
     getMakersInTournament: 'TournamentMakersResponse'
     getMyDrafts: 'Post'
@@ -1619,6 +1650,7 @@ export interface NexusGenFieldTypeNames {
     faqs: 'TournamentFAQ'
     id: 'Int'
     judges: 'TournamentJudge'
+    judging_rounds: 'TournamentJudgingRound'
     location: 'String'
     makers_count: 'Int'
     makers_deals: 'TournamentMakerDeal'
@@ -1668,6 +1700,16 @@ export interface NexusGenFieldTypeNames {
     company: 'String'
     name: 'String'
     twitter: 'String'
+  }
+  TournamentJudgingRound: { // field return type name
+    createdAt: 'Date'
+    description: 'String'
+    end_date: 'Date'
+    id: 'String'
+    judges: 'User'
+    projects: 'Project'
+    title: 'String'
+    tournament: 'Tournament'
   }
   TournamentMakerDeal: { // field return type name
     description: 'String'
@@ -1865,6 +1907,9 @@ export interface NexusGenArgTypes {
     createOrUpdateBadge: { // args
       input?: NexusGenInputs['CreateOrUpdateBadgeInput'] | null; // CreateOrUpdateBadgeInput
     }
+    createOrUpdateJudgingRound: { // args
+      input?: NexusGenInputs['CreateOrUpdateJudgingRoundInput'] | null; // CreateOrUpdateJudgingRoundInput
+    }
     createProject: { // args
       input?: NexusGenInputs['CreateProjectInput'] | null; // CreateProjectInput
     }
@@ -1962,6 +2007,9 @@ export interface NexusGenArgTypes {
       sortBy?: string | null; // String
       tag?: number | null; // Int
       take: number | null; // Int
+    }
+    getJudgingRounds: { // args
+      judgingRoundId: string; // String!
     }
     getLnurlDetailsForProject: { // args
       project_id: number; // Int!

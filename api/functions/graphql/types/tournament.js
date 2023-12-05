@@ -26,7 +26,10 @@ const {
 const { ImageInput } = require("./misc");
 const { createCRUDType } = require("../../../utils/helpers");
 const { queueService } = require("../../../services/queue-service");
-const { isAdmin } = require("../../../auth/utils/helperFuncs");
+const {
+  isAdmin,
+  isTournamentOrganizer,
+} = require("../../../auth/utils/helperFuncs");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
@@ -490,6 +493,17 @@ const Tournament = objectType({
         return prisma.tournament
           .findUnique({ where: { id: parent.id } })
           .then((t) => t.config || {});
+      },
+    });
+
+    t.nonNull.list.nonNull.field("judging_rounds", {
+      type: "TournamentJudgingRound",
+      resolve(parent, _, ctx) {
+        if (!isTournamentOrganizer(ctx.user?.id, parent.id)) return [];
+
+        return prisma.tournament
+          .findUnique({ where: { id: parent.id } })
+          .judging_rounds();
       },
     });
   },
