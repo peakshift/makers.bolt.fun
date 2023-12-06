@@ -21,9 +21,6 @@ import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loade
 import { Post_Type } from "src/graphql";
 import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
-import { updateBadgeDetailsLoader } from "src/features/AdminDashboard/pages/CreateBadgePage/updateBadgeDetails.loader";
-import { badgeDetailsLoader } from "src/features/AdminDashboard/pages/BadgeDetailsPage/badgeDetails.loader";
-import { manageBadgesLoader } from "src/features/AdminDashboard/pages/ManageBadgesPage/manageBadges.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -222,47 +219,11 @@ const TermsAndConditionsPage = Loadable(
   )
 );
 
-const AdminDashboardPage = Loadable(
+const AdminPages = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "admin_dashboard_page" */ "../../features/AdminDashboard/pages/AdminDashboard/AdminDashboard"
-      )
-  )
-);
-
-const AdminManageBadgesPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "admin_manage_badges_page" */ "../../features/AdminDashboard/pages/ManageBadgesPage/ManageBadgesPage"
-      )
-  )
-);
-
-const AdminCreateBadgePage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "admin_create_badge_page" */ "../../features/AdminDashboard/pages/CreateBadgePage/CreateBadgePage"
-      )
-  )
-);
-
-const AdminUpdateBadgePage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "admin_update_badge_page" */ "../../features/AdminDashboard/pages/CreateBadgePage/UpdateBadgePage"
-      )
-  )
-);
-
-const BadgeDetailsPage = Loadable(
-  React.lazy(
-    () =>
-      import(
-        /* webpackChunkName: "badge_details_page" */ "../../features/AdminDashboard/pages/BadgeDetailsPage/BadgeDetailsPage"
+        /* webpackChunkName: "admin_dashboard_page" */ "../../features/AdminDashboard"
       )
   )
 );
@@ -346,27 +307,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         </Route>
 
         <Route element={<ProtectedLayout onlyAdmins />}>
-          <Route path="admin">
-            <Route index element={<AdminDashboardPage />} />
-            <Route path="badges">
-              <Route path="create" element={<AdminCreateBadgePage />} />
-              <Route
-                path=":idOrSlug/update"
-                element={<AdminUpdateBadgePage />}
-                loader={updateBadgeDetailsLoader(queryClient)}
-              />
-              <Route
-                path=":idOrSlug"
-                element={<BadgeDetailsPage />}
-                loader={badgeDetailsLoader(queryClient)}
-              />
-              <Route
-                index
-                element={<AdminManageBadgesPage />}
-                loader={manageBadgesLoader(queryClient)}
-              />
-            </Route>
-          </Route>
+          <Route path="admin/*" element={<AdminPages />} />
         </Route>
 
         <Route

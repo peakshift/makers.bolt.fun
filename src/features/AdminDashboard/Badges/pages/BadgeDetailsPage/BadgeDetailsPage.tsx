@@ -1,5 +1,4 @@
 import { FiArrowLeft, FiEdit2 } from "react-icons/fi";
-import Skeleton from "react-loading-skeleton";
 import { Link, useParams } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
@@ -7,7 +6,6 @@ import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { ViewBadgeCard } from "src/features/Profiles/pages/ProfilePage/ViewBadgeModal/ViewBadgeModal";
 import { useGetBadgeDetailsQuery } from "src/graphql";
 import { openModal } from "src/redux/features/modals.slice";
-import { trimText } from "src/utils/helperFunctions";
 import { useAppDispatch, useNavigateBack } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
 
