@@ -5,6 +5,8 @@ import { useLoaderData } from "react-router-dom";
 import OgTags from "src/Components/OgTags/OgTags";
 
 import { CreateOrUpdateBadgeInput } from "src/graphql";
+import { RelayPoolProvider } from "src/lib/nostr";
+import { withProviders } from "src/utils/hoc";
 import { useNavigateBack } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
 import * as yup from "yup";
@@ -30,7 +32,7 @@ const schema: yup.SchemaOf<CreateOrUpdateBadgeInput> = yup
 
 export type CreateBadgeFormType = yup.InferType<typeof schema>;
 
-export default function UpdateBadgePage() {
+function UpdateBadgePage() {
   const loaderData = useLoaderData() as LoaderData;
 
   const badgeData = loaderData.getBadgeById;
@@ -88,3 +90,5 @@ export default function UpdateBadgePage() {
     </>
   );
 }
+
+export default withProviders(RelayPoolProvider)(UpdateBadgePage);
