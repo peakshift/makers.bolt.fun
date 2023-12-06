@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useTournament } from "src/features/Tournaments/pages/TournamentDetailsPage/TournamentDetailsContext";
-import { TournamentEventTypeEnum } from "src/graphql";
+import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 
 export default function JudgingRoundsPage() {
   const {
@@ -19,7 +18,9 @@ export default function JudgingRoundsPage() {
 
   return (
     <div className="pb-42 flex flex-col gap-36">
-      <h2 className="text-body1 font-bolder text-gray-900">Judging Rounds</h2>
+      <h2 className="text-body1 font-bolder text-gray-900">
+        Manage Judging Rounds
+      </h2>
       {judging_rounds.length === 0 && (
         <p className="text-center py-24 text-gray-500 font-medium text-body3">
           No judging rounds created yet.

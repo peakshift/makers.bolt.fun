@@ -10,7 +10,7 @@ import { useGetJudgingRoundDetailsQuery } from "src/graphql";
 import { createRoute } from "src/utils/routing";
 
 export default function JudgingRoundDetailsPage() {
-  const { id } = useParams<{ id: string }>();
+  const { roundId: id } = useParams<{ roundId: string }>();
 
   if (!id) throw new Error("No judging round id provided");
 

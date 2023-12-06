@@ -1237,6 +1237,7 @@ export interface NexusGenFieldTypes {
     email: string | null; // String
     emails: NexusGenRootTypes['LinkedEmail'][]; // [LinkedEmail!]!
     id: number; // Int!
+    tournaments_organizing: NexusGenRootTypes['Tournament'][]; // [Tournament!]!
     walletsKeys: NexusGenRootTypes['WalletKey'][]; // [WalletKey!]!
   }
   Vote: { // field return type
@@ -1818,6 +1819,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     emails: 'LinkedEmail'
     id: 'Int'
+    tournaments_organizing: 'Tournament'
     walletsKeys: 'WalletKey'
   }
   Vote: { // field return type name

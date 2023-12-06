@@ -1364,6 +1364,7 @@ export type UserPrivateData = {
   email: Maybe<Scalars['String']>;
   emails: Array<LinkedEmail>;
   id: Scalars['Int'];
+  tournaments_organizing: Array<Tournament>;
   walletsKeys: Array<WalletKey>;
 };
 
@@ -1483,6 +1484,32 @@ export type ManageBadgesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ManageBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }>, getPendingNostrBadgeRequests: Array<{ __typename?: 'NostrBadgeRequest', id: number, createdAt: any, publicKeyToAward: string, badge: { __typename?: 'Badge', id: number, image: string, title: string, badgeDefinitionNostrEventId: string | null }, user: { __typename?: 'User', id: number, name: string, avatar: string } }> };
+
+export type GetJudgingRoundDetailsQueryVariables = Exact<{
+  judgingRoundId: Scalars['String'];
+}>;
+
+
+export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }> } };
+
+export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
+  input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
+}>;
+
+
+export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any, tournament: { __typename?: 'Tournament', title: string, id: number }, projects: Array<{ __typename?: 'Project', id: number }>, judges: Array<{ __typename?: 'User', id: number, name: string }> } | null };
+
+export type ManageTournamentQueryVariables = Exact<{
+  idOrSlug: Scalars['String'];
+}>;
+
+
+export type ManageTournamentQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null }, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+
+export type AdminDashboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminDashboardQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', tournaments_organizing: Array<{ __typename?: 'Tournament', id: number, slug: string, title: string, thumbnail_image: string }> } } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1773,20 +1800,6 @@ export type ProjectDetailsModalQueryVariables = Exact<{
 
 export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
 
-export type GetJudgingRoundDetailsQueryVariables = Exact<{
-  judgingRoundId: Scalars['String'];
-}>;
-
-
-export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }> } };
-
-export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
-  input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
-}>;
-
-
-export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any, tournament: { __typename?: 'Tournament', title: string, id: number }, projects: Array<{ __typename?: 'Project', id: number }>, judges: Array<{ __typename?: 'User', id: number, name: string }> } | null };
-
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1858,7 +1871,7 @@ export type GetTournamentByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null }, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type NostrKeysMetadataQueryVariables = Exact<{
   keys: Array<Scalars['String']> | Scalars['String'];
@@ -2471,6 +2484,288 @@ export function useManageBadgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type ManageBadgesQueryHookResult = ReturnType<typeof useManageBadgesQuery>;
 export type ManageBadgesLazyQueryHookResult = ReturnType<typeof useManageBadgesLazyQuery>;
 export type ManageBadgesQueryResult = Apollo.QueryResult<ManageBadgesQuery, ManageBadgesQueryVariables>;
+export const GetJudgingRoundDetailsDocument = gql`
+    query GetJudgingRoundDetails($judgingRoundId: String!) {
+  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
+    id
+    title
+    description
+    createdAt
+    end_date
+    judges {
+      id
+      name
+      avatar
+    }
+    projects {
+      id
+      hashtag
+      title
+      thumbnail_image
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetJudgingRoundDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetJudgingRoundDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetJudgingRoundDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetJudgingRoundDetailsQuery({
+ *   variables: {
+ *      judgingRoundId: // value for 'judgingRoundId'
+ *   },
+ * });
+ */
+export function useGetJudgingRoundDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>(GetJudgingRoundDetailsDocument, options);
+      }
+export function useGetJudgingRoundDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>(GetJudgingRoundDetailsDocument, options);
+        }
+export type GetJudgingRoundDetailsQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsQuery>;
+export type GetJudgingRoundDetailsLazyQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsLazyQuery>;
+export type GetJudgingRoundDetailsQueryResult = Apollo.QueryResult<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>;
+export const CreateOrUpdateJudgingRoundDocument = gql`
+    mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
+  createOrUpdateJudgingRound(input: $input) {
+    id
+    title
+    description
+    end_date
+    createdAt
+    tournament {
+      title
+      id
+    }
+    projects {
+      id
+    }
+    judges {
+      id
+      name
+    }
+  }
+}
+    `;
+export type CreateOrUpdateJudgingRoundMutationFn = Apollo.MutationFunction<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>;
+
+/**
+ * __useCreateOrUpdateJudgingRoundMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateJudgingRoundMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateJudgingRoundMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateJudgingRoundMutation, { data, loading, error }] = useCreateOrUpdateJudgingRoundMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateJudgingRoundMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>(CreateOrUpdateJudgingRoundDocument, options);
+      }
+export type CreateOrUpdateJudgingRoundMutationHookResult = ReturnType<typeof useCreateOrUpdateJudgingRoundMutation>;
+export type CreateOrUpdateJudgingRoundMutationResult = Apollo.MutationResult<CreateOrUpdateJudgingRoundMutation>;
+export type CreateOrUpdateJudgingRoundMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>;
+export const ManageTournamentDocument = gql`
+    query ManageTournament($idOrSlug: String!) {
+  getTournamentById(idOrSlug: $idOrSlug) {
+    id
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    events_count
+    makers_count
+    projects_count
+    prizes {
+      title
+      description
+      image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
+    }
+    tracks {
+      id
+      title
+      icon
+    }
+    judges {
+      name
+      company
+      avatar
+      twitter
+    }
+    events {
+      id
+      title
+      image
+      description
+      starts_at
+      ends_at
+      location
+      website
+      type
+      links
+    }
+    faqs {
+      id
+      question
+      answer
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      projectsSubmissionClosesOn
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
+    }
+  }
+  getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {
+    makers {
+      user {
+        id
+        avatar
+      }
+    }
+  }
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: $idOrSlug)
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: $idOrSlug)
+}
+    `;
+
+/**
+ * __useManageTournamentQuery__
+ *
+ * To run a query within a React component, call `useManageTournamentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useManageTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useManageTournamentQuery({
+ *   variables: {
+ *      idOrSlug: // value for 'idOrSlug'
+ *   },
+ * });
+ */
+export function useManageTournamentQuery(baseOptions: Apollo.QueryHookOptions<ManageTournamentQuery, ManageTournamentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ManageTournamentQuery, ManageTournamentQueryVariables>(ManageTournamentDocument, options);
+      }
+export function useManageTournamentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ManageTournamentQuery, ManageTournamentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ManageTournamentQuery, ManageTournamentQueryVariables>(ManageTournamentDocument, options);
+        }
+export type ManageTournamentQueryHookResult = ReturnType<typeof useManageTournamentQuery>;
+export type ManageTournamentLazyQueryHookResult = ReturnType<typeof useManageTournamentLazyQuery>;
+export type ManageTournamentQueryResult = Apollo.QueryResult<ManageTournamentQuery, ManageTournamentQueryVariables>;
+export const AdminDashboardDocument = gql`
+    query AdminDashboard {
+  me {
+    id
+    private_data {
+      tournaments_organizing {
+        id
+        slug
+        title
+        thumbnail_image
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminDashboardQuery__
+ *
+ * To run a query within a React component, call `useAdminDashboardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminDashboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminDashboardQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminDashboardQuery(baseOptions?: Apollo.QueryHookOptions<AdminDashboardQuery, AdminDashboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminDashboardQuery, AdminDashboardQueryVariables>(AdminDashboardDocument, options);
+      }
+export function useAdminDashboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminDashboardQuery, AdminDashboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminDashboardQuery, AdminDashboardQueryVariables>(AdminDashboardDocument, options);
+        }
+export type AdminDashboardQueryHookResult = ReturnType<typeof useAdminDashboardQuery>;
+export type AdminDashboardLazyQueryHookResult = ReturnType<typeof useAdminDashboardLazyQuery>;
+export type AdminDashboardQueryResult = Apollo.QueryResult<AdminDashboardQuery, AdminDashboardQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -4663,104 +4958,6 @@ export function useProjectDetailsModalLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ProjectDetailsModalQueryHookResult = ReturnType<typeof useProjectDetailsModalQuery>;
 export type ProjectDetailsModalLazyQueryHookResult = ReturnType<typeof useProjectDetailsModalLazyQuery>;
 export type ProjectDetailsModalQueryResult = Apollo.QueryResult<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>;
-export const GetJudgingRoundDetailsDocument = gql`
-    query GetJudgingRoundDetails($judgingRoundId: String!) {
-  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
-    id
-    title
-    description
-    createdAt
-    end_date
-    judges {
-      id
-      name
-      avatar
-    }
-    projects {
-      id
-      hashtag
-      title
-      thumbnail_image
-    }
-  }
-}
-    `;
-
-/**
- * __useGetJudgingRoundDetailsQuery__
- *
- * To run a query within a React component, call `useGetJudgingRoundDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetJudgingRoundDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetJudgingRoundDetailsQuery({
- *   variables: {
- *      judgingRoundId: // value for 'judgingRoundId'
- *   },
- * });
- */
-export function useGetJudgingRoundDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>(GetJudgingRoundDetailsDocument, options);
-      }
-export function useGetJudgingRoundDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>(GetJudgingRoundDetailsDocument, options);
-        }
-export type GetJudgingRoundDetailsQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsQuery>;
-export type GetJudgingRoundDetailsLazyQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsLazyQuery>;
-export type GetJudgingRoundDetailsQueryResult = Apollo.QueryResult<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>;
-export const CreateOrUpdateJudgingRoundDocument = gql`
-    mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
-  createOrUpdateJudgingRound(input: $input) {
-    id
-    title
-    description
-    end_date
-    createdAt
-    tournament {
-      title
-      id
-    }
-    projects {
-      id
-    }
-    judges {
-      id
-      name
-    }
-  }
-}
-    `;
-export type CreateOrUpdateJudgingRoundMutationFn = Apollo.MutationFunction<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>;
-
-/**
- * __useCreateOrUpdateJudgingRoundMutation__
- *
- * To run a mutation, you first call `useCreateOrUpdateJudgingRoundMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateOrUpdateJudgingRoundMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createOrUpdateJudgingRoundMutation, { data, loading, error }] = useCreateOrUpdateJudgingRoundMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateOrUpdateJudgingRoundMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>(CreateOrUpdateJudgingRoundDocument, options);
-      }
-export type CreateOrUpdateJudgingRoundMutationHookResult = ReturnType<typeof useCreateOrUpdateJudgingRoundMutation>;
-export type CreateOrUpdateJudgingRoundMutationResult = Apollo.MutationResult<CreateOrUpdateJudgingRoundMutation>;
-export type CreateOrUpdateJudgingRoundMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {
@@ -5277,13 +5474,6 @@ export const GetTournamentByIdDocument = gql`
       showFeed
       mainFeedHashtag
       feedFilters
-    }
-    judging_rounds {
-      id
-      title
-      description
-      end_date
-      createdAt
     }
   }
   getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {

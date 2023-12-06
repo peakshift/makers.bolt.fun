@@ -202,6 +202,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -262,6 +263,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -322,6 +324,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -382,6 +385,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",

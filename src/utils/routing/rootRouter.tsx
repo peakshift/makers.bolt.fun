@@ -21,6 +21,10 @@ import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loade
 import { Post_Type } from "src/graphql";
 import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
+import { adminDashboardLoader } from "src/features/AdminDashboard/pages/AdminDashboard/dashboard.loader";
+import { manageBadgesLoader } from "src/features/AdminDashboard/Badges/pages/ManageBadgesPage/manageBadges.loader";
+import { updateBadgeDetailsLoader } from "src/features/AdminDashboard/Badges/pages/CreateBadgePage/updateBadgeDetails.loader";
+import { badgeDetailsLoader } from "src/features/AdminDashboard/Badges/pages/BadgeDetailsPage/badgeDetails.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -219,11 +223,56 @@ const TermsAndConditionsPage = Loadable(
   )
 );
 
-const AdminPages = Loadable(
+const AdminDashboard = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "admin_dashboard_page" */ "../../features/AdminDashboard"
+        /* webpackChunkName: "admin_dashboard" */ "../../features/AdminDashboard/pages/AdminDashboard/AdminDashboard"
+      )
+  )
+);
+
+const AdminManageBadgesPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_manage_badges_page" */ "../../features/AdminDashboard/Badges/pages/ManageBadgesPage/ManageBadgesPage"
+      )
+  )
+);
+
+const AdminCreateBadgePage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_create_badge_page" */ "../../features/AdminDashboard/Badges/pages/CreateBadgePage/CreateBadgePage"
+      )
+  )
+);
+
+const AdminUpdateBadgePage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "admin_update_badge_page" */ "../../features/AdminDashboard/Badges/pages/CreateBadgePage/UpdateBadgePage"
+      )
+  )
+);
+
+const BadgeDetailsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "badge_details_page" */ "../../features/AdminDashboard/Badges/pages/BadgeDetailsPage/BadgeDetailsPage"
+      )
+  )
+);
+
+const ManageTournamentPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "manage_tournament_page" */ "../../features/AdminDashboard/Tournaments/pages/ManageTournamentPage/ManageTournamentPage"
       )
   )
 );
@@ -306,8 +355,34 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           />
         </Route>
 
-        <Route element={<ProtectedLayout onlyAdmins />}>
-          <Route path="admin/*" element={<AdminPages />} />
+        <Route path="admin" element={<ProtectedLayout onlyAdmins />}>
+          <Route
+            index
+            element={<AdminDashboard />}
+            loader={adminDashboardLoader(queryClient)}
+          />
+          <Route path="badges">
+            <Route
+              index
+              element={<AdminManageBadgesPage />}
+              loader={manageBadgesLoader(queryClient)}
+            />
+            <Route path="create" element={<AdminCreateBadgePage />} />
+            <Route
+              path=":idOrSlug/update"
+              element={<AdminUpdateBadgePage />}
+              loader={updateBadgeDetailsLoader(queryClient)}
+            />
+            <Route
+              path=":idOrSlug"
+              element={<BadgeDetailsPage />}
+              loader={badgeDetailsLoader(queryClient)}
+            />
+          </Route>
+          <Route path="tournament/:idOrSlug">
+            <Route index element={<Navigate to="judging" replace />} />
+            <Route path="judging/*" element={<ManageTournamentPage />} />
+          </Route>
         </Route>
 
         <Route

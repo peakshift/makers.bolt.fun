@@ -968,6 +968,7 @@ type UserPrivateData {
   email: String
   emails: [LinkedEmail!]!
   id: Int!
+  tournaments_organizing: [Tournament!]!
   walletsKeys: [WalletKey!]!
 }
 

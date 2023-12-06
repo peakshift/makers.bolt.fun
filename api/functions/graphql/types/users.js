@@ -11,6 +11,7 @@ const {
   enumType,
 } = require("nexus");
 const { getUserById, isAdmin } = require("../../../auth/utils/helperFuncs");
+const { tournamentOrganizers } = require("../../../auth/utils/consts");
 const { removeNulls, defaultPrismaSelectFields } = require("./helpers");
 const { ImageInput } = require("./misc");
 const { Tournament } = require("./tournament");
@@ -401,6 +402,25 @@ const UserPrivateData = objectType({
         });
       },
     });
+
+    t.nonNull.list.nonNull.field("tournaments_organizing", {
+      type: Tournament,
+      resolve: async (parent) => {
+        const userId = parent.id;
+
+        const tournamentsIds = Object.entries(tournamentOrganizers)
+          .filter(([_, ids]) => ids.includes(userId))
+          .map(([id, _]) => Number(id));
+
+        return prisma.tournament.findMany({
+          where: {
+            id: {
+              in: tournamentsIds,
+            },
+          },
+        });
+      },
+    });
   },
 });
 
@@ -411,6 +431,7 @@ const me = extendType({
       type: "User",
       async resolve(parent, args, context, info) {
         if (!context.user?.id) return null;
+
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).valueWithFilter("User");

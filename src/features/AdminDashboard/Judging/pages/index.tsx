@@ -3,12 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import JudgingRoundDetailsPage from "./JudgingRoundDetailsPage/JudgingRoundDetailsPage";
 import JudgingRoundsPage from "./JudgingRoundsPage/JudgingRoundsPage";
 
-export default function JudgingPage() {
+export default function JudgingPages() {
   return (
     <div>
       <Routes>
         <Route index element={<JudgingRoundsPage />} />
-        <Route path=":id" element={<JudgingRoundDetailsPage />} />
+        <Route path=":roundId" element={<JudgingRoundDetailsPage />} />
         {/* <Route index element={<Navigate to="overview" replace />} />
       <Route path="overview" element={<OverviewPage />} />
       <Route path="workshops" element={<WorkshopsPage />} />

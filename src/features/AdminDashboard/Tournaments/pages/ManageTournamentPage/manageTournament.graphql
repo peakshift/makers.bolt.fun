@@ -1,4 +1,4 @@
-query GetTournamentById($idOrSlug: String!) {
+query ManageTournament($idOrSlug: String!) {
   getTournamentById(idOrSlug: $idOrSlug) {
     id
     title
@@ -92,6 +92,13 @@ query GetTournamentById($idOrSlug: String!) {
       showFeed
       mainFeedHashtag
       feedFilters
+    }
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
     }
   }
 
