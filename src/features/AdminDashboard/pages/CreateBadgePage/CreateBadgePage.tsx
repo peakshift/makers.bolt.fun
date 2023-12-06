@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 import { useNavigateBack } from "src/utils/hooks";
 import { FiArrowLeft } from "react-icons/fi";
+import { withProviders } from "src/utils/hoc";
+import { RelayPoolProvider } from "src/lib/nostr";
 
 const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
   .object({
@@ -29,7 +31,7 @@ const schema: yup.SchemaOf<Omit<CreateOrUpdateBadgeInput, "id">> = yup
 
 export type CreateBadgeFormType = yup.InferType<typeof schema>;
 
-export default function CreateBadgePage() {
+function CreateBadgePage() {
   const navigateBack = useNavigateBack(
     createRoute({ type: "admin-badges", page: "list" })
   );
@@ -87,3 +89,5 @@ export default function CreateBadgePage() {
     </>
   );
 }
+
+export default withProviders(RelayPoolProvider)(CreateBadgePage);

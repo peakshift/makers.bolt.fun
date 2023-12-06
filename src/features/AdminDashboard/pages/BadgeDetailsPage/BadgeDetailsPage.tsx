@@ -6,12 +6,14 @@ import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { ViewBadgeCard } from "src/features/Profiles/pages/ProfilePage/ViewBadgeModal/ViewBadgeModal";
 import { useGetBadgeDetailsQuery } from "src/graphql";
+import { RelayPoolProvider } from "src/lib/nostr";
 import { openModal } from "src/redux/features/modals.slice";
 import { trimText } from "src/utils/helperFunctions";
+import { withProviders } from "src/utils/hoc";
 import { useAppDispatch, useNavigateBack } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
 
-export default function BadgeDetailsPage() {
+function BadgeDetailsPage() {
   const navigateBack = useNavigateBack(
     createRoute({ type: "admin-badges", page: "list" })
   );
@@ -111,3 +113,5 @@ export default function BadgeDetailsPage() {
     </div>
   );
 }
+
+export default withProviders(RelayPoolProvider)(BadgeDetailsPage);
