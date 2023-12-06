@@ -1,11 +1,15 @@
 import React from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { CreateOrUpdateJudgingRoundInput } from "src/graphql";
+import {
+  CreateOrUpdateJudgingRoundInput,
+  useGetProjectsInTournamentQuery,
+} from "src/graphql";
 import { FormProvider, Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoaderData } from "./updateJudgingPageData.loader";
 import CreateJudgingRoundForm from "./CreateJudgingRoundForm";
+import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 
 const schema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> = yup
   .object({
@@ -23,6 +27,19 @@ export type UpdateJudgingRoundFormType = yup.InferType<typeof schema>;
 
 export default function UpdateJudgingRoundPage() {
   const loaderData = useLoaderData() as LoaderData;
+
+  const { tournamentDetails } = useTournament();
+
+  const projectsInTournamentQuery = useGetProjectsInTournamentQuery({
+    variables: {
+      tournamentId: tournamentDetails.id,
+      skip: 0,
+      take: 999,
+      trackId: null,
+      roleId: null,
+      search: null,
+    },
+  });
 
   const roundData = loaderData.getJudgingRoundById;
   const { roundId: id } = useParams<{ roundId: string }>();
@@ -42,10 +59,17 @@ export default function UpdateJudgingRoundPage() {
     },
   });
 
+  const projectsInTournament =
+    projectsInTournamentQuery.data?.getProjectsInTournament.projects;
+
   return (
     <FormProvider {...formMethods}>
-      <div>Update Judging Round</div>
-      <CreateJudgingRoundForm roundId={roundData.id} />
+      <h2 className="text-h2 font-bolder mb-24">Update Judging Round</h2>
+      <CreateJudgingRoundForm
+        roundId={roundData.id}
+        projectsInTournament={projectsInTournament ?? []}
+        initialJudges={roundData.judges}
+      />
     </FormProvider>
     // Check the badges form
   );

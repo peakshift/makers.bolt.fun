@@ -3,6 +3,7 @@ import { marked } from "marked";
 import React from "react";
 import { MdEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
+import BackButton from "src/Components/BackButton/BackButton";
 import Button from "src/Components/Button/Button";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
@@ -28,8 +29,11 @@ export default function JudgingRoundDetailsPage() {
   return (
     <div className="flex flex-col gap-42">
       <section>
-        <div className="flex flex-wrap gap-8">
-          <h1 className="text-h2 font-bold mb-16">{judgingRound.title}</h1>
+        <div className="flex flex-wrap items-center gap-16 mb-24">
+          <BackButton defaultBackRoute={"/admin"} />
+          <h2 className="text-h2 font-bolder text-gray-900">
+            {judgingRound.title}
+          </h2>
           <Button
             size="sm"
             color="gray"

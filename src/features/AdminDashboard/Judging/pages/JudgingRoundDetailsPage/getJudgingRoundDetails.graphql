@@ -9,6 +9,7 @@ query GetJudgingRoundDetails($judgingRoundId: String!) {
       id
       name
       avatar
+      jobTitle
     }
     projects {
       id

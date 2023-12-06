@@ -4,20 +4,35 @@ import DatePicker from "src/Components/Inputs/DatePicker/DatePicker";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 import {
   Badge,
+  Project,
   TournamentJudgingRound,
   useCreateOrUpdateBadgeMutation,
   useCreateOrUpdateJudgingRoundMutation,
+  useGetProjectsInTournamentQuery,
+  User,
 } from "src/graphql";
 import { NotificationsService } from "src/services";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import { CreateJudgingRoundFormType } from "./CreateJudgingRoundPage";
+import SelectJudgesInput from "./SelectJudgesInput";
+import SelectProjectsInput from "./SelectProjectsInput";
 
 interface Props {
   roundId?: string;
   onCreated?: (round: Partial<TournamentJudgingRound>) => void;
+  projectsInTournament: Pick<
+    Project,
+    "id" | "title" | "hashtag" | "thumbnail_image"
+  >[];
+  initialJudges?: Pick<User, "id" | "name" | "avatar" | "jobTitle">[];
 }
 
-export default function CreateJudgingRoundForm({ roundId, onCreated }: Props) {
+export default function CreateJudgingRoundForm({
+  roundId,
+  onCreated,
+  projectsInTournament,
+  initialJudges,
+}: Props) {
   const {
     register,
     formState: { errors },
@@ -64,7 +79,7 @@ export default function CreateJudgingRoundForm({ roundId, onCreated }: Props) {
             autoFocus
             type="text"
             className="input-text"
-            placeholder="Badge Title 🎖️"
+            placeholder="Semi-Final Round"
             {...register("title")}
           />
         </div>
@@ -100,6 +115,40 @@ export default function CreateJudgingRoundForm({ roundId, onCreated }: Props) {
         {errors.end_date && (
           <p className="input-error">{errors.end_date.message}</p>
         )}
+      </div>
+      <div>
+        <label className="text-body5 mb-12 inline-block">
+          Projects<sup className="text-red-500">*</sup>
+        </label>
+        <Controller
+          name="projects_ids"
+          control={control}
+          render={({ field }) => (
+            <SelectProjectsInput
+              {...field}
+              projects={projectsInTournament}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
+      </div>
+      <div>
+        <label className="text-body5 mb-12 inline-block">
+          Judges<sup className="text-red-500">*</sup>
+        </label>
+        <Controller
+          name="judges_ids"
+          control={control}
+          render={({ field }) => (
+            <SelectJudgesInput
+              {...field}
+              initialValue={initialJudges}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
       </div>
 
       <Button

@@ -1,16 +1,14 @@
-import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import BackButton from "src/Components/BackButton/BackButton";
 import Button from "src/Components/Button/Button";
 import OgTags from "src/Components/OgTags/OgTags";
 import BadgeCard from "src/features/Profiles/pages/ProfilePage/BadgesCard/BadgeCard";
 import { useManageBadgesQuery } from "src/graphql";
-import { useNavigateBack } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
 import PendingNostrBadgesRequestsList from "./PendingNostrBadgesRequests/PendingNostrBadgesRequestsList";
 
 export default function ManageBadgesPage() {
   const query = useManageBadgesQuery();
-  const navigateBack = useNavigateBack("/admin");
 
   const navigate = useNavigate();
 
@@ -20,14 +18,7 @@ export default function ManageBadgesPage() {
       <div className={`page-container`}>
         <section>
           <div className="flex flex-wrap items-center gap-16 mb-24">
-            <button
-              className={`
-           w-48 aspect-square rounded self-center flex flex-col justify-center items-center gap-8 text-gray-900 bg-white hover:bg-gray-50 active:bg-gray-100 border-2 border-gray-200
-            `}
-              onClick={navigateBack}
-            >
-              <FiArrowLeft />
-            </button>
+            <BackButton defaultBackRoute="/admin" />
             <h1 className="text-h1 font-bolder">Manage Badges 🎖️</h1>
             <Button
               href={createRoute({

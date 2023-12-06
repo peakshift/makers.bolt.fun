@@ -5,6 +5,7 @@ import * as yup from "yup";
 import {
   CreateOrUpdateJudgingRoundInput,
   useGetJudgingRoundDetailsQuery,
+  useGetProjectsInTournamentQuery,
 } from "src/graphql";
 import { FormProvider, Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,6 +36,17 @@ export type CreateJudgingRoundFormType = Override<
 export default function CreateJudgingRoundPage() {
   const { tournamentDetails } = useTournament();
 
+  const projectsInTournamentQuery = useGetProjectsInTournamentQuery({
+    variables: {
+      tournamentId: tournamentDetails.id,
+      skip: 0,
+      take: 999,
+      trackId: null,
+      roleId: null,
+      search: null,
+    },
+  });
+
   const formMethods = useForm<CreateJudgingRoundFormType>({
     resolver: yupResolver(schema) as Resolver<CreateJudgingRoundFormType>,
     defaultValues: {
@@ -47,10 +59,15 @@ export default function CreateJudgingRoundPage() {
     },
   });
 
+  const projectsInTournament =
+    projectsInTournamentQuery.data?.getProjectsInTournament.projects;
+
   return (
     <FormProvider {...formMethods}>
-      <div>Update Judging Round</div>
-      <CreateJudgingRoundForm />
+      <h2 className="text-h2 font-bolder mb-24">Create New Judging Round</h2>
+      <CreateJudgingRoundForm
+        projectsInTournament={projectsInTournament ?? []}
+      />
     </FormProvider>
     // Check the badges form
   );
