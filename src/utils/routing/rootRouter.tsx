@@ -25,6 +25,7 @@ import { adminDashboardLoader } from "src/features/AdminDashboard/pages/AdminDas
 import { manageBadgesLoader } from "src/features/AdminDashboard/Badges/pages/ManageBadgesPage/manageBadges.loader";
 import { updateBadgeDetailsLoader } from "src/features/AdminDashboard/Badges/pages/CreateBadgePage/updateBadgeDetails.loader";
 import { badgeDetailsLoader } from "src/features/AdminDashboard/Badges/pages/BadgeDetailsPage/badgeDetails.loader";
+import { updateJudgingPageDataLoader } from "src/features/AdminDashboard/Judging/pages/UpdateJudgingRoundPage/updateJudgingPageData.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -268,11 +269,47 @@ const BadgeDetailsPage = Loadable(
   )
 );
 
-const ManageTournamentPage = Loadable(
+const JudgingRoundsPage = Loadable(
   React.lazy(
     () =>
       import(
-        /* webpackChunkName: "manage_tournament_page" */ "../../features/AdminDashboard/Tournaments/pages/ManageTournamentPage/ManageTournamentPage"
+        /* webpackChunkName: "judging_rounds_page" */ "../../features/AdminDashboard/Judging/pages/JudgingRoundsPage/JudgingRoundsPage"
+      )
+  )
+);
+
+const JudgingRoundDetailsPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "judging_round_details_page" */ "../../features/AdminDashboard/Judging/pages/JudgingRoundDetailsPage/JudgingRoundDetailsPage"
+      )
+  )
+);
+
+const UpdateJudgingRoundPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "update_judging_round_page" */ "../../features/AdminDashboard/Judging/pages/UpdateJudgingRoundPage/UpdateJudgingRoundPage"
+      )
+  )
+);
+
+const CreateJudgingRoundPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "create_judging_round_page" */ "../../features/AdminDashboard/Judging/pages/UpdateJudgingRoundPage/CreateJudgingRoundPage"
+      )
+  )
+);
+
+const ManageTournamentLayout = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "manage_tournament_layout" */ "../../features/AdminDashboard/Tournaments/pages/ManageTournamentPage/ManageTournamentLayout"
       )
   )
 );
@@ -379,9 +416,21 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
               loader={badgeDetailsLoader(queryClient)}
             />
           </Route>
-          <Route path="tournament/:idOrSlug">
+          <Route
+            path="tournament/:idOrSlug"
+            element={<ManageTournamentLayout />}
+          >
             <Route index element={<Navigate to="judging" replace />} />
-            <Route path="judging/*" element={<ManageTournamentPage />} />
+            <Route path="judging">
+              <Route index element={<JudgingRoundsPage />} />
+              <Route path=":roundId" element={<JudgingRoundDetailsPage />} />
+              <Route path="create" element={<CreateJudgingRoundPage />} />
+              <Route
+                path=":roundId/update"
+                element={<UpdateJudgingRoundPage />}
+                loader={updateJudgingPageDataLoader(queryClient)}
+              />
+            </Route>
           </Route>
         </Route>
 

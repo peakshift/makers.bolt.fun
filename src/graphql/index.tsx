@@ -1490,7 +1490,7 @@ export type GetJudgingRoundDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }> } };
+export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, tournament: { __typename?: 'Tournament', id: number } } };
 
 export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
   input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
@@ -2502,6 +2502,9 @@ export const GetJudgingRoundDetailsDocument = gql`
       hashtag
       title
       thumbnail_image
+    }
+    tournament {
+      id
     }
   }
 }

@@ -16,5 +16,8 @@ query GetJudgingRoundDetails($judgingRoundId: String!) {
       title
       thumbnail_image
     }
+    tournament {
+      id
+    }
   }
 }
