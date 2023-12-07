@@ -13,6 +13,8 @@ import { LoaderData } from "./updateJudgingPageData.loader";
 import { Override } from "src/utils/interfaces";
 import CreateJudgingRoundForm from "./CreateJudgingRoundForm";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
+import BackButton from "src/Components/BackButton/BackButton";
+import { createRoute } from "src/utils/routing";
 
 const schema: yup.SchemaOf<Omit<CreateOrUpdateJudgingRoundInput, "id">> = yup
   .object({
@@ -64,11 +66,21 @@ export default function CreateJudgingRoundPage() {
 
   return (
     <FormProvider {...formMethods}>
-      <h2 className="text-h2 font-bolder mb-24">Create New Judging Round</h2>
+      <div className="flex flex-wrap items-center gap-16 mb-24">
+        <BackButton
+          defaultBackRoute={createRoute({
+            type: "judging-rounds",
+            page: "list",
+            tournamentIdOrSlug: tournamentDetails.slug,
+          })}
+        />
+        <h2 className="text-h2 font-bolder text-gray-900">
+          Create New Judging Round
+        </h2>
+      </div>
       <CreateJudgingRoundForm
         projectsInTournament={projectsInTournament ?? []}
       />
     </FormProvider>
-    // Check the badges form
   );
 }

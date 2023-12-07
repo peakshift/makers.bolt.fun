@@ -76,6 +76,28 @@ type RouteOptions =
       type: "admin-badges";
       page?: "list" | "create" | "update" | "details";
       idOrSlug?: string | number;
+    }
+  | {
+      type: "judging-rounds";
+      page: "list";
+      tournamentIdOrSlug: number | string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "create";
+      tournamentIdOrSlug: number | string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "update";
+      tournamentIdOrSlug: number | string;
+      roundId: string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "details";
+      tournamentIdOrSlug: number | string;
+      roundId: string;
     };
 
 export function createRoute(options: RouteOptions) {
@@ -159,6 +181,17 @@ export function createRoute(options: RouteOptions) {
     if (options.page === "update")
       return `/admin/badges/${options.idOrSlug}/update`;
     if (options.page === "details") return `/admin/badges/${options.idOrSlug}`;
+  }
+
+  if (options.type === "judging-rounds") {
+    if (options.page === "list")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging`;
+    if (options.page === "create")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging/create`;
+    if (options.page === "update")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}/update`;
+    if (options.page === "details")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}`;
   }
 
   return "";

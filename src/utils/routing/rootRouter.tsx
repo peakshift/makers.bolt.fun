@@ -417,7 +417,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             />
           </Route>
           <Route
-            path="tournament/:idOrSlug"
+            path="tournament/:tournamentIdOrSlug"
             element={<ManageTournamentLayout />}
           >
             <Route index element={<Navigate to="judging" replace />} />

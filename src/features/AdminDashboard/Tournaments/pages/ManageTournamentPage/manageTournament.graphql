@@ -1,6 +1,7 @@
 query ManageTournament($idOrSlug: String!) {
   getTournamentById(idOrSlug: $idOrSlug) {
     id
+    slug
     title
     description
     thumbnail_image

@@ -16,7 +16,7 @@ const Ctx = createContext<ITournamentDetails>(null!);
 export default function TournamentDetailsContext({
   children,
 }: PropsWithChildren<{}>) {
-  const { idOrSlug } = useParams();
+  const { tournamentIdOrSlug: idOrSlug } = useParams();
 
   const tournaemntQuery = useManageTournamentQuery({
     variables: {

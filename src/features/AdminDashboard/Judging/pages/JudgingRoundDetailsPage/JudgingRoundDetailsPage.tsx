@@ -6,12 +6,17 @@ import { Link, useParams } from "react-router-dom";
 import BackButton from "src/Components/BackButton/BackButton";
 import Button from "src/Components/Button/Button";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
+import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { useGetJudgingRoundDetailsQuery } from "src/graphql";
 import { createRoute } from "src/utils/routing";
 
 export default function JudgingRoundDetailsPage() {
   const { roundId: id } = useParams<{ roundId: string }>();
+
+  const {
+    tournamentDetails: { slug },
+  } = useTournament();
 
   if (!id) throw new Error("No judging round id provided");
 
@@ -30,7 +35,13 @@ export default function JudgingRoundDetailsPage() {
     <div className="flex flex-col gap-42">
       <section>
         <div className="flex flex-wrap items-center gap-16 mb-24">
-          <BackButton defaultBackRoute={"/admin"} />
+          <BackButton
+            backRoute={createRoute({
+              type: "judging-rounds",
+              page: "list",
+              tournamentIdOrSlug: slug,
+            })}
+          />
           <h2 className="text-h2 font-bolder text-gray-900">
             {judgingRound.title}
           </h2>
@@ -38,7 +49,12 @@ export default function JudgingRoundDetailsPage() {
             size="sm"
             color="gray"
             className="ml-auto self-center"
-            href="update"
+            href={createRoute({
+              type: "judging-rounds",
+              page: "update",
+              tournamentIdOrSlug: slug,
+              roundId: judgingRound.id,
+            })}
           >
             Edit Info <MdEdit />
           </Button>

@@ -10,6 +10,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { LoaderData } from "./updateJudgingPageData.loader";
 import CreateJudgingRoundForm from "./CreateJudgingRoundForm";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
+import BackButton from "src/Components/BackButton/BackButton";
+import { createRoute } from "src/utils/routing";
 
 const schema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> = yup
   .object({
@@ -64,7 +66,19 @@ export default function UpdateJudgingRoundPage() {
 
   return (
     <FormProvider {...formMethods}>
-      <h2 className="text-h2 font-bolder mb-24">Update Judging Round</h2>
+      <div className="flex flex-wrap items-center gap-16 mb-24">
+        <BackButton
+          defaultBackRoute={createRoute({
+            type: "judging-rounds",
+            page: "details",
+            tournamentIdOrSlug: tournamentDetails.slug,
+            roundId: roundData.id,
+          })}
+        />
+        <h2 className="text-h2 font-bolder text-gray-900">
+          Update Judging Round
+        </h2>
+      </div>
       <CreateJudgingRoundForm
         roundId={roundData.id}
         projectsInTournament={projectsInTournament ?? []}
