@@ -57,7 +57,17 @@ export default function Header() {
                 {formatDate(
                   tournamentDetails.start_date,
                   tournamentDetails.end_date
-                )}
+                )}{" "}
+                {tournamentDetails.config.projectsSubmissionOpen &&
+                  tournamentDetails.config.projectsSubmissionClosesOn && (
+                    <span>
+                      (Submission closes:{" "}
+                      {dayjs(
+                        tournamentDetails.config.projectsSubmissionClosesOn
+                      ).format("Do MMM")}
+                      )
+                    </span>
+                  )}
               </p>
               <p className="text-body5">
                 <IoLocationOutline className="mr-8" />{" "}
