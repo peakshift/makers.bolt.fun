@@ -891,7 +891,7 @@ export interface NexusGenFieldTypes {
     confirmVote: NexusGenRootTypes['Vote']; // Vote!
     createMakerBadge: NexusGenRootTypes['Badge'] | null; // Badge
     createOrUpdateBadge: NexusGenRootTypes['Badge'] | null; // Badge
-    createOrUpdateJudgingRound: NexusGenRootTypes['TournamentJudgingRound'] | null; // TournamentJudgingRound
+    createOrUpdateJudgingRound: NexusGenRootTypes['Tournament'] | null; // Tournament
     createProject: NexusGenRootTypes['CreateProjectResponse'] | null; // CreateProjectResponse
     createStory: NexusGenRootTypes['Story'] | null; // Story
     createTournament: NexusGenRootTypes['Tournament'] | null; // Tournament
@@ -1490,7 +1490,7 @@ export interface NexusGenFieldTypeNames {
     confirmVote: 'Vote'
     createMakerBadge: 'Badge'
     createOrUpdateBadge: 'Badge'
-    createOrUpdateJudgingRound: 'TournamentJudgingRound'
+    createOrUpdateJudgingRound: 'Tournament'
     createProject: 'CreateProjectResponse'
     createStory: 'Story'
     createTournament: 'Tournament'

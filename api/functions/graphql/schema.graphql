@@ -324,7 +324,7 @@ type Mutation {
   confirmVote(payment_request: String!, preimage: String!): Vote!
   createMakerBadge(input: CreateMakerBadgeInput): Badge
   createOrUpdateBadge(input: CreateOrUpdateBadgeInput): Badge
-  createOrUpdateJudgingRound(input: CreateOrUpdateJudgingRoundInput): TournamentJudgingRound
+  createOrUpdateJudgingRound(input: CreateOrUpdateJudgingRoundInput): Tournament
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
   createTournament(data: CreateTournamentInput): Tournament

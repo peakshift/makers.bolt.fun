@@ -1,20 +1,12 @@
 mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
   createOrUpdateJudgingRound(input: $input) {
     id
-    title
-    description
-    end_date
-    createdAt
-    tournament {
+    judging_rounds {
+      id
       title
-      id
-    }
-    projects {
-      id
-    }
-    judges {
-      id
-      name
+      description
+      end_date
+      createdAt
     }
   }
 }

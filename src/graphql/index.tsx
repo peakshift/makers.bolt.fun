@@ -358,7 +358,7 @@ export type Mutation = {
   confirmVote: Vote;
   createMakerBadge: Maybe<Badge>;
   createOrUpdateBadge: Maybe<Badge>;
-  createOrUpdateJudgingRound: Maybe<TournamentJudgingRound>;
+  createOrUpdateJudgingRound: Maybe<Tournament>;
   createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
   createTournament: Maybe<Tournament>;
@@ -1553,7 +1553,7 @@ export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any, tournament: { __typename?: 'Tournament', title: string, id: number }, projects: Array<{ __typename?: 'Project', id: number }>, judges: Array<{ __typename?: 'User', id: number, name: string }> } | null };
+export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'Tournament', id: number, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any }> } | null };
 
 export type ManageTournamentQueryVariables = Exact<{
   idOrSlug: Scalars['String'];
@@ -2727,20 +2727,12 @@ export const CreateOrUpdateJudgingRoundDocument = gql`
     mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
   createOrUpdateJudgingRound(input: $input) {
     id
-    title
-    description
-    end_date
-    createdAt
-    tournament {
+    judging_rounds {
+      id
       title
-      id
-    }
-    projects {
-      id
-    }
-    judges {
-      id
-      name
+      description
+      end_date
+      createdAt
     }
   }
 }

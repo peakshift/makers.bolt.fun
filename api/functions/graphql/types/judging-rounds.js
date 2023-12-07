@@ -234,7 +234,7 @@ const createOrUpdateJudgingRound = extendType({
   type: "Mutation",
   definition(t) {
     t.field("createOrUpdateJudgingRound", {
-      type: TournamentJudgingRound,
+      type: "Tournament",
       args: { input: CreateOrUpdateJudgingRoundInput },
       resolve: async (_, args, ctx) => {
         const { input } = args;
@@ -370,7 +370,9 @@ const createOrUpdateJudgingRound = extendType({
 
         // TODO: Send email to judges
 
-        return judgingRound;
+        return prisma.tournament.findUnique({
+          where: { id: tournament_id },
+        });
       },
     });
   },

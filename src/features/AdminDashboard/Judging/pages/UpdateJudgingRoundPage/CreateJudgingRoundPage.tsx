@@ -1,15 +1,11 @@
-import React from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import LoadingPage from "src/Components/LoadingPage/LoadingPage";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import {
   CreateOrUpdateJudgingRoundInput,
-  useGetJudgingRoundDetailsQuery,
   useGetProjectsInTournamentQuery,
 } from "src/graphql";
 import { FormProvider, Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoaderData } from "./updateJudgingPageData.loader";
 import { Override } from "src/utils/interfaces";
 import CreateJudgingRoundForm from "./CreateJudgingRoundForm";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";

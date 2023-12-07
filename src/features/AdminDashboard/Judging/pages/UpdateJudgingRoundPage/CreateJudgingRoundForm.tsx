@@ -3,7 +3,6 @@ import Button from "src/Components/Button/Button";
 import DatePicker from "src/Components/Inputs/DatePicker/DatePicker";
 import {
   Project,
-  TournamentJudgingRound,
   useCreateOrUpdateJudgingRoundMutation,
   User,
 } from "src/graphql";
@@ -15,7 +14,7 @@ import SelectProjectsInput from "./SelectProjectsInput";
 
 interface Props {
   roundId?: string;
-  onCreated?: (round: Partial<TournamentJudgingRound>) => void;
+  onCreated?: () => void;
   projectsInTournament: Pick<
     Project,
     "id" | "title" | "hashtag" | "thumbnail_image"
@@ -42,7 +41,7 @@ export default function CreateJudgingRoundForm({
   const onSubmit: SubmitHandler<CreateJudgingRoundFormType> = async (data) => {
     if (loading) return console.log("loading");
     try {
-      const res = await mutate({
+      await mutate({
         variables: {
           input: {
             ...data,
@@ -50,12 +49,11 @@ export default function CreateJudgingRoundForm({
           },
         },
       });
-      const roundData = res.data?.createOrUpdateJudgingRound;
       NotificationsService.success(
         roundId ? "Round updated successfully" : "Round created successfully"
       );
-      if (roundId && roundData) {
-        onCreated?.(roundData as any);
+      if (!roundId) {
+        onCreated?.();
       }
     } catch (error) {
       NotificationsService.error(
