@@ -1,14 +1,26 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import linkifyHtml from "linkifyjs/lib/linkify-html";
 import React from "react";
+import { Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { FaDiscord } from "react-icons/fa";
 import { FiGlobe } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import ProjectLinksList from "src/features/Projects/pages/ProjectPage/Components/ProjectLinksList/ProjectLinksList";
-import { Project, TournamentJudgingRoundProjectScore } from "src/graphql";
+import {
+  Project,
+  ScoreProjectInput,
+  TournamentJudgingRoundProjectScore,
+  useScoreTournamentProjectMutation,
+} from "src/graphql";
+import { NotificationsService } from "src/services";
+import { extractErrorMessage } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
+import * as yup from "yup";
 
 interface Props {
+  roundId: string;
   project: Pick<
     Project,
     | "id"
@@ -29,9 +41,131 @@ interface Props {
   scores?: TournamentJudgingRoundProjectScore;
 }
 
-export default function ProjectScoreCard({ project, scores }: Props) {
+const schema: yup.SchemaOf<ScoreProjectInput> = yup
+  .object({
+    project_id: yup.number().required(),
+    round_id: yup.string().required(),
+    scores: yup
+      .object({
+        value_proposition: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+        innovation: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+        bitcoin_integration_and_scalability: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+        execution: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+        ui_ux_design: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+        transparency: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+        je_ne_sais_quoi: yup
+          .number()
+          .min(0)
+          .max(10)
+          .nullable()
+          .transform((_, val) => (val === "" ? null : Number(val))),
+      })
+      .required(),
+  })
+  .required();
+
+type ScoreProjectFormType = yup.InferType<typeof schema>;
+
+export default function ProjectScoreCard({ roundId, project, scores }: Props) {
+  const {
+    register,
+    formState: { errors, isDirty },
+    handleSubmit,
+    reset,
+  } = useForm<ScoreProjectFormType>({
+    resolver: yupResolver(schema) as Resolver<ScoreProjectFormType>,
+    defaultValues: {
+      project_id: project.id,
+      round_id: roundId,
+      scores: {
+        value_proposition: scores?.value_proposition ?? "",
+        innovation: scores?.innovation ?? "",
+        bitcoin_integration_and_scalability:
+          scores?.bitcoin_integration_and_scalability ?? "",
+        execution: scores?.execution ?? "",
+        ui_ux_design: scores?.ui_ux_design ?? "",
+        transparency: scores?.transparency ?? "",
+        je_ne_sais_quoi: scores?.je_ne_sais_quoi ?? "",
+      } as any,
+    },
+  });
+
+  const [mutate, { loading }] = useScoreTournamentProjectMutation();
+
+  const onSubmit: SubmitHandler<ScoreProjectFormType> = async (data) => {
+    if (loading) return console.log("loading");
+    try {
+      const res = await mutate({
+        variables: {
+          input: {
+            ...data,
+          },
+        },
+      });
+      const updatedData = res.data?.scoreTournamentProject?.scores;
+      if (updatedData)
+        reset({
+          project_id: project.id,
+          round_id: roundId,
+          scores: {
+            value_proposition: updatedData.value_proposition ?? "",
+            innovation: updatedData.innovation ?? "",
+            bitcoin_integration_and_scalability:
+              updatedData.bitcoin_integration_and_scalability ?? "",
+            execution: updatedData.execution ?? "",
+            ui_ux_design: updatedData.ui_ux_design ?? "",
+            transparency: updatedData.transparency ?? "",
+            je_ne_sais_quoi: updatedData.je_ne_sais_quoi ?? "",
+          } as any,
+        });
+      NotificationsService.success("Project score updated");
+    } catch (error) {
+      NotificationsService.error(
+        extractErrorMessage(error) ?? "Something went wrong"
+      );
+    }
+  };
+
+  const handleCancel = () => {
+    reset();
+  };
+
   return (
-    <Card className="flex flex-col gap-12">
+    <Card
+      className={`flex flex-col gap-12 ${
+        isDirty && "!bg-primary-25 !border-primary-100"
+      }`}
+    >
       <div className="flex items-center gap-12">
         <img
           className="w-48 aspect-square rounded-12 border border-gray-100"
@@ -66,6 +200,191 @@ export default function ProjectScoreCard({ project, scores }: Props) {
           <ProjectLinksList project={project} />
         </div>
       </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-16">
+        <p className="text-gray-500 font-medium mb-8">Score</p>
+        <div className="grid grid-cols-3 gap-8">
+          <div>
+            <label
+              htmlFor={`value-proposition-input-${project.id}`}
+              className="text-body5"
+            >
+              Value Proposition 🎯
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`value-proposition-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.value_proposition")}
+              />
+            </div>
+            {errors.scores?.value_proposition && (
+              <p className="input-error">
+                {errors.scores?.value_proposition.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor={`innovation-input-${project.id}`}
+              className="text-body5"
+            >
+              Innovation 🧪
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`innovation-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.innovation")}
+              />
+            </div>
+            {errors.scores?.innovation && (
+              <p className="input-error">{errors.scores?.innovation.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor={`bitcoin-integration-input-${project.id}`}
+              className="text-body5"
+            >
+              Bitcoin Integration and Scalability ⚡️
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`bitcoin-integration-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.bitcoin_integration_and_scalability")}
+              />
+            </div>
+            {errors.scores?.bitcoin_integration_and_scalability && (
+              <p className="input-error">
+                {errors.scores?.bitcoin_integration_and_scalability.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor={`execution-input-${project.id}`}
+              className="text-body5"
+            >
+              Execution ✅
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`execution-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.execution")}
+              />
+            </div>
+            {errors.scores?.execution && (
+              <p className="input-error">{errors.scores?.execution.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor={`ui-ux-design-input-${project.id}`}
+              className="text-body5"
+            >
+              UI/UX Design 🍒
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`ui-ux-design-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.ui_ux_design")}
+              />
+            </div>
+            {errors.scores?.ui_ux_design && (
+              <p className="input-error">
+                {errors.scores?.ui_ux_design.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor={`transparency-input-${project.id}`}
+              className="text-body5"
+            >
+              Transparency 👁️
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`transparency-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.transparency")}
+              />
+            </div>
+            {errors.scores?.transparency && (
+              <p className="input-error">
+                {errors.scores?.transparency.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor={`je-ne-sais-quoi-input-${project.id}`}
+              className="text-body5"
+            >
+              Je Ne Sais Quoi 🤩
+            </label>
+            <div className="input-wrapper mt-8 relative">
+              <input
+                id={`je-ne-sais-quoi-input-${project.id}`}
+                type="number"
+                min={0}
+                max={10}
+                className="input-text"
+                placeholder=""
+                {...register("scores.je_ne_sais_quoi")}
+              />
+            </div>
+            {errors.scores?.je_ne_sais_quoi && (
+              <p className="input-error">
+                {errors.scores?.je_ne_sais_quoi.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {isDirty && (
+          <div className="flex flex-wrap gap-8 justify-end mt-8">
+            <Button color="gray" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button type="submit" color="primary" isLoading={loading}>
+              Update Score
+            </Button>
+          </div>
+        )}
+      </form>
     </Card>
   );
 }

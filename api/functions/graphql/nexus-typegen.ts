@@ -177,6 +177,20 @@ export interface NexusGenInputs {
     badgeId: number; // Int!
     publicKeyToAward: string; // String!
   }
+  ScoreObjectInput: { // input type
+    bitcoin_integration_and_scalability?: number | null; // Int
+    execution?: number | null; // Int
+    innovation?: number | null; // Int
+    je_ne_sais_quoi?: number | null; // Int
+    transparency?: number | null; // Int
+    ui_ux_design?: number | null; // Int
+    value_proposition?: number | null; // Int
+  }
+  ScoreProjectInput: { // input type
+    project_id: number; // Int!
+    round_id: string; // String!
+    scores: NexusGenInputs['ScoreObjectInput']; // ScoreObjectInput!
+  }
   StoryInputType: { // input type
     body: string; // String!
     cover_image?: NexusGenInputs['ImageInput'] | null; // ImageInput
@@ -887,6 +901,7 @@ export interface NexusGenFieldTypes {
     linkNostrKey: NexusGenRootTypes['User'] | null; // User
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     requestNostrBadge: boolean | null; // Boolean
+    scoreTournamentProject: NexusGenRootTypes['TournamentJudgingRoundJudgeScore'] | null; // TournamentJudgingRoundJudgeScore
     setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
     updateLastSeenNotificationTime: NexusGenRootTypes['User'] | null; // User
@@ -1147,7 +1162,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     judge: NexusGenRootTypes['User']; // User!
     project: NexusGenRootTypes['Project']; // Project!
-    score: NexusGenRootTypes['TournamentJudgingRoundProjectScore']; // TournamentJudgingRoundProjectScore!
+    scores: NexusGenRootTypes['TournamentJudgingRoundProjectScore']; // TournamentJudgingRoundProjectScore!
   }
   TournamentJudgingRoundProjectScore: { // field return type
     bitcoin_integration_and_scalability: number | null; // Int
@@ -1485,6 +1500,7 @@ export interface NexusGenFieldTypeNames {
     linkNostrKey: 'User'
     registerInTournament: 'User'
     requestNostrBadge: 'Boolean'
+    scoreTournamentProject: 'TournamentJudgingRoundJudgeScore'
     setUserNostrKeyAsPrimary: 'User'
     unlinkNostrKey: 'User'
     updateLastSeenNotificationTime: 'User'
@@ -1745,7 +1761,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     judge: 'User'
     project: 'Project'
-    score: 'TournamentJudgingRoundProjectScore'
+    scores: 'TournamentJudgingRoundProjectScore'
   }
   TournamentJudgingRoundProjectScore: { // field return type name
     bitcoin_integration_and_scalability: 'Int'
@@ -1983,6 +1999,9 @@ export interface NexusGenArgTypes {
     }
     requestNostrBadge: { // args
       input?: NexusGenInputs['RequestNostrBadgeInput'] | null; // RequestNostrBadgeInput
+    }
+    scoreTournamentProject: { // args
+      input?: NexusGenInputs['ScoreProjectInput'] | null; // ScoreProjectInput
     }
     setUserNostrKeyAsPrimary: { // args
       key?: string | null; // String

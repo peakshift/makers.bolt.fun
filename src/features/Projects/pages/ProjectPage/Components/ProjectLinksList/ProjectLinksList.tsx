@@ -100,7 +100,7 @@ export default function ProjectLinksList({ project }: Props) {
         .map((link, idx) =>
           link.url ? (
             <a
-              key={idx}
+              key={link.label}
               href={link.url!}
               className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
               target="_blank"
@@ -113,6 +113,7 @@ export default function ProjectLinksList({ project }: Props) {
             </a>
           ) : (
             <CopyToClipboard
+              key={link.label}
               text={link.value!}
               onCopy={() =>
                 NotificationsService.info(" Copied to clipboard", {
@@ -121,7 +122,6 @@ export default function ProjectLinksList({ project }: Props) {
               }
             >
               <button
-                key={idx}
                 onClick={() => {}}
                 className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
                 data-tooltip-id={`project_link_${link.url}`}

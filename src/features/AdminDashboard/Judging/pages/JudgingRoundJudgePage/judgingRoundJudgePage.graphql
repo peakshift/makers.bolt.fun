@@ -43,7 +43,7 @@ query JudgingRoundJudgePage($judgingRoundId: String!) {
         id
         hashtag
       }
-      score {
+      scores {
         value_proposition
         innovation
         bitcoin_integration_and_scalability

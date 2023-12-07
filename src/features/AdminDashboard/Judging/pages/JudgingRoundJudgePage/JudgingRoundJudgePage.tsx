@@ -51,10 +51,11 @@ export default function JudgingRoundJudgePage() {
             <li key={project.id} className="">
               <ProjectScoreCard
                 project={project}
+                roundId={judgingRound.id}
                 scores={
                   judgingRound.my_scores.find(
                     (score) => score.project.id === project.id
-                  )?.score
+                  )?.scores
                 }
               />
             </li>

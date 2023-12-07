@@ -1,0 +1,14 @@
+mutation ScoreTournamentProject($input: ScoreProjectInput) {
+  scoreTournamentProject(input: $input) {
+    id
+    scores {
+      value_proposition
+      innovation
+      bitcoin_integration_and_scalability
+      execution
+      ui_ux_design
+      transparency
+      je_ne_sais_quoi
+    }
+  }
+}

@@ -368,6 +368,7 @@ export type Mutation = {
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
   requestNostrBadge: Maybe<Scalars['Boolean']>;
+  scoreTournamentProject: Maybe<TournamentJudgingRoundJudgeScore>;
   setUserNostrKeyAsPrimary: Maybe<User>;
   unlinkNostrKey: Maybe<User>;
   updateLastSeenNotificationTime: Maybe<User>;
@@ -461,6 +462,11 @@ export type MutationRegisterInTournamentArgs = {
 
 export type MutationRequestNostrBadgeArgs = {
   input: InputMaybe<RequestNostrBadgeInput>;
+};
+
+
+export type MutationScoreTournamentProjectArgs = {
+  input: InputMaybe<ScoreProjectInput>;
 };
 
 
@@ -939,6 +945,22 @@ export enum RoleLevelEnum {
   Pro = 'Pro'
 }
 
+export type ScoreObjectInput = {
+  bitcoin_integration_and_scalability?: InputMaybe<Scalars['Int']>;
+  execution?: InputMaybe<Scalars['Int']>;
+  innovation?: InputMaybe<Scalars['Int']>;
+  je_ne_sais_quoi?: InputMaybe<Scalars['Int']>;
+  transparency?: InputMaybe<Scalars['Int']>;
+  ui_ux_design?: InputMaybe<Scalars['Int']>;
+  value_proposition?: InputMaybe<Scalars['Int']>;
+};
+
+export type ScoreProjectInput = {
+  project_id: Scalars['Int'];
+  round_id: Scalars['String'];
+  scores: ScoreObjectInput;
+};
+
 export type Story = PostBase & {
   __typename?: 'Story';
   author: User;
@@ -1114,7 +1136,7 @@ export type TournamentJudgingRoundJudgeScore = {
   id: Scalars['Int'];
   judge: User;
   project: Project;
-  score: TournamentJudgingRoundProjectScore;
+  scores: TournamentJudgingRoundProjectScore;
 };
 
 export type TournamentJudgingRoundProjectScore = {
@@ -1517,7 +1539,14 @@ export type JudgingRoundJudgePageQueryVariables = Exact<{
 }>;
 
 
-export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, project: { __typename?: 'Project', id: number, hashtag: string }, score: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } }> } };
+export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, project: { __typename?: 'Project', id: number, hashtag: string }, scores: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } }> } };
+
+export type ScoreTournamentProjectMutationVariables = Exact<{
+  input: InputMaybe<ScoreProjectInput>;
+}>;
+
+
+export type ScoreTournamentProjectMutation = { __typename?: 'Mutation', scoreTournamentProject: { __typename?: 'TournamentJudgingRoundJudgeScore', id: number, scores: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } } | null };
 
 export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
   input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
@@ -2611,7 +2640,7 @@ export const JudgingRoundJudgePageDocument = gql`
         id
         hashtag
       }
-      score {
+      scores {
         value_proposition
         innovation
         bitcoin_integration_and_scalability
@@ -2652,6 +2681,48 @@ export function useJudgingRoundJudgePageLazyQuery(baseOptions?: Apollo.LazyQuery
 export type JudgingRoundJudgePageQueryHookResult = ReturnType<typeof useJudgingRoundJudgePageQuery>;
 export type JudgingRoundJudgePageLazyQueryHookResult = ReturnType<typeof useJudgingRoundJudgePageLazyQuery>;
 export type JudgingRoundJudgePageQueryResult = Apollo.QueryResult<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>;
+export const ScoreTournamentProjectDocument = gql`
+    mutation ScoreTournamentProject($input: ScoreProjectInput) {
+  scoreTournamentProject(input: $input) {
+    id
+    scores {
+      value_proposition
+      innovation
+      bitcoin_integration_and_scalability
+      execution
+      ui_ux_design
+      transparency
+      je_ne_sais_quoi
+    }
+  }
+}
+    `;
+export type ScoreTournamentProjectMutationFn = Apollo.MutationFunction<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>;
+
+/**
+ * __useScoreTournamentProjectMutation__
+ *
+ * To run a mutation, you first call `useScoreTournamentProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useScoreTournamentProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [scoreTournamentProjectMutation, { data, loading, error }] = useScoreTournamentProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useScoreTournamentProjectMutation(baseOptions?: Apollo.MutationHookOptions<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>(ScoreTournamentProjectDocument, options);
+      }
+export type ScoreTournamentProjectMutationHookResult = ReturnType<typeof useScoreTournamentProjectMutation>;
+export type ScoreTournamentProjectMutationResult = Apollo.MutationResult<ScoreTournamentProjectMutation>;
+export type ScoreTournamentProjectMutationOptions = Apollo.BaseMutationOptions<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>;
 export const CreateOrUpdateJudgingRoundDocument = gql`
     mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
   createOrUpdateJudgingRound(input: $input) {

@@ -334,6 +334,7 @@ type Mutation {
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   requestNostrBadge(input: RequestNostrBadgeInput): Boolean
+  scoreTournamentProject(input: ScoreProjectInput): TournamentJudgingRoundJudgeScore
   setUserNostrKeyAsPrimary(key: String): User
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
@@ -574,6 +575,22 @@ enum RoleLevelEnum {
   Pro
 }
 
+input ScoreObjectInput {
+  bitcoin_integration_and_scalability: Int
+  execution: Int
+  innovation: Int
+  je_ne_sais_quoi: Int
+  transparency: Int
+  ui_ux_design: Int
+  value_proposition: Int
+}
+
+input ScoreProjectInput {
+  project_id: Int!
+  round_id: String!
+  scores: ScoreObjectInput!
+}
+
 type Story implements PostBase {
   author: User!
   body: String!
@@ -738,7 +755,7 @@ type TournamentJudgingRoundJudgeScore {
   id: Int!
   judge: User!
   project: Project!
-  score: TournamentJudgingRoundProjectScore!
+  scores: TournamentJudgingRoundProjectScore!
 }
 
 type TournamentJudgingRoundProjectScore {

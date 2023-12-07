@@ -73,7 +73,7 @@ const TournamentJudgingRoundJudgeScore = objectType({
       },
     });
 
-    t.nonNull.field("score", {
+    t.nonNull.field("scores", {
       type: TournamentJudgingRoundProjectScore,
       resolve: async (parent, _, ctx) => {
         return prisma.tournamentJudgingRoundJudgeScore
@@ -81,8 +81,7 @@ const TournamentJudgingRoundJudgeScore = objectType({
             where: { id: parent.id },
           })
           .then((res) => {
-            const data = JSON.parse(res.scores ?? "{}");
-
+            const data = res.scores ?? {};
             return {
               value_proposition: data.value_proposition,
               innovation: data.innovation,
@@ -377,6 +376,106 @@ const createOrUpdateJudgingRound = extendType({
   },
 });
 
+const ScoreObjectInput = inputObjectType({
+  name: "ScoreObjectInput",
+  definition(t) {
+    t.int("value_proposition");
+    t.int("innovation");
+    t.int("bitcoin_integration_and_scalability");
+    t.int("execution");
+    t.int("ui_ux_design");
+    t.int("transparency");
+    t.int("je_ne_sais_quoi");
+  },
+});
+
+const ScoreProjectInput = inputObjectType({
+  name: "ScoreProjectInput",
+  definition(t) {
+    t.nonNull.string("round_id");
+    t.nonNull.int("project_id");
+    t.nonNull.field("scores", {
+      type: ScoreObjectInput,
+    });
+  },
+});
+
+const scoreTournamentProject = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.field("scoreTournamentProject", {
+      type: TournamentJudgingRoundJudgeScore,
+      args: { input: ScoreProjectInput },
+      resolve: async (_, args, ctx) => {
+        const userId = ctx.user?.id;
+
+        if (!userId) throw new ApolloError("Not authorized", "401");
+
+        const { input } = args;
+
+        const { round_id, project_id, scores } = input;
+
+        const isJudgeInRound =
+          await prisma.tournamentJudgingRoundJudge.findFirst({
+            where: {
+              round_id: args.input.round_id,
+              judge_id: userId,
+            },
+          });
+
+        if (!isJudgeInRound) {
+          throw new ApolloError(
+            "You are not allowed to score this project.",
+            "403"
+          );
+        }
+
+        const judgingRound = await prisma.tournamentJudgingRound.findUnique({
+          where: { id: round_id },
+          include: {
+            projects: {
+              where: {
+                project_id: project_id,
+              },
+            },
+          },
+        });
+
+        const projectExistInRound = judgingRound?.projects?.length > 0;
+
+        if (!projectExistInRound) {
+          throw new ApolloError(
+            "This project is not part of this judging round.",
+            "404"
+          );
+        }
+
+        const judgingRoundJudgeScore =
+          await prisma.tournamentJudgingRoundJudgeScore.upsert({
+            where: {
+              round_id_judge_id_project_id: {
+                round_id: round_id,
+                judge_id: ctx.user.id,
+                project_id: project_id,
+              },
+            },
+            update: {
+              scores,
+            },
+            create: {
+              round_id: round_id,
+              judge_id: ctx.user?.id,
+              project_id: project_id,
+              scores,
+            },
+          });
+
+        return judgingRoundJudgeScore;
+      },
+    });
+  },
+});
+
 module.exports = {
   // Types
   TournamentJudgingRound,
@@ -384,4 +483,5 @@ module.exports = {
   getJudgingRoundById,
   // Mutations
   createOrUpdateJudgingRound,
+  scoreTournamentProject,
 };
