@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import * as yup from "yup";
 import {
@@ -36,6 +36,7 @@ export type CreateJudgingRoundFormType = Override<
 >;
 
 export default function CreateJudgingRoundPage() {
+  const navigate = useNavigate();
   const { tournamentDetails } = useTournament();
 
   const projectsInTournamentQuery = useGetProjectsInTournamentQuery({
@@ -64,6 +65,16 @@ export default function CreateJudgingRoundPage() {
   const projectsInTournament =
     projectsInTournamentQuery.data?.getProjectsInTournament.projects;
 
+  const onRoundCreated = () => {
+    navigate(
+      createRoute({
+        type: "judging-rounds",
+        page: "list",
+        tournamentIdOrSlug: tournamentDetails.slug,
+      })
+    );
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex flex-wrap items-center gap-16 mb-24">
@@ -80,6 +91,7 @@ export default function CreateJudgingRoundPage() {
       </div>
       <CreateJudgingRoundForm
         projectsInTournament={projectsInTournament ?? []}
+        onCreated={onRoundCreated}
       />
     </FormProvider>
   );

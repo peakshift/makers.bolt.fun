@@ -1,14 +1,10 @@
 import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
 import DatePicker from "src/Components/Inputs/DatePicker/DatePicker";
-import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
 import {
-  Badge,
   Project,
   TournamentJudgingRound,
-  useCreateOrUpdateBadgeMutation,
   useCreateOrUpdateJudgingRoundMutation,
-  useGetProjectsInTournamentQuery,
   User,
 } from "src/graphql";
 import { NotificationsService } from "src/services";
@@ -38,6 +34,7 @@ export default function CreateJudgingRoundForm({
     formState: { errors },
     handleSubmit,
     control,
+    watch,
   } = useFormContext<CreateJudgingRoundFormType>();
 
   const [mutate, { loading }] = useCreateOrUpdateJudgingRoundMutation();
@@ -110,7 +107,9 @@ export default function CreateJudgingRoundForm({
         <Controller
           name="end_date"
           control={control}
-          render={({ field }) => <DatePicker {...field} className="mt-8" />}
+          render={({ field }) => (
+            <DatePicker {...field} showTimeSelect className="mt-8" />
+          )}
         />
         {errors.end_date && (
           <p className="input-error">{errors.end_date.message}</p>
