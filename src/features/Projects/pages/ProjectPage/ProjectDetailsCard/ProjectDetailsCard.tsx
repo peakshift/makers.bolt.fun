@@ -7,7 +7,6 @@ import { setProject } from "src/redux/features/project.slice";
 import Button from "src/Components/Button/Button";
 import ProjectCardSkeleton from "./ProjectDetailsCard.Skeleton";
 // import VoteButton from 'src/features/Projects/pages/ProjectPage/VoteButton/VoteButton';
-import { NotificationsService } from "src/services";
 import {
   ProjectLaunchStatusEnum,
   ProjectPermissionEnum,
@@ -19,18 +18,14 @@ import ErrorMessage from "src/Components/Errors/ErrorMessage/ErrorMessage";
 import { setVoteAmount } from "src/redux/features/vote.slice";
 import { numberFormatter } from "src/utils/helperFunctions";
 import { MEDIA_QUERIES } from "src/utils/theme";
-import { FaDiscord } from "react-icons/fa";
-import { FiEdit2, FiFigma, FiGithub, FiGlobe, FiTwitter } from "react-icons/fi";
-import CopyToClipboard from "react-copy-to-clipboard";
+import { FiEdit2 } from "react-icons/fi";
 import Badge from "src/Components/Badge/Badge";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { Link } from "react-router-dom";
 import { createRoute } from "src/utils/routing";
 import { IoMdClose } from "react-icons/io";
 import { sortMembersByRole } from "src/features/Projects/utils/helperFunctions";
-import { GiOstrich } from "react-icons/gi";
-import { Tooltip } from "react-tooltip";
-import { SiReplit, SiYoutube } from "react-icons/si";
+import ProjectLinksList from "../Components/ProjectLinksList/ProjectLinksList";
 
 interface Props extends ModalCard {
   projectId: number;
@@ -87,71 +82,6 @@ export default function ProjectDetailsCard({
     );
 
   const project = data.getProject;
-
-  const links = [
-    {
-      value: project.discord,
-      text: project.discord,
-      icon: FaDiscord,
-      colors: "bg-violet-100 text-violet-900",
-      label: "Discord",
-    },
-    {
-      value: project.website,
-      text: project.website?.replace(/(^\w+:|^)\/\//, "").replace(/\/$/, ""),
-      icon: FiGlobe,
-      colors: "bg-gray-100 text-gray-900",
-      url: project.website,
-      label: "Website",
-    },
-    {
-      value: project.twitter,
-      text: project.twitter,
-      icon: FiTwitter,
-      colors: "bg-blue-100 text-blue-500",
-      url: project.twitter,
-      label: "Twitter",
-    },
-    {
-      value: project.youtube,
-      text: project.youtube,
-      icon: SiYoutube,
-      colors: "bg-red-100 text-red-600",
-      url: project.youtube,
-      label: "Youtube",
-    },
-    {
-      value: project.github,
-      text: project.github,
-      icon: FiGithub,
-      colors: "bg-gray-200 text-gray-800",
-      url: project.github,
-      label: "Github",
-    },
-    {
-      value: project.npub,
-      text: project.npub,
-      icon: GiOstrich,
-      colors: "bg-violet-100 text-violet-600",
-      label: "Nostr Public Key",
-    },
-    {
-      value: project.figma,
-      text: project.figma,
-      icon: FiFigma,
-      colors: "bg-pink-100 text-pink-600",
-      url: project.figma,
-      label: "Figma",
-    },
-    {
-      value: project.replit,
-      text: project.replit,
-      icon: SiReplit,
-      colors: "bg-orange-100 text-orange-600",
-      url: project.replit,
-      label: "Replit",
-    },
-  ];
 
   const onVote = (votes?: number) => {
     dispatch(setVoteAmount(votes ?? 10));
@@ -273,44 +203,7 @@ export default function ProjectDetailsCard({
 
           {/* Links */}
           <div className="mt-16 flex flex-wrap gap-16">
-            {links
-              .filter((link) => !!link.value)
-              .map((link, idx) =>
-                link.url ? (
-                  <a
-                    key={idx}
-                    href={link.url!}
-                    className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-tooltip-id={`project_link_${link.url}`}
-                    data-tooltip-content={link.label}
-                  >
-                    <link.icon className="scale-125" />
-                    <Tooltip id={`project_link_${link.url}`} />
-                  </a>
-                ) : (
-                  <CopyToClipboard
-                    text={link.value!}
-                    onCopy={() =>
-                      NotificationsService.info(" Copied to clipboard", {
-                        icon: "📋",
-                      })
-                    }
-                  >
-                    <button
-                      key={idx}
-                      onClick={() => {}}
-                      className={`w-40 aspect-square rounded-full flex justify-center items-center ${link.colors}`}
-                      data-tooltip-id={`project_link_${link.url}`}
-                      data-tooltip-content={link.label}
-                    >
-                      <link.icon className="scale-125" />
-                      <Tooltip id={`project_link_${link.url}`} />
-                    </button>
-                  </CopyToClipboard>
-                )
-              )}
+            <ProjectLinksList project={project} />
           </div>
         </div>
         {project.screenshots.length > 0 && (

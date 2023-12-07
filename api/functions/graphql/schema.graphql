@@ -728,9 +728,27 @@ type TournamentJudgingRound {
   end_date: Date!
   id: String!
   judges: [User!]!
+  my_scores: [TournamentJudgingRoundJudgeScore!]!
   projects: [Project!]!
   title: String!
   tournament: Tournament!
+}
+
+type TournamentJudgingRoundJudgeScore {
+  id: Int!
+  judge: User!
+  project: Project!
+  score: TournamentJudgingRoundProjectScore!
+}
+
+type TournamentJudgingRoundProjectScore {
+  bitcoin_integration_and_scalability: Int
+  execution: Int
+  innovation: Int
+  je_ne_sais_quoi: Int
+  transparency: Int
+  ui_ux_design: Int
+  value_proposition: Int
 }
 
 type TournamentMakerDeal {

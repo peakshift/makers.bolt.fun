@@ -16,6 +16,89 @@ const cacheService = require("../../../services/cache.service");
 const { queueService } = require("../../../services/queue-service");
 const { toSlug } = require("../../../utils/helpers");
 
+// model TournamentJudgingRoundJudgeScore {
+//   id Int @id @default(autoincrement())
+
+//   round_id String
+//   round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
+
+//   judge_id Int
+//   judge    User @relation(fields: [judge_id], references: [id])
+
+//   project_id Int
+//   project    Project @relation(fields: [project_id], references: [id])
+
+//   scores Json
+
+//   @@unique([round_id, judge_id, project_id])
+// }
+
+const TournamentJudgingRoundProjectScore = objectType({
+  name: "TournamentJudgingRoundProjectScore",
+  definition(t) {
+    t.int("value_proposition");
+    t.int("innovation");
+    t.int("bitcoin_integration_and_scalability");
+    t.int("execution");
+    t.int("ui_ux_design");
+    t.int("transparency");
+    t.int("je_ne_sais_quoi");
+  },
+});
+
+const TournamentJudgingRoundJudgeScore = objectType({
+  name: "TournamentJudgingRoundJudgeScore",
+  definition(t) {
+    t.nonNull.int("id");
+
+    t.nonNull.field("judge", {
+      type: "User",
+      resolve: async (parent, _, ctx) => {
+        return prisma.tournamentJudgingRoundJudgeScore
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .judge();
+      },
+    });
+
+    t.nonNull.field("project", {
+      type: "Project",
+      resolve: async (parent, _, ctx) => {
+        return prisma.tournamentJudgingRoundJudgeScore
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .project();
+      },
+    });
+
+    t.nonNull.field("score", {
+      type: TournamentJudgingRoundProjectScore,
+      resolve: async (parent, _, ctx) => {
+        return prisma.tournamentJudgingRoundJudgeScore
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .then((res) => {
+            const data = JSON.parse(res.scores ?? "{}");
+
+            return {
+              value_proposition: data.value_proposition,
+              innovation: data.innovation,
+              bitcoin_integration_and_scalability:
+                data.bitcoin_integration_and_scalability,
+              execution: data.execution,
+              ui_ux_design: data.ui_ux_design,
+              transparency: data.transparency,
+              je_ne_sais_quoi: data.je_ne_sais_quoi,
+            };
+          });
+      },
+    });
+  },
+});
+
 const TournamentJudgingRound = objectType({
   name: "TournamentJudgingRound",
   definition(t) {
@@ -71,6 +154,20 @@ const TournamentJudgingRound = objectType({
               },
             })
           );
+      },
+    });
+
+    t.nonNull.list.nonNull.field("my_scores", {
+      type: TournamentJudgingRoundJudgeScore,
+      resolve: async (parent, _, ctx) => {
+        if (!ctx.user?.id) throw new ApolloError("User not found", "404");
+
+        return prisma.tournamentJudgingRoundJudgeScore.findMany({
+          where: {
+            judge_id: ctx.user?.id,
+            round_id: parent.id,
+          },
+        });
       },
     });
   },

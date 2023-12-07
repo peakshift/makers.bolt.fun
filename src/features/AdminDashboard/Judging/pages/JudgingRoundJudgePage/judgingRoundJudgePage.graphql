@@ -1,0 +1,57 @@
+query JudgingRoundJudgePage($judgingRoundId: String!) {
+  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
+    id
+    title
+    description
+    createdAt
+    end_date
+    judges {
+      id
+      name
+      avatar
+      jobTitle
+    }
+    projects {
+      id
+      hashtag
+      title
+      tagline
+      description
+      thumbnail_image
+      twitter
+      discord
+      github
+      slack
+      telegram
+      figma
+      replit
+      youtube
+      npub
+      website
+      category {
+        id
+        icon
+        title
+      }
+    }
+    tournament {
+      id
+    }
+    my_scores {
+      id
+      project {
+        id
+        hashtag
+      }
+      score {
+        value_proposition
+        innovation
+        bitcoin_integration_and_scalability
+        execution
+        ui_ux_design
+        transparency
+        je_ne_sais_quoi
+      }
+    }
+  }
+}

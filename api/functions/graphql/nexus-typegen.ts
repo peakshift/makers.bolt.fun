@@ -590,6 +590,18 @@ export interface NexusGenObjects {
     id: string; // String!
     title: string; // String!
   }
+  TournamentJudgingRoundJudgeScore: { // root type
+    id: number; // Int!
+  }
+  TournamentJudgingRoundProjectScore: { // root type
+    bitcoin_integration_and_scalability?: number | null; // Int
+    execution?: number | null; // Int
+    innovation?: number | null; // Int
+    je_ne_sais_quoi?: number | null; // Int
+    transparency?: number | null; // Int
+    ui_ux_design?: number | null; // Int
+    value_proposition?: number | null; // Int
+  }
   TournamentMakerDeal: { // root type
     description: string; // String!
     title: string; // String!
@@ -1126,9 +1138,25 @@ export interface NexusGenFieldTypes {
     end_date: NexusGenScalars['Date']; // Date!
     id: string; // String!
     judges: NexusGenRootTypes['User'][]; // [User!]!
+    my_scores: NexusGenRootTypes['TournamentJudgingRoundJudgeScore'][]; // [TournamentJudgingRoundJudgeScore!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     title: string; // String!
     tournament: NexusGenRootTypes['Tournament']; // Tournament!
+  }
+  TournamentJudgingRoundJudgeScore: { // field return type
+    id: number; // Int!
+    judge: NexusGenRootTypes['User']; // User!
+    project: NexusGenRootTypes['Project']; // Project!
+    score: NexusGenRootTypes['TournamentJudgingRoundProjectScore']; // TournamentJudgingRoundProjectScore!
+  }
+  TournamentJudgingRoundProjectScore: { // field return type
+    bitcoin_integration_and_scalability: number | null; // Int
+    execution: number | null; // Int
+    innovation: number | null; // Int
+    je_ne_sais_quoi: number | null; // Int
+    transparency: number | null; // Int
+    ui_ux_design: number | null; // Int
+    value_proposition: number | null; // Int
   }
   TournamentMakerDeal: { // field return type
     description: string; // String!
@@ -1708,9 +1736,25 @@ export interface NexusGenFieldTypeNames {
     end_date: 'Date'
     id: 'String'
     judges: 'User'
+    my_scores: 'TournamentJudgingRoundJudgeScore'
     projects: 'Project'
     title: 'String'
     tournament: 'Tournament'
+  }
+  TournamentJudgingRoundJudgeScore: { // field return type name
+    id: 'Int'
+    judge: 'User'
+    project: 'Project'
+    score: 'TournamentJudgingRoundProjectScore'
+  }
+  TournamentJudgingRoundProjectScore: { // field return type name
+    bitcoin_integration_and_scalability: 'Int'
+    execution: 'Int'
+    innovation: 'Int'
+    je_ne_sais_quoi: 'Int'
+    transparency: 'Int'
+    ui_ux_design: 'Int'
+    value_proposition: 'Int'
   }
   TournamentMakerDeal: { // field return type name
     description: 'String'

@@ -26,6 +26,7 @@ import { manageBadgesLoader } from "src/features/AdminDashboard/Badges/pages/Man
 import { updateBadgeDetailsLoader } from "src/features/AdminDashboard/Badges/pages/CreateBadgePage/updateBadgeDetails.loader";
 import { badgeDetailsLoader } from "src/features/AdminDashboard/Badges/pages/BadgeDetailsPage/badgeDetails.loader";
 import { updateJudgingPageDataLoader } from "src/features/AdminDashboard/Judging/pages/UpdateJudgingRoundPage/updateJudgingPageData.loader";
+import { judgingRoundJudgePageDataLoader } from "src/features/AdminDashboard/Judging/pages/JudgingRoundJudgePage/judgingRoundJudgePage.loader";
 
 const HomePage = Loadable(
   React.lazy(
@@ -314,6 +315,15 @@ const ManageTournamentLayout = Loadable(
   )
 );
 
+const JudgingRoundJudgePage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "judging_round_judge_page" */ "../../features/AdminDashboard/Judging/pages/JudgingRoundJudgePage/JudgingRoundJudgePage"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -429,6 +439,11 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
                 path=":roundId/update"
                 element={<UpdateJudgingRoundPage />}
                 loader={updateJudgingPageDataLoader(queryClient)}
+              />
+              <Route
+                path=":roundId/judge"
+                element={<JudgingRoundJudgePage />}
+                loader={judgingRoundJudgePageDataLoader(queryClient)}
               />
             </Route>
           </Route>

@@ -1103,9 +1103,29 @@ export type TournamentJudgingRound = {
   end_date: Scalars['Date'];
   id: Scalars['String'];
   judges: Array<User>;
+  my_scores: Array<TournamentJudgingRoundJudgeScore>;
   projects: Array<Project>;
   title: Scalars['String'];
   tournament: Tournament;
+};
+
+export type TournamentJudgingRoundJudgeScore = {
+  __typename?: 'TournamentJudgingRoundJudgeScore';
+  id: Scalars['Int'];
+  judge: User;
+  project: Project;
+  score: TournamentJudgingRoundProjectScore;
+};
+
+export type TournamentJudgingRoundProjectScore = {
+  __typename?: 'TournamentJudgingRoundProjectScore';
+  bitcoin_integration_and_scalability: Maybe<Scalars['Int']>;
+  execution: Maybe<Scalars['Int']>;
+  innovation: Maybe<Scalars['Int']>;
+  je_ne_sais_quoi: Maybe<Scalars['Int']>;
+  transparency: Maybe<Scalars['Int']>;
+  ui_ux_design: Maybe<Scalars['Int']>;
+  value_proposition: Maybe<Scalars['Int']>;
 };
 
 export type TournamentMakerDeal = {
@@ -1491,6 +1511,13 @@ export type GetJudgingRoundDetailsQueryVariables = Exact<{
 
 
 export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, tournament: { __typename?: 'Tournament', id: number } } };
+
+export type JudgingRoundJudgePageQueryVariables = Exact<{
+  judgingRoundId: Scalars['String'];
+}>;
+
+
+export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, project: { __typename?: 'Project', id: number, hashtag: string }, score: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } }> } };
 
 export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
   input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
@@ -2538,6 +2565,93 @@ export function useGetJudgingRoundDetailsLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetJudgingRoundDetailsQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsQuery>;
 export type GetJudgingRoundDetailsLazyQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsLazyQuery>;
 export type GetJudgingRoundDetailsQueryResult = Apollo.QueryResult<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>;
+export const JudgingRoundJudgePageDocument = gql`
+    query JudgingRoundJudgePage($judgingRoundId: String!) {
+  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
+    id
+    title
+    description
+    createdAt
+    end_date
+    judges {
+      id
+      name
+      avatar
+      jobTitle
+    }
+    projects {
+      id
+      hashtag
+      title
+      tagline
+      description
+      thumbnail_image
+      twitter
+      discord
+      github
+      slack
+      telegram
+      figma
+      replit
+      youtube
+      npub
+      website
+      category {
+        id
+        icon
+        title
+      }
+    }
+    tournament {
+      id
+    }
+    my_scores {
+      id
+      project {
+        id
+        hashtag
+      }
+      score {
+        value_proposition
+        innovation
+        bitcoin_integration_and_scalability
+        execution
+        ui_ux_design
+        transparency
+        je_ne_sais_quoi
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useJudgingRoundJudgePageQuery__
+ *
+ * To run a query within a React component, call `useJudgingRoundJudgePageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJudgingRoundJudgePageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJudgingRoundJudgePageQuery({
+ *   variables: {
+ *      judgingRoundId: // value for 'judgingRoundId'
+ *   },
+ * });
+ */
+export function useJudgingRoundJudgePageQuery(baseOptions: Apollo.QueryHookOptions<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>(JudgingRoundJudgePageDocument, options);
+      }
+export function useJudgingRoundJudgePageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>(JudgingRoundJudgePageDocument, options);
+        }
+export type JudgingRoundJudgePageQueryHookResult = ReturnType<typeof useJudgingRoundJudgePageQuery>;
+export type JudgingRoundJudgePageLazyQueryHookResult = ReturnType<typeof useJudgingRoundJudgePageLazyQuery>;
+export type JudgingRoundJudgePageQueryResult = Apollo.QueryResult<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>;
 export const CreateOrUpdateJudgingRoundDocument = gql`
     mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
   createOrUpdateJudgingRound(input: $input) {
