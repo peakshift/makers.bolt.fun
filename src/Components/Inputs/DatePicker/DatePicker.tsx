@@ -34,8 +34,11 @@ const DatePicker = React.forwardRef<HTMLDivElement, Props>(
       >
         <MdCalendarToday className="flex-shrink-0 self-center text-gray-600" />
         <ReactDatePicker
-          showTimeSelect={showTimeSelect}
+          showTimeInput={showTimeSelect}
           selected={value}
+          showMonthDropdown
+          showYearDropdown
+          dropdownMode="select"
           onChange={onChange}
           dateFormat={showTimeSelect ? "MMMM d, yyyy h:mm aa" : "MMMM d, yyyy"}
           className={`
