@@ -194,7 +194,9 @@ export default function ProjectScoreCard({ roundId, project, scores }: Props) {
         }}
       ></div>
       <div>
-        <p className="text-body5 text-gray-500 font-medium mb-8">Links</p>
+        <p className="text-body5 text-gray-500 font-medium mb-8">
+          Project Links
+        </p>
 
         <div className="flex flex-wrap gap-16">
           <ProjectLinksList project={project} />

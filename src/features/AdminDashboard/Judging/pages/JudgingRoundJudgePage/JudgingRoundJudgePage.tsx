@@ -28,10 +28,10 @@ export default function JudgingRoundJudgePage() {
             {judgingRound.title}
           </h2>
         </div>
-        <p className="mb-16">
-          Round closes on:{" "}
-          <span className="font-bold">
-            {dayjs(judgingRound.end_date).format("MMM DD")}
+        <p className="mb-16 ">
+          Judging closes in:{" "}
+          <span className="font-bold text-orange-500 text-body3">
+            {getDateTimeDifference(judgingRound.end_date)}
           </span>
         </p>
         <div
@@ -64,4 +64,15 @@ export default function JudgingRoundJudgePage() {
       </section>
     </div>
   );
+}
+
+function getDateTimeDifference(endDate: string) {
+  const diffInMs = dayjs(endDate).diff(new Date());
+
+  if (diffInMs < 0) return "Round has ended";
+
+  // "## days ## hours"
+  return `${Math.floor(diffInMs / 1000 / 60 / 60 / 24)} days ${Math.floor(
+    (diffInMs / 1000 / 60 / 60) % 24
+  )} hours`;
 }
