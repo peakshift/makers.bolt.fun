@@ -98,6 +98,12 @@ type RouteOptions =
       page: "details";
       tournamentIdOrSlug: number | string;
       roundId: string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "judge-page";
+      tournamentIdOrSlug: number | string;
+      roundId: string;
     };
 
 export function createRoute(options: RouteOptions) {
@@ -192,6 +198,9 @@ export function createRoute(options: RouteOptions) {
       return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}/update`;
     if (options.page === "details")
       return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}`;
+
+    if (options.page === "judge-page")
+      return `/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}/judge`;
   }
 
   return "";

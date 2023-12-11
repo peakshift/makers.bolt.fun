@@ -1,18 +1,23 @@
 import dayjs from "dayjs";
 import { marked } from "marked";
 import React from "react";
+import { IoIosCopy } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import BackButton from "src/Components/BackButton/BackButton";
 import Button from "src/Components/Button/Button";
+import InfoCard from "src/Components/InfoCard/InfoCard";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { useGetJudgingRoundDetailsQuery } from "src/graphql";
+import { NotificationsService } from "src/services";
+import useCopyToClipboard from "src/utils/hooks/useCopyToClipboard";
 import { createRoute } from "src/utils/routing";
 
 export default function JudgingRoundDetailsPage() {
   const { roundId: id } = useParams<{ roundId: string }>();
+  const copyToClipboard = useCopyToClipboard();
 
   const {
     tournamentDetails: { slug },
@@ -123,6 +128,33 @@ export default function JudgingRoundDetailsPage() {
             </li>
           ))}
         </ul>
+        {judgingRound.judges.length > 0 && (
+          <div className="mt-16 ">
+            <Button
+              size="sm"
+              color="primary"
+              onClick={() => {
+                copyToClipboard(
+                  `${window.location.origin}${createRoute({
+                    type: "judging-rounds",
+                    page: "judge-page",
+                    tournamentIdOrSlug: slug,
+                    roundId: judgingRound.id,
+                  })}`
+                );
+                NotificationsService.info("URL copied to clipboard");
+              }}
+            >
+              <IoIosCopy /> Copy URL to Judging Page
+            </Button>
+            <InfoCard className="mt-16">
+              <span className="font-bold">ℹ️ Note:</span> This URL can only be
+              opened by users who are logged in & invited as judges for this
+              round. Even tournament admins cannot access this page unless they
+              are also invited as judges.
+            </InfoCard>
+          </div>
+        )}
       </section>
     </div>
   );

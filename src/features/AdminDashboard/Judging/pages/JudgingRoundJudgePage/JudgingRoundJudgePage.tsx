@@ -40,93 +40,95 @@ export default function JudgingRoundJudgePage() {
   const judgingRound = query.data.getJudgingRoundById;
 
   return (
-    <div className="flex flex-col gap-42">
-      <section>
-        <div className="flex flex-wrap items-center gap-16 mb-24">
-          <h2 className="text-h2 font-bolder text-gray-900">
-            {judgingRound.title}
-          </h2>
-        </div>
-        <p className="mb-16 ">
-          Judging closes in:{" "}
-          <span className="font-bold text-orange-500 text-body3">
-            {getDateTimeDifference(judgingRound.end_date)}
-          </span>
-        </p>
-        <div
-          className="prose prose-sm max-w-none"
-          dangerouslySetInnerHTML={{
-            __html: marked.parse(judgingRound.description),
-          }}
-        ></div>
-      </section>
-
-      <section>
-        <h2 className="text-h3 font-bold mb-16">
-          Projects ({judgingRound.projects.length})
-        </h2>
-        <div className="mb-16">
-          <p>
-            You scored{" "}
-            <span className="font-bold text-green-600">
-              {judgedProjects.length}
-            </span>{" "}
-            out of {judgingRound.projects.length} projects
-          </p>
-          <div className="relative h-4 w-full mt-8 rounded-4 overflow-hidden bg-gray-200">
-            <div
-              className="absolute h-full bg-green-500"
-              style={{
-                width: `${
-                  (judgedProjects.length / judgingRound.projects.length) * 100
-                }%`,
-              }}
-            ></div>
+    <div className="page-container">
+      <div className="flex flex-col gap-42">
+        <section>
+          <div className="flex flex-wrap items-center gap-16 mb-24">
+            <h2 className="text-h2 font-bolder text-gray-900">
+              {judgingRound.title}
+            </h2>
           </div>
-        </div>
-        <ul className="flex flex-col gap-8">
-          {judgingRound.projects.map((project) => (
-            <li key={project.id} className="">
-              <ProjectScoreCard
-                project={project}
-                roundId={judgingRound.id}
-                scores={
-                  judgingRound.my_scores.find(
-                    (score) => score.project.id === project.id
-                  )?.scores
-                }
-                note={
-                  judgingRound.my_scores.find(
-                    (score) => score.project.id === project.id
-                  )?.note
-                }
-                onUpdatedScore={(scores) => {
-                  let hasNonNullScore = false;
+          <p className="mb-16 ">
+            Judging closes in:{" "}
+            <span className="font-bold text-orange-500 text-body3">
+              {getDateTimeDifference(judgingRound.end_date)}
+            </span>
+          </p>
+          <div
+            className="prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: marked.parse(judgingRound.description),
+            }}
+          ></div>
+        </section>
 
-                  for (const [key, score] of Object.entries(scores)) {
-                    if (key === "__typename") continue;
-
-                    if (score != null) {
-                      setJudgedProjects((prev) => {
-                        if (prev.includes(project.id)) return prev;
-
-                        return [...prev, project.id];
-                      });
-                      hasNonNullScore = true;
-                      break;
-                    }
-                  }
-
-                  if (!hasNonNullScore)
-                    setJudgedProjects((prev) =>
-                      prev.filter((id) => id !== project.id)
-                    );
+        <section>
+          <h2 className="text-h3 font-bold mb-16">
+            Projects ({judgingRound.projects.length})
+          </h2>
+          <div className="mb-16">
+            <p>
+              You scored{" "}
+              <span className="font-bold text-green-600">
+                {judgedProjects.length}
+              </span>{" "}
+              out of {judgingRound.projects.length} projects
+            </p>
+            <div className="relative h-4 w-full mt-8 rounded-4 overflow-hidden bg-gray-200">
+              <div
+                className="absolute h-full bg-green-500"
+                style={{
+                  width: `${
+                    (judgedProjects.length / judgingRound.projects.length) * 100
+                  }%`,
                 }}
-              />
-            </li>
-          ))}
-        </ul>
-      </section>
+              ></div>
+            </div>
+          </div>
+          <ul className="flex flex-col gap-8">
+            {judgingRound.projects.map((project) => (
+              <li key={project.id} className="">
+                <ProjectScoreCard
+                  project={project}
+                  roundId={judgingRound.id}
+                  scores={
+                    judgingRound.my_scores.find(
+                      (score) => score.project.id === project.id
+                    )?.scores
+                  }
+                  note={
+                    judgingRound.my_scores.find(
+                      (score) => score.project.id === project.id
+                    )?.note
+                  }
+                  onUpdatedScore={(scores) => {
+                    let hasNonNullScore = false;
+
+                    for (const [key, score] of Object.entries(scores)) {
+                      if (key === "__typename") continue;
+
+                      if (score != null) {
+                        setJudgedProjects((prev) => {
+                          if (prev.includes(project.id)) return prev;
+
+                          return [...prev, project.id];
+                        });
+                        hasNonNullScore = true;
+                        break;
+                      }
+                    }
+
+                    if (!hasNonNullScore)
+                      setJudgedProjects((prev) =>
+                        prev.filter((id) => id !== project.id)
+                      );
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </div>
   );
 }

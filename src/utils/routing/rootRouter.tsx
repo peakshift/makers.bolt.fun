@@ -448,14 +448,14 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
                 element={<UpdateJudgingRoundPage />}
                 loader={updateJudgingPageDataLoader(queryClient)}
               />
-              <Route
-                path=":roundId/judge"
-                element={<JudgingRoundJudgePage />}
-                loader={judgingRoundJudgePageDataLoader(queryClient)}
-              />
             </Route>
           </Route>
         </Route>
+        <Route
+          path="tournament/:tournamentIdOrSlug/judging/:roundId/judge"
+          element={<JudgingRoundJudgePage />}
+          loader={judgingRoundJudgePageDataLoader(queryClient)}
+        />
 
         <Route
           path={PAGES_ROUTES.projects.listProject}
