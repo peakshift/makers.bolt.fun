@@ -101,6 +101,7 @@ model User {
   nostrBadgeRequests        NostrBadgeRequest[]
   tournament_judging_rounds TournamentJudgingRoundJudge[]
   tournament_judging_scores TournamentJudgingRoundJudgeScore[]
+  tournaments_organizing    TournamentOrganizer[]
 }
 
 model UserKey {
@@ -435,6 +436,7 @@ model Tournament {
   participants   TournamentParticipant[]
   projects       TournamentProject[]
   judging_rounds TournamentJudgingRound[]
+  organizers     TournamentOrganizer[]
 }
 
 model TournamentTrack {
@@ -704,4 +706,14 @@ model TournamentJudgingRoundJudgeScore {
   scores Json
 
   @@unique([round_id, judge_id, project_id])
+}
+
+model TournamentOrganizer {
+  tournament_id Int
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  @@id([tournament_id, user_id])
 }

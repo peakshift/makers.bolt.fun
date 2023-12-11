@@ -8,5 +8,11 @@ query Me {
     primary_nostr_key
     last_seen_notification_time
     is_admin
+    private_data {
+      tournaments_organizing {
+        id
+        slug
+      }
+    }
   }
 }

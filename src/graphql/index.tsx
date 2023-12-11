@@ -1570,7 +1570,7 @@ export type AdminDashboardQuery = { __typename?: 'Query', me: { __typename?: 'Us
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any, is_admin: boolean | null } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any, is_admin: boolean | null, private_data: { __typename?: 'UserPrivateData', tournaments_organizing: Array<{ __typename?: 'Tournament', id: number, slug: string }> } } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2959,6 +2959,12 @@ export const MeDocument = gql`
     primary_nostr_key
     last_seen_notification_time
     is_admin
+    private_data {
+      tournaments_organizing {
+        id
+        slug
+      }
+    }
   }
 }
     `;

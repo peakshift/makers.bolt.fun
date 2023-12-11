@@ -371,35 +371,51 @@ const UserPrivateData = objectType({
     t.nonNull.list.nonNull.field("walletsKeys", {
       type: "WalletKey",
       resolve: (parent, _, context) => {
-        return prisma.userKey
-          .findMany({
+        return prisma.user
+          .findUnique({
             where: {
-              user_id: parent.id,
-            },
-            orderBy: {
-              createdAt: "asc",
+              id: parent.id,
             },
           })
-          .then((keys) =>
-            keys.map((k) => ({
+          .userKeys()
+          .then((keys) => {
+            let sortedKeys = [...keys];
+            sortedKeys.sort((a, b) => {
+              const aCreatedAt = new Date(a).getTime();
+              const bCreatedAt = new Date(b).getTime();
+
+              return aCreatedAt - bCreatedAt;
+            });
+
+            return sortedKeys.map((k) => ({
               ...k,
-              is_current: k.key === context.user.pubKey,
-            }))
-          );
+              is_current: k.createdAt === context.user.pubKey,
+            }));
+          });
       },
     });
 
     t.nonNull.list.nonNull.field("emails", {
       type: LinkedEmail,
       resolve: (parent) => {
-        return prisma.userEmail.findMany({
-          where: {
-            user_id: parent.id,
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        });
+        return prisma.user
+          .findUnique({
+            where: {
+              id: parent.id,
+            },
+          })
+          .userEmails()
+          .then((emails) => {
+            let sortedEmails = [...emails];
+            sortedEmails.sort((a, b) => {
+              const aCreatedAt = new Date(a).getTime();
+              const bCreatedAt = new Date(b).getTime();
+
+              return aCreatedAt - bCreatedAt;
+            });
+
+            return sortedEmails;
+          });
       },
     });
 
@@ -408,17 +424,16 @@ const UserPrivateData = objectType({
       resolve: async (parent) => {
         const userId = parent.id;
 
-        const tournamentsIds = Object.entries(tournamentOrganizers)
-          .filter(([_, ids]) => ids.includes(userId))
-          .map(([id, _]) => Number(id));
-
-        return prisma.tournament.findMany({
-          where: {
-            id: {
-              in: tournamentsIds,
+        return prisma.tournamentOrganizer
+          .findMany({
+            where: {
+              user_id: userId,
             },
-          },
-        });
+            include: {
+              tournament: true,
+            },
+          })
+          .then((data) => data.map((item) => item.tournament));
       },
     });
   },
