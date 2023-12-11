@@ -81,24 +81,27 @@ model User {
 
   join_date DateTime @default(now())
 
-  stories                  Story[]
-  questions                Question[]
-  posts_comments           PostComment[]
-  donations                Donation[]
-  userKeys                 UserKey[]
-  userNostrKeys            UserNostrKey[]
-  userEmails               UserEmail[]
-  skills                   Skill[]
-  roles                    UsersOnWorkRoles[]
-  projects                 ProjectMember[]
-  moderating               Tag[]
-  votes                    Vote[]
-  founders_club_membership FoundersClubMember?
-  tournaments              TournamentParticipant[]
-  actions                  UserAction[]
-  badgesProgress           UserBadgeProgress[]
-  badges                   UserBadge[]
-  nostrBadgeRequests       NostrBadgeRequest[]
+  stories                   Story[]
+  questions                 Question[]
+  posts_comments            PostComment[]
+  donations                 Donation[]
+  userKeys                  UserKey[]
+  userNostrKeys             UserNostrKey[]
+  userEmails                UserEmail[]
+  skills                    Skill[]
+  roles                     UsersOnWorkRoles[]
+  projects                  ProjectMember[]
+  moderating                Tag[]
+  votes                     Vote[]
+  founders_club_membership  FoundersClubMember?
+  tournaments               TournamentParticipant[]
+  actions                   UserAction[]
+  badgesProgress            UserBadgeProgress[]
+  badges                    UserBadge[]
+  nostrBadgeRequests        NostrBadgeRequest[]
+  tournament_judging_rounds TournamentJudgingRoundJudge[]
+  tournament_judging_scores TournamentJudgingRoundJudgeScore[]
+  tournaments_organizing    TournamentOrganizer[]
 }
 
 model UserKey {
@@ -216,10 +219,12 @@ model Project {
   tags         Tag[]
   capabilities Capability[]
 
-  members       ProjectMember[]
-  recruit_roles ProjectRecruitRoles[]
-  tournaments   TournamentProject[]
-  stories       Story[]
+  members        ProjectMember[]
+  recruit_roles  ProjectRecruitRoles[]
+  tournaments    TournamentProject[]
+  stories        Story[]
+  judging_rounds TournamentJudgingRoundProject[]
+  judges_scores  TournamentJudgingRoundJudgeScore[]
 
   @@index([hashtag], type: Hash)
 }
@@ -424,12 +429,14 @@ model Tournament {
   makers_deals Json?
   config       Json?
 
-  tracks       TournamentTrack[]
-  judges       TournamentJudge[]
-  faqs         TournamentFAQ[]
-  events       TournamentEvent[]
-  participants TournamentParticipant[]
-  projects     TournamentProject[]
+  tracks         TournamentTrack[]
+  judges         TournamentJudge[]
+  faqs           TournamentFAQ[]
+  events         TournamentEvent[]
+  participants   TournamentParticipant[]
+  projects       TournamentProject[]
+  judging_rounds TournamentJudgingRound[]
+  organizers     TournamentOrganizer[]
 }
 
 model TournamentTrack {
@@ -625,4 +632,89 @@ model NostrBadgeRequest {
   createdAt        DateTime @default(now())
 
   @@unique([userId, badgeId])
+}
+
+// - TournamentJudgingRound
+// -- id (UUID)
+// -- Title
+// -- Description
+// -- End Date
+// -- tournament_id
+
+// - TournamentJudgingRoundProjects
+// -- round_id
+// -- project_id
+
+// - TournamentJudgingRoundJudge
+// -- round_id
+// -- user_id
+
+// - TournamentJudgingRoundJudgeScore
+// -- round_id
+// -- user_id
+// -- scores (json)
+
+model TournamentJudgingRound {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  end_date    DateTime
+  createdAt   DateTime @default(now())
+
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+  tournament_id Int
+
+  projects TournamentJudgingRoundProject[]
+  judges   TournamentJudgingRoundJudge[]
+  scores   TournamentJudgingRoundJudgeScore[]
+}
+
+model TournamentJudgingRoundProject {
+  round_id String
+  round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
+
+  project_id Int
+  project    Project @relation(fields: [project_id], references: [id])
+
+  @@id([round_id, project_id])
+}
+
+model TournamentJudgingRoundJudge {
+  id Int @id @default(autoincrement())
+
+  round_id String
+  round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
+
+  judge_id Int
+  judge    User @relation(fields: [judge_id], references: [id])
+
+  @@unique([round_id, judge_id])
+}
+
+model TournamentJudgingRoundJudgeScore {
+  id Int @id @default(autoincrement())
+
+  round_id String
+  round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
+
+  judge_id Int
+  judge    User @relation(fields: [judge_id], references: [id])
+
+  project_id Int
+  project    Project @relation(fields: [project_id], references: [id])
+
+  scores Json
+  note   String?
+
+  @@unique([round_id, judge_id, project_id])
+}
+
+model TournamentOrganizer {
+  tournament_id Int
+  tournament    Tournament @relation(fields: [tournament_id], references: [id])
+
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  @@id([tournament_id, user_id])
 }
