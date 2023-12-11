@@ -39,6 +39,7 @@ interface Props {
     | "replit"
   >;
   scores?: TournamentJudgingRoundProjectScore;
+  onUpdatedScore?: (score: TournamentJudgingRoundProjectScore) => void;
 }
 
 const schema: yup.SchemaOf<ScoreProjectInput> = yup
@@ -96,7 +97,12 @@ const schema: yup.SchemaOf<ScoreProjectInput> = yup
 
 type ScoreProjectFormType = yup.InferType<typeof schema>;
 
-export default function ProjectScoreCard({ roundId, project, scores }: Props) {
+export default function ProjectScoreCard({
+  roundId,
+  project,
+  scores,
+  onUpdatedScore,
+}: Props) {
   const {
     register,
     formState: { errors, isDirty },
@@ -132,22 +138,24 @@ export default function ProjectScoreCard({ roundId, project, scores }: Props) {
           },
         },
       });
-      const updatedData = res.data?.scoreTournamentProject?.scores;
-      if (updatedData)
+      const resData = res.data?.scoreTournamentProject?.scores;
+      if (resData) {
         reset({
           project_id: project.id,
           round_id: roundId,
           scores: {
-            value_proposition: updatedData.value_proposition ?? "",
-            innovation: updatedData.innovation ?? "",
+            value_proposition: resData.value_proposition ?? "",
+            innovation: resData.innovation ?? "",
             bitcoin_integration_and_scalability:
-              updatedData.bitcoin_integration_and_scalability ?? "",
-            execution: updatedData.execution ?? "",
-            ui_ux_design: updatedData.ui_ux_design ?? "",
-            transparency: updatedData.transparency ?? "",
-            je_ne_sais_quoi: updatedData.je_ne_sais_quoi ?? "",
+              resData.bitcoin_integration_and_scalability ?? "",
+            execution: resData.execution ?? "",
+            ui_ux_design: resData.ui_ux_design ?? "",
+            transparency: resData.transparency ?? "",
+            je_ne_sais_quoi: resData.je_ne_sais_quoi ?? "",
           } as any,
         });
+        onUpdatedScore?.(resData);
+      }
       NotificationsService.success("Project score updated");
     } catch (error) {
       NotificationsService.error(

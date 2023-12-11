@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { marked } from "marked";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 import { useJudgingRoundJudgePageQuery } from "src/graphql";
@@ -10,9 +11,27 @@ export default function JudgingRoundJudgePage() {
 
   if (!roundId) throw new Error("No judging round id provided");
 
+  const [judgedProjects, setJudgedProjects] = useState<number[]>([]);
+
   const query = useJudgingRoundJudgePageQuery({
     variables: {
       judgingRoundId: roundId,
+    },
+    onCompleted: (data) => {
+      data.getJudgingRoundById.my_scores.forEach(({ project, scores }) => {
+        for (const [key, score] of Object.entries(scores)) {
+          if (key === "__typename") continue;
+
+          if (score != null) {
+            setJudgedProjects((prev) => {
+              if (prev.includes(project.id)) return prev;
+
+              return [...prev, project.id];
+            });
+            break;
+          }
+        }
+      });
     },
   });
 
@@ -46,6 +65,25 @@ export default function JudgingRoundJudgePage() {
         <h2 className="text-h3 font-bold mb-16">
           Projects ({judgingRound.projects.length})
         </h2>
+        <div className="mb-16">
+          <p>
+            You scored{" "}
+            <span className="font-bold text-green-600">
+              {judgedProjects.length}
+            </span>{" "}
+            out of {judgingRound.projects.length} projects
+          </p>
+          <div className="relative h-4 w-full mt-8 rounded-4 overflow-hidden bg-gray-200">
+            <div
+              className="absolute h-full bg-green-500"
+              style={{
+                width: `${
+                  (judgedProjects.length / judgingRound.projects.length) * 100
+                }%`,
+              }}
+            ></div>
+          </div>
+        </div>
         <ul className="flex flex-col gap-8">
           {judgingRound.projects.map((project) => (
             <li key={project.id} className="">
@@ -57,6 +95,28 @@ export default function JudgingRoundJudgePage() {
                     (score) => score.project.id === project.id
                   )?.scores
                 }
+                onUpdatedScore={(scores) => {
+                  let hasNonNullScore = false;
+
+                  for (const [key, score] of Object.entries(scores)) {
+                    if (key === "__typename") continue;
+
+                    if (score != null) {
+                      setJudgedProjects((prev) => {
+                        if (prev.includes(project.id)) return prev;
+
+                        return [...prev, project.id];
+                      });
+                      hasNonNullScore = true;
+                      break;
+                    }
+                  }
+
+                  if (!hasNonNullScore)
+                    setJudgedProjects((prev) =>
+                      prev.filter((id) => id !== project.id)
+                    );
+                }}
               />
             </li>
           ))}
