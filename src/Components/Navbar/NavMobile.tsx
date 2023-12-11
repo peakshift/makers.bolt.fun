@@ -179,7 +179,7 @@ export default function NavMobile() {
                     </MenuButton>
                   }
                 >
-                  {curUser.is_admin && (
+                  {(curUser.is_admin || curUser.is_tournament_org) && (
                     <MenuItem
                       href="/admin"
                       onClick={(e) => {

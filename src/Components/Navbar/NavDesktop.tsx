@@ -167,7 +167,7 @@ export default function NavDesktop() {
                   </MenuButton>
                 }
               >
-                {curUser.is_admin && (
+                {(curUser.is_admin || curUser.is_tournament_org) && (
                   <MenuItem
                     href={"/admin"}
                     onClick={(e) => {

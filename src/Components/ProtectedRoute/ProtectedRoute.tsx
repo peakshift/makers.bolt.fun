@@ -38,7 +38,7 @@ export default function ProtectedRoute({
       isAllowed = true;
     } else if (
       onlyAllow.includes("tournament_organizer") &&
-      user.private_data.tournaments_organizing.length > 0
+      user.is_tournament_org
     ) {
       isAllowed = true;
     }
