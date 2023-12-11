@@ -95,6 +95,11 @@ export default function JudgingRoundJudgePage() {
                     (score) => score.project.id === project.id
                   )?.scores
                 }
+                note={
+                  judgingRound.my_scores.find(
+                    (score) => score.project.id === project.id
+                  )?.note
+                }
                 onUpdatedScore={(scores) => {
                   let hasNonNullScore = false;
 

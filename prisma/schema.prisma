@@ -704,6 +704,7 @@ model TournamentJudgingRoundJudgeScore {
   project    Project @relation(fields: [project_id], references: [id])
 
   scores Json
+  note   String?
 
   @@unique([round_id, judge_id, project_id])
 }

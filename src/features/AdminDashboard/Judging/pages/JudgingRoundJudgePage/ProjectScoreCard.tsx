@@ -39,11 +39,13 @@ interface Props {
     | "replit"
   >;
   scores?: TournamentJudgingRoundProjectScore;
+  note?: string | null;
   onUpdatedScore?: (score: TournamentJudgingRoundProjectScore) => void;
 }
 
 const schema: yup.SchemaOf<ScoreProjectInput> = yup
   .object({
+    note: yup.string().nullable(),
     project_id: yup.number().required(),
     round_id: yup.string().required(),
     scores: yup
@@ -101,6 +103,7 @@ export default function ProjectScoreCard({
   roundId,
   project,
   scores,
+  note,
   onUpdatedScore,
 }: Props) {
   const {
@@ -113,6 +116,7 @@ export default function ProjectScoreCard({
     defaultValues: {
       project_id: project.id,
       round_id: roundId,
+      note: note ?? "",
       scores: {
         value_proposition: scores?.value_proposition ?? "",
         innovation: scores?.innovation ?? "",
@@ -383,9 +387,23 @@ export default function ProjectScoreCard({
             )}
           </div>
         </div>
+        <div className="mt-16">
+          <label htmlFor={`note-input-${project.id}`} className="text-body5">
+            Note
+          </label>
+          <div className="input-wrapper mt-8 relative">
+            <textarea
+              id={`note-input-${project.id}`}
+              className="input-text"
+              placeholder=""
+              {...register("note")}
+            />
+          </div>
+          {errors.note && <p className="input-error">{errors.note.message}</p>}
+        </div>
 
         {isDirty && (
-          <div className="flex flex-wrap gap-8 justify-end mt-8">
+          <div className="flex flex-wrap gap-8 justify-end mt-24">
             <Button color="gray" onClick={handleCancel}>
               Cancel
             </Button>
