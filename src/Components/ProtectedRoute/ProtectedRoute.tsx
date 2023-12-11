@@ -6,7 +6,7 @@ interface Props {
   isAllowed?: (user: ReturnType<typeof useMyUser>) => boolean;
   notAuthorizedRedirectPath?: string;
   notAllowedRedirectPath?: string;
-  onlyAdmins?: boolean;
+  onlyAllow?: ("admin" | "tournament_organizer")[];
 }
 
 export default function ProtectedRoute({
@@ -14,7 +14,7 @@ export default function ProtectedRoute({
   notAuthorizedRedirectPath = "/login",
   notAllowedRedirectPath = "/",
   children,
-  onlyAdmins,
+  onlyAllow,
 }: PropsWithChildren<Props>) {
   const user = useAppSelector((state) => state.user.me);
 
@@ -31,8 +31,20 @@ export default function ProtectedRoute({
       />
     );
 
-  if (onlyAdmins && !user.is_admin)
-    return <Navigate to={notAllowedRedirectPath} replace />;
+  if (onlyAllow) {
+    let isAllowed = false;
+
+    if (onlyAllow.includes("admin") && user.is_admin) {
+      isAllowed = true;
+    } else if (
+      onlyAllow.includes("tournament_organizer") &&
+      user.private_data.tournaments_organizing.length > 0
+    ) {
+      isAllowed = true;
+    }
+
+    if (!isAllowed) return <Navigate to={notAllowedRedirectPath} replace />;
+  }
 
   if (isAllowed && !isAllowed(user)) {
     return <Navigate to={notAllowedRedirectPath} replace />;

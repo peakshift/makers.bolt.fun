@@ -402,13 +402,21 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           />
         </Route>
 
-        <Route path="admin" element={<ProtectedLayout onlyAdmins />}>
+        <Route
+          path="admin"
+          element={
+            <ProtectedLayout onlyAllow={["admin", "tournament_organizer"]} />
+          }
+        >
           <Route
             index
             element={<AdminDashboard />}
             loader={adminDashboardLoader(queryClient)}
           />
-          <Route path="badges">
+          <Route
+            path="badges"
+            element={<ProtectedLayout onlyAllow={["admin"]} />}
+          >
             <Route
               index
               element={<AdminManageBadgesPage />}
