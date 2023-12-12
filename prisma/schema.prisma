@@ -634,26 +634,6 @@ model NostrBadgeRequest {
   @@unique([userId, badgeId])
 }
 
-// - TournamentJudgingRound
-// -- id (UUID)
-// -- Title
-// -- Description
-// -- End Date
-// -- tournament_id
-
-// - TournamentJudgingRoundProjects
-// -- round_id
-// -- project_id
-
-// - TournamentJudgingRoundJudge
-// -- round_id
-// -- user_id
-
-// - TournamentJudgingRoundJudgeScore
-// -- round_id
-// -- user_id
-// -- scores (json)
-
 model TournamentJudgingRound {
   id          String   @id @default(uuid())
   title       String
@@ -663,6 +643,8 @@ model TournamentJudgingRound {
 
   tournament    Tournament @relation(fields: [tournament_id], references: [id])
   tournament_id Int
+
+  scores_schema Json @default("[]")
 
   projects TournamentJudgingRoundProject[]
   judges   TournamentJudgingRoundJudge[]
@@ -703,8 +685,9 @@ model TournamentJudgingRoundJudgeScore {
   project_id Int
   project    Project @relation(fields: [project_id], references: [id])
 
-  scores Json
-  note   String?
+  scores        Json
+  note          String?
+  internal_note String?
 
   @@unique([round_id, judge_id, project_id])
 }

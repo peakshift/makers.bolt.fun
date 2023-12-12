@@ -66,6 +66,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     judges_ids: number[]; // [Int!]!
     projects_ids: number[]; // [Int!]!
+    scores_schema: NexusGenInputs['TournamentJudgingRoundScoresSchemaInput'][]; // [TournamentJudgingRoundScoresSchemaInput!]!
     title: string; // String!
     tournament_id: number; // Int!
   }
@@ -216,6 +217,12 @@ export interface NexusGenInputs {
   TournamentContactInput: { // input type
     type: string; // String!
     url: string; // String!
+  }
+  TournamentJudgingRoundScoresSchemaInput: { // input type
+    key: string; // String!
+    label: string; // String!
+    required?: boolean | null; // Boolean
+    type: string; // String!
   }
   TournamentMakerDealInput: { // input type
     description: string; // String!
@@ -604,6 +611,7 @@ export interface NexusGenObjects {
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
     id: string; // String!
+    scores_schema: NexusGenRootTypes['TournamentJudgingRoundScoresSchema'][]; // [TournamentJudgingRoundScoresSchema!]!
     title: string; // String!
   }
   TournamentJudgingRoundJudgeScore: { // root type
@@ -618,6 +626,12 @@ export interface NexusGenObjects {
     transparency?: number | null; // Int
     ui_ux_design?: number | null; // Int
     value_proposition?: number | null; // Int
+  }
+  TournamentJudgingRoundScoresSchema: { // root type
+    key: string; // String!
+    label: string; // String!
+    required?: boolean | null; // Boolean
+    type: string; // String!
   }
   TournamentMakerDeal: { // root type
     description: string; // String!
@@ -1159,6 +1173,7 @@ export interface NexusGenFieldTypes {
     judges: NexusGenRootTypes['User'][]; // [User!]!
     my_scores: NexusGenRootTypes['TournamentJudgingRoundJudgeScore'][]; // [TournamentJudgingRoundJudgeScore!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+    scores_schema: NexusGenRootTypes['TournamentJudgingRoundScoresSchema'][]; // [TournamentJudgingRoundScoresSchema!]!
     title: string; // String!
     tournament: NexusGenRootTypes['Tournament']; // Tournament!
   }
@@ -1177,6 +1192,12 @@ export interface NexusGenFieldTypes {
     transparency: number | null; // Int
     ui_ux_design: number | null; // Int
     value_proposition: number | null; // Int
+  }
+  TournamentJudgingRoundScoresSchema: { // field return type
+    key: string; // String!
+    label: string; // String!
+    required: boolean | null; // Boolean
+    type: string; // String!
   }
   TournamentMakerDeal: { // field return type
     description: string; // String!
@@ -1760,6 +1781,7 @@ export interface NexusGenFieldTypeNames {
     judges: 'User'
     my_scores: 'TournamentJudgingRoundJudgeScore'
     projects: 'Project'
+    scores_schema: 'TournamentJudgingRoundScoresSchema'
     title: 'String'
     tournament: 'Tournament'
   }
@@ -1778,6 +1800,12 @@ export interface NexusGenFieldTypeNames {
     transparency: 'Int'
     ui_ux_design: 'Int'
     value_proposition: 'Int'
+  }
+  TournamentJudgingRoundScoresSchema: { // field return type name
+    key: 'String'
+    label: 'String'
+    required: 'Boolean'
+    type: 'String'
   }
   TournamentMakerDeal: { // field return type name
     description: 'String'

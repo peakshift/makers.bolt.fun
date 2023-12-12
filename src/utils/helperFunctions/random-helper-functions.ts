@@ -34,9 +34,9 @@ export function shuffle<T>(_array: Array<T>) {
   return array;
 }
 
-export function generateId() {
+export function generateId(size: number = 6) {
   // TODO: Change to proper generator
-  return nanoid(6);
+  return nanoid(size);
 }
 
 export function generateList(component: React.ReactElement, cnt: number) {

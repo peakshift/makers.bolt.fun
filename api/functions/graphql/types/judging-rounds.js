@@ -83,6 +83,16 @@ const TournamentJudgingRoundJudgeScore = objectType({
   },
 });
 
+const TournamentJudgingRoundScoresSchema = objectType({
+  name: "TournamentJudgingRoundScoresSchema",
+  definition(t) {
+    t.nonNull.string("key");
+    t.nonNull.string("label");
+    t.nonNull.string("type");
+    t.boolean("required");
+  },
+});
+
 const TournamentJudgingRound = objectType({
   name: "TournamentJudgingRound",
   definition(t) {
@@ -91,6 +101,11 @@ const TournamentJudgingRound = objectType({
     t.nonNull.string("description");
     t.nonNull.date("end_date");
     t.nonNull.date("createdAt");
+
+    t.nonNull.list.nonNull.field("scores_schema", {
+      type: TournamentJudgingRoundScoresSchema,
+    });
+
     t.nonNull.field("tournament", {
       type: "Tournament",
       resolve: async (parent, _, ctx) => {
@@ -201,6 +216,22 @@ const getJudgingRoundById = extendType({
   },
 });
 
+// {
+//   label: "Some Label"
+//   type: "range" | "checkbox" | "radio"
+//   required?: boolean
+//   }[]
+
+const TournamentJudgingRoundScoresSchemaInput = inputObjectType({
+  name: "TournamentJudgingRoundScoresSchemaInput",
+  definition(t) {
+    t.nonNull.string("key");
+    t.nonNull.string("label");
+    t.nonNull.string("type");
+    t.boolean("required");
+  },
+});
+
 const CreateOrUpdateJudgingRoundInput = inputObjectType({
   name: "CreateOrUpdateJudgingRoundInput",
   definition(t) {
@@ -212,6 +243,10 @@ const CreateOrUpdateJudgingRoundInput = inputObjectType({
 
     t.nonNull.list.nonNull.int("judges_ids");
     t.nonNull.list.nonNull.int("projects_ids");
+
+    t.nonNull.list.nonNull.field("scores_schema", {
+      type: TournamentJudgingRoundScoresSchemaInput,
+    });
   },
 });
 
@@ -232,6 +267,7 @@ const createOrUpdateJudgingRound = extendType({
           tournament_id,
           judges_ids,
           projects_ids,
+          scores_schema,
         } = input;
 
         const isOrganizer = isTournamentOrganizer(ctx.user?.id, tournament_id);
@@ -249,12 +285,14 @@ const createOrUpdateJudgingRound = extendType({
             title,
             description,
             end_date,
+            scores_schema,
           },
           create: {
             id: generateId(),
             title,
             description,
             end_date,
+            scores_schema,
             tournament: {
               connect: {
                 id: tournament_id,

@@ -22,6 +22,18 @@ const schema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> = yup
     tournament_id: yup.number().required(),
     judges_ids: yup.array(yup.number().required()).required(),
     projects_ids: yup.array(yup.number().required()).required(),
+    scores_schema: yup
+      .array(
+        yup
+          .object({
+            key: yup.string().required(),
+            label: yup.string().required("Score label is required"),
+            type: yup.string().required(),
+            required: yup.boolean().nullable(),
+          })
+          .required()
+      )
+      .required(),
   })
   .required();
 
@@ -58,6 +70,9 @@ export default function UpdateJudgingRoundPage() {
       tournament_id: roundData.tournament.id,
       judges_ids: roundData.judges.map((judge) => judge.id),
       projects_ids: roundData.projects.map((project) => project.id),
+      scores_schema: roundData.scores_schema.map(
+        ({ __typename, ...rest }) => rest
+      ),
     },
   });
 

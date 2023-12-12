@@ -192,6 +192,7 @@ export type CreateOrUpdateJudgingRoundInput = {
   id?: InputMaybe<Scalars['String']>;
   judges_ids: Array<Scalars['Int']>;
   projects_ids: Array<Scalars['Int']>;
+  scores_schema: Array<TournamentJudgingRoundScoresSchemaInput>;
   title: Scalars['String'];
   tournament_id: Scalars['Int'];
 };
@@ -1135,6 +1136,7 @@ export type TournamentJudgingRound = {
   judges: Array<User>;
   my_scores: Array<TournamentJudgingRoundJudgeScore>;
   projects: Array<Project>;
+  scores_schema: Array<TournamentJudgingRoundScoresSchema>;
   title: Scalars['String'];
   tournament: Tournament;
 };
@@ -1157,6 +1159,21 @@ export type TournamentJudgingRoundProjectScore = {
   transparency: Maybe<Scalars['Int']>;
   ui_ux_design: Maybe<Scalars['Int']>;
   value_proposition: Maybe<Scalars['Int']>;
+};
+
+export type TournamentJudgingRoundScoresSchema = {
+  __typename?: 'TournamentJudgingRoundScoresSchema';
+  key: Scalars['String'];
+  label: Scalars['String'];
+  required: Maybe<Scalars['Boolean']>;
+  type: Scalars['String'];
+};
+
+export type TournamentJudgingRoundScoresSchemaInput = {
+  key: Scalars['String'];
+  label: Scalars['String'];
+  required?: InputMaybe<Scalars['Boolean']>;
+  type: Scalars['String'];
 };
 
 export type TournamentMakerDeal = {
@@ -1541,7 +1558,7 @@ export type GetJudgingRoundDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, tournament: { __typename?: 'Tournament', id: number } } };
+export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, tournament: { __typename?: 'Tournament', id: number }, scores_schema: Array<{ __typename?: 'TournamentJudgingRoundScoresSchema', key: string, label: string, type: string, required: boolean | null }> } };
 
 export type JudgingRoundJudgePageQueryVariables = Exact<{
   judgingRoundId: Scalars['String'];
@@ -2571,6 +2588,12 @@ export const GetJudgingRoundDetailsDocument = gql`
     }
     tournament {
       id
+    }
+    scores_schema {
+      key
+      label
+      type
+      required
     }
   }
 }

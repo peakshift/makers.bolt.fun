@@ -20,6 +20,18 @@ const schema: yup.SchemaOf<Omit<CreateOrUpdateJudgingRoundInput, "id">> = yup
     tournament_id: yup.number().required(),
     judges_ids: yup.array().of(yup.number().required()).required(),
     projects_ids: yup.array().of(yup.number().required()).required(),
+    scores_schema: yup
+      .array(
+        yup
+          .object({
+            key: yup.string().required(),
+            label: yup.string().required("Score label is required"),
+            type: yup.string().required(),
+            required: yup.boolean().nullable(),
+          })
+          .required()
+      )
+      .required(),
   })
   .required();
 
@@ -55,8 +67,11 @@ export default function CreateJudgingRoundPage() {
       tournament_id: tournamentDetails.id,
       judges_ids: [],
       projects_ids: [],
+      scores_schema: [],
     },
   });
+
+  const scores = formMethods.getValues("scores_schema");
 
   const projectsInTournament =
     projectsInTournamentQuery.data?.getProjectsInTournament.projects;

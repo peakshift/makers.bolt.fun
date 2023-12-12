@@ -9,6 +9,7 @@ import {
 import { NotificationsService } from "src/services";
 import { extractErrorMessage } from "src/utils/helperFunctions";
 import { CreateJudgingRoundFormType } from "./CreateJudgingRoundPage";
+import ScoresSchemaInput from "./ScoresSchemaInput";
 import SelectJudgesInput from "./SelectJudgesInput";
 import SelectProjectsInput from "./SelectProjectsInput";
 
@@ -45,6 +46,7 @@ export default function CreateJudgingRoundForm({
         variables: {
           input: {
             ...data,
+            scores_schema: data.scores_schema!,
             id: roundId,
           },
         },
@@ -146,6 +148,10 @@ export default function CreateJudgingRoundForm({
             />
           )}
         />
+      </div>
+      <div>
+        <label className="text-body5 mb-12 inline-block">Score Schema</label>
+        <ScoresSchemaInput />
       </div>
 
       <Button

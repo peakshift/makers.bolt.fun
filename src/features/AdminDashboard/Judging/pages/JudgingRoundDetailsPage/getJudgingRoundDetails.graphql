@@ -20,5 +20,11 @@ query GetJudgingRoundDetails($judgingRoundId: String!) {
     tournament {
       id
     }
+    scores_schema {
+      key
+      label
+      type
+      required
+    }
   }
 }

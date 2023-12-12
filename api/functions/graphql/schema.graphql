@@ -163,6 +163,7 @@ input CreateOrUpdateJudgingRoundInput {
   id: String
   judges_ids: [Int!]!
   projects_ids: [Int!]!
+  scores_schema: [TournamentJudgingRoundScoresSchemaInput!]!
   title: String!
   tournament_id: Int!
 }
@@ -749,6 +750,7 @@ type TournamentJudgingRound {
   judges: [User!]!
   my_scores: [TournamentJudgingRoundJudgeScore!]!
   projects: [Project!]!
+  scores_schema: [TournamentJudgingRoundScoresSchema!]!
   title: String!
   tournament: Tournament!
 }
@@ -769,6 +771,20 @@ type TournamentJudgingRoundProjectScore {
   transparency: Int
   ui_ux_design: Int
   value_proposition: Int
+}
+
+type TournamentJudgingRoundScoresSchema {
+  key: String!
+  label: String!
+  required: Boolean
+  type: String!
+}
+
+input TournamentJudgingRoundScoresSchemaInput {
+  key: String!
+  label: String!
+  required: Boolean
+  type: String!
 }
 
 type TournamentMakerDeal {
