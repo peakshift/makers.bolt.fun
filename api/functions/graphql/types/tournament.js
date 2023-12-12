@@ -499,11 +499,23 @@ const Tournament = objectType({
     t.nonNull.list.nonNull.field("judging_rounds", {
       type: "TournamentJudgingRound",
       resolve(parent, _, ctx) {
-        if (!isTournamentOrganizer(ctx.user?.id, parent.id)) return [];
+        const userId = ctx.user?.id;
+        if (!userId) return [];
 
-        return prisma.tournament
-          .findUnique({ where: { id: parent.id } })
-          .judging_rounds();
+        if (isTournamentOrganizer(userId, parent.id))
+          return prisma.tournament
+            .findUnique({ where: { id: parent.id } })
+            .judging_rounds();
+
+        return prisma.tournamentJudgingRound.findMany({
+          where: {
+            judges: {
+              some: {
+                judge_id: userId,
+              },
+            },
+          },
+        });
       },
     });
   },
