@@ -2046,6 +2046,10 @@ export interface NexusGenArgTypes {
     members: { // args
       take?: number | null; // Int
     }
+    stories: { // args
+      skip?: number | null; // Int
+      take: number | null; // Int
+    }
   }
   Query: {
     activeUsers: { // args

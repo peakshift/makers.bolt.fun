@@ -456,7 +456,7 @@ type Project {
   replit: String
   screenshots: [String!]!
   slack: String
-  stories: [Story!]!
+  stories(skip: Int = 0, take: Int = 10): [Story!]!
   tagline: String!
   tags: [Tag!]!
   telegram: String

@@ -656,6 +656,12 @@ export type ProjectMembersArgs = {
   take: InputMaybe<Scalars['Int']>;
 };
 
+
+export type ProjectStoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+};
+
 export type ProjectInTournament = {
   __typename?: 'ProjectInTournament';
   project: Project;
@@ -1541,7 +1547,7 @@ export type JudgingRoundJudgePageQueryVariables = Exact<{
 }>;
 
 
-export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, note: string | null, project: { __typename?: 'Project', id: number, hashtag: string }, scores: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } }> } };
+export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any }> }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, note: string | null, project: { __typename?: 'Project', id: number, hashtag: string }, scores: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } }> } };
 
 export type ScoreTournamentProjectMutationVariables = Exact<{
   input: InputMaybe<ScoreProjectInput>;
@@ -2631,6 +2637,11 @@ export const JudgingRoundJudgePageDocument = gql`
         id
         icon
         title
+      }
+      stories(take: 3) {
+        id
+        title
+        createdAt
       }
     }
     tournament {

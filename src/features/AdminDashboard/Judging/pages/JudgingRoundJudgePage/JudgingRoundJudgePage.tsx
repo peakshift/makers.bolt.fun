@@ -90,6 +90,7 @@ export default function JudgingRoundJudgePage() {
               <li key={project.id} className="">
                 <ProjectScoreCard
                   project={project}
+                  latestStories={project.stories}
                   roundId={judgingRound.id}
                   scores={
                     judgingRound.my_scores.find(

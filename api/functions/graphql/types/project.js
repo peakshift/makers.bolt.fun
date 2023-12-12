@@ -183,7 +183,8 @@ const Project = objectType({
 
     t.nonNull.list.nonNull.field("stories", {
       type: Story,
-      resolve: (parent, args, ctx, info) => {
+      args: paginationArgs({ take: undefined }),
+      resolve: (parent, { take, skip }, ctx, info) => {
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).valueWithFilter("Story");
@@ -196,6 +197,8 @@ const Project = objectType({
           orderBy: {
             createdAt: "desc",
           },
+          take: take ?? undefined,
+          skip: skip ?? undefined,
         });
       },
     });

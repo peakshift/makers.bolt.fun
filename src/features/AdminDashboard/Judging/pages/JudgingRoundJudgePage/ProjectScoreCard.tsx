@@ -5,17 +5,23 @@ import { Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { FaDiscord } from "react-icons/fa";
 import { FiGlobe } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import Badge from "src/Components/Badge/Badge";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import ProjectLinksList from "src/features/Projects/pages/ProjectPage/Components/ProjectLinksList/ProjectLinksList";
 import {
   Project,
   ScoreProjectInput,
+  Story,
+  Tag,
   TournamentJudgingRoundProjectScore,
   useScoreTournamentProjectMutation,
 } from "src/graphql";
 import { NotificationsService } from "src/services";
-import { extractErrorMessage } from "src/utils/helperFunctions";
+import {
+  extractErrorMessage,
+  getDateDifference,
+} from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
 import * as yup from "yup";
 
@@ -38,6 +44,7 @@ interface Props {
     | "figma"
     | "replit"
   >;
+  latestStories: Array<Pick<Story, "id" | "title" | "createdAt">>;
   scores?: TournamentJudgingRoundProjectScore;
   note?: string | null;
   onUpdatedScore?: (score: TournamentJudgingRoundProjectScore) => void;
@@ -102,6 +109,7 @@ type ScoreProjectFormType = yup.InferType<typeof schema>;
 export default function ProjectScoreCard({
   roundId,
   project,
+  latestStories,
   scores,
   note,
   onUpdatedScore,
@@ -205,14 +213,56 @@ export default function ProjectScoreCard({
           }),
         }}
       ></div>
-      <div>
+      <div className="mt-16">
         <p className="text-body5 text-gray-500 font-medium mb-8">
-          Project Links
+          🔗 Project Links
         </p>
-
         <div className="flex flex-wrap gap-16">
           <ProjectLinksList project={project} />
         </div>
+      </div>
+
+      <div className="mt-16">
+        <p className="text-body5 text-gray-500 font-medium">
+          ✍️ Latest Stories
+        </p>
+        {latestStories.length > 0 && (
+          <ul className="">
+            {latestStories.map((story) => (
+              <li
+                key={story.id}
+                className="py-16 first:pt-8 border-b-[1px] border-gray-200 last-of-type:border-b-0  "
+              >
+                <Link
+                  className="hover:underline text-body3 font-medium"
+                  role={"button"}
+                  target="_blank"
+                  rel="noreferrer"
+                  to={createRoute({
+                    type: "story",
+                    id: story.id,
+                    title: story.title,
+                  })}
+                >
+                  {story.title}
+                </Link>
+                <div className="flex flex-wrap items-center gap-8 text-body5 mt-8">
+                  <p className="text-gray-600 mr-12">
+                    Published{" "}
+                    {getDateDifference(story.createdAt, { dense: true })} ago
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        {latestStories.length === 0 && (
+          <div className="flex flex-col gap-16 mt-16">
+            <p className="text-body4 font-medium">
+              No stories has been published for this project
+            </p>
+          </div>
+        )}
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-16">
         <p className="text-gray-500 font-medium mb-8">Score</p>

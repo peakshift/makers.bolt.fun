@@ -33,6 +33,11 @@ query JudgingRoundJudgePage($judgingRoundId: String!) {
         icon
         title
       }
+      stories(take: 3) {
+        id
+        title
+        createdAt
+      }
     }
     tournament {
       id
