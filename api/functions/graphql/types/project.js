@@ -34,6 +34,7 @@ const Project = objectType({
     t.nonNull.string("website");
     t.nonNull.string("description");
     t.nonNull.string("hashtag");
+    t.nonNull.date("createdAt");
     t.string("cover_image", {
       async resolve(parent) {
         if (parent.cover_image_rel)

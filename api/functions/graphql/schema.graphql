@@ -439,6 +439,7 @@ type Project {
   capabilities: [Capability!]!
   category: Category!
   cover_image: String
+  createdAt: Date!
   description: String!
   discord: String
   figma: String

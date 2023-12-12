@@ -488,6 +488,7 @@ export interface NexusGenObjects {
     votes_count: number; // Int!
   }
   Project: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
     description: string; // String!
     discord?: string | null; // String
     figma?: string | null; // String
@@ -952,6 +953,7 @@ export interface NexusGenFieldTypes {
     capabilities: NexusGenRootTypes['Capability'][]; // [Capability!]!
     category: NexusGenRootTypes['Category']; // Category!
     cover_image: string | null; // String
+    createdAt: NexusGenScalars['Date']; // Date!
     description: string; // String!
     discord: string | null; // String
     figma: string | null; // String
@@ -1552,6 +1554,7 @@ export interface NexusGenFieldTypeNames {
     capabilities: 'Capability'
     category: 'Category'
     cover_image: 'String'
+    createdAt: 'Date'
     description: 'String'
     discord: 'String'
     figma: 'String'

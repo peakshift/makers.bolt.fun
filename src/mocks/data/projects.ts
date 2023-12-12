@@ -1,5 +1,9 @@
+import dayjs from "dayjs";
 import { Project, ProjectPermissionEnum } from "src/graphql";
+import { random } from "src/utils/helperFunctions";
 import { ProjectCategory } from "src/utils/interfaces";
+
+const getDate = () => dayjs().subtract(random(5, 48), "hour").toString();
 
 export let categories = [
   {
@@ -103,6 +107,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/alby_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://getalby.com/",
     lightning_address: "hello@getalby.com",
     votes_count: 335,
@@ -148,6 +153,7 @@ export let projects = [
     thumbnail_image:
       "https://user-images.githubusercontent.com/36778205/157433567-4b1e41db-23d4-4a80-b48f-ee248ee87f1e.jpg",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://geyser.fund/",
     lightning_address: "divineorgan67@walletofsatoshi.com",
     votes_count: 232,
@@ -241,6 +247,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lightning-video_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lightning.video/",
     lightning_address: "moritz@getalby.com",
     votes_count: 205,
@@ -286,6 +293,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/wavlake_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://www.wavlake.com/",
     lightning_address: "moritz@getalby.com",
     votes_count: 45,
@@ -331,6 +339,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/bitrefill_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://www.bitrefill.com/buy",
     lightning_address: "moritz@getalby.com",
     votes_count: 25,
@@ -376,6 +385,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/sparkshot_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://sparkshot.io/",
     lightning_address: "johns@getalby.com",
     votes_count: 11,
@@ -421,6 +431,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lightning-roulette_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lightning-roulette.com/",
     lightning_address: "moritz@getalby.com",
     votes_count: 10,
@@ -466,6 +477,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lnshort-it_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lnshort.it/",
     lightning_address: "moritz@getalby.com",
     votes_count: 10,
@@ -511,6 +523,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lightning-gifts_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lightning.gifts/",
     lightning_address: "moritz@getalby.com",
     votes_count: 10,
@@ -556,6 +569,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lnblackjack_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://www.lnblackjack.com/",
     lightning_address: "moritz@getalby.com",
     votes_count: 5,
@@ -896,6 +910,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lnmarkets_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lnmarkets.com/",
     lightning_address: "johns@getalby.com",
     votes_count: 0,
@@ -1007,6 +1022,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/loft-trade_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://loft.trade/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1052,6 +1068,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/sats-4-likes_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://kriptode.com/satsforlikes/index.html",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1097,6 +1114,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/scarce-city_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://scarce.city/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1142,6 +1160,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/stacker-news_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://stacker.news/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1187,6 +1206,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/starbackr_thumbail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://www.starbackr.com/",
     lightning_address: "moritz@geralby.com",
     votes_count: 0,
@@ -1232,6 +1252,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/amboss-space_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://amboss.space/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1277,6 +1298,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/yalls_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://yalls.org/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1322,6 +1344,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lightning-network-stores_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lightningnetworkstores.com/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1367,6 +1390,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lightning-poker_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lightning-poker.com/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,
@@ -1412,6 +1436,7 @@ export let projects = [
     thumbnail_image:
       "https://fra1.digitaloceanspaces.com/alby-storage/makers-bolt-fun/bolt.fund_thumbnails_covers/lngames_thumbnail.png",
     screenshots: [],
+    createdAt: getDate(),
     website: "https://lngames.net/",
     lightning_address: "moritz@getalby.com",
     votes_count: 0,

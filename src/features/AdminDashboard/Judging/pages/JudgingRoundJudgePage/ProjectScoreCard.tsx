@@ -1,11 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import dayjs from "dayjs";
 import linkifyHtml from "linkifyjs/lib/linkify-html";
-import React from "react";
 import { Resolver, SubmitHandler, useForm } from "react-hook-form";
-import { FaDiscord } from "react-icons/fa";
-import { FiGlobe } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Badge from "src/Components/Badge/Badge";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import ProjectLinksList from "src/features/Projects/pages/ProjectPage/Components/ProjectLinksList/ProjectLinksList";
@@ -13,7 +10,6 @@ import {
   Project,
   ScoreProjectInput,
   Story,
-  Tag,
   TournamentJudgingRoundProjectScore,
   useScoreTournamentProjectMutation,
 } from "src/graphql";
@@ -23,7 +19,10 @@ import {
   getDateDifference,
 } from "src/utils/helperFunctions";
 import { createRoute } from "src/utils/routing";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 import * as yup from "yup";
+
+dayjs.extend(advancedFormat);
 
 interface Props {
   roundId: string;
@@ -35,6 +34,7 @@ interface Props {
     | "hashtag"
     | "thumbnail_image"
     | "description"
+    | "createdAt"
     | "github"
     | "website"
     | "discord"
@@ -201,9 +201,14 @@ export default function ProjectScoreCard({
           <p className="text-gray-600 text-body5">{project.tagline}</p>
         </div>
       </div>
-
+      <p className="text-gray-600 text-body5">
+        Project published on:{" "}
+        <span className="font-bold">
+          {dayjs(project.createdAt).format("Do MMM, YYYY")}
+        </span>
+      </p>
       <div
-        className="mt-16 text-body4 text-gray-600 leading-normal whitespace-pre-line"
+        className="text-body4 text-gray-600 leading-normal whitespace-pre-line"
         dangerouslySetInnerHTML={{
           __html: linkifyHtml(project.description, {
             className: " text-blue-500 underline",
@@ -231,7 +236,7 @@ export default function ProjectScoreCard({
             {latestStories.map((story) => (
               <li
                 key={story.id}
-                className="py-16 first:pt-8 border-b-[1px] border-gray-200 last-of-type:border-b-0  "
+                className="py-16 first:pt-8 last:pb-8 border-b-[1px] border-gray-200 last-of-type:border-b-0  "
               >
                 <Link
                   className="hover:underline text-body3 font-medium"
@@ -439,7 +444,7 @@ export default function ProjectScoreCard({
         </div>
         <div className="mt-16">
           <label htmlFor={`note-input-${project.id}`} className="text-body5">
-            Note
+            Note for the Team
           </label>
           <div className="input-wrapper mt-8 relative">
             <textarea

@@ -28,6 +28,7 @@ query JudgingRoundJudgePage($judgingRoundId: String!) {
       youtube
       npub
       website
+      createdAt
       category {
         id
         icon
