@@ -509,11 +509,18 @@ const Tournament = objectType({
 
         return prisma.tournamentJudgingRound.findMany({
           where: {
-            judges: {
-              some: {
-                judge_id: userId,
+            AND: [
+              {
+                tournament_id: parent.id,
               },
-            },
+              {
+                judges: {
+                  some: {
+                    judge_id: userId,
+                  },
+                },
+              },
+            ],
           },
         });
       },

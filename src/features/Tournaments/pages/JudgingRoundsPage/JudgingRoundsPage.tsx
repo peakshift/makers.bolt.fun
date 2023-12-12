@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
 import Button from "src/Components/Button/Button";
+import { useMyUser } from "src/utils/hooks";
 import { createRoute } from "src/utils/routing";
 import { useTournament } from "../TournamentDetailsPage/TournamentDetailsContext";
 
 export default function JudgingRoundsPage() {
-  const {
-    tournamentDetails: { judging_rounds },
-  } = useTournament();
+  const { tournamentDetails } = useTournament();
 
-  const roundsSortedByCreationDate = [...judging_rounds];
+  const isOrganizerForThisTournament =
+    useMyUser().private_data.tournaments_organizing.some(
+      (t) => t.id === tournamentDetails.id
+    );
+
+  const roundsSortedByCreationDate = [...tournamentDetails.judging_rounds];
 
   roundsSortedByCreationDate.sort((a, b) => {
     const aDate = new Date(a.createdAt);
@@ -30,7 +34,7 @@ export default function JudgingRoundsPage() {
           Create New Round
         </Button>
       </div>
-      {judging_rounds.length === 0 && (
+      {tournamentDetails.judging_rounds.length === 0 && (
         <p className="text-center py-24 text-gray-500 font-medium text-body3">
           No judging rounds created yet.
         </p>
@@ -40,11 +44,20 @@ export default function JudgingRoundsPage() {
           {roundsSortedByCreationDate.map((round) => (
             <li key={round.id}>
               <Link
-                to={createRoute({
-                  type: "judging-rounds",
-                  page: "judge-page",
-                  roundId: round.id,
-                })}
+                to={
+                  isOrganizerForThisTournament
+                    ? createRoute({
+                        type: "judging-rounds",
+                        page: "details",
+                        tournamentIdOrSlug: tournamentDetails.slug,
+                        roundId: round.id,
+                      })
+                    : createRoute({
+                        type: "judging-rounds",
+                        page: "judge-page",
+                        roundId: round.id,
+                      })
+                }
                 className="p-24 bg-gray-100 hover:bg-gray-50 border-2 border-gray-200 rounded font-medium flex flex-col items-center text-center text-body3"
               >
                 {round.title}
