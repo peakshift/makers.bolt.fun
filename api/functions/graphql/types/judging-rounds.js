@@ -14,24 +14,8 @@ const {
 const { prisma } = require("../../../prisma");
 const cacheService = require("../../../services/cache.service");
 const { queueService } = require("../../../services/queue-service");
+const { generateId } = require("../../../utils/generateId");
 const { toSlug } = require("../../../utils/helpers");
-
-// model TournamentJudgingRoundJudgeScore {
-//   id Int @id @default(autoincrement())
-
-//   round_id String
-//   round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
-
-//   judge_id Int
-//   judge    User @relation(fields: [judge_id], references: [id])
-
-//   project_id Int
-//   project    Project @relation(fields: [project_id], references: [id])
-
-//   scores Json
-
-//   @@unique([round_id, judge_id, project_id])
-// }
 
 const TournamentJudgingRoundProjectScore = objectType({
   name: "TournamentJudgingRoundProjectScore",
@@ -267,6 +251,7 @@ const createOrUpdateJudgingRound = extendType({
             end_date,
           },
           create: {
+            id: generateId(),
             title,
             description,
             end_date,

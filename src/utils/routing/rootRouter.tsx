@@ -452,7 +452,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           </Route>
         </Route>
         <Route
-          path="tournament/:tournamentIdOrSlug/judging/:roundId/judge"
+          path="judging-round/:roundId"
           element={<JudgingRoundJudgePage />}
           loader={judgingRoundJudgePageDataLoader(queryClient)}
         />

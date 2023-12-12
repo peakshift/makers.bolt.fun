@@ -138,7 +138,6 @@ export default function JudgingRoundDetailsPage() {
                   `${window.location.origin}${createRoute({
                     type: "judging-rounds",
                     page: "judge-page",
-                    tournamentIdOrSlug: slug,
                     roundId: judgingRound.id,
                   })}`
                 );

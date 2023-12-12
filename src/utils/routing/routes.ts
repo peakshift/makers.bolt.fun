@@ -102,7 +102,6 @@ type RouteOptions =
   | {
       type: "judging-rounds";
       page: "judge-page";
-      tournamentIdOrSlug: number | string;
       roundId: string;
     };
 
@@ -200,7 +199,7 @@ export function createRoute(options: RouteOptions) {
       return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}`;
 
     if (options.page === "judge-page")
-      return `/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}/judge`;
+      return `/judging-round/${options.roundId}`;
   }
 
   return "";
