@@ -39,6 +39,20 @@ export default function JudgingRoundJudgePage() {
 
   const judgingRound = query.data.getJudgingRoundById;
 
+  const sortedProjectsByLatestStory = [...judgingRound.projects];
+  sortedProjectsByLatestStory.sort((p1, p2) => {
+    const p1LatestStory = p1.stories.at(0)?.createdAt;
+    const p2LatestStory = p2.stories.at(0)?.createdAt;
+
+    if (!p1LatestStory && !p2LatestStory) return 0;
+    if (!p1LatestStory) return 1;
+    if (!p2LatestStory) return -1;
+
+    return (
+      new Date(p2LatestStory).getTime() - new Date(p1LatestStory).getTime()
+    );
+  });
+
   return (
     <div className="page-container">
       <div className="flex flex-col gap-42">
@@ -86,7 +100,7 @@ export default function JudgingRoundJudgePage() {
             </div>
           </div>
           <ul className="flex flex-col gap-8">
-            {judgingRound.projects.map((project) => (
+            {sortedProjectsByLatestStory.map((project) => (
               <li key={project.id} className="">
                 <ProjectScoreCard
                   project={project}
