@@ -1572,7 +1572,7 @@ export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'Tournament', id: number, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any }> } | null };
+export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'Tournament', id: number, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, scores_schema: Array<{ __typename?: 'TournamentJudgingRoundScoresSchema', key: string, label: string, type: string, required: boolean | null }> }> } | null };
 
 export type ManageTournamentQueryVariables = Exact<{
   idOrSlug: Scalars['String'];
@@ -2757,6 +2757,24 @@ export const CreateOrUpdateJudgingRoundDocument = gql`
       description
       end_date
       createdAt
+      judges {
+        id
+        name
+        avatar
+        jobTitle
+      }
+      projects {
+        id
+        hashtag
+        title
+        thumbnail_image
+      }
+      scores_schema {
+        key
+        label
+        type
+        required
+      }
     }
   }
 }
