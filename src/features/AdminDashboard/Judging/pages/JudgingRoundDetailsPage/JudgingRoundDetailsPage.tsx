@@ -8,6 +8,7 @@ import BackButton from "src/Components/BackButton/BackButton";
 import Button from "src/Components/Button/Button";
 import InfoCard from "src/Components/InfoCard/InfoCard";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
+import OgTags from "src/Components/OgTags/OgTags";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 import Avatar from "src/features/Profiles/Components/Avatar/Avatar";
 import { useGetJudgingRoundDetailsQuery } from "src/graphql";
@@ -38,6 +39,7 @@ export default function JudgingRoundDetailsPage() {
 
   return (
     <div className="flex flex-col gap-42">
+      <OgTags title={`${judgingRound.title}`} />
       <section>
         <div className="flex flex-wrap items-center gap-16 mb-24">
           <BackButton

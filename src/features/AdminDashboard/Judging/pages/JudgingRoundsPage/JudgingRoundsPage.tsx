@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import BackButton from "src/Components/BackButton/BackButton";
 import Button from "src/Components/Button/Button";
+import OgTags from "src/Components/OgTags/OgTags";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 import { createRoute } from "src/utils/routing";
 
 export default function JudgingRoundsPage() {
   const {
-    tournamentDetails: { slug, judging_rounds },
+    tournamentDetails: { slug, judging_rounds, title },
   } = useTournament();
 
   const roundsSortedByCreationDate = [...judging_rounds];
@@ -21,6 +22,7 @@ export default function JudgingRoundsPage() {
 
   return (
     <div className="pb-42 flex flex-col gap-36">
+      <OgTags title={`Manage Judging Rounds for ${title}`} />
       <div className="flex flex-wrap items-center gap-16 mb-24">
         <BackButton backRoute={"/admin"} />
         <h2 className="text-h2 font-bolder text-gray-900">

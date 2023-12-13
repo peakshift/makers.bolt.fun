@@ -3,6 +3,7 @@ import { marked } from "marked";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
+import OgTags from "src/Components/OgTags/OgTags";
 import {
   TournamentJudgingRoundProjectScore,
   useJudgingRoundJudgePageQuery,
@@ -88,6 +89,7 @@ export default function JudgingRoundJudgePage() {
 
   return (
     <div className="page-container">
+      <OgTags title={`${judgingRound.title}`} />
       <div className="flex flex-col gap-42">
         <section>
           <div className="flex flex-wrap items-center gap-16 mb-24">

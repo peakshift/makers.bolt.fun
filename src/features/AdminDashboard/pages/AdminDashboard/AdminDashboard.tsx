@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
+import OgTags from "src/Components/OgTags/OgTags";
 import { createRoute } from "src/utils/routing";
 import { LoaderData } from "./dashboard.loader";
 
@@ -24,6 +25,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="page-container">
+      <OgTags title={"Admin Dashboard"} />
       <h1 className="text-h1 font-bolder mb-42">Admin Dashboard</h1>
       <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-16">
         {links.map((link) => (

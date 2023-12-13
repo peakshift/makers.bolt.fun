@@ -11,6 +11,7 @@ import CreateJudgingRoundForm from "./CreateJudgingRoundForm";
 import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/ManageTournamentPage/TournamentDetailsContext";
 import BackButton from "src/Components/BackButton/BackButton";
 import { createRoute } from "src/utils/routing";
+import OgTags from "src/Components/OgTags/OgTags";
 
 const schema: yup.SchemaOf<Omit<CreateOrUpdateJudgingRoundInput, "id">> = yup
   .object({
@@ -88,6 +89,7 @@ export default function CreateJudgingRoundPage() {
 
   return (
     <FormProvider {...formMethods}>
+      <OgTags title={`Create New Judging Round`} />
       <div className="flex flex-wrap items-center gap-16 mb-24">
         <BackButton
           defaultBackRoute={createRoute({
