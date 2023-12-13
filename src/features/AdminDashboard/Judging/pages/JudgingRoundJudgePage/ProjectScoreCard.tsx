@@ -54,12 +54,14 @@ interface Props {
   scoresSchema: TournamentJudgingRoundScoresSchema[];
   scores?: TournamentJudgingRoundProjectScore[];
   note?: string | null;
+  internal_note?: string | null;
   onUpdatedScore?: (score: TournamentJudgingRoundProjectScore[]) => void;
 }
 
 const schema: yup.SchemaOf<ScoreProjectInput> = yup
   .object({
     note: yup.string().nullable(),
+    internal_note: yup.string().nullable(),
     project_id: yup.number().required(),
     round_id: yup.string().required(),
     scores: yup
@@ -83,6 +85,7 @@ export default function ProjectScoreCard({
   scoresSchema,
   scores,
   note,
+  internal_note,
   onUpdatedScore,
 }: Props) {
   const {
@@ -97,6 +100,7 @@ export default function ProjectScoreCard({
       project_id: project.id,
       round_id: roundId,
       note: note ?? "",
+      internal_note: internal_note ?? "",
       scores:
         scoresSchema.map((schema) => {
           const fieldType = schema.type;
@@ -137,6 +141,7 @@ export default function ProjectScoreCard({
           project_id: project.id,
           round_id: roundId,
           note: data.note ?? "",
+          internal_note: data.internal_note ?? "",
           scores: scoresSchema.map((schema) => {
             const fieldType = schema.type;
             const value = newScores.find(
@@ -301,7 +306,7 @@ export default function ProjectScoreCard({
                   </label>
                   <input
                     id={`score-input-${project.id}-${index}`}
-                    className="input-checkbox cursor-pointer w-40 h-40"
+                    className="input-checkbox cursor-pointer w-24 h-24"
                     type="checkbox"
                     {...register(`scores.${index}.value` as const)}
                   />
@@ -342,6 +347,25 @@ export default function ProjectScoreCard({
             />
           </div>
           {errors.note && <p className="input-error">{errors.note.message}</p>}
+        </div>
+        <div className="mt-16">
+          <label
+            htmlFor={`internal-note-input-${project.id}`}
+            className="text-body5"
+          >
+            Note for the Organizers
+          </label>
+          <div className="input-wrapper mt-8 relative">
+            <textarea
+              id={`internal-note-input-${project.id}`}
+              className="input-text"
+              placeholder=""
+              {...register("internal_note")}
+            />
+          </div>
+          {errors.internal_note && (
+            <p className="input-error">{errors.internal_note.message}</p>
+          )}
         </div>
 
         {isDirty && (

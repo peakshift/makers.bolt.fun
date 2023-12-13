@@ -30,6 +30,7 @@ const TournamentJudgingRoundJudgeScore = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.string("note");
+    t.string("internal_note");
 
     t.nonNull.field("judge", {
       type: "User",
@@ -422,6 +423,7 @@ const ScoreProjectInput = inputObjectType({
     t.nonNull.string("round_id");
     t.nonNull.int("project_id");
     t.string("note");
+    t.string("internal_note");
     t.nonNull.list.nonNull.field("scores", {
       type: ScoreObjectInput,
     });
@@ -441,7 +443,7 @@ const scoreTournamentProject = extendType({
 
         const { input } = args;
 
-        const { round_id, note, project_id, scores } = input;
+        const { round_id, note, internal_note, project_id, scores } = input;
 
         const isJudgeInRound =
           await prisma.tournamentJudgingRoundJudge.findFirst({
@@ -490,6 +492,7 @@ const scoreTournamentProject = extendType({
             update: {
               scores,
               note,
+              internal_note,
             },
             create: {
               round_id: round_id,
@@ -497,6 +500,7 @@ const scoreTournamentProject = extendType({
               project_id: project_id,
               scores,
               note,
+              internal_note,
             },
           });
 

@@ -3,7 +3,10 @@ import { marked } from "marked";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "src/Components/LoadingPage/LoadingPage";
-import { useJudgingRoundJudgePageQuery } from "src/graphql";
+import {
+  TournamentJudgingRoundProjectScore,
+  useJudgingRoundJudgePageQuery,
+} from "src/graphql";
 import ProjectScoreCard from "./ProjectScoreCard";
 
 export default function JudgingRoundJudgePage() {
@@ -59,6 +62,30 @@ export default function JudgingRoundJudgePage() {
     );
   });
 
+  const onProjectScoreUpdated = (
+    scores: TournamentJudgingRoundProjectScore[],
+    projectId: number
+  ) => {
+    let hasNonNullScore = false;
+
+    for (const [key, score] of Object.entries(scores)) {
+      if (key === "__typename") continue;
+
+      if (score != null) {
+        setJudgedProjects((prev) => {
+          if (prev.includes(projectId)) return prev;
+
+          return [...prev, projectId];
+        });
+        hasNonNullScore = true;
+        break;
+      }
+    }
+
+    if (!hasNonNullScore)
+      setJudgedProjects((prev) => prev.filter((id) => id !== projectId));
+  };
+
   return (
     <div className="page-container">
       <div className="flex flex-col gap-42">
@@ -106,48 +133,28 @@ export default function JudgingRoundJudgePage() {
             </div>
           </div>
           <ul className="flex flex-col gap-8">
-            {sortedProjectsByLatestStory.map((project) => (
-              <li key={project.id} className="">
-                <ProjectScoreCard
-                  project={project}
-                  latestStories={project.stories}
-                  roundId={judgingRound.id}
-                  scoresSchema={judgingRound.scores_schema}
-                  scores={
-                    judgingRound.my_scores.find(
-                      (score) => score.project.id === project.id
-                    )?.scores
-                  }
-                  note={
-                    judgingRound.my_scores.find(
-                      (score) => score.project.id === project.id
-                    )?.note
-                  }
-                  onUpdatedScore={(scores) => {
-                    let hasNonNullScore = false;
+            {sortedProjectsByLatestStory.map((project) => {
+              const myScore = judgingRound.my_scores.find(
+                (score) => score.project.id === project.id
+              );
 
-                    for (const [key, score] of Object.entries(scores)) {
-                      if (key === "__typename") continue;
-
-                      if (score != null) {
-                        setJudgedProjects((prev) => {
-                          if (prev.includes(project.id)) return prev;
-
-                          return [...prev, project.id];
-                        });
-                        hasNonNullScore = true;
-                        break;
-                      }
+              return (
+                <li key={project.id} className="">
+                  <ProjectScoreCard
+                    project={project}
+                    latestStories={project.stories}
+                    roundId={judgingRound.id}
+                    scoresSchema={judgingRound.scores_schema}
+                    scores={myScore?.scores}
+                    note={myScore?.note}
+                    internal_note={myScore?.internal_note}
+                    onUpdatedScore={(scores) =>
+                      onProjectScoreUpdated(scores, project.id)
                     }
-
-                    if (!hasNonNullScore)
-                      setJudgedProjects((prev) =>
-                        prev.filter((id) => id !== project.id)
-                      );
-                  }}
-                />
-              </li>
-            ))}
+                  />
+                </li>
+              );
+            })}
           </ul>
         </section>
       </div>

@@ -183,6 +183,7 @@ export interface NexusGenInputs {
     value: string; // String!
   }
   ScoreProjectInput: { // input type
+    internal_note?: string | null; // String
     note?: string | null; // String
     project_id: number; // Int!
     round_id: string; // String!
@@ -611,6 +612,7 @@ export interface NexusGenObjects {
   }
   TournamentJudgingRoundJudgeScore: { // root type
     id: number; // Int!
+    internal_note?: string | null; // String
     note?: string | null; // String
   }
   TournamentJudgingRoundProjectScore: { // root type
@@ -1170,6 +1172,7 @@ export interface NexusGenFieldTypes {
   }
   TournamentJudgingRoundJudgeScore: { // field return type
     id: number; // Int!
+    internal_note: string | null; // String
     judge: NexusGenRootTypes['User']; // User!
     note: string | null; // String
     project: NexusGenRootTypes['Project']; // Project!
@@ -1774,6 +1777,7 @@ export interface NexusGenFieldTypeNames {
   }
   TournamentJudgingRoundJudgeScore: { // field return type name
     id: 'Int'
+    internal_note: 'String'
     judge: 'User'
     note: 'String'
     project: 'Project'

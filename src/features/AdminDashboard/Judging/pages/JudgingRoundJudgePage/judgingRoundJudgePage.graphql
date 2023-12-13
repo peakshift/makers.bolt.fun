@@ -47,6 +47,7 @@ query JudgingRoundJudgePage($judgingRoundId: String!) {
     my_scores {
       id
       note
+      internal_note
       project {
         id
         hashtag

@@ -583,6 +583,7 @@ input ScoreObjectInput {
 }
 
 input ScoreProjectInput {
+  internal_note: String
   note: String
   project_id: Int!
   round_id: String!
@@ -753,6 +754,7 @@ type TournamentJudgingRound {
 
 type TournamentJudgingRoundJudgeScore {
   id: Int!
+  internal_note: String
   judge: User!
   note: String
   project: Project!
