@@ -1,18 +1,11 @@
-import React from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { FiTrash2 } from "react-icons/fi";
+import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FiPlus, FiTrash2 } from "react-icons/fi";
 import Button from "src/Components/Button/Button";
 import IconButton from "src/Components/IconButton/IconButton";
-import { TournamentJudgingRoundScoresSchemaInput } from "src/graphql";
 import { generateId } from "src/utils/helperFunctions";
 import { CreateJudgingRoundFormType } from "./CreateJudgingRoundPage";
-
-// type ScoresSchemaInput = {
-//     key: Scalars['String'];
-//     label: Scalars['String'];
-//     required?: InputMaybe<Scalars['Boolean']>;
-//     type: Scalars['String'];
-//   }[]
 
 const inputTypesOptions = [
   {
@@ -23,10 +16,10 @@ const inputTypesOptions = [
     label: "Checkbox (Can select multiple)",
     value: "checkbox",
   },
-  {
-    label: "Radio (Can select one)",
-    value: "radio",
-  },
+  // {
+  //   label: "Radio (Can select one)",
+  //   value: "radio",
+  // },
 ];
 
 export default function ScoresSchemaInput() {
@@ -36,24 +29,37 @@ export default function ScoresSchemaInput() {
     formState: { errors },
   } = useFormContext<CreateJudgingRoundFormType>();
 
-  const { fields, append, remove } = useFieldArray<
+  const { fields, append, remove, swap } = useFieldArray<
     CreateJudgingRoundFormType,
     "scores_schema"
   >({
-    // control,
     name: "scores_schema",
   });
 
-  console.log(errors);
-
   return (
     <div>
-      {/* List of all the scores inputs, their: label, type. & a button to remove the entry*/}
       {fields.length > 0 && (
         <ul className="flex flex-col gap-8 mb-16">
           {fields.map((field, index) => (
             <li key={field.id}>
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-16">
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr_auto] gap-16">
+                <div className="flex flex-col items-center justify-center text-gray-500">
+                  <IconButton
+                    className={`!p-4`}
+                    disabled={index === 0}
+                    onClick={() => swap(index, index - 1)}
+                  >
+                    <FaChevronUp />
+                  </IconButton>
+
+                  <IconButton
+                    className="!p-4"
+                    onClick={() => swap(index, index + 1)}
+                    disabled={index === fields.length - 1}
+                  >
+                    <FaChevronDown />
+                  </IconButton>
+                </div>
                 <div>
                   <label
                     htmlFor={`label-input-${field.id}`}
@@ -126,7 +132,7 @@ export default function ScoresSchemaInput() {
         color="gray"
         onClick={() => append({ key: generateId(), label: "", type: "range" })}
       >
-        Add new score attribute
+        <FiPlus /> Add new score attribute
       </Button>
     </div>
   );

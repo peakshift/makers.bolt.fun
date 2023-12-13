@@ -20,13 +20,8 @@ const { toSlug } = require("../../../utils/helpers");
 const TournamentJudgingRoundProjectScore = objectType({
   name: "TournamentJudgingRoundProjectScore",
   definition(t) {
-    t.int("value_proposition");
-    t.int("innovation");
-    t.int("bitcoin_integration_and_scalability");
-    t.int("execution");
-    t.int("ui_ux_design");
-    t.int("transparency");
-    t.int("je_ne_sais_quoi");
+    t.nonNull.string("key");
+    t.nonNull.string("value");
   },
 });
 
@@ -58,7 +53,7 @@ const TournamentJudgingRoundJudgeScore = objectType({
       },
     });
 
-    t.nonNull.field("scores", {
+    t.nonNull.list.nonNull.field("scores", {
       type: TournamentJudgingRoundProjectScore,
       resolve: async (parent, _, ctx) => {
         return prisma.tournamentJudgingRoundJudgeScore
@@ -66,17 +61,19 @@ const TournamentJudgingRoundJudgeScore = objectType({
             where: { id: parent.id },
           })
           .then((res) => {
-            const data = res.scores ?? {};
-            return {
-              value_proposition: data.value_proposition,
-              innovation: data.innovation,
-              bitcoin_integration_and_scalability:
-                data.bitcoin_integration_and_scalability,
-              execution: data.execution,
-              ui_ux_design: data.ui_ux_design,
-              transparency: data.transparency,
-              je_ne_sais_quoi: data.je_ne_sais_quoi,
-            };
+            const data = res.scores ?? [];
+
+            if (Array.isArray(data)) return data;
+
+            // This is for backward compatibility, once all the data is updated, this can be removed
+            return Object.entries(data)
+              .map(([key, value]) => {
+                return {
+                  key,
+                  value,
+                };
+              })
+              .filter((d) => d.value !== null);
           });
       },
     });
@@ -133,6 +130,21 @@ const TournamentJudgingRound = objectType({
               },
             })
           );
+      },
+    });
+
+    t.nonNull.boolean("is_judge", {
+      resolve: async (parent, _, ctx) => {
+        if (!ctx.user?.id) return false;
+
+        return prisma.tournamentJudgingRoundJudge
+          .findFirst({
+            where: {
+              round_id: parent.id,
+              judge_id: ctx.user?.id,
+            },
+          })
+          .then(Boolean);
       },
     });
 
@@ -215,12 +227,6 @@ const getJudgingRoundById = extendType({
     });
   },
 });
-
-// {
-//   label: "Some Label"
-//   type: "range" | "checkbox" | "radio"
-//   required?: boolean
-//   }[]
 
 const TournamentJudgingRoundScoresSchemaInput = inputObjectType({
   name: "TournamentJudgingRoundScoresSchemaInput",
@@ -405,13 +411,8 @@ const createOrUpdateJudgingRound = extendType({
 const ScoreObjectInput = inputObjectType({
   name: "ScoreObjectInput",
   definition(t) {
-    t.int("value_proposition");
-    t.int("innovation");
-    t.int("bitcoin_integration_and_scalability");
-    t.int("execution");
-    t.int("ui_ux_design");
-    t.int("transparency");
-    t.int("je_ne_sais_quoi");
+    t.nonNull.string("key");
+    t.nonNull.string("value");
   },
 });
 
@@ -421,7 +422,7 @@ const ScoreProjectInput = inputObjectType({
     t.nonNull.string("round_id");
     t.nonNull.int("project_id");
     t.string("note");
-    t.nonNull.field("scores", {
+    t.nonNull.list.nonNull.field("scores", {
       type: ScoreObjectInput,
     });
   },

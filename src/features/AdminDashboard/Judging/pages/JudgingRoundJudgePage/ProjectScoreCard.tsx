@@ -1,7 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
 import linkifyHtml from "linkifyjs/lib/linkify-html";
-import { Resolver, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Resolver,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { Link } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
@@ -11,6 +16,7 @@ import {
   ScoreProjectInput,
   Story,
   TournamentJudgingRoundProjectScore,
+  TournamentJudgingRoundScoresSchema,
   useScoreTournamentProjectMutation,
 } from "src/graphql";
 import { NotificationsService } from "src/services";
@@ -45,9 +51,10 @@ interface Props {
     | "replit"
   >;
   latestStories: Array<Pick<Story, "id" | "title" | "createdAt">>;
-  scores?: TournamentJudgingRoundProjectScore;
+  scoresSchema: TournamentJudgingRoundScoresSchema[];
+  scores?: TournamentJudgingRoundProjectScore[];
   note?: string | null;
-  onUpdatedScore?: (score: TournamentJudgingRoundProjectScore) => void;
+  onUpdatedScore?: (score: TournamentJudgingRoundProjectScore[]) => void;
 }
 
 const schema: yup.SchemaOf<ScoreProjectInput> = yup
@@ -56,50 +63,13 @@ const schema: yup.SchemaOf<ScoreProjectInput> = yup
     project_id: yup.number().required(),
     round_id: yup.string().required(),
     scores: yup
-      .object({
-        value_proposition: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-        innovation: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-        bitcoin_integration_and_scalability: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-        execution: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-        ui_ux_design: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-        transparency: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-        je_ne_sais_quoi: yup
-          .number()
-          .min(0)
-          .max(10)
-          .nullable()
-          .transform((_, val) => (val === "" ? null : Number(val))),
-      })
+      .array()
+      .of(
+        yup.object({
+          key: yup.string().required(),
+          value: yup.string() as yup.StringSchema<string>,
+        })
+      )
       .required(),
   })
   .required();
@@ -110,6 +80,7 @@ export default function ProjectScoreCard({
   roundId,
   project,
   latestStories,
+  scoresSchema,
   scores,
   note,
   onUpdatedScore,
@@ -119,23 +90,29 @@ export default function ProjectScoreCard({
     formState: { errors, isDirty },
     handleSubmit,
     reset,
+    control,
   } = useForm<ScoreProjectFormType>({
     resolver: yupResolver(schema) as Resolver<ScoreProjectFormType>,
     defaultValues: {
       project_id: project.id,
       round_id: roundId,
       note: note ?? "",
-      scores: {
-        value_proposition: scores?.value_proposition ?? "",
-        innovation: scores?.innovation ?? "",
-        bitcoin_integration_and_scalability:
-          scores?.bitcoin_integration_and_scalability ?? "",
-        execution: scores?.execution ?? "",
-        ui_ux_design: scores?.ui_ux_design ?? "",
-        transparency: scores?.transparency ?? "",
-        je_ne_sais_quoi: scores?.je_ne_sais_quoi ?? "",
-      } as any,
+      scores:
+        scoresSchema.map((schema) => {
+          const fieldType = schema.type;
+          const value = scores?.find(({ key }) => key === schema.key)?.value;
+
+          return {
+            key: schema.key,
+            value: parseValue(value, fieldType) as any,
+          };
+        }) ?? [],
     },
+  });
+
+  const { fields: scoresFields } = useFieldArray({
+    name: "scores",
+    control,
   });
 
   const [mutate, { loading }] = useScoreTournamentProjectMutation();
@@ -147,26 +124,32 @@ export default function ProjectScoreCard({
         variables: {
           input: {
             ...data,
+            scores:
+              data.scores?.filter(({ value }) => {
+                return value !== undefined && value !== null && value !== "";
+              }) ?? [],
           },
         },
       });
-      const resData = res.data?.scoreTournamentProject?.scores;
-      if (resData) {
+      const newScores = res.data?.scoreTournamentProject?.scores;
+      if (newScores) {
         reset({
           project_id: project.id,
           round_id: roundId,
-          scores: {
-            value_proposition: resData.value_proposition ?? "",
-            innovation: resData.innovation ?? "",
-            bitcoin_integration_and_scalability:
-              resData.bitcoin_integration_and_scalability ?? "",
-            execution: resData.execution ?? "",
-            ui_ux_design: resData.ui_ux_design ?? "",
-            transparency: resData.transparency ?? "",
-            je_ne_sais_quoi: resData.je_ne_sais_quoi ?? "",
-          } as any,
+          note: data.note ?? "",
+          scores: scoresSchema.map((schema) => {
+            const fieldType = schema.type;
+            const value = newScores.find(
+              ({ key }) => key === schema.key
+            )?.value;
+
+            return {
+              key: schema.key,
+              value: parseValue(value, fieldType) as any,
+            };
+          }),
         });
-        onUpdatedScore?.(resData);
+        onUpdatedScore?.(newScores);
       }
       NotificationsService.success("Project score updated");
     } catch (error) {
@@ -272,175 +255,79 @@ export default function ProjectScoreCard({
       <form onSubmit={handleSubmit(onSubmit)} className="mt-16">
         <p className="text-gray-500 font-medium mb-8">Score</p>
         <div className="grid grid-cols-3 gap-8">
-          <div>
-            <label
-              htmlFor={`value-proposition-input-${project.id}`}
-              className="text-body5"
-            >
-              Value Proposition 🎯
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`value-proposition-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.value_proposition")}
-              />
-            </div>
-            {errors.scores?.value_proposition && (
-              <p className="input-error">
-                {errors.scores?.value_proposition.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor={`innovation-input-${project.id}`}
-              className="text-body5"
-            >
-              Innovation 🧪
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`innovation-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.innovation")}
-              />
-            </div>
-            {errors.scores?.innovation && (
-              <p className="input-error">{errors.scores?.innovation.message}</p>
-            )}
-          </div>
+          {scoresFields.map((field, index) => {
+            const schema = scoresSchema.find(
+              (schema) => schema.key === field.key
+            );
 
-          <div>
-            <label
-              htmlFor={`bitcoin-integration-input-${project.id}`}
-              className="text-body5"
-            >
-              Bitcoin Integration and Scalability ⚡️
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`bitcoin-integration-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.bitcoin_integration_and_scalability")}
-              />
-            </div>
-            {errors.scores?.bitcoin_integration_and_scalability && (
-              <p className="input-error">
-                {errors.scores?.bitcoin_integration_and_scalability.message}
-              </p>
-            )}
-          </div>
+            if (!schema) return null;
 
-          <div>
-            <label
-              htmlFor={`execution-input-${project.id}`}
-              className="text-body5"
-            >
-              Execution ✅
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`execution-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.execution")}
-              />
-            </div>
-            {errors.scores?.execution && (
-              <p className="input-error">{errors.scores?.execution.message}</p>
-            )}
-          </div>
+            if (schema.type === "range")
+              return (
+                <div key={field.key}>
+                  <label
+                    htmlFor={`score-input-${project.id}-${index}`}
+                    className="text-body5"
+                  >
+                    {schema.label}
+                  </label>
+                  <div className="input-wrapper mt-8 relative">
+                    <input
+                      id={`score-input-${project.id}-${index}`}
+                      type="number"
+                      min={0}
+                      max={10}
+                      className="input-text"
+                      placeholder=""
+                      {...register(`scores.${index}.value` as const)}
+                    />
+                  </div>
+                  {errors.scores?.[index]?.value && (
+                    <p className="input-error">
+                      {errors.scores?.[index]?.value?.message}
+                    </p>
+                  )}
+                </div>
+              );
 
-          <div>
-            <label
-              htmlFor={`ui-ux-design-input-${project.id}`}
-              className="text-body5"
-            >
-              UI/UX Design 🍒
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`ui-ux-design-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.ui_ux_design")}
-              />
-            </div>
-            {errors.scores?.ui_ux_design && (
-              <p className="input-error">
-                {errors.scores?.ui_ux_design.message}
-              </p>
-            )}
-          </div>
+            if (schema.type === "checkbox")
+              return (
+                <div key={field.key} className="flex flex-col gap-12">
+                  <label
+                    htmlFor={`score-input-${project.id}-${index}`}
+                    className="text-body4"
+                  >
+                    {schema.label}
+                  </label>
+                  <input
+                    id={`score-input-${project.id}-${index}`}
+                    className="input-checkbox cursor-pointer w-40 h-40"
+                    type="checkbox"
+                    {...register(`scores.${index}.value` as const)}
+                  />
+                </div>
+              );
 
-          <div>
-            <label
-              htmlFor={`transparency-input-${project.id}`}
-              className="text-body5"
-            >
-              Transparency 👁️
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`transparency-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.transparency")}
-              />
-            </div>
-            {errors.scores?.transparency && (
-              <p className="input-error">
-                {errors.scores?.transparency.message}
-              </p>
-            )}
-          </div>
+            // if (schema.type === "radio")
+            //   return (
+            //     <div key={field.key} className="flex items-center gap-12">
+            //       <input
+            //         id={`score-input-${project.id}-${index}`}
+            //         className="input-radio cursor-pointer"
+            //         type="radio"
+            //         {...register(`scores.${index}.value` as const)}
+            //       />
+            //       <label
+            //         htmlFor={`score-input-${project.id}-${index}`}
+            //         className="text-body4"
+            //       >
+            //         {schema.label}
+            //       </label>
+            //     </div>
+            //   );
 
-          <div>
-            <label
-              htmlFor={`je-ne-sais-quoi-input-${project.id}`}
-              className="text-body5"
-            >
-              Je Ne Sais Quoi 🤩
-            </label>
-            <div className="input-wrapper mt-8 relative">
-              <input
-                id={`je-ne-sais-quoi-input-${project.id}`}
-                type="number"
-                min={0}
-                max={10}
-                className="input-text"
-                placeholder=""
-                {...register("scores.je_ne_sais_quoi")}
-              />
-            </div>
-            {errors.scores?.je_ne_sais_quoi && (
-              <p className="input-error">
-                {errors.scores?.je_ne_sais_quoi.message}
-              </p>
-            )}
-          </div>
+            return null;
+          })}
         </div>
         <div className="mt-16">
           <label htmlFor={`note-input-${project.id}`} className="text-body5">
@@ -470,4 +357,11 @@ export default function ProjectScoreCard({
       </form>
     </Card>
   );
+}
+
+function parseValue(value: string | undefined, type: string) {
+  if (!value) return "";
+  if (type === "range") return value ? value : "";
+  if (type === "checkbox") return value === "true";
+  return value;
 }

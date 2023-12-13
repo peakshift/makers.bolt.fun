@@ -5,11 +5,12 @@ query JudgingRoundJudgePage($judgingRoundId: String!) {
     description
     createdAt
     end_date
-    judges {
-      id
-      name
-      avatar
-      jobTitle
+    is_judge
+    scores_schema {
+      key
+      label
+      type
+      required
     }
     projects {
       id
@@ -51,13 +52,8 @@ query JudgingRoundJudgePage($judgingRoundId: String!) {
         hashtag
       }
       scores {
-        value_proposition
-        innovation
-        bitcoin_integration_and_scalability
-        execution
-        ui_ux_design
-        transparency
-        je_ne_sais_quoi
+        key
+        value
       }
     }
   }

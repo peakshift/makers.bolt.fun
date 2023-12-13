@@ -578,20 +578,15 @@ enum RoleLevelEnum {
 }
 
 input ScoreObjectInput {
-  bitcoin_integration_and_scalability: Int
-  execution: Int
-  innovation: Int
-  je_ne_sais_quoi: Int
-  transparency: Int
-  ui_ux_design: Int
-  value_proposition: Int
+  key: String!
+  value: String!
 }
 
 input ScoreProjectInput {
   note: String
   project_id: Int!
   round_id: String!
-  scores: ScoreObjectInput!
+  scores: [ScoreObjectInput!]!
 }
 
 type Story implements PostBase {
@@ -747,6 +742,7 @@ type TournamentJudgingRound {
   description: String!
   end_date: Date!
   id: String!
+  is_judge: Boolean!
   judges: [User!]!
   my_scores: [TournamentJudgingRoundJudgeScore!]!
   projects: [Project!]!
@@ -760,17 +756,12 @@ type TournamentJudgingRoundJudgeScore {
   judge: User!
   note: String
   project: Project!
-  scores: TournamentJudgingRoundProjectScore!
+  scores: [TournamentJudgingRoundProjectScore!]!
 }
 
 type TournamentJudgingRoundProjectScore {
-  bitcoin_integration_and_scalability: Int
-  execution: Int
-  innovation: Int
-  je_ne_sais_quoi: Int
-  transparency: Int
-  ui_ux_design: Int
-  value_proposition: Int
+  key: String!
+  value: String!
 }
 
 type TournamentJudgingRoundScoresSchema {

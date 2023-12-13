@@ -954,20 +954,15 @@ export enum RoleLevelEnum {
 }
 
 export type ScoreObjectInput = {
-  bitcoin_integration_and_scalability?: InputMaybe<Scalars['Int']>;
-  execution?: InputMaybe<Scalars['Int']>;
-  innovation?: InputMaybe<Scalars['Int']>;
-  je_ne_sais_quoi?: InputMaybe<Scalars['Int']>;
-  transparency?: InputMaybe<Scalars['Int']>;
-  ui_ux_design?: InputMaybe<Scalars['Int']>;
-  value_proposition?: InputMaybe<Scalars['Int']>;
+  key: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type ScoreProjectInput = {
   note?: InputMaybe<Scalars['String']>;
   project_id: Scalars['Int'];
   round_id: Scalars['String'];
-  scores: ScoreObjectInput;
+  scores: Array<ScoreObjectInput>;
 };
 
 export type Story = PostBase & {
@@ -1133,6 +1128,7 @@ export type TournamentJudgingRound = {
   description: Scalars['String'];
   end_date: Scalars['Date'];
   id: Scalars['String'];
+  is_judge: Scalars['Boolean'];
   judges: Array<User>;
   my_scores: Array<TournamentJudgingRoundJudgeScore>;
   projects: Array<Project>;
@@ -1147,18 +1143,13 @@ export type TournamentJudgingRoundJudgeScore = {
   judge: User;
   note: Maybe<Scalars['String']>;
   project: Project;
-  scores: TournamentJudgingRoundProjectScore;
+  scores: Array<TournamentJudgingRoundProjectScore>;
 };
 
 export type TournamentJudgingRoundProjectScore = {
   __typename?: 'TournamentJudgingRoundProjectScore';
-  bitcoin_integration_and_scalability: Maybe<Scalars['Int']>;
-  execution: Maybe<Scalars['Int']>;
-  innovation: Maybe<Scalars['Int']>;
-  je_ne_sais_quoi: Maybe<Scalars['Int']>;
-  transparency: Maybe<Scalars['Int']>;
-  ui_ux_design: Maybe<Scalars['Int']>;
-  value_proposition: Maybe<Scalars['Int']>;
+  key: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type TournamentJudgingRoundScoresSchema = {
@@ -1565,14 +1556,14 @@ export type JudgingRoundJudgePageQueryVariables = Exact<{
 }>;
 
 
-export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, createdAt: any, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any }> }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, note: string | null, project: { __typename?: 'Project', id: number, hashtag: string }, scores: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } }> } };
+export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, is_judge: boolean, scores_schema: Array<{ __typename?: 'TournamentJudgingRoundScoresSchema', key: string, label: string, type: string, required: boolean | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, createdAt: any, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any }> }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, note: string | null, project: { __typename?: 'Project', id: number, hashtag: string }, scores: Array<{ __typename?: 'TournamentJudgingRoundProjectScore', key: string, value: string }> }> } };
 
 export type ScoreTournamentProjectMutationVariables = Exact<{
   input: InputMaybe<ScoreProjectInput>;
 }>;
 
 
-export type ScoreTournamentProjectMutation = { __typename?: 'Mutation', scoreTournamentProject: { __typename?: 'TournamentJudgingRoundJudgeScore', id: number, scores: { __typename?: 'TournamentJudgingRoundProjectScore', value_proposition: number | null, innovation: number | null, bitcoin_integration_and_scalability: number | null, execution: number | null, ui_ux_design: number | null, transparency: number | null, je_ne_sais_quoi: number | null } } | null };
+export type ScoreTournamentProjectMutation = { __typename?: 'Mutation', scoreTournamentProject: { __typename?: 'TournamentJudgingRoundJudgeScore', id: number, scores: Array<{ __typename?: 'TournamentJudgingRoundProjectScore', key: string, value: string }> } | null };
 
 export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
   input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
@@ -2634,11 +2625,12 @@ export const JudgingRoundJudgePageDocument = gql`
     description
     createdAt
     end_date
-    judges {
-      id
-      name
-      avatar
-      jobTitle
+    is_judge
+    scores_schema {
+      key
+      label
+      type
+      required
     }
     projects {
       id
@@ -2680,13 +2672,8 @@ export const JudgingRoundJudgePageDocument = gql`
         hashtag
       }
       scores {
-        value_proposition
-        innovation
-        bitcoin_integration_and_scalability
-        execution
-        ui_ux_design
-        transparency
-        je_ne_sais_quoi
+        key
+        value
       }
     }
   }
@@ -2725,13 +2712,8 @@ export const ScoreTournamentProjectDocument = gql`
   scoreTournamentProject(input: $input) {
     id
     scores {
-      value_proposition
-      innovation
-      bitcoin_integration_and_scalability
-      execution
-      ui_ux_design
-      transparency
-      je_ne_sais_quoi
+      key
+      value
     }
   }
 }

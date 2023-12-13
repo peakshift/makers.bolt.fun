@@ -179,19 +179,14 @@ export interface NexusGenInputs {
     publicKeyToAward: string; // String!
   }
   ScoreObjectInput: { // input type
-    bitcoin_integration_and_scalability?: number | null; // Int
-    execution?: number | null; // Int
-    innovation?: number | null; // Int
-    je_ne_sais_quoi?: number | null; // Int
-    transparency?: number | null; // Int
-    ui_ux_design?: number | null; // Int
-    value_proposition?: number | null; // Int
+    key: string; // String!
+    value: string; // String!
   }
   ScoreProjectInput: { // input type
     note?: string | null; // String
     project_id: number; // Int!
     round_id: string; // String!
-    scores: NexusGenInputs['ScoreObjectInput']; // ScoreObjectInput!
+    scores: NexusGenInputs['ScoreObjectInput'][]; // [ScoreObjectInput!]!
   }
   StoryInputType: { // input type
     body: string; // String!
@@ -619,13 +614,8 @@ export interface NexusGenObjects {
     note?: string | null; // String
   }
   TournamentJudgingRoundProjectScore: { // root type
-    bitcoin_integration_and_scalability?: number | null; // Int
-    execution?: number | null; // Int
-    innovation?: number | null; // Int
-    je_ne_sais_quoi?: number | null; // Int
-    transparency?: number | null; // Int
-    ui_ux_design?: number | null; // Int
-    value_proposition?: number | null; // Int
+    key: string; // String!
+    value: string; // String!
   }
   TournamentJudgingRoundScoresSchema: { // root type
     key: string; // String!
@@ -1170,6 +1160,7 @@ export interface NexusGenFieldTypes {
     description: string; // String!
     end_date: NexusGenScalars['Date']; // Date!
     id: string; // String!
+    is_judge: boolean; // Boolean!
     judges: NexusGenRootTypes['User'][]; // [User!]!
     my_scores: NexusGenRootTypes['TournamentJudgingRoundJudgeScore'][]; // [TournamentJudgingRoundJudgeScore!]!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
@@ -1182,16 +1173,11 @@ export interface NexusGenFieldTypes {
     judge: NexusGenRootTypes['User']; // User!
     note: string | null; // String
     project: NexusGenRootTypes['Project']; // Project!
-    scores: NexusGenRootTypes['TournamentJudgingRoundProjectScore']; // TournamentJudgingRoundProjectScore!
+    scores: NexusGenRootTypes['TournamentJudgingRoundProjectScore'][]; // [TournamentJudgingRoundProjectScore!]!
   }
   TournamentJudgingRoundProjectScore: { // field return type
-    bitcoin_integration_and_scalability: number | null; // Int
-    execution: number | null; // Int
-    innovation: number | null; // Int
-    je_ne_sais_quoi: number | null; // Int
-    transparency: number | null; // Int
-    ui_ux_design: number | null; // Int
-    value_proposition: number | null; // Int
+    key: string; // String!
+    value: string; // String!
   }
   TournamentJudgingRoundScoresSchema: { // field return type
     key: string; // String!
@@ -1778,6 +1764,7 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     end_date: 'Date'
     id: 'String'
+    is_judge: 'Boolean'
     judges: 'User'
     my_scores: 'TournamentJudgingRoundJudgeScore'
     projects: 'Project'
@@ -1793,13 +1780,8 @@ export interface NexusGenFieldTypeNames {
     scores: 'TournamentJudgingRoundProjectScore'
   }
   TournamentJudgingRoundProjectScore: { // field return type name
-    bitcoin_integration_and_scalability: 'Int'
-    execution: 'Int'
-    innovation: 'Int'
-    je_ne_sais_quoi: 'Int'
-    transparency: 'Int'
-    ui_ux_design: 'Int'
-    value_proposition: 'Int'
+    key: 'String'
+    value: 'String'
   }
   TournamentJudgingRoundScoresSchema: { // field return type name
     key: 'String'

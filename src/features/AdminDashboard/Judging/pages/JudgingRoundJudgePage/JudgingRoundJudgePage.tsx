@@ -35,7 +35,13 @@ export default function JudgingRoundJudgePage() {
     },
   });
 
+  if (query.error) throw query.error;
+
   if (query.loading || !query.data) return <LoadingPage />;
+
+  const isJudge = query.data.getJudgingRoundById.is_judge;
+
+  if (!isJudge) throw new Error("You are not a judge for this round");
 
   const judgingRound = query.data.getJudgingRoundById;
 
@@ -106,6 +112,7 @@ export default function JudgingRoundJudgePage() {
                   project={project}
                   latestStories={project.stories}
                   roundId={judgingRound.id}
+                  scoresSchema={judgingRound.scores_schema}
                   scores={
                     judgingRound.my_scores.find(
                       (score) => score.project.id === project.id
