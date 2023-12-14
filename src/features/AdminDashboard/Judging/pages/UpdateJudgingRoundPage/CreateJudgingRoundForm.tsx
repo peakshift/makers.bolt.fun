@@ -123,7 +123,6 @@ export default function CreateJudgingRoundForm({
           control={control}
           render={({ field }) => (
             <SelectProjectsInput
-              {...field}
               projects={projectsInTournament}
               value={field.value}
               onChange={field.onChange}
@@ -140,7 +139,6 @@ export default function CreateJudgingRoundForm({
           control={control}
           render={({ field }) => (
             <SelectJudgesInput
-              {...field}
               initialValue={initialJudges}
               value={field.value}
               onChange={field.onChange}

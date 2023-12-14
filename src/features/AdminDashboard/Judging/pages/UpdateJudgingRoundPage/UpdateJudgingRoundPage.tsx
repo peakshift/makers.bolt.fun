@@ -15,6 +15,7 @@ import { createRoute } from "src/utils/routing";
 import OgTags from "src/Components/OgTags/OgTags";
 import { Override } from "src/utils/interfaces";
 import { toSlug } from "src/utils/helperFunctions";
+import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 
 export const updateRoundSchema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> =
   yup
@@ -31,7 +32,11 @@ export const updateRoundSchema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> =
           yup
             .object({
               key: yup.string().required(),
-              label: yup.string().min(3).required("Score label is required"),
+              label: yup
+                .string()
+                .min(3)
+                .required()
+                .label("Score attribute's label"),
               type: yup.string().required(),
               required: yup.boolean().nullable(),
             })
@@ -45,7 +50,12 @@ export const updateRoundSchema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> =
           message: "Labels must be unique",
           test: (value) => {
             if (!value) return false;
-            const keys = value.map((item) => toSlug(item.label!));
+            const keys = value
+              .map((item) => toSlug(item.label!))
+              .filter(Boolean);
+
+            if (keys.length !== value.length) return true; // if there are empty labels, don't run the test
+
             return new Set(keys).size === keys.length;
           },
         })
@@ -97,6 +107,8 @@ export default function UpdateJudgingRoundPage() {
       scores_schema: roundData.scores_schema,
     },
   });
+
+  if (projectsInTournamentQuery.loading) return <LoadingPage />;
 
   const projectsInTournament =
     projectsInTournamentQuery.data?.getProjectsInTournament.projects;

@@ -1,5 +1,5 @@
+import { motion } from "framer-motion";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { FiPlus, FiTrash2 } from "react-icons/fi";
 import Button from "src/Components/Button/Button";
@@ -42,7 +42,7 @@ export default function ScoresSchemaInput() {
       {fields.length > 0 && (
         <ul className="flex flex-col gap-8 mb-16">
           {fields.map((field, index) => (
-            <li key={field.id}>
+            <motion.li layout key={field.id}>
               <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr_auto] gap-16">
                 <div className="flex flex-col items-center justify-center text-gray-500">
                   <IconButton
@@ -74,7 +74,9 @@ export default function ScoresSchemaInput() {
                       type="text"
                       className="input-text"
                       placeholder="e.g. Value Proposition 🎯"
-                      {...register(`scores_schema.${index}.label` as const)}
+                      {...register(`scores_schema.${index}.label` as const, {
+                        onChange: () => trigger("scores_schema"),
+                      })}
                     />
                   </div>
                   {errors.scores_schema?.[index]?.label && (
@@ -125,7 +127,7 @@ export default function ScoresSchemaInput() {
                   <FiTrash2 />
                 </IconButton>
               </div>
-            </li>
+            </motion.li>
           ))}
         </ul>
       )}
@@ -138,7 +140,7 @@ export default function ScoresSchemaInput() {
         color="gray"
         onClick={() => {
           append({ key: generateId(), label: "", type: "range" });
-          trigger("scores_schema");
+          if (fields.length === 0) trigger("scores_schema");
         }}
       >
         <FiPlus /> Add new score attribute

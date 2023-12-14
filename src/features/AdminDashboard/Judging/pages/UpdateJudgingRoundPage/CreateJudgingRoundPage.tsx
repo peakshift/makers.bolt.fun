@@ -10,6 +10,7 @@ import { createRoute } from "src/utils/routing";
 import OgTags from "src/Components/OgTags/OgTags";
 import { updateRoundSchema } from "./UpdateJudgingRoundPage";
 import { Override } from "src/utils/interfaces";
+import LoadingPage from "src/Components/LoadingPage/LoadingPage";
 
 const schema = updateRoundSchema.omit(["id"]);
 
@@ -48,6 +49,8 @@ export default function CreateJudgingRoundPage() {
       scores_schema: [],
     },
   });
+
+  if (projectsInTournamentQuery.loading) return <LoadingPage />;
 
   const projectsInTournament =
     projectsInTournamentQuery.data?.getProjectsInTournament.projects;
