@@ -14,6 +14,7 @@ const {
 const { prisma } = require("../../../prisma");
 const cacheService = require("../../../services/cache.service");
 const { queueService } = require("../../../services/queue-service");
+const env = require("../../../utils/consts");
 const { generateId } = require("../../../utils/generateId");
 const { toSlug } = require("../../../utils/helpers");
 
@@ -288,6 +289,16 @@ const createOrUpdateJudgingRound = extendType({
 
         const judgingRound = await prisma.tournamentJudgingRound.upsert({
           where: { id: id ?? "" },
+          select: {
+            id: true,
+            tournament: {
+              select: {
+                id: true,
+                title: true,
+                slug: true,
+              },
+            },
+          },
           update: {
             title,
             description,
@@ -308,7 +319,7 @@ const createOrUpdateJudgingRound = extendType({
           },
         });
 
-        const [judges, projects] = await Promise.all([
+        const [currentJudges, currentProjects] = await Promise.all([
           prisma.tournamentJudgingRoundJudge.findMany({
             where: {
               round_id: judgingRound.id,
@@ -321,20 +332,20 @@ const createOrUpdateJudgingRound = extendType({
           }),
         ]);
 
-        const judgesToDelete = judges.filter(
+        const judgesToDelete = currentJudges.filter(
           (j) => !judges_ids.includes(j.judge_id)
         );
 
-        const judgesToAdd = judges_ids.filter(
-          (j) => !judges.map((j) => j.judge_id).includes(j)
+        const judgesIdsToAdd = judges_ids.filter(
+          (j) => !currentJudges.map((j) => j.judge_id).includes(j)
         );
 
-        const projectsToDelete = projects.filter(
+        const projectsToDelete = currentProjects.filter(
           (p) => !projects_ids.includes(p.project_id)
         );
 
         const projectsToAdd = projects_ids.filter(
-          (p) => !projects.map((p) => p.project_id).includes(p)
+          (p) => !currentProjects.map((p) => p.project_id).includes(p)
         );
 
         const updateJudgesTrx = [];
@@ -351,10 +362,10 @@ const createOrUpdateJudgingRound = extendType({
           );
         }
 
-        if (judgesToAdd.length > 0) {
+        if (judgesIdsToAdd.length > 0) {
           updateJudgesTrx.push(
             prisma.tournamentJudgingRoundJudge.createMany({
-              data: judgesToAdd.map((j) => ({
+              data: judgesIdsToAdd.map((j) => ({
                 round_id: judgingRound.id,
                 judge_id: j,
               })),
@@ -399,7 +410,36 @@ const createOrUpdateJudgingRound = extendType({
           prisma.$transaction(updateProjectsTrx),
         ]);
 
-        // TODO: Send email to judges
+        if (judgesIdsToAdd.length > 0) {
+          const newlyCreatedJudges = await prisma.user.findMany({
+            where: {
+              id: {
+                in: judgesIdsToAdd,
+              },
+            },
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              userEmails: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          });
+          await queueService.emailService.inviteJudgesToJudgingRound({
+            judges: newlyCreatedJudges
+              .map((judge) => ({
+                ...judge,
+                email: judge.userEmails.at(0)?.email ?? judge.email,
+              }))
+              .filter((j) => j.email),
+            round_url: `${env.SITE_URL}/judging-round/${judgingRound.id}`,
+            tournament_id: tournament_id,
+            tournament_title: judgingRound.tournament.title,
+          });
+        }
 
         return prisma.tournament.findUnique({
           where: { id: tournament_id },

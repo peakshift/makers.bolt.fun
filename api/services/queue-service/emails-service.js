@@ -35,6 +35,20 @@ const emailService = {
       track_id,
     });
   },
+
+  inviteJudgesToJudgingRound: ({
+    judges,
+    tournament_id,
+    tournament_title,
+    round_url,
+  }) => {
+    return callQueueApi("/add-job/emails/invite-judges-to-judging-round", {
+      judges,
+      tournament_id,
+      tournament_title,
+      round_url,
+    });
+  },
 };
 
 module.exports = emailService;
