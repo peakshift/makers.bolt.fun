@@ -82,7 +82,7 @@ export default function BadgesCard({
     }
   }, [badges, dispatch, isOwner, openBadgeSearchParam, username]);
 
-  if (badges.length === 0 && !isOwner) return null;
+  if (badges.length === 0) return null;
 
   return (
     <div>
