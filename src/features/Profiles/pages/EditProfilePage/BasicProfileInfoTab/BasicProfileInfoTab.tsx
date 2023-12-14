@@ -80,7 +80,12 @@ export default function BasicProfileInfoTab() {
   const apolloClient = useApolloClient();
   const profileQuery = useMyProfileAboutQuery({
     onCompleted: (data) => {
-      if (data.me) reset({ ...data.me, avatar: { url: data.me.avatar } });
+      if (data.me)
+        reset({
+          ...data.me,
+          email: data.me.private_data.email,
+          avatar: { url: data.me.avatar },
+        });
     },
   });
   const [mutate, mutationStatus] = useUpdateProfileAboutMutation();
