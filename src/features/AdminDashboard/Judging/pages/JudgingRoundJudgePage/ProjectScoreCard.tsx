@@ -189,7 +189,7 @@ export default function ProjectScoreCard({
           <p className="text-gray-600 text-body5">{project.tagline}</p>
         </div>
       </div>
-      <p className="text-gray-600 text-body5">
+      <p className="text-gray-500 text-body5 ">
         Project published on:{" "}
         <span className="font-bold">
           {dayjs(project.createdAt).format("Do MMM, YYYY")}
@@ -207,7 +207,7 @@ export default function ProjectScoreCard({
         }}
       ></div>
       <div className="mt-16">
-        <p className="text-body5 text-gray-500 font-medium mb-8">
+        <p className="text-body5 text-gray-500 font-medium mb-8 uppercase">
           🔗 Project Links
         </p>
         <div className="flex flex-wrap gap-16">
@@ -216,7 +216,7 @@ export default function ProjectScoreCard({
       </div>
 
       <div className="mt-16">
-        <p className="text-body5 text-gray-500 font-medium">
+        <p className="text-body5 text-gray-500 font-medium uppercase">
           ✍️ Latest Stories
         </p>
         {latestStories.length > 0 && (
@@ -239,7 +239,7 @@ export default function ProjectScoreCard({
                 >
                   {story.title}
                 </Link>
-                <div className="flex flex-wrap items-center gap-8 text-body5 mt-8">
+                <div className="flex flex-wrap items-center gap-8 text-body5">
                   <p className="text-gray-600 mr-12">
                     Published{" "}
                     {getDateDifference(story.createdAt, { dense: true })} ago
@@ -258,7 +258,9 @@ export default function ProjectScoreCard({
         )}
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-16">
-        <p className="text-gray-500 font-medium mb-8">Score</p>
+        <p className="text-body5 text-gray-500 font-medium uppercase">
+          📝 Scores
+        </p>
         <div className="grid grid-cols-3 gap-8">
           {scoresFields.map((field, index) => {
             const schema = scoresSchema.find(
@@ -334,7 +336,7 @@ export default function ProjectScoreCard({
             return null;
           })}
         </div>
-        <div className="mt-16">
+        <div className="mt-8">
           <label htmlFor={`note-input-${project.id}`} className="text-body5">
             Note for the Team
           </label>
@@ -348,7 +350,7 @@ export default function ProjectScoreCard({
           </div>
           {errors.note && <p className="input-error">{errors.note.message}</p>}
         </div>
-        <div className="mt-16">
+        <div className="mt-8">
           <label
             htmlFor={`internal-note-input-${project.id}`}
             className="text-body5"
