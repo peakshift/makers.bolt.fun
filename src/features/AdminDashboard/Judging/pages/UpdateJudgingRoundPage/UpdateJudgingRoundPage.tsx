@@ -13,32 +13,53 @@ import { useTournament } from "src/features/AdminDashboard/Tournaments/pages/Man
 import BackButton from "src/Components/BackButton/BackButton";
 import { createRoute } from "src/utils/routing";
 import OgTags from "src/Components/OgTags/OgTags";
+import { Override } from "src/utils/interfaces";
+import { toSlug } from "src/utils/helperFunctions";
 
-const schema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> = yup
-  .object({
-    id: yup.string().required(),
-    title: yup.string().required().min(3),
-    description: yup.string().required().min(10),
-    end_date: yup.date().required(),
-    tournament_id: yup.number().required(),
-    judges_ids: yup.array(yup.number().required()).required(),
-    projects_ids: yup.array(yup.number().required()).required(),
-    scores_schema: yup
-      .array(
-        yup
-          .object({
-            key: yup.string().required(),
-            label: yup.string().required("Score label is required"),
-            type: yup.string().required(),
-            required: yup.boolean().nullable(),
-          })
-          .required()
-      )
-      .required(),
-  })
-  .required();
+export const updateRoundSchema: yup.SchemaOf<CreateOrUpdateJudgingRoundInput> =
+  yup
+    .object({
+      id: yup.string().required(),
+      title: yup.string().required().min(3),
+      description: yup.string().required().min(10),
+      end_date: yup.date().required(),
+      tournament_id: yup.number().required(),
+      judges_ids: yup.array(yup.number().required()).required(),
+      projects_ids: yup.array(yup.number().required()).required(),
+      scores_schema: yup
+        .array(
+          yup
+            .object({
+              key: yup.string().required(),
+              label: yup.string().min(3).required("Score label is required"),
+              type: yup.string().required(),
+              required: yup.boolean().nullable(),
+            })
+            .noUnknown()
+            .required()
+        )
+        .min(1, "At least one score attribute is required")
+        .required()
+        .test({
+          name: "unique-labels",
+          message: "Labels must be unique",
+          test: (value) => {
+            if (!value) return false;
+            const keys = value.map((item) => toSlug(item.label!));
+            return new Set(keys).size === keys.length;
+          },
+        })
+        .default([]),
+    })
+    .required();
 
-export type UpdateJudgingRoundFormType = yup.InferType<typeof schema>;
+export type UpdateJudgingRoundFormType = Override<
+  yup.InferType<typeof updateRoundSchema>,
+  {
+    projects_ids: number[];
+    judges_ids: number[];
+  }
+>;
 
 export default function UpdateJudgingRoundPage() {
   const loaderData = useLoaderData() as LoaderData;
@@ -62,7 +83,9 @@ export default function UpdateJudgingRoundPage() {
   if (!id) throw new Error("No judging round id provided");
 
   const formMethods = useForm<UpdateJudgingRoundFormType>({
-    resolver: yupResolver(schema) as Resolver<UpdateJudgingRoundFormType>,
+    resolver: yupResolver(
+      updateRoundSchema
+    ) as Resolver<UpdateJudgingRoundFormType>,
     defaultValues: {
       id: roundData.id,
       title: roundData.title,
@@ -71,9 +94,7 @@ export default function UpdateJudgingRoundPage() {
       tournament_id: roundData.tournament.id,
       judges_ids: roundData.judges.map((judge) => judge.id),
       projects_ids: roundData.projects.map((project) => project.id),
-      scores_schema: roundData.scores_schema.map(
-        ({ __typename, ...rest }) => rest
-      ),
+      scores_schema: roundData.scores_schema,
     },
   });
 
@@ -102,6 +123,5 @@ export default function UpdateJudgingRoundPage() {
         initialJudges={roundData.judges}
       />
     </FormProvider>
-    // Check the badges form
   );
 }

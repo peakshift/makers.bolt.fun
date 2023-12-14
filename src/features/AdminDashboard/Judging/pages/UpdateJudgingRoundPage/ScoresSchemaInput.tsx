@@ -27,6 +27,7 @@ export default function ScoresSchemaInput() {
     control,
     register,
     formState: { errors },
+    trigger,
   } = useFormContext<CreateJudgingRoundFormType>();
 
   const { fields, append, remove, swap } = useFieldArray<
@@ -128,9 +129,17 @@ export default function ScoresSchemaInput() {
           ))}
         </ul>
       )}
+      {errors.scores_schema &&
+        "message" in errors.scores_schema &&
+        typeof errors.scores_schema.message === "string" && (
+          <p className="input-error mb-16">{errors.scores_schema.message}</p>
+        )}
       <Button
         color="gray"
-        onClick={() => append({ key: generateId(), label: "", type: "range" })}
+        onClick={() => {
+          append({ key: generateId(), label: "", type: "range" });
+          trigger("scores_schema");
+        }}
       >
         <FiPlus /> Add new score attribute
       </Button>

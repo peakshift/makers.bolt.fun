@@ -34,7 +34,6 @@ export default function CreateJudgingRoundForm({
     formState: { errors },
     handleSubmit,
     control,
-    watch,
   } = useFormContext<CreateJudgingRoundFormType>();
 
   const [mutate, { loading }] = useCreateOrUpdateJudgingRoundMutation();
