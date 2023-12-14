@@ -1,5 +1,6 @@
 import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
 import Button from "src/Components/Button/Button";
+import InfoCard from "src/Components/InfoCard/InfoCard";
 import DatePicker from "src/Components/Inputs/DatePicker/DatePicker";
 import {
   Project,
@@ -147,7 +148,12 @@ export default function CreateJudgingRoundForm({
         />
       </div>
       <div>
-        <label className="text-body5 mb-12 inline-block">Score Schema</label>
+        <label className="text-body5 inline-block">Judging Criterias</label>
+        <p className="text-body5 text-gray-500  mb-12">
+          Note that although you can edit the judging criterias at anytime, if
+          you do so after judges submit their scores, any fields that are
+          removed will be removed from the scores as well.
+        </p>
         <ScoresSchemaInput />
       </div>
 
