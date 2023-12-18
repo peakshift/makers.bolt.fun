@@ -101,6 +101,11 @@ const navItems: NavItem[] = [
     text: "Host a hackathon",
   },
   {
+    href: PAGES_ROUTES.subscribeToNewsletter.default,
+    icon: "📧",
+    text: "Subscribe to our Newsletter",
+  },
+  {
     href: "https://www.figma.com/file/73tOKOOvZD8iN3qP9Cr18E/BOLT%F0%9F%94%A9FUN?node-id=878-150109&t=aRcywwDisNlwZfPF-0",
     icon: "🎨",
     text: "View in Figma",

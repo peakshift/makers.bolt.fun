@@ -9,8 +9,13 @@ import { ComponentProps, CSSProperties, useCallback, useState } from "react";
 import LoginWithEmail from "src/features/Auth/components/LoginWithEmail/LoginWithEmail";
 import LoginWithLightning from "src/features/Auth/components/LoginWithLightning/LoginWithLightning";
 import LoginWithNostr from "src/features/Auth/components/LoginWithNostr/LoginWithNostr";
-import { useMeQuery } from "src/graphql";
-import { randomItem, trimText } from "src/utils/helperFunctions";
+import { useMeQuery, useSubscribeToNewsletterMutation } from "src/graphql";
+import {
+  delay,
+  extractErrorMessage,
+  randomItem,
+  trimText,
+} from "src/utils/helperFunctions";
 import * as yup from "yup";
 import { emailSchema } from "src/utils/validation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -18,6 +23,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "src/Components/Button/Button";
 import Card from "src/Components/Card/Card";
 import OgTags from "src/Components/OgTags/OgTags";
+import { NotificationsService } from "src/services";
+import { useNavigate } from "react-router-dom";
+import { PAGES_ROUTES } from "src/utils/routing";
 
 interface Props {}
 
@@ -72,9 +80,23 @@ export default function SubscribeToNewsletterPage({ ...props }: Props) {
     },
     resolver: yupResolver(schema),
   });
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FormType> = (data) => {
-    // dispatch(action)
+  const [mutate, { loading }] = useSubscribeToNewsletterMutation();
+
+  const onSubmit: SubmitHandler<FormType> = async (data) => {
+    if (loading) return;
+    try {
+      await mutate({ variables: { email: data.email } });
+      NotificationsService.success("Subscribed to newsletter successfully!");
+      await delay(1000);
+      navigate(PAGES_ROUTES.blog.feed);
+    } catch (error) {
+      NotificationsService.error(
+        extractErrorMessage(error) ??
+          "Something went wrong on our side, please try again."
+      );
+    }
   };
 
   return (
@@ -146,6 +168,7 @@ export default function SubscribeToNewsletterPage({ ...props }: Props) {
                   color="primary"
                   type="submit"
                   className="mt-16"
+                  isLoading={loading}
                 >
                   Subscribe
                 </Button>

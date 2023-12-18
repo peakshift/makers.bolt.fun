@@ -21,7 +21,6 @@ import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loade
 import { Post_Type } from "src/graphql";
 import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
-import SubscribeToNewsletterPage from "src/features/Shared/pages/SubscribeToNewsletterPage/SubscribeToNewsletterPage";
 
 const HomePage = Loadable(
   React.lazy(
@@ -219,6 +218,15 @@ const TermsAndConditionsPage = Loadable(
   )
 );
 
+const SubscribeToNewsletterPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "subscribe_to_newsletter_page" */ "../../features/Shared/pages/SubscribeToNewsletterPage/SubscribeToNewsletterPage"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -239,8 +247,12 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         }
       />
       <Route
-        path={"/subscribe-to-newsletter"}
-        element={<SubscribeToNewsletterPage />}
+        path={PAGES_ROUTES.subscribeToNewsletter.default}
+        element={
+          <ProtectedRoute>
+            <SubscribeToNewsletterPage />
+          </ProtectedRoute>
+        }
       />
       <Route element={<TopNavLayout />}>
         <Route element={<SideNavLayout />}>

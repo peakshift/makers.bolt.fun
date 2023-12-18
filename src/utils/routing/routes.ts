@@ -199,4 +199,7 @@ export const PAGES_ROUTES = {
     loginEmail: "/login-email",
     logout: "/logout",
   },
+  subscribeToNewsletter: {
+    default: "/subscribe-to-newsletter",
+  },
 };

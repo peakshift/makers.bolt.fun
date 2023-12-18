@@ -102,3 +102,7 @@ export function overrideErrorMessage(msg: string, errorToOverride: any) {
   }
   return err;
 }
+
+export function delay(ms: number) {
+  return new Promise((res) => setTimeout(res, ms));
+}

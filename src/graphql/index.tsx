@@ -288,6 +288,7 @@ export type Mutation = {
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
   setUserNostrKeyAsPrimary: Maybe<User>;
+  subscribeToNewsletter: Maybe<User>;
   unlinkNostrKey: Maybe<User>;
   updateLastSeenNotificationTime: Maybe<User>;
   updateProfileDetails: Maybe<User>;
@@ -360,6 +361,11 @@ export type MutationRegisterInTournamentArgs = {
 
 export type MutationSetUserNostrKeyAsPrimaryArgs = {
   key: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationSubscribeToNewsletterArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -1557,6 +1563,13 @@ export type ProjectDetailsModalQueryVariables = Exact<{
 
 
 export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+
+export type SubscribeToNewsletterMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type SubscribeToNewsletterMutation = { __typename?: 'Mutation', subscribeToNewsletter: { __typename?: 'User', id: number } | null };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4072,6 +4085,39 @@ export function useProjectDetailsModalLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ProjectDetailsModalQueryHookResult = ReturnType<typeof useProjectDetailsModalQuery>;
 export type ProjectDetailsModalLazyQueryHookResult = ReturnType<typeof useProjectDetailsModalLazyQuery>;
 export type ProjectDetailsModalQueryResult = Apollo.QueryResult<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>;
+export const SubscribeToNewsletterDocument = gql`
+    mutation SubscribeToNewsletter($email: String!) {
+  subscribeToNewsletter(email: $email) {
+    id
+  }
+}
+    `;
+export type SubscribeToNewsletterMutationFn = Apollo.MutationFunction<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>;
+
+/**
+ * __useSubscribeToNewsletterMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToNewsletterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToNewsletterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToNewsletterMutation, { data, loading, error }] = useSubscribeToNewsletterMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useSubscribeToNewsletterMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>(SubscribeToNewsletterDocument, options);
+      }
+export type SubscribeToNewsletterMutationHookResult = ReturnType<typeof useSubscribeToNewsletterMutation>;
+export type SubscribeToNewsletterMutationResult = Apollo.MutationResult<SubscribeToNewsletterMutation>;
+export type SubscribeToNewsletterMutationOptions = Apollo.BaseMutationOptions<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {

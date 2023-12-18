@@ -257,6 +257,7 @@ type Mutation {
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   setUserNostrKeyAsPrimary(key: String): User
+  subscribeToNewsletter(email: String!): User
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
