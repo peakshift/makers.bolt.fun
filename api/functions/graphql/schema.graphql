@@ -54,7 +54,7 @@ interface BaseUser {
 type Bounty implements PostBase {
   applicants_count: Int!
   applications: [BountyApplication!]!
-  author: User!
+  author: User
   body: String!
   cover_image: String
   createdAt: Date!
@@ -319,7 +319,7 @@ interface PostBase {
 }
 
 type PostComment {
-  author: User!
+  author: User
   body: String!
   created_at: Date!
   id: Int!
@@ -451,7 +451,7 @@ type Query {
 }
 
 type Question implements PostBase {
-  author: User!
+  author: User
   body: String!
   createdAt: Date!
   excerpt: String!
@@ -479,7 +479,7 @@ enum RoleLevelEnum {
 }
 
 type Story implements PostBase {
-  author: User!
+  author: User
   body: String!
   comments: [PostComment!]!
   comments_count: Int!
