@@ -71,15 +71,10 @@ export default function Thread({
   };
 
   const handleReply = async (text: string) => {
-    try {
-      await publishEvent?.(text, { replyToEvent: thread });
-      toggleRepliesCollapsed(false);
-      setReplyOpen(false);
-      setScrollToLatestReply(true);
-      return true;
-    } catch (error) {
-      return false;
-    }
+    await publishEvent?.(text, { replyToEvent: thread });
+    toggleRepliesCollapsed(false);
+    setReplyOpen(false);
+    setScrollToLatestReply(true);
   };
 
   const repliesSorted = [...thread.replies].reverse();

@@ -22,6 +22,7 @@ import { InvalidContentHandler } from "remirror";
 import { useNostrComments } from "../CommentsWidget/useNostrComments";
 import { NotificationsService } from "src/services";
 import { uploadImage } from "src/Components/Inputs/FilesInputs/upload-image";
+import { extractErrorMessage } from "src/utils/helperFunctions";
 
 interface Props {
   initialContent?: string;
@@ -128,7 +129,8 @@ export default function AddComment({
         manager.createState({ content: manager.createEmptyDoc() })
       );
     } catch (error) {
-      if (typeof error === "string") NotificationsService.error(error);
+      if (typeof extractErrorMessage(error) === "string")
+        NotificationsService.error(extractErrorMessage(error)!);
       else console.log(error);
     }
     setIsLoading(false);
