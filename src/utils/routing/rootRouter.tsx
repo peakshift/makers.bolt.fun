@@ -21,6 +21,7 @@ import { feedPageLoader } from "src/features/Posts/pages/FeedPage/feedPage.loade
 import { Post_Type } from "src/graphql";
 import { LandingPage } from "src/features/LandingPage/LandingPage";
 import { EventsPage } from "src/features/Events/pages/EventsPage/EventsPage";
+import SubscribeToNewsletterPage from "src/features/Shared/pages/SubscribeToNewsletterPage/SubscribeToNewsletterPage";
 
 const HomePage = Loadable(
   React.lazy(
@@ -237,6 +238,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
           </ProtectedRoute>
         }
       />
+      <Route
+        path={"/subscribe-to-newsletter"}
+        element={<SubscribeToNewsletterPage />}
+      />
       <Route element={<TopNavLayout />}>
         <Route element={<SideNavLayout />}>
           <Route
@@ -290,7 +295,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
           <Route path={PAGES_ROUTES.home.default} element={<LandingPage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
-          <Route path={PAGES_ROUTES.landingPage.buildOnBitcoin} element={<HomePage />} />
+          <Route
+            path={PAGES_ROUTES.landingPage.buildOnBitcoin}
+            element={<HomePage />}
+          />
         </Route>
 
         <Route
@@ -335,6 +343,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
         <Route path={"/privacy-policy"} element={<PrivacyPolicyPage />} />
+
         <Route
           path={"/terms-conditions"}
           element={<TermsAndConditionsPage />}

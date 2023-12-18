@@ -23,6 +23,8 @@ export const tagSchema = yup.object().shape({
   title: yup.string().trim().min(2).required(),
 });
 
+export const emailSchema = yup.string().trim().email();
+
 export const registerDebounceValidation = <TFieldValues extends FieldValues>(
   name: FieldPath<TFieldValues>,
   delay: number,
