@@ -24,7 +24,6 @@ import {
 import { getProfileDataFromMetaData } from "src/lib/nostr/helpers";
 
 interface Props {
-  rootEventId?: string;
   story: {
     id?: number;
     nostr_event_id: string | null;

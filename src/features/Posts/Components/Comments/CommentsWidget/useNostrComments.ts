@@ -16,7 +16,6 @@ import { createRoute } from "src/utils/routing";
 
 export interface Props {
   publicKey?: string;
-  rootEventId?: string;
   onNotice?: (text: string, isErr?: boolean) => void;
   story: {
     id?: number;
