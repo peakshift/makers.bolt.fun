@@ -43,7 +43,7 @@ export default function JudgingRoundDetailsPage() {
       <section>
         <div className="flex flex-wrap items-center gap-16 mb-24">
           <BackButton
-            backRoute={createRoute({
+            defaultBackRoute={createRoute({
               type: "judging-rounds",
               page: "list",
               tournamentIdOrSlug: slug,

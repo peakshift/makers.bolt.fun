@@ -10,7 +10,7 @@ export const useNavigateBack = (fallbackUrl: string) => {
   const navigateBack = useCallback(() => {
     if (locationKey === "default")
       // user landed on this page directly
-      navigate(fallbackUrl);
+      navigate(fallbackUrl, { replace: true });
     else navigate(-1);
   }, [fallbackUrl, locationKey, navigate]);
 

@@ -24,7 +24,7 @@ export default function JudgingRoundsPage() {
     <div className="pb-42 flex flex-col gap-36">
       <OgTags title={`Manage Judging Rounds for ${title}`} />
       <div className="flex flex-wrap items-center gap-16 mb-24">
-        <BackButton backRoute={"/admin"} />
+        <BackButton defaultBackRoute={"/admin"} />
         <h2 className="text-h2 font-bolder text-gray-900">
           Manage Judging Rounds
         </h2>

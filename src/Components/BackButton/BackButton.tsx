@@ -1,26 +1,14 @@
 import React from "react";
 import { FiArrowLeft } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 import { useNavigateBack } from "src/utils/hooks";
 import { twMerge } from "tailwind-merge";
 
-type Props = (
-  | {
-      defaultBackRoute: string;
-    }
-  | {
-      backRoute: string;
-    }
-) &
-  React.ButtonHTMLAttributes<HTMLButtonElement>;
+type Props = {
+  defaultBackRoute: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function BackButton({ className, onClick, ...props }: Props) {
-  const defaultBackRoute = (props as any).defaultBackRoute;
-
-  const useDirectNavigation = !!(props as any).backRoute;
-
-  const navigate = useNavigate();
-  const navigateBack = useNavigateBack(defaultBackRoute);
+  const navigateBack = useNavigateBack(props.defaultBackRoute);
 
   return (
     <button
@@ -31,8 +19,7 @@ export default function BackButton({ className, onClick, ...props }: Props) {
         className
       )}
       onClick={(e) => {
-        if (useDirectNavigation) navigate((props as any).backRoute);
-        else navigateBack();
+        navigateBack();
         onClick?.(e);
       }}
       {...props}
