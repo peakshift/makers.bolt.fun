@@ -1,6 +1,5 @@
+const { nanoid } = require("nanoid");
 
-const crypto = require('crypto');
+const generateId = (length = 6) => nanoid(length);
 
-const generateId = () => crypto.randomUUID({});
-
-module.exports = generateId;
+module.exports = { generateId };

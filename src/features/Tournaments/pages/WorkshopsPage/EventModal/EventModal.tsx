@@ -5,7 +5,6 @@ import { Tournament } from "src/graphql";
 import { MEDIA_QUERIES } from "src/utils/theme";
 import { IoGlobe, IoLocationOutline } from "react-icons/io5";
 import { getSpanDate, mapTypeToBadge } from "../EventCard/EventCard";
-import dayjs from "dayjs";
 import { marked } from "marked";
 
 interface Props extends ModalCard {

@@ -34,6 +34,7 @@ const Project = objectType({
     t.nonNull.string("website");
     t.nonNull.string("description");
     t.nonNull.string("hashtag");
+    t.nonNull.date("createdAt");
     t.string("cover_image", {
       async resolve(parent) {
         if (parent.cover_image_rel)
@@ -183,7 +184,8 @@ const Project = objectType({
 
     t.nonNull.list.nonNull.field("stories", {
       type: Story,
-      resolve: (parent, args, ctx, info) => {
+      args: paginationArgs({ take: undefined }),
+      resolve: (parent, { take, skip }, ctx, info) => {
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).valueWithFilter("Story");
@@ -196,6 +198,8 @@ const Project = objectType({
           orderBy: {
             createdAt: "desc",
           },
+          take: take ?? undefined,
+          skip: skip ?? undefined,
         });
       },
     });

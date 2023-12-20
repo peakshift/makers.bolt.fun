@@ -1,0 +1,29 @@
+query ManageBadges {
+  getAllBadges {
+    id
+    title
+    slug
+    image
+    description
+    color
+    winningDescriptionTemplate
+    badgeDefinitionNostrEventId
+  }
+
+  getPendingNostrBadgeRequests {
+    id
+    createdAt
+    publicKeyToAward
+    badge {
+      id
+      image
+      title
+      badgeDefinitionNostrEventId
+    }
+    user {
+      id
+      name
+      avatar
+    }
+  }
+}

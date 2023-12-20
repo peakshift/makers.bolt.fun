@@ -24,13 +24,56 @@ type Award {
   url: String!
 }
 
+input AwardNostrBadgeInput {
+  awardEventId: String!
+  nostrBadgeRequestId: Int!
+}
+
+type AwardedBadgeMetadata {
+  emoji: String
+  label: String
+  value: String
+}
+
+type Badge {
+  awardedTo: [User!]!
+  badgeDefinitionNostrEventId: String
+  color: String
+  description: String!
+  id: Int!
+  image: String!
+  incrementOnAction: UserActionType
+  incrementsNeeded: Int
+  isAdminIssuedOnly: Boolean!
+  slug: String!
+  title: String!
+  winningDescriptionTemplate: String
+}
+
+input BadgeMetadataInput {
+  emoji: String
+  label: String
+  value: String
+}
+
+type BadgeProgress {
+  awardedAt: Date
+  badgeAwardNostrEventId: String
+  current: Int
+  isCompleted: Boolean!
+  metaData: [AwardedBadgeMetadata!]
+  totalNeeded: Int
+}
+
 interface BaseUser {
   avatar: String!
+  badges: [UserBadge!]!
   bio: String
   discord: String
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
+  is_admin: Boolean
   jobTitle: String
   join_date: Date!
   last_seen_notification_time: Date!
@@ -92,6 +135,37 @@ type Category {
   project: [Project!]!
   title: String!
   votes_sum: Int!
+}
+
+input CreateMakerBadgeInput {
+  badge_id: Int!
+  metaData: [BadgeMetadataInput!]!
+  user_ids: [Int!]!
+}
+
+input CreateOrUpdateBadgeInput {
+  badgeDefinitionNostrEventId: String
+  color: String
+  description: String!
+  id: Int
+  image: String!
+  incrementOnActionId: Int
+  incrementsNeeded: Int
+  isAdminIssuedOnly: Boolean!
+  slug: String!
+  title: String!
+  winningDescriptionTemplate: String
+}
+
+input CreateOrUpdateJudgingRoundInput {
+  description: String!
+  end_date: Date!
+  id: String
+  judges_ids: [Int!]!
+  projects_ids: [Int!]!
+  scores_schema: [TournamentJudgingRoundScoresSchemaInput!]!
+  title: String!
+  tournament_id: Int!
 }
 
 input CreateProjectInput {
@@ -246,8 +320,12 @@ input MakerSkillInput {
 
 type Mutation {
   addProjectToTournament(input: AddProjectToTournamentInput): ParticipationInfo
+  awardNostrBadge(input: AwardNostrBadgeInput): Boolean
   confirmDonation(payment_request: String!, preimage: String!): Donation!
   confirmVote(payment_request: String!, preimage: String!): Vote!
+  createMakerBadge(input: CreateMakerBadgeInput): Badge
+  createOrUpdateBadge(input: CreateOrUpdateBadgeInput): Badge
+  createOrUpdateJudgingRound(input: CreateOrUpdateJudgingRoundInput): Tournament
   createProject(input: CreateProjectInput): CreateProjectResponse
   createStory(data: StoryInputType): Story
   createTournament(data: CreateTournamentInput): Tournament
@@ -256,6 +334,8 @@ type Mutation {
   donate(amount_in_sat: Int!): Donation!
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
+  requestNostrBadge(input: RequestNostrBadgeInput): Boolean
+  scoreTournamentProject(input: ScoreProjectInput): TournamentJudgingRoundJudgeScore
   setUserNostrKeyAsPrimary(key: String): User
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
@@ -266,6 +346,14 @@ type Mutation {
   updateTournamentRegistration(data: UpdateTournamentRegistrationInput, tournament_id: Int!): ParticipationInfo
   updateUserPreferences(newEmails: [UserEmailInputType!], newKeys: [UserKeyInputType!]): User!
   vote(amount_in_sat: Int!, item_id: Int!, item_type: VOTE_ITEM_TYPE!): Vote!
+}
+
+type NostrBadgeRequest {
+  badge: Badge!
+  createdAt: Date!
+  id: Int!
+  publicKeyToAward: String!
+  user: User!
 }
 
 input NostrEventInput {
@@ -352,6 +440,7 @@ type Project {
   capabilities: [Capability!]!
   category: Category!
   cover_image: String
+  createdAt: Date!
   description: String!
   discord: String
   figma: String
@@ -369,7 +458,7 @@ type Project {
   replit: String
   screenshots: [String!]!
   slack: String
-  stories: [Story!]!
+  stories(skip: Int = 0, take: Int = 10): [Story!]!
   tagline: String!
   tags: [Tag!]!
   telegram: String
@@ -414,16 +503,21 @@ type Query {
   allCategories: [Category!]!
   allProjects(skip: Int = 0, take: Int = 50): [Project!]!
   checkValidProjectHashtag(hashtag: String!, projectId: Int): Boolean!
+  getAllBadges: [Badge!]!
   getAllCapabilities: [Capability!]!
   getAllHackathons(sortBy: String, tag: Int): [Hackathon!]!
   getAllMakersRoles: [GenericMakerRole!]!
   getAllMakersSkills: [MakerSkill!]!
+  getAllUserActionTypes: [UserActionType!]!
+  getBadgeById(idOrSlug: String!): Badge!
   getCategory(id: Int!): Category!
   getDonationsStats: DonationsStats!
   getFeed(skip: Int = 0, sortBy: String, tag: Int = 0, take: Int = 10): [Post!]!
+  getJudgingRoundById(judgingRoundId: String!): TournamentJudgingRound!
   getLnurlDetailsForProject(project_id: Int!): LnurlDetails!
   getMakersInTournament(openToConnect: Boolean, roleId: Int, search: String, skip: Int = 0, take: Int = 10, tournamentIdOrSlug: String!): TournamentMakersResponse!
   getMyDrafts(type: POST_TYPE!): [Post!]!
+  getPendingNostrBadgeRequests: [NostrBadgeRequest!]!
   getPostById(id: Int!, type: POST_TYPE!): Post!
   getProject(id: Int, tag: String): Project!
   getProjectsById(ids: [String!]!): [Project!]!
@@ -470,12 +564,30 @@ input RegisterInTournamentInput {
   hacking_status: TournamentMakerHackingStatusEnum!
 }
 
+input RequestNostrBadgeInput {
+  badgeId: Int!
+  publicKeyToAward: String!
+}
+
 enum RoleLevelEnum {
   Advanced
   Beginner
   Hobbyist
   Intermediate
   Pro
+}
+
+input ScoreObjectInput {
+  key: String!
+  value: String!
+}
+
+input ScoreProjectInput {
+  internal_note: String
+  note: String
+  project_id: Int!
+  round_id: String!
+  scores: [ScoreObjectInput!]!
 }
 
 type Story implements PostBase {
@@ -548,6 +660,7 @@ type Tournament {
   faqs: [TournamentFAQ!]!
   id: Int!
   judges: [TournamentJudge!]!
+  judging_rounds: [TournamentJudgingRound!]!
   location: String!
   makers_count: Int!
   makers_deals: [TournamentMakerDeal!]!
@@ -623,6 +736,48 @@ type TournamentJudge {
   company: String
   name: String!
   twitter: String
+}
+
+type TournamentJudgingRound {
+  createdAt: Date!
+  description: String!
+  end_date: Date!
+  id: String!
+  is_judge: Boolean!
+  judges: [User!]!
+  my_scores: [TournamentJudgingRoundJudgeScore!]!
+  projects: [Project!]!
+  scores_schema: [TournamentJudgingRoundScoresSchema!]!
+  title: String!
+  tournament: Tournament!
+}
+
+type TournamentJudgingRoundJudgeScore {
+  id: Int!
+  internal_note: String
+  judge: User!
+  note: String
+  project: Project!
+  scores: [TournamentJudgingRoundProjectScore!]!
+}
+
+type TournamentJudgingRoundProjectScore {
+  key: String!
+  value: String!
+}
+
+type TournamentJudgingRoundScoresSchema {
+  key: String!
+  label: String!
+  required: Boolean
+  type: String!
+}
+
+input TournamentJudgingRoundScoresSchemaInput {
+  key: String!
+  label: String!
+  required: Boolean
+  type: String!
 }
 
 type TournamentMakerDeal {
@@ -806,11 +961,13 @@ input UpdateTournamentRegistrationInput {
 
 type User implements BaseUser {
   avatar: String!
+  badges: [UserBadge!]!
   bio: String
   discord: String
   github: String
   id: Int!
   in_tournament(id: Int!): Boolean!
+  is_admin: Boolean
   jobTitle: String
   join_date: Date!
   last_seen_notification_time: Date!
@@ -832,6 +989,17 @@ type User implements BaseUser {
   website: String
 }
 
+type UserActionType {
+  id: Int!
+  name: String!
+}
+
+type UserBadge {
+  badge: Badge!
+  id: String!
+  progress: BadgeProgress
+}
+
 input UserEmailInputType {
   email: String!
 }
@@ -847,6 +1015,7 @@ type UserPrivateData {
   email: String
   emails: [LinkedEmail!]!
   id: Int!
+  tournaments_organizing: [Tournament!]!
   walletsKeys: [WalletKey!]!
 }
 

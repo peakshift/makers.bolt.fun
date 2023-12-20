@@ -1,4 +1,5 @@
 import React from "react";
+import { nanoid } from "nanoid";
 
 export function random(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -33,9 +34,9 @@ export function shuffle<T>(_array: Array<T>) {
   return array;
 }
 
-export function generateId() {
+export function generateId(size: number = 6) {
   // TODO: Change to proper generator
-  return Math.random().toString();
+  return nanoid(size);
 }
 
 export function generateList(component: React.ReactElement, cnt: number) {

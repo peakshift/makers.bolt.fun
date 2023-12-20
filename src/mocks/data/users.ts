@@ -163,6 +163,7 @@ export const users: User[] = [
     id: 123,
     avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Mtgmtg.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    is_admin: false,
     name: "Mtg",
     github: "MTG2000",
     jobTitle: "Front-end Web Developer",
@@ -185,6 +186,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -200,6 +202,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -221,6 +224,7 @@ export const users: User[] = [
     id: 441,
     avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Eduardu.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    is_admin: false,
     name: "Edward P",
     github: "barefoot_88",
     jobTitle: "Senior Product Designer",
@@ -243,6 +247,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -258,6 +263,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -279,6 +285,7 @@ export const users: User[] = [
     id: 422,
     avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Johns.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    is_admin: false,
     name: "Johns Beharry",
     github: "johnsbehhary",
     jobTitle: "Manager",
@@ -301,6 +308,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -316,6 +324,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",
@@ -337,6 +346,7 @@ export const users: User[] = [
     id: 511,
     avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Carlos.svg",
     bio: "Lorem asiop asklh kluiw wekjhl shkj kljhsva klu khsc klhlkbs mjklwqr kmlk sadlfui mewr qiumnk, asdjomi cskhsdf.",
+    is_admin: false,
     name: "Mohammed Taher ",
     github: "MTG2000",
     jobTitle: "Back-end Web Developer",
@@ -359,6 +369,7 @@ export const users: User[] = [
     tournaments,
     similar_makers,
     projects: projects.slice(0, 3),
+    badges: [],
     nostr_keys: [
       {
         key: "123123123123",
@@ -374,6 +385,7 @@ export const users: User[] = [
       email: "myemail@gmail.com",
       default_nostr_prv_key: "123123124asdfsadfsa8d7fsadfasdf",
       default_nostr_pub_key: "123124123123dfsadfsa8d7f11sadfasdf",
+      tournaments_organizing: [],
       walletsKeys: [
         {
           key: "1645h234j2421zxvertw",

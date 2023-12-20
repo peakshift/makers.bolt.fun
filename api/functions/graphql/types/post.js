@@ -25,6 +25,7 @@ const {
 const { queueService } = require("../../../services/queue-service");
 const { toSlug } = require("../../../utils/helpers");
 const env = require("../../../utils/consts");
+const userActionsService = require("../../../services/user-actions-tracker-service");
 
 const POST_TYPE = enumType({
   name: "POST_TYPE",
@@ -725,7 +726,13 @@ const createStory = extendType({
                 throw new ApolloError("Unexpected error happened...");
               });
             _promisesList.push(
-              queueService.searchIndexService.createStory(createdStory)
+              queueService.searchIndexService.createStory(createdStory),
+              userActionsService.registerAction(
+                userActionsService.actionsCreator.publishedStory({
+                  storyId: createdStory.id,
+                  userId: user.id,
+                })
+              )
             );
           }
 

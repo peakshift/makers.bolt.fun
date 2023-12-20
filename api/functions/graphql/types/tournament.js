@@ -26,6 +26,10 @@ const {
 const { ImageInput } = require("./misc");
 const { createCRUDType } = require("../../../utils/helpers");
 const { queueService } = require("../../../services/queue-service");
+const {
+  isAdmin,
+  isTournamentOrganizer,
+} = require("../../../auth/utils/helperFuncs");
 
 const TournamentPrize = objectType({
   name: "TournamentPrize",
@@ -489,6 +493,36 @@ const Tournament = objectType({
         return prisma.tournament
           .findUnique({ where: { id: parent.id } })
           .then((t) => t.config || {});
+      },
+    });
+
+    t.nonNull.list.nonNull.field("judging_rounds", {
+      type: "TournamentJudgingRound",
+      resolve(parent, _, ctx) {
+        const userId = ctx.user?.id;
+        if (!userId) return [];
+
+        if (isTournamentOrganizer(userId, parent.id))
+          return prisma.tournament
+            .findUnique({ where: { id: parent.id } })
+            .judging_rounds();
+
+        return prisma.tournamentJudgingRound.findMany({
+          where: {
+            AND: [
+              {
+                tournament_id: parent.id,
+              },
+              {
+                judges: {
+                  some: {
+                    judge_id: userId,
+                  },
+                },
+              },
+            ],
+          },
+        });
       },
     });
   },
@@ -1020,10 +1054,6 @@ const CreateTournamentInput = inputObjectType({
   },
 });
 
-const isAdminUser = (userId) => {
-  return userId === 3 || userId === 37 || userId === 9;
-};
-
 const createTournament = extendType({
   type: "Mutation",
   definition(t) {
@@ -1037,7 +1067,7 @@ const createTournament = extendType({
 
         if (!user?.id) throw new Error("You have to login");
 
-        if (!isAdminUser(user.id))
+        if (!isAdmin(user.id))
           throw new Error("You are not allowed to create a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([
@@ -1180,7 +1210,7 @@ const updateTournament = extendType({
 
         if (!user?.id) throw new Error("You have to login");
 
-        if (!isAdminUser(user.id))
+        if (!isAdmin(user.id))
           throw new Error("You are not allowed to update a tournament");
 
         const [thumbnail_image_rel, cover_image_rel] = await Promise.all([

@@ -79,6 +79,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper turpis est, ac e
         additional_prizes: null,
       },
     ],
+    judging_rounds: [],
     events_count: 6,
     makers_count: 668,
     projects_count: 21,

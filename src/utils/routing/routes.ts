@@ -71,6 +71,38 @@ type RouteOptions =
       type: "tournament";
       idOrSlug: string | number;
       tab?: "overview" | "events" | "makers" | "projects";
+    }
+  | {
+      type: "admin-badges";
+      page?: "list" | "create" | "update" | "details";
+      idOrSlug?: string | number;
+    }
+  | {
+      type: "judging-rounds";
+      page: "list";
+      tournamentIdOrSlug: number | string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "create";
+      tournamentIdOrSlug: number | string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "update";
+      tournamentIdOrSlug: number | string;
+      roundId: string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "details";
+      tournamentIdOrSlug: number | string;
+      roundId: string;
+    }
+  | {
+      type: "judging-rounds";
+      page: "judge-page";
+      roundId: string;
     };
 
 export function createRoute(options: RouteOptions) {
@@ -147,6 +179,28 @@ export function createRoute(options: RouteOptions) {
 
   if (options.type === "edit-project")
     return `/projects/list-project` + (options.id ? `?id=${options.id}` : "");
+
+  if (options.type === "admin-badges") {
+    if (options.page === "list") return "/admin/badges";
+    if (options.page === "create") return "/admin/badges/create";
+    if (options.page === "update")
+      return `/admin/badges/${options.idOrSlug}/update`;
+    if (options.page === "details") return `/admin/badges/${options.idOrSlug}`;
+  }
+
+  if (options.type === "judging-rounds") {
+    if (options.page === "list")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging`;
+    if (options.page === "create")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging/create`;
+    if (options.page === "update")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}/update`;
+    if (options.page === "details")
+      return `/admin/tournament/${options.tournamentIdOrSlug}/judging/${options.roundId}`;
+
+    if (options.page === "judge-page")
+      return `/judging-round/${options.roundId}`;
+  }
 
   return "";
 }

@@ -71,6 +71,7 @@ query GetProjectsInTournament(
     projects {
       id
       title
+      hashtag
       description
       thumbnail_image
       members_count

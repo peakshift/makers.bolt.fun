@@ -41,13 +41,59 @@ export type Award = {
   url: Scalars['String'];
 };
 
+export type AwardNostrBadgeInput = {
+  awardEventId: Scalars['String'];
+  nostrBadgeRequestId: Scalars['Int'];
+};
+
+export type AwardedBadgeMetadata = {
+  __typename?: 'AwardedBadgeMetadata';
+  emoji: Maybe<Scalars['String']>;
+  label: Maybe<Scalars['String']>;
+  value: Maybe<Scalars['String']>;
+};
+
+export type Badge = {
+  __typename?: 'Badge';
+  awardedTo: Array<User>;
+  badgeDefinitionNostrEventId: Maybe<Scalars['String']>;
+  color: Maybe<Scalars['String']>;
+  description: Scalars['String'];
+  id: Scalars['Int'];
+  image: Scalars['String'];
+  incrementOnAction: Maybe<UserActionType>;
+  incrementsNeeded: Maybe<Scalars['Int']>;
+  isAdminIssuedOnly: Scalars['Boolean'];
+  slug: Scalars['String'];
+  title: Scalars['String'];
+  winningDescriptionTemplate: Maybe<Scalars['String']>;
+};
+
+export type BadgeMetadataInput = {
+  emoji?: InputMaybe<Scalars['String']>;
+  label?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+export type BadgeProgress = {
+  __typename?: 'BadgeProgress';
+  awardedAt: Maybe<Scalars['Date']>;
+  badgeAwardNostrEventId: Maybe<Scalars['String']>;
+  current: Maybe<Scalars['Int']>;
+  isCompleted: Scalars['Boolean'];
+  metaData: Maybe<Array<AwardedBadgeMetadata>>;
+  totalNeeded: Maybe<Scalars['Int']>;
+};
+
 export type BaseUser = {
   avatar: Scalars['String'];
+  badges: Array<UserBadge>;
   bio: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
+  is_admin: Maybe<Scalars['Boolean']>;
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   last_seen_notification_time: Scalars['Date'];
@@ -118,6 +164,37 @@ export type Category = {
   project: Array<Project>;
   title: Scalars['String'];
   votes_sum: Scalars['Int'];
+};
+
+export type CreateMakerBadgeInput = {
+  badge_id: Scalars['Int'];
+  metaData: Array<BadgeMetadataInput>;
+  user_ids: Array<Scalars['Int']>;
+};
+
+export type CreateOrUpdateBadgeInput = {
+  badgeDefinitionNostrEventId?: InputMaybe<Scalars['String']>;
+  color?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  image: Scalars['String'];
+  incrementOnActionId?: InputMaybe<Scalars['Int']>;
+  incrementsNeeded?: InputMaybe<Scalars['Int']>;
+  isAdminIssuedOnly: Scalars['Boolean'];
+  slug: Scalars['String'];
+  title: Scalars['String'];
+  winningDescriptionTemplate?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateOrUpdateJudgingRoundInput = {
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  id?: InputMaybe<Scalars['String']>;
+  judges_ids: Array<Scalars['Int']>;
+  projects_ids: Array<Scalars['Int']>;
+  scores_schema: Array<TournamentJudgingRoundScoresSchemaInput>;
+  title: Scalars['String'];
+  tournament_id: Scalars['Int'];
 };
 
 export type CreateProjectInput = {
@@ -277,8 +354,12 @@ export type MakerSkillInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addProjectToTournament: Maybe<ParticipationInfo>;
+  awardNostrBadge: Maybe<Scalars['Boolean']>;
   confirmDonation: Donation;
   confirmVote: Vote;
+  createMakerBadge: Maybe<Badge>;
+  createOrUpdateBadge: Maybe<Badge>;
+  createOrUpdateJudgingRound: Maybe<Tournament>;
   createProject: Maybe<CreateProjectResponse>;
   createStory: Maybe<Story>;
   createTournament: Maybe<Tournament>;
@@ -287,6 +368,8 @@ export type Mutation = {
   donate: Donation;
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
+  requestNostrBadge: Maybe<Scalars['Boolean']>;
+  scoreTournamentProject: Maybe<TournamentJudgingRoundJudgeScore>;
   setUserNostrKeyAsPrimary: Maybe<User>;
   unlinkNostrKey: Maybe<User>;
   updateLastSeenNotificationTime: Maybe<User>;
@@ -305,6 +388,11 @@ export type MutationAddProjectToTournamentArgs = {
 };
 
 
+export type MutationAwardNostrBadgeArgs = {
+  input: InputMaybe<AwardNostrBadgeInput>;
+};
+
+
 export type MutationConfirmDonationArgs = {
   payment_request: Scalars['String'];
   preimage: Scalars['String'];
@@ -314,6 +402,21 @@ export type MutationConfirmDonationArgs = {
 export type MutationConfirmVoteArgs = {
   payment_request: Scalars['String'];
   preimage: Scalars['String'];
+};
+
+
+export type MutationCreateMakerBadgeArgs = {
+  input: InputMaybe<CreateMakerBadgeInput>;
+};
+
+
+export type MutationCreateOrUpdateBadgeArgs = {
+  input: InputMaybe<CreateOrUpdateBadgeInput>;
+};
+
+
+export type MutationCreateOrUpdateJudgingRoundArgs = {
+  input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
 };
 
 
@@ -355,6 +458,16 @@ export type MutationLinkNostrKeyArgs = {
 export type MutationRegisterInTournamentArgs = {
   data: InputMaybe<RegisterInTournamentInput>;
   tournament_id: Scalars['Int'];
+};
+
+
+export type MutationRequestNostrBadgeArgs = {
+  input: InputMaybe<RequestNostrBadgeInput>;
+};
+
+
+export type MutationScoreTournamentProjectArgs = {
+  input: InputMaybe<ScoreProjectInput>;
 };
 
 
@@ -409,6 +522,15 @@ export type MutationVoteArgs = {
   amount_in_sat: Scalars['Int'];
   item_id: Scalars['Int'];
   item_type: Vote_Item_Type;
+};
+
+export type NostrBadgeRequest = {
+  __typename?: 'NostrBadgeRequest';
+  badge: Badge;
+  createdAt: Scalars['Date'];
+  id: Scalars['Int'];
+  publicKeyToAward: Scalars['String'];
+  user: User;
 };
 
 export type NostrEventInput = {
@@ -500,6 +622,7 @@ export type Project = {
   capabilities: Array<Capability>;
   category: Category;
   cover_image: Maybe<Scalars['String']>;
+  createdAt: Scalars['Date'];
   description: Scalars['String'];
   discord: Maybe<Scalars['String']>;
   figma: Maybe<Scalars['String']>;
@@ -533,6 +656,12 @@ export type Project = {
 
 export type ProjectMembersArgs = {
   take: InputMaybe<Scalars['Int']>;
+};
+
+
+export type ProjectStoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export type ProjectInTournament = {
@@ -571,16 +700,21 @@ export type Query = {
   allCategories: Array<Category>;
   allProjects: Array<Project>;
   checkValidProjectHashtag: Scalars['Boolean'];
+  getAllBadges: Array<Badge>;
   getAllCapabilities: Array<Capability>;
   getAllHackathons: Array<Hackathon>;
   getAllMakersRoles: Array<GenericMakerRole>;
   getAllMakersSkills: Array<MakerSkill>;
+  getAllUserActionTypes: Array<UserActionType>;
+  getBadgeById: Badge;
   getCategory: Category;
   getDonationsStats: DonationsStats;
   getFeed: Array<Post>;
+  getJudgingRoundById: TournamentJudgingRound;
   getLnurlDetailsForProject: LnurlDetails;
   getMakersInTournament: TournamentMakersResponse;
   getMyDrafts: Array<Post>;
+  getPendingNostrBadgeRequests: Array<NostrBadgeRequest>;
   getPostById: Post;
   getProject: Project;
   getProjectsById: Array<Project>;
@@ -633,6 +767,11 @@ export type QueryGetAllHackathonsArgs = {
 };
 
 
+export type QueryGetBadgeByIdArgs = {
+  idOrSlug: Scalars['String'];
+};
+
+
 export type QueryGetCategoryArgs = {
   id: Scalars['Int'];
 };
@@ -643,6 +782,11 @@ export type QueryGetFeedArgs = {
   sortBy: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetJudgingRoundByIdArgs = {
+  judgingRoundId: Scalars['String'];
 };
 
 
@@ -796,6 +940,11 @@ export type RegisterInTournamentInput = {
   hacking_status: TournamentMakerHackingStatusEnum;
 };
 
+export type RequestNostrBadgeInput = {
+  badgeId: Scalars['Int'];
+  publicKeyToAward: Scalars['String'];
+};
+
 export enum RoleLevelEnum {
   Advanced = 'Advanced',
   Beginner = 'Beginner',
@@ -803,6 +952,19 @@ export enum RoleLevelEnum {
   Intermediate = 'Intermediate',
   Pro = 'Pro'
 }
+
+export type ScoreObjectInput = {
+  key: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type ScoreProjectInput = {
+  internal_note?: InputMaybe<Scalars['String']>;
+  note?: InputMaybe<Scalars['String']>;
+  project_id: Scalars['Int'];
+  round_id: Scalars['String'];
+  scores: Array<ScoreObjectInput>;
+};
 
 export type Story = PostBase & {
   __typename?: 'Story';
@@ -878,6 +1040,7 @@ export type Tournament = {
   faqs: Array<TournamentFaq>;
   id: Scalars['Int'];
   judges: Array<TournamentJudge>;
+  judging_rounds: Array<TournamentJudgingRound>;
   location: Scalars['String'];
   makers_count: Scalars['Int'];
   makers_deals: Array<TournamentMakerDeal>;
@@ -958,6 +1121,52 @@ export type TournamentJudge = {
   company: Maybe<Scalars['String']>;
   name: Scalars['String'];
   twitter: Maybe<Scalars['String']>;
+};
+
+export type TournamentJudgingRound = {
+  __typename?: 'TournamentJudgingRound';
+  createdAt: Scalars['Date'];
+  description: Scalars['String'];
+  end_date: Scalars['Date'];
+  id: Scalars['String'];
+  is_judge: Scalars['Boolean'];
+  judges: Array<User>;
+  my_scores: Array<TournamentJudgingRoundJudgeScore>;
+  projects: Array<Project>;
+  scores_schema: Array<TournamentJudgingRoundScoresSchema>;
+  title: Scalars['String'];
+  tournament: Tournament;
+};
+
+export type TournamentJudgingRoundJudgeScore = {
+  __typename?: 'TournamentJudgingRoundJudgeScore';
+  id: Scalars['Int'];
+  internal_note: Maybe<Scalars['String']>;
+  judge: User;
+  note: Maybe<Scalars['String']>;
+  project: Project;
+  scores: Array<TournamentJudgingRoundProjectScore>;
+};
+
+export type TournamentJudgingRoundProjectScore = {
+  __typename?: 'TournamentJudgingRoundProjectScore';
+  key: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type TournamentJudgingRoundScoresSchema = {
+  __typename?: 'TournamentJudgingRoundScoresSchema';
+  key: Scalars['String'];
+  label: Scalars['String'];
+  required: Maybe<Scalars['Boolean']>;
+  type: Scalars['String'];
+};
+
+export type TournamentJudgingRoundScoresSchemaInput = {
+  key: Scalars['String'];
+  label: Scalars['String'];
+  required?: InputMaybe<Scalars['Boolean']>;
+  type: Scalars['String'];
 };
 
 export type TournamentMakerDeal = {
@@ -1154,11 +1363,13 @@ export type UpdateTournamentRegistrationInput = {
 export type User = BaseUser & {
   __typename?: 'User';
   avatar: Scalars['String'];
+  badges: Array<UserBadge>;
   bio: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   in_tournament: Scalars['Boolean'];
+  is_admin: Maybe<Scalars['Boolean']>;
   jobTitle: Maybe<Scalars['String']>;
   join_date: Scalars['Date'];
   last_seen_notification_time: Scalars['Date'];
@@ -1185,6 +1396,19 @@ export type UserIn_TournamentArgs = {
   id: Scalars['Int'];
 };
 
+export type UserActionType = {
+  __typename?: 'UserActionType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type UserBadge = {
+  __typename?: 'UserBadge';
+  badge: Badge;
+  id: Scalars['String'];
+  progress: Maybe<BadgeProgress>;
+};
+
 export type UserEmailInputType = {
   email: Scalars['String'];
 };
@@ -1201,6 +1425,7 @@ export type UserPrivateData = {
   email: Maybe<Scalars['String']>;
   emails: Array<LinkedEmail>;
   id: Scalars['Int'];
+  tournaments_organizing: Array<Tournament>;
   walletsKeys: Array<WalletKey>;
 };
 
@@ -1276,10 +1501,95 @@ export type SearchProjectsQueryVariables = Exact<{
 
 export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'Project', id: number, thumbnail_image: string | null, title: string, category: { __typename?: 'Category', title: string, id: number } }> };
 
+export type IssueMakerBadgeMutationVariables = Exact<{
+  input: InputMaybe<CreateMakerBadgeInput>;
+}>;
+
+
+export type IssueMakerBadgeMutation = { __typename?: 'Mutation', createMakerBadge: { __typename?: 'Badge', id: number, awardedTo: Array<{ __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string }> } | null };
+
+export type GetBadgeDetailsQueryVariables = Exact<{
+  idOrSlug: Scalars['String'];
+}>;
+
+
+export type GetBadgeDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null, awardedTo: Array<{ __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string }> } };
+
+export type CreateOrUpdateBadgeMutationVariables = Exact<{
+  input: InputMaybe<CreateOrUpdateBadgeInput>;
+}>;
+
+
+export type CreateOrUpdateBadgeMutation = { __typename?: 'Mutation', createOrUpdateBadge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null } | null };
+
+export type GetUserActionTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserActionTypesQuery = { __typename?: 'Query', getAllUserActionTypes: Array<{ __typename?: 'UserActionType', id: number, name: string }> };
+
+export type GetBadgeToEditDetailsQueryVariables = Exact<{
+  idOrSlug: Scalars['String'];
+}>;
+
+
+export type GetBadgeToEditDetailsQuery = { __typename?: 'Query', getBadgeById: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, winningDescriptionTemplate: string | null, color: string | null, badgeDefinitionNostrEventId: string | null, isAdminIssuedOnly: boolean, incrementsNeeded: number | null, incrementOnAction: { __typename?: 'UserActionType', id: number, name: string } | null } };
+
+export type AwardNostrBadgeMutationVariables = Exact<{
+  input: InputMaybe<AwardNostrBadgeInput>;
+}>;
+
+
+export type AwardNostrBadgeMutation = { __typename?: 'Mutation', awardNostrBadge: boolean | null };
+
+export type ManageBadgesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ManageBadgesQuery = { __typename?: 'Query', getAllBadges: Array<{ __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }>, getPendingNostrBadgeRequests: Array<{ __typename?: 'NostrBadgeRequest', id: number, createdAt: any, publicKeyToAward: string, badge: { __typename?: 'Badge', id: number, image: string, title: string, badgeDefinitionNostrEventId: string | null }, user: { __typename?: 'User', id: number, name: string, avatar: string } }> };
+
+export type GetJudgingRoundDetailsQueryVariables = Exact<{
+  judgingRoundId: Scalars['String'];
+}>;
+
+
+export type GetJudgingRoundDetailsQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, tournament: { __typename?: 'Tournament', id: number }, scores_schema: Array<{ __typename?: 'TournamentJudgingRoundScoresSchema', key: string, label: string, type: string, required: boolean | null }> } };
+
+export type JudgingRoundJudgePageQueryVariables = Exact<{
+  judgingRoundId: Scalars['String'];
+}>;
+
+
+export type JudgingRoundJudgePageQuery = { __typename?: 'Query', getJudgingRoundById: { __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, createdAt: any, end_date: any, is_judge: boolean, scores_schema: Array<{ __typename?: 'TournamentJudgingRoundScoresSchema', key: string, label: string, type: string, required: boolean | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, tagline: string, description: string, thumbnail_image: string | null, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, website: string, createdAt: any, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any }> }>, tournament: { __typename?: 'Tournament', id: number }, my_scores: Array<{ __typename?: 'TournamentJudgingRoundJudgeScore', id: number, note: string | null, internal_note: string | null, project: { __typename?: 'Project', id: number, hashtag: string }, scores: Array<{ __typename?: 'TournamentJudgingRoundProjectScore', key: string, value: string }> }> } };
+
+export type ScoreTournamentProjectMutationVariables = Exact<{
+  input: InputMaybe<ScoreProjectInput>;
+}>;
+
+
+export type ScoreTournamentProjectMutation = { __typename?: 'Mutation', scoreTournamentProject: { __typename?: 'TournamentJudgingRoundJudgeScore', id: number, scores: Array<{ __typename?: 'TournamentJudgingRoundProjectScore', key: string, value: string }> } | null };
+
+export type CreateOrUpdateJudgingRoundMutationVariables = Exact<{
+  input: InputMaybe<CreateOrUpdateJudgingRoundInput>;
+}>;
+
+
+export type CreateOrUpdateJudgingRoundMutation = { __typename?: 'Mutation', createOrUpdateJudgingRound: { __typename?: 'Tournament', id: number, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any, judges: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null }>, scores_schema: Array<{ __typename?: 'TournamentJudgingRoundScoresSchema', key: string, label: string, type: string, required: boolean | null }> }> } | null };
+
+export type ManageTournamentQueryVariables = Exact<{
+  idOrSlug: Scalars['String'];
+}>;
+
+
+export type ManageTournamentQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, slug: string, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null }, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+
+export type AdminDashboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminDashboardQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, private_data: { __typename?: 'UserPrivateData', tournaments_organizing: Array<{ __typename?: 'Tournament', id: number, slug: string, title: string, thumbnail_image: string }> } } | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any } | null };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, bio: string | null, primary_nostr_key: string | null, last_seen_notification_time: any, is_admin: boolean | null, private_data: { __typename?: 'UserPrivateData', tournaments_organizing: Array<{ __typename?: 'Tournament', id: number, slug: string }> } } | null };
 
 export type DonationsStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1400,19 +1710,19 @@ export type TagFeedQueryVariables = Exact<{
 
 export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
-export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any };
+export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null };
 
 export type MyProfileAboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type MyProfileAboutQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type UpdateProfileAboutMutationVariables = Exact<{
   data: InputMaybe<ProfileDetailsInput>;
 }>;
 
 
-export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
+export type UpdateProfileAboutMutation = { __typename?: 'Mutation', updateProfileDetails: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null, private_data: { __typename?: 'UserPrivateData', email: string | null } } | null };
 
 export type MyNostrKeysQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1472,12 +1782,19 @@ export type UpdateUserRolesSkillsMutationVariables = Exact<{
 
 export type UpdateUserRolesSkillsMutation = { __typename?: 'Mutation', updateProfileRoles: { __typename?: 'User', id: number, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
+export type RequestNostrBadgeMutationVariables = Exact<{
+  input: InputMaybe<RequestNostrBadgeInput>;
+}>;
+
+
+export type RequestNostrBadgeMutation = { __typename?: 'Mutation', requestNostrBadge: boolean | null };
+
 export type ProfileQueryVariables = Exact<{
   profileId: Scalars['Int'];
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean, is_default_generated_key: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any, is_admin: boolean | null, stories: Array<{ __typename?: 'Story', id: number, title: string, createdAt: any, tags: Array<{ __typename?: 'Tag', id: number, title: string, icon: string | null }> }>, tournaments: Array<{ __typename?: 'Tournament', id: number, title: string, thumbnail_image: string, start_date: any, end_date: any }>, badges: Array<{ __typename?: 'UserBadge', id: string, badge: { __typename?: 'Badge', id: number, title: string, slug: string, image: string, description: string, color: string | null, winningDescriptionTemplate: string | null, badgeDefinitionNostrEventId: string | null }, progress: { __typename?: 'BadgeProgress', isCompleted: boolean, badgeAwardNostrEventId: string | null, totalNeeded: number | null, current: number | null, awardedAt: any | null, metaData: Array<{ __typename?: 'AwardedBadgeMetadata', emoji: string | null, label: string | null, value: string | null }> | null } | null }>, projects: Array<{ __typename?: 'Project', id: number, hashtag: string, title: string, thumbnail_image: string | null, category: { __typename?: 'Category', id: number, icon: string | null, title: string } }>, similar_makers: Array<{ __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null }>, nostr_keys: Array<{ __typename?: 'NostrKey', key: string, createdAt: any, label: string, is_primary: boolean, is_default_generated_key: boolean }>, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type CategoryPageQueryVariables = Exact<{
   categoryId: Scalars['Int'];
@@ -1585,7 +1902,7 @@ export type GetProjectsInTournamentQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', allItemsCount: number | null, hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
+export type GetProjectsInTournamentQuery = { __typename?: 'Query', getProjectsInTournament: { __typename?: 'TournamentProjectsResponse', allItemsCount: number | null, hasNext: boolean | null, hasPrev: boolean | null, projects: Array<{ __typename?: 'Project', id: number, title: string, hashtag: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }> } };
 
 export type UpdateTournamentRegistrationMutationVariables = Exact<{
   tournamentId: Scalars['Int'];
@@ -1622,14 +1939,14 @@ export type MeTournamentQueryVariables = Exact<{
 }>;
 
 
-export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
+export type MeTournamentQuery = { __typename?: 'Query', tournamentParticipationInfo: { __typename?: 'ParticipationInfo', createdAt: any, hacking_status: TournamentMakerHackingStatusEnum, projects: Array<{ __typename?: 'ProjectInTournament', project: { __typename?: 'Project', id: number, title: string, hashtag: string, description: string, thumbnail_image: string | null, members_count: number, category: { __typename?: 'Category', id: number, title: string, icon: string | null }, members: Array<{ __typename?: 'ProjectMember', user: { __typename?: 'User', id: number, avatar: string } }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> }, track: { __typename?: 'TournamentTrack', id: number, title: string, icon: string } | null }> } | null, me: { __typename?: 'User', id: number, name: string, avatar: string, jobTitle: string | null, twitter: string | null, linkedin: string | null, github: string | null, skills: Array<{ __typename?: 'MakerSkill', id: number, title: string }>, roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }> } | null };
 
 export type GetTournamentByIdQueryVariables = Exact<{
   idOrSlug: Scalars['String'];
 }>;
 
 
-export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null } }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
+export type GetTournamentByIdQuery = { __typename?: 'Query', pubkeysOfMakersInTournament: Array<string>, pubkeysOfProjectsInTournament: Array<string>, getTournamentById: { __typename?: 'Tournament', id: number, slug: string, title: string, description: string, thumbnail_image: string, cover_image: string, start_date: any, end_date: any, location: string, website: string | null, events_count: number, makers_count: number, projects_count: number, prizes: Array<{ __typename?: 'TournamentPrize', title: string, description: string, image: string, positions: Array<{ __typename?: 'TournamentPrizePosition', position: string, reward: string, project: string | null }>, additional_prizes: Array<{ __typename?: 'TournamentPrizeAdditionalPrize', text: string, url: string | null }> | null }>, tracks: Array<{ __typename?: 'TournamentTrack', id: number, title: string, icon: string }>, judges: Array<{ __typename?: 'TournamentJudge', name: string, company: string | null, avatar: string | null, twitter: string | null }>, events: Array<{ __typename?: 'TournamentEvent', id: number, title: string, image: string, description: string, starts_at: any, ends_at: any, location: string, website: string, type: TournamentEventTypeEnum, links: Array<string> }>, faqs: Array<{ __typename?: 'TournamentFAQ', id: number, question: string, answer: string }>, contacts: Array<{ __typename?: 'TournamentContact', type: string, url: string }>, partners: Array<{ __typename?: 'TournamentPartner', title: string, items: Array<{ __typename?: 'TournamentPartnerItem', image: string, url: string, isBigImage: boolean | null }> }>, schedule: Array<{ __typename?: 'TournamentSchedule', date: string, events: Array<{ __typename?: 'TournamentScheduleEvent', title: string, time: string | null, timezone: string | null, url: string | null, type: string | null, location: string | null }> }>, makers_deals: Array<{ __typename?: 'TournamentMakerDeal', title: string, description: string, url: string | null }>, config: { __typename?: 'TournamentConfig', registerationOpen: boolean, projectsSubmissionOpen: boolean, projectsSubmissionClosesOn: string | null, ideasRootNostrEventId: string | null, showFeed: boolean | null, mainFeedHashtag: string | null, feedFilters: Array<string> | null }, judging_rounds: Array<{ __typename?: 'TournamentJudgingRound', id: string, title: string, description: string, end_date: any, createdAt: any }> }, getMakersInTournament: { __typename?: 'TournamentMakersResponse', makers: Array<{ __typename?: 'TournamentParticipant', user: { __typename?: 'User', id: number, avatar: string } }> } };
 
 export type NostrKeysMetadataQueryVariables = Exact<{
   keys: Array<Scalars['String']> | Scalars['String'];
@@ -1673,6 +1990,7 @@ export const UserBasicInfoFragmentDoc = gql`
   bio
   location
   last_seen_notification_time
+  is_admin
 }
     `;
 export const UserRolesSkillsFragmentDoc = gql`
@@ -1937,6 +2255,741 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const IssueMakerBadgeDocument = gql`
+    mutation IssueMakerBadge($input: CreateMakerBadgeInput) {
+  createMakerBadge(input: $input) {
+    id
+    awardedTo {
+      id
+      name
+      jobTitle
+      avatar
+    }
+  }
+}
+    `;
+export type IssueMakerBadgeMutationFn = Apollo.MutationFunction<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>;
+
+/**
+ * __useIssueMakerBadgeMutation__
+ *
+ * To run a mutation, you first call `useIssueMakerBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIssueMakerBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [issueMakerBadgeMutation, { data, loading, error }] = useIssueMakerBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useIssueMakerBadgeMutation(baseOptions?: Apollo.MutationHookOptions<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>(IssueMakerBadgeDocument, options);
+      }
+export type IssueMakerBadgeMutationHookResult = ReturnType<typeof useIssueMakerBadgeMutation>;
+export type IssueMakerBadgeMutationResult = Apollo.MutationResult<IssueMakerBadgeMutation>;
+export type IssueMakerBadgeMutationOptions = Apollo.BaseMutationOptions<IssueMakerBadgeMutation, IssueMakerBadgeMutationVariables>;
+export const GetBadgeDetailsDocument = gql`
+    query GetBadgeDetails($idOrSlug: String!) {
+  getBadgeById(idOrSlug: $idOrSlug) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+    isAdminIssuedOnly
+    incrementsNeeded
+    incrementOnAction {
+      id
+      name
+    }
+    awardedTo {
+      id
+      name
+      jobTitle
+      avatar
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBadgeDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetBadgeDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBadgeDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBadgeDetailsQuery({
+ *   variables: {
+ *      idOrSlug: // value for 'idOrSlug'
+ *   },
+ * });
+ */
+export function useGetBadgeDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>(GetBadgeDetailsDocument, options);
+      }
+export function useGetBadgeDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>(GetBadgeDetailsDocument, options);
+        }
+export type GetBadgeDetailsQueryHookResult = ReturnType<typeof useGetBadgeDetailsQuery>;
+export type GetBadgeDetailsLazyQueryHookResult = ReturnType<typeof useGetBadgeDetailsLazyQuery>;
+export type GetBadgeDetailsQueryResult = Apollo.QueryResult<GetBadgeDetailsQuery, GetBadgeDetailsQueryVariables>;
+export const CreateOrUpdateBadgeDocument = gql`
+    mutation CreateOrUpdateBadge($input: CreateOrUpdateBadgeInput) {
+  createOrUpdateBadge(input: $input) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+  }
+}
+    `;
+export type CreateOrUpdateBadgeMutationFn = Apollo.MutationFunction<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>;
+
+/**
+ * __useCreateOrUpdateBadgeMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateBadgeMutation, { data, loading, error }] = useCreateOrUpdateBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateBadgeMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>(CreateOrUpdateBadgeDocument, options);
+      }
+export type CreateOrUpdateBadgeMutationHookResult = ReturnType<typeof useCreateOrUpdateBadgeMutation>;
+export type CreateOrUpdateBadgeMutationResult = Apollo.MutationResult<CreateOrUpdateBadgeMutation>;
+export type CreateOrUpdateBadgeMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateBadgeMutation, CreateOrUpdateBadgeMutationVariables>;
+export const GetUserActionTypesDocument = gql`
+    query GetUserActionTypes {
+  getAllUserActionTypes {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetUserActionTypesQuery__
+ *
+ * To run a query within a React component, call `useGetUserActionTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserActionTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserActionTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserActionTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>(GetUserActionTypesDocument, options);
+      }
+export function useGetUserActionTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>(GetUserActionTypesDocument, options);
+        }
+export type GetUserActionTypesQueryHookResult = ReturnType<typeof useGetUserActionTypesQuery>;
+export type GetUserActionTypesLazyQueryHookResult = ReturnType<typeof useGetUserActionTypesLazyQuery>;
+export type GetUserActionTypesQueryResult = Apollo.QueryResult<GetUserActionTypesQuery, GetUserActionTypesQueryVariables>;
+export const GetBadgeToEditDetailsDocument = gql`
+    query GetBadgeToEditDetails($idOrSlug: String!) {
+  getBadgeById(idOrSlug: $idOrSlug) {
+    id
+    title
+    slug
+    image
+    description
+    winningDescriptionTemplate
+    color
+    badgeDefinitionNostrEventId
+    isAdminIssuedOnly
+    incrementsNeeded
+    incrementOnAction {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBadgeToEditDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetBadgeToEditDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBadgeToEditDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBadgeToEditDetailsQuery({
+ *   variables: {
+ *      idOrSlug: // value for 'idOrSlug'
+ *   },
+ * });
+ */
+export function useGetBadgeToEditDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>(GetBadgeToEditDetailsDocument, options);
+      }
+export function useGetBadgeToEditDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>(GetBadgeToEditDetailsDocument, options);
+        }
+export type GetBadgeToEditDetailsQueryHookResult = ReturnType<typeof useGetBadgeToEditDetailsQuery>;
+export type GetBadgeToEditDetailsLazyQueryHookResult = ReturnType<typeof useGetBadgeToEditDetailsLazyQuery>;
+export type GetBadgeToEditDetailsQueryResult = Apollo.QueryResult<GetBadgeToEditDetailsQuery, GetBadgeToEditDetailsQueryVariables>;
+export const AwardNostrBadgeDocument = gql`
+    mutation AwardNostrBadge($input: AwardNostrBadgeInput) {
+  awardNostrBadge(input: $input)
+}
+    `;
+export type AwardNostrBadgeMutationFn = Apollo.MutationFunction<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>;
+
+/**
+ * __useAwardNostrBadgeMutation__
+ *
+ * To run a mutation, you first call `useAwardNostrBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAwardNostrBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [awardNostrBadgeMutation, { data, loading, error }] = useAwardNostrBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAwardNostrBadgeMutation(baseOptions?: Apollo.MutationHookOptions<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>(AwardNostrBadgeDocument, options);
+      }
+export type AwardNostrBadgeMutationHookResult = ReturnType<typeof useAwardNostrBadgeMutation>;
+export type AwardNostrBadgeMutationResult = Apollo.MutationResult<AwardNostrBadgeMutation>;
+export type AwardNostrBadgeMutationOptions = Apollo.BaseMutationOptions<AwardNostrBadgeMutation, AwardNostrBadgeMutationVariables>;
+export const ManageBadgesDocument = gql`
+    query ManageBadges {
+  getAllBadges {
+    id
+    title
+    slug
+    image
+    description
+    color
+    winningDescriptionTemplate
+    badgeDefinitionNostrEventId
+  }
+  getPendingNostrBadgeRequests {
+    id
+    createdAt
+    publicKeyToAward
+    badge {
+      id
+      image
+      title
+      badgeDefinitionNostrEventId
+    }
+    user {
+      id
+      name
+      avatar
+    }
+  }
+}
+    `;
+
+/**
+ * __useManageBadgesQuery__
+ *
+ * To run a query within a React component, call `useManageBadgesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useManageBadgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useManageBadgesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useManageBadgesQuery(baseOptions?: Apollo.QueryHookOptions<ManageBadgesQuery, ManageBadgesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ManageBadgesQuery, ManageBadgesQueryVariables>(ManageBadgesDocument, options);
+      }
+export function useManageBadgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ManageBadgesQuery, ManageBadgesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ManageBadgesQuery, ManageBadgesQueryVariables>(ManageBadgesDocument, options);
+        }
+export type ManageBadgesQueryHookResult = ReturnType<typeof useManageBadgesQuery>;
+export type ManageBadgesLazyQueryHookResult = ReturnType<typeof useManageBadgesLazyQuery>;
+export type ManageBadgesQueryResult = Apollo.QueryResult<ManageBadgesQuery, ManageBadgesQueryVariables>;
+export const GetJudgingRoundDetailsDocument = gql`
+    query GetJudgingRoundDetails($judgingRoundId: String!) {
+  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
+    id
+    title
+    description
+    createdAt
+    end_date
+    judges {
+      id
+      name
+      avatar
+      jobTitle
+    }
+    projects {
+      id
+      hashtag
+      title
+      thumbnail_image
+    }
+    tournament {
+      id
+    }
+    scores_schema {
+      key
+      label
+      type
+      required
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetJudgingRoundDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetJudgingRoundDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetJudgingRoundDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetJudgingRoundDetailsQuery({
+ *   variables: {
+ *      judgingRoundId: // value for 'judgingRoundId'
+ *   },
+ * });
+ */
+export function useGetJudgingRoundDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>(GetJudgingRoundDetailsDocument, options);
+      }
+export function useGetJudgingRoundDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>(GetJudgingRoundDetailsDocument, options);
+        }
+export type GetJudgingRoundDetailsQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsQuery>;
+export type GetJudgingRoundDetailsLazyQueryHookResult = ReturnType<typeof useGetJudgingRoundDetailsLazyQuery>;
+export type GetJudgingRoundDetailsQueryResult = Apollo.QueryResult<GetJudgingRoundDetailsQuery, GetJudgingRoundDetailsQueryVariables>;
+export const JudgingRoundJudgePageDocument = gql`
+    query JudgingRoundJudgePage($judgingRoundId: String!) {
+  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
+    id
+    title
+    description
+    createdAt
+    end_date
+    is_judge
+    scores_schema {
+      key
+      label
+      type
+      required
+    }
+    projects {
+      id
+      hashtag
+      title
+      tagline
+      description
+      thumbnail_image
+      twitter
+      discord
+      github
+      slack
+      telegram
+      figma
+      replit
+      youtube
+      npub
+      website
+      createdAt
+      category {
+        id
+        icon
+        title
+      }
+      stories(take: 3) {
+        id
+        title
+        createdAt
+      }
+    }
+    tournament {
+      id
+    }
+    my_scores {
+      id
+      note
+      internal_note
+      project {
+        id
+        hashtag
+      }
+      scores {
+        key
+        value
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useJudgingRoundJudgePageQuery__
+ *
+ * To run a query within a React component, call `useJudgingRoundJudgePageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJudgingRoundJudgePageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJudgingRoundJudgePageQuery({
+ *   variables: {
+ *      judgingRoundId: // value for 'judgingRoundId'
+ *   },
+ * });
+ */
+export function useJudgingRoundJudgePageQuery(baseOptions: Apollo.QueryHookOptions<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>(JudgingRoundJudgePageDocument, options);
+      }
+export function useJudgingRoundJudgePageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>(JudgingRoundJudgePageDocument, options);
+        }
+export type JudgingRoundJudgePageQueryHookResult = ReturnType<typeof useJudgingRoundJudgePageQuery>;
+export type JudgingRoundJudgePageLazyQueryHookResult = ReturnType<typeof useJudgingRoundJudgePageLazyQuery>;
+export type JudgingRoundJudgePageQueryResult = Apollo.QueryResult<JudgingRoundJudgePageQuery, JudgingRoundJudgePageQueryVariables>;
+export const ScoreTournamentProjectDocument = gql`
+    mutation ScoreTournamentProject($input: ScoreProjectInput) {
+  scoreTournamentProject(input: $input) {
+    id
+    scores {
+      key
+      value
+    }
+  }
+}
+    `;
+export type ScoreTournamentProjectMutationFn = Apollo.MutationFunction<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>;
+
+/**
+ * __useScoreTournamentProjectMutation__
+ *
+ * To run a mutation, you first call `useScoreTournamentProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useScoreTournamentProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [scoreTournamentProjectMutation, { data, loading, error }] = useScoreTournamentProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useScoreTournamentProjectMutation(baseOptions?: Apollo.MutationHookOptions<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>(ScoreTournamentProjectDocument, options);
+      }
+export type ScoreTournamentProjectMutationHookResult = ReturnType<typeof useScoreTournamentProjectMutation>;
+export type ScoreTournamentProjectMutationResult = Apollo.MutationResult<ScoreTournamentProjectMutation>;
+export type ScoreTournamentProjectMutationOptions = Apollo.BaseMutationOptions<ScoreTournamentProjectMutation, ScoreTournamentProjectMutationVariables>;
+export const CreateOrUpdateJudgingRoundDocument = gql`
+    mutation CreateOrUpdateJudgingRound($input: CreateOrUpdateJudgingRoundInput) {
+  createOrUpdateJudgingRound(input: $input) {
+    id
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
+      judges {
+        id
+        name
+        avatar
+        jobTitle
+      }
+      projects {
+        id
+        hashtag
+        title
+        thumbnail_image
+      }
+      scores_schema {
+        key
+        label
+        type
+        required
+      }
+    }
+  }
+}
+    `;
+export type CreateOrUpdateJudgingRoundMutationFn = Apollo.MutationFunction<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>;
+
+/**
+ * __useCreateOrUpdateJudgingRoundMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateJudgingRoundMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateJudgingRoundMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateJudgingRoundMutation, { data, loading, error }] = useCreateOrUpdateJudgingRoundMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateJudgingRoundMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>(CreateOrUpdateJudgingRoundDocument, options);
+      }
+export type CreateOrUpdateJudgingRoundMutationHookResult = ReturnType<typeof useCreateOrUpdateJudgingRoundMutation>;
+export type CreateOrUpdateJudgingRoundMutationResult = Apollo.MutationResult<CreateOrUpdateJudgingRoundMutation>;
+export type CreateOrUpdateJudgingRoundMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateJudgingRoundMutation, CreateOrUpdateJudgingRoundMutationVariables>;
+export const ManageTournamentDocument = gql`
+    query ManageTournament($idOrSlug: String!) {
+  getTournamentById(idOrSlug: $idOrSlug) {
+    id
+    slug
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+    events_count
+    makers_count
+    projects_count
+    prizes {
+      title
+      description
+      image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
+    }
+    tracks {
+      id
+      title
+      icon
+    }
+    judges {
+      name
+      company
+      avatar
+      twitter
+    }
+    events {
+      id
+      title
+      image
+      description
+      starts_at
+      ends_at
+      location
+      website
+      type
+      links
+    }
+    faqs {
+      id
+      question
+      answer
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      projectsSubmissionClosesOn
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
+    }
+  }
+  getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {
+    makers {
+      user {
+        id
+        avatar
+      }
+    }
+  }
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: $idOrSlug)
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: $idOrSlug)
+}
+    `;
+
+/**
+ * __useManageTournamentQuery__
+ *
+ * To run a query within a React component, call `useManageTournamentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useManageTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useManageTournamentQuery({
+ *   variables: {
+ *      idOrSlug: // value for 'idOrSlug'
+ *   },
+ * });
+ */
+export function useManageTournamentQuery(baseOptions: Apollo.QueryHookOptions<ManageTournamentQuery, ManageTournamentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ManageTournamentQuery, ManageTournamentQueryVariables>(ManageTournamentDocument, options);
+      }
+export function useManageTournamentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ManageTournamentQuery, ManageTournamentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ManageTournamentQuery, ManageTournamentQueryVariables>(ManageTournamentDocument, options);
+        }
+export type ManageTournamentQueryHookResult = ReturnType<typeof useManageTournamentQuery>;
+export type ManageTournamentLazyQueryHookResult = ReturnType<typeof useManageTournamentLazyQuery>;
+export type ManageTournamentQueryResult = Apollo.QueryResult<ManageTournamentQuery, ManageTournamentQueryVariables>;
+export const AdminDashboardDocument = gql`
+    query AdminDashboard {
+  me {
+    id
+    private_data {
+      tournaments_organizing {
+        id
+        slug
+        title
+        thumbnail_image
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminDashboardQuery__
+ *
+ * To run a query within a React component, call `useAdminDashboardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminDashboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminDashboardQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminDashboardQuery(baseOptions?: Apollo.QueryHookOptions<AdminDashboardQuery, AdminDashboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminDashboardQuery, AdminDashboardQueryVariables>(AdminDashboardDocument, options);
+      }
+export function useAdminDashboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminDashboardQuery, AdminDashboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminDashboardQuery, AdminDashboardQueryVariables>(AdminDashboardDocument, options);
+        }
+export type AdminDashboardQueryHookResult = ReturnType<typeof useAdminDashboardQuery>;
+export type AdminDashboardLazyQueryHookResult = ReturnType<typeof useAdminDashboardLazyQuery>;
+export type AdminDashboardQueryResult = Apollo.QueryResult<AdminDashboardQuery, AdminDashboardQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -1947,6 +3000,13 @@ export const MeDocument = gql`
     bio
     primary_nostr_key
     last_seen_notification_time
+    is_admin
+    private_data {
+      tournaments_organizing {
+        id
+        slug
+      }
+    }
   }
 }
     `;
@@ -3385,6 +4445,37 @@ export function useUpdateUserRolesSkillsMutation(baseOptions?: Apollo.MutationHo
 export type UpdateUserRolesSkillsMutationHookResult = ReturnType<typeof useUpdateUserRolesSkillsMutation>;
 export type UpdateUserRolesSkillsMutationResult = Apollo.MutationResult<UpdateUserRolesSkillsMutation>;
 export type UpdateUserRolesSkillsMutationOptions = Apollo.BaseMutationOptions<UpdateUserRolesSkillsMutation, UpdateUserRolesSkillsMutationVariables>;
+export const RequestNostrBadgeDocument = gql`
+    mutation RequestNostrBadge($input: RequestNostrBadgeInput) {
+  requestNostrBadge(input: $input)
+}
+    `;
+export type RequestNostrBadgeMutationFn = Apollo.MutationFunction<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>;
+
+/**
+ * __useRequestNostrBadgeMutation__
+ *
+ * To run a mutation, you first call `useRequestNostrBadgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestNostrBadgeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestNostrBadgeMutation, { data, loading, error }] = useRequestNostrBadgeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRequestNostrBadgeMutation(baseOptions?: Apollo.MutationHookOptions<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>(RequestNostrBadgeDocument, options);
+      }
+export type RequestNostrBadgeMutationHookResult = ReturnType<typeof useRequestNostrBadgeMutation>;
+export type RequestNostrBadgeMutationResult = Apollo.MutationResult<RequestNostrBadgeMutation>;
+export type RequestNostrBadgeMutationOptions = Apollo.BaseMutationOptions<RequestNostrBadgeMutation, RequestNostrBadgeMutationVariables>;
 export const ProfileDocument = gql`
     query profile($profileId: Int!) {
   profile(id: $profileId) {
@@ -3404,6 +4495,31 @@ export const ProfileDocument = gql`
       thumbnail_image
       start_date
       end_date
+    }
+    badges {
+      id
+      badge {
+        id
+        title
+        slug
+        image
+        description
+        color
+        winningDescriptionTemplate
+        badgeDefinitionNostrEventId
+      }
+      progress {
+        isCompleted
+        badgeAwardNostrEventId
+        totalNeeded
+        current
+        awardedAt
+        metaData {
+          emoji
+          label
+          value
+        }
+      }
     }
     projects {
       id
@@ -4194,6 +5310,7 @@ export const GetProjectsInTournamentDocument = gql`
     projects {
       id
       title
+      hashtag
       description
       thumbnail_image
       members_count
@@ -4427,6 +5544,7 @@ export const MeTournamentDocument = gql`
       project {
         id
         title
+        hashtag
         description
         thumbnail_image
         members_count
@@ -4499,6 +5617,7 @@ export const GetTournamentByIdDocument = gql`
     query GetTournamentById($idOrSlug: String!) {
   getTournamentById(idOrSlug: $idOrSlug) {
     id
+    slug
     title
     description
     thumbnail_image
@@ -4588,6 +5707,13 @@ export const GetTournamentByIdDocument = gql`
       showFeed
       mainFeedHashtag
       feedFilters
+    }
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
     }
   }
   getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {

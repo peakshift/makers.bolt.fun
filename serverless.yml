@@ -106,6 +106,22 @@ functions:
           path: pubkeys-to-users
           method: post
 
+  # Users Actions (Badges Related)
+  # -----------------------------
+  register-user-action:
+    handler: api/functions/register-user-action-background/register-user-action-background.handler
+    events:
+      - http:
+          path: register-user-action
+          method: post
+
+  process-pending-users-actions:
+    handler: api/functions/process-pending-users-actions-background/process-pending-users-actions-background.handler
+    events:
+      - http:
+          path: process-pending-users-actions
+          method: post
+
   # Misc
   # ----------------------------
   sync-tournament-data-background:

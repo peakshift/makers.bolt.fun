@@ -157,11 +157,6 @@ export const useNostrQueryList = (props: Props) => {
         });
   }
 
-  const getRelayUrls = useCallback(
-    () => Array.from(relayPool?.relayByUrl.keys() ?? []),
-    [relayPool?.relayByUrl]
-  );
-
   return {
     isEmpty,
     relayPool,

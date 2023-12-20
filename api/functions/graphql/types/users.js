@@ -10,7 +10,8 @@ const {
   list,
   enumType,
 } = require("nexus");
-const { getUserById } = require("../../../auth/utils/helperFuncs");
+const { getUserById, isAdmin } = require("../../../auth/utils/helperFuncs");
+const { tournamentOrganizers } = require("../../../auth/utils/consts");
 const { removeNulls, defaultPrismaSelectFields } = require("./helpers");
 const { ImageInput } = require("./misc");
 const { Tournament } = require("./tournament");
@@ -23,6 +24,7 @@ const {
   validateEvent,
 } = require("../../../utils/nostr-tools");
 const { queueService } = require("../../../services/queue-service");
+const { UserBadge } = require("./badges");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -41,6 +43,11 @@ const BaseUser = interfaceType({
     t.nonNull.date("join_date");
     t.nonNull.date("last_seen_notification_time");
     t.string("role");
+    t.boolean("is_admin", {
+      resolve: (parent) => {
+        return isAdmin(parent.id);
+      },
+    });
     t.string("jobTitle");
     t.string("lightning_address");
     t.string("website");
@@ -119,6 +126,88 @@ const BaseUser = interfaceType({
           .then((d) => d.map((item) => item.project));
       },
     });
+
+    t.nonNull.list.nonNull.field("badges", {
+      type: UserBadge,
+      resolve: async (parent, _, ctx) => {
+        const userId = ctx.user?.id;
+
+        const isSelf = userId === parent.id;
+
+        if (!isSelf) {
+          const userBadges = await prisma.userBadge.findMany({
+            where: {
+              userId: parent.id,
+            },
+            include: {
+              badge: true,
+            },
+          });
+
+          return userBadges.map((item) => ({
+            id: `${item.badge.id}-${item.userId}`,
+            badge: item.badge,
+            progress: {
+              isCompleted: true,
+              badgeAwardNostrEventId: item.badgeAwardNostrEventId,
+              awardedAt: item.awardedAt,
+              metaData: item.metaData,
+            },
+          }));
+        } else {
+          const [allBadges, myBadgesProgress] = await Promise.all([
+            prisma.badge.findMany({
+              include: {
+                UserBadge: {
+                  where: {
+                    userId: parent.id,
+                  },
+                },
+              },
+            }),
+            prisma.userBadgeProgress
+              .findMany({
+                where: {
+                  userId: parent.id,
+                },
+              })
+              .then((data) =>
+                data.reduce(
+                  (acc, curr) => ({ ...acc, [curr.badgeId]: curr }),
+                  {}
+                )
+              ),
+          ]);
+
+          return allBadges
+            .filter((badge) => {
+              const userHasThisBadge = badge.UserBadge.length > 0;
+              const isAdminIssuedOnlyBadge = badge.isAdminIssuedOnly;
+
+              return !isAdminIssuedOnlyBadge || userHasThisBadge;
+            })
+            .map((badge) => {
+              const userHasThisBadge = badge.UserBadge.length > 0;
+              const userBadge = badge.UserBadge[0];
+              const badgeUserProgress = myBadgesProgress[badge.id];
+
+              return {
+                id: `${badge.id}-${parent.id}`,
+                badge,
+                progress: {
+                  isCompleted: userHasThisBadge,
+                  badgeAwardNostrEventId: userBadge?.badgeAwardNostrEventId,
+                  totalNeeded: badge.incrementsNeeded,
+                  current: badgeUserProgress?.progress,
+                  awardedAt: userBadge?.awardedAt,
+                  metaData: userBadge?.metaData,
+                },
+              };
+            });
+        }
+      },
+    });
+
     t.nonNull.list.nonNull.field("similar_makers", {
       type: "User",
       resolve(parent) {
@@ -282,35 +371,69 @@ const UserPrivateData = objectType({
     t.nonNull.list.nonNull.field("walletsKeys", {
       type: "WalletKey",
       resolve: (parent, _, context) => {
-        return prisma.userKey
-          .findMany({
+        return prisma.user
+          .findUnique({
             where: {
-              user_id: parent.id,
-            },
-            orderBy: {
-              createdAt: "asc",
+              id: parent.id,
             },
           })
-          .then((keys) =>
-            keys.map((k) => ({
+          .userKeys()
+          .then((keys) => {
+            let sortedKeys = [...keys];
+            sortedKeys.sort((a, b) => {
+              const aCreatedAt = new Date(a).getTime();
+              const bCreatedAt = new Date(b).getTime();
+
+              return aCreatedAt - bCreatedAt;
+            });
+
+            return sortedKeys.map((k) => ({
               ...k,
-              is_current: k.key === context.user.pubKey,
-            }))
-          );
+              is_current: k.createdAt === context.user.pubKey,
+            }));
+          });
       },
     });
 
     t.nonNull.list.nonNull.field("emails", {
       type: LinkedEmail,
       resolve: (parent) => {
-        return prisma.userEmail.findMany({
-          where: {
-            user_id: parent.id,
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        });
+        return prisma.user
+          .findUnique({
+            where: {
+              id: parent.id,
+            },
+          })
+          .userEmails()
+          .then((emails) => {
+            let sortedEmails = [...emails];
+            sortedEmails.sort((a, b) => {
+              const aCreatedAt = new Date(a).getTime();
+              const bCreatedAt = new Date(b).getTime();
+
+              return aCreatedAt - bCreatedAt;
+            });
+
+            return sortedEmails;
+          });
+      },
+    });
+
+    t.nonNull.list.nonNull.field("tournaments_organizing", {
+      type: Tournament,
+      resolve: async (parent) => {
+        const userId = parent.id;
+
+        return prisma.tournamentOrganizer
+          .findMany({
+            where: {
+              user_id: userId,
+            },
+            include: {
+              tournament: true,
+            },
+          })
+          .then((data) => data.map((item) => item.tournament));
       },
     });
   },
@@ -323,6 +446,7 @@ const me = extendType({
       type: "User",
       async resolve(parent, args, context, info) {
         if (!context.user?.id) return null;
+
         const select = new PrismaSelect(info, {
           defaultFields: defaultPrismaSelectFields,
         }).valueWithFilter("User");
@@ -360,7 +484,10 @@ const searchUsers = extendType({
       args: {
         value: nonNull(stringArg()),
       },
-      async resolve(_, { value }) {
+      async resolve(_, { value }, context, info) {
+        const select = new PrismaSelect(info, {
+          defaultFields: defaultPrismaSelectFields,
+        }).valueWithFilter("User");
         return prisma.user.findMany({
           where: {
             name: {
@@ -368,6 +495,7 @@ const searchUsers = extendType({
               mode: "insensitive",
             },
           },
+          ...select,
         });
       },
     });

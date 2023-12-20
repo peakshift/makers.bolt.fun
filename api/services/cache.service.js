@@ -25,6 +25,12 @@ async function invalidateTournamentById(id) {
   );
 }
 
+async function invalidateBadgeById(id) {
+  return makeRequest(
+    `mutation { _purgeType(type: "Badge", keyFields: [{name: "id", value: "${id}" }]) }`
+  );
+}
+
 async function makeRequest(query) {
   if (!env.CACHE_PURGE_TOKEN) return null;
   return axios
@@ -50,6 +56,7 @@ const cacheService = {
   invalidateTournamentById,
   invalidateUserById,
   invalidateTournamentProjects,
+  invalidateBadgeById,
 };
 
 module.exports = cacheService;

@@ -3,6 +3,7 @@ const jose = require("jose");
 const { JWT_SECRET } = require("../../utils/consts");
 const env = require("../../utils/consts");
 const { generatePrivateKey, getPublicKey } = require("../../utils/nostr-tools");
+const { adminUsersIds, tournamentOrganizers } = require("./consts");
 
 const getUserByPubKey = (pubKey) => {
   if (!pubKey) return null;
@@ -93,10 +94,34 @@ const createNewUser = async (pubKey) => {
   });
 };
 
+function verifyInternalAuthHeader(authHeader) {
+  const authToken = authHeader?.split(" ")[1];
+  if (authToken !== env.INTERNAL_FUNCTIONS_API_TOKEN) {
+    return false;
+  }
+  return true;
+}
+
+function isAdmin(userId) {
+  if (!userId) return false;
+  return adminUsersIds.includes(userId);
+}
+
+function isTournamentOrganizer(userId, tournamentId) {
+  if (!userId || !tournamentId) return false;
+
+  return true;
+
+  return tournamentOrganizers[tournamentId]?.includes(userId);
+}
+
 module.exports = {
   getUserByPubKey,
   getUserById,
   generateAuthToken,
   getAuthCookieConfig,
   createNewUser,
+  verifyInternalAuthHeader,
+  isAdmin,
+  isTournamentOrganizer,
 };

@@ -1,0 +1,3 @@
+mutation RequestNostrBadge($input: RequestNostrBadgeInput) {
+  requestNostrBadge(input: $input)
+}

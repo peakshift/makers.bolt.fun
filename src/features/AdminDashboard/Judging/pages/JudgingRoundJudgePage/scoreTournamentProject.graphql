@@ -1,0 +1,9 @@
+mutation ScoreTournamentProject($input: ScoreProjectInput) {
+  scoreTournamentProject(input: $input) {
+    id
+    scores {
+      key
+      value
+    }
+  }
+}

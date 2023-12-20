@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { GrClose, GrFormDown } from "react-icons/gr";
+import { GrClose } from "react-icons/gr";
 import Button from "../Button/Button";
 import ASSETS from "src/assets";
-import Search from "./Search/Search";
 import IconButton from "../IconButton/IconButton";
 import { useAppDispatch, useAppSelector } from "src/utils/hooks";
 import { FiBell, FiMenu, FiPlusCircle } from "react-icons/fi";
@@ -51,16 +50,10 @@ const categoriesListVariants = {
   },
 };
 
-const listArrowVariants = {
-  open: { rotate: 180 },
-  closed: { rotate: 0 },
-};
-
 export default function NavMobile() {
   const dispatch = useAppDispatch();
 
   const [drawerOpen, toggleDrawerOpen] = useToggle(false);
-  const [eventsOpen, toggleEventsOpen] = useToggle(false);
 
   const { curUser } = useAppSelector((state) => ({
     curUser: state.user.me,
@@ -186,6 +179,18 @@ export default function NavMobile() {
                     </MenuButton>
                   }
                 >
+                  {(curUser.is_admin || curUser.is_tournament_org) && (
+                    <MenuItem
+                      href="/admin"
+                      onClick={(e) => {
+                        e.syntheticEvent.preventDefault();
+                        navigate("/admin");
+                      }}
+                      className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                    >
+                      👨🏻‍💼 Admin
+                    </MenuItem>
+                  )}
                   <MenuItem
                     href={createRoute({
                       type: "profile",

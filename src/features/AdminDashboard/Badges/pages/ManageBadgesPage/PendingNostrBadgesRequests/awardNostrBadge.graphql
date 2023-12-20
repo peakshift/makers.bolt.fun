@@ -1,0 +1,3 @@
+mutation AwardNostrBadge($input: AwardNostrBadgeInput) {
+  awardNostrBadge(input: $input)
+}

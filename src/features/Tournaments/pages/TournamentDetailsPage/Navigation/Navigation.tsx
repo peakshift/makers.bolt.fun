@@ -53,6 +53,11 @@ export default function Navigation() {
         path: "ideas",
         hide: !showIdeas,
       },
+      {
+        text: "Judging Rounds",
+        path: "judging-rounds",
+        hide: tournamentDetails.judging_rounds.length === 0,
+      },
       // {
       //     text: "???? 🚧",
       //     path: "ideas",
@@ -67,8 +72,11 @@ export default function Navigation() {
     [
       showFeed,
       showIdeas,
+      tournamentDetails.events.length,
+      tournamentDetails.judging_rounds.length,
       tournamentDetails.makers_count,
       tournamentDetails.projects_count,
+      tournamentDetails.schedule.length,
     ]
   );
 

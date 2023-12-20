@@ -6,6 +6,7 @@ query MeTournament($id: Int!) {
       project {
         id
         title
+        hashtag
         description
         thumbnail_image
         members_count

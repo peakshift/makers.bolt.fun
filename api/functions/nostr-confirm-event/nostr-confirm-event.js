@@ -8,6 +8,7 @@ const { prisma } = require("../../prisma");
 const {
   sendNewCommentNotification,
 } = require("../../services/notifications.service");
+const userActionsService = require("../../services/user-actions-tracker-service");
 
 const confirmEvent = async (req, res) => {
   try {
@@ -65,19 +66,30 @@ const confirmEvent = async (req, res) => {
           },
         }),
 
-        // Send new comment notification
         prisma.story
           .findUnique({
             where: { id: Number(refId) },
             select: { id: true, title: true },
           })
-          .then((story) =>
-            sendNewCommentNotification({
-              storyId: story.id,
-              storyTitle: story.title,
-              authorName: user.name,
-            }).catch(() => {})
-          ),
+          .then((story) => {
+            return Promise.allSettled([
+              // Send new comment notification
+              sendNewCommentNotification({
+                storyId: story.id,
+                storyTitle: story.title,
+                authorName: user.name,
+              }).catch(() => {}),
+
+              // Register action in user actions tracker
+              userActionsService.registerAction(
+                userActionsService.actionsCreator.commentedOnStory({
+                  storyId: story.id,
+                  userId: user.id,
+                  nostrEventId: event.id,
+                })
+              ),
+            ]);
+          }),
       ]);
     }
 

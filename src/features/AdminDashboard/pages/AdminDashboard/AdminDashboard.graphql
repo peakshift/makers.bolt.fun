@@ -1,0 +1,13 @@
+query AdminDashboard {
+  me {
+    id
+    private_data {
+      tournaments_organizing {
+        id
+        slug
+        title
+        thumbnail_image
+      }
+    }
+  }
+}

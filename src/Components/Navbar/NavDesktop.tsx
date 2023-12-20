@@ -167,6 +167,18 @@ export default function NavDesktop() {
                   </MenuButton>
                 }
               >
+                {(curUser.is_admin || curUser.is_tournament_org) && (
+                  <MenuItem
+                    href={"/admin"}
+                    onClick={(e) => {
+                      e.syntheticEvent.preventDefault();
+                      navigate("/admin");
+                    }}
+                    className="!p-16 font-medium flex gap-16 hover:bg-gray-100 !rounded-12"
+                  >
+                    👨🏻‍💼 Admin
+                  </MenuItem>
+                )}
                 <MenuItem
                   href={createRoute({
                     type: "profile",

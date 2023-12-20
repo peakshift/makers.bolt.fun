@@ -137,6 +137,7 @@ const Button = React.forwardRef<any, Props>(
           rel="noopener noreferrer"
           onClick={(e) => handleClick(e)}
           state={state}
+          {...(props as any)}
         >
           {btnContent}
         </LinkDuo>

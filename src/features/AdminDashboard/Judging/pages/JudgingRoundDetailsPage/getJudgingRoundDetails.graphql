@@ -1,0 +1,30 @@
+query GetJudgingRoundDetails($judgingRoundId: String!) {
+  getJudgingRoundById(judgingRoundId: $judgingRoundId) {
+    id
+    title
+    description
+    createdAt
+    end_date
+    judges {
+      id
+      name
+      avatar
+      jobTitle
+    }
+    projects {
+      id
+      hashtag
+      title
+      thumbnail_image
+    }
+    tournament {
+      id
+    }
+    scores_schema {
+      key
+      label
+      type
+      required
+    }
+  }
+}

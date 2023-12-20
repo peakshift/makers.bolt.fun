@@ -1,7 +1,5 @@
 import { useState } from "react";
-import Button from "src/Components/Button/Button";
 import { TournamentEventTypeEnum } from "src/graphql";
-import ScheduleSection from "../OverviewPage/ScheduleSection/ScheduleSection";
 import { useTournament } from "../TournamentDetailsPage/TournamentDetailsContext";
 import EventCard from "./EventCard/EventCard";
 import EventsFilters from "./EventsFilters/EventsFilters";
@@ -11,7 +9,7 @@ export default function WorkshopsPage() {
   const [eventFilter, setEventFilter] =
     useState<TournamentEventTypeEnum | null>(null);
   const {
-    tournamentDetails: { events, events_count },
+    tournamentDetails: { events },
   } = useTournament();
 
   return (

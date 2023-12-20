@@ -10,6 +10,7 @@ import TournamentDetailsContext from "./TournamentDetailsContext";
 import IdeasPage from "../IdeasPage/IdeasPage";
 import TournamentFeedPage from "../TournamentFeedPage/TournamentFeedPage";
 import SchedulePage from "../SchedulePage/SchedulePage";
+import JudgingRoundsPage from "../JudgingRoundsPage/JudgingRoundsPage";
 
 export type MeTournament = MeTournamentQuery["me"];
 
@@ -36,6 +37,7 @@ export default function TournamentDetailsPage() {
             <Route path="makers" element={<MakersPage />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="ideas" element={<IdeasPage />} />
+            <Route path="judging-rounds" element={<JudgingRoundsPage />} />
           </Routes>
         </section>
       </TournamentDetailsContext>

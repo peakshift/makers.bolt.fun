@@ -15,6 +15,7 @@ fragment UserBasicInfo on BaseUser {
   bio
   location
   last_seen_notification_time
+  is_admin
 }
 
 query MyProfileAbout {

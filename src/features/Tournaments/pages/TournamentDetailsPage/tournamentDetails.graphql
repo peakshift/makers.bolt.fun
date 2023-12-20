@@ -1,6 +1,7 @@
 query GetTournamentById($idOrSlug: String!) {
   getTournamentById(idOrSlug: $idOrSlug) {
     id
+    slug
     title
     description
     thumbnail_image
@@ -92,6 +93,13 @@ query GetTournamentById($idOrSlug: String!) {
       showFeed
       mainFeedHashtag
       feedFilters
+    }
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
     }
   }
 

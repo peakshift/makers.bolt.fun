@@ -1,0 +1,118 @@
+query ManageTournament($idOrSlug: String!) {
+  getTournamentById(idOrSlug: $idOrSlug) {
+    id
+    slug
+    title
+    description
+    thumbnail_image
+    cover_image
+    start_date
+    end_date
+    location
+    website
+
+    events_count
+    makers_count
+    projects_count
+
+    prizes {
+      title
+      description
+      image
+      positions {
+        position
+        reward
+        project
+      }
+      additional_prizes {
+        text
+        url
+      }
+    }
+    tracks {
+      id
+      title
+      icon
+    }
+    judges {
+      name
+      company
+      avatar
+      twitter
+    }
+    events {
+      id
+      title
+      image
+      description
+      starts_at
+      ends_at
+      location
+      website
+      type
+      links
+    }
+    faqs {
+      id
+      question
+      answer
+    }
+    contacts {
+      type
+      url
+    }
+    partners {
+      title
+      items {
+        image
+        url
+        isBigImage
+      }
+    }
+    schedule {
+      date
+      events {
+        title
+        time
+        timezone
+        url
+        type
+        location
+      }
+    }
+    makers_deals {
+      title
+      description
+      url
+    }
+    config {
+      registerationOpen
+      projectsSubmissionOpen
+      projectsSubmissionClosesOn
+      ideasRootNostrEventId
+      showFeed
+      mainFeedHashtag
+      feedFilters
+    }
+    judging_rounds {
+      id
+      title
+      description
+      end_date
+      createdAt
+    }
+  }
+
+  getMakersInTournament(tournamentIdOrSlug: $idOrSlug, take: 4) {
+    makers {
+      user {
+        id
+        avatar
+      }
+    }
+  }
+
+  pubkeysOfMakersInTournament(tournamentIdOrSlug: $idOrSlug)
+
+  pubkeysOfProjectsInTournament(tournamentIdOrSlug: $idOrSlug)
+}

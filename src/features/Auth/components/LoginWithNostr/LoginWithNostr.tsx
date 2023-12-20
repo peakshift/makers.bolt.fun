@@ -5,7 +5,6 @@ import { loginWithNostrOTP, requestOTP } from "src/api/auth";
 import { NotificationsService } from "src/services";
 import IconButton from "src/Components/IconButton/IconButton";
 import { FaArrowLeft, FaChevronDown } from "react-icons/fa";
-import { createRoute } from "src/utils/routing";
 import { nip05, nip19 } from "nostr-tools";
 
 interface Props {

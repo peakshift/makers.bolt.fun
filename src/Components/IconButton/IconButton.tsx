@@ -42,6 +42,7 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(
       onClick = () => {},
       variant = "blank",
       isDisabled,
+      style,
       ...restProps
     },
     ref
@@ -55,7 +56,7 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(
                 ${sizeToPadding[size]} 
                 ${baseBtnStyles[variant]} 
                 inline-block active:scale-95 rounded-full ${className}`}
-          style={{ lineHeight: 0 }}
+          style={{ lineHeight: 0, ...style }}
           onClick={onClick}
           {...restProps}
         >
@@ -74,7 +75,7 @@ const IconButton = React.forwardRef<any, PropsWithChildren<Props>>(
             active:scale-95 rounded-full
             ${isDisabled && "opacity-60"}
              `}
-        style={{ lineHeight: 0 }}
+        style={{ lineHeight: 0, ...style }}
         onClick={onClick}
         disabled={isDisabled}
         {...restProps}

@@ -17,6 +17,31 @@ query profile($profileId: Int!) {
       start_date
       end_date
     }
+    badges {
+      id
+      badge {
+        id
+        title
+        slug
+        image
+        description
+        color
+        winningDescriptionTemplate
+        badgeDefinitionNostrEventId
+      }
+      progress {
+        isCompleted
+        badgeAwardNostrEventId
+        totalNeeded
+        current
+        awardedAt
+        metaData {
+          emoji
+          label
+          value
+        }
+      }
+    }
     projects {
       id
       hashtag

@@ -37,6 +37,8 @@ import { ConnectNostrIdToProfileModal } from "src/features/Profiles/pages/EditPr
 import { LinkingNewEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/LinkingNewEmailModal";
 import { RemoveEmailModal } from "src/features/Profiles/pages/EditProfilePage/PreferencesTab/RemoveEmailModal";
 import { LoginModal } from "src/features/Auth/components/LoginModal";
+import { ViewBadgeModal } from "src/features/Profiles/pages/ProfilePage/ViewBadgeModal";
+import { IssueBadgeToMakerModal } from "src/features/AdminDashboard/Badges/pages/BadgeDetailsPage/IssueBadgeToMakerModal";
 
 export enum Direction {
   START,
@@ -69,6 +71,10 @@ export const ALL_MODALS = {
   RegisterTournamet_ConfrimAccount: RegistrationModals.ConfirmAccount,
   RegisterTournamet_RegistrationDetails: RegistrationModals.RegistrationDetails,
   RegisterTournamet_RegistrationSuccess: RegistrationModals.RegistrationSuccess,
+
+  // Badges
+  ViewBadgeModal,
+  IssueBadgeToMakerModal,
 
   // Misc
   ConfirmModal,

@@ -13,7 +13,7 @@ import SaveChangesCard from "../SaveChangesCard/SaveChangesCard";
 import { toast } from "react-toastify";
 import Card from "src/Components/Card/Card";
 import NotFoundPage from "src/features/Shared/pages/NotFoundPage/NotFoundPage";
-import { setMeData } from "src/redux/features/user.slice";
+import { updateMeData } from "src/redux/features/user.slice";
 import UpdateProfileAboutTabSkeleton from "./BasicProfileInfoTab.Skeleton";
 import { useApolloClient } from "@apollo/client";
 import AvatarInput from "src/Components/Inputs/FilesInputs/AvatarInput/AvatarInput";
@@ -123,7 +123,17 @@ export default function BasicProfileInfoTab() {
       },
       onCompleted: ({ updateProfileDetails: data }) => {
         if (data) {
-          dispatch(setMeData(data));
+          dispatch(
+            updateMeData({
+              id: data.id,
+              name: data.name,
+              avatar: data.avatar,
+              jobTitle: data.jobTitle,
+              bio: data.bio,
+              is_admin: data.is_admin,
+              primary_nostr_key: data.primary_nostr_key,
+            })
+          );
           reset({ ...data, avatar: { url: data.avatar } });
           apolloClient.writeFragment({
             id: `User:${data?.id}`,
@@ -139,6 +149,7 @@ export default function BasicProfileInfoTab() {
         }
       },
     }).catch((error) => {
+      console.log({ error });
       toast.update(toastId, {
         render: extractErrorMessage(error) ?? "A network error happened",
         type: "error",
