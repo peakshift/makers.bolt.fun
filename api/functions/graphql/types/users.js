@@ -771,28 +771,24 @@ const updateLastSeenNotificationTime = extendType({
 const subscribeToNewsletter = extendType({
   type: "Mutation",
   definition(t) {
-    t.field("subscribeToNewsletter", {
-      type: "User",
+    t.nonNull.boolean("subscribeToNewsletter", {
       args: { email: nonNull(stringArg()) },
       async resolve(_root, { email }, ctx) {
         const user = await getUserById(ctx.user?.id);
 
-        if (!user?.id) throw new Error("You have to login");
-
-        const userData = await prisma.user.findUnique({
-          where: {
-            id: user.id,
-          },
-        });
-
         // TODO: store in the DB that the user is subscribed to the newsletter
-        await queueService.emailService.subscribeToNewsletter({
-          email,
-          user_id: userData.id,
-          user_name: userData.name,
-        });
+        await queueService.emailService
+          .subscribeToNewsletter({
+            email,
+            user_id: user?.id,
+            user_name: user?.name,
+          })
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
 
-        return userData;
+        return true;
       },
     });
   },

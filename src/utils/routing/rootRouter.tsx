@@ -248,11 +248,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
       />
       <Route
         path={PAGES_ROUTES.subscribeToNewsletter.default}
-        element={
-          <ProtectedRoute>
-            <SubscribeToNewsletterPage />
-          </ProtectedRoute>
-        }
+        element={<SubscribeToNewsletterPage />}
       />
       <Route element={<TopNavLayout />}>
         <Route element={<SideNavLayout />}>

@@ -288,7 +288,7 @@ export type Mutation = {
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
   setUserNostrKeyAsPrimary: Maybe<User>;
-  subscribeToNewsletter: Maybe<User>;
+  subscribeToNewsletter: Scalars['Boolean'];
   unlinkNostrKey: Maybe<User>;
   updateLastSeenNotificationTime: Maybe<User>;
   updateProfileDetails: Maybe<User>;
@@ -1569,7 +1569,7 @@ export type SubscribeToNewsletterMutationVariables = Exact<{
 }>;
 
 
-export type SubscribeToNewsletterMutation = { __typename?: 'Mutation', subscribeToNewsletter: { __typename?: 'User', id: number } | null };
+export type SubscribeToNewsletterMutation = { __typename?: 'Mutation', subscribeToNewsletter: boolean };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4087,9 +4087,7 @@ export type ProjectDetailsModalLazyQueryHookResult = ReturnType<typeof useProjec
 export type ProjectDetailsModalQueryResult = Apollo.QueryResult<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>;
 export const SubscribeToNewsletterDocument = gql`
     mutation SubscribeToNewsletter($email: String!) {
-  subscribeToNewsletter(email: $email) {
-    id
-  }
+  subscribeToNewsletter(email: $email)
 }
     `;
 export type SubscribeToNewsletterMutationFn = Apollo.MutationFunction<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>;

@@ -756,7 +756,7 @@ export interface NexusGenFieldTypes {
     linkNostrKey: NexusGenRootTypes['User'] | null; // User
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
-    subscribeToNewsletter: NexusGenRootTypes['User'] | null; // User
+    subscribeToNewsletter: boolean; // Boolean!
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
     updateLastSeenNotificationTime: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
@@ -1270,7 +1270,7 @@ export interface NexusGenFieldTypeNames {
     linkNostrKey: 'User'
     registerInTournament: 'User'
     setUserNostrKeyAsPrimary: 'User'
-    subscribeToNewsletter: 'User'
+    subscribeToNewsletter: 'Boolean'
     unlinkNostrKey: 'User'
     updateLastSeenNotificationTime: 'User'
     updateProfileDetails: 'User'
