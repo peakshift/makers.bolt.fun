@@ -54,11 +54,13 @@ function StoryPageContent({ story }: Props) {
       <OgTags image={story.cover_image} />
       <Card id="content" onlyMd className="relative max">
         <div className="flex justify-between items-center flex-wrap mb-16">
-          <PostPageHeader
-            author={story.author}
-            project={story.project}
-            date={story.createdAt}
-          />
+          {story.author && (
+            <PostPageHeader
+              author={story.author}
+              project={story.project}
+              date={story.createdAt}
+            />
+          )}
           <div className="shrink-0 text-gray-400">
             {story.nostr_event_id && (
               <a
@@ -94,7 +96,7 @@ function StoryPageContent({ story }: Props) {
                 <FiShare2 />
               </IconButton>
             </CopyToClipboard>
-            {curUser?.id === story.author.id && (
+            {curUser?.id && curUser.id === story.author?.id && (
               <Menu
                 menuClassName="!p-8 !rounded-12"
                 menuButton={
@@ -225,7 +227,7 @@ function StoryPageContent({ story }: Props) {
               id: story.id,
               nostr_event_id: story.nostr_event_id,
               createdAt: story.createdAt,
-              author_pubkey: story.author.primary_nostr_key,
+              author_pubkey: story.author?.primary_nostr_key,
             }}
           />
         </Suspense>

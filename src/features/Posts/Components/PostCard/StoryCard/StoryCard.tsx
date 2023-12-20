@@ -30,7 +30,7 @@ export type StoryCardType = Pick<
   | "nostr_event_id"
 > & {
   tags: Array<Pick<Tag, "id" | "title">>;
-  author: Pick<Author, "id" | "name" | "avatar" | "join_date">;
+  author: Pick<Author, "id" | "name" | "avatar" | "join_date"> | null;
 };
 
 interface Props {
@@ -58,16 +58,18 @@ export default function StoryCard({
     type: "story",
     id: story.id,
     title: story.title,
-    username: story.author.name,
+    username: story.author?.name,
   });
 
   return (
     <div>
-      <PostCardHeader
-        author={story.author}
-        project={story.project}
-        date={story.createdAt}
-      />
+      {story.author && (
+        <PostCardHeader
+          author={story.author}
+          project={story.project}
+          date={story.createdAt}
+        />
+      )}
       <Card className="overflow-hidden mt-8">
         {story.cover_image && (
           <Link

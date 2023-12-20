@@ -218,6 +218,15 @@ const TermsAndConditionsPage = Loadable(
   )
 );
 
+const SubscribeToNewsletterPage = Loadable(
+  React.lazy(
+    () =>
+      import(
+        /* webpackChunkName: "subscribe_to_newsletter_page" */ "../../features/Shared/pages/SubscribeToNewsletterPage/SubscribeToNewsletterPage"
+      )
+  )
+);
+
 const createRoutes = (queryClient: ApolloClient<object>) =>
   createRoutesFromElements(
     <Route element={<App />} errorElement={<ErrorPage />}>
@@ -236,6 +245,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
             <HangoutPage />
           </ProtectedRoute>
         }
+      />
+      <Route
+        path={PAGES_ROUTES.subscribeToNewsletter.default}
+        element={<SubscribeToNewsletterPage />}
       />
       <Route element={<TopNavLayout />}>
         <Route element={<SideNavLayout />}>
@@ -290,7 +303,10 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
 
           <Route path={PAGES_ROUTES.home.default} element={<LandingPage />} />
           <Route path={"/BuildOnBitcoin"} element={<HomePage />} />
-          <Route path={PAGES_ROUTES.landingPage.buildOnBitcoin} element={<HomePage />} />
+          <Route
+            path={PAGES_ROUTES.landingPage.buildOnBitcoin}
+            element={<HomePage />}
+          />
         </Route>
 
         <Route
@@ -335,6 +351,7 @@ const createRoutes = (queryClient: ApolloClient<object>) =>
         <Route path={PAGES_ROUTES.auth.logout} element={<LogoutPage />} />
 
         <Route path={"/privacy-policy"} element={<PrivacyPolicyPage />} />
+
         <Route
           path={"/terms-conditions"}
           element={<TermsAndConditionsPage />}

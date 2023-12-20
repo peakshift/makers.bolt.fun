@@ -35,6 +35,14 @@ const emailService = {
       track_id,
     });
   },
+
+  subscribeToNewsletter: ({ email, user_id, user_name }) => {
+    return callQueueApi("/add-job/emails/subscribe-to-newsletter", {
+      email,
+      user_id,
+      user_name,
+    });
+  },
 };
 
 module.exports = emailService;

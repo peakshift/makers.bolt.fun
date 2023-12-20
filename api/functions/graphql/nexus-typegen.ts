@@ -393,7 +393,7 @@ export interface NexusGenObjects {
     projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // root type
-    author: NexusGenRootTypes['User']; // User!
+    author?: NexusGenRootTypes['User'] | null; // User
     body: string; // String!
     created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -653,7 +653,7 @@ export interface NexusGenFieldTypes {
   Bounty: { // field return type
     applicants_count: number; // Int!
     applications: NexusGenRootTypes['BountyApplication'][]; // [BountyApplication!]!
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['User'] | null; // User
     body: string; // String!
     cover_image: string | null; // String
     createdAt: NexusGenScalars['Date']; // Date!
@@ -756,6 +756,7 @@ export interface NexusGenFieldTypes {
     linkNostrKey: NexusGenRootTypes['User'] | null; // User
     registerInTournament: NexusGenRootTypes['User'] | null; // User
     setUserNostrKeyAsPrimary: NexusGenRootTypes['User'] | null; // User
+    subscribeToNewsletter: boolean; // Boolean!
     unlinkNostrKey: NexusGenRootTypes['User'] | null; // User
     updateLastSeenNotificationTime: NexusGenRootTypes['User'] | null; // User
     updateProfileDetails: NexusGenRootTypes['User'] | null; // User
@@ -784,7 +785,7 @@ export interface NexusGenFieldTypes {
     projects: NexusGenRootTypes['ProjectInTournament'][]; // [ProjectInTournament!]!
   }
   PostComment: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['User'] | null; // User
     body: string; // String!
     created_at: NexusGenScalars['Date']; // Date!
     id: number; // Int!
@@ -878,7 +879,7 @@ export interface NexusGenFieldTypes {
     usersByNostrKeys: NexusGenRootTypes['NostrKeyWithUser'][]; // [NostrKeyWithUser!]!
   }
   Question: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['User'] | null; // User
     body: string; // String!
     createdAt: NexusGenScalars['Date']; // Date!
     excerpt: string; // String!
@@ -892,7 +893,7 @@ export interface NexusGenFieldTypes {
     votes_count: number; // Int!
   }
   Story: { // field return type
-    author: NexusGenRootTypes['User']; // User!
+    author: NexusGenRootTypes['User'] | null; // User
     body: string; // String!
     comments: NexusGenRootTypes['PostComment'][]; // [PostComment!]!
     comments_count: number; // Int!
@@ -1269,6 +1270,7 @@ export interface NexusGenFieldTypeNames {
     linkNostrKey: 'User'
     registerInTournament: 'User'
     setUserNostrKeyAsPrimary: 'User'
+    subscribeToNewsletter: 'Boolean'
     unlinkNostrKey: 'User'
     updateLastSeenNotificationTime: 'User'
     updateProfileDetails: 'User'
@@ -1701,6 +1703,9 @@ export interface NexusGenArgTypes {
     }
     setUserNostrKeyAsPrimary: { // args
       key?: string | null; // String
+    }
+    subscribeToNewsletter: { // args
+      email: string; // String!
     }
     unlinkNostrKey: { // args
       key: string; // String!

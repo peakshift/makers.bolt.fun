@@ -54,7 +54,7 @@ interface BaseUser {
 type Bounty implements PostBase {
   applicants_count: Int!
   applications: [BountyApplication!]!
-  author: User!
+  author: User
   body: String!
   cover_image: String
   createdAt: Date!
@@ -257,6 +257,7 @@ type Mutation {
   linkNostrKey(event: NostrEventInput): User
   registerInTournament(data: RegisterInTournamentInput, tournament_id: Int!): User
   setUserNostrKeyAsPrimary(key: String): User
+  subscribeToNewsletter(email: String!): Boolean!
   unlinkNostrKey(key: String!): User
   updateLastSeenNotificationTime(timestamp: String!): User
   updateProfileDetails(data: ProfileDetailsInput): User
@@ -319,7 +320,7 @@ interface PostBase {
 }
 
 type PostComment {
-  author: User!
+  author: User
   body: String!
   created_at: Date!
   id: Int!
@@ -451,7 +452,7 @@ type Query {
 }
 
 type Question implements PostBase {
-  author: User!
+  author: User
   body: String!
   createdAt: Date!
   excerpt: String!
@@ -479,7 +480,7 @@ enum RoleLevelEnum {
 }
 
 type Story implements PostBase {
-  author: User!
+  author: User
   body: String!
   comments: [PostComment!]!
   comments_count: Int!

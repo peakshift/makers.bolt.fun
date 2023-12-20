@@ -23,6 +23,7 @@ const {
   validateEvent,
 } = require("../../../utils/nostr-tools");
 const { queueService } = require("../../../services/queue-service");
+const { error } = require("console");
 
 const BaseUser = interfaceType({
   name: "BaseUser",
@@ -767,6 +768,32 @@ const updateLastSeenNotificationTime = extendType({
   },
 });
 
+const subscribeToNewsletter = extendType({
+  type: "Mutation",
+  definition(t) {
+    t.nonNull.boolean("subscribeToNewsletter", {
+      args: { email: nonNull(stringArg()) },
+      async resolve(_root, { email }, ctx) {
+        const user = await getUserById(ctx.user?.id);
+
+        // TODO: store in the DB that the user is subscribed to the newsletter
+        await queueService.emailService
+          .subscribeToNewsletter({
+            email,
+            user_id: user?.id,
+            user_name: user?.name,
+          })
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
+
+        return true;
+      },
+    });
+  },
+});
+
 const WalletKey = objectType({
   name: "WalletKey",
   definition(t) {
@@ -1003,4 +1030,5 @@ module.exports = {
   unlinkNostrKey,
   setUserNostrKeyAsPrimary,
   updateLastSeenNotificationTime,
+  subscribeToNewsletter,
 };

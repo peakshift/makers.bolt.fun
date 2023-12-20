@@ -77,7 +77,7 @@ export type Bounty = PostBase & {
   __typename?: 'Bounty';
   applicants_count: Scalars['Int'];
   applications: Array<BountyApplication>;
-  author: User;
+  author: Maybe<User>;
   body: Scalars['String'];
   cover_image: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
@@ -288,6 +288,7 @@ export type Mutation = {
   linkNostrKey: Maybe<User>;
   registerInTournament: Maybe<User>;
   setUserNostrKeyAsPrimary: Maybe<User>;
+  subscribeToNewsletter: Scalars['Boolean'];
   unlinkNostrKey: Maybe<User>;
   updateLastSeenNotificationTime: Maybe<User>;
   updateProfileDetails: Maybe<User>;
@@ -360,6 +361,11 @@ export type MutationRegisterInTournamentArgs = {
 
 export type MutationSetUserNostrKeyAsPrimaryArgs = {
   key: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationSubscribeToNewsletterArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -466,7 +472,7 @@ export type PostBase = {
 
 export type PostComment = {
   __typename?: 'PostComment';
-  author: User;
+  author: Maybe<User>;
   body: Scalars['String'];
   created_at: Scalars['Date'];
   id: Scalars['Int'];
@@ -777,7 +783,7 @@ export type QueryUsersByNostrKeysArgs = {
 
 export type Question = PostBase & {
   __typename?: 'Question';
-  author: User;
+  author: Maybe<User>;
   body: Scalars['String'];
   createdAt: Scalars['Date'];
   excerpt: Scalars['String'];
@@ -806,7 +812,7 @@ export enum RoleLevelEnum {
 
 export type Story = PostBase & {
   __typename?: 'Story';
-  author: User;
+  author: Maybe<User>;
   body: Scalars['String'];
   comments: Array<PostComment>;
   comments_count: Scalars['Int'];
@@ -1327,7 +1333,7 @@ export type RecentProjectsInTagQuery = { __typename?: 'Query', recentProjectsInT
 export type TrendingPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } }> };
+export type TrendingPostsQuery = { __typename?: 'Query', getTrendingPosts: Array<{ __typename?: 'Bounty', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } | null } | { __typename?: 'Question', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } | null } | { __typename?: 'Story', id: number, title: string, author: { __typename?: 'User', id: number, avatar: string } | null }> };
 
 export type GetAllTopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1373,7 +1379,7 @@ export type FeedQueryVariables = Exact<{
 }>;
 
 
-export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
+export type FeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
 export type PostDetailsQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -1381,7 +1387,7 @@ export type PostDetailsQueryVariables = Exact<{
 }>;
 
 
-export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> } } | { __typename?: 'Story', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
+export type PostDetailsQuery = { __typename?: 'Query', getPostById: { __typename?: 'Bounty', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, applications: Array<{ __typename?: 'BountyApplication', id: number, date: string, workplan: string, author: { __typename?: 'User', id: number, name: string, avatar: string } }> } | { __typename?: 'Question', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> } } | { __typename?: 'Story', id: number, title: string, excerpt: string, createdAt: any, body: string, type: string, cover_image: string | null, is_published: boolean | null, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, votes: { __typename?: 'Votes', total: number, total_anonymous_votes: number, voters: Array<{ __typename?: 'Voter', amount_voted: number, user: { __typename?: 'User', id: number, name: string, avatar: string } }> }, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null } };
 
 export type GetTagInfoQueryVariables = Exact<{
   tag: InputMaybe<Scalars['String']>;
@@ -1398,7 +1404,7 @@ export type TagFeedQueryVariables = Exact<{
 }>;
 
 
-export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any }, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
+export type TagFeedQuery = { __typename?: 'Query', getFeed: Array<{ __typename?: 'Bounty', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, deadline: string, reward_amount: number, applicants_count: number, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Question', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }> } | { __typename?: 'Story', id: number, title: string, createdAt: any, excerpt: string, votes_count: number, type: string, cover_image: string | null, comments_count: number, nostr_event_id: string | null, author: { __typename?: 'User', id: number, name: string, avatar: string, join_date: any } | null, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, project: { __typename?: 'Project', id: number, title: string, thumbnail_image: string | null, hashtag: string } | null }> };
 
 export type UserBasicInfoFragment = { __typename?: 'User', id: number, name: string, avatar: string, join_date: any, primary_nostr_key: string | null, role: string | null, jobTitle: string | null, lightning_address: string | null, website: string | null, twitter: string | null, discord: string | null, github: string | null, linkedin: string | null, bio: string | null, location: string | null, last_seen_notification_time: any };
 
@@ -1557,6 +1563,13 @@ export type ProjectDetailsModalQueryVariables = Exact<{
 
 
 export type ProjectDetailsModalQuery = { __typename?: 'Query', getProject: { __typename?: 'Project', id: number, title: string, tagline: string, description: string, hashtag: string, cover_image: string | null, thumbnail_image: string | null, launch_status: ProjectLaunchStatusEnum, twitter: string | null, discord: string | null, github: string | null, slack: string | null, telegram: string | null, figma: string | null, replit: string | null, youtube: string | null, npub: string | null, screenshots: Array<string>, website: string, lightning_address: string | null, votes_count: number, permissions: Array<ProjectPermissionEnum>, category: { __typename?: 'Category', id: number, icon: string | null, title: string }, members: Array<{ __typename?: 'ProjectMember', role: Team_Member_Role, user: { __typename?: 'User', id: number, name: string, jobTitle: string | null, avatar: string } }>, tags: Array<{ __typename?: 'Tag', id: number, title: string }>, recruit_roles: Array<{ __typename?: 'MakerRole', id: number, title: string, icon: string, level: RoleLevelEnum }>, capabilities: Array<{ __typename?: 'Capability', id: number, title: string, icon: string }> } };
+
+export type SubscribeToNewsletterMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type SubscribeToNewsletterMutation = { __typename?: 'Mutation', subscribeToNewsletter: boolean };
 
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4072,6 +4085,37 @@ export function useProjectDetailsModalLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ProjectDetailsModalQueryHookResult = ReturnType<typeof useProjectDetailsModalQuery>;
 export type ProjectDetailsModalLazyQueryHookResult = ReturnType<typeof useProjectDetailsModalLazyQuery>;
 export type ProjectDetailsModalQueryResult = Apollo.QueryResult<ProjectDetailsModalQuery, ProjectDetailsModalQueryVariables>;
+export const SubscribeToNewsletterDocument = gql`
+    mutation SubscribeToNewsletter($email: String!) {
+  subscribeToNewsletter(email: $email)
+}
+    `;
+export type SubscribeToNewsletterMutationFn = Apollo.MutationFunction<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>;
+
+/**
+ * __useSubscribeToNewsletterMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToNewsletterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToNewsletterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToNewsletterMutation, { data, loading, error }] = useSubscribeToNewsletterMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useSubscribeToNewsletterMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>(SubscribeToNewsletterDocument, options);
+      }
+export type SubscribeToNewsletterMutationHookResult = ReturnType<typeof useSubscribeToNewsletterMutation>;
+export type SubscribeToNewsletterMutationResult = Apollo.MutationResult<SubscribeToNewsletterMutation>;
+export type SubscribeToNewsletterMutationOptions = Apollo.BaseMutationOptions<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>;
 export const GetAllRolesDocument = gql`
     query GetAllRoles {
   getAllMakersRoles {
