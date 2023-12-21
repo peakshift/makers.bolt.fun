@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import Button from "src/Components/Button/Button";
 import { useMyUser } from "src/utils/hooks";
@@ -60,7 +61,13 @@ export default function JudgingRoundsPage() {
                 }
                 className="p-24 bg-gray-100 hover:bg-gray-50 border-2 border-gray-200 rounded font-medium flex flex-col items-center text-center text-body3"
               >
-                {round.title}
+                <p>{round.title}</p>
+                <p className="text-body5 mt-16">
+                  Round closes on:{" "}
+                  <span className="font-bold">
+                    {dayjs(round.end_date).format("MMM DD")}
+                  </span>
+                </p>
               </Link>
             </li>
           ))}

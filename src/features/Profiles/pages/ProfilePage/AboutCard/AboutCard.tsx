@@ -119,6 +119,8 @@ export default function AboutCard({ user, isOwner }: Props) {
     }
   };
 
+  const hasPrimaryNostrKey = !!user.nostr_keys.find((k) => k.is_primary);
+
   return (
     <Card defaultPadding={false}>
       <div className="bg-gray-600 relative h-[160px] rounded-t-16">
@@ -212,7 +214,7 @@ export default function AboutCard({ user, isOwner }: Props) {
             </p>
           }
 
-          {user.nostr_keys.length > 0 && (
+          {hasPrimaryNostrKey && (
             <div>
               <p className="text-gray-400 text-body5 mb-8 mt-16 uppercase">
                 Nostr
