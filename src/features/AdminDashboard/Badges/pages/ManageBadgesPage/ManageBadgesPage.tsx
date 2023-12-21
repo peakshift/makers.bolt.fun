@@ -32,7 +32,7 @@ export default function ManageBadgesPage() {
               Create New Badge
             </Button>
           </div>
-          <ul className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-24">
+          <ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-24">
             {query.data?.getAllBadges.map((badge) => (
               <li key={badge.id}>
                 <BadgeCard
