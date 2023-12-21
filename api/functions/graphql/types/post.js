@@ -726,18 +726,18 @@ const createStory = extendType({
                 throw new ApolloError("Unexpected error happened...");
               });
             _promisesList.push(
-              queueService.searchIndexService.createStory(createdStory),
-              userActionsService.registerAction(
-                userActionsService.actionsCreator.publishedStory({
-                  storyId: createdStory.id,
-                  userId: user.id,
-                })
-              )
+              queueService.searchIndexService.createStory(createdStory)
             );
           }
 
           if (!was_published && createdStory.is_published)
             _promisesList.push(
+              userActionsService.registerAction(
+                userActionsService.actionsCreator.publishedStory({
+                  storyId: createdStory.id,
+                  userId: user.id,
+                })
+              ),
               sendNewStoryNotification({
                 title: createdStory.title,
                 id: createdStory.id,

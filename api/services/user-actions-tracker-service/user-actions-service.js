@@ -25,7 +25,7 @@ const actionsCreator = {
 
 async function registerAction(action) {
   await axios.post(
-    env.FUNCTIONS_URL + "/register-user-action",
+    env.FUNCTIONS_URL + "/register-user-action-background",
     { action },
     {
       headers: {

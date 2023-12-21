@@ -72,5 +72,7 @@ exports.handler = async (event, context) => {
 };
 
 async function triggerProcessingFunction() {
-  await axios.post(env.FUNCTIONS_URL + "/process-pending-users-actions");
+  await axios.post(
+    env.FUNCTIONS_URL + "/process-pending-users-actions-background"
+  );
 }
