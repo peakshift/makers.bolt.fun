@@ -139,17 +139,21 @@ const renderPrizes = (
 
       const project1 = winningProjectsMap.get(prize1.project ?? "");
 
-      return (
-        <div>
-          <h4 className="text-[32px] leading-[1em] mb-8">
-            {prizes[0].position}
-          </h4>
-          <p className="text-[84px] leading-[1em]" data-attr={prizeNumber + 1}>
-            {prizes[0].reward}
-          </p>
-          <ProjectThumbnail project={project1!} />
-        </div>
-      );
+      if (!!project1)
+        return (
+          <div>
+            <h4 className="text-[32px] leading-[1em] mb-8">
+              {prizes[0].position}
+            </h4>
+            <p
+              className="text-[84px] leading-[1em]"
+              data-attr={prizeNumber + 1}
+            >
+              {prizes[0].reward}
+            </p>
+            <ProjectThumbnail project={project1!} />
+          </div>
+        );
     }
 
     return (
@@ -172,22 +176,23 @@ const renderPrizes = (
       const project1 = winningProjectsMap.get(prize1.project ?? "");
       const project2 = winningProjectsMap.get(prize2.project ?? "");
 
-      return (
-        <div className="flex flex-col gap-40">
-          <div>
-            <h4 className="text-[32px] leading-[1em] mb-8">
-              {prizes[0].position}
-            </h4>
-            <ProjectThumbnail project={project1!} />
+      if (!!project1 && !!project2)
+        return (
+          <div className="flex flex-col gap-40">
+            <div>
+              <h4 className="text-[32px] leading-[1em] mb-8">
+                {prizes[0].position}
+              </h4>
+              <ProjectThumbnail project={project1!} />
+            </div>
+            <div>
+              <h4 className="text-[20px] leading-[1em] mb-8">
+                {prizes[1].position}
+              </h4>
+              <ProjectThumbnail project={project2!} />
+            </div>
           </div>
-          <div>
-            <h4 className="text-[20px] leading-[1em] mb-8">
-              {prizes[1].position}
-            </h4>
-            <ProjectThumbnail project={project2!} />
-          </div>
-        </div>
-      );
+        );
     }
 
     return (
@@ -216,50 +221,49 @@ const renderPrizes = (
       const project2 = winningProjectsMap.get(prize2.project ?? "");
       const project3 = winningProjectsMap.get(prize3.project ?? "");
 
-      if (!project1 || !project2 || !project3) return;
-
-      return (
-        <div className="flex flex-col md:justify-end md:items-end flex-wrap gap-40">
-          <div className="flex flex-col md:items-end">
-            <h4 className={`text-h2 mb-8`}>{prize1.position}</h4>
-            <ProjectThumbnail project={project1!} />
-          </div>
-
-          <div className="flex gap-36 flex-wrap min-w-0">
+      if (!!project1 || !!project2 || !!project3)
+        return (
+          <div className="flex flex-col md:justify-end md:items-end flex-wrap gap-40">
             <div className="flex flex-col md:items-end">
-              <h4 className={`text-body2 mb-8`}>{prize2.position}</h4>
-              <div className="flex gap-16">
-                <ProjectThumbnail project={project2!} />
+              <h4 className={`text-h2 mb-8`}>{prize1.position}</h4>
+              <ProjectThumbnail project={project1!} />
+            </div>
+
+            <div className="flex gap-36 flex-wrap min-w-0">
+              <div className="flex flex-col md:items-end">
+                <h4 className={`text-body2 mb-8`}>{prize2.position}</h4>
+                <div className="flex gap-16">
+                  <ProjectThumbnail project={project2!} />
+                </div>
+              </div>
+              <div className="flex flex-col md:items-end">
+                <h4 className={`text-body2 mb-8`}>{prize3.position}</h4>
+                <div className="flex gap-16">
+                  <ProjectThumbnail project={project3!} />
+                </div>
               </div>
             </div>
-            <div className="flex flex-col md:items-end">
-              <h4 className={`text-body2 mb-8`}>{prize3.position}</h4>
-              <div className="flex gap-16">
-                <ProjectThumbnail project={project3!} />
-              </div>
-            </div>
           </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="flex md:justify-end flex-wrap gap-40">
-          {prizes.map((prize, idx) => (
-            <div key={idx} className="first:w-full">
-              <h4 className={`${idx === 0 ? "text-h2" : "text-body2"}`}>
-                {prize.position}
-              </h4>
-              <p
-                className={`${idx === 0 ? "text-[48px]" : "text-[36px]"}`}
-                data-attr={prizeNumber + 1}
-              >
-                {prize.reward}
-              </p>
-            </div>
-          ))}
-        </div>
-      );
+        );
     }
+
+    return (
+      <div className="flex md:justify-end flex-wrap gap-40">
+        {prizes.map((prize, idx) => (
+          <div key={idx} className="first:w-full">
+            <h4 className={`${idx === 0 ? "text-h2" : "text-body2"}`}>
+              {prize.position}
+            </h4>
+            <p
+              className={`${idx === 0 ? "text-[48px]" : "text-[36px]"}`}
+              data-attr={prizeNumber + 1}
+            >
+              {prize.reward}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
   }
   if (prizes.length === 4) {
     const [prize1, ...restPrizes] = prizes;
@@ -286,25 +290,24 @@ const renderPrizes = (
           </div>
         </div>
       );
-    } else {
-      return (
-        <div className="flex md:justify-end flex-wrap gap-40">
-          {prizes.map((prize, idx) => (
-            <div key={idx} className="first:w-full">
-              <h4 className={`${idx === 0 ? "text-h2" : "text-body2"}`}>
-                {prize.position}
-              </h4>
-              <p
-                className={`${idx === 0 ? "text-[48px]" : "text-[36px]"}`}
-                data-attr={prizeNumber + 1}
-              >
-                {prize.reward}
-              </p>
-            </div>
-          ))}
-        </div>
-      );
     }
+    return (
+      <div className="flex md:justify-end flex-wrap gap-40">
+        {prizes.map((prize, idx) => (
+          <div key={idx} className="first:w-full">
+            <h4 className={`${idx === 0 ? "text-h2" : "text-body2"}`}>
+              {prize.position}
+            </h4>
+            <p
+              className={`${idx === 0 ? "text-[48px]" : "text-[36px]"}`}
+              data-attr={prizeNumber + 1}
+            >
+              {prize.reward}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
   }
 };
 
