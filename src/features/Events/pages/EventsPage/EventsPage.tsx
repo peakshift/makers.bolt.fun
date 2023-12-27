@@ -13,19 +13,20 @@ export function EventsPage() {
 
       <main>
         <h1 className="text-2xl font-bold">Upcoming Tournaments</h1>
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 md:gap-x-20 gap-y-20 md:gap-y-0">
-          <UpcomingTournamentCard
-            type="🏆 TOURNAMENT"
-            title="Legends Of Lightning II"
-            imageSrc="assets/images/legends_of_lightning.png"
-            date="5th Oct - 17th Dec"
-            organizerImageSrc="assets/images/fulgur.png"
-            linkTo="/tournaments/legends-of-lightning-vol2"
-          />
-        </div>
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 md:gap-x-20 gap-y-20 md:gap-y-0"></div>
+        <p className="text-gray-600 text-body3">
+          Exciting new tournaments are in the works. Stay tuned!
+        </p>
         <div className="w-full h-px my-32 bg-gray-200" />
         <h1 className="text-2xl font-bold">Completed</h1>
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-32 gap-y-32">
+          <CompletedTournamentCard
+            title="Legends of Lightning II"
+            imageSrc="assets/images/legends_of_lightning.png"
+            date="5th Oct - 17th Dec"
+            emoji="🛠️"
+            linkTo="legends-of-lightning-vol2"
+          />
           <CompletedTournamentCard
             title="Nostrasia Hackathon"
             imageSrc="assets/images/nostaria.png"

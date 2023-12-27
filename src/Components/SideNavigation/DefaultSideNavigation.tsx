@@ -35,11 +35,6 @@ const navItems: NavItem[] = [
     href: createRoute({ type: "tournaments" }),
     icon: "🏆",
     text: "Tournaments",
-    badge: {
-      text: "1",
-      color: "red",
-    },
-    highlighted: true,
   },
   {
     href: PAGES_ROUTES.blog.topicsPage,

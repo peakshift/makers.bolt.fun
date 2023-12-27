@@ -28,7 +28,7 @@ export const bannerData = {
 };
 
 const headerLinks = [
-  bannerData,
+  // bannerData,
   {
     title: (
       <p className="text-body1 font-bolder text-white">
@@ -73,7 +73,31 @@ export default function Header() {
     <div className="relative group">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="w-full flex gap-16">
-          <div className="flex-[0_0_100%] md:flex-[0_0_calc(50%-8px)] rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
+          {headerLinks.map((link, index) => (
+            <div
+              className={`flex-[0_0_100%] ${
+                headerLinks.length === 2 && "md:flex-[0_0_calc(50%-8px)]"
+              } rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end`}
+              key={index}
+            >
+              <img
+                className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
+                src={link.img}
+                alt=""
+              />
+              <div className="w-full h-full object-cover bg-gradient-to-t from-gray-900 absolute top-0 left-0 z-[-1]"></div>
+              <div className="max-w-[90%]">{link.title}</div>
+              <Button
+                color="gray"
+                href={link.link.url}
+                newTab={link.link.newTab ?? false}
+                className="mt-24"
+              >
+                {link.link.content}
+              </Button>
+            </div>
+          ))}
+          {/* <div className="flex-[0_0_100%] md:flex-[0_0_calc(50%-8px)] rounded-20 h-[280px] relative overflow-hidden p-24 flex flex-col items-start justify-end">
             <img
               className="w-full h-full object-cover absolute top-0 left-0 z-[-2]"
               src={headerLinks[0].img}
@@ -105,7 +129,7 @@ export default function Header() {
             >
               {headerLinks[1].link.content}
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="absolute inset-x-0 bottom-8 flex justify-center gap-4 md:hidden">
