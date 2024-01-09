@@ -15,7 +15,7 @@ export function EventsPage() {
         <h1 className="text-2xl font-bold">Upcoming Tournaments</h1>
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 md:gap-x-20 gap-y-20 md:gap-y-0"></div>
         <p className="text-gray-600 text-body3">
-          Exciting new tournaments are in the works. Stay tuned and <a href="https://mail.bolt.fun/subscription/form" target="_blank">subscribe to our newsletter</a>!
+          Exciting new tournaments are in the works. Stay tuned and <a href="https://mail.bolt.fun/subscription/form" target="_blank" className="font-bold">subscribe to our newsletter</a>!
         </p>
         <div className="w-full h-px my-32 bg-gray-200" />
         <h1 className="text-2xl font-bold">Completed</h1>
