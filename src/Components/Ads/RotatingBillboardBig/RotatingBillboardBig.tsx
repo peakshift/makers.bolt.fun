@@ -36,8 +36,8 @@ export default function RotatingBillboardBig({
         backgroundImage: `url(${bgImageUrl})`,
       }}
     >
-      <div className="flex flex-col gap-24 relative p-24 pt-48">
-        <img src={logo} alt="" className="w-10/12 max-w-[230px] " />
+      <div className="flex flex-col gap-24 relative p-24 pt-16">
+        <img src={logo} alt="" className="" />
         <div>
           <h3 className={`${textColor} font-bolder text-body1`}>{title}</h3>
           <p className={`${textColor} font-medium mt-8 text-body4`}>
