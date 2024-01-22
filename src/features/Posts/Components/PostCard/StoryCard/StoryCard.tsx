@@ -114,11 +114,11 @@ export default function StoryCard({
                 {isLoadingComments ? (
                   <Skeleton width="9ch" />
                 ) : comments.data.length === 1 ? (
-                  `${comments.data.length} Comment`
+                  `${comments.data.length} Reply`
                 ) : comments.data.length > 1 ? (
-                  `${comments.data.length} Comments`
+                  `${comments.data.length} Replies`
                 ) : (
-                  "Drop a comment!"
+                  "Give feedback!"
                 )}
               </span>
             </Link>
