@@ -22,14 +22,33 @@ const navItems: NavItem[] = [
     text: "Community Feed",
   },
   {
-    href: createRoute({ type: "tag-page", tag: "intros" }),
-    icon: "👋",
-    text: "Intros",
-  },
-  {
     href: createRoute({ type: "tag-page", tag: "get-help" }),
     icon: "🙋‍♀️",
     text: "Questions",
+  },
+  {
+    href: createRoute({ type: "tag-page", tag: "get-help" }),
+    icon: "🚦️",
+    text: "Activity",
+  },
+  {
+    href: createRoute({ type: "tag-page", tag: "startups" }),
+    icon: "🚀",
+    text: "Startups",
+    badge: {
+      text: "NEW!",
+      color: "red",
+    },
+  },
+  {
+    href: createRoute({ type: "hangout" }),
+    icon: "🔊",
+    text: "Hangout",
+  },
+  {
+    href: createRoute({ type: "tag-page", tag: "intros" }),
+    icon: "👋",
+    text: "Intros",
   },
   {
     href: createRoute({ type: "tournaments" }),
@@ -42,13 +61,8 @@ const navItems: NavItem[] = [
     text: "Topics",
   },
   {
-    href: createRoute({ type: "hangout" }),
-    icon: "🔊",
-    text: "Hangout",
-  },
-  {
     href: createRoute({ type: "projects-page" }),
-    icon: "🚀",
+    icon: "🚧",
     text: "Explore Projects",
   },
   {
@@ -95,18 +109,18 @@ const navItems: NavItem[] = [
     icon: "💬",
     text: "Host a hackathon",
   },
-  {
-    href: "https://www.figma.com/file/73tOKOOvZD8iN3qP9Cr18E/BOLT%F0%9F%94%A9FUN?node-id=878-150109&t=aRcywwDisNlwZfPF-0",
-    icon: "🎨",
-    text: "View in Figma",
-    isExternal: true,
-  },
-  {
-    href: "http://github.com/peakshift/makers.bolt.fun",
-    icon: "🐙",
-    text: "View source",
-    isExternal: true,
-  },
+  // {
+  //   href: "https://www.figma.com/file/73tOKOOvZD8iN3qP9Cr18E/BOLT%F0%9F%94%A9FUN?node-id=878-150109&t=aRcywwDisNlwZfPF-0",
+  //   icon: "🎨",
+  //   text: "View in Figma",
+  //   isExternal: true,
+  // },
+  // {
+  //   href: "http://github.com/peakshift/makers.bolt.fun",
+  //   icon: "🐙",
+  //   text: "View source",
+  //   isExternal: true,
+  // },
 ];
 
 export default function DefaultSideNavigation() {
