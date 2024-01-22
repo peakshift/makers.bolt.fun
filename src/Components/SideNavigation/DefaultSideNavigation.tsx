@@ -125,7 +125,7 @@ const navItems: NavItem[] = [
 
 export default function DefaultSideNavigation() {
   return (
-    <ul className="flex flex-col mb-16 gap-8">
+    <ul className="flex flex-col mb-16">
       {navItems.map((item) => (
         <li className="group" key={item.href}>
           {item.isExternal ? (
