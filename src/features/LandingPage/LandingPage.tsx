@@ -249,9 +249,10 @@ export function LandingPage() {
           src="assets/images/landing-page-bg.png"
           alt=""
         />
-        <div className="absolute top-1/4 text-center -translate-y-[35%] left-1/2 -translate-x-1/2 uppercase text-[#212649] text-2xl xs:text-3xl sm:!text-5xl md:!text-6xl font-black">
-          <h1>this fall...</h1>
-          <h1 className="whitespace-nowrap"> fun is mandatory!</h1>
+        <div className="absolute top-1/3 text-center -translate-y-[35%] left-1/2 -translate-x-1/2 uppercase text-[#212649] text-2xl xs:text-3xl sm:!text-5xl md:!text-6xl font-black">
+          <h1 className="whitespace-nowrap">BUILDING SOMETHING?</h1>
+          <h1 className="whitespace-nowrap">SHARE YOUR</h1>
+          <h1 className="whitespace-nowrap">MAKER JOURNEY</h1>
         </div>
       </div>
       <div className="max-w-4xl mx-auto text-center">
