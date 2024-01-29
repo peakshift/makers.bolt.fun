@@ -27,7 +27,7 @@ const navItems: NavItem[] = [
     text: "Questions",
   },
   {
-    href: createRoute({ type: "tag-page", tag: "get-help" }),
+    href: createRoute({ type: "tag-page", tag: "activity" }),
     icon: "🚦️",
     text: "Activity",
   },
