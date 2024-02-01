@@ -80,30 +80,16 @@ const templates = [
     title: "👋  Maker intro",
     description: "Tell the community about yourself",
     value: {
-      title: "Hi, I'm ___ 👋",
-      body: `### About me 👋
-Tell the community about yourself, your hobbies, and interests...
+      title: "Hi, I'm ___ 👋 making ___",
+      body: `
+### What are you currently working on? 🧑‍💻
+...
 
-#### How did you get into bitcoin?
-We've all been down the rabit hole, let's hear your side of things...
-
-#### What's something that excites you about the space now?
-What's ignigniting your maker spark? Is it a new layer spec, event, or app? We want to hear about it...
-
-#### What's your spirit animal/star sign?
-It's important, ok...
-
-### My roles & skills 🦄
-Let everyone know what roles you usually take in your product teams, plus some of your top skills and levels...
+#### What do you need help with?
+...
 
 #### How can you help others?
-Those skills sound awesome, is there anything you could help other makers with in particular? I'm sure they'd return the favour...
-
-### What I'm currently working on 🧑‍💻
-Working on anything exciting? List your current projects here so other makers can check out your work...
-
-#### What can the BOLT.FUN community help you with right now?
-Is there anything you need help with? There are plenty of makers around ready to help you out...
+...
 `,
       tags: ["introductions"],
     },
