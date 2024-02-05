@@ -22,7 +22,7 @@ const navItems: NavItem[] = [
     text: "Community Feed",
   },
   {
-    href: createRoute({ type: "tag-page", tag: "get-help" }),
+    href: createRoute({ type: "tag-page", tag: "questions" }),
     icon: "🙋‍♀️",
     text: "Questions",
   },

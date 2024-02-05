@@ -56,7 +56,7 @@ export default function LandingPage() {
                   href={createRoute({
                     type: "write-story",
                     initData: {
-                      tags: ["get-help"],
+                      tags: ["questions"],
                     },
                   })}
                   color="none"

@@ -87,7 +87,7 @@ function ChipStack() {
         <div className="hidden [@media(min-width:400px)]:block">
           <Chip>🎨 #Design</Chip>
         </div>
-        <Chip>✋ #Get-Help</Chip>
+        <Chip>✋ #Questions</Chip>
       </div>
       <div className="flex ml-4 gap-x-12">
         <div className="hidden sm:block">
