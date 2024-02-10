@@ -58,7 +58,7 @@ export default function CommentCard({
                   id: author.boltfun_id,
                   username: author.name,
                 })
-              : `https://nostr.guru/p/${author.pubkey}`
+              : `https://njump.me/${author.pubkey}`
           }
           className="shrink-0"
         >
@@ -84,7 +84,7 @@ export default function CommentCard({
           href={
             isMobile
               ? `nostr:${nip19.noteEncode(comment.id)}`
-              : `https://www.nostr.guru/e/${comment.id}`
+              : `https://njump.me/${comment.id}`
           }
           target="_blank"
           rel="noreferrer"

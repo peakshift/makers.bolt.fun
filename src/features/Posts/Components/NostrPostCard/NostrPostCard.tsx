@@ -69,7 +69,7 @@ export default function NostrPostCard({ post, author, comments }: Props) {
                   id: author.boltfun_id,
                   username: author.name,
                 })
-              : `https://nostr.guru/p/${post.pubkey}`
+              : `https://njump.me/${post.pubkey}`
           }
           className="shrink-0"
         >
@@ -95,7 +95,7 @@ export default function NostrPostCard({ post, author, comments }: Props) {
           href={
             isMobile
               ? `nostr:${nip19.noteEncode(post.id)}`
-              : `https://www.nostr.guru/e/${post.id}`
+              : `https://njump.me/${post.id}`
           }
           target="_blank"
           rel="noreferrer"

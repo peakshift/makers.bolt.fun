@@ -120,12 +120,12 @@ export function replaceMentionsWithLinks(content: string, tags: string[][]) {
       const npub = nip19.npubEncode(pubkey);
       return `[${npub.slice(0, 9)}...${npub.slice(
         -5
-      )}](https://www.nostr.guru/p/${pubkey})`;
+      )}](https://njump.me/${pubkey})`;
     }
     if (tags[Number(group1)][0] === "e") {
       const eventId = tags[Number(group1)][1];
       const note = nip19.noteEncode(eventId);
-      return `[${note.slice(0, 8)}...](https://www.nostr.guru/e/${eventId})`;
+      return `[${note.slice(0, 8)}...](https://njump.me/${eventId})`;
     }
     return match;
   });

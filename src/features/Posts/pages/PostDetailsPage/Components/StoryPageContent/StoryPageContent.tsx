@@ -62,7 +62,7 @@ function StoryPageContent({ story }: Props) {
           <div className="shrink-0 text-gray-400">
             {story.nostr_event_id && (
               <a
-                href={`https://www.nostr.guru/e/${story.nostr_event_id}`}
+                href={`https://njump.me/${story.nostr_event_id}`}
                 target="_blank"
                 rel="noreferrer"
                 data-tooltip-id="nostr-link"
