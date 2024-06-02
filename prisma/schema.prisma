@@ -48,7 +48,7 @@ model Vote {
   paid            Boolean @default(false)
 
   user_id Int?
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
 }
 
 // -----------------
@@ -109,7 +109,7 @@ model UserKey {
   name      String   @default("My new wallet key")
   createdAt DateTime @default(now())
 
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int?
 }
 
@@ -120,7 +120,7 @@ model UserNostrKey {
   is_primary               Boolean  @default(false)
   is_default_generated_key Boolean  @default(false)
 
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int?
 }
 
@@ -129,7 +129,7 @@ model UserEmail {
   email     String   @unique
   createdAt DateTime @default(now())
 
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int?
 }
 
@@ -141,7 +141,7 @@ model Otp {
 }
 
 model UsersOnWorkRoles {
-  user   User     @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
   role   WorkRole @relation(fields: [roleId], references: [id])
   roleId Int
@@ -243,7 +243,7 @@ model ProjectRecruitRoles {
 model ProjectMember {
   project   Project @relation(fields: [projectId], references: [id])
   projectId Int
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
 
   role String // Admin | Maker | (new_roles_later)
@@ -284,7 +284,7 @@ model Story {
 
   tags Tag[]
 
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   user_id Int?
 
   comments PostComment[] @relation("StoryComment")
@@ -305,7 +305,7 @@ model Question {
 
   tags Tag[]
 
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   user_id Int?
 
   comments PostComment[] @relation("QuestionComment")
@@ -322,7 +322,7 @@ model PostComment {
   parent_comment_id Int?
   parent_comment    PostComment?  @relation("PostComment_Replies", fields: [parent_comment_id], references: [id])
 
-  user    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
   user_id Int?
 
   story    Story? @relation("StoryComment", fields: [story_id], references: [id])
@@ -363,7 +363,7 @@ model Donation {
   preimage        String?
   paid            Boolean  @default(false)
 
-  donor    User? @relation(fields: [donor_id], references: [id])
+  donor    User? @relation(fields: [donor_id], references: [id], onDelete: SetNull)
   donor_id Int?
 }
 
@@ -492,7 +492,7 @@ model TournamentEvent {
 model TournamentParticipant {
   tournament    Tournament @relation(fields: [tournament_id], references: [id])
   tournament_id Int
-  user          User       @relation(fields: [user_id], references: [id])
+  user          User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id       Int
   createdAt     DateTime   @default(now())
 
@@ -536,7 +536,7 @@ model FoundersClubInvitation {
 model FoundersClubMember {
   id      Int    @id @default(autoincrement())
   email   String
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int    @unique // relation scalar field (used in the `@relation` attribute above)
 }
 
@@ -561,7 +561,7 @@ model UserAction {
 
   failReason String?
 
-  user    User @relation(fields: [user_id], references: [id])
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int
 
   createdAt DateTime @default(now())
@@ -596,7 +596,7 @@ model UserBadgeProgress {
   badge   Badge @relation(fields: [badgeId], references: [id])
   badgeId Int
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
   progress Int @default(0)
@@ -608,7 +608,7 @@ model UserBadge {
   badge   Badge @relation(fields: [badgeId], references: [id])
   badgeId Int
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
   badgeAwardNostrEventId String?
@@ -624,7 +624,7 @@ model NostrBadgeRequest {
   badge   Badge @relation(fields: [badgeId], references: [id])
   badgeId Int
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
   publicKeyToAward String
@@ -668,7 +668,7 @@ model TournamentJudgingRoundJudge {
   round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
 
   judge_id Int
-  judge    User @relation(fields: [judge_id], references: [id])
+  judge    User @relation(fields: [judge_id], references: [id], onDelete: Cascade)
 
   @@unique([round_id, judge_id])
 }
@@ -680,7 +680,7 @@ model TournamentJudgingRoundJudgeScore {
   round    TournamentJudgingRound @relation(fields: [round_id], references: [id])
 
   judge_id Int
-  judge    User @relation(fields: [judge_id], references: [id])
+  judge    User @relation(fields: [judge_id], references: [id], onDelete: Cascade)
 
   project_id Int
   project    Project @relation(fields: [project_id], references: [id])
@@ -697,7 +697,7 @@ model TournamentOrganizer {
   tournament    Tournament @relation(fields: [tournament_id], references: [id])
 
   user_id Int
-  user    User @relation(fields: [user_id], references: [id])
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([tournament_id, user_id])
 }

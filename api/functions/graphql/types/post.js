@@ -189,7 +189,7 @@ const Story = objectType({
         return post._count.comments;
       },
     });
-    t.nonNull.field("author", {
+    t.field("author", {
       type: "User",
       resolve: (parent) => {
         return (
@@ -252,7 +252,7 @@ const Bounty = objectType({
     t.nonNull.list.nonNull.field("applications", {
       type: "BountyApplication",
     });
-    t.nonNull.field("author", {
+    t.field("author", {
       type: "User",
       resolve: (parent) => {
         return prisma.bounty.findUnique({ where: { id: parent.id } }).user();
@@ -288,7 +288,7 @@ const Question = objectType({
     //     }
     // });
 
-    t.nonNull.field("author", {
+    t.field("author", {
       type: "User",
       resolve: (parent) => {
         return prisma.question.findUnique({ where: { id: parent.id } }).user();
@@ -303,7 +303,7 @@ const PostComment = objectType({
     t.nonNull.int("id");
     t.nonNull.date("created_at");
     t.nonNull.string("body");
-    t.nonNull.field("author", {
+    t.field("author", {
       type: "User",
     });
     t.int("parentId");

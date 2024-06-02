@@ -53,7 +53,7 @@ export default function PostDetailsPage(props: Props) {
             </main>
             <aside className="no-scrollbar min-w-0">
               <div className="flex flex-col gap-32 overflow-y-auto sticky-side-element">
-                <AuthorCard author={post.author} />
+                {post.author && <AuthorCard author={post.author} />}
                 <TrendingCard />
               </div>
             </aside>
@@ -62,7 +62,7 @@ export default function PostDetailsPage(props: Props) {
           <div className="flex flex-col gap-32">
             <PageContent post={post} />
             <PostActions post={post} total_votes={post.votes.total} />
-            <AuthorCard author={post.author} />
+            {post.author && <AuthorCard author={post.author} />}
             <TrendingCard />
           </div>
         )}
